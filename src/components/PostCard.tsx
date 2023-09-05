@@ -15,16 +15,28 @@ import Like from '../assets/icons/like'
 import EyeIcon from '../assets/icons/EyeIcon'
 import Fire from '../assets/icons/fire'
 import Heart from '../assets/icons/heart'
+import LoginModal from '../screens/Login'
 
 interface componentNameProps {}
 
 const onLikePressed = () => {}
 
 const PostCard = (props: componentNameProps) => {
+  const [isLoginModalVisible, setLoginModalVisible] = React.useState(false)
+
+  const openLoginModal = () => {
+    setLoginModalVisible(true)
+  }
+
+  const closeLoginModal = () => {
+    setLoginModalVisible(false)
+  }
   return (
     <View style={styles.postCard}>
       <View style={styles.imageContent}>
-        <Image style={styles.tShirtImg} source={require('../assets/images/t-shirt.png')} />
+        <TouchableOpacity onPress={openLoginModal}>
+          <Image style={styles.tShirtImg} source={require('../assets/images/t-shirt.png')} />
+        </TouchableOpacity>
         <View
           style={{
             position: 'absolute',
@@ -95,6 +107,8 @@ const PostCard = (props: componentNameProps) => {
       <View style={styles.postCardContent}>
         <Text style={styles.text}>ttttttt</Text>
       </View>
+
+      <LoginModal isVisible={isLoginModalVisible} onClose={closeLoginModal} />
     </View>
   )
 }
