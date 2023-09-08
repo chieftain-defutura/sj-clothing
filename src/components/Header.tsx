@@ -1,29 +1,28 @@
 import * as React from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
-import Logo from '../assets/icons/Logo'
+import { Pressable } from 'react-native'
+import styled from 'styled-components/native'
 import ShoppingCart from '../assets/icons/ShoppingCart'
+import Logo from '../assets/icons/Logo'
 
-const Header = () => {
+const Header: React.FC = () => {
   return (
-    <View style={styles.headerWrapper}>
+    <HeaderWrapper>
       <Pressable>
         <Logo />
       </Pressable>
       <Pressable>
         <ShoppingCart height={24} width={24} />
       </Pressable>
-    </View>
+    </HeaderWrapper>
   )
 }
 
-export default Header
+const HeaderWrapper = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 16px;
+  margin-top: 26px;
+`
 
-const styles = StyleSheet.create({
-  headerWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 16,
-    marginTop: 26,
-  },
-})
+export default Header
