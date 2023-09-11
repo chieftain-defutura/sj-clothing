@@ -2421,11 +2421,6 @@
     "@urql/core" ">=2.3.1"
     "wonka" "^4.0.14"
 
-"@use-expo/font@^2.0.0":
-  "integrity" "sha512-oOJ2uaRyZNQg7PnQviz7nBcdrRL38zxScab4ktgtI4asa6G0dHW9wg307uJJmn0sHS04Yqtw+m0EOjDcGw3iWg=="
-  "resolved" "https://registry.npmjs.org/@use-expo/font/-/font-2.0.0.tgz"
-  "version" "2.0.0"
-
 "@webassemblyjs/ast@^1.11.5", "@webassemblyjs/ast@1.11.6":
   "integrity" "sha512-IN1xI7PwOvLPgjcf180gC1bqn3q/QaOCwYUahIOhbYUu8KA/3tw2RT/T0Gidi1l7Hhj5D/INhJxiICObqpMu4Q=="
   "resolved" "https://registry.npmjs.org/@webassemblyjs/ast/-/ast-1.11.6.tgz"
@@ -4360,7 +4355,7 @@
   dependencies:
     "uuid" "^3.4.0"
 
-"expo-font@>=8.1.0", "expo-font@~11.4.0":
+"expo-font@^11.4.0", "expo-font@~11.4.0":
   "integrity" "sha512-nkmezCFD7gR/I6R+e3/ry18uEfF8uYrr6h+PdBJu+3dawoLOpo+wFb/RG9bHUekU1/cPanR58LR7G5MEMKHR2w=="
   "resolved" "https://registry.npmjs.org/expo-font/-/expo-font-11.4.0.tgz"
   "version" "11.4.0"

@@ -7,10 +7,26 @@ import EyeIcon from '../assets/icons/EyeIcon'
 import Fire from '../assets/icons/fire'
 import Heart from '../assets/icons/heart'
 import LoginModal from '../screens/Login'
+import SaveIcon from '../assets/icons/SaveIcon'
 
 interface componentNameProps {}
 
 const onLikePressed = () => {}
+
+const Data = [
+  {
+    id: 1,
+    image: require('../assets/images/t-shirt.png'),
+    title: 'John David',
+    description: 'Imperdiet in sit rhoncus , eleifend tellus augue lec ... more',
+  },
+  {
+    id: 2,
+    image: require('../assets/images/t-shirt.png'),
+    title: 'John David',
+    description: 'Imperdiet in sit rhoncus , eleifend tellus augue lec ... more',
+  },
+]
 
 const PostCard = (props: componentNameProps) => {
   const [isLoginModalVisible, setLoginModalVisible] = React.useState(false)
@@ -52,7 +68,17 @@ const PostCard = (props: componentNameProps) => {
       </ImageContent>
 
       <PostCardContent>
-        <PostCardText>Post Card</PostCardText>
+        <FlexContent>
+          <SliderNumber>1/2</SliderNumber>
+          <SliderDots>...</SliderDots>
+          <SaveIcon width={24} height={24} />
+        </FlexContent>
+        <Content>
+          <PostCardText>Post Card</PostCardText>
+          <PostDescription>
+            Imperdiet in sit rhoncus , eleifend tellus augue lec ... more
+          </PostDescription>
+        </Content>
       </PostCardContent>
 
       <LoginModal isVisible={isLoginModalVisible} onClose={closeLoginModal} />
@@ -64,6 +90,40 @@ const PostCardWrapper = styled.View`
   background-color: transparent;
   margin: 20px;
 `
+
+const SliderNumber = styled.Text`
+  color: ${COLORS.iconsHighlightClr};
+  letter-spacing: -0.28px;
+  font-size: 14px;
+  font-family: Gilroy-SemiBold;
+`
+
+const FlexContent = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const Content = styled.View`
+  margin-top: 20px;
+`
+
+const PostCardText = styled.Text`
+  color: ${COLORS.textClr};
+  font-size: 16px;
+  font-family: Gilroy-Medium;
+`
+
+const PostDescription = styled.Text`
+  color: ${COLORS.secondaryRGBAClr};
+  font-size: 12px;
+  font-family: Gilroy-Regular;
+  letter-spacing: -0.24px;
+  margin-top: 4px;
+`
+
+const SliderDots = styled.Text``
 
 const ImageContent = styled.View`
   background-color: ${COLORS.imageContentClr};
@@ -98,7 +158,6 @@ const ContentView = styled.View`
 const LikeText = styled.Text`
   color: white;
   align-items: center;
-  font-family: Gilroy;
   font-style: normal;
   font-size: 14px;
 `
@@ -115,7 +174,6 @@ const EyeContent = styled.View`
 const EyeText = styled.Text`
   color: white;
   align-items: center;
-  font-family: Gilroy;
   font-style: normal;
   font-size: 14px;
 `
@@ -123,14 +181,9 @@ const EyeText = styled.Text`
 const PostCardContent = styled.View`
   width: auto;
   background-color: white;
-  padding: 30px;
+  padding: 16px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-`
-
-const PostCardText = styled.Text`
-  color: ${COLORS.textClr};
-  font-size: 16px;
 `
 
 export default PostCard

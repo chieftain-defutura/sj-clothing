@@ -9,4 +9,8 @@ export const COLORS = {
   strokeClr: '#E5CEF5',
   imageContentClr: '#FFBBE9',
   borderClr: '#EEE',
+  backgroundBlurClr: 'rgba(0,0,0,0.5)',
+  secondaryRGBAClr: 'rgba(70, 45, 133, 0.60)',
+  errorClr: '#ff6347',
+  SecondaryTwo: '#8C73CB',
 }

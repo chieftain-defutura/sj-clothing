@@ -6,6 +6,7 @@ import SelectStyle from '../../../components/PostCreater/SelectStyle'
 import SelectColor from '../../../components/PostCreater/SelectColor'
 import AddImage from '../../../components/PostCreater/AddImage'
 import AddText from '../../../components/PostCreater/AddText'
+import CartPage from './Cart'
 
 const Stack = createNativeStackNavigator()
 
@@ -19,6 +20,14 @@ const StackNavigationRoutes: React.FC = () => {
           headerBackground: () => <Header />,
         }}
         component={TabNavigationRoutes}
+      />
+      <Stack.Screen
+        name='Cart'
+        options={{
+          headerShown: false,
+          headerBackground: () => <Header />,
+        }}
+        component={CartPage}
       />
       <Stack.Screen
         name='Style'
