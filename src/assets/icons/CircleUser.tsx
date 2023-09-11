@@ -1,5 +1,6 @@
 import * as React from 'react'
 import Svg, { SvgProps, G, Path, Defs, ClipPath } from 'react-native-svg'
+
 const CircleUser = (props: SvgProps) => (
   <Svg width={20} height={20} fill='none' {...props}>
     <G clipPath='url(#a)'>
