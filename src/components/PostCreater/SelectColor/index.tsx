@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import { COLORS } from '../../../styles/theme'
 import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
-import PlusIcon from '../../../assets/icons/Plus'
 import CloseIcon from '../../../assets/icons/Close'
 
 const Colors = ['white', 'violet', 'blue', 'red', 'orange', 'green']
