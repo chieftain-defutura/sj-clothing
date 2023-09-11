@@ -159,7 +159,7 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
       <View style={styles.AddImage360Degree}>
         <Image source={require('../../../assets/images/360-degree.png')} />
       </View>
-      <SelectDesign />
+      {/* <SelectDesign /> */}
     </View>
   )
 }
