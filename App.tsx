@@ -9,11 +9,11 @@ import { useFonts } from 'expo-font'
 
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
-    'Arvo-Regular': require('./src/assets/fonts/Arvo-Regular.ttf'),
-    'Gilroy-Medium': require('./src/assets/fonts/Gilroy-Medium.ttf'),
-    'Gilroy-Regular': require('./src/assets/fonts/Gilroy-Regular.ttf'),
-    'Gilroy-SemiBold': require('./src/assets/fonts/Gilroy-SemiBold.ttf'),
-    'Montserrat-Medium': require('./src/assets/fonts/Montserrat-Medium.ttf'),
+    'Arvo-Regular': require('./src/assets/fonts/Arvo-Regular.ttf'), //400
+    'Gilroy-Medium': require('./src/assets/fonts/Gilroy-Medium.ttf'), //500
+    'Gilroy-Regular': require('./src/assets/fonts/Gilroy-Regular.ttf'), //400
+    'Gilroy-SemiBold': require('./src/assets/fonts/Gilroy-SemiBold.ttf'), //600
+    'Montserrat-Medium': require('./src/assets/fonts/Montserrat-Medium.ttf'), //500
   })
 
   if (!fontsLoaded) {

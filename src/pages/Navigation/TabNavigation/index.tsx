@@ -10,7 +10,6 @@ import Post from './Post'
 import MidLevel from './MidLevel'
 import Premium from './Premium'
 import Account from './Account'
-import CartPage from '../StackNavigation/Cart'
 
 const Tab = createBottomTabNavigator()
 

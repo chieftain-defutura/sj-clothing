@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Header from '../../../components/Header'
 import TabNavigationRoutes from '../TabNavigation'
 import CartPage from './Cart'
+import MostSearches from './MostSearches'
 
 const Stack = createNativeStackNavigator()
 
@@ -24,6 +25,14 @@ const StackNavigationRoutes: React.FC = () => {
           headerBackground: () => <Header />,
         }}
         component={CartPage}
+      />
+      <Stack.Screen
+        name='Search'
+        options={{
+          headerShown: false,
+          headerBackground: () => <Header />,
+        }}
+        component={MostSearches}
       />
     </Stack.Navigator>
   )
