@@ -4,7 +4,33 @@ import { COLORS } from '../../../styles/theme'
 import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import CloseIcon from '../../../assets/icons/Close'
 
-const StyleData = [
+const StyleShirtData = [
+  {
+    Title: 'Half sleeve',
+    Image: '../../../assets/images/plain-shirt.png',
+  },
+  {
+    Title: 'Round neck',
+    Image: '../../../assets/images/t-shirt.png',
+  },
+  {
+    Title: 'Sleeveless',
+    Image: '../../../assets/images/t-shirt.png',
+  },
+  {
+    Title: 'Full sleeve',
+    Image: '../../../assets/images/plain-shirt.png',
+  },
+  {
+    Title: 'V neck',
+    Image: '../../../assets/images/t-shirt.png',
+  },
+  {
+    Title: 'Polo',
+    Image: '../../../assets/images/plain-shirt.png',
+  },
+]
+const StyleTShirtData = [
   {
     Title: 'Half sleeve',
     Image: '../../../assets/images/plain-shirt.png',
@@ -37,6 +63,8 @@ interface ISelectStyle {
 
 const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
   const [isStyle, setStyle] = useState(false)
+  const [isType, setType] = useState('shirt')
+  const [isSelectedStyle, setSelectedStyle] = useState('Half sleeve')
   return (
     <View style={styles.selectStyleContainer}>
       {!isStyle ? (
@@ -53,55 +81,190 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
           </Pressable>
         </View>
       ) : (
-        <View
-          style={{
-            height: 'auto',
-          }}
-        >
-          {/* <View
+        <View>
+          <View
+            style={{
+              backgroundColor: COLORS.iconsNormalClr,
+              borderBottomRightRadius: 50,
+              borderBottomLeftRadius: 50,
+              padding: 20,
+            }}
+          >
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                gap: 24,
+                borderBottomColor: COLORS.borderClr,
+                borderBottomWidth: 1,
+                padding: 20,
+              }}
+            >
+              <Pressable onPress={() => setType('shirt')}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: isType === 'shirt' ? COLORS.iconsHighlightClr : COLORS.textTertiaryClr,
+                  }}
+                >
+                  Shirt
+                </Text>
+              </Pressable>
+              <Pressable onPress={() => setType('t-shirt')}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: isType === 't-shirt' ? COLORS.iconsHighlightClr : COLORS.textTertiaryClr,
+                  }}
+                >
+                  T-Shirt
+                </Text>
+              </Pressable>
+            </View>
+            {isType === 'shirt' ? (
+              <View
+                style={{
+                  padding: 16,
+                }}
+              >
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    gap: 75,
+                    paddingBottom: 10,
+                  }}
+                >
+                  {StyleShirtData.slice(0, 3).map((data, index) => (
+                    <Pressable onPress={() => setSelectedStyle(data.Title)}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color:
+                            isSelectedStyle === data.Title
+                              ? COLORS.textSecondaryClr
+                              : COLORS.textTertiaryClr,
+                        }}
+                        key={index}
+                      >
+                        {data.Title}
+                      </Text>
+                    </Pressable>
+                  ))}
+                </View>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-around',
+                    gap: 105,
+                    paddingRight: 30,
+                    paddingBottom: 10,
+                  }}
+                >
+                  {StyleShirtData.slice(3, 6).map((data, index) => (
+                    <Pressable onPress={() => setSelectedStyle(data.Title)}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color:
+                            isSelectedStyle === data.Title
+                              ? COLORS.textSecondaryClr
+                              : COLORS.textTertiaryClr,
+                        }}
+                        key={index}
+                      >
+                        {data.Title}
+                      </Text>
+                    </Pressable>
+                  ))}
+                </View>
+              </View>
+            ) : (
+              <View
+                style={{
+                  padding: 16,
+                }}
+              >
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    gap: 75,
+                    paddingBottom: 10,
+                  }}
+                >
+                  {StyleTShirtData.slice(0, 3).map((data, index) => (
+                    <Pressable onPress={() => setSelectedStyle(data.Title)}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color:
+                            isSelectedStyle === data.Title
+                              ? COLORS.textSecondaryClr
+                              : COLORS.textTertiaryClr,
+                        }}
+                        key={index}
+                      >
+                        {data.Title}
+                      </Text>
+                    </Pressable>
+                  ))}
+                </View>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-around',
+                    gap: 105,
+                    paddingRight: 30,
+                    paddingBottom: 10,
+                  }}
+                >
+                  {StyleTShirtData.slice(3, 6).map((data, index) => (
+                    <Pressable onPress={() => setSelectedStyle(data.Title)}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color:
+                            isSelectedStyle === data.Title
+                              ? COLORS.textSecondaryClr
+                              : COLORS.textTertiaryClr,
+                        }}
+                        key={index}
+                      >
+                        {data.Title}
+                      </Text>
+                    </Pressable>
+                  ))}
+                </View>
+              </View>
+            )}
+          </View>
+          <View
             style={{
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
-              gap: 20,
-              borderBottomColor: COLORS.strokeClr,
-              borderBottomWidth: 1,
-              paddingBottom: 10,
+              paddingVertical: 10,
             }}
           >
-            <Text>Shirt</Text>
-            <Text>T-shirt</Text>
-          </View>
-          <View style={{ paddingVertical: 10 }}>
-            <View
+            <Pressable
+              onPress={() => setStyle(false)}
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                justifyContent: 'space-around',
+                backgroundColor: COLORS.iconsNormalClr,
+                width: 42,
+                height: 42,
+                borderRadius: 50,
+                padding: 10,
               }}
             >
-              {StyleData.splice(0, 3).map((f) => (
-                <Text>{f.Title}</Text>
-              ))}
-            </View>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                justifyContent: 'space-around',
-                alignItems: 'center',
-              }}
-            >
-              {StyleData.splice(0, 3).map((f) => (
-                <Text style={{ textAlign: 'center' }}>{f.Title}</Text>
-              ))}
-            </View>
+              <CloseIcon />
+            </Pressable>
           </View>
-          <Pressable onPress={() => setStyle(false)}>
-            <CloseIcon />
-          </Pressable> */}
         </View>
       )}
       <View style={styles.selectStyleTShirt}>
@@ -118,8 +281,8 @@ export default SelectStyle
 
 const styles = StyleSheet.create({
   selectStyleContainer: {
-    paddingVertical: 10,
-    backgroundColor: 'white',
+    // paddingVertical: 10,
+    // backgroundColor: 'white',
   },
   selectStyleNavigator: {
     display: 'flex',

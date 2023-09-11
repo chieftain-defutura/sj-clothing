@@ -35,6 +35,7 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation }) => {
               backgroundColor: COLORS.iconsNormalClr,
               borderBottomRightRadius: 50,
               borderBottomLeftRadius: 50,
+              paddingHorizontal: 15,
             }}
           >
             <Text
