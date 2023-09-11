@@ -13,4 +13,5 @@ export const COLORS = {
   secondaryRGBAClr: 'rgba(70, 45, 133, 0.60)',
   errorClr: '#ff6347',
   SecondaryTwo: '#8C73CB',
+  BoxBackgoundClr: '#EBEBEB',
 }
