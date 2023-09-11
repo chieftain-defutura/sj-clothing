@@ -1,5 +1,6 @@
 import * as React from 'react'
 import Svg, { SvgProps, G, Path, Defs, ClipPath, Rect } from 'react-native-svg'
+
 const BottomBar = (props: SvgProps) => (
   <Svg width={props.width} height={props.height} viewBox='0 0 360 72' fill='none'>
     <ClipPath>

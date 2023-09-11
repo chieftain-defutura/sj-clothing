@@ -4402,13 +4402,6 @@
     "commander" "2.20.0"
     "update-check" "1.5.3"
 
-"expo-splash-screen@^0.20.5":
-  "integrity" "sha512-nTALYdjHpeEA30rdOWSguxn72ctv8WM8ptuUgpfRgsWyn4i6rwYds/rBXisX69XO5fg+XjHAQqijGx/b28+3tg=="
-  "resolved" "https://registry.npmjs.org/expo-splash-screen/-/expo-splash-screen-0.20.5.tgz"
-  "version" "0.20.5"
-  dependencies:
-    "@expo/prebuild-config" "6.2.6"
-
 "expo-status-bar@~1.6.0":
   "integrity" "sha512-e//Oi2WPdomMlMDD3skE4+1ZarKCJ/suvcB4Jo/nO427niKug5oppcPNYO+csR6y3ZglGuypS+3pp/hJ+Xp6fQ=="
   "resolved" "https://registry.npmjs.org/expo-status-bar/-/expo-status-bar-1.6.0.tgz"
