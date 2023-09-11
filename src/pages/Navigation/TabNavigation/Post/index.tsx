@@ -1,32 +1,56 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { View } from 'react-native'
+import { Pressable, Touchable, View } from 'react-native'
 import { COLORS } from '../../../../styles/theme'
 import Setting from '../../../../assets/icons/Settings'
 import Search from '../../../../assets/icons/Search'
 import PostCard from '../../../../components/PostCard'
+import SubscriptionModal from '../../../../screens/Subscription'
+import PlusIcon from '../../../../assets/icons/Plus'
 
-const Post: React.FC = () => {
+interface IPost {
+  navigation: any
+}
+
+const Post: React.FC<IPost> = ({ navigation }) => {
+  const [isSubscriptionModal, setSubscriptionModal] = useState(false)
+  const openSubscriptionModal = () => {
+    setSubscriptionModal(true)
+  }
+
+  const closeSubscriptionModal = () => {
+    setSubscriptionModal(false)
+  }
   return (
-    <PostWrapper>
-      <PostHead>
-        <View>
-          <ViewedText>Most viewed</ViewedText>
-        </View>
-        <PostIcons>
-          <Setting />
-          <Search />
-        </PostIcons>
-      </PostHead>
-      <Cards>
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-      </Cards>
-    </PostWrapper>
+    <PostContainer>
+      <PostWrapper>
+        <PostHead>
+          <View>
+            <ViewedText>Most viewed</ViewedText>
+          </View>
+          <PostIcons>
+            <Setting />
+            <Search />
+          </PostIcons>
+        </PostHead>
+        <Cards>
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+        </Cards>
+      </PostWrapper>
+      <PlusWrapper onPress={() => navigation.navigate('Style')}>
+        <PlusIcon />
+      </PlusWrapper>
+      <SubscriptionModal isVisible={isSubscriptionModal} onClose={closeSubscriptionModal} />
+    </PostContainer>
   )
 }
+
+const PostContainer = styled.View`
+  flex: 1;
+`
 
 const PostWrapper = styled.ScrollView`
   background-color: ${COLORS.backgroundClr};
@@ -48,6 +72,16 @@ const PostIcons = styled.View`
   display: flex;
   flex-direction: row;
   gap: 24px;
+`
+
+const PlusWrapper = styled.Pressable`
+  background-color: #462d85;
+  border-radius: 50px;
+  width: 69px;
+  padding: 25px;
+  position: absolute;
+  bottom: 60px;
+  right: 30px;
 `
 
 const Cards = styled.View`
