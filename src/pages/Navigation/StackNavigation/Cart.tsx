@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/native'
 import { useNavigation } from '@react-navigation/native'
-import { ScrollView, View } from 'react-native'
+import { ScrollView, View, Pressable } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import CircleClose from '../../../assets/icons/CircleClose'
 import CustomButton from '../../../components/Button'
@@ -20,20 +20,26 @@ const data = [
     priceInr: '450 INR',
   },
   {
-    image: require('../../../assets/images/t-shirt.png'),
+    image: require('../../../assets/images/t-shirt-two.png'),
     product: 'Product',
-    productName: 'purple ape t-shirt',
+    productName: 'Formal plain shirt',
     size: 'size',
     sizeCm: 'L-40cm',
     style: 'style',
     styleName: 'Half sleeve',
     price: 'price',
-    priceInr: '450 INR',
+    priceInr: '900 INR',
   },
 ]
 
 const CartPage: React.FC = () => {
   const navigation = useNavigation()
+  const [closedItems, setClosedItems] = useState<number[]>([])
+
+  const handleClose = (index: number) => {
+    setClosedItems([...closedItems, index])
+  }
+
   return (
     <CartPageWrapper>
       <GoBackArrowContent
@@ -47,42 +53,45 @@ const CartPage: React.FC = () => {
       <CartPageContent>
         <ScrollView>
           {data.map((f, index) => {
+            const isItemClosed = closedItems.includes(index)
             return (
               <View key={index}>
-                <CartPageContainer>
-                  <View>
-                    <TShirtImage source={f.image} />
-                  </View>
-                  <View>
-                    <ProductWrapper>
-                      <View>
-                        <ProductText>{f.product}</ProductText>
-                        <ProductShirtText>{f.productName}</ProductShirtText>
-                      </View>
-                      <View>
-                        <CircleClose width={20} height={20} />
-                      </View>
-                    </ProductWrapper>
-                    <ProductSizes>
-                      <ProductStyle>
-                        <ProductText>{f.size}</ProductText>
-                        <ProductShirtText>{f.sizeCm}</ProductShirtText>
-                      </ProductStyle>
-                      <ProductStyle>
-                        <ProductText>{f.style}</ProductText>
-                        <ProductShirtText>{f.styleName}</ProductShirtText>
-                      </ProductStyle>
-                    </ProductSizes>
-                    <ProductSizes>
-                      <ProductStyle>
-                        <ProductText>{f.price}</ProductText>
-                        <ProductShirtText style={{ marginBottom: 16 }}>
-                          {f.priceInr}
-                        </ProductShirtText>
-                      </ProductStyle>
-                    </ProductSizes>
-                  </View>
-                </CartPageContainer>
+                {!isItemClosed && (
+                  <CartPageContainer>
+                    <View>
+                      <TShirtImage source={f.image} />
+                    </View>
+                    <View>
+                      <ProductWrapper>
+                        <View>
+                          <ProductText>{f.product}</ProductText>
+                          <ProductShirtText>{f.productName}</ProductShirtText>
+                        </View>
+                        <Pressable onPress={() => handleClose(index)}>
+                          <CircleClose width={20} height={20} />
+                        </Pressable>
+                      </ProductWrapper>
+                      <ProductSizes>
+                        <ProductStyle>
+                          <ProductText>{f.size}</ProductText>
+                          <ProductShirtText>{f.sizeCm}</ProductShirtText>
+                        </ProductStyle>
+                        <ProductStyle>
+                          <ProductText>{f.style}</ProductText>
+                          <ProductShirtText>{f.styleName}</ProductShirtText>
+                        </ProductStyle>
+                      </ProductSizes>
+                      <ProductSizes>
+                        <ProductStyle>
+                          <ProductText>{f.price}</ProductText>
+                          <ProductShirtText style={{ marginBottom: 16 }}>
+                            {f.priceInr}
+                          </ProductShirtText>
+                        </ProductStyle>
+                      </ProductSizes>
+                    </View>
+                  </CartPageContainer>
+                )}
               </View>
             )
           })}
@@ -149,16 +158,13 @@ const CartPageContainer = styled.View`
   border-bottom-color: ${COLORS.strokeClr};
   border-bottom-width: 1px;
   margin-bottom: 16px;
-
-  &:last-child {
-    border-bottom-width: 0;
-  }
 `
 
 const TShirtImage = styled.Image`
   width: 80px;
   height: 80px;
   flex-shrink: 0;
+  object-fit: contain;
 `
 
 const ProductText = styled.Text`

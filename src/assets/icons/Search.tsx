@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Svg, { SvgProps, G, Path, Defs, ClipPath } from 'react-native-svg'
 
-const Search = (props: SvgProps) => (
+const SearchIcon = (props: SvgProps) => (
   <Svg width={20} height={20} fill='#462D85' {...props}>
     <G clipPath='url(#a)'>
       <Path
@@ -16,4 +16,4 @@ const Search = (props: SvgProps) => (
     </Defs>
   </Svg>
 )
-export default Search
+export default SearchIcon

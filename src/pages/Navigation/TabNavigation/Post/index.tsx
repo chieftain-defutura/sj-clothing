@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { Pressable, Touchable, View } from 'react-native'
+import { Pressable, View } from 'react-native'
 import { COLORS } from '../../../../styles/theme'
 import Setting from '../../../../assets/icons/Settings'
 import Search from '../../../../assets/icons/Search'
@@ -14,9 +14,6 @@ interface IPost {
 
 const Post: React.FC<IPost> = ({ navigation }) => {
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
-  const openSubscriptionModal = () => {
-    setSubscriptionModal(true)
-  }
 
   const closeSubscriptionModal = () => {
     setSubscriptionModal(false)
@@ -30,7 +27,9 @@ const Post: React.FC<IPost> = ({ navigation }) => {
           </View>
           <PostIcons>
             <Setting />
-            <Search />
+            <Pressable onPress={() => navigation.navigate('Search')}>
+              <Search />
+            </Pressable>
           </PostIcons>
         </PostHead>
         <Cards>

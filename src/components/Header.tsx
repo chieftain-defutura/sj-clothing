@@ -15,7 +15,7 @@ const Header: React.FC = () => {
     setIsNotificationActive(!isNotificationActive)
   }
 
-  const goToCartPage = () => {
+  const goToCart = () => {
     navigation.navigate('Cart')
   }
 
@@ -25,7 +25,7 @@ const Header: React.FC = () => {
         <Logo />
       </Pressable>
       <Icons>
-        <Pressable onPress={goToCartPage}>
+        <Pressable onPress={goToCart}>
           <ShoppingCart height={24} width={24} />
         </Pressable>
         <View>

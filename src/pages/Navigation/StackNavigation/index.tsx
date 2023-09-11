@@ -7,6 +7,9 @@ import SelectColor from '../../../components/PostCreater/SelectColor'
 import AddImage from '../../../components/PostCreater/AddImage'
 import AddText from '../../../components/PostCreater/AddText'
 import CartPage from './Cart'
+import MostSearches from './MostSearches'
+import LoginModal from '../../../screens/Login'
+import SignupModal from '../../../screens/Signup'
 
 const Stack = createNativeStackNavigator()
 
@@ -29,6 +32,9 @@ const StackNavigationRoutes: React.FC = () => {
         }}
         component={CartPage}
       />
+      <Stack.Screen name='Login' options={{ headerShown: false }} component={LoginModal} />
+      <Stack.Screen name='Signup' options={{ headerShown: false }} component={SignupModal} />
+
       <Stack.Screen
         name='Style'
         options={{
@@ -60,6 +66,14 @@ const StackNavigationRoutes: React.FC = () => {
           headerBackground: () => <Header />,
         }}
         component={AddText}
+      />
+      <Stack.Screen
+        name='Search'
+        options={{
+          headerShown: false,
+          headerBackground: () => <Header />,
+        }}
+        component={MostSearches}
       />
     </Stack.Navigator>
   )
