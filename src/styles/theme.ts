@@ -7,4 +7,8 @@ export const COLORS = {
   buttonPrimaryClr: 'linear-gradient(90deg, #462D85 0%, #DB00FF 100%)',
   strokeClr: '#E5CEF5',
   imageContentClr: '#FFBBE9',
+  backgroundBlurClr: 'rgba(0,0,0,0.5)',
+  secondaryRGBAClr: 'rgba(70, 45, 133, 0.60)',
+  errorClr: '#ff6347',
+  SecondaryTwo: '#8C73CB',
 }
