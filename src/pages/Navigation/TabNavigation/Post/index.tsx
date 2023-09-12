@@ -76,10 +76,9 @@ const PostIcons = styled.View`
 const PlusWrapper = styled.Pressable`
   background-color: #462d85;
   border-radius: 50px;
-  width: 69px;
-  padding: 25px;
   position: absolute;
-  bottom: 60px;
+  padding: 20px;
+  bottom: 40px;
   right: 30px;
 `
 

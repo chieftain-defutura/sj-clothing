@@ -3,6 +3,7 @@ export const COLORS = {
   iconsHighlightClr: '#462D85',
   iconsNormalClr: '#FFFFFF',
   backgroundClr: '#FFEFFF',
+  backgroundSecondaryClr: '#DDD',
   textSecondaryClr: '#DB00FF',
   textTertiaryClr: 'rgba(70, 45, 133, 0.40);',
   strokeClr: '#E5CEF5',

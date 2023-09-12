@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import React, { useState } from 'react'
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import { COLORS } from '../../../styles/theme'
-import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import CloseIcon from '../../../assets/icons/Close'
+import ThreeSixtyDegree from '../../../assets/icons/360-degree'
+import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 
 const Colors = ['white', 'violet', 'blue', 'red', 'orange', 'green']
 
@@ -124,7 +125,7 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation }) => {
         <Image source={require('../../../assets/images/plain-shirt.png')} />
       </View>
       <View style={styles.selectColor360Degree}>
-        <Image source={require('../../../assets/images/360-degree.png')} />
+        <ThreeSixtyDegree width={40} height={40} />
       </View>
     </View>
   )

@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View, Image, Touchable, Pressable } from 'react-native'
 import React, { useState } from 'react'
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import { COLORS } from '../../../styles/theme'
-import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import CloseIcon from '../../../assets/icons/Close'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
+import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 
 const StyleShirtData = [
   {
@@ -37,11 +37,11 @@ const StyleTShirtData = [
     Image: '../../../assets/images/plain-shirt.png',
   },
   {
-    Title: 'Round neck',
+    Title: 'Sleeveless',
     Image: '../../../assets/images/t-shirt.png',
   },
   {
-    Title: 'Sleeveless',
+    Title: 'Round neck',
     Image: '../../../assets/images/t-shirt.png',
   },
   {

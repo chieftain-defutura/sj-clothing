@@ -1,10 +1,9 @@
-import { StyleSheet, Text, View, Image, Touchable, Pressable } from 'react-native'
 import React, { useState } from 'react'
+import styled from 'styled-components/native'
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
-import styled from 'styled-components/native'
-import SelectDesign from './SelectDesign'
-import LeftArrow from '../../../assets/icons/LeftArrow'
+import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 
 const Images = [
   {
@@ -79,7 +78,9 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
             >
               {Images.slice(0, 2).map((data, index) => (
                 <Pressable
-                  onPress={() => setSelect(data.title)}
+                  onPress={() => {
+                    setSelect(data.title), setAddImage(false), navigation.navigate('AddedImage')
+                  }}
                   key={index}
                   style={{
                     display: 'flex',
@@ -104,7 +105,9 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
               ))}
               {Images.slice(2, 4).map((data, index) => (
                 <Pressable
-                  onPress={() => setSelect(data.title)}
+                  onPress={() => {
+                    setSelect(data.title), setAddImage(false), navigation.navigate('AddedImage')
+                  }}
                   key={index}
                   style={{
                     display: 'flex',
@@ -157,11 +160,16 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
         <Image source={require('../../../assets/images/plain-shirt.png')} />
       </View>
       <View style={styles.AddImage360Degree}>
-        <Image source={require('../../../assets/images/360-degree.png')} />
+        <ThreeSixtyDegree width={40} height={40} />
       </View>
-      <View style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      {/* <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+        }}
+      >
         <SelectDesign />
-      </View>
+      </View> */}
     </View>
   )
 }
@@ -171,6 +179,7 @@ export default AddImage
 const styles = StyleSheet.create({
   AddImageContainer: {
     // padding: 16,
+    flex: 1,
   },
   AddImageNavigator: {
     display: 'flex',
@@ -208,6 +217,6 @@ const DropDownWrapper = styled.View`
   top: 0;
   left: 0;
   right: 0;
-  width: 109%;
+  width: 100%;
   z-index: 1;
 `
