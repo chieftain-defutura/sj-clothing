@@ -14,6 +14,8 @@ type Props = {
   onPress?: () => void
   disabled?: boolean
   disabledBackgroundColor?: string
+  fontFamily?: string
+  fontSize?: number
 }
 
 const CustomButton: React.FC<Props> = ({
@@ -26,6 +28,8 @@ const CustomButton: React.FC<Props> = ({
   onPress,
   disabled,
   disabledBackgroundColor,
+  fontFamily,
+  fontSize,
 }: Props) => {
   return (
     <TouchableOpacity onPress={disabled ? undefined : onPress} disabled={disabled}>
@@ -43,6 +47,7 @@ const CustomButton: React.FC<Props> = ({
             opacity: disabled ? 0.7 : 1,
           },
           buttonStyle,
+
           {
             borderRadius: 50,
           },
@@ -50,7 +55,9 @@ const CustomButton: React.FC<Props> = ({
       >
         <StyledView>
           {leftIcon && <View>{leftIcon}</View>}
-          <ButtonText variant={variant}>{text}</ButtonText>
+          <ButtonText variant={variant} style={{ fontFamily: fontFamily, fontSize: fontSize }}>
+            {text}
+          </ButtonText>
           {rightIcon && <View>{rightIcon}</View>}
         </StyledView>
       </LinearGradient>

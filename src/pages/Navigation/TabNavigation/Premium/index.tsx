@@ -30,7 +30,6 @@ import {
   Animated,
   useWindowDimensions,
   Image,
-  Text,
 } from 'react-native'
 
 const images = [

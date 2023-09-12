@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { COLORS } from '../../../styles/theme'
 import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import CloseIcon from '../../../assets/icons/Close'
+import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 
 const StyleShirtData = [
   {
@@ -138,7 +139,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
                   }}
                 >
                   {StyleShirtData.slice(0, 3).map((data, index) => (
-                    <Pressable onPress={() => setSelectedStyle(data.Title)}>
+                    <Pressable key={index} onPress={() => setSelectedStyle(data.Title)}>
                       <Text
                         style={{
                           textAlign: 'center',
@@ -147,7 +148,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
                               ? COLORS.textSecondaryClr
                               : COLORS.textTertiaryClr,
                         }}
-                        key={index}
                       >
                         {data.Title}
                       </Text>
@@ -271,7 +271,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
         <Image source={require('../../../assets/images/plain-shirt.png')} />
       </View>
       <View style={styles.selectStyle360Degree}>
-        <Image source={require('../../../assets/images/360-degree.png')} />
+        <ThreeSixtyDegree width={40} height={40} />
       </View>
     </View>
   )
