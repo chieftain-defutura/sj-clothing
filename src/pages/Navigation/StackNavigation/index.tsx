@@ -10,6 +10,9 @@ import CartPage from './Cart'
 import MostSearches from './MostSearches'
 import LoginModal from '../../../screens/Login'
 import SignupModal from '../../../screens/Signup'
+import Checkout from './Checkout'
+import MyOrders from './MyOrders'
+import TrackOrder from './TrackOrder'
 
 const Stack = createNativeStackNavigator()
 
@@ -31,6 +34,30 @@ const StackNavigationRoutes: React.FC = () => {
           headerBackground: () => <Header />,
         }}
         component={CartPage}
+      />
+      <Stack.Screen
+        name='Checkout'
+        options={{
+          headerShown: false,
+          headerBackground: () => <Header />,
+        }}
+        component={Checkout}
+      />
+      <Stack.Screen
+        name='MyOrders'
+        options={{
+          headerShown: false,
+          headerBackground: () => <Header />,
+        }}
+        component={MyOrders}
+      />
+      <Stack.Screen
+        name='TrackOrder'
+        options={{
+          headerShown: false,
+          headerBackground: () => <Header />,
+        }}
+        component={TrackOrder}
       />
       <Stack.Screen name='Login' options={{ headerShown: false }} component={LoginModal} />
       <Stack.Screen name='Signup' options={{ headerShown: false }} component={SignupModal} />

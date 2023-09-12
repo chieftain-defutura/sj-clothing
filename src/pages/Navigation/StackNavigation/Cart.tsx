@@ -40,77 +40,89 @@ const CartPage: React.FC = () => {
     setClosedItems([...closedItems, index])
   }
 
-  return (
-    <CartPageWrapper>
-      <GoBackArrowContent
-        onPress={() => {
-          navigation.goBack()
-        }}
-      >
-        <LeftArrow width={24} height={24} />
-        <CartText>Cart</CartText>
-      </GoBackArrowContent>
-      <CartPageContent>
-        <ScrollView>
-          {data.map((f, index) => {
-            const isItemClosed = closedItems.includes(index)
-            return (
-              <View key={index}>
-                {!isItemClosed && (
-                  <CartPageContainer>
-                    <View>
-                      <TShirtImage source={f.image} />
-                    </View>
-                    <View>
-                      <ProductWrapper>
-                        <View>
-                          <ProductText>{f.product}</ProductText>
-                          <ProductShirtText>{f.productName}</ProductShirtText>
-                        </View>
-                        <Pressable onPress={() => handleClose(index)}>
-                          <CircleClose width={20} height={20} />
-                        </Pressable>
-                      </ProductWrapper>
-                      <ProductSizes>
-                        <ProductStyle>
-                          <ProductText>{f.size}</ProductText>
-                          <ProductShirtText>{f.sizeCm}</ProductShirtText>
-                        </ProductStyle>
-                        <ProductStyle>
-                          <ProductText>{f.style}</ProductText>
-                          <ProductShirtText>{f.styleName}</ProductShirtText>
-                        </ProductStyle>
-                      </ProductSizes>
-                      <ProductSizes>
-                        <ProductStyle>
-                          <ProductText>{f.price}</ProductText>
-                          <ProductShirtText style={{ marginBottom: 16 }}>
-                            {f.priceInr}
-                          </ProductShirtText>
-                        </ProductStyle>
-                      </ProductSizes>
-                    </View>
-                  </CartPageContainer>
-                )}
-              </View>
-            )
-          })}
+  const goToCheckout = () => {
+    navigation.navigate('Checkout')
+  }
 
-          <CustomBtn>
-            <CustomButton variant='primary' text='Check out' />
-          </CustomBtn>
-        </ScrollView>
-      </CartPageContent>
-    </CartPageWrapper>
+  return (
+    <ScrollViewContent>
+      <View>
+        <GoBackArrowContent
+          onPress={() => {
+            navigation.goBack()
+          }}
+        >
+          <LeftArrow width={24} height={24} />
+          <CartText>Cart</CartText>
+        </GoBackArrowContent>
+        <CartPageContent>
+          <ScrollView>
+            {data.map((f, index) => {
+              const isItemClosed = closedItems.includes(index)
+              return (
+                <View key={index}>
+                  {!isItemClosed && (
+                    <CartPageContainer>
+                      <View>
+                        <TShirtImage source={f.image} />
+                      </View>
+                      <View>
+                        <ProductWrapper>
+                          <View style={{ marginBottom: 16 }}>
+                            <ProductText>{f.product}</ProductText>
+                            <ProductShirtText>{f.productName}</ProductShirtText>
+                          </View>
+                          <Pressable onPress={() => handleClose(index)}>
+                            <CircleClose width={20} height={20} />
+                          </Pressable>
+                        </ProductWrapper>
+                        <ProductSizes>
+                          <ProductStyle>
+                            <ProductText>{f.size}</ProductText>
+                            <ProductShirtText>{f.sizeCm}</ProductShirtText>
+                          </ProductStyle>
+                          <ProductStyle>
+                            <ProductText>{f.style}</ProductText>
+                            <ProductShirtText>{f.styleName}</ProductShirtText>
+                          </ProductStyle>
+                        </ProductSizes>
+                        <ProductSizes>
+                          <ProductStyle style={{ marginTop: 16 }}>
+                            <ProductText>{f.price}</ProductText>
+                            <ProductShirtText>{f.priceInr}</ProductShirtText>
+                          </ProductStyle>
+                        </ProductSizes>
+                      </View>
+                    </CartPageContainer>
+                  )}
+                </View>
+              )
+            })}
+
+            <CustomBtn>
+              <CustomButton
+                variant='primary'
+                text='Check out'
+                fontFamily='Arvo-Regular'
+                fontSize={16}
+                onPress={goToCheckout}
+              />
+            </CustomBtn>
+          </ScrollView>
+        </CartPageContent>
+      </View>
+    </ScrollViewContent>
   )
 }
 
-const CartPageWrapper = styled.View`
+const ScrollViewContent = styled.ScrollView`
   background: ${COLORS.backgroundClr};
   height: 100%;
 `
 
-const CustomBtn = styled.View``
+const CustomBtn = styled.View`
+  margin-top: 80px;
+`
 
 const GoBackArrowContent = styled.Pressable`
   display: flex;
@@ -128,7 +140,7 @@ const CartText = styled.Text`
 `
 
 const CartPageContent = styled.View`
-  padding-vertical: 16px;
+  padding-horizontal: 24px;
   flex: 1;
   justify-content: center;
   align-items: center;
@@ -139,7 +151,6 @@ const ProductSizes = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   gap: 16px;
-  margin-top: 16px;
 `
 
 const ProductStyle = styled.View``
@@ -148,16 +159,17 @@ const ProductWrapper = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 82px;
+  gap: 90px;
 `
 
 const CartPageContainer = styled.View`
   display: flex;
   flex-direction: row;
   gap: 16px;
+  align-items: center;
   border-bottom-color: ${COLORS.strokeClr};
   border-bottom-width: 1px;
-  margin-bottom: 16px;
+  padding-vertical: 16px;
 `
 
 const TShirtImage = styled.Image`
