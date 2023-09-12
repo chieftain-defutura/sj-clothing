@@ -159,7 +159,9 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
       <View style={styles.AddImage360Degree}>
         <Image source={require('../../../assets/images/360-degree.png')} />
       </View>
-      {/* <SelectDesign /> */}
+      <View style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <SelectDesign />
+      </View>
     </View>
   )
 }
@@ -168,13 +170,14 @@ export default AddImage
 
 const styles = StyleSheet.create({
   AddImageContainer: {
-    padding: 16,
+    // padding: 16,
   },
   AddImageNavigator: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    padding: 16,
   },
   AddImageDropdown: {
     display: 'flex',
