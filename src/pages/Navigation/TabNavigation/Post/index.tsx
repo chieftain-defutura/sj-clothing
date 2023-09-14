@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { Pressable, View, StyleSheet, Dimensions } from 'react-native'
+import { Pressable, View, StyleSheet, Dimensions, ScrollView } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS } from '../../../../styles/theme'
 import Setting from '../../../../assets/icons/Settings'
@@ -88,8 +88,8 @@ const Post: React.FC<IPost> = ({ navigation }) => {
           <CloseIcon width={24} height={24} />
         </Pressable>
       </Animated.View>
-      <PostWrapper>
-        <PostHead>
+      <ScrollView style={styles.postWrapper}>
+        <PostHead style={{ padding: 16 }}>
           <View>
             <ViewedText>Most viewed</ViewedText>
           </View>
@@ -111,17 +111,14 @@ const Post: React.FC<IPost> = ({ navigation }) => {
             <PostCard />
           </Cards>
         </View>
-      </PostWrapper>
-
+      </ScrollView>
       <LinearGradient
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         colors={['#462D85', '#DB00FF']}
         style={styles.gradientColor}
       >
-        <Pressable onPress={() => navigation.navigate('Style')}>
-          <PlusIcon width={24} height={24} />
-        </Pressable>
+        <PlusIcon onPress={() => navigation.navigate('Style')} />
       </LinearGradient>
       <SubscriptionModal isVisible={isSubscriptionModal} onClose={closeSubscriptionModal} />
     </PostContainer>
@@ -201,13 +198,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   gradientColor: {
-    borderRadius: 70,
+    backgroundColor: '#462d85',
+    borderRadius: 50,
     width: 64,
     height: 64,
     padding: 20,
     position: 'absolute',
-    bottom: 35,
+    bottom: 40,
     right: 30,
+  },
+  postWrapper: {
+    backgroundColor: COLORS.backgroundClr,
   },
 })
 
