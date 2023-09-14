@@ -78,9 +78,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) => {
 
               <AccountView>
                 <AccountViewText>Don’t have an account?</AccountViewText>
-                <Pressable
-                // onPress={() => navigation.navigate('Login', { name: 'Jane' })}
-                >
+                <Pressable>
                   <SignUpLink>Sign up</SignUpLink>
                 </Pressable>
               </AccountView>

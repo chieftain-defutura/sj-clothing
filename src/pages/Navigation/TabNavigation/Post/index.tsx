@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
 import { Pressable, View, StyleSheet, Dimensions } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS } from '../../../../styles/theme'
 import Setting from '../../../../assets/icons/Settings'
 import Search from '../../../../assets/icons/Search'
@@ -111,9 +112,17 @@ const Post: React.FC<IPost> = ({ navigation }) => {
           </Cards>
         </View>
       </PostWrapper>
-      <PlusWrapper onPress={() => navigation.navigate('Style')}>
-        <PlusIcon />
-      </PlusWrapper>
+
+      <LinearGradient
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        colors={['#462D85', '#DB00FF']}
+        style={styles.gradientColor}
+      >
+        <Pressable onPress={() => navigation.navigate('Style')}>
+          <PlusIcon width={24} height={24} />
+        </Pressable>
+      </LinearGradient>
       <SubscriptionModal isVisible={isSubscriptionModal} onClose={closeSubscriptionModal} />
     </PostContainer>
   )
@@ -164,16 +173,6 @@ const PostIcons = styled.View`
   gap: 24px;
 `
 
-const PlusWrapper = styled.Pressable`
-  background-color: #462d85;
-  border-radius: 50px;
-  width: 69px;
-  padding: 25px;
-  position: absolute;
-  bottom: 40px;
-  right: 30px;
-`
-
 const Cards = styled.View`
   display: flex;
   justify-content: center;
@@ -200,6 +199,15 @@ const styles = StyleSheet.create({
     left: '40%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  gradientColor: {
+    borderRadius: 70,
+    width: 64,
+    height: 64,
+    padding: 20,
+    position: 'absolute',
+    bottom: 35,
+    right: 30,
   },
 })
 
