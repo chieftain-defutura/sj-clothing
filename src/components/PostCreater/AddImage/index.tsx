@@ -41,7 +41,7 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
             <ArrowCircleLeft width={24} height={24} />
           </Pressable>
           <Pressable onPress={() => setAddImage(true)} style={styles.AddImageDropdown}>
-            <Text>Add Image</Text>
+            <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Add Image</Text>
           </Pressable>
           <Pressable onPress={() => navigation.navigate('AddText')}>
             <ArrowCircleRight width={24} height={24} />
@@ -65,6 +65,7 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
                 paddingVertical: 20,
                 color: COLORS.textClr,
                 fontSize: 14,
+                fontFamily: 'Gilroy-Medium',
               }}
             >
               Select area to add image
@@ -75,7 +76,8 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 paddingVertical: 20,
-                paddingHorizontal: 10,
+                paddingHorizontal: 1,
+                gap: 10,
               }}
             >
               {Images.slice(0, 2).map((data, index) => (
@@ -88,6 +90,7 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    gap: 4,
                   }}
                 >
                   <View
@@ -102,7 +105,9 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
                     <Image style={{ width: 70, height: 100 }} source={data.image} />
                   </View>
 
-                  <Text style={{ color: COLORS.textClr }}>{data.title}</Text>
+                  <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                    {data.title}
+                  </Text>
                 </Pressable>
               ))}
               {Images.slice(2, 4).map((data, index) => (
@@ -115,6 +120,7 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    gap: 4,
                   }}
                 >
                   <View
@@ -122,6 +128,10 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
                       backgroundColor: COLORS.BoxBackgoundClr,
                       padding: 16,
                       borderRadius: 10,
+                      display: 'flex',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      width: 80,
                       borderColor: isSelect === data.title ? COLORS.textSecondaryClr : '',
                       borderWidth: isSelect === data.title ? 1 : 0,
                     }}
@@ -129,7 +139,9 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
                     <Image style={{ width: 30, height: 100 }} source={data.image} />
                   </View>
 
-                  <Text style={{ color: COLORS.textClr }}>{data.title}</Text>
+                  <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                    {data.title}
+                  </Text>
                 </Pressable>
               ))}
             </View>
@@ -158,20 +170,19 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
         </DropDownWrapper>
       )}
 
-      <View style={styles.AddImageTShirt}>
+      <View
+        style={{
+          marginTop: !isAddImage ? 64 : 254,
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}
+      >
         <Image source={require('../../../assets/images/plain-shirt.png')} />
       </View>
       <View style={styles.AddImage360Degree}>
         <ThreeSixtyDegree width={40} height={40} />
       </View>
-      {/* <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-        }}
-      >
-        <SelectDesign />
-      </View> */}
     </View>
   )
 }
@@ -180,7 +191,6 @@ export default AddImage
 
 const styles = StyleSheet.create({
   AddImageContainer: {
-    // padding: 16,
     flex: 1,
   },
   AddImageNavigator: {

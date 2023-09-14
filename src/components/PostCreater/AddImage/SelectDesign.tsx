@@ -5,11 +5,22 @@ import CloseIcon from '../../../assets/icons/Close'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 
 const MostSearchData = ['Bluebee', 'Round neck', 'Gold', 'Sleeve', 'V-neck', 'Polo']
+const NftImage = [
+  require('../../../assets/images/monkey-nft.png'),
+  require('../../../assets/images/monkey-nft-1.png'),
+  require('../../../assets/images/monkey-nft-2.png'),
+  require('../../../assets/images/monkey-nft-3.png'),
+  require('../../../assets/images/monkey-nft-4.png'),
+  require('../../../assets/images/monkey-nft-5.png'),
+]
 interface ISelectDesign {
   navigation: any
 }
 const SelectDesign: React.FC<ISelectDesign> = ({ navigation }) => {
   const [isOpen, setOpen] = useState(false)
+  const [isNftImage, setNftImage] = useState(0)
+  const [isStyleName, setStyleName] = useState('Bluebee')
+
   return (
     <View style={{ flex: 1 }}>
       <View
@@ -27,7 +38,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({ navigation }) => {
               <LeftArrow width={24} height={24} />
             </Pressable>
             <Pressable onPress={() => navigation.navigate('AddText')}>
-              <Text style={{ color: COLORS.textClr }}>Done</Text>
+              <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>Done</Text>
             </Pressable>
           </>
         ) : (
@@ -61,14 +72,18 @@ const SelectDesign: React.FC<ISelectDesign> = ({ navigation }) => {
             }}
           >
             <View>
-              <Text style={{ fontSize: 16, color: COLORS.textClr }}>Select Design</Text>
+              <Text style={{ fontSize: 16, color: COLORS.textClr, fontFamily: 'Arvo-Regular' }}>
+                Select Design
+              </Text>
             </View>
             <Pressable>
               <CloseIcon width={20} height={20} />
             </Pressable>
           </View>
 
-          <Text style={{ fontSize: 10, color: COLORS.textClr }}>MOST SEARCHES</Text>
+          <Text style={{ fontSize: 10, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>
+            MOST SEARCHES
+          </Text>
           <View style={{ paddingVertical: 16 }}>
             <FlatList
               data={MostSearchData}
@@ -81,18 +96,30 @@ const SelectDesign: React.FC<ISelectDesign> = ({ navigation }) => {
                 gap: 5,
                 paddingVertical: 5,
               }}
-              renderItem={(item) => (
-                <View
+              renderItem={({ item }) => (
+                <Pressable
+                  onPress={() => setStyleName(item)}
                   style={{
-                    borderColor: COLORS.textTertiaryClr,
+                    borderColor:
+                      isStyleName === item ? COLORS.textSecondaryClr : COLORS.textTertiaryClr,
                     borderWidth: 1,
-                    paddingHorizontal: 30,
+                    paddingHorizontal: 10,
                     borderRadius: 50,
                     paddingVertical: 4,
                   }}
                 >
-                  <Text style={{ color: COLORS.textTertiaryClr }}>#{item.item}</Text>
-                </View>
+                  <Text
+                    style={{
+                      color:
+                        isStyleName === item ? COLORS.textSecondaryClr : COLORS.textTertiaryClr,
+                      fontFamily: 'Gilroy-Regular',
+                      width: 100,
+                      textAlign: 'center',
+                    }}
+                  >
+                    #{item}
+                  </Text>
+                </Pressable>
               )}
             />
           </View>
@@ -106,17 +133,20 @@ const SelectDesign: React.FC<ISelectDesign> = ({ navigation }) => {
               gap: 8,
               paddingVertical: 16,
             }}
-            data={MostSearchData}
+            data={NftImage}
             horizontal
             renderItem={(item) => (
               <Pressable
                 onPress={() => setOpen(true)}
-                style={{ backgroundColor: COLORS.cardClr, padding: 5, borderRadius: 5 }}
+                style={{
+                  backgroundColor: COLORS.cardClr,
+                  padding: 5,
+                  borderRadius: 5,
+                  borderColor: isNftImage === item.index ? COLORS.textSecondaryClr : 'red',
+                  borderWidth: isNftImage === item.index ? 1 : 0,
+                }}
               >
-                <Image
-                  style={{ width: 100, height: 100 }}
-                  source={require('../../../assets/images/monkey-nft.png')}
-                />
+                <Image style={{ width: 100, height: 100 }} source={item.item} />
               </Pressable>
             )}
           />

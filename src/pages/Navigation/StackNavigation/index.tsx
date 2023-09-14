@@ -15,7 +15,7 @@ import SelectStyle from '../../../components/PostCreater/SelectStyle'
 import SelectColor from '../../../components/PostCreater/SelectColor'
 import SelectText from '../../../components/PostCreater/AddText/SelectText'
 import SelectDesign from '../../../components/PostCreater/AddImage/SelectDesign'
-import SelectSizeAndColor from '../../../components/PostCreater/SelectSizeAndCountry'
+import ProductAndCaption from '../../../components/PostCreater/ProductAndCaption'
 import GiftOptions from './GiftOptions'
 import NotificationPage from './NotificationPage'
 
@@ -133,12 +133,12 @@ const StackNavigationRoutes: React.FC = () => {
         component={SelectText}
       />
       <Stack.Screen
-        name='SelectSizeAndColor'
+        name='ProductAndCaption'
         options={{
           headerShown: false,
           headerBackground: () => <Header />,
         }}
-        component={SelectSizeAndColor}
+        component={ProductAndCaption}
       />
       <Stack.Screen
         name='Search'

@@ -24,7 +24,7 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation }) => {
             <ArrowCircleLeft width={24} height={24} />
           </Pressable>
           <Pressable onPress={() => setSelected(true)} style={styles.selectColorDropdown}>
-            <Text>Select Color</Text>
+            <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Select Color</Text>
             <DropDownArrowIcon />
           </Pressable>
           <Pressable onPress={() => navigation.navigate('AddImage')}>
@@ -44,6 +44,7 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation }) => {
             <Text
               style={{
                 textAlign: 'center',
+                fontFamily: 'Gilroy-Medium',
                 borderBottomColor: COLORS.borderClr,
                 borderBottomWidth: 2,
                 paddingVertical: 20,
@@ -66,11 +67,10 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation }) => {
                   <Pressable onPress={() => setSelectedColor(color)} key={index}>
                     <View
                       style={{
-                        width: 44,
-                        height: 44,
                         borderRadius: 50,
-                        borderColor: COLORS.borderClr,
-                        borderWidth: 2,
+                        borderColor: COLORS.textTertiaryClr,
+                        borderWidth: 1,
+                        padding: 1,
                       }}
                     >
                       <View
@@ -79,6 +79,7 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation }) => {
                           width: 40,
                           height: 40,
                           borderRadius: 50,
+                          padding: 3,
                         }}
                       ></View>
                     </View>
@@ -90,6 +91,7 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation }) => {
                             : COLORS.textTertiaryClr,
                         textAlign: 'center',
                         textTransform: 'capitalize',
+                        fontFamily: 'Gilroy-Regular',
                       }}
                     >
                       {color}

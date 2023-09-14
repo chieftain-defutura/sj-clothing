@@ -22,7 +22,7 @@ const SelectText: React.FC<ISelectText> = ({ navigation }) => {
           <LeftArrow width={24} height={24} />
         </Pressable>
         <Pressable onPress={() => navigation.navigate('SelectSizeAndColor')}>
-          <Text style={{ color: COLORS.textClr }}>Done</Text>
+          <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Done</Text>
         </Pressable>
       </View>
       <View
@@ -40,24 +40,24 @@ const SelectText: React.FC<ISelectText> = ({ navigation }) => {
         }}
       >
         <View
-          style={{ borderRadius: 50, padding: 30, backgroundColor: COLORS.backgroundSecondaryClr }}
+          style={{ borderRadius: 50, padding: 20, backgroundColor: COLORS.backgroundSecondaryClr }}
         >
-          <Text>Aa</Text>
+          <Text style={{ fontSize: 32 }}>Aa</Text>
         </View>
         <View
-          style={{ borderRadius: 50, padding: 30, backgroundColor: COLORS.backgroundSecondaryClr }}
+          style={{ borderRadius: 50, padding: 20, backgroundColor: COLORS.backgroundSecondaryClr }}
         >
-          <Text>Bb</Text>
+          <Text style={{ fontSize: 32 }}>Bb</Text>
         </View>
         <View
-          style={{ borderRadius: 50, padding: 30, backgroundColor: COLORS.backgroundSecondaryClr }}
+          style={{ borderRadius: 50, padding: 20, backgroundColor: COLORS.backgroundSecondaryClr }}
         >
-          <Text>Cc</Text>
+          <Text style={{ fontSize: 32 }}>Cc</Text>
         </View>
         <View
-          style={{ borderRadius: 50, padding: 30, backgroundColor: COLORS.backgroundSecondaryClr }}
+          style={{ borderRadius: 50, padding: 20, backgroundColor: COLORS.backgroundSecondaryClr }}
         >
-          <Text>Dd</Text>
+          <Text style={{ fontSize: 32 }}>Dd</Text>
         </View>
       </View>
     </View>

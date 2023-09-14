@@ -87,6 +87,7 @@ const Post: React.FC<IPost> = ({ navigation }) => {
           <CloseIcon width={24} height={24} />
         </Pressable>
       </Animated.View>
+
       <PostWrapper>
         <PostHead>
           <View>
