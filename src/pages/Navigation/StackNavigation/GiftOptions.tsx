@@ -30,7 +30,7 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation }) => {
   return (
     <ScrollViewContent>
       <View>
-        <GiftContent>
+        <GiftContent style={{ backgroundColor: '#FFF' }}>
           <GoBackArrowContent
             onPress={() => {
               navigation.goBack()
@@ -76,19 +76,18 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation }) => {
                   />
                   {touched.from && errors.from && <ErrorText>{errors.from}</ErrorText>}
                 </InputStyleContent>
-                <ContinueBtn>
-                  <CustomButton
-                    variant='primary'
-                    text='Continue'
-                    onPress={() => {
-                      handleSubmit(), navigation.navigate('Notification')
-                    }}
-                    disabled={!isValid}
-                    fontFamily='Arvo-Regular'
-                    fontSize={16}
-                    style={{ marginTop: '14%' }}
-                  />
-                </ContinueBtn>
+
+                <CustomButton
+                  variant='primary'
+                  text='Continue'
+                  onPress={() => {
+                    handleSubmit(), navigation.navigate('Checkout')
+                  }}
+                  disabled={!isValid}
+                  fontFamily='Arvo-Regular'
+                  fontSize={16}
+                  style={{ marginTop: 50 }}
+                />
               </GiftMessageWrapper>
             )}
           </Formik>
@@ -99,7 +98,8 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation }) => {
 }
 
 const ScrollViewContent = styled.ScrollView`
-  background: ${COLORS.iconsNormalClr};
+  background: ${COLORS.backgroundClr};
+  height: 100%;
   flex: 1;
 `
 
@@ -114,10 +114,6 @@ const GiftMessageWrapper = styled.View`
 
 const InputStyleContent = styled.View`
   margin-vertical: 16px;
-`
-
-const ContinueBtn = styled.View`
-  margin-top: 16px;
 `
 
 const InputStyle = styled.TextInput`

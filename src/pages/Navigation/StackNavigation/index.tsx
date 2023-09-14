@@ -18,6 +18,7 @@ import SelectDesign from '../../../components/PostCreater/AddImage/SelectDesign'
 import SelectSizeAndColor from '../../../components/PostCreater/SelectSizeAndCountry'
 import GiftOptions from './GiftOptions'
 import NotificationPage from './NotificationPage'
+import OrderPlaced from '../../../screens/OrderPlaced'
 
 const Stack = createNativeStackNavigator()
 
@@ -32,6 +33,7 @@ const StackNavigationRoutes: React.FC = () => {
         }}
         component={TabNavigationRoutes}
       />
+
       <Stack.Screen
         name='Cart'
         options={{
@@ -83,6 +85,7 @@ const StackNavigationRoutes: React.FC = () => {
 
       <Stack.Screen name='Login' options={{ headerShown: false }} component={LoginModal} />
       <Stack.Screen name='Signup' options={{ headerShown: false }} component={SignupModal} />
+      <Stack.Screen name='OrderPlaced' options={{ headerShown: false }} component={OrderPlaced} />
 
       <Stack.Screen
         name='Style'

@@ -30,7 +30,7 @@ const data = [
     priceInr: '900 INR',
   },
   {
-    image: require('../../../assets/images/t-shirt-two.png'),
+    image: require('../../../assets/images/t-shirt.png'),
     product: 'Product',
     productName: 'Formal plain shirt',
     size: 'size',
@@ -52,7 +52,7 @@ const data = [
     priceInr: '900 INR',
   },
   {
-    image: require('../../../assets/images/t-shirt-two.png'),
+    image: require('../../../assets/images/t-shirt.png'),
     product: 'Product',
     productName: 'Formal plain shirt',
     size: 'size',
@@ -74,7 +74,29 @@ const data = [
     priceInr: '900 INR',
   },
   {
+    image: require('../../../assets/images/t-shirt.png'),
+    product: 'Product',
+    productName: 'Formal plain shirt',
+    size: 'size',
+    sizeCm: 'L-40cm',
+    style: 'style',
+    styleName: 'Half sleeve',
+    price: 'price',
+    priceInr: '900 INR',
+  },
+  {
     image: require('../../../assets/images/t-shirt-two.png'),
+    product: 'Product',
+    productName: 'purple ape t-shirt',
+    size: 'size',
+    sizeCm: 'L-40cm',
+    style: 'style',
+    styleName: 'Half sleeve',
+    price: 'price',
+    priceInr: '450 INR',
+  },
+  {
+    image: require('../../../assets/images/t-shirt.png'),
     product: 'Product',
     productName: 'Formal plain shirt',
     size: 'size',
@@ -98,9 +120,9 @@ const CartPage: React.FC<ICartPage> = ({ navigation }) => {
   }
 
   return (
-    <View style={{ height: '100%' }}>
+    <View>
       <ScrollViewContent style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
-        <View>
+        <View style={{ paddingBottom: 150 }}>
           <GoBackArrowContent
             onPress={() => {
               navigation.goBack()
@@ -162,7 +184,15 @@ const CartPage: React.FC<ICartPage> = ({ navigation }) => {
         fontFamily='Arvo-Regular'
         fontSize={16}
         onPress={() => navigation.navigate('Checkout')}
-        style={{ position: 'absolute', bottom: 32, width: '90%', alignSelf: 'center' }}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          width: '100%',
+          backgroundColor: '#FFF',
+          padding: 16,
+        }}
       />
     </View>
   )
@@ -171,7 +201,6 @@ const CartPage: React.FC<ICartPage> = ({ navigation }) => {
 const ScrollViewContent = styled.ScrollView`
   background: ${COLORS.backgroundClr};
   height: 100%;
-  position: absolute;
 `
 
 const CustomBtn = styled.View`
@@ -224,6 +253,7 @@ const CartPageContainer = styled.View`
   border-bottom-color: ${COLORS.strokeClr};
   border-bottom-width: 1px;
   padding-vertical: 16px;
+  width: 100%;
 `
 
 const TShirtImage = styled.Image`

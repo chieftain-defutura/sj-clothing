@@ -63,7 +63,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation }) => {
               <OrderGroup width={25} height={203} />
             </Pressable>
             <View>
-              <FlexOrder onPress={() => navigation.navigate('GiftOptions')}>
+              <FlexOrder>
                 <OrderPlacedFlexContent>
                   <View>
                     <OrderPlacedText>Order placed</OrderPlacedText>
@@ -78,7 +78,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation }) => {
                   laboredolore aliqua.
                 </OrderDescription>
               </FlexOrder>
-              <FlexOrder onPress={() => navigation.navigate('GiftOptions')}>
+              <FlexOrder>
                 <OrderPlacedFlexContent>
                   <View>
                     <OrderPlacedText>Shipping</OrderPlacedText>
@@ -93,7 +93,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation }) => {
                   laboredolore aliqua.
                 </OrderDescription>
               </FlexOrder>
-              <FlexOrder onPress={() => navigation.navigate('GiftOptions')}>
+              <FlexOrder>
                 <OrderPlacedFlexContent>
                   <View>
                     <OrderPlacedText>Delivery</OrderPlacedText>

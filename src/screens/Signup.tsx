@@ -106,7 +106,9 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose }) => {
 
               <AccountView>
                 <AccountViewText>Already have an account?</AccountViewText>
-                <LoginLink>Log in</LoginLink>
+                <Pressable>
+                  <LoginLink>Log in</LoginLink>
+                </Pressable>
               </AccountView>
             </SignUpContainer>
           )}
