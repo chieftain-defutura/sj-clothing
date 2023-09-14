@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { Pressable, View, Text, StyleSheet, Dimensions } from 'react-native'
+import { Pressable, View, StyleSheet, Dimensions } from 'react-native'
 import { COLORS } from '../../../../styles/theme'
 import Setting from '../../../../assets/icons/Settings'
 import Search from '../../../../assets/icons/Search'
