@@ -4,6 +4,8 @@ import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
+import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
+import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 
 const Images = [
   {
@@ -36,13 +38,13 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
       {!isAddImage ? (
         <View style={styles.AddImageNavigator}>
           <Pressable onPress={() => navigation.navigate('Color')}>
-            <Image source={require('../../../assets/images/arrow-circle-left.png')} />
+            <ArrowCircleLeft width={24} height={24} />
           </Pressable>
           <Pressable onPress={() => setAddImage(true)} style={styles.AddImageDropdown}>
             <Text>Add Image</Text>
           </Pressable>
           <Pressable onPress={() => navigation.navigate('AddText')}>
-            <Image source={require('../../../assets/images/arrow-circle-right.png')} />
+            <ArrowCircleRight width={24} height={24} />
           </Pressable>
         </View>
       ) : (

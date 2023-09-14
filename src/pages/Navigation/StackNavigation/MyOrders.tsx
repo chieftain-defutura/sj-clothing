@@ -33,13 +33,11 @@ const data = [
   },
 ]
 
-const MyOrders: React.FC = () => {
-  const navigation = useNavigation()
+interface IMyOrders {
+  navigation: any
+}
 
-  const goToTrackOrder = () => {
-    navigation.navigate('TrackOrder')
-  }
-
+const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
   return (
     <ScrollViewContent>
       <View>
@@ -54,7 +52,7 @@ const MyOrders: React.FC = () => {
         <CartPageContent>
           {data.map((f, index) => {
             return (
-              <Pressable key={index} onPress={goToTrackOrder}>
+              <Pressable key={index} onPress={() => navigation.navigate('TrackOrder')}>
                 <CartPageContainer>
                   <View>
                     <TShirtImage source={f.image} />

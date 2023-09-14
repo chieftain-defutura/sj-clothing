@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { useNavigation } from '@react-navigation/native'
 import { ScrollView, View, Pressable } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import CircleClose from '../../../assets/icons/CircleClose'
@@ -30,94 +29,149 @@ const data = [
     price: 'price',
     priceInr: '900 INR',
   },
+  {
+    image: require('../../../assets/images/t-shirt-two.png'),
+    product: 'Product',
+    productName: 'Formal plain shirt',
+    size: 'size',
+    sizeCm: 'L-40cm',
+    style: 'style',
+    styleName: 'Half sleeve',
+    price: 'price',
+    priceInr: '900 INR',
+  },
+  {
+    image: require('../../../assets/images/t-shirt-two.png'),
+    product: 'Product',
+    productName: 'Formal plain shirt',
+    size: 'size',
+    sizeCm: 'L-40cm',
+    style: 'style',
+    styleName: 'Half sleeve',
+    price: 'price',
+    priceInr: '900 INR',
+  },
+  {
+    image: require('../../../assets/images/t-shirt-two.png'),
+    product: 'Product',
+    productName: 'Formal plain shirt',
+    size: 'size',
+    sizeCm: 'L-40cm',
+    style: 'style',
+    styleName: 'Half sleeve',
+    price: 'price',
+    priceInr: '900 INR',
+  },
+  {
+    image: require('../../../assets/images/t-shirt-two.png'),
+    product: 'Product',
+    productName: 'Formal plain shirt',
+    size: 'size',
+    sizeCm: 'L-40cm',
+    style: 'style',
+    styleName: 'Half sleeve',
+    price: 'price',
+    priceInr: '900 INR',
+  },
+  {
+    image: require('../../../assets/images/t-shirt-two.png'),
+    product: 'Product',
+    productName: 'Formal plain shirt',
+    size: 'size',
+    sizeCm: 'L-40cm',
+    style: 'style',
+    styleName: 'Half sleeve',
+    price: 'price',
+    priceInr: '900 INR',
+  },
 ]
 
-const CartPage: React.FC = () => {
-  const navigation = useNavigation()
+interface ICartPage {
+  navigation: any
+}
+
+const CartPage: React.FC<ICartPage> = ({ navigation }) => {
   const [closedItems, setClosedItems] = useState<number[]>([])
 
   const handleClose = (index: number) => {
     setClosedItems([...closedItems, index])
   }
 
-  const goToCheckout = () => {
-    navigation.navigate('Checkout')
-  }
-
   return (
-    <ScrollViewContent>
-      <View>
-        <GoBackArrowContent
-          onPress={() => {
-            navigation.goBack()
-          }}
-        >
-          <LeftArrow width={24} height={24} />
-          <CartText>Cart</CartText>
-        </GoBackArrowContent>
-        <CartPageContent>
-          <ScrollView>
-            {data.map((f, index) => {
-              const isItemClosed = closedItems.includes(index)
-              return (
-                <View key={index}>
-                  {!isItemClosed && (
-                    <CartPageContainer>
-                      <View>
-                        <TShirtImage source={f.image} />
-                      </View>
-                      <View>
-                        <ProductWrapper>
-                          <View style={{ marginBottom: 16 }}>
-                            <ProductText>{f.product}</ProductText>
-                            <ProductShirtText>{f.productName}</ProductShirtText>
-                          </View>
-                          <Pressable onPress={() => handleClose(index)}>
-                            <CircleClose width={20} height={20} />
-                          </Pressable>
-                        </ProductWrapper>
-                        <ProductSizes>
-                          <ProductStyle>
-                            <ProductText>{f.size}</ProductText>
-                            <ProductShirtText>{f.sizeCm}</ProductShirtText>
-                          </ProductStyle>
-                          <ProductStyle>
-                            <ProductText>{f.style}</ProductText>
-                            <ProductShirtText>{f.styleName}</ProductShirtText>
-                          </ProductStyle>
-                        </ProductSizes>
-                        <ProductSizes>
-                          <ProductStyle style={{ marginTop: 16 }}>
-                            <ProductText>{f.price}</ProductText>
-                            <ProductShirtText>{f.priceInr}</ProductShirtText>
-                          </ProductStyle>
-                        </ProductSizes>
-                      </View>
-                    </CartPageContainer>
-                  )}
-                </View>
-              )
-            })}
-
-            <CustomBtn>
-              <CustomButton
-                variant='primary'
-                text='Check out'
-                fontFamily='Arvo-Regular'
-                fontSize={16}
-                onPress={goToCheckout}
-              />
-            </CustomBtn>
-          </ScrollView>
-        </CartPageContent>
-      </View>
-    </ScrollViewContent>
+    <View style={{ height: '100%' }}>
+      <ScrollViewContent style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
+        <View>
+          <GoBackArrowContent
+            onPress={() => {
+              navigation.goBack()
+            }}
+          >
+            <LeftArrow width={24} height={24} />
+            <CartText>Cart</CartText>
+          </GoBackArrowContent>
+          <CartPageContent>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {data.map((f, index) => {
+                const isItemClosed = closedItems.includes(index)
+                return (
+                  <View key={index}>
+                    {!isItemClosed && (
+                      <CartPageContainer>
+                        <View>
+                          <TShirtImage source={f.image} />
+                        </View>
+                        <View>
+                          <ProductWrapper>
+                            <View style={{ marginBottom: 16 }}>
+                              <ProductText>{f.product}</ProductText>
+                              <ProductShirtText>{f.productName}</ProductShirtText>
+                            </View>
+                            <Pressable onPress={() => handleClose(index)}>
+                              <CircleClose width={20} height={20} />
+                            </Pressable>
+                          </ProductWrapper>
+                          <ProductSizes>
+                            <ProductStyle>
+                              <ProductText>{f.size}</ProductText>
+                              <ProductShirtText>{f.sizeCm}</ProductShirtText>
+                            </ProductStyle>
+                            <ProductStyle>
+                              <ProductText>{f.style}</ProductText>
+                              <ProductShirtText>{f.styleName}</ProductShirtText>
+                            </ProductStyle>
+                          </ProductSizes>
+                          <ProductSizes>
+                            <ProductStyle style={{ marginTop: 16 }}>
+                              <ProductText>{f.price}</ProductText>
+                              <ProductShirtText>{f.priceInr}</ProductShirtText>
+                            </ProductStyle>
+                          </ProductSizes>
+                        </View>
+                      </CartPageContainer>
+                    )}
+                  </View>
+                )
+              })}
+            </ScrollView>
+          </CartPageContent>
+        </View>
+      </ScrollViewContent>
+      <CustomButton
+        variant='primary'
+        text='Check out'
+        fontFamily='Arvo-Regular'
+        fontSize={16}
+        onPress={() => navigation.navigate('Checkout')}
+        style={{ position: 'absolute', bottom: 32, width: '90%', alignSelf: 'center' }}
+      />
+    </View>
   )
 }
 
 const ScrollViewContent = styled.ScrollView`
   background: ${COLORS.backgroundClr};
   height: 100%;
+  position: absolute;
 `
 
 const CustomBtn = styled.View`

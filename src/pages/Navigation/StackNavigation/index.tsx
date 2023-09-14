@@ -16,6 +16,8 @@ import SelectColor from '../../../components/PostCreater/SelectColor'
 import SelectText from '../../../components/PostCreater/AddText/SelectText'
 import SelectDesign from '../../../components/PostCreater/AddImage/SelectDesign'
 import SelectSizeAndColor from '../../../components/PostCreater/SelectSizeAndCountry'
+import GiftOptions from './GiftOptions'
+import NotificationPage from './NotificationPage'
 
 const Stack = createNativeStackNavigator()
 
@@ -62,6 +64,23 @@ const StackNavigationRoutes: React.FC = () => {
         }}
         component={TrackOrder}
       />
+      <Stack.Screen
+        name='GiftOptions'
+        options={{
+          headerShown: false,
+          headerBackground: () => <Header />,
+        }}
+        component={GiftOptions}
+      />
+      <Stack.Screen
+        name='Notification'
+        options={{
+          headerShown: false,
+          headerBackground: () => <Header />,
+        }}
+        component={NotificationPage}
+      />
+
       <Stack.Screen name='Login' options={{ headerShown: false }} component={LoginModal} />
       <Stack.Screen name='Signup' options={{ headerShown: false }} component={SignupModal} />
 

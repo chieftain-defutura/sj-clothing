@@ -13,8 +13,9 @@ const App: React.FC = () => {
     'Gilroy-Medium': require('./src/assets/fonts/Gilroy-Medium.ttf'), //500
     'Gilroy-Regular': require('./src/assets/fonts/Gilroy-Regular.ttf'), //400
     'Gilroy-SemiBold': require('./src/assets/fonts/Gilroy-SemiBold.ttf'), //600
-    'Montserrat-Medium': require('./src/assets/fonts/Montserrat-Medium.ttf'), //500
     'Montserrat-Regular': require('./src/assets/fonts/Montserrat-Regular.ttf'), //400
+    'Montserrat-Medium': require('./src/assets/fonts/Montserrat-Medium.ttf'), //500
+    'Montserrat-SemiBold': require('./src/assets/fonts/Montserrat-SemiBold.ttf'), //600
   })
 
   if (!fontsLoaded) {

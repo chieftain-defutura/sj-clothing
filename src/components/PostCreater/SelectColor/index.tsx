@@ -4,6 +4,8 @@ import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
+import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
+import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 
 const Colors = ['white', 'violet', 'blue', 'red', 'orange', 'green']
 
@@ -19,14 +21,14 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation }) => {
       {!isSelected ? (
         <View style={styles.selectColorNavigator}>
           <Pressable onPress={() => navigation.navigate('Style')}>
-            <Image source={require('../../../assets/images/arrow-circle-left.png')} />
+            <ArrowCircleLeft width={24} height={24} />
           </Pressable>
           <Pressable onPress={() => setSelected(true)} style={styles.selectColorDropdown}>
             <Text>Select Color</Text>
             <DropDownArrowIcon />
           </Pressable>
           <Pressable onPress={() => navigation.navigate('AddImage')}>
-            <Image source={require('../../../assets/images/arrow-circle-right.png')} />
+            <ArrowCircleRight width={24} height={24} />
           </Pressable>
         </View>
       ) : (

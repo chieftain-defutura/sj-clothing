@@ -1,14 +1,16 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import { useNavigation } from '@react-navigation/native'
 import { View, Pressable } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import OrderGroup from '../../../assets/icons/OrderGroup'
 
-const TrackOrder: React.FC = () => {
-  const navigation = useNavigation()
+interface ITrackOrder {
+  navigation: any
+}
+
+const TrackOrder: React.FC<ITrackOrder> = ({ navigation }) => {
   return (
     <ScrollViewContent>
       <View>
@@ -61,10 +63,51 @@ const TrackOrder: React.FC = () => {
               <OrderGroup width={25} height={203} />
             </Pressable>
             <View>
-              <OrderPlacedFlexContent>
-                <OrderPlacedText>Order placed</OrderPlacedText>
-                <OrderPlacedDate>23 Jul, 2023</OrderPlacedDate>
-              </OrderPlacedFlexContent>
+              <FlexOrder onPress={() => navigation.navigate('GiftOptions')}>
+                <OrderPlacedFlexContent>
+                  <View>
+                    <OrderPlacedText>Order placed</OrderPlacedText>
+                  </View>
+                  <View>
+                    <OrderPlacedDate>23 Jul, 2023</OrderPlacedDate>
+                  </View>
+                </OrderPlacedFlexContent>
+
+                <OrderDescription>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut
+                  laboredolore aliqua.
+                </OrderDescription>
+              </FlexOrder>
+              <FlexOrder onPress={() => navigation.navigate('GiftOptions')}>
+                <OrderPlacedFlexContent>
+                  <View>
+                    <OrderPlacedText>Shipping</OrderPlacedText>
+                  </View>
+                  <View>
+                    <OrderPlacedDate>23 Jul, 2023</OrderPlacedDate>
+                  </View>
+                </OrderPlacedFlexContent>
+
+                <OrderDescription>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut
+                  laboredolore aliqua.
+                </OrderDescription>
+              </FlexOrder>
+              <FlexOrder onPress={() => navigation.navigate('GiftOptions')}>
+                <OrderPlacedFlexContent>
+                  <View>
+                    <OrderPlacedText>Delivery</OrderPlacedText>
+                  </View>
+                  <View>
+                    <OrderPlacedDate>23 Jul, 2023</OrderPlacedDate>
+                  </View>
+                </OrderPlacedFlexContent>
+
+                <OrderDescription>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut
+                  laboredolore aliqua.
+                </OrderDescription>
+              </FlexOrder>
             </View>
           </OrderGroupContent>
         </TrackOrderContent>
@@ -77,28 +120,48 @@ const ScrollViewContent = styled.ScrollView`
   background: ${COLORS.iconsNormalClr};
 `
 
+const FlexOrder = styled.Pressable`
+  margin-bottom: 25px;
+`
+
 const TrackOrderContent = styled.View`
   background: ${COLORS.backgroundClr};
   padding: 24px;
 `
 
+const OrderDescription = styled.Text`
+  margin-top: 8px;
+  font-size: 12px;
+  color: ${COLORS.SecondaryTwo};
+  font-family: Gilroy-Regular;
+  line-height: 18px;
+`
+
 const OrderPlacedFlexContent = styled.View`
   display: flex;
+  justify-content: space-between;
   flex-direction: row;
+  align-items: center;
 `
 
 const OrderPlacedText = styled.Text`
   font-size: 16px;
   color: ${COLORS.iconsHighlightClr};
+  font-family: Montserrat-SemiBold;
 `
 
-const OrderPlacedDate = styled.Text``
+const OrderPlacedDate = styled.Text`
+  font-size: 12px;
+  color: ${COLORS.SecondaryTwo};
+  font-family: Gilroy-Regular;
+`
 
 const OrderGroupContent = styled.View`
-  margin-top: 26px;
   display: flex;
   flex-direction: row;
   gap: 8px;
+  padding-right: 24px;
+  margin-top: 30px;
 `
 
 const FlexContent = styled.View`
@@ -148,7 +211,6 @@ const TShirtImage = styled.Image`
   height: 300px;
   flex-shrink: 0;
   margin-top: 50px;
-  margin-horizontal: auto;
 `
 
 const CartText = styled.Text`

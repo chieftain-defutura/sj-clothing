@@ -4,6 +4,8 @@ import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
+import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
+import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 
 const StyleShirtData = [
   {
@@ -71,14 +73,14 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
       {!isStyle ? (
         <View style={styles.selectStyleNavigator}>
           <Pressable onPress={() => navigation.navigate('Stack')}>
-            <Image source={require('../../../assets/images/arrow-circle-left.png')} />
+            <ArrowCircleLeft width={24} height={24} />
           </Pressable>
           <Pressable onPress={() => setStyle(true)} style={styles.selectStyleDropdown}>
             <Text>Select Style</Text>
             <DropDownArrowIcon />
           </Pressable>
           <Pressable onPress={() => navigation.navigate('Color')}>
-            <Image source={require('../../../assets/images/arrow-circle-right.png')} />
+            <ArrowCircleRight width={24} height={24} />
           </Pressable>
         </View>
       ) : (
@@ -165,7 +167,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
                   }}
                 >
                   {StyleShirtData.slice(3, 6).map((data, index) => (
-                    <Pressable onPress={() => setSelectedStyle(data.Title)}>
+                    <Pressable key={index} onPress={() => setSelectedStyle(data.Title)}>
                       <Text
                         style={{
                           textAlign: 'center',
@@ -174,7 +176,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
                               ? COLORS.textSecondaryClr
                               : COLORS.textTertiaryClr,
                         }}
-                        key={index}
                       >
                         {data.Title}
                       </Text>
@@ -198,7 +199,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
                   }}
                 >
                   {StyleTShirtData.slice(0, 3).map((data, index) => (
-                    <Pressable onPress={() => setSelectedStyle(data.Title)}>
+                    <Pressable key={index} onPress={() => setSelectedStyle(data.Title)}>
                       <Text
                         style={{
                           textAlign: 'center',
@@ -207,7 +208,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
                               ? COLORS.textSecondaryClr
                               : COLORS.textTertiaryClr,
                         }}
-                        key={index}
                       >
                         {data.Title}
                       </Text>
@@ -225,7 +225,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
                   }}
                 >
                   {StyleTShirtData.slice(3, 6).map((data, index) => (
-                    <Pressable onPress={() => setSelectedStyle(data.Title)}>
+                    <Pressable key={index} onPress={() => setSelectedStyle(data.Title)}>
                       <Text
                         style={{
                           textAlign: 'center',
@@ -234,7 +234,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
                               ? COLORS.textSecondaryClr
                               : COLORS.textTertiaryClr,
                         }}
-                        key={index}
                       >
                         {data.Title}
                       </Text>

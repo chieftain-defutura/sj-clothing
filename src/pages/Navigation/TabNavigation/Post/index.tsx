@@ -1,43 +1,115 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components/native'
-import { Pressable, View } from 'react-native'
+import { Pressable, View, Text, StyleSheet, Dimensions } from 'react-native'
 import { COLORS } from '../../../../styles/theme'
 import Setting from '../../../../assets/icons/Settings'
 import Search from '../../../../assets/icons/Search'
 import PostCard from '../../../../components/PostCard'
 import SubscriptionModal from '../../../../screens/Subscription'
 import PlusIcon from '../../../../assets/icons/Plus'
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated'
+import CloseIcon from '../../../../assets/icons/Close'
 
 interface IPost {
   navigation: any
 }
 
+const { width } = Dimensions.get('window')
+
 const Post: React.FC<IPost> = ({ navigation }) => {
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
+  const height = useSharedValue(0)
+  const display = useSharedValue<'none' | 'flex'>('none')
+  const top = useSharedValue(10)
+
+  const animStyle = useAnimatedStyle(() => ({
+    height: height.value,
+  }))
+
+  const displayStyle = useAnimatedStyle(() => ({
+    display: display.value,
+  }))
+
+  const cancelStyle = useAnimatedStyle(() => ({
+    top: top.value,
+  }))
 
   const closeSubscriptionModal = () => {
     setSubscriptionModal(false)
   }
+
+  const handleClick = () => {
+    if (height.value === 0) {
+      height.value = withSpring(196)
+      display.value = 'flex'
+      top.value = withSpring(205)
+    } else {
+      top.value = withTiming(0, { duration: 300 })
+      height.value = withTiming(0, { duration: 300 })
+      setTimeout(() => {
+        display.value = 'none'
+      }, 200)
+    }
+  }
+
   return (
     <PostContainer>
+      <Animated.View style={[animStyle, styles.dropDown, displayStyle]}>
+        <CategoryHeading>Category</CategoryHeading>
+        <CategoryContent>
+          <CategoryText>Trending</CategoryText>
+          <CategoryText>Trending</CategoryText>
+          <CategoryText>Trending</CategoryText>
+        </CategoryContent>
+        <CategoryContent>
+          <CategoryText>New collections</CategoryText>
+          <CategoryText>New collections</CategoryText>
+          <CategoryText>New collections</CategoryText>
+        </CategoryContent>
+        <CategoryContent>
+          <CategoryText>Trending</CategoryText>
+          <CategoryText>Trending</CategoryText>
+          <CategoryText>Trending</CategoryText>
+        </CategoryContent>
+        <CategoryContent>
+          <CategoryText>Trending</CategoryText>
+          <CategoryText>Trending</CategoryText>
+          <CategoryText>Trending</CategoryText>
+        </CategoryContent>
+      </Animated.View>
+      <Animated.View style={[styles.cancel, cancelStyle, displayStyle]}>
+        <Pressable onPress={handleClick}>
+          <CloseIcon width={24} height={24} />
+        </Pressable>
+      </Animated.View>
       <PostWrapper>
         <PostHead>
           <View>
             <ViewedText>Most viewed</ViewedText>
           </View>
           <PostIcons>
-            <Setting />
+            <Pressable onPress={handleClick}>
+              <View></View>
+              <Setting />
+            </Pressable>
             <Pressable onPress={() => navigation.navigate('Search')}>
               <Search />
             </Pressable>
           </PostIcons>
         </PostHead>
-        <Cards>
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-        </Cards>
+        <View>
+          <Cards>
+            <PostCard />
+            <PostCard />
+            <PostCard />
+            <PostCard />
+          </Cards>
+        </View>
       </PostWrapper>
       <PlusWrapper onPress={() => navigation.navigate('Style')}>
         <PlusIcon />
@@ -49,6 +121,25 @@ const Post: React.FC<IPost> = ({ navigation }) => {
 
 const PostContainer = styled.View`
   flex: 1;
+`
+
+const CategoryHeading = styled.Text`
+  font-family: Arvo-Regular;
+  font-size: 16px;
+  color: ${COLORS.iconsHighlightClr};
+`
+
+const CategoryContent = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+`
+
+const CategoryText = styled.Text`
+  font-family: Gilroy-Medium;
+  font-size: 12px;
+  color: rgba(70, 45, 133, 0.4);
 `
 
 const PostWrapper = styled.ScrollView`
@@ -76,8 +167,9 @@ const PostIcons = styled.View`
 const PlusWrapper = styled.Pressable`
   background-color: #462d85;
   border-radius: 50px;
+  width: 69px;
+  padding: 25px;
   position: absolute;
-  padding: 20px;
   bottom: 40px;
   right: 30px;
 `
@@ -87,5 +179,28 @@ const Cards = styled.View`
   justify-content: center;
   align-items: center;
 `
+
+const styles = StyleSheet.create({
+  dropDown: {
+    backgroundColor: 'white',
+    width: '100%',
+    zIndex: 999,
+    position: 'absolute',
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    padding: 16,
+  },
+  cancel: {
+    position: 'absolute',
+    width: 45,
+    height: 45,
+    zIndex: 999,
+    backgroundColor: '#EBEBEB',
+    borderRadius: 50,
+    left: '40%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+})
 
 export default Post

@@ -16,6 +16,7 @@ type Props = {
   disabledBackgroundColor?: string
   fontFamily?: string
   fontSize?: number
+  style?: ViewStyle
 }
 
 const CustomButton: React.FC<Props> = ({
@@ -30,9 +31,10 @@ const CustomButton: React.FC<Props> = ({
   disabledBackgroundColor,
   fontFamily,
   fontSize,
+  style,
 }: Props) => {
   return (
-    <TouchableOpacity onPress={disabled ? undefined : onPress} disabled={disabled}>
+    <TouchableOpacity onPress={disabled ? undefined : onPress} disabled={disabled} style={style}>
       <LinearGradient
         colors={
           disabled && disabledBackgroundColor

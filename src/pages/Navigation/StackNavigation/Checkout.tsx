@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { useNavigation } from '@react-navigation/native'
 import { ScrollView, View, Pressable, StyleSheet } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import CircleClose from '../../../assets/icons/CircleClose'
@@ -39,16 +38,15 @@ const data = [
   },
 ]
 
-const Checkout: React.FC = () => {
-  const navigation = useNavigation()
+interface ICheckout {
+  navigation: any
+}
+
+const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   const [closedItems, setClosedItems] = useState<number[]>([])
 
   const handleClose = (index: number) => {
     setClosedItems([...closedItems, index])
-  }
-
-  const goToMyOrders = () => {
-    navigation.navigate('MyOrders')
   }
 
   return (
@@ -193,7 +191,7 @@ const Checkout: React.FC = () => {
                 text='Place order'
                 fontFamily='Arvo-Regular'
                 fontSize={16}
-                onPress={goToMyOrders}
+                onPress={() => navigation.navigate('MyOrders')}
               />
             </CustomBtn>
           </ScrollView>
@@ -226,6 +224,7 @@ const TotalText = styled.Text`
 const TotalValue = styled.Text`
   font-size: 20px;
   font-family: Gilroy-SemiBold;
+  color: ${COLORS.iconsHighlightClr};
 `
 
 const Content = styled.View`
