@@ -1,11 +1,11 @@
-import { Pressable, StyleSheet, Text, View, Share, FlatList, ScrollView } from 'react-native'
+import { Pressable, StyleSheet, Text, View, Image, FlatList, ScrollView, Share } from 'react-native'
 import React from 'react'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { COLORS } from '../../../styles/theme'
 import ShareArrow from '../../../assets/icons/ShareArrow'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
-import CustomButton from '../../Button'
-import Carousle from './Carousle'
+import CustomButton from '../../../components/Button'
+
 const Data = [
   {
     title: 'Product',
@@ -33,10 +33,10 @@ const Data = [
   },
 ]
 
-interface IFinalProduct {
+interface IBuyNow {
   navigation: any
 }
-const FinalProduct: React.FC<IFinalProduct> = ({ navigation }) => {
+const BuyNow: React.FC<IBuyNow> = ({ navigation }) => {
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
     try {
@@ -81,10 +81,10 @@ const FinalProduct: React.FC<IFinalProduct> = ({ navigation }) => {
           <ShareArrow width={24} height={24} />
         </Pressable>
       </View>
-      <View style={styles.selectColorTShirt}>
-        <Carousle />
+      <View style={styles.TShirt}>
+        <Image source={require('../../../assets/images/plain-shirt.png')} />
       </View>
-      <View style={styles.selectColor360Degree}>
+      <View style={styles.threesixtyDegree}>
         <ThreeSixtyDegree width={40} height={40} />
       </View>
       <View style={{ paddingVertical: 8, display: 'flex', gap: 4 }}>
@@ -137,7 +137,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({ navigation }) => {
   )
 }
 
-export default FinalProduct
+export default BuyNow
 
 const styles = StyleSheet.create({
   selectContainer: {
@@ -152,12 +152,12 @@ const styles = StyleSheet.create({
     paddingTop: 34,
     paddingBottom: 16,
   },
-  selectColorTShirt: {
+  TShirt: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  selectColor360Degree: {
+  threesixtyDegree: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',

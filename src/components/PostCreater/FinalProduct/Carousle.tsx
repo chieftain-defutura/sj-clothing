@@ -1,10 +1,40 @@
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Slick from 'react-native-slick'
+import * as ImagePicker from 'expo-image-picker'
 import UndrawGiftBox from '../../../assets/icons/Undraw-gift-box'
 import { COLORS } from '../../../styles/theme'
+import { Video } from 'expo-av'
 
 const Carousle = () => {
+  const [selectedVideo, setSelectedVideo] = useState<any>(null)
+
+  useEffect(() => {
+    ;(async () => {
+      // Request permission to access the user's media library
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+      if (status !== 'granted') {
+        alert('Permission to access media library is required!')
+      }
+    })()
+  }, [])
+
+  const pickVideo = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+        allowsEditing: true,
+        quality: 1,
+      })
+
+      if (!result.canceled) {
+        result.assets?.map((s) => setSelectedVideo(s.uri))
+      }
+    } catch (error) {
+      console.error('Error picking a video', error)
+    }
+  }
+
   return (
     <Slick
       style={styles.wrapper}
@@ -22,51 +52,64 @@ const Carousle = () => {
         />
       </View>
       <View style={styles.slide3}>
-        <UndrawGiftBox width={248} height={200} />
-        <View style={{ paddingVertical: 16 }}>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 24,
-              fontFamily: 'Arvo-Regular',
-              color: COLORS.textClr,
-            }}
-          >
-            Upload Your
-          </Text>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 24,
-              fontFamily: 'Arvo-Regular',
-              color: COLORS.textSecondaryClr,
-            }}
-          >
-            Gift unboxing video
-          </Text>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 24,
-              fontFamily: 'Arvo-Regular',
-              color: COLORS.textClr,
-            }}
-          >
-            here!
-          </Text>
-        </View>
-        <Pressable style={styles.button}>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 14,
-              fontFamily: 'Gilroy-Regular',
-              color: COLORS.textSecondaryClr,
-            }}
-          >
-            Upload
-          </Text>
-        </Pressable>
+        {selectedVideo ? (
+          <View>
+            <Video
+              source={{ uri: selectedVideo }}
+              style={{ width: 400, height: 400 }}
+              shouldPlay
+              useNativeControls
+            />
+          </View>
+        ) : (
+          <View>
+            <UndrawGiftBox width={248} height={200} />
+            <View style={{ paddingVertical: 16 }}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 24,
+                  fontFamily: 'Arvo-Regular',
+                  color: COLORS.textClr,
+                }}
+              >
+                Upload Your
+              </Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 24,
+                  fontFamily: 'Arvo-Regular',
+                  color: COLORS.textSecondaryClr,
+                }}
+              >
+                Gift unboxing video
+              </Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 24,
+                  fontFamily: 'Arvo-Regular',
+                  color: COLORS.textClr,
+                }}
+              >
+                here!
+              </Text>
+            </View>
+            <Pressable onPress={pickVideo} style={styles.button}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 14,
+                  fontFamily: 'Gilroy-Regular',
+                  color: COLORS.textSecondaryClr,
+                }}
+              >
+                Upload
+              </Text>
+            </Pressable>
+          </View>
+        )}
       </View>
     </Slick>
   )
