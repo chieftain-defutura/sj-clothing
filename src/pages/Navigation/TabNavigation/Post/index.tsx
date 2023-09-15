@@ -118,7 +118,9 @@ const Post: React.FC<IPost> = ({ navigation }) => {
         colors={['#462D85', '#DB00FF']}
         style={styles.gradientColor}
       >
-        <PlusIcon onPress={() => navigation.navigate('Style')} />
+        <Pressable onPress={() => navigation.navigate('Style')}>
+          <PlusIcon width={24} height={24} />
+        </Pressable>
       </LinearGradient>
       <SubscriptionModal isVisible={isSubscriptionModal} onClose={closeSubscriptionModal} />
     </PostContainer>
