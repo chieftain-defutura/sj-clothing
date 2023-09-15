@@ -19,6 +19,10 @@ const Header: React.FC = () => {
     navigation.navigate('Cart')
   }
 
+  const goToNotification = () => {
+    navigation.navigate('Notification')
+  }
+
   return (
     <HeaderWrapper>
       <Pressable>
@@ -29,7 +33,12 @@ const Header: React.FC = () => {
           <ShoppingCart height={24} width={24} />
         </Pressable>
         <View>
-          <Pressable onPress={toggleNotification}>
+          <Pressable
+            onPress={() => {
+              toggleNotification()
+              goToNotification()
+            }}
+          >
             {isNotificationActive ? (
               <NotificationActive height={24} width={24} />
             ) : (

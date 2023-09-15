@@ -22,7 +22,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({ navigation }) => {
   const [isStyleName, setStyleName] = useState('Bluebee')
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: '#FFEFFF' }}>
       <View
         style={{
           display: 'flex',
@@ -76,7 +76,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({ navigation }) => {
                 Select Design
               </Text>
             </View>
-            <Pressable>
+            <Pressable onPress={() => setOpen(true)}>
               <CloseIcon width={20} height={20} />
             </Pressable>
           </View>

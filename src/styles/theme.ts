@@ -14,6 +14,8 @@ export const COLORS = {
   errorClr: '#ff6347',
   SecondaryTwo: '#8C73CB',
   BoxBackgoundClr: '#EBEBEB',
+  slickDotClr: '#AAA',
+  fontBackgroundClr: 'rgba(219, 0, 255, 0.10)',
   cardClr:
     'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), url(<path-to-image>), lightgray 50% / cover no-repeat;',
 }

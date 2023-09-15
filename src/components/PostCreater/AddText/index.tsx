@@ -185,13 +185,15 @@ export default AddText
 const styles = StyleSheet.create({
   AddTextContainer: {
     flex: 1,
+    backgroundColor: '#FFEFFF',
   },
   AddTextNavigator: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    paddingVertical: 50,
+    paddingHorizontal: 16,
   },
   AddTextDropdown: {
     display: 'flex',

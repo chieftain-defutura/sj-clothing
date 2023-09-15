@@ -1,5 +1,7 @@
+import * as Yup from 'yup'
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
+
 import {
   StyleSheet,
   View,
@@ -8,86 +10,87 @@ import {
   FlatList,
   Dimensions,
   TouchableOpacity,
+  ImageSourcePropType,
+  ScrollView,
 } from 'react-native'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
 import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 import { COLORS } from '../../../styles/theme'
+import { Formik } from 'formik'
 
 const Data = [
   require('../../../assets/images/text-tshirt.png'),
   require('../../../assets/images/plain-shirt.png'),
+  require('../../../assets/images/t-shirt.png'),
+  require('../../../assets/images/imaged-tshirt.png'),
 ]
 
 interface IProductAndCaption {
   navigation: any
 }
-const { width } = Dimensions.get('window')
+
+const ValidationSchema = Yup.object({
+  productname: Yup.string().required('Please enter your product name'),
+  caption: Yup.string().required('Please enter your caption'),
+})
 
 const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation }) => {
-  const [currentIndex, setCurrentIndex] = useState(0)
-
-  const flatListRenderer = () => {
-    return (
-      <ImageContent>
-        <TShirtImg source={require('../../../assets/images/t-shirt.png')} />
-      </ImageContent>
-    )
-  }
-
   return (
-    <View style={styles.ProductAndCaptionContainer}>
+    <ScrollView style={styles.ProductAndCaptionContainer}>
       <View style={styles.ProductAndCaptionNavigator}>
         <Pressable onPress={() => navigation.navigate('AddText')}>
           <ArrowCircleLeft width={24} height={24} />
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('AddText')}>
+        <Pressable onPress={() => navigation.navigate('FinalProduct')}>
           <ArrowCircleRight width={24} height={24} />
         </Pressable>
       </View>
-
-      <View style={{ height: 400 }}>
-        <FlatList
-          data={Data}
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          onScroll={(e) => {
-            const x = e.nativeEvent.contentOffset.x
-            const newIndex = Math.round(x / width)
-            setCurrentIndex(newIndex)
-          }}
-          horizontal
-          renderItem={({ item, index }) => flatListRenderer()}
-        />
-      </View>
-      <View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          {Data.map((item, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  backgroundColor: currentIndex == index ? '#DB00FF' : '#AAA',
-                  width: currentIndex == index ? 12 : 4,
-                  height: 4,
-                  borderRadius: 10,
-                  marginLeft: 5,
-                }}
-              ></View>
-            )
-          })}
-        </View>
+      <View style={styles.TShirt}>
+        <Image source={require('../../../assets/images/plain-shirt.png')} />
       </View>
       <View style={styles.ProductAndCaption360Degree}>
         <ThreeSixtyDegree width={40} height={40} />
       </View>
-    </View>
+
+      <Formik
+        initialValues={{
+          productname: '',
+          caption: '',
+        }}
+        validationSchema={ValidationSchema}
+        onSubmit={(values) => console.log(values)}
+      >
+        {({ values, errors, touched, handleChange, isValid, handleSubmit, handleBlur }) => (
+          <SignUpContainer>
+            <View>
+              <LabelText>Product name</LabelText>
+              <InputStyle
+                placeholder='Name'
+                value={values.productname}
+                onChangeText={handleChange('productname')}
+                onBlur={handleBlur('productname')}
+                placeholderTextColor={COLORS.SecondaryTwo}
+              />
+              {touched.productname && errors.productname && (
+                <ErrorText>{errors.productname}</ErrorText>
+              )}
+            </View>
+            <View>
+              <LabelText>Caption</LabelText>
+              <InputStyle
+                placeholder='Caption'
+                value={values.caption}
+                onChangeText={handleChange('caption')}
+                onBlur={handleBlur('caption')}
+                placeholderTextColor={COLORS.SecondaryTwo}
+              />
+              {touched.caption && errors.caption && <ErrorText>{errors.caption}</ErrorText>}
+            </View>
+          </SignUpContainer>
+        )}
+      </Formik>
+    </ScrollView>
   )
 }
 
@@ -96,13 +99,15 @@ export default ProductAndCaption
 const styles = StyleSheet.create({
   ProductAndCaptionContainer: {
     flex: 1,
+    backgroundColor: '#FFEFFF',
   },
   ProductAndCaptionNavigator: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    paddingVertical: 50,
+    paddingHorizontal: 16,
   },
   ProductAndCaptionDropdown: {
     display: 'flex',
@@ -126,14 +131,44 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 16,
   },
+  TShirt: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
 })
 
+const SignUpContainer = styled.View`
+  padding: 20px;
+  border-radius: 10px;
+`
+
+const InputStyle = styled.TextInput`
+  border-color: ${COLORS.strokeClr};
+  border-width: 1px;
+  border-radius: 5px;
+  padding-vertical: 8px;
+  padding-horizontal: 14px;
+  font-family: Gilroy-Medium;
+`
+
+const LabelText = styled.Text`
+  font-size: 14px;
+  letter-spacing: -0.28px;
+  color: ${COLORS.textClr};
+  font-family: Gilroy-Medium;
+  margin-top: 16px;
+  margin-bottom: 8px;
+`
+
+const ErrorText = styled.Text`
+  font-size: 12px;
+  color: ${COLORS.errorClr};
+`
 const ImageContent = styled.View`
-  background-color: ${COLORS.imageContentClr};
   padding: 16px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  width: 50%;
 `
 const TShirtImg = styled.Image`
   width: 250px;
