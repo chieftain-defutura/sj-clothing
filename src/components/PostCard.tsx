@@ -44,10 +44,11 @@ const PostCard = (props: componentNameProps) => {
 
   const flatListRenderer = () => {
     return (
-      <ImageContent>
+      <ImageContent style={{ width: 345 }}>
         <TouchableOpacity onPress={openLoginModal}>
-          <TShirtImg source={require('../assets/images/t-shirt.png')} />
+          <TShirtImg source={require('../assets/images/t-shirt.png')} resizeMode='cover' />
         </TouchableOpacity>
+
         <CardContent>
           <Pressable onPress={onLikePressed}>
             <Like height={20} width={20} />
@@ -132,6 +133,7 @@ const PostCard = (props: componentNameProps) => {
 }
 
 const PostCardWrapper = styled.View`
+  width: 88%;
   background-color: transparent;
   margin: 20px;
 `
@@ -178,7 +180,6 @@ const ImageContent = styled.View`
 `
 
 const TShirtImg = styled.Image`
-  width: 250px;
   height: 300px;
   flex-shrink: 0;
   margin-vertical: 30px;
