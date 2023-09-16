@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Image, Pressable, FlatList } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import styled from 'styled-components/native'
 import CloseIcon from '../../../assets/icons/Close'
@@ -98,7 +98,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
           <ArrowCircleLeft width={24} height={24} />
         </Pressable>
         <Pressable onPress={animate} style={styles.selectStyleDropdown}>
-          <SelectText>Select Style</SelectText>
+          <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Select Style</Text>
           <DropDownArrowIcon />
         </Pressable>
         <Pressable onPress={() => navigation.navigate('Color')}>
@@ -124,7 +124,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
             backgroundColor: COLORS.iconsNormalClr,
             borderBottomRightRadius: 50,
             borderBottomLeftRadius: 50,
-            padding: 20,
+            paddingHorizontal: 20,
           }}
         >
           <View
@@ -165,57 +165,40 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
                 padding: 16,
               }}
             >
-              <View
-                style={{
+              <FlatList
+                data={StyleShirtData}
+                numColumns={3}
+                columnWrapperStyle={{
                   display: 'flex',
                   flexDirection: 'row',
-                  justifyContent: 'center',
-                  gap: 75,
-                  paddingBottom: 10,
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexGrow: 1,
+                  gap: 5,
+                  paddingVertical: 5,
                 }}
-              >
-                {StyleShirtData.slice(0, 3).map((data, index) => (
-                  <Pressable key={index} onPress={() => setSelectedStyle(data.Title)}>
+                renderItem={({ item }) => (
+                  <Pressable
+                    onPress={() => setSelectedStyle(item.Title)}
+                    style={{
+                      paddingVertical: 4,
+                    }}
+                  >
                     <Text
                       style={{
-                        textAlign: 'center',
+                        textAlign: 'left',
+                        fontFamily: 'Gilroy-Medium',
                         color:
-                          isSelectedStyle === data.Title
+                          isSelectedStyle === item.Title
                             ? COLORS.textSecondaryClr
                             : COLORS.textTertiaryClr,
                       }}
                     >
-                      {data.Title}
+                      {item.Title}
                     </Text>
                   </Pressable>
-                ))}
-              </View>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  gap: 94,
-                  paddingRight: 30,
-                  paddingBottom: 10,
-                }}
-              >
-                {StyleShirtData.slice(3, 6).map((data, index) => (
-                  <Pressable key={index} onPress={() => setSelectedStyle(data.Title)}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color:
-                          isSelectedStyle === data.Title
-                            ? COLORS.textSecondaryClr
-                            : COLORS.textTertiaryClr,
-                      }}
-                    >
-                      {data.Title}
-                    </Text>
-                  </Pressable>
-                ))}
-              </View>
+                )}
+              />
             </View>
           ) : (
             <View
@@ -223,57 +206,40 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
                 padding: 16,
               }}
             >
-              <View
-                style={{
+              <FlatList
+                data={StyleTShirtData}
+                numColumns={3}
+                columnWrapperStyle={{
                   display: 'flex',
                   flexDirection: 'row',
-                  justifyContent: 'center',
-                  gap: 75,
-                  paddingBottom: 10,
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexGrow: 1,
+                  gap: 5,
+                  paddingVertical: 5,
                 }}
-              >
-                {StyleTShirtData.slice(0, 3).map((data, index) => (
-                  <Pressable key={index} onPress={() => setSelectedStyle(data.Title)}>
+                renderItem={({ item }) => (
+                  <Pressable
+                    onPress={() => setSelectedStyle(item.Title)}
+                    style={{
+                      paddingVertical: 4,
+                    }}
+                  >
                     <Text
                       style={{
-                        textAlign: 'center',
+                        textAlign: 'left',
+                        fontFamily: 'Gilroy-Medium',
                         color:
-                          isSelectedStyle === data.Title
+                          isSelectedStyle === item.Title
                             ? COLORS.textSecondaryClr
                             : COLORS.textTertiaryClr,
                       }}
                     >
-                      {data.Title}
+                      {item.Title}
                     </Text>
                   </Pressable>
-                ))}
-              </View>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                  gap: 128,
-                  paddingRight: 30,
-                  paddingBottom: 10,
-                }}
-              >
-                {StyleTShirtData.slice(3, 6).map((data, index) => (
-                  <Pressable key={index} onPress={() => setSelectedStyle(data.Title)}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color:
-                          isSelectedStyle === data.Title
-                            ? COLORS.textSecondaryClr
-                            : COLORS.textTertiaryClr,
-                      }}
-                    >
-                      {data.Title}
-                    </Text>
-                  </Pressable>
-                ))}
-              </View>
+                )}
+              />
             </View>
           )}
         </View>
@@ -321,10 +287,8 @@ export default SelectStyle
 const styles = StyleSheet.create({
   selectStyleContainer: {
     flex: 1,
-    // paddingVertical: 10,
     backgroundColor: '#FFEFFF',
   },
-
   selectStyleNavigator: {
     display: 'flex',
     flexDirection: 'row',

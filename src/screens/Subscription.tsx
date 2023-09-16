@@ -5,24 +5,18 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import CloseIcon from '../assets/icons/Close'
 import CustomButton from '../components/Button'
+import { useNavigation } from '@react-navigation/native'
+import CloseRedIcon from '../assets/icons/CloseRedIcon'
 
 interface LoginModalProps {
   isVisible: boolean
   onClose: () => void
 }
 
-const ValidationSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Please enter your email address'),
-  password: Yup.string()
-    .min(8)
-    .required('Please enter your password')
-    .matches(
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-      'Must contain minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character',
-    ),
-})
+const ValidationSchema = Yup.object().shape({})
 
 const SubscriptionModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) => {
+  const navigation = useNavigation()
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <View
@@ -34,21 +28,18 @@ const SubscriptionModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) =>
         }}
       >
         <Formik
-          initialValues={{
-            email: '',
-            password: '',
-          }}
+          initialValues={{}}
           validationSchema={ValidationSchema}
           onSubmit={(values) => console.log(values)}
         >
-          {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
+          {({}) => (
             <View style={styles.loginWrapper}>
               <View style={styles.loginHead}>
                 <Text
                   style={{
                     fontSize: 20,
                     letterSpacing: -0.4,
-                    fontFamily: 'Gilroy',
+                    fontFamily: 'Arvo-Regular',
                     color: '#462D85',
                   }}
                 >
@@ -67,13 +58,37 @@ const SubscriptionModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) =>
                     />
                   </View>
                   <View>
-                    <Text style={{ fontSize: 16 }}>PREMIUM</Text>
-                    <Text style={{ fontSize: 12 }}>Membership</Text>
+                    <Text
+                      style={{ fontSize: 16, fontFamily: 'Gilroy-Medium', color: COLORS.textClr }}
+                    >
+                      PREMIUM
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontFamily: 'Gilroy-Regular',
+                        color: COLORS.textSecondaryClr,
+                      }}
+                    >
+                      Membership
+                    </Text>
                   </View>
                 </View>
-                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ fontSize: 20 }}>790</Text>
-                  <Text style={{ fontSize: 12 }}>INR/month</Text>
+                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontFamily: 'Montserrat-SemiBold',
+                      color: COLORS.textClr,
+                    }}
+                  >
+                    790
+                  </Text>
+                  <Text
+                    style={{ fontSize: 12, fontFamily: 'Gilroy-Medium', color: COLORS.textClr }}
+                  >
+                    INR/month
+                  </Text>
                 </View>
               </View>
               <View style={styles.featureContainer}>
@@ -84,13 +99,24 @@ const SubscriptionModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) =>
                     paddingRight: 10,
                   }}
                 >
-                  <Text style={{ paddingTop: 20, paddingBottom: 20 }}>FEATURES</Text>
+                  <Text
+                    style={{
+                      paddingTop: 20,
+                      paddingBottom: 20,
+                      color: COLORS.textClr,
+                      fontFamily: 'Gilroy-Medium',
+                    }}
+                  >
+                    FEATURES
+                  </Text>
                   <Text
                     style={{
                       paddingTop: 20,
                       paddingBottom: 20,
                       borderTopWidth: 1,
                       borderTopColor: '#E5CEF5',
+                      color: COLORS.textClr,
+                      fontFamily: 'Gilroy-Medium',
                     }}
                   >
                     Create post
@@ -106,21 +132,39 @@ const SubscriptionModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) =>
                       paddingBottom: 10,
                     }}
                   >
-                    <Text style={{ textAlign: 'center' }}>STANDARD</Text>
-                    <Text>Membership</Text>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: COLORS.textClr,
+                        fontFamily: 'Gilroy-Medium',
+                      }}
+                    >
+                      STANDARD
+                    </Text>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: COLORS.textClr,
+                        fontFamily: 'Gilroy-Medium',
+                      }}
+                    >
+                      Membership
+                    </Text>
                   </View>
-                  <Text
+                  <View
                     style={{
                       paddingTop: 20,
                       paddingBottom: 20,
                       borderTopWidth: 1,
                       borderTopColor: '#E5CEF5',
-                      textAlign: 'center',
-                      color: '#D0342C',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                     }}
                   >
-                    X
-                  </Text>
+                    <CloseRedIcon />
+                  </View>
                 </View>
                 <View>
                   <View
@@ -129,8 +173,24 @@ const SubscriptionModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) =>
                       paddingBottom: 10,
                     }}
                   >
-                    <Text style={{ textAlign: 'center' }}>PREMIUM</Text>
-                    <Text style={{ textAlign: 'center' }}>Membership</Text>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: COLORS.textClr,
+                        fontFamily: 'Gilroy-Medium',
+                      }}
+                    >
+                      PREMIUM
+                    </Text>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: COLORS.textClr,
+                        fontFamily: 'Gilroy-Medium',
+                      }}
+                    >
+                      Membership
+                    </Text>
                   </View>
                   <Text
                     style={{
@@ -139,6 +199,9 @@ const SubscriptionModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) =>
                       borderTopWidth: 1,
                       borderTopColor: '#E5CEF5',
                       color: '#119D05',
+                      fontFamily: 'Gilroy-Medium',
+                      width: 80,
+                      textAlign: 'center',
                     }}
                   >
                     Unlimited posts
@@ -146,18 +209,37 @@ const SubscriptionModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) =>
                 </View>
               </View>
               <View style={styles.totalContainer}>
-                <Text>Total</Text>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: COLORS.textClr,
+                    fontFamily: 'Gilroy-Medium',
+                  }}
+                >
+                  Total
+                </Text>
                 <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'baseline' }}>
-                  <Text style={{ fontSize: 20 }}>790</Text>
-                  <Text>INR</Text>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      color: COLORS.textClr,
+                      fontFamily: 'Montserrat-SemiBold',
+                    }}
+                  >
+                    790
+                  </Text>
+                  <Text style={{ textAlign: 'center', color: COLORS.textClr }}>INR</Text>
                 </View>
               </View>
-              <Pressable onPress={() => handleSubmit()} disabled={!isValid}>
-                <CustomButton
-                  text='Pay now'
-                  buttonStyle={[styles.submitBtn, { backgroundColor: isValid ? '#DB00FF' : 'red' }]}
-                />
-              </Pressable>
+              <CustomButton
+                variant='primary'
+                text='Pay now'
+                onPress={() => {
+                  navigation.navigate('Style'), onClose
+                }}
+                fontFamily='Arvo-Regular'
+                buttonStyle={[styles.submitBtn]}
+              />
             </View>
           )}
         </Formik>

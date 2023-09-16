@@ -37,13 +37,13 @@ const AddText: React.FC<IAddText> = ({ navigation }) => {
     <View style={styles.AddTextContainer}>
       {!isAddText ? (
         <View style={styles.AddTextNavigator}>
-          <Pressable onPress={() => navigation.navigate('Color')}>
+          <Pressable onPress={() => navigation.navigate('AddImage')}>
             <ArrowCircleLeft width={24} height={24} />
           </Pressable>
           <Pressable onPress={() => setAddText(true)} style={styles.AddTextDropdown}>
-            <Text>Add Text</Text>
+            <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Add Text</Text>
           </Pressable>
-          <Pressable onPress={() => navigation.navigate('SelectSizeAndColor')}>
+          <Pressable onPress={() => navigation.navigate('ProductAndCaption')}>
             <ArrowCircleRight width={24} height={24} />
           </Pressable>
         </View>
@@ -60,6 +60,7 @@ const AddText: React.FC<IAddText> = ({ navigation }) => {
             <Text
               style={{
                 textAlign: 'center',
+                fontFamily: 'Gilroy-Medium',
                 borderBottomColor: COLORS.borderClr,
                 borderBottomWidth: 2,
                 paddingVertical: 20,
@@ -75,7 +76,8 @@ const AddText: React.FC<IAddText> = ({ navigation }) => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 paddingVertical: 20,
-                paddingHorizontal: 10,
+                paddingHorizontal: 1,
+                gap: 10,
               }}
             >
               {Images.slice(0, 2).map((data, index) => (
@@ -88,6 +90,7 @@ const AddText: React.FC<IAddText> = ({ navigation }) => {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    gap: 4,
                   }}
                 >
                   <View
@@ -102,7 +105,9 @@ const AddText: React.FC<IAddText> = ({ navigation }) => {
                     <Image style={{ width: 70, height: 100 }} source={data.image} />
                   </View>
 
-                  <Text style={{ color: COLORS.textClr }}>{data.title}</Text>
+                  <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                    {data.title}
+                  </Text>
                 </Pressable>
               ))}
               {Images.slice(2, 4).map((data, index) => (
@@ -115,6 +120,7 @@ const AddText: React.FC<IAddText> = ({ navigation }) => {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    gap: 4,
                   }}
                 >
                   <View
@@ -122,6 +128,10 @@ const AddText: React.FC<IAddText> = ({ navigation }) => {
                       backgroundColor: COLORS.BoxBackgoundClr,
                       padding: 16,
                       borderRadius: 10,
+                      width: 80,
+                      display: 'flex',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
                       borderColor: isSelect === data.title ? COLORS.textSecondaryClr : '',
                       borderWidth: isSelect === data.title ? 1 : 0,
                     }}
@@ -129,7 +139,9 @@ const AddText: React.FC<IAddText> = ({ navigation }) => {
                     <Image style={{ width: 30, height: 100 }} source={data.image} />
                   </View>
 
-                  <Text style={{ color: COLORS.textClr }}>{data.title}</Text>
+                  <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                    {data.title}
+                  </Text>
                 </Pressable>
               ))}
             </View>
@@ -173,13 +185,15 @@ export default AddText
 const styles = StyleSheet.create({
   AddTextContainer: {
     flex: 1,
+    backgroundColor: '#FFEFFF',
   },
   AddTextNavigator: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    paddingVertical: 50,
+    paddingHorizontal: 16,
   },
   AddTextDropdown: {
     display: 'flex',

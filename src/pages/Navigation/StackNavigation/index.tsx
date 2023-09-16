@@ -15,11 +15,12 @@ import SelectStyle from '../../../components/PostCreater/SelectStyle'
 import SelectColor from '../../../components/PostCreater/SelectColor'
 import SelectText from '../../../components/PostCreater/AddText/SelectText'
 import SelectDesign from '../../../components/PostCreater/AddImage/SelectDesign'
-import SelectSizeAndColor from '../../../components/PostCreater/SelectSizeAndCountry'
+import ProductAndCaption from '../../../components/PostCreater/ProductAndCaption'
 import GiftOptions from './GiftOptions'
 import NotificationPage from './NotificationPage'
 import OrderPlaced from '../../../screens/OrderPlaced'
 import AddressBook from './AddressBook'
+import FinalProduct from '../../../components/PostCreater/FinalProduct'
 
 const Stack = createNativeStackNavigator()
 
@@ -145,12 +146,20 @@ const StackNavigationRoutes: React.FC = () => {
         component={SelectText}
       />
       <Stack.Screen
-        name='SelectSizeAndColor'
+        name='ProductAndCaption'
         options={{
           headerShown: false,
           headerBackground: () => <Header />,
         }}
-        component={SelectSizeAndColor}
+        component={ProductAndCaption}
+      />
+      <Stack.Screen
+        name='FinalProduct'
+        options={{
+          headerShown: false,
+          headerBackground: () => <Header />,
+        }}
+        component={FinalProduct}
       />
       <Stack.Screen
         name='Search'

@@ -25,7 +25,7 @@ const Header: React.FC = () => {
 
   return (
     <HeaderWrapper>
-      <Pressable>
+      <Pressable onPress={() => navigation.navigate('Stack')}>
         <Logo />
       </Pressable>
       <Icons>
@@ -55,13 +55,15 @@ const HeaderWrapper = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   padding: 16px;
-  margin-top: 26px;
+  margin-top: 36px;
 `
 const Icons = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   gap: 24px;
 `
 

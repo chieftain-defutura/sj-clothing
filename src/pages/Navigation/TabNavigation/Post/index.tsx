@@ -58,6 +58,9 @@ const Post: React.FC<IPost> = ({ navigation }) => {
   const closeSubscriptionModal = () => {
     setSubscriptionModal(false)
   }
+  const openSubscriptionModal = () => {
+    setSubscriptionModal(true)
+  }
 
   const handleClick = () => {
     if (height.value === 0) {
@@ -141,7 +144,7 @@ const Post: React.FC<IPost> = ({ navigation }) => {
         colors={['#462D85', '#DB00FF']}
         style={styles.gradientColor}
       >
-        <Pressable onPress={() => navigation.navigate('Style')}>
+        <Pressable onPress={openSubscriptionModal}>
           <PlusIcon width={24} height={24} />
         </Pressable>
       </LinearGradient>
@@ -225,8 +228,7 @@ const styles = StyleSheet.create({
   gradientColor: {
     backgroundColor: '#462d85',
     borderRadius: 50,
-    width: 64,
-    height: 64,
+
     padding: 20,
     position: 'absolute',
     bottom: 40,
