@@ -9,15 +9,13 @@ import CustomButton from '../components/Button'
 import EyeIcon from '../assets/icons/EyeIcon'
 import EyeHideIcon from '../assets/icons/EyeIconHide'
 
-interface LoginModalProps {
+interface ForgotModalProps {
   isVisible?: boolean
   onClose?: () => void
-  onSignClick: () => void
 }
 
-const initialValues = { email: '', password: '' }
-
 const ValidationSchema = Yup.object({
+  name: Yup.string().required('Please enter your name'),
   email: Yup.string().email('Invalid email').required('Please enter your email address'),
   password: Yup.string()
     .min(8)
@@ -26,43 +24,53 @@ const ValidationSchema = Yup.object({
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
       'Must contain minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character',
     ),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password')], 'Passwords must match')
+    .required('Please confirm your password'),
 })
 
-const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick }) => {
+const ForgotModal: React.FC<ForgotModalProps> = ({ isVisible, onClose }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
-  const [isSignUpModel, setSignupMoodel] = React.useState(false)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
-  const closeSignUpModel = () => {
-    setSignupMoodel(false)
-  }
-
-  const onSignUpClick = () => {
-    setSignupMoodel(true)
-  }
-
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
-      <LoginWrapper>
+      <SignUpWrapper>
         <Formik
-          initialValues={initialValues}
+          initialValues={{
+            name: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+          }}
           validationSchema={ValidationSchema}
           onSubmit={(values) => console.log(values)}
         >
           {({ values, errors, touched, handleChange, isValid, handleSubmit, handleBlur }) => (
-            <LoginContainer>
-              <LoginHead>
-                <LoginHeading>Log in</LoginHeading>
+            <SignUpContainer>
+              <SignUpHead>
+                <SignUpHeading>Sign up</SignUpHeading>
                 <Pressable onPress={onClose}>
                   <CloseIcon width={24} height={24} />
                 </Pressable>
-              </LoginHead>
-
+              </SignUpHead>
+              <View>
+                <LabelText>Full name</LabelText>
+                <InputBorder>
+                  <InputStyle
+                    placeholder='Enter your name'
+                    value={values.name}
+                    onChangeText={handleChange('name')}
+                    onBlur={handleBlur('name')}
+                    placeholderTextColor={COLORS.SecondaryTwo}
+                  />
+                </InputBorder>
+                {touched.name && errors.name && <ErrorText>{errors.name}</ErrorText>}
+              </View>
               <View>
                 <LabelText>E-mail</LabelText>
-
                 <InputBorder>
                   <InputStyle
                     placeholder='Enter your e-mail'
@@ -77,7 +85,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
               </View>
               <View>
                 <LabelText>Password</LabelText>
-                <InputBorder style={{ marginBottom: 16 }}>
+                <InputBorder>
                   <InputStyle
                     secureTextEntry={!showPassword}
                     placeholder='Enter password'
@@ -86,12 +94,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
                     onBlur={() => handleBlur('password')}
                     placeholderTextColor={COLORS.SecondaryTwo}
                   />
-                  <Pressable
-                    onPress={(event) => {
-                      togglePasswordVisibility()
-                      event.stopPropagation()
-                    }}
-                  >
+                  <Pressable onPress={togglePasswordVisibility}>
                     {showPassword ? (
                       <EyeIcon width={14} height={14} />
                     ) : (
@@ -101,57 +104,54 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
                 </InputBorder>
                 {touched.password && errors.password && <ErrorText>{errors.password}</ErrorText>}
               </View>
-              {/* <Pressable>
-                <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
-              </Pressable> */}
 
               <CustomButton
                 variant='primary'
-                text='Log in'
+                text='Sign up'
                 onPress={() => handleSubmit()}
                 disabled={!isValid}
                 buttonStyle={[styles.submitBtn]}
               />
 
               <AccountView>
-                <AccountViewText>Don’t have an account?</AccountViewText>
-                <Pressable onPress={() => onSignClick()}>
-                  <SignUpLink>Sign up</SignUpLink>
+                <AccountViewText>Already have an account?</AccountViewText>
+                <Pressable>
+                  <LoginLink>Log in</LoginLink>
                 </Pressable>
               </AccountView>
-            </LoginContainer>
+            </SignUpContainer>
           )}
         </Formik>
-      </LoginWrapper>
+      </SignUpWrapper>
     </Modal>
   )
 }
 
-const LoginWrapper = styled.View`
+const SignUpWrapper = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
   background-color: ${COLORS.backgroundBlurClr};
 `
 
-const LoginContainer = styled.View`
+const SignUpContainer = styled.View`
   background-color: ${COLORS.iconsNormalClr};
   padding: 20px;
   border-radius: 10px;
   width: 328px;
 `
 
-const LoginHead = styled.View`
+const SignUpHead = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `
 
-const LoginHeading = styled.Text`
+const SignUpHeading = styled.Text`
   font-size: 20px;
   letter-spacing: -0.4px;
   font-family: Arvo-Regular;
-  color: ${COLORS.textClr};
+  color: ${COLORS.iconsHighlightClr};
 `
 
 const LabelText = styled.Text`
@@ -161,6 +161,11 @@ const LabelText = styled.Text`
   font-family: Gilroy-Medium;
   margin-top: 16px;
   margin-bottom: 8px;
+`
+
+const AccountViewText = styled.Text`
+  color: ${COLORS.SecondaryTwo};
+  font-family: Gilroy-Regular;
 `
 
 const InputBorder = styled.View`
@@ -175,29 +180,21 @@ const InputBorder = styled.View`
   padding-horizontal: 16px;
 `
 
-const InputStyle = styled.TextInput`
-  font-family: Gilroy-Medium;
-  width: 100%;
-  font-size: 12px;
-`
-
 const VerifyText = styled.Text`
   font-size: 12px;
   color: ${COLORS.textSecondaryClr};
   font-family: Gilroy-Regular;
 `
 
+const InputStyle = styled.TextInput`
+  font-family: Gilroy-Medium;
+  width: 100%;
+  font-size: 12px;
+`
+
 const ErrorText = styled.Text`
   font-size: 12px;
   color: ${COLORS.errorClr};
-`
-
-const ForgotPasswordText = styled.Text`
-  font-family: Gilroy-Regular;
-  color: ${COLORS.textSecondaryClr};
-  font-size: 14px;
-  margin-top: 8px;
-  margin-bottom: 16px;
 `
 
 const AccountView = styled.View`
@@ -207,22 +204,16 @@ const AccountView = styled.View`
   gap: 8px;
 `
 
-const AccountViewText = styled.Text`
-  color: ${COLORS.SecondaryTwo};
-  font-family: Gilroy-Regular;
-`
-
-const SignUpLink = styled.Text`
+const LoginLink = styled.Text`
   color: ${COLORS.textSecondaryClr};
   font-size: 14px;
   font-family: Gilroy-Medium;
 `
 
-export default LoginModal
+export default ForgotModal
 
 const styles = StyleSheet.create({
   submitBtn: {
-    marginBottom: 16,
-    fontFamily: 'Montserrat-Medium',
+    marginVertical: 16,
   },
 })

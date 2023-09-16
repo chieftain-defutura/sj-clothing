@@ -249,7 +249,7 @@ const PostCard = (props: componentNameProps) => {
 
   const flatListRenderer = () => {
     return (
-      <ImageContent style={{ width: 345 }}>
+      <ImageContent style={{ width: width - 32, overflow: 'hidden' }}>
         <TouchableOpacity onPress={openLoginModal}>
           <TShirtImg source={require('../assets/images/t-shirt.png')} resizeMode='cover' />
         </TouchableOpacity>
@@ -438,6 +438,7 @@ const EyeText = styled.Text`
   align-items: center;
   font-style: normal;
   font-size: 14px;
+  margin-top: -3px;
 `
 
 const PostCardContent = styled.View`

@@ -21,6 +21,7 @@ import NotificationPage from './NotificationPage'
 import OrderPlaced from '../../../screens/OrderPlaced'
 import AddressBook from './AddressBook'
 import FinalProduct from '../../../components/PostCreater/FinalProduct'
+import ForgotModal from '../../../screens/Forgot'
 
 const Stack = createNativeStackNavigator()
 
@@ -95,6 +96,7 @@ const StackNavigationRoutes: React.FC = () => {
 
       <Stack.Screen name='Login' options={{ headerShown: false }} component={LoginModal} />
       <Stack.Screen name='Signup' options={{ headerShown: false }} component={SignupModal} />
+      <Stack.Screen name='Forgot' options={{ headerShown: false }} component={ForgotModal} />
       <Stack.Screen name='OrderPlaced' options={{ headerShown: false }} component={OrderPlaced} />
 
       <Stack.Screen

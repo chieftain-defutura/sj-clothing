@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
 import styled from 'styled-components/native'
 import { Formik } from 'formik'
@@ -6,6 +6,8 @@ import * as Yup from 'yup'
 import { COLORS } from '../styles/theme'
 import CloseIcon from '../assets/icons/Close'
 import CustomButton from '../components/Button'
+import EyeIcon from '../assets/icons/EyeIcon'
+import EyeHideIcon from '../assets/icons/EyeIconHide'
 
 interface SignupModalProps {
   isVisible?: boolean
@@ -29,6 +31,11 @@ const ValidationSchema = Yup.object({
 })
 
 const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginClick }) => {
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <SignUpWrapper>
@@ -52,49 +59,51 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
               </SignUpHead>
               <View>
                 <LabelText>Full name</LabelText>
-                <InputStyle
-                  placeholder='Enter your name'
-                  value={values.name}
-                  onChangeText={handleChange('name')}
-                  onBlur={handleBlur('name')}
-                  placeholderTextColor={COLORS.SecondaryTwo}
-                />
+                <InputBorder>
+                  <InputStyle
+                    placeholder='Enter your name'
+                    value={values.name}
+                    onChangeText={handleChange('name')}
+                    onBlur={handleBlur('name')}
+                    placeholderTextColor={COLORS.SecondaryTwo}
+                  />
+                </InputBorder>
                 {touched.name && errors.name && <ErrorText>{errors.name}</ErrorText>}
               </View>
               <View>
                 <LabelText>E-mail</LabelText>
-                <InputStyle
-                  placeholder='Enter your e-mail'
-                  value={values.email}
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  placeholderTextColor={COLORS.SecondaryTwo}
-                />
+                <InputBorder>
+                  <InputStyle
+                    placeholder='Enter your e-mail'
+                    value={values.email}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    placeholderTextColor={COLORS.SecondaryTwo}
+                  />
+                  <VerifyText>Verify</VerifyText>
+                </InputBorder>
                 {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
               </View>
               <View>
                 <LabelText>Password</LabelText>
-                <InputStyle
-                  placeholder='Enter password'
-                  value={values.password}
-                  onChangeText={handleChange('password')}
-                  onBlur={() => handleBlur('password')}
-                  placeholderTextColor={COLORS.SecondaryTwo}
-                />
+                <InputBorder>
+                  <InputStyle
+                    secureTextEntry={!showPassword}
+                    placeholder='Enter password'
+                    value={values.password}
+                    onChangeText={handleChange('password')}
+                    onBlur={() => handleBlur('password')}
+                    placeholderTextColor={COLORS.SecondaryTwo}
+                  />
+                  <Pressable onPress={togglePasswordVisibility}>
+                    {showPassword ? (
+                      <EyeIcon width={14} height={14} />
+                    ) : (
+                      <EyeHideIcon width={14} height={14} />
+                    )}
+                  </Pressable>
+                </InputBorder>
                 {touched.password && errors.password && <ErrorText>{errors.password}</ErrorText>}
-              </View>
-              <View>
-                <LabelText>Confirm password</LabelText>
-                <InputStyle
-                  placeholder='Enter confirm password'
-                  value={values.confirmPassword}
-                  onChangeText={handleChange('confirmPassword')}
-                  onBlur={() => handleBlur('confirmPassword')}
-                  placeholderTextColor={COLORS.SecondaryTwo}
-                />
-                {touched.confirmPassword && errors.confirmPassword && (
-                  <ErrorText>{errors.confirmPassword}</ErrorText>
-                )}
               </View>
 
               <CustomButton
@@ -160,13 +169,28 @@ const AccountViewText = styled.Text`
   font-family: Gilroy-Regular;
 `
 
-const InputStyle = styled.TextInput`
+const InputBorder = styled.View`
   border-color: ${COLORS.strokeClr};
   border-width: 1px;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
   padding-vertical: 8px;
-  padding-horizontal: 14px;
+  padding-horizontal: 16px;
+`
+
+const VerifyText = styled.Text`
+  font-size: 12px;
+  color: ${COLORS.textSecondaryClr};
+  font-family: Gilroy-Regular;
+`
+
+const InputStyle = styled.TextInput`
   font-family: Gilroy-Medium;
+  width: 100%;
+  font-size: 12px;
 `
 
 const ErrorText = styled.Text`
