@@ -117,12 +117,14 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                 )
               })}
               <HomeFlexContent>
-                <View>
-                  <HomeText>Home</HomeText>
-                  <HomeDescription>
-                    Mr John Smith. 132, My Street, Kingston, New York 12401.
-                  </HomeDescription>
-                </View>
+                <Pressable onPress={() => navigation.navigate('AddressBook')}>
+                  <View>
+                    <HomeText>Home</HomeText>
+                    <HomeDescription>
+                      Mr John Smith. 132, My Street, Kingston, New York 12401.
+                    </HomeDescription>
+                  </View>
+                </Pressable>
                 <Pressable>
                   <ChevronLeft width={16} height={16} />
                 </Pressable>

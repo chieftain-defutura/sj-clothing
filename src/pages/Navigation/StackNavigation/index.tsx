@@ -19,6 +19,7 @@ import SelectSizeAndColor from '../../../components/PostCreater/SelectSizeAndCou
 import GiftOptions from './GiftOptions'
 import NotificationPage from './NotificationPage'
 import OrderPlaced from '../../../screens/OrderPlaced'
+import AddressBook from './AddressBook'
 
 const Stack = createNativeStackNavigator()
 
@@ -32,6 +33,14 @@ const StackNavigationRoutes: React.FC = () => {
           headerBackground: () => <Header />,
         }}
         component={TabNavigationRoutes}
+      />
+      <Stack.Screen
+        name='AddressBook'
+        options={{
+          headerShown: false,
+          headerBackground: () => <Header />,
+        }}
+        component={AddressBook}
       />
 
       <Stack.Screen

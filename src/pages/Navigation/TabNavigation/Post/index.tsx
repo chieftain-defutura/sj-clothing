@@ -20,6 +20,21 @@ interface IPost {
   navigation: any
 }
 
+const data = [
+  'Trending',
+  'New collection',
+  'Trending',
+  'New collection',
+  'Trending',
+  'New collection',
+  'Trending',
+  'New collection',
+  'Trending',
+  'New collection',
+  'Trending',
+  'New collection',
+]
+
 const { width } = Dimensions.get('window')
 
 const Post: React.FC<IPost> = ({ navigation }) => {
@@ -63,24 +78,32 @@ const Post: React.FC<IPost> = ({ navigation }) => {
       <Animated.View style={[animStyle, styles.dropDown, displayStyle]}>
         <CategoryHeading>Category</CategoryHeading>
         <CategoryContent>
-          <CategoryText>Trending</CategoryText>
-          <CategoryText>Trending</CategoryText>
-          <CategoryText>Trending</CategoryText>
+          {data.slice(0, 3).map((f, index) => (
+            <Pressable key={index}>
+              <CategoryText>{f}</CategoryText>
+            </Pressable>
+          ))}
         </CategoryContent>
         <CategoryContent>
-          <CategoryText>New collections</CategoryText>
-          <CategoryText>New collections</CategoryText>
-          <CategoryText>New collections</CategoryText>
+          {data.slice(3, 6).map((f, index) => (
+            <Pressable key={index}>
+              <CategoryText>{f}</CategoryText>
+            </Pressable>
+          ))}
         </CategoryContent>
         <CategoryContent>
-          <CategoryText>Trending</CategoryText>
-          <CategoryText>Trending</CategoryText>
-          <CategoryText>Trending</CategoryText>
+          {data.slice(6, 9).map((f, index) => (
+            <Pressable key={index}>
+              <CategoryText>{f}</CategoryText>
+            </Pressable>
+          ))}
         </CategoryContent>
         <CategoryContent>
-          <CategoryText>Trending</CategoryText>
-          <CategoryText>Trending</CategoryText>
-          <CategoryText>Trending</CategoryText>
+          {data.slice(9, 12).map((f, index) => (
+            <Pressable key={index}>
+              <CategoryText>{f}</CategoryText>
+            </Pressable>
+          ))}
         </CategoryContent>
       </Animated.View>
       <Animated.View style={[styles.cancel, cancelStyle, displayStyle]}>
@@ -195,7 +218,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
     backgroundColor: '#EBEBEB',
     borderRadius: 50,
-    left: '40%',
+    left: '44%',
     justifyContent: 'center',
     alignItems: 'center',
   },

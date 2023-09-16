@@ -10,6 +10,7 @@ import CustomButton from '../components/Button'
 interface SignupModalProps {
   isVisible?: boolean
   onClose?: () => void
+  onLoginClick: () => void
 }
 
 const ValidationSchema = Yup.object({
@@ -27,7 +28,7 @@ const ValidationSchema = Yup.object({
     .required('Please confirm your password'),
 })
 
-const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose }) => {
+const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginClick }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <SignUpWrapper>
@@ -106,7 +107,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose }) => {
 
               <AccountView>
                 <AccountViewText>Already have an account?</AccountViewText>
-                <Pressable>
+                <Pressable onPress={onLoginClick}>
                   <LoginLink>Log in</LoginLink>
                 </Pressable>
               </AccountView>

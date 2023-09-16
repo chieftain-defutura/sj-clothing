@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
 import styled from 'styled-components/native'
 import { Formik } from 'formik'
@@ -6,11 +6,16 @@ import * as Yup from 'yup'
 import { COLORS } from '../styles/theme'
 import CloseIcon from '../assets/icons/Close'
 import CustomButton from '../components/Button'
+import EyeIcon from '../assets/icons/EyeIcon'
+import EyeHideIcon from '../assets/icons/EyeIconHide'
 
 interface LoginModalProps {
   isVisible?: boolean
   onClose?: () => void
+  onSignClick: () => void
 }
+
+const initialValues = { email: '', password: '' }
 
 const ValidationSchema = Yup.object({
   email: Yup.string().email('Invalid email').required('Please enter your email address'),
@@ -23,15 +28,17 @@ const ValidationSchema = Yup.object({
     ),
 })
 
-const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) => {
+const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick }) => {
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <LoginWrapper>
         <Formik
-          initialValues={{
-            email: '',
-            password: '',
-          }}
+          initialValues={initialValues}
           validationSchema={ValidationSchema}
           onSubmit={(values) => console.log(values)}
         >
@@ -57,13 +64,33 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) => {
               </View>
               <View>
                 <LabelText>Password</LabelText>
-                <InputStyle
-                  placeholder='Enter password'
-                  value={values.password}
-                  onChangeText={handleChange('password')}
-                  onBlur={() => handleBlur('password')}
-                  placeholderTextColor={COLORS.SecondaryTwo}
-                />
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    width: '100%',
+                  }}
+                >
+                  <InputStyle
+                    secureTextEntry={showPassword}
+                    placeholder='Enter password'
+                    value={values.password}
+                    onChangeText={handleChange('password')}
+                    onBlur={() => handleBlur('password')}
+                    placeholderTextColor={COLORS.SecondaryTwo}
+                  />
+                  <Pressable
+                    style={{ transform: [{ translateX: -30 }], marginTop: 14 }}
+                    onPress={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <EyeHideIcon width={14} height={14} />
+                    ) : (
+                      <EyeIcon width={14} height={14} />
+                    )}
+                  </Pressable>
+                </View>
                 {touched.password && errors.password && <ErrorText>{errors.password}</ErrorText>}
               </View>
               <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
@@ -78,7 +105,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) => {
 
               <AccountView>
                 <AccountViewText>Don’t have an account?</AccountViewText>
-                <Pressable>
+                <Pressable onPress={() => onSignClick()}>
                   <SignUpLink>Sign up</SignUpLink>
                 </Pressable>
               </AccountView>
@@ -132,6 +159,7 @@ const InputStyle = styled.TextInput`
   padding-vertical: 8px;
   padding-left: 14px;
   font-family: Gilroy-Medium;
+  width: 100%;
 `
 
 const ErrorText = styled.Text`
