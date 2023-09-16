@@ -189,7 +189,7 @@
 // export default PostCard
 
 import * as React from 'react'
-import { TouchableOpacity, Pressable, FlatList, View, Dimensions } from 'react-native'
+import { TouchableOpacity, Pressable, FlatList, View, Dimensions, Share } from 'react-native'
 import { COLORS } from '../styles/theme'
 import styled from 'styled-components/native'
 import Like from '../assets/icons/like'
@@ -245,6 +245,23 @@ const PostCard = (props: componentNameProps) => {
 
   const closeSignUpModel = () => {
     setSignupMoodel(false)
+  }
+  const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
+  const share = async () => {
+    try {
+      const result = await Share.share({ message: 'Bug:' + `\n` + url })
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          console.log('shared with active type', result.activityType)
+        } else {
+          console.log('shared')
+        }
+      } else if (result.action === Share.dismissedAction) {
+        console.log('dismissed')
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const flatListRenderer = () => {
@@ -321,7 +338,9 @@ const PostCard = (props: componentNameProps) => {
               })}
             </View>
           </SliderDots>
-          <SaveIcon width={24} height={24} />
+          <Pressable onPress={share}>
+            <SaveIcon width={24} height={24} />
+          </Pressable>
         </FlexContent>
         <Content>
           <PostCardText>Post Card</PostCardText>

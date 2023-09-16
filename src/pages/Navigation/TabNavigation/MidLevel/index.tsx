@@ -1,10 +1,13 @@
 import React from 'react'
 import styled from 'styled-components/native'
+import AuthNavigate from '../../../../screens/AuthNavigate'
 
 const MidLevel: React.FC = () => {
   return (
     <MidLevelWrapper>
-      <MidLevelText>MidLevel</MidLevelText>
+      <AuthNavigate>
+        <MidLevelText>MidLevel</MidLevelText>
+      </AuthNavigate>
     </MidLevelWrapper>
   )
 }

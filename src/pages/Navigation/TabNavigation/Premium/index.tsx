@@ -1,10 +1,13 @@
 import React from 'react'
 import styled from 'styled-components/native'
+import AuthNavigate from '../../../../screens/AuthNavigate'
 
 const Premium: React.FC = () => {
   return (
     <PremiumWrapper>
-      <PremiumText>Premium</PremiumText>
+      <AuthNavigate>
+        <PremiumText>Premium</PremiumText>
+      </AuthNavigate>
     </PremiumWrapper>
   )
 }

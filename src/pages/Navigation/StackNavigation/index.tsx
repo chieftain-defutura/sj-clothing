@@ -22,6 +22,7 @@ import OrderPlaced from '../../../screens/OrderPlaced'
 import AddressBook from './AddressBook'
 import FinalProduct from '../../../components/PostCreater/FinalProduct'
 import ForgotModal from '../../../screens/Forgot'
+import BuyNow from './BuyNow'
 
 const Stack = createNativeStackNavigator()
 
@@ -43,6 +44,14 @@ const StackNavigationRoutes: React.FC = () => {
           headerBackground: () => <Header />,
         }}
         component={AddressBook}
+      />
+      <Stack.Screen
+        name='Buynow'
+        options={{
+          headerShown: false,
+          headerBackground: () => <Header />,
+        }}
+        component={BuyNow}
       />
 
       <Stack.Screen

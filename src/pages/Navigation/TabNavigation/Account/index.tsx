@@ -1,10 +1,13 @@
 import React from 'react'
 import styled from 'styled-components/native'
+import AuthNavigate from '../../../../screens/AuthNavigate'
 
-const Account = () => {
+const Account: React.FC = () => {
   return (
     <AccountWrapper>
-      <AccountText>Account</AccountText>
+      <AuthNavigate>
+        <AccountText>Account</AccountText>
+      </AuthNavigate>
     </AccountWrapper>
   )
 }

@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { useNavigation } from '@react-navigation/native'
 import { COLORS } from '../../../styles/theme'
 import HomeIcon from '../../../assets/icons/HomeIcon'
 import MidLevelIcon from '../../../assets/icons/MidLevelIcon'
@@ -14,6 +15,7 @@ import Account from './Account'
 const Tab = createBottomTabNavigator()
 
 const TabNavigationRoutes: React.FC = () => {
+  useEffect(() => {}, [])
   return (
     <Tab.Navigator
       initialRouteName='Home'

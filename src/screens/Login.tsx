@@ -3,11 +3,16 @@ import { View, Modal, StyleSheet, Pressable } from 'react-native'
 import styled from 'styled-components/native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import { useNavigation } from '@react-navigation/native'
+import { AuthErrorCodes, signInWithEmailAndPassword } from 'firebase/auth'
 import { COLORS } from '../styles/theme'
 import CloseIcon from '../assets/icons/Close'
 import CustomButton from '../components/Button'
 import EyeIcon from '../assets/icons/EyeIcon'
 import EyeHideIcon from '../assets/icons/EyeIconHide'
+import { auth } from '../../firebase'
+import { FirebaseError } from 'firebase/app'
+import { userStore } from '../store/userStore'
 
 interface LoginModalProps {
   isVisible?: boolean
@@ -30,17 +35,30 @@ const ValidationSchema = Yup.object({
 
 const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
-  const [isSignUpModel, setSignupMoodel] = React.useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const user = userStore((state) => state.user)
+  const navigation = useNavigation()
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
-  const closeSignUpModel = () => {
-    setSignupMoodel(false)
-  }
 
-  const onSignUpClick = () => {
-    setSignupMoodel(true)
+  const handleSubmit = async (values: typeof initialValues) => {
+    try {
+      console.log(values)
+      await signInWithEmailAndPassword(auth, values.email, values.password)
+      console.log('user logged in successfully')
+      navigation.navigate('Post')
+    } catch (error) {
+      console.log(error)
+      if (error instanceof FirebaseError) {
+        if (error.code === AuthErrorCodes.INVALID_PASSWORD) {
+          setErrorMessage('Invalid password')
+        } else if (error.code === AuthErrorCodes.USER_DELETED) {
+          setErrorMessage('User not found')
+        }
+      }
+    }
   }
 
   return (
@@ -49,7 +67,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
         <Formik
           initialValues={initialValues}
           validationSchema={ValidationSchema}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={handleSubmit}
         >
           {({ values, errors, touched, handleChange, isValid, handleSubmit, handleBlur }) => (
             <LoginContainer>
@@ -75,9 +93,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
                 </InputBorder>
                 {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
               </View>
-              <View>
+              <View style={{ marginBottom: 16 }}>
                 <LabelText>Password</LabelText>
-                <InputBorder style={{ marginBottom: 16 }}>
+                <InputBorder>
                   <InputStyle
                     secureTextEntry={!showPassword}
                     placeholder='Enter password'
@@ -104,6 +122,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
               {/* <Pressable>
                 <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
               </Pressable> */}
+
+              {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
 
               <CustomButton
                 variant='primary'

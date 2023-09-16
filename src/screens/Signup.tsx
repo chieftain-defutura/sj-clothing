@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
 import styled from 'styled-components/native'
 import { Formik } from 'formik'
@@ -8,12 +8,25 @@ import CloseIcon from '../assets/icons/Close'
 import CustomButton from '../components/Button'
 import EyeIcon from '../assets/icons/EyeIcon'
 import EyeHideIcon from '../assets/icons/EyeIconHide'
+import { useNavigation } from '@react-navigation/native'
+import {
+  AuthErrorCodes,
+  User,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  updateProfile,
+} from 'firebase/auth'
+import { auth } from '../../firebase'
+import { FirebaseError } from 'firebase/app'
+import { userStore } from '../store/userStore'
 
 interface SignupModalProps {
   isVisible?: boolean
   onClose?: () => void
   onLoginClick: () => void
 }
+
+const initialValues = { name: '', email: '', password: '' }
 
 const ValidationSchema = Yup.object({
   name: Yup.string().required('Please enter your name'),
@@ -25,31 +38,76 @@ const ValidationSchema = Yup.object({
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
       'Must contain minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character',
     ),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], 'Passwords must match')
-    .required('Please confirm your password'),
 })
 
 const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginClick }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const updateUser = userStore((state) => state.updateUser)
+  const updateFetching = userStore((state) => state.updateFetching)
+  const navigation = useNavigation()
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
+  }
+
+  useEffect(() => {
+    return onAuthStateChanged(auth, (data) => {
+      if (data) {
+        updateUser(data)
+        setTimeout(() => {
+          updateFetching(false)
+          navigation.navigate('Post')
+        }, 0)
+      } else {
+        setTimeout(() => {
+          updateFetching(false)
+          navigation.navigate('Post')
+        }, 0)
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage(null)
+      }, 3000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [errorMessage])
+
+  const handleSubmit = async (values: typeof initialValues) => {
+    try {
+      const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password)
+      await updateProfile(user, { displayName: values.name })
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
+          setErrorMessage('Email is already in use. Please choose a different email.')
+        }
+      }
+    }
   }
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <SignUpWrapper>
         <Formik
-          initialValues={{
-            name: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-          }}
+          initialValues={initialValues}
           validationSchema={ValidationSchema}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={handleSubmit}
         >
-          {({ values, errors, touched, handleChange, isValid, handleSubmit, handleBlur }) => (
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            isValid,
+            handleSubmit,
+            handleBlur,
+            isSubmitting,
+          }) => (
             <SignUpContainer>
               <SignUpHead>
                 <SignUpHeading>Sign up</SignUpHeading>
@@ -106,9 +164,11 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                 {touched.password && errors.password && <ErrorText>{errors.password}</ErrorText>}
               </View>
 
+              {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
+
               <CustomButton
                 variant='primary'
-                text='Sign up'
+                text={isSubmitting ? 'Sign up...' : 'Sign up'}
                 onPress={() => handleSubmit()}
                 disabled={!isValid}
                 buttonStyle={[styles.submitBtn]}
