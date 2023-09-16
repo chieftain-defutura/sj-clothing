@@ -23,8 +23,8 @@ const AddressBook = () => {
   }
 
   const editAnimationStyle = useAnimatedStyle(() => ({
-    height: height.value,
-    display: displayAddressSelection.value,
+    height: height.value as any,
+    display: displayAddressSelection.value as any,
   }))
 
   // useEffect(() => {}, [])
