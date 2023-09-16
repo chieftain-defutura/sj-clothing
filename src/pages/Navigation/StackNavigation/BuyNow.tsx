@@ -95,24 +95,25 @@ const BuyNow: React.FC<IBuyNow> = ({ navigation }) => {
         </Text>
       </View>
       <View>
-        <FlatList
-          data={Data}
-          numColumns={3}
-          columnWrapperStyle={{
+        <View
+          style={{
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            paddingVertical: 8,
+            flexWrap: 'wrap',
+            paddingBottom: 8,
           }}
-          renderItem={({ item }) => (
+        >
+          {Data.map((item, index) => (
             <View
+              key={index}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between',
-                gap: 2,
-                width: 150,
+                justifyContent: 'flex-start',
+                columnGap: 30,
+                width: 100,
+                paddingTop: 16,
               }}
             >
               <Text
@@ -124,15 +125,15 @@ const BuyNow: React.FC<IBuyNow> = ({ navigation }) => {
                 {item.content}
               </Text>
             </View>
-          )}
-        />
-        <CustomButton
-          variant='primary'
-          text='Post'
-          onPress={() => navigation.navigate('Stack')}
-          buttonStyle={[styles.submitBtn]}
-        />
+          ))}
+        </View>
       </View>
+      <CustomButton
+        variant='primary'
+        text='Buy now'
+        onPress={() => navigation.navigate('Stack')}
+        buttonStyle={[styles.submitBtn]}
+      />
     </ScrollView>
   )
 }

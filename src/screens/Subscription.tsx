@@ -235,7 +235,7 @@ const SubscriptionModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) =>
                 variant='primary'
                 text='Pay now'
                 onPress={() => {
-                  navigation.navigate('Style'), onClose
+                  navigation.navigate('Style'), onClose()
                 }}
                 fontFamily='Arvo-Regular'
                 buttonStyle={[styles.submitBtn]}

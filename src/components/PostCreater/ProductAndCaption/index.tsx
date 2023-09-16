@@ -37,7 +37,7 @@ const ValidationSchema = Yup.object({
 
 const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation }) => {
   return (
-    <ScrollView style={styles.ProductAndCaptionContainer}>
+    <View style={styles.ProductAndCaptionContainer}>
       <View style={styles.ProductAndCaptionNavigator}>
         <Pressable onPress={() => navigation.navigate('AddText')}>
           <ArrowCircleLeft width={24} height={24} />
@@ -90,7 +90,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation }) => {
           </SignUpContainer>
         )}
       </Formik>
-    </ScrollView>
+    </View>
   )
 }
 
@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
 const SignUpContainer = styled.View`
   padding: 20px;
   border-radius: 10px;
+  padding-bottom: 100px;
 `
 
 const InputStyle = styled.TextInput`

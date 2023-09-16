@@ -84,6 +84,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({ navigation }) => {
       <View style={styles.selectColorTShirt}>
         <Carousle />
       </View>
+
       <View style={styles.selectColor360Degree}>
         <ThreeSixtyDegree width={40} height={40} />
       </View>
@@ -94,45 +95,42 @@ const FinalProduct: React.FC<IFinalProduct> = ({ navigation }) => {
           tellus augue lec.
         </Text>
       </View>
-      <View>
-        <FlatList
-          data={Data}
-          numColumns={3}
-          columnWrapperStyle={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            paddingVertical: 8,
-          }}
-          renderItem={({ item }) => (
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                gap: 2,
-                width: 150,
-              }}
-            >
-              <Text
-                style={{ color: COLORS.textClr, fontFamily: 'Montserrat-Regular', fontSize: 10 }}
-              >
-                {item.title}
-              </Text>
-              <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-                {item.content}
-              </Text>
-            </View>
-          )}
-        />
-        <CustomButton
-          variant='primary'
-          text='Post'
-          onPress={() => navigation.navigate('Stack')}
-          buttonStyle={[styles.submitBtn]}
-        />
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          paddingBottom: 8,
+        }}
+      >
+        {Data.map((item, index) => (
+          <View
+            key={index}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+              columnGap: 30,
+              width: 100,
+              paddingTop: 16,
+            }}
+          >
+            <Text style={{ color: COLORS.textClr, fontFamily: 'Montserrat-Regular', fontSize: 10 }}>
+              {item.title}
+            </Text>
+            <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+              {item.content}
+            </Text>
+          </View>
+        ))}
       </View>
+      <CustomButton
+        variant='primary'
+        text='Post'
+        onPress={() => navigation.navigate('Stack')}
+        buttonStyle={[styles.submitBtn]}
+      />
     </ScrollView>
   )
 }
