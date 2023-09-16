@@ -113,7 +113,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({ navigation }) => {
                       color:
                         isStyleName === item ? COLORS.textSecondaryClr : COLORS.textTertiaryClr,
                       fontFamily: 'Gilroy-Regular',
-                      width: 100,
+                      width: 89,
                       textAlign: 'center',
                     }}
                   >

@@ -102,7 +102,10 @@ const AddText: React.FC<IAddText> = ({ navigation }) => {
                       borderWidth: isSelect === data.title ? 1 : 0,
                     }}
                   >
-                    <Image style={{ width: 70, height: 100 }} source={data.image} />
+                    <Image
+                      style={{ width: 50, height: 72, objectFit: 'contain' }}
+                      source={data.image}
+                    />
                   </View>
 
                   <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
@@ -128,7 +131,7 @@ const AddText: React.FC<IAddText> = ({ navigation }) => {
                       backgroundColor: COLORS.BoxBackgoundClr,
                       padding: 16,
                       borderRadius: 10,
-                      width: 80,
+                      width: 70,
                       display: 'flex',
                       justifyContent: 'center',
                       flexDirection: 'row',
@@ -136,7 +139,10 @@ const AddText: React.FC<IAddText> = ({ navigation }) => {
                       borderWidth: isSelect === data.title ? 1 : 0,
                     }}
                   >
-                    <Image style={{ width: 30, height: 100 }} source={data.image} />
+                    <Image
+                      style={{ width: 25, height: 72, objectFit: 'contain' }}
+                      source={data.image}
+                    />
                   </View>
 
                   <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
@@ -192,8 +198,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 50,
-    paddingHorizontal: 16,
+    padding: 16,
   },
   AddTextDropdown: {
     display: 'flex',

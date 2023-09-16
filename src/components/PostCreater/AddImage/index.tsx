@@ -136,7 +136,10 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
                     borderWidth: isSelect === data.title ? 1 : 0,
                   }}
                 >
-                  <Image style={{ width: 70, height: 100 }} source={data.image} />
+                  <Image
+                    style={{ width: 50, height: 72, objectFit: 'contain' }}
+                    source={data.image}
+                  />
                 </View>
 
                 <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
@@ -170,7 +173,10 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
                     borderWidth: isSelect === data.title ? 1 : 0,
                   }}
                 >
-                  <Image style={{ width: 30, height: 100 }} source={data.image} />
+                  <Image
+                    style={{ width: 25, height: 72, objectFit: 'contain' }}
+                    source={data.image}
+                  />
                 </View>
 
                 <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
@@ -232,8 +238,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 50,
-    paddingHorizontal: 16,
+    padding: 16,
   },
   AddImageDropdown: {
     display: 'flex',

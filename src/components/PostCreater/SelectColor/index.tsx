@@ -179,8 +179,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 50,
-    paddingHorizontal: 16,
+    padding: 16,
   },
   selectColorDropdown: {
     display: 'flex',
