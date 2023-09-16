@@ -69,6 +69,11 @@ const CustomButton: React.FC<Props> = ({
 
 const StyledView = styled.View`
   padding: 16px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
 `
 
 const ButtonText = styled.Text<{ variant: 'primary' | 'secondary' | undefined }>`
