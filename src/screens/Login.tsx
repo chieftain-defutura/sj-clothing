@@ -3,11 +3,14 @@ import { View, Modal, StyleSheet, Pressable } from 'react-native'
 import styled from 'styled-components/native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+
 import { COLORS } from '../styles/theme'
 import CloseIcon from '../assets/icons/Close'
 import CustomButton from '../components/Button'
 import EyeIcon from '../assets/icons/EyeIcon'
 import EyeHideIcon from '../assets/icons/EyeIconHide'
+import { auth } from '../../firebase'
 
 interface LoginModalProps {
   isVisible?: boolean
@@ -34,13 +37,24 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
+
+  const handleSubmit = async (values: typeof initialValues) => {
+    try {
+      console.log(values)
+      await createUserWithEmailAndPassword(auth, values.email, values.password)
+      console.log('user created')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <LoginWrapper>
         <Formik
           initialValues={initialValues}
           validationSchema={ValidationSchema}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={handleSubmit}
         >
           {({ values, errors, touched, handleChange, isValid, handleSubmit, handleBlur }) => (
             <LoginContainer>
