@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import styled from 'styled-components/native'
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
@@ -264,11 +263,11 @@ const styles = StyleSheet.create({
   },
 })
 
-const DropDownWrapper = styled.View`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 1;
-`
+// const DropDownWrapper = styled.View`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   width: 100%;
+//   z-index: 1;
+// `

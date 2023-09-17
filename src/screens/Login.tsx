@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { useNavigation } from '@react-navigation/native'
-import { AuthErrorCodes, signInWithEmailAndPassword } from 'firebase/auth'
+import { AuthErrorCodes, sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth'
 import { COLORS } from '../styles/theme'
 import CloseIcon from '../assets/icons/Close'
 import CustomButton from '../components/Button'
@@ -13,11 +13,13 @@ import EyeHideIcon from '../assets/icons/EyeIconHide'
 import { auth } from '../../firebase'
 import { FirebaseError } from 'firebase/app'
 import { userStore } from '../store/userStore'
+// import { userStore } from '../store/userStore'
 
 interface LoginModalProps {
+  // onForgot: () => void
   isVisible?: boolean
   onClose?: () => void
-  onSignClick: () => void
+  onSignClick?: () => void
 }
 
 const initialValues = { email: '', password: '' }
@@ -36,12 +38,22 @@ const ValidationSchema = Yup.object({
 const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const user = userStore((state) => state.user)
+  // const user = userStore((state) => state.user)
   const navigation = useNavigation()
+  const [btnText, setBtnText] = useState('Login')
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
+
+  const handleVerify = () => {
+    console.log('asdasd')
+  }
+
+  // const onForgotClick = () => {
+  //   console.log('ihi')
+  //   onForgot()
+  // }
 
   const handleSubmit = async (values: typeof initialValues) => {
     try {
@@ -89,7 +101,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
                     onBlur={handleBlur('email')}
                     placeholderTextColor={COLORS.SecondaryTwo}
                   />
-                  <VerifyText>Verify</VerifyText>
+                  <Pressable onPress={handleVerify}>
+                    <VerifyText>Verify</VerifyText>
+                  </Pressable>
                 </InputBorder>
                 {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
               </View>
@@ -119,7 +133,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
                 </InputBorder>
                 {touched.password && errors.password && <ErrorText>{errors.password}</ErrorText>}
               </View>
-              {/* <Pressable>
+              {/* <Pressable onPress={onForgotClick}>
                 <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
               </Pressable> */}
 
@@ -127,7 +141,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
 
               <CustomButton
                 variant='primary'
-                text='Log in'
+                text={btnText}
                 onPress={() => handleSubmit()}
                 disabled={!isValid}
                 buttonStyle={[styles.submitBtn]}

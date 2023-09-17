@@ -16,11 +16,11 @@ const Data = [
 ]
 const SelectText: React.FC<ISelectText> = ({ navigation }) => {
   const [isFont, setFont] = useState('Aa')
-  const [sliderValues, setSliderValues] = useState([25, 75])
+  // const [sliderValues, setSliderValues] = useState([25, 75])
 
-  const handleSliderChange = (values: number[]) => {
-    setSliderValues(values)
-  }
+  // const handleSliderChange = (values: number[]) => {
+  //   setSliderValues(values)
+  // }
   return (
     <View style={{ flex: 1, backgroundColor: '#FFEFFF' }}>
       <View
@@ -58,6 +58,7 @@ const SelectText: React.FC<ISelectText> = ({ navigation }) => {
       >
         {Data.map((font, index) => (
           <Pressable
+            key={index}
             onPress={() => setFont(font.content)}
             style={{
               borderRadius: 50,

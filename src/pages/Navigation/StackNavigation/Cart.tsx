@@ -203,10 +203,6 @@ const ScrollViewContent = styled.ScrollView`
   height: 100%;
 `
 
-const CustomBtn = styled.View`
-  margin-top: 80px;
-`
-
 const GoBackArrowContent = styled.Pressable`
   display: flex;
   flex-direction: row;

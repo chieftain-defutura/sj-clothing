@@ -15,7 +15,6 @@ interface ForgotModalProps {
 }
 
 const ValidationSchema = Yup.object({
-  name: Yup.string().required('Please enter your name'),
   email: Yup.string().email('Invalid email').required('Please enter your email address'),
   password: Yup.string()
     .min(8)
@@ -40,7 +39,6 @@ const ForgotModal: React.FC<ForgotModalProps> = ({ isVisible, onClose }) => {
       <SignUpWrapper>
         <Formik
           initialValues={{
-            name: '',
             email: '',
             password: '',
             confirmPassword: '',
@@ -51,24 +49,12 @@ const ForgotModal: React.FC<ForgotModalProps> = ({ isVisible, onClose }) => {
           {({ values, errors, touched, handleChange, isValid, handleSubmit, handleBlur }) => (
             <SignUpContainer>
               <SignUpHead>
-                <SignUpHeading>Sign up</SignUpHeading>
+                <SignUpHeading>Forgot</SignUpHeading>
                 <Pressable onPress={onClose}>
                   <CloseIcon width={24} height={24} />
                 </Pressable>
               </SignUpHead>
-              <View>
-                <LabelText>Full name</LabelText>
-                <InputBorder>
-                  <InputStyle
-                    placeholder='Enter your name'
-                    value={values.name}
-                    onChangeText={handleChange('name')}
-                    onBlur={handleBlur('name')}
-                    placeholderTextColor={COLORS.SecondaryTwo}
-                  />
-                </InputBorder>
-                {touched.name && errors.name && <ErrorText>{errors.name}</ErrorText>}
-              </View>
+
               <View>
                 <LabelText>E-mail</LabelText>
                 <InputBorder>

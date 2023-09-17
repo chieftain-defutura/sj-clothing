@@ -276,12 +276,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
   )
 }
 
-const SelectText = styled.Text`
-  font-size: 12px;
-  font-family: Gilroy-Medium;
-  color: ${COLORS.iconsHighlightClr};
-`
-
 export default SelectStyle
 
 const styles = StyleSheet.create({

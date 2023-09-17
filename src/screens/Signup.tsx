@@ -11,19 +11,21 @@ import EyeHideIcon from '../assets/icons/EyeIconHide'
 import { useNavigation } from '@react-navigation/native'
 import {
   AuthErrorCodes,
-  User,
+  // User,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   updateProfile,
+  // sendEmailVerification,
 } from 'firebase/auth'
 import { auth } from '../../firebase'
 import { FirebaseError } from 'firebase/app'
 import { userStore } from '../store/userStore'
+// import { signOut } from 'firebase/auth'
 
 interface SignupModalProps {
   isVisible?: boolean
   onClose?: () => void
-  onLoginClick: () => void
+  onLoginClick?: () => void
 }
 
 const initialValues = { name: '', email: '', password: '' }
@@ -51,18 +53,23 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
     setShowPassword(!showPassword)
   }
 
+  const handleVerify = () => {
+    console.log('Verify')
+    // sendEmailVerification(user)
+  }
+
   useEffect(() => {
     return onAuthStateChanged(auth, (data) => {
       if (data) {
         updateUser(data)
         setTimeout(() => {
           updateFetching(false)
-          navigation.navigate('Post')
+          isVisible = false
         }, 0)
       } else {
         setTimeout(() => {
           updateFetching(false)
-          navigation.navigate('Post')
+          isVisible = false
         }, 0)
       }
     })
@@ -82,6 +89,8 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
     try {
       const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password)
       await updateProfile(user, { displayName: values.name })
+
+      navigation.navigate('Post')
     } catch (error) {
       if (error instanceof FirebaseError) {
         if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
@@ -138,7 +147,9 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                     onBlur={handleBlur('email')}
                     placeholderTextColor={COLORS.SecondaryTwo}
                   />
-                  <VerifyText>Verify</VerifyText>
+                  <Pressable onPress={handleVerify}>
+                    <VerifyText>Verify</VerifyText>
+                  </Pressable>
                 </InputBorder>
                 {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
               </View>

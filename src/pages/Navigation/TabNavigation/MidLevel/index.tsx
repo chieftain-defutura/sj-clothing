@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import AuthNavigate from '../../../../screens/AuthNavigate'
+import { useIsFocused } from '@react-navigation/native'
 
 const MidLevel: React.FC = () => {
+  const isFocused = useIsFocused()
   return (
     <MidLevelWrapper>
-      <AuthNavigate>
+      <AuthNavigate focus={isFocused}>
         <MidLevelText>MidLevel</MidLevelText>
       </AuthNavigate>
     </MidLevelWrapper>

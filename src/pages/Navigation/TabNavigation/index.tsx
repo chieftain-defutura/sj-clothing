@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { useNavigation } from '@react-navigation/native'
 import { COLORS } from '../../../styles/theme'
-import HomeIcon from '../../../assets/icons/HomeIcon'
 import MidLevelIcon from '../../../assets/icons/MidLevelIcon'
 import PremiumIcon from '../../../assets/icons/PremiumIcon'
 import AccountIcon from '../../../assets/icons/AccountIcon'
@@ -11,11 +9,11 @@ import Post from './Post'
 import MidLevel from './MidLevel'
 import Premium from './Premium'
 import Account from './Account'
+import TabHomeIcon from '../../../assets/icons/TabHomeIcon'
 
 const Tab = createBottomTabNavigator()
 
 const TabNavigationRoutes: React.FC = () => {
-  useEffect(() => {}, [])
   return (
     <Tab.Navigator
       initialRouteName='Home'
@@ -28,10 +26,10 @@ const TabNavigationRoutes: React.FC = () => {
           tabBarIcon: ({ focused, color }) =>
             focused ? (
               <View style={{ backgroundColor: 'white', borderRadius: 50 }}>
-                <HomeIcon color={color} width={40} height={40} />
+                <TabHomeIcon color={color} width={40} height={40} />
               </View>
             ) : (
-              <HomeIcon color={color} width={40} height={40} />
+              <TabHomeIcon color={color} width={40} height={40} />
             ),
           headerShown: false,
         }}

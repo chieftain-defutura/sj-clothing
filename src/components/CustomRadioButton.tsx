@@ -1,41 +1,45 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
+import styled from 'styled-components/native'
 import { RadioButton } from 'react-native-paper'
 import HomeIcon from '../assets/icons/HomeIcon'
 import Briefcase from '../assets/icons/Briefcase'
+import { COLORS } from '../styles/theme'
 
 const CustomRadioButton = () => {
-  const [checked, setChecked] = useState('first') // Initialize the selected radio button
+  const [checked, setChecked] = useState('first')
 
   return (
     <View>
       <RadioButton.Group onValueChange={(newValue) => setChecked(newValue)} value={checked}>
-        <View style={styles.radioBtn}>
+        <RadioBtn>
           <View>
-            <RadioButton value='1' />
+            <RadioButton value='1' color={COLORS.textSecondaryClr} />
           </View>
           <View style={{ display: 'flex', flexDirection: 'column' }}>
             <View style={styles.RadioTitle}>
               <HomeIcon width={16} height={16} color={'black'} />
-              <Text style={styles.headerStyle}>Home</Text>
+              <HeaderStyle>Home</HeaderStyle>
             </View>
-            <Text style={{ width: 225 }}>Madras christian college chennai</Text>
+            <DescriptionText>Madras Christian College, East </DescriptionText>
+            <DescriptionText>Tambaram, Chennai - 600 059.</DescriptionText>
           </View>
           <View style={styles.editStyle}>
             <Text style={styles.editText}>Edit</Text>
           </View>
-        </View>
+        </RadioBtn>
 
         <View style={styles.radioBtn}>
           <View>
-            <RadioButton value='2' />
+            <RadioButton value='2' color={COLORS.textSecondaryClr} />
           </View>
           <View style={{ display: 'flex', flexDirection: 'column' }}>
             <View style={styles.RadioTitle}>
               <Briefcase width={16} height={16} color={'black'} />
-              <Text style={styles.headerStyle}>Home</Text>
+              <HeaderStyle>Home</HeaderStyle>
             </View>
-            <Text style={{ width: 225, color: 'gray' }}>Madras christian college chennai</Text>
+            <DescriptionText>Madras Christian College, East </DescriptionText>
+            <DescriptionText>Tambaram, Chennai - 600 059.</DescriptionText>
           </View>
           <View style={styles.editStyle}>
             <Text style={styles.editText}>Edit</Text>
@@ -46,29 +50,55 @@ const CustomRadioButton = () => {
   )
 }
 
+const HeaderStyle = styled.Text`
+  font-size: 14px;
+  font-family: Gilroy-Medium;
+  color: ${COLORS.iconsHighlightClr};
+`
+
+const DescriptionText = styled.Text`
+  color: ${COLORS.SecondaryTwo};
+  font-size: 12px;
+  font-family: Gilroy-Regular;
+  line-height: 18px;
+  width: 225px;
+`
+
+const RadioBtn = styled.View`
+  border-width: 1px;
+  border-color: ${COLORS.strokeClr};
+  border-radius: 10px;
+  padding-vertical: 12px;
+  padding-horizontal: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  margin-vertical: 8px;
+`
+
 export default CustomRadioButton
 
 const styles = StyleSheet.create({
-  headerStyle: {
-    fontWeight: '600',
-    paddingLeft: 8,
-  },
   radioBtn: {
     borderWidth: 1,
     borderColor: '#efcef5',
-    borderRadius: 20,
+    borderRadius: 10,
     paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    gap: 16,
+    gap: 8,
     marginVertical: 8,
   },
   RadioTitle: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
   },
   editStyle: {
     justifyContent: 'center',

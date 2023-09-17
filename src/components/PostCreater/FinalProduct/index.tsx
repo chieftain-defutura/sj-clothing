@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View, Share, FlatList, ScrollView } from 'react-native'
+import { Pressable, StyleSheet, Text, View, Share, ScrollView } from 'react-native'
 import React from 'react'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { COLORS } from '../../../styles/theme'

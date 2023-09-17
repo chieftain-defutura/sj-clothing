@@ -1,11 +1,14 @@
 import React from 'react'
 import styled from 'styled-components/native'
 import AuthNavigate from '../../../../screens/AuthNavigate'
+import { useIsFocused } from '@react-navigation/native'
 
 const Premium: React.FC = () => {
+  const isFocused = useIsFocused()
+
   return (
     <PremiumWrapper>
-      <AuthNavigate>
+      <AuthNavigate focus={isFocused}>
         <PremiumText>Premium</PremiumText>
       </AuthNavigate>
     </PremiumWrapper>

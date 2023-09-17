@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components/native'
 import { View, Pressable } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { COLORS } from '../../../styles/theme'
 import ChevronLeft from '../../../assets/icons/ChevronLeft'

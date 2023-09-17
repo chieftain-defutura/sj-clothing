@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View, Image, FlatList, ScrollView, Share } from 'react-native'
+import { Pressable, StyleSheet, Text, View, Image, ScrollView, Share } from 'react-native'
 import React from 'react'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { COLORS } from '../../../styles/theme'
@@ -57,7 +57,7 @@ const BuyNow: React.FC<IBuyNow> = ({ navigation }) => {
   return (
     <ScrollView style={styles.selectContainer}>
       <View style={styles.selectNavigator}>
-        <Pressable onPress={() => navigation.navigate('ProductAndCaption')}>
+        <Pressable onPress={() => navigation.goBack()}>
           <LeftArrow width={24} height={24} />
         </Pressable>
         <Pressable

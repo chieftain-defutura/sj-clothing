@@ -20,7 +20,7 @@ interface ISelectColor {
 }
 
 const SelectColor: React.FC<ISelectColor> = ({ navigation }) => {
-  const [isSelected, setSelected] = useState(false)
+  // const [isSelected, setSelected] = useState(false)
   const [isSelectedColor, setSelectedColor] = useState('white')
   const height = useSharedValue(0)
   const display = useSharedValue<'none' | 'flex'>('none')

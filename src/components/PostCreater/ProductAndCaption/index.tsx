@@ -1,30 +1,20 @@
 import * as Yup from 'yup'
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components/native'
 
-import {
-  StyleSheet,
-  View,
-  Image,
-  Pressable,
-  FlatList,
-  Dimensions,
-  TouchableOpacity,
-  ImageSourcePropType,
-  ScrollView,
-} from 'react-native'
+import { StyleSheet, View, Image, Pressable } from 'react-native'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
 import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 import { COLORS } from '../../../styles/theme'
 import { Formik } from 'formik'
 
-const Data = [
-  require('../../../assets/images/text-tshirt.png'),
-  require('../../../assets/images/plain-shirt.png'),
-  require('../../../assets/images/t-shirt.png'),
-  require('../../../assets/images/imaged-tshirt.png'),
-]
+// const Data = [
+//   require('../../../assets/images/text-tshirt.png'),
+//   require('../../../assets/images/plain-shirt.png'),
+//   require('../../../assets/images/t-shirt.png'),
+//   require('../../../assets/images/imaged-tshirt.png'),
+// ]
 
 interface IProductAndCaption {
   navigation: any

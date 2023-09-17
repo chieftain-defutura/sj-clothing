@@ -35,7 +35,7 @@ const data = [
   'New collection',
 ]
 
-const { width } = Dimensions.get('window')
+// const { width } = Dimensions.get('window')
 
 const Post: React.FC<IPost> = ({ navigation }) => {
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
@@ -131,10 +131,10 @@ const Post: React.FC<IPost> = ({ navigation }) => {
         </PostHead>
         <View>
           <Cards>
-            <PostCard />
-            <PostCard />
-            <PostCard />
-            <PostCard />
+            <PostCard onPress={() => navigation.navigate('Buynow')} />
+            <PostCard onPress={() => navigation.navigate('Buynow')} />
+            <PostCard onPress={() => navigation.navigate('Buynow')} />
+            <PostCard onPress={() => navigation.navigate('Buynow')} />
           </Cards>
         </View>
       </ScrollView>
@@ -174,11 +174,6 @@ const CategoryText = styled.Text`
   font-family: Gilroy-Medium;
   font-size: 12px;
   color: rgba(70, 45, 133, 0.4);
-`
-
-const PostWrapper = styled.ScrollView`
-  background-color: ${COLORS.backgroundClr};
-  padding: 16px;
 `
 
 const PostHead = styled.View`
