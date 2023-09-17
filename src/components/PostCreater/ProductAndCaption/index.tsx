@@ -1,4 +1,4 @@
-import * as Yup from 'yup'
+// import * as Yup from 'yup'
 import React from 'react'
 import styled from 'styled-components/native'
 
@@ -7,7 +7,7 @@ import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
 import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 import { COLORS } from '../../../styles/theme'
-import { Formik } from 'formik'
+// import { Formik } from 'formik'
 
 // const Data = [
 //   require('../../../assets/images/text-tshirt.png'),
@@ -20,10 +20,10 @@ interface IProductAndCaption {
   navigation: any
 }
 
-const ValidationSchema = Yup.object({
-  productname: Yup.string().required('Please enter your product name'),
-  caption: Yup.string().required('Please enter your caption'),
-})
+// const ValidationSchema = Yup.object({
+//   productname: Yup.string().required('Please enter your product name'),
+//   caption: Yup.string().required('Please enter your caption'),
+// })
 
 const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation }) => {
   return (
@@ -43,7 +43,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation }) => {
         <ThreeSixtyDegree width={40} height={40} />
       </View>
 
-      <Formik
+      {/* <Formik
         initialValues={{
           productname: '',
           caption: '',
@@ -79,7 +79,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation }) => {
             </View>
           </SignUpContainer>
         )}
-      </Formik>
+      </Formik> */}
     </View>
   )
 }
