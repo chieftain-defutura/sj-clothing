@@ -1,5 +1,5 @@
 {
-  "name": "react-native-expo-project",
+  "name": "Sprinkle-Clothing",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -11,6 +11,7 @@
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",
     "@react-native-async-storage/async-storage": "^1.19.3",
+    "@react-native-firebase/app": "^18.4.0",
     "@react-native-firebase/auth": "^18.4.0",
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/material-bottom-tabs": "^6.2.16",
