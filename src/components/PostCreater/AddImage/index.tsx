@@ -11,6 +11,8 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated'
+import SelectDesign from './SelectDesign'
+import { PostCreationStore } from '../../../store/postCreationStore'
 
 const Images = [
   {
@@ -40,6 +42,10 @@ const AddImage: React.FC<IAddImage> = ({ navigation, setPostCreationSteps }) => 
   const height = useSharedValue(0)
   const [isSelect, setSelect] = useState('Front')
   const [isAddImage, setAddImage] = useState(false)
+  const [isImageAdded, setImageAdded] = useState(false)
+  const [isNftImage, setNftImage] = useState(0)
+  const [isStyleName, setStyleName] = useState('Bluebee')
+  const { setPostCreation } = PostCreationStore()
   const display = useSharedValue<'none' | 'flex'>('none')
   const animatedStyle = useAnimatedStyle(() => ({
     height: height.value,
@@ -58,170 +64,192 @@ const AddImage: React.FC<IAddImage> = ({ navigation, setPostCreationSteps }) => 
   }
 
   return (
-    <View style={styles.AddImageContainer}>
-      <View style={styles.AddImageNavigator}>
-        <Pressable onPress={() => setPostCreationSteps(1)}>
-          <ArrowCircleLeft width={24} height={24} />
-        </Pressable>
-        <Pressable onPress={animate} style={styles.AddImageDropdown}>
-          <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Add Image</Text>
-        </Pressable>
-        <Pressable onPress={() => setPostCreationSteps(3)}>
-          <ArrowCircleRight width={24} height={24} />
-        </Pressable>
-      </View>
-      <Animated.View
-        style={[
-          {
-            position: 'absolute',
-            width: '100%',
-            backgroundColor: COLORS.iconsNormalClr,
-            borderBottomRightRadius: 50,
-            borderBottomLeftRadius: 50,
-            zIndex: 10,
-          },
-          animatedStyle,
-        ]}
-      >
-        <View
-          style={{
-            backgroundColor: COLORS.iconsNormalClr,
-            borderBottomRightRadius: 50,
-            borderBottomLeftRadius: 50,
-            paddingHorizontal: 15,
-          }}
-        >
-          <Text
-            style={{
-              textAlign: 'center',
-              borderBottomColor: COLORS.borderClr,
-              borderBottomWidth: 2,
-              paddingVertical: 20,
-              color: COLORS.textClr,
-              fontSize: 14,
-              fontFamily: 'Gilroy-Medium',
-            }}
+    <View style={{ flex: 1 }}>
+      {isImageAdded ? (
+        <SelectDesign
+          navigation={navigation}
+          setImageAdded={setImageAdded}
+          setPostCreationSteps={setPostCreationSteps}
+          isNftImage={isNftImage}
+          isStyleName={isStyleName}
+          isSelect={isSelect}
+          setNftImage={setNftImage}
+          setStyleName={setStyleName}
+        />
+      ) : (
+        <View style={styles.AddImageContainer}>
+          <View style={styles.AddImageNavigator}>
+            <Pressable onPress={() => setPostCreationSteps(1)}>
+              <ArrowCircleLeft width={24} height={24} />
+            </Pressable>
+            <Pressable onPress={animate} style={styles.AddImageDropdown}>
+              <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Add Image</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                setPostCreationSteps(3),
+                  setPostCreation({
+                    image: { title: isSelect, design: { image: 0, name: isStyleName } },
+                  })
+              }}
+            >
+              <ArrowCircleRight width={24} height={24} />
+            </Pressable>
+          </View>
+          <Animated.View
+            style={[
+              {
+                position: 'absolute',
+                width: '100%',
+                backgroundColor: COLORS.iconsNormalClr,
+                borderBottomRightRadius: 50,
+                borderBottomLeftRadius: 50,
+                zIndex: 10,
+              },
+              animatedStyle,
+            ]}
           >
-            Select area to add image
-          </Text>
+            <View
+              style={{
+                backgroundColor: COLORS.iconsNormalClr,
+                borderBottomRightRadius: 50,
+                borderBottomLeftRadius: 50,
+                paddingHorizontal: 15,
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  borderBottomColor: COLORS.borderClr,
+                  borderBottomWidth: 2,
+                  paddingVertical: 20,
+                  color: COLORS.textClr,
+                  fontSize: 14,
+                  fontFamily: 'Gilroy-Medium',
+                }}
+              >
+                Select area to add image
+              </Text>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingVertical: 20,
+                  paddingHorizontal: 1,
+                  gap: 10,
+                }}
+              >
+                {Images.slice(0, 2).map((data, index) => (
+                  <Pressable
+                    onPress={() => {
+                      setSelect(data.title), setAddImage(false), setImageAdded(true)
+                    }}
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 4,
+                    }}
+                  >
+                    <View
+                      style={{
+                        backgroundColor: COLORS.BoxBackgoundClr,
+                        padding: 16,
+                        borderRadius: 10,
+                        borderColor: isSelect === data.title ? COLORS.textSecondaryClr : '',
+                        borderWidth: isSelect === data.title ? 1 : 0,
+                      }}
+                    >
+                      <Image
+                        style={{ width: 50, height: 72, objectFit: 'contain' }}
+                        source={data.image}
+                      />
+                    </View>
+
+                    <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                      {data.title}
+                    </Text>
+                  </Pressable>
+                ))}
+                {Images.slice(2, 4).map((data, index) => (
+                  <Pressable
+                    onPress={() => {
+                      setSelect(data.title), setAddImage(false), setImageAdded(true)
+                    }}
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 4,
+                    }}
+                  >
+                    <View
+                      style={{
+                        backgroundColor: COLORS.BoxBackgoundClr,
+                        padding: 16,
+                        borderRadius: 10,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexDirection: 'row',
+                        width: 80,
+                        borderColor: isSelect === data.title ? COLORS.textSecondaryClr : '',
+                        borderWidth: isSelect === data.title ? 1 : 0,
+                      }}
+                    >
+                      <Image
+                        style={{ width: 25, height: 72, objectFit: 'contain' }}
+                        source={data.image}
+                      />
+                    </View>
+
+                    <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                      {data.title}
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
+            </View>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                paddingVertical: 10,
+              }}
+            >
+              <Pressable
+                onPress={animate}
+                style={{
+                  backgroundColor: COLORS.iconsNormalClr,
+                  width: 42,
+                  height: 42,
+                  borderRadius: 50,
+                  padding: 10,
+                }}
+              >
+                <CloseIcon />
+              </Pressable>
+            </View>
+          </Animated.View>
+
           <View
             style={{
+              marginTop: !isAddImage ? 64 : 254,
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingVertical: 20,
-              paddingHorizontal: 1,
-              gap: 10,
+              justifyContent: 'center',
             }}
           >
-            {Images.slice(0, 2).map((data, index) => (
-              <Pressable
-                onPress={() => {
-                  setSelect(data.title), setAddImage(false), navigation.navigate('AddedImage')
-                }}
-                key={index}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: 4,
-                }}
-              >
-                <View
-                  style={{
-                    backgroundColor: COLORS.BoxBackgoundClr,
-                    padding: 16,
-                    borderRadius: 10,
-                    borderColor: isSelect === data.title ? COLORS.textSecondaryClr : '',
-                    borderWidth: isSelect === data.title ? 1 : 0,
-                  }}
-                >
-                  <Image
-                    style={{ width: 50, height: 72, objectFit: 'contain' }}
-                    source={data.image}
-                  />
-                </View>
-
-                <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                  {data.title}
-                </Text>
-              </Pressable>
-            ))}
-            {Images.slice(2, 4).map((data, index) => (
-              <Pressable
-                onPress={() => {
-                  setSelect(data.title), setAddImage(false), navigation.navigate('AddedImage')
-                }}
-                key={index}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: 4,
-                }}
-              >
-                <View
-                  style={{
-                    backgroundColor: COLORS.BoxBackgoundClr,
-                    padding: 16,
-                    borderRadius: 10,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    width: 80,
-                    borderColor: isSelect === data.title ? COLORS.textSecondaryClr : '',
-                    borderWidth: isSelect === data.title ? 1 : 0,
-                  }}
-                >
-                  <Image
-                    style={{ width: 25, height: 72, objectFit: 'contain' }}
-                    source={data.image}
-                  />
-                </View>
-
-                <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                  {data.title}
-                </Text>
-              </Pressable>
-            ))}
+            <Image source={require('../../../assets/images/plain-shirt.png')} />
+          </View>
+          <View style={styles.AddImage360Degree}>
+            <ThreeSixtyDegree width={40} height={40} />
           </View>
         </View>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            paddingVertical: 10,
-          }}
-        >
-          <Pressable
-            onPress={animate}
-            style={{
-              backgroundColor: COLORS.iconsNormalClr,
-              width: 42,
-              height: 42,
-              borderRadius: 50,
-              padding: 10,
-            }}
-          >
-            <CloseIcon />
-          </Pressable>
-        </View>
-      </Animated.View>
-
-      <View
-        style={{
-          marginTop: !isAddImage ? 64 : 254,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}
-      >
-        <Image source={require('../../../assets/images/plain-shirt.png')} />
-      </View>
-      <View style={styles.AddImage360Degree}>
-        <ThreeSixtyDegree width={40} height={40} />
-      </View>
+      )}
     </View>
   )
 }

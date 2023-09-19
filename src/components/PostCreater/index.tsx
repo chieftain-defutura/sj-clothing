@@ -14,6 +14,7 @@ interface IPostCreation {
 }
 const PostCreation: React.FC<IPostCreation> = ({ navigation }) => {
   const [isPostCreationSteps, setPostCreationSteps] = useState(0)
+  console.log(isPostCreationSteps)
   return (
     <PostCreationContainer style={{ flex: 1 }}>
       {isPostCreationSteps === 0 && (
@@ -29,10 +30,10 @@ const PostCreation: React.FC<IPostCreation> = ({ navigation }) => {
         <AddText navigation={navigation} setPostCreationSteps={setPostCreationSteps} />
       )}
       {isPostCreationSteps === 4 && (
-        <FinalProduct navigation={navigation} setPostCreationSteps={setPostCreationSteps} />
+        <ProductAndCaption navigation={navigation} setPostCreationSteps={setPostCreationSteps} />
       )}
       {isPostCreationSteps === 5 && (
-        <ProductAndCaption navigation={navigation} setPostCreationSteps={setPostCreationSteps} />
+        <FinalProduct navigation={navigation} setPostCreationSteps={setPostCreationSteps} />
       )}
     </PostCreationContainer>
   )

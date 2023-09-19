@@ -2,9 +2,17 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import LeftArrow from '../../../assets/icons/LeftArrow'
+import { PostCreationStore } from '../../../store/postCreationStore'
 
 interface ISelectText {
   navigation: any
+  isFont: string
+  isTextColor: string
+  isSelect: string
+  setTextAdded: React.Dispatch<React.SetStateAction<boolean>>
+  setFont: React.Dispatch<React.SetStateAction<string>>
+  setTextColor: React.Dispatch<React.SetStateAction<string>>
+  setPostCreationSteps: React.Dispatch<React.SetStateAction<number>>
 }
 
 const Data = [
@@ -13,9 +21,17 @@ const Data = [
   { content: 'Cc', fontFamily: 'Montserrat-Regular' },
   { content: 'Dd', fontFamily: 'Arvo-Regular' },
 ]
-const SelectText: React.FC<ISelectText> = ({ navigation }) => {
-  const [isFont, setFont] = useState('Aa')
-
+const SelectText: React.FC<ISelectText> = ({
+  navigation,
+  setTextAdded,
+  isFont,
+  isTextColor,
+  isSelect,
+  setFont,
+  setTextColor,
+  setPostCreationSteps,
+}) => {
+  const { setPostCreation } = PostCreationStore()
   return (
     <View style={{ flex: 1, backgroundColor: '#FFEFFF' }}>
       <View
@@ -27,10 +43,17 @@ const SelectText: React.FC<ISelectText> = ({ navigation }) => {
           paddingHorizontal: 16,
         }}
       >
-        <Pressable onPress={() => navigation.navigate('AddText')}>
+        <Pressable onPress={() => setTextAdded(false)}>
           <LeftArrow width={24} height={24} />
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('ProductAndCaption')}>
+        <Pressable
+          onPress={() => {
+            setPostCreationSteps(4),
+              setPostCreation({
+                text: { title: isSelect, design: { color: isTextColor, font: isFont } },
+              })
+          }}
+        >
           <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Done</Text>
         </Pressable>
       </View>

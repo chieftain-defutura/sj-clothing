@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, FlatList, Image, Pressable } from 'react-native
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
 import LeftArrow from '../../../assets/icons/LeftArrow'
+import { PostCreationStore } from '../../../store/postCreationStore'
 
 const MostSearchData = ['Bluebee', 'Round neck', 'Gold', 'Sleeve', 'V-neck', 'Polo']
 const NftImage = [
@@ -15,12 +16,27 @@ const NftImage = [
 ]
 interface ISelectDesign {
   navigation: any
+  isStyleName: string
+  isNftImage: number
+  isSelect: string
+  setImageAdded: React.Dispatch<React.SetStateAction<boolean>>
+  setPostCreationSteps: React.Dispatch<React.SetStateAction<number>>
+  setStyleName: React.Dispatch<React.SetStateAction<string>>
+  setNftImage: React.Dispatch<React.SetStateAction<number>>
 }
-const SelectDesign: React.FC<ISelectDesign> = ({ navigation }) => {
+const SelectDesign: React.FC<ISelectDesign> = ({
+  navigation,
+  isNftImage,
+  isStyleName,
+  isSelect,
+  setImageAdded,
+  setPostCreationSteps,
+  setNftImage,
+  setStyleName,
+}) => {
   const [isOpen, setOpen] = useState(false)
-  const [isNftImage, setNftImage] = useState(0)
-  const [isStyleName, setStyleName] = useState('Bluebee')
-
+  const { setPostCreation, postcreation } = PostCreationStore()
+  console.log(postcreation)
   return (
     <View style={{ flex: 1, backgroundColor: '#FFEFFF' }}>
       <View
@@ -37,12 +53,19 @@ const SelectDesign: React.FC<ISelectDesign> = ({ navigation }) => {
             <Pressable onPress={() => setOpen(false)}>
               <LeftArrow width={24} height={24} />
             </Pressable>
-            <Pressable onPress={() => navigation.navigate('AddText')}>
+            <Pressable
+              onPress={() => {
+                setPostCreationSteps(3),
+                  setPostCreation({
+                    image: { title: isSelect, design: { image: 0, name: isStyleName } },
+                  })
+              }}
+            >
               <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>Done</Text>
             </Pressable>
           </>
         ) : (
-          <Pressable onPress={() => navigation.navigate('AddImage')}>
+          <Pressable onPress={() => setImageAdded(false)}>
             <LeftArrow width={24} height={24} />
           </Pressable>
         )}
@@ -137,7 +160,9 @@ const SelectDesign: React.FC<ISelectDesign> = ({ navigation }) => {
             horizontal
             renderItem={(item) => (
               <Pressable
-                onPress={() => setOpen(true)}
+                onPress={() => {
+                  setOpen(true), setNftImage(item.index)
+                }}
                 style={{
                   backgroundColor: COLORS.cardClr,
                   padding: 5,

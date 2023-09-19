@@ -10,6 +10,17 @@ interface IPostCreationData {
     color?: string | null
     image?: {
       title: string | null
+      design: {
+        name: string | null
+        image: any
+      }
+    }
+    text?: {
+      title: string | null
+      design: {
+        font: string | null
+        color: any
+      }
     }
   }
   setPostCreation: (newPostCreation: Partial<IPostCreationData['postcreation']>) => void
@@ -23,6 +34,20 @@ export const PostCreationStore = create<IPostCreationData>((set) => ({
       type: null,
     },
     color: null,
+    image: {
+      title: null,
+      design: {
+        name: null,
+        image: null,
+      },
+    },
+    text: {
+      title: null,
+      design: {
+        font: null,
+        color: null,
+      },
+    },
   },
   setPostCreation: (newPostCreation) => set({ postcreation: { ...newPostCreation } }),
 }))

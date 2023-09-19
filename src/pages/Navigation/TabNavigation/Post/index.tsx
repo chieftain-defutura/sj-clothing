@@ -138,16 +138,18 @@ const Post: React.FC<IPost> = ({ navigation }) => {
           </Cards>
         </View>
       </ScrollView>
-      <LinearGradient
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        colors={['#462D85', '#DB00FF']}
-        style={styles.gradientColor}
-      >
-        <Pressable onPress={openSubscriptionModal}>
-          <PlusIcon width={24} height={24} />
-        </Pressable>
-      </LinearGradient>
+      <Pressable onPress={openSubscriptionModal}>
+        <LinearGradient
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          colors={['#462D85', '#DB00FF']}
+          style={styles.gradientColor}
+        >
+          <View>
+            <PlusIcon width={24} height={24} />
+          </View>
+        </LinearGradient>
+      </Pressable>
       <SubscriptionModal
         navigation={navigation}
         isVisible={isSubscriptionModal}
