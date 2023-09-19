@@ -35,8 +35,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
   setStyleName,
 }) => {
   const [isOpen, setOpen] = useState(false)
-  const { setPostCreation, postcreation } = PostCreationStore()
-  console.log(postcreation)
+  const { setImage } = PostCreationStore()
   return (
     <View style={{ flex: 1, backgroundColor: '#FFEFFF' }}>
       <View
@@ -56,9 +55,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
             <Pressable
               onPress={() => {
                 setPostCreationSteps(3),
-                  setPostCreation({
-                    image: { title: isSelect, design: { image: 0, name: isStyleName } },
-                  })
+                  setImage({ title: isSelect, design: { image: 0, name: isStyleName } })
               }}
             >
               <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>Done</Text>

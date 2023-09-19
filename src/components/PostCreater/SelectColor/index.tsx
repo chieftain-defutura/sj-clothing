@@ -26,7 +26,7 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation, setPostCreationSteps 
   const [isSelectedColor, setSelectedColor] = useState('white')
   const height = useSharedValue(0)
   const display = useSharedValue<'none' | 'flex'>('none')
-  const { postcreation, setPostCreation } = PostCreationStore()
+  const { setColor } = PostCreationStore()
   const animatedStyle = useAnimatedStyle(() => ({
     height: height.value,
     display: display.value,
@@ -43,7 +43,6 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation, setPostCreationSteps 
     }
   }
 
-  console.log(postcreation)
   return (
     <View style={styles.selectColorContainer}>
       <View style={styles.selectColorNavigator}>
@@ -56,7 +55,7 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation, setPostCreationSteps 
         </Pressable>
         <Pressable
           onPress={() => {
-            setPostCreationSteps(2), setPostCreation({ color: isSelectedColor })
+            setPostCreationSteps(2), setColor(isSelectedColor)
           }}
         >
           <ArrowCircleRight width={24} height={24} />

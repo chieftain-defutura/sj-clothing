@@ -45,7 +45,7 @@ const AddImage: React.FC<IAddImage> = ({ navigation, setPostCreationSteps }) => 
   const [isImageAdded, setImageAdded] = useState(false)
   const [isNftImage, setNftImage] = useState(0)
   const [isStyleName, setStyleName] = useState('Bluebee')
-  const { setPostCreation } = PostCreationStore()
+  const { setImage } = PostCreationStore()
   const display = useSharedValue<'none' | 'flex'>('none')
   const animatedStyle = useAnimatedStyle(() => ({
     height: height.value,
@@ -88,8 +88,9 @@ const AddImage: React.FC<IAddImage> = ({ navigation, setPostCreationSteps }) => 
             <Pressable
               onPress={() => {
                 setPostCreationSteps(3),
-                  setPostCreation({
-                    image: { title: isSelect, design: { image: 0, name: isStyleName } },
+                  setImage({
+                    title: isSelect,
+                    design: { image: '/assets/images/left-arm-design.png', name: isStyleName },
                   })
               }}
             >

@@ -9,9 +9,12 @@ interface ISelectText {
   isFont: string
   isTextColor: string
   isSelect: string
+  fontFamily: string
   setTextAdded: React.Dispatch<React.SetStateAction<boolean>>
   setFont: React.Dispatch<React.SetStateAction<string>>
   setTextColor: React.Dispatch<React.SetStateAction<string>>
+  setFontFamily: React.Dispatch<React.SetStateAction<string>>
+
   setPostCreationSteps: React.Dispatch<React.SetStateAction<number>>
 }
 
@@ -27,11 +30,14 @@ const SelectText: React.FC<ISelectText> = ({
   isFont,
   isTextColor,
   isSelect,
+  fontFamily,
   setFont,
   setTextColor,
+  setFontFamily,
+
   setPostCreationSteps,
 }) => {
-  const { setPostCreation } = PostCreationStore()
+  const { setText } = PostCreationStore()
   return (
     <View style={{ flex: 1, backgroundColor: '#FFEFFF' }}>
       <View
@@ -49,8 +55,9 @@ const SelectText: React.FC<ISelectText> = ({
         <Pressable
           onPress={() => {
             setPostCreationSteps(4),
-              setPostCreation({
-                text: { title: isSelect, design: { color: isTextColor, font: isFont } },
+              setText({
+                title: isSelect,
+                design: { color: isTextColor, font: fontFamily },
               })
           }}
         >
@@ -77,7 +84,9 @@ const SelectText: React.FC<ISelectText> = ({
         {Data.map((font, index) => (
           <Pressable
             key={index}
-            onPress={() => setFont(font.content)}
+            onPress={() => {
+              setFont(font.content), setFontFamily(font.fontFamily)
+            }}
             style={{
               borderRadius: 50,
               padding: 20,

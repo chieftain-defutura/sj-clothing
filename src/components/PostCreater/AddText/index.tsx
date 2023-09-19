@@ -36,6 +36,8 @@ const AddText: React.FC<IAddText> = ({ navigation, setPostCreationSteps }) => {
   const [isAddText, setAddText] = useState(false)
   const [isTextAdded, setTextAdded] = useState(false)
   const [isFont, setFont] = useState('Aa')
+  const [isFontFamily, setFontFamily] = useState('Arvo-Regular')
+
   const [isTextColor, setTextColor] = useState('red')
   const [isSelect, setSelect] = useState('Front')
   return (
@@ -199,6 +201,8 @@ const AddText: React.FC<IAddText> = ({ navigation, setPostCreationSteps }) => {
           setFont={setFont}
           isFont={isFont}
           isSelect={isSelect}
+          fontFamily={isFontFamily}
+          setFontFamily={setFontFamily}
           setPostCreationSteps={setPostCreationSteps}
         />
       )}

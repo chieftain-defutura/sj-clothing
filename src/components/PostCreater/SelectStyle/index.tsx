@@ -78,7 +78,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation, setPostCreationSteps 
   const height = useSharedValue(0)
   const display = useSharedValue<'none' | 'flex'>('none')
   const [isSelectedStyle, setSelectedStyle] = useState('Half sleeve')
-  const { setPostCreation, postcreation } = PostCreationStore()
+  const { setStyle } = PostCreationStore()
   const animatedStyle = useAnimatedStyle(() => ({
     height: height.value,
     display: display.value,
@@ -86,7 +86,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation, setPostCreationSteps 
   const animate = () => {
     if (height.value === 0) {
       display.value = 'flex' as 'none' | 'flex'
-      height.value = withSpring(95)
+      height.value = withSpring(105)
     } else {
       height.value = withTiming(0, { duration: 300 })
       setTimeout(() => {
@@ -94,7 +94,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation, setPostCreationSteps 
       }, 250)
     }
   }
-  console.log(postcreation)
 
   return (
     <View style={styles.selectStyleContainer}>
@@ -108,8 +107,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation, setPostCreationSteps 
         </Pressable>
         <Pressable
           onPress={() => {
-            setPostCreationSteps(1),
-              setPostCreation({ style: { title: isType, type: isSelectedStyle } })
+            setPostCreationSteps(1), setStyle({ title: isType, type: isSelectedStyle })
           }}
         >
           <ArrowCircleRight width={24} height={24} />
@@ -125,6 +123,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation, setPostCreationSteps 
             borderBottomRightRadius: 50,
             borderBottomLeftRadius: 50,
             zIndex: 10,
+            paddingVertical: 5,
           },
           animatedStyle,
         ]}
@@ -145,7 +144,8 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation, setPostCreationSteps 
               gap: 24,
               borderBottomColor: COLORS.borderClr,
               borderBottomWidth: 1,
-              paddingBottom: 20,
+              paddingBottom: 25,
+              paddingTop: 15,
             }}
           >
             <Pressable onPress={() => setType('shirt')}>

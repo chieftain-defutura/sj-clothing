@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import styled from 'styled-components/native'
-import { StyleSheet, View, Image, Pressable } from 'react-native'
+import { StyleSheet, View, Image, Pressable, ScrollView } from 'react-native'
 
 import { COLORS } from '../../../styles/theme'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
 import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
+import { PostCreationStore } from '../../../store/postCreationStore'
 
 // const Data = [
 //   require('../../../assets/images/text-tshirt.png'),
@@ -27,13 +28,21 @@ const ValidationSchema = Yup.object({
 })
 
 const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation, setPostCreationSteps }) => {
+  const { setproductandcaption } = PostCreationStore()
+  const [isCaption, setCaption] = useState('')
+  const [isProduct, setProduct] = useState('')
   return (
-    <View style={styles.ProductAndCaptionContainer}>
+    <ScrollView style={styles.ProductAndCaptionContainer}>
       <View style={styles.ProductAndCaptionNavigator}>
-        <Pressable onPress={() => setPostCreationSteps(4)}>
+        <Pressable onPress={() => setPostCreationSteps(3)}>
           <ArrowCircleLeft width={24} height={24} />
         </Pressable>
-        <Pressable onPress={() => setPostCreationSteps(5)}>
+        <Pressable
+          onPress={() => {
+            setPostCreationSteps(5),
+              setproductandcaption({ caption: isCaption, product: isProduct })
+          }}
+        >
           <ArrowCircleRight width={24} height={24} />
         </Pressable>
       </View>
@@ -44,13 +53,15 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation, setPostCr
         <ThreeSixtyDegree width={40} height={40} />
       </View>
 
-      <Formik
+      {/* <Formik
         initialValues={{
           productname: '',
           caption: '',
         }}
         validationSchema={ValidationSchema}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => {
+          setCaption(values.caption), setProduct(values.productname)
+        }}
       >
         {({ values, errors, touched, handleChange, isValid, handleSubmit, handleBlur }) => (
           <SignUpContainer>
@@ -80,8 +91,27 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation, setPostCr
             </View>
           </SignUpContainer>
         )}
-      </Formik>
-    </View>
+      </Formik> */}
+
+      <SignUpContainer>
+        <View>
+          <LabelText>Product name</LabelText>
+          <InputStyle
+            placeholder='Product Name'
+            onChangeText={(text) => setProduct(text)}
+            placeholderTextColor={COLORS.SecondaryTwo}
+          />
+        </View>
+        <View>
+          <LabelText>Caption</LabelText>
+          <InputStyle
+            placeholder='Caption'
+            onChangeText={(text) => setCaption(text)}
+            placeholderTextColor={COLORS.SecondaryTwo}
+          />
+        </View>
+      </SignUpContainer>
+    </ScrollView>
   )
 }
 
@@ -97,7 +127,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 50,
+    paddingTop: 16,
+    paddingBottom: 50,
     paddingHorizontal: 16,
   },
   ProductAndCaptionDropdown: {
