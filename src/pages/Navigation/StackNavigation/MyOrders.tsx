@@ -30,6 +30,30 @@ const data = [
     statusName: 'Shipping',
     date: 'on 23 Jul, 2023',
   },
+  {
+    image: require('../../../assets/images/t-shirt-two.png'),
+    product: 'Product',
+    productName: 'Formal plain shirt',
+    status: 'Status',
+    statusName: 'Delivered',
+    date: 'on 23 Jul, 2023',
+  },
+  {
+    image: require('../../../assets/images/t-shirt.png'),
+    product: 'Product',
+    productName: 'purple ape t-shirt',
+    status: 'Status',
+    statusName: 'Shipping',
+    date: 'on 23 Jul, 2023',
+  },
+  {
+    image: require('../../../assets/images/t-shirt-two.png'),
+    product: 'Product',
+    productName: 'Formal plain shirt',
+    status: 'Status',
+    statusName: 'Delivered',
+    date: 'on 23 Jul, 2023',
+  },
 ]
 
 interface IMyOrders {

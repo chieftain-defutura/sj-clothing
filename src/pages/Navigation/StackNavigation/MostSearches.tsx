@@ -29,11 +29,13 @@ const MostSearches: React.FC = () => {
     'Sleeveless designs',
     'Tending styles',
     'Premium shirts',
+    'Half hand t-shirts designs',
+    'Sleeveless designs',
   ]
 
   return (
-    <SearchesWrapper>
-      <ScrollView>
+    <ScrollViewContainer>
+      <SearchesWrapper>
         <SearchBar
           placeholder='Search'
           leftIcon={<SearchGrayIcon width={20} height={20} />}
@@ -62,15 +64,18 @@ const MostSearches: React.FC = () => {
             </View>
           )
         })}
-      </ScrollView>
-    </SearchesWrapper>
+      </SearchesWrapper>
+    </ScrollViewContainer>
   )
 }
 
 const SearchesWrapper = styled.View`
+  padding: 24px;
+`
+
+const ScrollViewContainer = styled.ScrollView`
   background: ${COLORS.backgroundClr};
   height: 100%;
-  padding: 24px;
 `
 
 const MostSearchesHead = styled.Text`

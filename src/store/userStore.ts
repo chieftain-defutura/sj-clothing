@@ -14,7 +14,7 @@ type State = {
 
 type Action = {
   updateFetching: (fetching: boolean) => void
-  updateUser: (user: User) => void
+  updateUser: (user: User | null) => void
   updateUserData: (user: IUserData) => void
 }
 
