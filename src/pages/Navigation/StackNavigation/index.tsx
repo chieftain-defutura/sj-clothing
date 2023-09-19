@@ -5,7 +5,7 @@ import Checkout from './Checkout'
 import MyOrders from './MyOrders'
 import TrackOrder from './TrackOrder'
 import MostSearches from './MostSearches'
-import Header from '../../../components/Header'
+import { HeaderLeft, HeaderRight } from '../../../components/Header'
 import LoginModal from '../../../screens/Login'
 import SignupModal from '../../../screens/Signup'
 import TabNavigationRoutes from '../TabNavigation'
@@ -13,7 +13,7 @@ import AddText from '../../../components/PostCreater/AddText'
 import AddImage from '../../../components/PostCreater/AddImage'
 import SelectStyle from '../../../components/PostCreater/SelectStyle'
 import SelectColor from '../../../components/PostCreater/SelectColor'
-import SelectText from '../../../components/PostCreater/AddText/SelectText'
+// import SelectText from '../../../components/PostCreater/AddText/SelectText'
 import SelectDesign from '../../../components/PostCreater/AddImage/SelectDesign'
 import ProductAndCaption from '../../../components/PostCreater/ProductAndCaption'
 import FinalProduct from '../../../components/PostCreater/FinalProduct'
@@ -29,119 +29,33 @@ const Stack = createNativeStackNavigator()
 
 const StackNavigationRoutes: React.FC = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name='Stack'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={TabNavigationRoutes}
-      />
-      <Stack.Screen
-        name='AddressBook'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={AddressBook}
-      />
-      <Stack.Screen
-        name='Buynow'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={BuyNow}
-      />
-      <Stack.Screen
-        name='Cart'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={CartPage}
-      />
-      <Stack.Screen
-        name='Checkout'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={Checkout}
-      />
-      <Stack.Screen
-        name='MyOrders'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={MyOrders}
-      />
-      <Stack.Screen
-        name='TrackOrder'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={TrackOrder}
-      />
-      <Stack.Screen
-        name='GiftOptions'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={GiftOptions}
-      />
-      <Stack.Screen
-        name='Notification'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={NotificationPage}
-      />
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: '#fff' },
+        headerLeft: HeaderLeft,
+        headerRight: HeaderRight,
+        headerTitle: '',
+      }}
+    >
+      <Stack.Screen name='Stack' component={TabNavigationRoutes} />
+      <Stack.Screen name='AddressBook' component={AddressBook} />
+      <Stack.Screen name='Buynow' component={BuyNow} />
+      <Stack.Screen name='PostCreation' component={PostCreation} />
+      <Stack.Screen name='Cart' component={CartPage} />
+      <Stack.Screen name='Checkout' component={Checkout} />
+      <Stack.Screen name='MyOrders' component={MyOrders} />
+      <Stack.Screen name='TrackOrder' component={TrackOrder} />
+      <Stack.Screen name='GiftOptions' component={GiftOptions} />
+      <Stack.Screen name='Notification' component={NotificationPage} />
+
       <Stack.Screen name='Login' options={{ headerShown: false }} component={LoginModal} />
       <Stack.Screen name='Signup' options={{ headerShown: false }} component={SignupModal} />
       <Stack.Screen name='Forgot' options={{ headerShown: false }} component={ForgotModal} />
       <Stack.Screen name='OrderPlaced' options={{ headerShown: false }} component={OrderPlaced} />
 
-      <Stack.Screen
-        name='PostCreation'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={PostCreation}
-      />
+      <Stack.Screen name='AddedImage' component={SelectDesign} />
 
-      <Stack.Screen
-        name='AddedImage'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={SelectDesign}
-      />
-
-      <Stack.Screen
-        name='AddedText'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={SelectText}
-      />
-
-      <Stack.Screen
-        name='Search'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={MostSearches}
-      />
+      <Stack.Screen name='Search' component={MostSearches} />
     </Stack.Navigator>
   )
 }
