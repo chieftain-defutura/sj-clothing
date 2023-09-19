@@ -56,7 +56,7 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation }) => {
                   <GiftMessageText>Gift message</GiftMessageText>
                   <TextArea
                     multiline={true}
-                    numberOfLines={4}
+                    numberOfLines={2}
                     value={values.yourGift}
                     onChangeText={handleChange('yourGift')}
                     onBlur={handleBlur('yourGift')}
@@ -86,7 +86,7 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation }) => {
                   disabled={!isValid}
                   fontFamily='Arvo-Regular'
                   fontSize={16}
-                  style={{ marginTop: 50 }}
+                  style={{ marginTop: 24 }}
                 />
               </GiftMessageWrapper>
             )}
@@ -110,6 +110,7 @@ const GiftContent = styled.View`
 const GiftMessageWrapper = styled.View`
   background: ${COLORS.backgroundClr};
   padding: 16px;
+  flex: 1;
 `
 
 const InputStyleContent = styled.View`
@@ -120,7 +121,8 @@ const InputStyle = styled.TextInput`
   border-color: ${COLORS.strokeClr};
   border-width: 1px;
   border-radius: 5px;
-  padding-vertical: 8px;
+  padding-vertical: 12px;
+  padding-horizontal: 16px;
   padding-left: 14px;
   font-family: Gilroy-Medium;
 `
@@ -136,6 +138,7 @@ const TextArea = styled.TextInput`
   border-radius: 5px;
   margin-top: 8px;
   padding-horizontal: 16px;
+  padding-vertical: 12px;
 `
 
 const GiftMessageText = styled.Text`

@@ -75,6 +75,7 @@ const NotificationPage: React.FC = () => {
 const ScrollViewContent = styled.ScrollView`
   background: ${COLORS.backgroundClr};
   height: 100%;
+  flex: 1;
   padding-horizontal: 16px;
 `
 
