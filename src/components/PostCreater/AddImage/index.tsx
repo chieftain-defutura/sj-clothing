@@ -33,9 +33,10 @@ const Images = [
 
 interface IAddImage {
   navigation: any
+  setPostCreationSteps: React.Dispatch<React.SetStateAction<number>>
 }
 
-const AddImage: React.FC<IAddImage> = ({ navigation }) => {
+const AddImage: React.FC<IAddImage> = ({ navigation, setPostCreationSteps }) => {
   const height = useSharedValue(0)
   const [isSelect, setSelect] = useState('Front')
   const [isAddImage, setAddImage] = useState(false)
@@ -59,13 +60,13 @@ const AddImage: React.FC<IAddImage> = ({ navigation }) => {
   return (
     <View style={styles.AddImageContainer}>
       <View style={styles.AddImageNavigator}>
-        <Pressable onPress={() => navigation.navigate('Color')}>
+        <Pressable onPress={() => setPostCreationSteps(1)}>
           <ArrowCircleLeft width={24} height={24} />
         </Pressable>
         <Pressable onPress={animate} style={styles.AddImageDropdown}>
           <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Add Image</Text>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('AddText')}>
+        <Pressable onPress={() => setPostCreationSteps(3)}>
           <ArrowCircleRight width={24} height={24} />
         </Pressable>
       </View>

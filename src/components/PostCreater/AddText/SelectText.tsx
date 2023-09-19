@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import LeftArrow from '../../../assets/icons/LeftArrow'
-import MultiColorRangeSlider from './MultiColorRangeSlider'
 
 interface ISelectText {
   navigation: any
@@ -16,11 +15,7 @@ const Data = [
 ]
 const SelectText: React.FC<ISelectText> = ({ navigation }) => {
   const [isFont, setFont] = useState('Aa')
-  // const [sliderValues, setSliderValues] = useState([25, 75])
 
-  // const handleSliderChange = (values: number[]) => {
-  //   setSliderValues(values)
-  // }
   return (
     <View style={{ flex: 1, backgroundColor: '#FFEFFF' }}>
       <View
@@ -44,9 +39,9 @@ const SelectText: React.FC<ISelectText> = ({ navigation }) => {
       >
         <Image source={require('../../../assets/images/text-tshirt.png')} />
       </View>
-      <View style={styles.container}>
+      {/* <View style={styles.container}>
         <MultiColorRangeSlider />
-      </View>
+      </View> */}
       <View
         style={{
           display: 'flex',

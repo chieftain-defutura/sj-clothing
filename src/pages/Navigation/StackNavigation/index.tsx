@@ -13,7 +13,7 @@ import AddText from '../../../components/PostCreater/AddText'
 import AddImage from '../../../components/PostCreater/AddImage'
 import SelectStyle from '../../../components/PostCreater/SelectStyle'
 import SelectColor from '../../../components/PostCreater/SelectColor'
-// import SelectText from '../../../components/PostCreater/AddText/SelectText'
+import SelectText from '../../../components/PostCreater/AddText/SelectText'
 import SelectDesign from '../../../components/PostCreater/AddImage/SelectDesign'
 import ProductAndCaption from '../../../components/PostCreater/ProductAndCaption'
 import FinalProduct from '../../../components/PostCreater/FinalProduct'
@@ -23,6 +23,7 @@ import OrderPlaced from '../../../screens/OrderPlaced'
 import AddressBook from './AddressBook'
 import ForgotModal from '../../../screens/Forgot'
 import BuyNow from './BuyNow'
+import PostCreation from '../../../components/PostCreater'
 
 const Stack = createNativeStackNavigator()
 
@@ -53,7 +54,6 @@ const StackNavigationRoutes: React.FC = () => {
         }}
         component={BuyNow}
       />
-
       <Stack.Screen
         name='Cart'
         options={{
@@ -102,36 +102,20 @@ const StackNavigationRoutes: React.FC = () => {
         }}
         component={NotificationPage}
       />
-
       <Stack.Screen name='Login' options={{ headerShown: false }} component={LoginModal} />
       <Stack.Screen name='Signup' options={{ headerShown: false }} component={SignupModal} />
       <Stack.Screen name='Forgot' options={{ headerShown: false }} component={ForgotModal} />
       <Stack.Screen name='OrderPlaced' options={{ headerShown: false }} component={OrderPlaced} />
 
       <Stack.Screen
-        name='Style'
+        name='PostCreation'
         options={{
           headerShown: false,
           headerBackground: () => <Header />,
         }}
-        component={SelectStyle}
+        component={PostCreation}
       />
-      <Stack.Screen
-        name='Color'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={SelectColor}
-      />
-      <Stack.Screen
-        name='AddImage'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={AddImage}
-      />
+
       <Stack.Screen
         name='AddedImage'
         options={{
@@ -140,38 +124,16 @@ const StackNavigationRoutes: React.FC = () => {
         }}
         component={SelectDesign}
       />
+
       <Stack.Screen
-        name='AddText'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={AddText}
-      />
-      {/* <Stack.Screen
         name='AddedText'
         options={{
           headerShown: false,
           headerBackground: () => <Header />,
         }}
         component={SelectText}
-      /> */}
-      <Stack.Screen
-        name='ProductAndCaption'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={ProductAndCaption}
       />
-      <Stack.Screen
-        name='FinalProduct'
-        options={{
-          headerShown: false,
-          headerBackground: () => <Header />,
-        }}
-        component={FinalProduct}
-      />
+
       <Stack.Screen
         name='Search'
         options={{

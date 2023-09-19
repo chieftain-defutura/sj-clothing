@@ -8,15 +8,19 @@ import CustomButton from '../components/Button'
 import { useNavigation } from '@react-navigation/native'
 import CloseRedIcon from '../assets/icons/CloseRedIcon'
 
-interface LoginModalProps {
+interface SubscriptionModalProps {
   isVisible: boolean
   onClose: () => void
+  navigation: any
 }
 
 const ValidationSchema = Yup.object().shape({})
 
-const SubscriptionModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) => {
-  const navigation = useNavigation()
+const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
+  isVisible,
+  onClose,
+  navigation,
+}) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <View
@@ -33,8 +37,8 @@ const SubscriptionModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) =>
           onSubmit={(values) => console.log(values)}
         >
           {({}) => (
-            <View style={styles.loginWrapper}>
-              <View style={styles.loginHead}>
+            <View style={styles.SubscriptionWrapper}>
+              <View style={styles.SubscriptionHead}>
                 <Text
                   style={{
                     fontSize: 20,
@@ -235,7 +239,7 @@ const SubscriptionModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) =>
                 variant='primary'
                 text='Pay now'
                 onPress={() => {
-                  navigation.navigate('Style'), onClose()
+                  navigation.navigate('PostCreation'), onClose()
                 }}
                 fontFamily='Arvo-Regular'
                 buttonStyle={[styles.submitBtn]}
@@ -251,13 +255,13 @@ const SubscriptionModal: React.FC<LoginModalProps> = ({ isVisible, onClose }) =>
 export default SubscriptionModal
 
 const styles = StyleSheet.create({
-  loginWrapper: {
+  SubscriptionWrapper: {
     backgroundColor: COLORS.iconsNormalClr,
     padding: 20,
     borderRadius: 10,
     width: 328,
   },
-  loginHead: {
+  SubscriptionHead: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',

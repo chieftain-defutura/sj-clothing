@@ -28,22 +28,23 @@ const Images = [
 
 interface IAddText {
   navigation: any
+  setPostCreationSteps: React.Dispatch<React.SetStateAction<number>>
 }
 
-const AddText: React.FC<IAddText> = ({ navigation }) => {
+const AddText: React.FC<IAddText> = ({ navigation, setPostCreationSteps }) => {
   const [isAddText, setAddText] = useState(false)
   const [isSelect, setSelect] = useState('Front')
   return (
     <View style={styles.AddTextContainer}>
       {!isAddText ? (
         <View style={styles.AddTextNavigator}>
-          <Pressable onPress={() => navigation.navigate('AddImage')}>
+          <Pressable onPress={() => setPostCreationSteps(2)}>
             <ArrowCircleLeft width={24} height={24} />
           </Pressable>
           <Pressable onPress={() => setAddText(true)} style={styles.AddTextDropdown}>
             <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Add Text</Text>
           </Pressable>
-          <Pressable onPress={() => navigation.navigate('ProductAndCaption')}>
+          <Pressable onPress={() => setPostCreationSteps(4)}>
             <ArrowCircleRight width={24} height={24} />
           </Pressable>
         </View>

@@ -148,7 +148,11 @@ const Post: React.FC<IPost> = ({ navigation }) => {
           <PlusIcon width={24} height={24} />
         </Pressable>
       </LinearGradient>
-      <SubscriptionModal isVisible={isSubscriptionModal} onClose={closeSubscriptionModal} />
+      <SubscriptionModal
+        navigation={navigation}
+        isVisible={isSubscriptionModal}
+        onClose={closeSubscriptionModal}
+      />
     </PostContainer>
   )
 }

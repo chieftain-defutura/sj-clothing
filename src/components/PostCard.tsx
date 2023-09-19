@@ -48,7 +48,7 @@ const PostCard: React.FC<PostCardProps> = ({ props: componentNameProps, onPress 
       setLoginModalVisible(true)
     } else {
       console.log('press ', user)
-      onPress()
+      setLoginModalVisible(false)
     }
   }
 

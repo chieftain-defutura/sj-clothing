@@ -35,8 +35,9 @@ const Data = [
 
 interface IFinalProduct {
   navigation: any
+  setPostCreationSteps: React.Dispatch<React.SetStateAction<number>>
 }
-const FinalProduct: React.FC<IFinalProduct> = ({ navigation }) => {
+const FinalProduct: React.FC<IFinalProduct> = ({ navigation, setPostCreationSteps }) => {
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
     try {
@@ -57,7 +58,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({ navigation }) => {
   return (
     <ScrollView style={styles.selectContainer}>
       <View style={styles.selectNavigator}>
-        <Pressable onPress={() => navigation.navigate('ProductAndCaption')}>
+        <Pressable onPress={() => setPostCreationSteps(4)}>
           <LeftArrow width={24} height={24} />
         </Pressable>
         <Pressable

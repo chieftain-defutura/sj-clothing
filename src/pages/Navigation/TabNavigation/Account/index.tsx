@@ -66,19 +66,22 @@ const data = [
     name: 'About us',
   },
 ]
+interface IAccount {
+  navigation: any
+}
 
-const Account: React.FC = () => {
+const Account: React.FC<IAccount> = ({ navigation }) => {
   const isFocused = useIsFocused()
-  const navigation = useNavigation()
-  const user = userStore((state) => state.user)
+  // const navigation = useNavigation()
+  const { user, updateUser } = userStore()
 
   const handleLogout = async () => {
     try {
       await auth.signOut()
-      console.log(auth.currentUser)
       const user = auth.currentUser
+
       if (!user) {
-        userStore((state) => state.updateUser(null))
+        updateUser(null)
         navigation.navigate('Post')
         console.log('Signed out successfully')
       }
@@ -86,6 +89,8 @@ const Account: React.FC = () => {
       console.log(error)
     }
   }
+
+  console.log(user?.displayName)
 
   return (
     <ScrollView>

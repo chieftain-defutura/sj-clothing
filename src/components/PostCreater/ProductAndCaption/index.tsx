@@ -1,13 +1,13 @@
-// import * as Yup from 'yup'
 import React from 'react'
+import * as Yup from 'yup'
+import { Formik } from 'formik'
 import styled from 'styled-components/native'
-
 import { StyleSheet, View, Image, Pressable } from 'react-native'
+
+import { COLORS } from '../../../styles/theme'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
 import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
-import { COLORS } from '../../../styles/theme'
-// import { Formik } from 'formik'
 
 // const Data = [
 //   require('../../../assets/images/text-tshirt.png'),
@@ -18,21 +18,22 @@ import { COLORS } from '../../../styles/theme'
 
 interface IProductAndCaption {
   navigation: any
+  setPostCreationSteps: React.Dispatch<React.SetStateAction<number>>
 }
 
-// const ValidationSchema = Yup.object({
-//   productname: Yup.string().required('Please enter your product name'),
-//   caption: Yup.string().required('Please enter your caption'),
-// })
+const ValidationSchema = Yup.object({
+  productname: Yup.string().required('Please enter your product name'),
+  caption: Yup.string().required('Please enter your caption'),
+})
 
-const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation }) => {
+const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation, setPostCreationSteps }) => {
   return (
     <View style={styles.ProductAndCaptionContainer}>
       <View style={styles.ProductAndCaptionNavigator}>
-        <Pressable onPress={() => navigation.navigate('AddText')}>
+        <Pressable onPress={() => setPostCreationSteps(4)}>
           <ArrowCircleLeft width={24} height={24} />
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('FinalProduct')}>
+        <Pressable onPress={() => setPostCreationSteps(5)}>
           <ArrowCircleRight width={24} height={24} />
         </Pressable>
       </View>
@@ -43,7 +44,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation }) => {
         <ThreeSixtyDegree width={40} height={40} />
       </View>
 
-      {/* <Formik
+      <Formik
         initialValues={{
           productname: '',
           caption: '',
@@ -79,7 +80,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation }) => {
             </View>
           </SignUpContainer>
         )}
-      </Formik> */}
+      </Formik>
     </View>
   )
 }
