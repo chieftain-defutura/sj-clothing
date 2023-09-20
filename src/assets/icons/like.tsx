@@ -1,5 +1,6 @@
 import * as React from 'react'
 import Svg, { SvgProps, G, Path, Defs, ClipPath, Rect } from 'react-native-svg'
+
 const Like = (props: SvgProps) => (
   <Svg width={props.width} height={props.height} viewBox='0 0 20 20' fill='none'>
     <Path
