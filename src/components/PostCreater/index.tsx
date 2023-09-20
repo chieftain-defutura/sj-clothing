@@ -1,8 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import SelectStyle from './SelectStyle'
 import styled from 'styled-components/native'
-import SelectText from './AddText/SelectText'
 import SelectColor from './SelectColor'
 import AddImage from './AddImage'
 import AddText from './AddText'

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Svg, { SvgProps, G, Path, Defs, ClipPath } from 'react-native-svg'
 
-const Plus = (props: SvgProps) => (
+const HomePlusIcon = (props: SvgProps) => (
   <Svg fill='none' {...props}>
     <G clipPath='url(#a)'>
       <Path
@@ -16,4 +16,4 @@ const Plus = (props: SvgProps) => (
     </Defs>
   </Svg>
 )
-export default Plus
+export default HomePlusIcon
