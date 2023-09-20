@@ -71,8 +71,7 @@ interface IAccount {
 
 const Account: React.FC<IAccount> = ({ navigation }) => {
   const isFocused = useIsFocused()
-  // const navigation = useNavigation()
-  const { user, updateUser } = userStore()
+  const { updateUser } = userStore()
 
   const handleLogout = async () => {
     try {

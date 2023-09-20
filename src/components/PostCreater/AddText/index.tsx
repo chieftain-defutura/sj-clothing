@@ -1,12 +1,19 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
+import Animated, {
+  BounceInUp,
+  BounceOutUp,
+  FlipInXDown,
+  FlipOutXDown,
+} from 'react-native-reanimated'
+
+import SelectText from './SelectText'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
 import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
-import SelectText from './SelectText'
 
 const Images = [
   {
@@ -33,32 +40,34 @@ interface IAddText {
 }
 
 const AddText: React.FC<IAddText> = ({ navigation, setPostCreationSteps }) => {
-  const [isAddText, setAddText] = useState(false)
-  const [isTextAdded, setTextAdded] = useState(false)
   const [isFont, setFont] = useState('Aa')
+  const [isSelect, setSelect] = useState('Front')
+  const [isAddText, setAddText] = useState(false)
+  const [isDropDown, setDropDown] = useState(false)
+  const [isTextAdded, setTextAdded] = useState(false)
+  const [isTextColor, setTextColor] = useState('red')
   const [isFontFamily, setFontFamily] = useState('Arvo-Regular')
 
-  const [isTextColor, setTextColor] = useState('red')
-  const [isSelect, setSelect] = useState('Front')
   return (
     <View style={{ flex: 1 }}>
       {!isTextAdded ? (
         <View style={styles.AddTextContainer}>
-          {!isAddText ? (
-            <View style={styles.AddTextNavigator}>
-              <Pressable onPress={() => setPostCreationSteps(2)}>
-                <ArrowCircleLeft width={24} height={24} />
-              </Pressable>
-              <Pressable onPress={() => setAddText(true)} style={styles.AddTextDropdown}>
-                <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Add Text</Text>
-              </Pressable>
-              <Pressable onPress={() => setPostCreationSteps(4)}>
-                <ArrowCircleRight width={24} height={24} />
-              </Pressable>
-            </View>
-          ) : (
+          <View style={styles.AddTextNavigator}>
+            <Pressable onPress={() => setPostCreationSteps(2)}>
+              <ArrowCircleLeft width={24} height={24} />
+            </Pressable>
+            <Pressable onPress={() => setDropDown(true)} style={styles.AddTextDropdown}>
+              <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Add Text</Text>
+            </Pressable>
+            <Pressable onPress={() => setPostCreationSteps(4)}>
+              <ArrowCircleRight width={24} height={24} />
+            </Pressable>
+          </View>
+          {isDropDown && (
             <DropDownWrapper>
-              <View
+              <Animated.View
+                entering={FlipInXDown}
+                exiting={FlipOutXDown.duration(400)}
                 style={{
                   backgroundColor: COLORS.iconsNormalClr,
                   borderBottomRightRadius: 50,
@@ -160,17 +169,20 @@ const AddText: React.FC<IAddText> = ({ navigation, setPostCreationSteps }) => {
                     </Pressable>
                   ))}
                 </View>
-              </View>
-              <View
+              </Animated.View>
+              <Animated.View
+                entering={BounceInUp.duration(800)}
+                exiting={BounceOutUp.duration(700)}
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'center',
                   paddingVertical: 10,
+                  zIndex: 10,
                 }}
               >
                 <Pressable
-                  onPress={() => setAddText(false)}
+                  onPress={() => setDropDown(false)}
                   style={{
                     backgroundColor: COLORS.iconsNormalClr,
                     width: 42,
@@ -181,15 +193,24 @@ const AddText: React.FC<IAddText> = ({ navigation, setPostCreationSteps }) => {
                 >
                   <CloseIcon />
                 </Pressable>
-              </View>
+              </Animated.View>
             </DropDownWrapper>
           )}
 
-          <View style={styles.AddTextTShirt}>
-            <Image source={require('../../../assets/images/plain-shirt.png')} />
-          </View>
-          <View style={styles.AddText360Degree}>
-            <ThreeSixtyDegree width={40} height={40} />
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              flex: 1,
+            }}
+          >
+            <View style={[styles.AddTextTShirt]}>
+              <Image source={require('../../../assets/images/plain-shirt.png')} />
+            </View>
+            <View style={styles.AddText360Degree}>
+              <ThreeSixtyDegree width={40} height={40} />
+            </View>
           </View>
         </View>
       ) : (
@@ -223,6 +244,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 16,
+    zIndex: -1,
   },
   AddTextDropdown: {
     display: 'flex',
@@ -238,7 +260,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 64,
+    zIndex: -1,
   },
   AddText360Degree: {
     display: 'flex',

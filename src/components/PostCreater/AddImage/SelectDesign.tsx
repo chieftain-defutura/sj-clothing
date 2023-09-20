@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, FlatList, Image, Pressable } from 'react-native'
+import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
 import LeftArrow from '../../../assets/icons/LeftArrow'
@@ -73,7 +74,9 @@ const SelectDesign: React.FC<ISelectDesign> = ({
         <Image source={require('../../../assets/images/added-image-shirt.png')} />
       </View>
       {!isOpen && (
-        <View
+        <Animated.View
+          entering={SlideInDown.duration(800)}
+          exiting={SlideOutDown.duration(800)}
           style={{
             backgroundColor: COLORS.iconsNormalClr,
             padding: 24,
@@ -172,7 +175,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
               </Pressable>
             )}
           />
-        </View>
+        </Animated.View>
       )}
     </View>
   )

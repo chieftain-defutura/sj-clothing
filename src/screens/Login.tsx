@@ -1,23 +1,21 @@
-import React, { useState } from 'react'
-import { View, Modal, StyleSheet, Pressable } from 'react-native'
-import styled from 'styled-components/native'
-import { Formik } from 'formik'
 import * as Yup from 'yup'
+import { Formik } from 'formik'
+import React, { useState } from 'react'
+import styled from 'styled-components/native'
 import { useNavigation } from '@react-navigation/native'
-import { AuthErrorCodes, sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth'
-import { COLORS } from '../styles/theme'
-import CloseIcon from '../assets/icons/Close'
-import CustomButton from '../components/Button'
-import EyeIcon from '../assets/icons/EyeIcon'
-import EyeHideIcon from '../assets/icons/EyeIconHide'
-import { auth } from '../../firebase'
-import { FirebaseError } from 'firebase/app'
+import { View, Modal, StyleSheet, Pressable } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { AuthErrorCodes, signInWithEmailAndPassword } from 'firebase/auth'
 
-// import { userStore } from '../store/userStore'
+import { auth } from '../../firebase'
+import { COLORS } from '../styles/theme'
+import { FirebaseError } from 'firebase/app'
+import CloseIcon from '../assets/icons/Close'
+import EyeIcon from '../assets/icons/EyeIcon'
+import CustomButton from '../components/Button'
+import EyeHideIcon from '../assets/icons/EyeIconHide'
 
 interface LoginModalProps {
-  // onForgot: () => void
   isVisible?: boolean
   onClose?: () => void
   onSignClick?: () => void
@@ -39,7 +37,6 @@ const ValidationSchema = Yup.object({
 const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  // const user = userStore((state) => state.user)
   const navigation = useNavigation()
   const [btnText, setBtnText] = useState('Login')
 
@@ -62,6 +59,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
       await signInWithEmailAndPassword(auth, values.email, values.password)
       await AsyncStorage.setItem('mail', values.email)
       console.log('user logged in successfully')
+      navigation.navigate('Post')
     } catch (error) {
       console.log(error)
       if (error instanceof FirebaseError) {

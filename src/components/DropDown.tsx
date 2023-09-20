@@ -1,21 +1,24 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
-import { COLORS } from '../../../styles/theme'
-import CloseIcon from '../../../assets/icons/Close'
-import ThreeSixtyDegree from '../../../assets/icons/360-degree'
-import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
-import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
-import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
+
 import Animated, {
   BounceInUp,
+  BounceOut,
   BounceOutUp,
   Easing,
+  FadeIn,
   FadeInDown,
   FadeOut,
-  FlipInXDown,
-  FlipOutXDown,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
 } from 'react-native-reanimated'
-import { PostCreationStore } from '../../../store/postCreationStore'
+import { COLORS } from '../styles/theme'
+import ArrowCircleRight from '../assets/icons/ArrowCircleRight'
+import DropDownArrowIcon from '../assets/icons/DropDownArrow'
+import ArrowCircleLeft from '../assets/icons/ArrowCircleLeft'
+import CloseIcon from '../assets/icons/Close'
 
 const Colors = ['white', 'violet', 'blue', 'red', 'orange', 'green']
 
@@ -24,14 +27,13 @@ interface ISelectColor {
   setPostCreationSteps: React.Dispatch<React.SetStateAction<number>>
 }
 
-const SelectColor: React.FC<ISelectColor> = ({ navigation, setPostCreationSteps }) => {
-  const [isDropDown, setDropDown] = useState(false)
+const SimpleDropdownWithAnimation: React.FC<ISelectColor> = ({ setPostCreationSteps }) => {
   const [isSelectedColor, setSelectedColor] = useState('white')
-  const { setColor } = PostCreationStore()
+  const [isOpen, setOpen] = useState(false)
 
   return (
     <View style={styles.selectColorContainer}>
-      {isDropDown && (
+      {isOpen ? (
         <Animated.View
           style={[
             {
@@ -39,6 +41,8 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation, setPostCreationSteps 
               width: '100%',
               borderBottomRightRadius: 50,
               borderBottomLeftRadius: 50,
+              marginTop: 50,
+              zIndex: 10,
               display: 'flex',
               flexDirection: 'column',
               gap: 15,
@@ -46,8 +50,8 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation, setPostCreationSteps 
           ]}
         >
           <Animated.View
-            entering={FlipInXDown}
-            exiting={FlipOutXDown.duration(400)}
+            entering={FadeInDown}
+            exiting={FadeOut.duration(700).easing(Easing.ease)}
             style={[
               {
                 backgroundColor: COLORS.iconsNormalClr,
@@ -119,66 +123,51 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation, setPostCreationSteps 
           </Animated.View>
           <Animated.View
             entering={BounceInUp.duration(800)}
-            exiting={BounceOutUp.duration(500)}
+            exiting={BounceOutUp.duration(700)}
             style={{
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
+              //   paddingVertical: 10,
             }}
           >
             <Pressable
-              onPress={() => setDropDown(false)}
+              onPress={() => setOpen(false)}
               style={{
                 backgroundColor: COLORS.iconsNormalClr,
                 width: 42,
                 height: 42,
                 borderRadius: 50,
                 padding: 10,
-                zIndex: 10,
               }}
             >
               <CloseIcon />
             </Pressable>
           </Animated.View>
         </Animated.View>
+      ) : (
+        <View style={styles.selectColorNavigator}>
+          <Pressable onPress={() => setPostCreationSteps(0)}>
+            <ArrowCircleLeft width={24} height={24} />
+          </Pressable>
+          <Pressable onPress={() => setOpen(true)} style={styles.selectColorDropdown}>
+            <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Select Color</Text>
+            <DropDownArrowIcon />
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              setPostCreationSteps(2)
+            }}
+          >
+            <ArrowCircleRight width={24} height={24} />
+          </Pressable>
+        </View>
       )}
-      <View style={styles.selectColorNavigator}>
-        <Pressable onPress={() => setPostCreationSteps(0)}>
-          <ArrowCircleLeft width={24} height={24} />
-        </Pressable>
-        <Pressable onPress={() => setDropDown(true)} style={styles.selectColorDropdown}>
-          <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Select Color</Text>
-          <DropDownArrowIcon />
-        </Pressable>
-        <Pressable
-          onPress={() => {
-            setPostCreationSteps(2), setColor(isSelectedColor)
-          }}
-        >
-          <ArrowCircleRight width={24} height={24} />
-        </Pressable>
-      </View>
-
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          flex: 1,
-        }}
-      >
-        <View style={[styles.selectColorTShirt]}>
-          <Image source={require('../../../assets/images/plain-shirt.png')} />
-        </View>
-        <View style={styles.selectColor360Degree}>
-          <ThreeSixtyDegree width={40} height={40} />
-        </View>
-      </View>
     </View>
   )
 }
 
-export default SelectColor
+export default SimpleDropdownWithAnimation
 
 const styles = StyleSheet.create({
   selectColorContainer: {
@@ -191,7 +180,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 16,
-    zIndex: -1,
+    marginTop: 60,
   },
   selectColorDropdown: {
     display: 'flex',
@@ -208,7 +197,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    zIndex: -1,
+    marginTop: 64,
   },
   selectColor360Degree: {
     display: 'flex',

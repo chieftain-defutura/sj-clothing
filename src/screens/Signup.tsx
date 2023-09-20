@@ -1,28 +1,25 @@
+import * as Yup from 'yup'
+import { Formik } from 'formik'
+import styled from 'styled-components/native'
 import React, { useEffect, useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
-import styled from 'styled-components/native'
-import { Formik } from 'formik'
-import * as Yup from 'yup'
-import { COLORS } from '../styles/theme'
-import CloseIcon from '../assets/icons/Close'
-import CustomButton from '../components/Button'
-import EyeIcon from '../assets/icons/EyeIcon'
-import EyeHideIcon from '../assets/icons/EyeIconHide'
-import { useNavigation } from '@react-navigation/native'
 import {
   AuthErrorCodes,
-  // User,
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
   updateProfile,
-  // sendEmailVerification,
+  onAuthStateChanged,
 } from 'firebase/auth'
+
 import { auth } from '../../firebase'
+import { COLORS } from '../styles/theme'
 import { FirebaseError } from 'firebase/app'
+import CloseIcon from '../assets/icons/Close'
+import EyeIcon from '../assets/icons/EyeIcon'
 import { userStore } from '../store/userStore'
-// import { signOut } from 'firebase/auth'
+import CustomButton from '../components/Button'
+import EyeHideIcon from '../assets/icons/EyeIconHide'
 
 interface SignupModalProps {
   isVisible?: boolean
