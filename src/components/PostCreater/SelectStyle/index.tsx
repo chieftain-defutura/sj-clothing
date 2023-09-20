@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Image, Pressable, FlatList } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import styled from 'styled-components/native'
@@ -13,6 +13,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated'
+import { PostCreationStore } from '../../../store/postCreationStore'
 
 const StyleShirtData = [
   {
@@ -69,13 +70,15 @@ const StyleTShirtData = [
 
 interface ISelectStyle {
   navigation: any
+  setPostCreationSteps: React.Dispatch<React.SetStateAction<number>>
 }
 
-const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
+const SelectStyle: React.FC<ISelectStyle> = ({ navigation, setPostCreationSteps }) => {
   const [isType, setType] = useState('shirt')
   const height = useSharedValue(0)
   const display = useSharedValue<'none' | 'flex'>('none')
   const [isSelectedStyle, setSelectedStyle] = useState('Half sleeve')
+  const { setStyle } = PostCreationStore()
   const animatedStyle = useAnimatedStyle(() => ({
     height: height.value,
     display: display.value,
@@ -83,7 +86,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
   const animate = () => {
     if (height.value === 0) {
       display.value = 'flex' as 'none' | 'flex'
-      height.value = withSpring(95)
+      height.value = withSpring(105)
     } else {
       height.value = withTiming(0, { duration: 300 })
       setTimeout(() => {
@@ -91,6 +94,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
       }, 250)
     }
   }
+
   return (
     <View style={styles.selectStyleContainer}>
       <View style={styles.selectStyleNavigator}>
@@ -101,7 +105,11 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
           <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Select Style</Text>
           <DropDownArrowIcon />
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('Color')}>
+        <Pressable
+          onPress={() => {
+            setPostCreationSteps(1), setStyle({ title: isType, type: isSelectedStyle })
+          }}
+        >
           <ArrowCircleRight width={24} height={24} />
         </Pressable>
       </View>
@@ -115,6 +123,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
             borderBottomRightRadius: 50,
             borderBottomLeftRadius: 50,
             zIndex: 10,
+            paddingVertical: 5,
           },
           animatedStyle,
         ]}
@@ -135,7 +144,8 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation }) => {
               gap: 24,
               borderBottomColor: COLORS.borderClr,
               borderBottomWidth: 1,
-              paddingBottom: 20,
+              paddingBottom: 25,
+              paddingTop: 15,
             }}
           >
             <Pressable onPress={() => setType('shirt')}>

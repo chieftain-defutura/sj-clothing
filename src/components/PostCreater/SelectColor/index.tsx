@@ -12,18 +12,21 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated'
+import { PostCreationStore } from '../../../store/postCreationStore'
 
 const Colors = ['white', 'violet', 'blue', 'red', 'orange', 'green']
 
 interface ISelectColor {
   navigation: any
+  setPostCreationSteps: React.Dispatch<React.SetStateAction<number>>
 }
 
-const SelectColor: React.FC<ISelectColor> = ({ navigation }) => {
+const SelectColor: React.FC<ISelectColor> = ({ navigation, setPostCreationSteps }) => {
   // const [isSelected, setSelected] = useState(false)
   const [isSelectedColor, setSelectedColor] = useState('white')
   const height = useSharedValue(0)
   const display = useSharedValue<'none' | 'flex'>('none')
+  const { setColor } = PostCreationStore()
   const animatedStyle = useAnimatedStyle(() => ({
     height: height.value,
     display: display.value,
@@ -39,17 +42,22 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation }) => {
       }, 200)
     }
   }
+
   return (
     <View style={styles.selectColorContainer}>
       <View style={styles.selectColorNavigator}>
-        <Pressable onPress={() => navigation.navigate('Style')}>
+        <Pressable onPress={() => setPostCreationSteps(0)}>
           <ArrowCircleLeft width={24} height={24} />
         </Pressable>
         <Pressable onPress={animate} style={styles.selectColorDropdown}>
           <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Select Color</Text>
           <DropDownArrowIcon />
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('AddImage')}>
+        <Pressable
+          onPress={() => {
+            setPostCreationSteps(2), setColor(isSelectedColor)
+          }}
+        >
           <ArrowCircleRight width={24} height={24} />
         </Pressable>
       </View>

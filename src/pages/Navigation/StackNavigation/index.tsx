@@ -23,6 +23,7 @@ import OrderPlaced from '../../../screens/OrderPlaced'
 import AddressBook from './AddressBook'
 import ForgotModal from '../../../screens/Forgot'
 import BuyNow from './BuyNow'
+import PostCreation from '../../../components/PostCreater'
 
 const Stack = createNativeStackNavigator()
 
@@ -39,7 +40,7 @@ const StackNavigationRoutes: React.FC = () => {
       <Stack.Screen name='Stack' component={TabNavigationRoutes} />
       <Stack.Screen name='AddressBook' component={AddressBook} />
       <Stack.Screen name='Buynow' component={BuyNow} />
-
+      <Stack.Screen name='PostCreation' component={PostCreation} />
       <Stack.Screen name='Cart' component={CartPage} />
       <Stack.Screen name='Checkout' component={Checkout} />
       <Stack.Screen name='MyOrders' component={MyOrders} />
@@ -52,18 +53,8 @@ const StackNavigationRoutes: React.FC = () => {
       <Stack.Screen name='Forgot' options={{ headerShown: false }} component={ForgotModal} />
       <Stack.Screen name='OrderPlaced' options={{ headerShown: false }} component={OrderPlaced} />
 
-      <Stack.Screen name='Style' component={SelectStyle} />
-      <Stack.Screen name='Color' component={SelectColor} />
-      <Stack.Screen name='AddImage' component={AddImage} />
       <Stack.Screen name='AddedImage' component={SelectDesign} />
-      <Stack.Screen name='AddText' component={AddText} />
-      {/* <Stack.Screen
-        name='AddedText'
 
-        component={SelectText}
-      /> */}
-      <Stack.Screen name='ProductAndCaption' component={ProductAndCaption} />
-      <Stack.Screen name='FinalProduct' component={FinalProduct} />
       <Stack.Screen name='Search' component={MostSearches} />
     </Stack.Navigator>
   )

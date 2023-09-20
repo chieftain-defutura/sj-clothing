@@ -18,7 +18,12 @@ const TabNavigationRoutes: React.FC = () => {
     <Tab.Navigator
       initialRouteName='Home'
       screenOptions={{
-        tabBarStyle: { padding: 10, backgroundColor: COLORS.textClr },
+        tabBarStyle: {
+          backgroundColor: COLORS.textClr,
+          paddingVertical: 16,
+          borderTopWidth: 0,
+          height: 60,
+        },
       }}
     >
       <Tab.Screen

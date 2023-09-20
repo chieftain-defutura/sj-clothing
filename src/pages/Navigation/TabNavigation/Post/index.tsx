@@ -235,17 +235,15 @@
 // export default Post
 
 import React from 'react'
-import { SafeAreaView, StatusBar } from 'react-native'
+import { SafeAreaView } from 'react-native'
 import ReelsComponent from '../../../../components/PostReels'
+import { reelsData } from '../../../../utils/postData'
 
 const Post: React.FC = () => {
   return (
-    <>
-      <StatusBar barStyle='dark-content' />
-      <SafeAreaView style={{ flex: 1 }}>
-        <ReelsComponent />
-      </SafeAreaView>
-    </>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ReelsComponent reelsData={reelsData} />
+    </SafeAreaView>
   )
 }
 

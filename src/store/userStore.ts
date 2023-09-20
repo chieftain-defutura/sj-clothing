@@ -17,7 +17,6 @@ type Action = {
   updateUser: (user: User | null) => void
   updateUserData: (user: IUserData) => void
 }
-
 // Create your store, which includes both state and (optionally) actions
 export const userStore = create<State & Action>((set) => ({
   user: null,

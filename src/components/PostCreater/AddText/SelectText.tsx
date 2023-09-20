@@ -2,10 +2,20 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import LeftArrow from '../../../assets/icons/LeftArrow'
-import MultiColorRangeSlider from './MultiColorRangeSlider'
+import { PostCreationStore } from '../../../store/postCreationStore'
 
 interface ISelectText {
   navigation: any
+  isFont: string
+  isTextColor: string
+  isSelect: string
+  fontFamily: string
+  setTextAdded: React.Dispatch<React.SetStateAction<boolean>>
+  setFont: React.Dispatch<React.SetStateAction<string>>
+  setTextColor: React.Dispatch<React.SetStateAction<string>>
+  setFontFamily: React.Dispatch<React.SetStateAction<string>>
+
+  setPostCreationSteps: React.Dispatch<React.SetStateAction<number>>
 }
 
 const Data = [
@@ -14,13 +24,20 @@ const Data = [
   { content: 'Cc', fontFamily: 'Montserrat-Regular' },
   { content: 'Dd', fontFamily: 'Arvo-Regular' },
 ]
-const SelectText: React.FC<ISelectText> = ({ navigation }) => {
-  const [isFont, setFont] = useState('Aa')
-  // const [sliderValues, setSliderValues] = useState([25, 75])
+const SelectText: React.FC<ISelectText> = ({
+  navigation,
+  setTextAdded,
+  isFont,
+  isTextColor,
+  isSelect,
+  fontFamily,
+  setFont,
+  setTextColor,
+  setFontFamily,
 
-  // const handleSliderChange = (values: number[]) => {
-  //   setSliderValues(values)
-  // }
+  setPostCreationSteps,
+}) => {
+  const { setText } = PostCreationStore()
   return (
     <View style={{ flex: 1, backgroundColor: '#FFEFFF' }}>
       <View
@@ -32,10 +49,18 @@ const SelectText: React.FC<ISelectText> = ({ navigation }) => {
           paddingHorizontal: 16,
         }}
       >
-        <Pressable onPress={() => navigation.navigate('AddText')}>
+        <Pressable onPress={() => setTextAdded(false)}>
           <LeftArrow width={24} height={24} />
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('ProductAndCaption')}>
+        <Pressable
+          onPress={() => {
+            setPostCreationSteps(4),
+              setText({
+                title: isSelect,
+                design: { color: isTextColor, font: fontFamily },
+              })
+          }}
+        >
           <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Done</Text>
         </Pressable>
       </View>
@@ -44,9 +69,9 @@ const SelectText: React.FC<ISelectText> = ({ navigation }) => {
       >
         <Image source={require('../../../assets/images/text-tshirt.png')} />
       </View>
-      <View style={styles.container}>
+      {/* <View style={styles.container}>
         <MultiColorRangeSlider />
-      </View>
+      </View> */}
       <View
         style={{
           display: 'flex',
@@ -59,7 +84,9 @@ const SelectText: React.FC<ISelectText> = ({ navigation }) => {
         {Data.map((font, index) => (
           <Pressable
             key={index}
-            onPress={() => setFont(font.content)}
+            onPress={() => {
+              setFont(font.content), setFontFamily(font.fontFamily)
+            }}
             style={{
               borderRadius: 50,
               padding: 20,

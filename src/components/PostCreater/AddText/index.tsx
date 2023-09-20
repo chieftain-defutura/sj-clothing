@@ -6,6 +6,7 @@ import CloseIcon from '../../../assets/icons/Close'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
 import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
+import SelectText from './SelectText'
 
 const Images = [
   {
@@ -28,160 +29,183 @@ const Images = [
 
 interface IAddText {
   navigation: any
+  setPostCreationSteps: React.Dispatch<React.SetStateAction<number>>
 }
 
-const AddText: React.FC<IAddText> = ({ navigation }) => {
+const AddText: React.FC<IAddText> = ({ navigation, setPostCreationSteps }) => {
   const [isAddText, setAddText] = useState(false)
+  const [isTextAdded, setTextAdded] = useState(false)
+  const [isFont, setFont] = useState('Aa')
+  const [isFontFamily, setFontFamily] = useState('Arvo-Regular')
+
+  const [isTextColor, setTextColor] = useState('red')
   const [isSelect, setSelect] = useState('Front')
   return (
-    <View style={styles.AddTextContainer}>
-      {!isAddText ? (
-        <View style={styles.AddTextNavigator}>
-          <Pressable onPress={() => navigation.navigate('AddImage')}>
-            <ArrowCircleLeft width={24} height={24} />
-          </Pressable>
-          <Pressable onPress={() => setAddText(true)} style={styles.AddTextDropdown}>
-            <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Add Text</Text>
-          </Pressable>
-          <Pressable onPress={() => navigation.navigate('ProductAndCaption')}>
-            <ArrowCircleRight width={24} height={24} />
-          </Pressable>
+    <View style={{ flex: 1 }}>
+      {!isTextAdded ? (
+        <View style={styles.AddTextContainer}>
+          {!isAddText ? (
+            <View style={styles.AddTextNavigator}>
+              <Pressable onPress={() => setPostCreationSteps(2)}>
+                <ArrowCircleLeft width={24} height={24} />
+              </Pressable>
+              <Pressable onPress={() => setAddText(true)} style={styles.AddTextDropdown}>
+                <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Add Text</Text>
+              </Pressable>
+              <Pressable onPress={() => setPostCreationSteps(4)}>
+                <ArrowCircleRight width={24} height={24} />
+              </Pressable>
+            </View>
+          ) : (
+            <DropDownWrapper>
+              <View
+                style={{
+                  backgroundColor: COLORS.iconsNormalClr,
+                  borderBottomRightRadius: 50,
+                  borderBottomLeftRadius: 50,
+                  paddingHorizontal: 15,
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontFamily: 'Gilroy-Medium',
+                    borderBottomColor: COLORS.borderClr,
+                    borderBottomWidth: 2,
+                    paddingVertical: 20,
+                    color: COLORS.textClr,
+                    fontSize: 14,
+                  }}
+                >
+                  Select area to add text
+                </Text>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingVertical: 20,
+                    paddingHorizontal: 1,
+                    gap: 10,
+                  }}
+                >
+                  {Images.slice(0, 2).map((data, index) => (
+                    <Pressable
+                      onPress={() => {
+                        setSelect(data.title), setAddText(false), setTextAdded(true)
+                      }}
+                      key={index}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: 4,
+                      }}
+                    >
+                      <View
+                        style={{
+                          backgroundColor: COLORS.BoxBackgoundClr,
+                          padding: 16,
+                          borderRadius: 10,
+                          borderColor: isSelect === data.title ? COLORS.textSecondaryClr : '',
+                          borderWidth: isSelect === data.title ? 1 : 0,
+                        }}
+                      >
+                        <Image
+                          style={{ width: 50, height: 72, objectFit: 'contain' }}
+                          source={data.image}
+                        />
+                      </View>
+
+                      <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                        {data.title}
+                      </Text>
+                    </Pressable>
+                  ))}
+                  {Images.slice(2, 4).map((data, index) => (
+                    <Pressable
+                      onPress={() => {
+                        setSelect(data.title), setAddText(false), setTextAdded(true)
+                      }}
+                      key={index}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: 4,
+                      }}
+                    >
+                      <View
+                        style={{
+                          backgroundColor: COLORS.BoxBackgoundClr,
+                          padding: 16,
+                          borderRadius: 10,
+                          width: 70,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          flexDirection: 'row',
+                          borderColor: isSelect === data.title ? COLORS.textSecondaryClr : '',
+                          borderWidth: isSelect === data.title ? 1 : 0,
+                        }}
+                      >
+                        <Image
+                          style={{ width: 25, height: 72, objectFit: 'contain' }}
+                          source={data.image}
+                        />
+                      </View>
+
+                      <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                        {data.title}
+                      </Text>
+                    </Pressable>
+                  ))}
+                </View>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  paddingVertical: 10,
+                }}
+              >
+                <Pressable
+                  onPress={() => setAddText(false)}
+                  style={{
+                    backgroundColor: COLORS.iconsNormalClr,
+                    width: 42,
+                    height: 42,
+                    borderRadius: 50,
+                    padding: 10,
+                  }}
+                >
+                  <CloseIcon />
+                </Pressable>
+              </View>
+            </DropDownWrapper>
+          )}
+
+          <View style={styles.AddTextTShirt}>
+            <Image source={require('../../../assets/images/plain-shirt.png')} />
+          </View>
+          <View style={styles.AddText360Degree}>
+            <ThreeSixtyDegree width={40} height={40} />
+          </View>
         </View>
       ) : (
-        <DropDownWrapper>
-          <View
-            style={{
-              backgroundColor: COLORS.iconsNormalClr,
-              borderBottomRightRadius: 50,
-              borderBottomLeftRadius: 50,
-              paddingHorizontal: 15,
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                fontFamily: 'Gilroy-Medium',
-                borderBottomColor: COLORS.borderClr,
-                borderBottomWidth: 2,
-                paddingVertical: 20,
-                color: COLORS.textClr,
-                fontSize: 14,
-              }}
-            >
-              Select area to add text
-            </Text>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingVertical: 20,
-                paddingHorizontal: 1,
-                gap: 10,
-              }}
-            >
-              {Images.slice(0, 2).map((data, index) => (
-                <Pressable
-                  onPress={() => {
-                    setSelect(data.title), setAddText(false), navigation.navigate('AddedText')
-                  }}
-                  key={index}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 4,
-                  }}
-                >
-                  <View
-                    style={{
-                      backgroundColor: COLORS.BoxBackgoundClr,
-                      padding: 16,
-                      borderRadius: 10,
-                      borderColor: isSelect === data.title ? COLORS.textSecondaryClr : '',
-                      borderWidth: isSelect === data.title ? 1 : 0,
-                    }}
-                  >
-                    <Image
-                      style={{ width: 50, height: 72, objectFit: 'contain' }}
-                      source={data.image}
-                    />
-                  </View>
-
-                  <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                    {data.title}
-                  </Text>
-                </Pressable>
-              ))}
-              {Images.slice(2, 4).map((data, index) => (
-                <Pressable
-                  onPress={() => {
-                    setSelect(data.title), setAddText(false), navigation.navigate('AddedText')
-                  }}
-                  key={index}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 4,
-                  }}
-                >
-                  <View
-                    style={{
-                      backgroundColor: COLORS.BoxBackgoundClr,
-                      padding: 16,
-                      borderRadius: 10,
-                      width: 70,
-                      display: 'flex',
-                      justifyContent: 'center',
-                      flexDirection: 'row',
-                      borderColor: isSelect === data.title ? COLORS.textSecondaryClr : '',
-                      borderWidth: isSelect === data.title ? 1 : 0,
-                    }}
-                  >
-                    <Image
-                      style={{ width: 25, height: 72, objectFit: 'contain' }}
-                      source={data.image}
-                    />
-                  </View>
-
-                  <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                    {data.title}
-                  </Text>
-                </Pressable>
-              ))}
-            </View>
-          </View>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              paddingVertical: 10,
-            }}
-          >
-            <Pressable
-              onPress={() => setAddText(false)}
-              style={{
-                backgroundColor: COLORS.iconsNormalClr,
-                width: 42,
-                height: 42,
-                borderRadius: 50,
-                padding: 10,
-              }}
-            >
-              <CloseIcon />
-            </Pressable>
-          </View>
-        </DropDownWrapper>
+        <SelectText
+          navigation={navigation}
+          setTextAdded={setTextAdded}
+          isTextColor={isTextColor}
+          setTextColor={setTextColor}
+          setFont={setFont}
+          isFont={isFont}
+          isSelect={isSelect}
+          fontFamily={isFontFamily}
+          setFontFamily={setFontFamily}
+          setPostCreationSteps={setPostCreationSteps}
+        />
       )}
-
-      <View style={styles.AddTextTShirt}>
-        <Image source={require('../../../assets/images/plain-shirt.png')} />
-      </View>
-      <View style={styles.AddText360Degree}>
-        <ThreeSixtyDegree width={40} height={40} />
-      </View>
     </View>
   )
 }
