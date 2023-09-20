@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Image, Pressable, FlatList } from 'react-native'
 import { COLORS } from '../../../styles/theme'
-import styled from 'styled-components/native'
 import CloseIcon from '../../../assets/icons/Close'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
@@ -12,6 +11,8 @@ import Animated, {
   BounceOutUp,
   FlipInXDown,
   FlipOutXDown,
+  LightSpeedInLeft,
+  LightSpeedOutRight,
 } from 'react-native-reanimated'
 import { PostCreationStore } from '../../../store/postCreationStore'
 
@@ -245,7 +246,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation, setPostCreationSteps 
           </Animated.View>
         </Animated.View>
       )}
-      <View style={styles.selectStyleNavigator}>
+      <Animated.View style={styles.selectStyleNavigator}>
         <Pressable onPress={() => navigation.navigate('Stack')}>
           <ArrowCircleLeft width={24} height={24} />
         </Pressable>
@@ -258,9 +259,11 @@ const SelectStyle: React.FC<ISelectStyle> = ({ navigation, setPostCreationSteps 
             setPostCreationSteps(1), setStyle({ title: isType, type: isSelectedStyle })
           }}
         >
-          <ArrowCircleRight width={24} height={24} />
+          <View>
+            <ArrowCircleRight width={24} height={24} />
+          </View>
         </Pressable>
-      </View>
+      </Animated.View>
       <View
         style={{
           display: 'flex',

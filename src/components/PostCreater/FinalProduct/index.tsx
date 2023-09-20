@@ -8,6 +8,7 @@ import CustomButton from '../../Button'
 import Carousle from './Carousle'
 import { PostCreationStore } from '../../../store/postCreationStore'
 import { title } from 'process'
+import Animated, { LightSpeedOutRight } from 'react-native-reanimated'
 const Data = [
   {
     title: 'Product',
@@ -62,7 +63,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({ navigation, setPostCreationStep
   console.log(style, text, color, image, productandcaption)
   return (
     <ScrollView style={styles.selectContainer}>
-      <View style={styles.selectNavigator}>
+      <Animated.View style={styles.selectNavigator}>
         <Pressable onPress={() => setPostCreationSteps(4)}>
           <LeftArrow width={24} height={24} />
         </Pressable>
@@ -93,7 +94,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({ navigation, setPostCreationStep
         <Pressable onPress={share}>
           <ShareArrow width={24} height={24} />
         </Pressable>
-      </View>
+      </Animated.View>
       <View style={styles.selectColorTShirt}>
         <Carousle />
       </View>

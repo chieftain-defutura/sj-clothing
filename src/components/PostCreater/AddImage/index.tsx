@@ -5,6 +5,8 @@ import Animated, {
   BounceOutUp,
   FlipInXDown,
   FlipOutXDown,
+  LightSpeedInLeft,
+  LightSpeedOutRight,
 } from 'react-native-reanimated'
 
 import SelectDesign from './SelectDesign'
@@ -63,7 +65,7 @@ const AddImage: React.FC<IAddImage> = ({ navigation, setPostCreationSteps }) => 
         />
       ) : (
         <View style={styles.AddImageContainer}>
-          <View style={styles.AddImageNavigator}>
+          <Animated.View style={styles.AddImageNavigator}>
             <Pressable onPress={() => setPostCreationSteps(1)}>
               <ArrowCircleLeft width={24} height={24} />
             </Pressable>
@@ -81,7 +83,7 @@ const AddImage: React.FC<IAddImage> = ({ navigation, setPostCreationSteps }) => 
             >
               <ArrowCircleRight width={24} height={24} />
             </Pressable>
-          </View>
+          </Animated.View>
           {isDropDown && (
             <Animated.View
               style={[

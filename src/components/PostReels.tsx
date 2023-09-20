@@ -13,10 +13,19 @@ import Heart from '../assets/icons/heart'
 import IsLikeIcon from '../assets/icons/PostPageIcon/isLikeIcon'
 import IsHeartIcon from '../assets/icons/PostPageIcon/isHeartIcon'
 import IsFireIcon from '../assets/icons/PostPageIcon/isFire'
+import SubscriptionModal from '../screens/Subscription'
+import { useNavigation } from '@react-navigation/native'
+import Animated, {
+  BounceInUp,
+  BounceOutUp,
+  FlipInXDown,
+  FlipOutXDown,
+} from 'react-native-reanimated'
 
 const { width, height } = Dimensions.get('window')
 
 const ReelsComponent: React.FC<ReelsComponentProps> = ({ reelsData }) => {
+  const navigation = useNavigation()
   const [isFullContent, setIsFullContent] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPressed, setIsPressed] = useState(false)
@@ -98,141 +107,149 @@ const ReelsComponent: React.FC<ReelsComponentProps> = ({ reelsData }) => {
 
   return (
     <View style={{ height: reelsHeight }}>
-      <SwiperFlatList
-        data={reelsData}
-        vertical
-        renderItem={({ item }) => (
-          <View
-            key={item.id}
-            style={[styles.item, { backgroundColor: item.backgroundColor, height: reelsHeight }]}
-          >
-            <ImageSlide>
-              <SwiperFlatList
-                data={item.images}
-                horizontal
-                index={currentIndex}
-                onChangeIndex={({ index }) => setCurrentIndex(index)}
-                renderItem={({ item: imageUrl }) => (
-                  <View
-                    key={imageUrl}
-                    style={[styles.item, { backgroundColor: 'pink', height: reelsHeight }]}
-                  >
-                    <View style={styles.container}>
-                      <Image
-                        source={{ uri: imageUrl }}
-                        style={[styles.adImage, { height: reelsHeight }]}
-                      />
-                      <LinearGradient
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        colors={['rgba(0, 0, 0, 0.04)', 'rgba(0, 0, 0, 0.80)']}
-                        style={styles.linearGradient}
-                      ></LinearGradient>
+      <Animated.View entering={FlipInXDown} exiting={FlipOutXDown}>
+        <SwiperFlatList
+          data={reelsData}
+          vertical
+          renderItem={({ item }) => (
+            <View
+              key={item.id}
+              style={[styles.item, { backgroundColor: item.backgroundColor, height: reelsHeight }]}
+            >
+              <ImageSlide>
+                <SwiperFlatList
+                  data={item.images}
+                  horizontal
+                  index={currentIndex}
+                  onChangeIndex={({ index }) => setCurrentIndex(index)}
+                  renderItem={({ item: imageUrl }) => (
+                    <View
+                      key={imageUrl}
+                      style={[styles.item, { backgroundColor: 'pink', height: reelsHeight }]}
+                    >
+                      <View style={styles.container}>
+                        <Image
+                          source={{ uri: imageUrl }}
+                          style={[styles.adImage, { height: reelsHeight }]}
+                        />
+                        <LinearGradient
+                          start={{ x: 0, y: 0 }}
+                          end={{ x: 1, y: 1 }}
+                          colors={['rgba(0, 0, 0, 0.04)', 'rgba(0, 0, 0, 0.80)']}
+                          style={styles.linearGradient}
+                        ></LinearGradient>
+                      </View>
                     </View>
-                  </View>
-                )}
-              />
-            </ImageSlide>
+                  )}
+                />
+              </ImageSlide>
 
-            <FlexContent>
-              <SliderCountContent>
-                <SliderNumber>
-                  {currentIndex + 1}/{item.images.length}
-                </SliderNumber>
-              </SliderCountContent>
-              <PlusIconStyle onPress={openSubscriptionModal}>
-                <LinearGradient
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  colors={['#462D85', '#DB00FF']}
-                  style={styles.plusIconGradientColor}
-                >
-                  <HomePlusIcon width={20} height={20} />
-                </LinearGradient>
-              </PlusIconStyle>
-            </FlexContent>
-            <IconsContent>
-              <View>
-                <IconPressable onPress={share}>
-                  <ShareWhiteIcon width={20} height={20} />
-                </IconPressable>
-              </View>
-              <View>
-                <IconPressable
-                  onPress={() => handleIconPress('like')}
-                  onPressIn={handlePressIn}
-                  onPressOut={handlePressOut}
-                  // style={LikeIconStyle}
-                >
-                  <View>
-                    {activeIcon === 'like' ? (
-                      isLiked ? (
-                        <IsLikeIcon width={20} height={20} />
+              <FlexContent>
+                <SliderCountContent>
+                  <SliderNumber>
+                    {currentIndex + 1}/{item.images.length}
+                  </SliderNumber>
+                </SliderCountContent>
+                <PlusIconStyle onPress={openSubscriptionModal}>
+                  <LinearGradient
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={['#462D85', '#DB00FF']}
+                    style={styles.plusIconGradientColor}
+                  >
+                    <HomePlusIcon width={20} height={20} />
+                  </LinearGradient>
+                </PlusIconStyle>
+              </FlexContent>
+              <IconsContent>
+                <View>
+                  <IconPressable onPress={share}>
+                    <ShareWhiteIcon width={20} height={20} />
+                  </IconPressable>
+                </View>
+                <View>
+                  <IconPressable
+                    onPress={() => handleIconPress('like')}
+                    onPressIn={handlePressIn}
+                    onPressOut={handlePressOut}
+                    // style={LikeIconStyle}
+                  >
+                    <View>
+                      {activeIcon === 'like' ? (
+                        isLiked ? (
+                          <IsLikeIcon width={20} height={20} />
+                        ) : (
+                          <IsLikeIcon width={20} height={20} />
+                        )
                       ) : (
-                        <IsLikeIcon width={20} height={20} />
-                      )
-                    ) : (
-                      <Like width={20} height={20} />
-                    )}
-                  </View>
-                </IconPressable>
-                <ViewText>1k</ViewText>
-              </View>
-              <View>
-                <IconPressable
-                  onPress={() => handleIconPress('fire')}
-                  onPressIn={handlePressIn}
-                  onPressOut={handlePressOut}
-                  // style={FireIconStyle}
-                >
-                  <View>
-                    {activeIcon === 'fire' ? (
-                      isFireActive ? (
-                        <IsFireIcon width={20} height={20} />
+                        <Like width={20} height={20} />
+                      )}
+                    </View>
+                  </IconPressable>
+                  <ViewText>1k</ViewText>
+                </View>
+                <View>
+                  <IconPressable
+                    onPress={() => handleIconPress('fire')}
+                    onPressIn={handlePressIn}
+                    onPressOut={handlePressOut}
+                    // style={FireIconStyle}
+                  >
+                    <View>
+                      {activeIcon === 'fire' ? (
+                        isFireActive ? (
+                          <IsFireIcon width={20} height={20} />
+                        ) : (
+                          <IsFireIcon width={20} height={20} />
+                        )
                       ) : (
-                        <IsFireIcon width={20} height={20} />
-                      )
-                    ) : (
-                      <Fire width={20} height={20} />
-                    )}
-                  </View>
-                </IconPressable>
-                <ViewText>1.6k</ViewText>
-              </View>
-              <View>
-                <IconPressable
-                  onPress={() => handleIconPress('heart')}
-                  onPressIn={handlePressIn}
-                  onPressOut={handlePressOut}
-                  // style={HeartIconStyle}
-                >
-                  <View>
-                    {activeIcon === 'heart' ? (
-                      isHeartActive ? (
-                        <IsHeartIcon width={20} height={20} />
+                        <Fire width={20} height={20} />
+                      )}
+                    </View>
+                  </IconPressable>
+                  <ViewText>1.6k</ViewText>
+                </View>
+                <View>
+                  <IconPressable
+                    onPress={() => handleIconPress('heart')}
+                    onPressIn={handlePressIn}
+                    onPressOut={handlePressOut}
+                    // style={HeartIconStyle}
+                  >
+                    <View>
+                      {activeIcon === 'heart' ? (
+                        isHeartActive ? (
+                          <IsHeartIcon width={20} height={20} />
+                        ) : (
+                          <IsHeartIcon width={20} height={20} />
+                        )
                       ) : (
-                        <IsHeartIcon width={20} height={20} />
-                      )
-                    ) : (
-                      <Heart width={20} height={20} />
-                    )}
-                  </View>
-                </IconPressable>
-                <ViewText>12k</ViewText>
-              </View>
-            </IconsContent>
-            <Content>
-              <ReelsHead>{item.text}</ReelsHead>
-              <ReelsTitle>{item.title}</ReelsTitle>
-              <ReelsDescription>
-                {isFullContent ? item.description : `${item.description.slice(0, 100)}...`}
-              </ReelsDescription>
-              <TouchableOpacity onPress={toggleContent}>
-                <ReelsDescription>{isFullContent ? 'Read Less' : 'Read More'}</ReelsDescription>
-              </TouchableOpacity>
-            </Content>
-          </View>
-        )}
+                        <Heart width={20} height={20} />
+                      )}
+                    </View>
+                  </IconPressable>
+                  <ViewText>12k</ViewText>
+                </View>
+              </IconsContent>
+              <Content>
+                <ReelsHead>{item.text}</ReelsHead>
+                <ReelsTitle>{item.title}</ReelsTitle>
+                <ReelsDescription>
+                  {isFullContent ? item.description : `${item.description.slice(0, 100)}...`}
+                </ReelsDescription>
+                <TouchableOpacity onPress={toggleContent}>
+                  <ReelsDescription>{isFullContent ? 'Read Less' : 'Read More'}</ReelsDescription>
+                </TouchableOpacity>
+              </Content>
+            </View>
+          )}
+        />
+      </Animated.View>
+
+      <SubscriptionModal
+        isVisible={isSubscriptionModal}
+        onClose={closeSubscriptionModal}
+        navigation={navigation}
       />
     </View>
   )

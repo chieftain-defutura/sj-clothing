@@ -6,6 +6,8 @@ import Animated, {
   BounceOutUp,
   FlipInXDown,
   FlipOutXDown,
+  LightSpeedInLeft,
+  LightSpeedOutRight,
 } from 'react-native-reanimated'
 
 import SelectText from './SelectText'
@@ -52,7 +54,7 @@ const AddText: React.FC<IAddText> = ({ navigation, setPostCreationSteps }) => {
     <View style={{ flex: 1 }}>
       {!isTextAdded ? (
         <View style={styles.AddTextContainer}>
-          <View style={styles.AddTextNavigator}>
+          <Animated.View style={styles.AddTextNavigator}>
             <Pressable onPress={() => setPostCreationSteps(2)}>
               <ArrowCircleLeft width={24} height={24} />
             </Pressable>
@@ -62,7 +64,7 @@ const AddText: React.FC<IAddText> = ({ navigation, setPostCreationSteps }) => {
             <Pressable onPress={() => setPostCreationSteps(4)}>
               <ArrowCircleRight width={24} height={24} />
             </Pressable>
-          </View>
+          </Animated.View>
           {isDropDown && (
             <DropDownWrapper>
               <Animated.View

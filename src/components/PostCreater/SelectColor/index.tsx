@@ -14,6 +14,8 @@ import Animated, {
   FadeOut,
   FlipInXDown,
   FlipOutXDown,
+  LightSpeedInLeft,
+  LightSpeedOutRight,
 } from 'react-native-reanimated'
 import { PostCreationStore } from '../../../store/postCreationStore'
 
@@ -142,7 +144,7 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation, setPostCreationSteps 
           </Animated.View>
         </Animated.View>
       )}
-      <View style={styles.selectColorNavigator}>
+      <Animated.View style={styles.selectColorNavigator}>
         <Pressable onPress={() => setPostCreationSteps(0)}>
           <ArrowCircleLeft width={24} height={24} />
         </Pressable>
@@ -157,7 +159,7 @@ const SelectColor: React.FC<ISelectColor> = ({ navigation, setPostCreationSteps 
         >
           <ArrowCircleRight width={24} height={24} />
         </Pressable>
-      </View>
+      </Animated.View>
 
       <View
         style={{

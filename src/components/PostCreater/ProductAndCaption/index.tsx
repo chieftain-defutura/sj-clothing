@@ -9,6 +9,7 @@ import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
 import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 import { PostCreationStore } from '../../../store/postCreationStore'
+import Animated, { LightSpeedInLeft, LightSpeedOutRight } from 'react-native-reanimated'
 
 // const Data = [
 //   require('../../../assets/images/text-tshirt.png'),
@@ -33,7 +34,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation, setPostCr
   const [isProduct, setProduct] = useState('')
   return (
     <ScrollView style={styles.ProductAndCaptionContainer}>
-      <View style={styles.ProductAndCaptionNavigator}>
+      <Animated.View style={styles.ProductAndCaptionNavigator}>
         <Pressable onPress={() => setPostCreationSteps(3)}>
           <ArrowCircleLeft width={24} height={24} />
         </Pressable>
@@ -45,7 +46,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation, setPostCr
         >
           <ArrowCircleRight width={24} height={24} />
         </Pressable>
-      </View>
+      </Animated.View>
       <View style={styles.TShirt}>
         <Image source={require('../../../assets/images/plain-shirt.png')} />
       </View>
