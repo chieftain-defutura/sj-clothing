@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { TouchableOpacity, Pressable, FlatList, View, Dimensions, Share } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { COLORS } from '../styles/theme'
 import styled from 'styled-components/native'
 import Like from '../assets/icons/like'
@@ -8,7 +9,7 @@ import Fire from '../assets/icons/fire'
 import Heart from '../assets/icons/heart'
 import LoginModal from '../screens/Login'
 import SaveIcon from '../assets/icons/SaveIcon'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import SignupModal from '../screens/Signup'
 import { userStore } from '../store/userStore'
 
@@ -40,11 +41,22 @@ interface PostCardProps {
 const PostCard: React.FC<PostCardProps> = ({ props: componentNameProps, onPress }) => {
   const [isLoginModalVisible, setLoginModalVisible] = React.useState(false)
   const [isSignUpModel, setSignupMoodel] = React.useState(false)
+  const [userMail, setUserMail] = useState<string | null>('')
   const [currentIndex, setCurrentIndex] = useState(0)
   const user = userStore((state) => state.user)
 
+  const getMail = React.useCallback(async () => {
+    const data = await AsyncStorage.getItem('mail')
+    console.log('datas', data)
+    setUserMail(data)
+  }, [])
+
+  useEffect(() => {
+    getMail()
+  }, [getMail])
+
   const handleClick = () => {
-    if (!user) {
+    if (!userMail) {
       setLoginModalVisible(true)
     } else {
       console.log('press ', user)

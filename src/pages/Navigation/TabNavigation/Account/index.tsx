@@ -1,26 +1,25 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import AuthNavigate from '../../../../screens/AuthNavigate'
 import { ScrollView, View } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
-import CustomButton from '../../../../components/Button'
-import { userStore } from '../../../../store/userStore'
-import { useNavigation } from '@react-navigation/native'
-import { signOut, updateCurrentUser } from 'firebase/auth'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 import { auth } from '../../../../../firebase'
 import { COLORS } from '../../../../styles/theme'
-import UserIcon from '../../../../assets/icons/AccountPageIcon/UserIcon'
+import { userStore } from '../../../../store/userStore'
+import AuthNavigate from '../../../../screens/AuthNavigate'
 import ChevronLeft from '../../../../assets/icons/ChevronLeft'
-import CopyIcon from '../../../../assets/icons/AccountPageIcon/CopyIcon'
-import SackDollar from '../../../../assets/icons/AccountPageIcon/SackDollar'
 import Cart from '../../../../assets/icons/AccountPageIcon/CartIcon'
+import LogoutIcon from '../../../../assets/icons/AccountPageIcon/Logout'
+import UserIcon from '../../../../assets/icons/AccountPageIcon/UserIcon'
+import CopyIcon from '../../../../assets/icons/AccountPageIcon/CopyIcon'
+import UsersMore from '../../../../assets/icons/AccountPageIcon/UsersMore'
+import SackDollar from '../../../../assets/icons/AccountPageIcon/SackDollar'
 import ShoppingBag from '../../../../assets/icons/AccountPageIcon/ShoppingBag'
 import WishListIcon from '../../../../assets/icons/AccountPageIcon/WishlistIcon'
 import HomeLocation from '../../../../assets/icons/AccountPageIcon/HomeLocation'
 import CustomerCare from '../../../../assets/icons/AccountPageIcon/CustomerCare'
 import HelpQuestion from '../../../../assets/icons/AccountPageIcon/HelpQuestion'
-import UsersMore from '../../../../assets/icons/AccountPageIcon/UsersMore'
-import LogoutIcon from '../../../../assets/icons/AccountPageIcon/Logout'
 
 const data = [
   {
@@ -79,8 +78,9 @@ const Account: React.FC<IAccount> = ({ navigation }) => {
     try {
       await auth.signOut()
       const user = auth.currentUser
-
-      if (!user) {
+      const data = await AsyncStorage.getItem('mail')
+      await AsyncStorage.removeItem('mail')
+      if (!data) {
         updateUser(null)
         navigation.navigate('Post')
         console.log('Signed out successfully')
@@ -89,8 +89,6 @@ const Account: React.FC<IAccount> = ({ navigation }) => {
       console.log(error)
     }
   }
-
-  console.log(user?.displayName)
 
   return (
     <ScrollView>

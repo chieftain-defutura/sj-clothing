@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 import styled from 'styled-components/native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -89,7 +91,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
     try {
       const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password)
       await updateProfile(user, { displayName: values.name })
-
+      await AsyncStorage.setItem('mail', values.email)
       navigation.navigate('Post')
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -180,7 +182,9 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
               <CustomButton
                 variant='primary'
                 text={isSubmitting ? 'Sign up...' : 'Sign up'}
-                onPress={() => handleSubmit()}
+                onPress={() => {
+                  handleSubmit(), onClose
+                }}
                 disabled={!isValid}
                 buttonStyle={[styles.submitBtn]}
               />

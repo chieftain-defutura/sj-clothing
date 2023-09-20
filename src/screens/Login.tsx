@@ -12,7 +12,8 @@ import EyeIcon from '../assets/icons/EyeIcon'
 import EyeHideIcon from '../assets/icons/EyeIconHide'
 import { auth } from '../../firebase'
 import { FirebaseError } from 'firebase/app'
-import { userStore } from '../store/userStore'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 // import { userStore } from '../store/userStore'
 
 interface LoginModalProps {
@@ -59,8 +60,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
     try {
       console.log(values)
       await signInWithEmailAndPassword(auth, values.email, values.password)
+      await AsyncStorage.setItem('mail', values.email)
       console.log('user logged in successfully')
-      navigation.navigate('Post')
     } catch (error) {
       console.log(error)
       if (error instanceof FirebaseError) {
@@ -142,7 +143,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
               <CustomButton
                 variant='primary'
                 text={btnText}
-                onPress={() => handleSubmit()}
+                onPress={() => {
+                  handleSubmit(), onClose
+                }}
                 disabled={!isValid}
                 buttonStyle={[styles.submitBtn]}
               />
