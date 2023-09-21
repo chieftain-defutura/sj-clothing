@@ -108,6 +108,8 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
 
   const dynamicHeartIconStyle = activeIcon === 'heart' ? HeartIconStyle : {}
 
+  const gradientColors = ['#BF94E4', '#D7B4E8', '#ECD1EC', '#F6E5F6', '#CADAF1', '#91B1E1']
+
   return (
     <PostCardWrapper>
       <SwiperFlatList
@@ -126,7 +128,8 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
               onChangeIndex={({ index }) => setCurrentIndex(index)}
               showPagination={false}
               renderItem={({ item: image }) => (
-                <ImageContent>
+                <LinearGradient colors={gradientColors} style={{ borderRadius: 10 }}>
+                  {/* <ImageContent> */}
                   <View style={styles.container}>
                     <Image
                       source={image}
@@ -143,7 +146,8 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
                       style={styles.linearGradient}
                     ></LinearGradient>
                   </View>
-                </ImageContent>
+                  {/* </ImageContent> */}
+                </LinearGradient>
               )}
             />
 
@@ -322,7 +326,6 @@ const PostDescription = styled.Text`
 `
 
 const ImageContent = styled.View`
-  background-color: ${COLORS.imageContentClr};
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 `
@@ -360,12 +363,15 @@ const PostCardContent = styled.View`
 const styles = StyleSheet.create({
   linearGradient: {
     ...StyleSheet.absoluteFillObject,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   plusIconGradientColor: {
     backgroundColor: '#462d85',
     borderRadius: 70,
