@@ -1,49 +1,52 @@
 import * as React from 'react'
-import { TouchableOpacity, Pressable, FlatList, View, Dimensions, Share } from 'react-native'
+import { Image, Pressable, Dimensions, Share, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { COLORS } from '../styles/theme'
 import styled from 'styled-components/native'
 import Like from '../assets/icons/like'
-import EyeIcon from '../assets/icons/EyeIcon'
 import Fire from '../assets/icons/fire'
 import Heart from '../assets/icons/heart'
-import LoginModal from '../screens/Login'
 import SaveIcon from '../assets/icons/SaveIcon'
 import { useState, useEffect } from 'react'
-import SignupModal from '../screens/Signup'
-import { userStore } from '../store/userStore'
+import SwiperFlatList from 'react-native-swiper-flatlist'
+import { reelsData } from '../utils/postData'
+import { LinearGradient } from 'expo-linear-gradient'
+import { StyleSheet } from 'react-native'
+import IsLikeIcon from '../assets/icons/PostPageIcon/isLikeIcon'
+import IsFireIcon from '../assets/icons/PostPageIcon/isFire'
+import IsHeartIcon from '../assets/icons/PostPageIcon/isHeartIcon'
 
-interface componentNameProps {}
+const { width, height } = Dimensions.get('window')
 
-const onLikePressed = () => {}
-
-const { width } = Dimensions.get('window')
-const Data = [
-  {
-    id: 1,
-    image: require('../assets/images/t-shirt.png'),
-    title: 'John David',
-    description: 'Imperdiet in sit rhoncus , eleifend tellus augue lec ... more',
-  },
-  {
-    id: 2,
-    image: require('../assets/images/t-shirt.png'),
-    title: 'John David',
-    description: 'Imperdiet in sit rhoncus , eleifend tellus augue lec ... more',
-  },
-]
-
-interface PostCardProps {
-  onPress: () => void
-  props?: componentNameProps
-}
-
-const PostCard: React.FC<PostCardProps> = ({ props: componentNameProps, onPress }) => {
-  const [isLoginModalVisible, setLoginModalVisible] = React.useState(false)
-  const [isSignUpModel, setSignupMoodel] = React.useState(false)
+const PostCard: React.FC = () => {
   const [userMail, setUserMail] = useState<string | null>('')
   const [currentIndex, setCurrentIndex] = useState(0)
-  const user = userStore((state) => state.user)
+  const [activeIcon, setActiveIcon] = useState<string | null>(null)
+  const [isLiked, setIsLiked] = useState(false)
+  const [isPressed, setIsPressed] = useState(false)
+  const [isFireActive, setIsFireActive] = useState(false)
+  const [isHeartActive, setIsHeartActive] = useState(false)
+  const tabHeight = 120
+  const reelsHeight = height - tabHeight
+
+  const handleIconPress = (iconName: string) => {
+    setActiveIcon(iconName)
+    if (iconName === 'like') {
+      setIsLiked((prevIsLiked) => !prevIsLiked)
+    } else if (iconName === 'fire') {
+      setIsFireActive((prev) => !prev)
+    } else if (iconName === 'heart') {
+      setIsHeartActive((prev) => !prev)
+    }
+  }
+
+  const handlePressIn = () => {
+    setIsPressed(true)
+  }
+
+  const handlePressOut = () => {
+    setIsPressed(false)
+  }
 
   const getMail = React.useCallback(async () => {
     const data = await AsyncStorage.getItem('mail')
@@ -55,27 +58,6 @@ const PostCard: React.FC<PostCardProps> = ({ props: componentNameProps, onPress 
     getMail()
   }, [getMail])
 
-  const handleClick = () => {
-    if (!userMail) {
-      setLoginModalVisible(true)
-    } else {
-      console.log('press ', user)
-      setLoginModalVisible(false)
-    }
-  }
-
-  const closeLoginModal = () => {
-    setLoginModalVisible(false)
-  }
-
-  const onSignUpClick = () => {
-    setLoginModalVisible(false)
-    setSignupMoodel(true)
-  }
-
-  const closeSignUpModel = () => {
-    setSignupMoodel(false)
-  }
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
     try {
@@ -94,113 +76,177 @@ const PostCard: React.FC<PostCardProps> = ({ props: componentNameProps, onPress 
     }
   }
 
-  const flatListRenderer = () => {
-    return (
-      <ImageContent style={{ width: width - 32, overflow: 'hidden' }}>
-        <TouchableOpacity onPress={handleClick}>
-          <TShirtImg source={require('../assets/images/t-shirt.png')} resizeMode='cover' />
-        </TouchableOpacity>
-        <CardContent>
-          <Pressable onPress={onLikePressed}>
-            <Like height={20} width={20} />
-          </Pressable>
-
-          <Pressable onPress={onLikePressed}>
-            <Fire height={20} width={20} />
-          </Pressable>
-          <ContentView>
-            <Pressable onPress={onLikePressed}>
-              <Heart height={20} width={20} />
-            </Pressable>
-            <LikeText>10.01k</LikeText>
-          </ContentView>
-        </CardContent>
-        <EyeContent>
-          <Pressable onPress={onLikePressed}>
-            <EyeIcon height={20} width={20} />
-          </Pressable>
-          <EyeText>10.01k</EyeText>
-        </EyeContent>
-      </ImageContent>
-    )
+  const LikeIconStyle = {
+    backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
   }
+
+  const dynamicLikeIconStyle = activeIcon === 'like' ? LikeIconStyle : {}
+
+  const FireIconStyle = {
+    backgroundColor: isPressed ? 'rgba(251, 99, 4, 0.5)' : 'transparent',
+  }
+
+  const dynamicFireIconStyle = activeIcon === 'fire' ? FireIconStyle : {}
+
+  const HeartIconStyle = {
+    backgroundColor: isPressed ? 'rgba(219, 0, 255, 0.5)' : 'transparent',
+  }
+
+  const dynamicHeartIconStyle = activeIcon === 'heart' ? HeartIconStyle : {}
+
   return (
     <PostCardWrapper>
-      <View style={{ height: 400 }}>
-        <FlatList
-          data={Data}
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          onScroll={(e) => {
-            const x = e.nativeEvent.contentOffset.x
-            const newIndex = Math.round(x / width)
-            setCurrentIndex(newIndex)
-          }}
-          horizontal
-          renderItem={({ item, index }) => flatListRenderer()}
-        />
-      </View>
+      <SwiperFlatList
+        data={reelsData}
+        vertical
+        renderAll={true}
+        renderItem={({ item }) => (
+          <View
+            key={item.id}
+            style={{ height: reelsHeight - 12, flex: 1, borderRadius: 10, position: 'relative' }}
+          >
+            <SwiperFlatList
+              data={item.images}
+              horizontal
+              index={currentIndex}
+              onChangeIndex={({ index }) => setCurrentIndex(index)}
+              showPagination={false}
+              renderItem={({ item: image }) => (
+                <ImageContent>
+                  <View style={styles.container}>
+                    <Image
+                      source={image}
+                      style={{
+                        height: reelsHeight - 150,
+                        width: width - 16,
+                        resizeMode: 'cover',
+                      }}
+                    />
+                    <LinearGradient
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 0, y: 1 }}
+                      colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.38)']}
+                      style={styles.linearGradient}
+                    ></LinearGradient>
+                  </View>
+                </ImageContent>
+              )}
+            />
 
-      <PostCardContent>
-        <FlexContent>
-          <SliderNumber>{currentIndex + 1}/2</SliderNumber>
-          <SliderDots>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              {Data.map((item, index) => {
-                return (
-                  <View
-                    key={index}
-                    style={{
-                      backgroundColor: currentIndex == index ? '#DB00FF' : '#AAA',
-                      width: currentIndex == index ? 12 : 4,
-                      height: 4,
-                      borderRadius: 10,
-                      marginLeft: 5,
-                    }}
-                  ></View>
-                )
-              })}
-            </View>
-          </SliderDots>
-          <Pressable onPress={share}>
-            <SaveIcon width={24} height={24} />
-          </Pressable>
-        </FlexContent>
-        <Content>
-          <PostCardText>Post Card</PostCardText>
-          <PostDescription>
-            Imperdiet in sit rhoncus , eleifend tellus augue lec ... more
-          </PostDescription>
-        </Content>
-      </PostCardContent>
+            <SliderCountContent>
+              <SliderNumber>
+                {currentIndex + 1}/{item.images.length}
+              </SliderNumber>
+            </SliderCountContent>
 
-      <LoginModal
-        isVisible={isLoginModalVisible}
-        onClose={closeLoginModal}
-        onSignClick={onSignUpClick}
-      />
-      <SignupModal
-        isVisible={isSignUpModel}
-        onLoginClick={() => {
-          setSignupMoodel(false)
-          setLoginModalVisible(true)
-        }}
-        onClose={closeSignUpModel}
+            <CardContent>
+              <IconPressable>
+                <ContentView
+                  onPress={() => handleIconPress('like')}
+                  onPressIn={handlePressIn}
+                  onPressOut={handlePressOut}
+                  style={dynamicLikeIconStyle}
+                >
+                  {activeIcon === 'like' ? (
+                    isLiked ? (
+                      <IsLikeIcon width={20} height={20} />
+                    ) : (
+                      <IsLikeIcon width={20} height={20} />
+                    )
+                  ) : (
+                    <Like width={20} height={20} />
+                  )}
+                </ContentView>
+                <LikeText>1k</LikeText>
+              </IconPressable>
+
+              <IconPressable>
+                <ContentView
+                  onPress={() => handleIconPress('fire')}
+                  onPressIn={handlePressIn}
+                  onPressOut={handlePressOut}
+                  style={dynamicFireIconStyle}
+                >
+                  {activeIcon === 'fire' ? (
+                    isFireActive ? (
+                      <IsFireIcon width={20} height={20} />
+                    ) : (
+                      <IsFireIcon width={20} height={20} />
+                    )
+                  ) : (
+                    <Fire width={20} height={20} />
+                  )}
+                </ContentView>
+                <LikeText>1.2k</LikeText>
+              </IconPressable>
+              <IconPressable>
+                <ContentView
+                  onPress={() => handleIconPress('heart')}
+                  onPressIn={handlePressIn}
+                  onPressOut={handlePressOut}
+                  style={dynamicHeartIconStyle}
+                >
+                  {activeIcon === 'heart' ? (
+                    isHeartActive ? (
+                      <IsHeartIcon width={20} height={20} />
+                    ) : (
+                      <IsHeartIcon width={20} height={20} />
+                    )
+                  ) : (
+                    <Heart width={20} height={20} />
+                  )}
+                </ContentView>
+                <LikeText>1.5k</LikeText>
+              </IconPressable>
+            </CardContent>
+
+            <PostCardContent>
+              <FlexContent>
+                <TextHead>{item.text}</TextHead>
+                <Pressable onPress={share}>
+                  <SaveIcon width={24} height={24} />
+                </Pressable>
+              </FlexContent>
+              <Content>
+                <PostCardText>{item.title}</PostCardText>
+                <PostDescription>{item.description}</PostDescription>
+              </Content>
+            </PostCardContent>
+          </View>
+        )}
       />
     </PostCardWrapper>
   )
 }
 
 const PostCardWrapper = styled.View`
-  width: 90%;
-  background-color: transparent;
-  margin: 20px;
+  padding-horizontal: 8px;
+  padding-vertical: 8px;
+`
+
+const SliderCountContent = styled.View`
+  background: ${COLORS.iconsNormalClr};
+  border-radius: 20px;
+  padding-vertical: 4px;
+  padding-horizontal: 8px;
+  width: 42px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+`
+
+const IconPressable = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+`
+
+const TextHead = styled.Text`
+  font-size: 14px;
+  letter-spacing: -0.28px;
+  font-family: Gilroy-SemiBold;
+  color: ${COLORS.iconsHighlightClr};
 `
 
 const SliderNumber = styled.Text`
@@ -208,6 +254,7 @@ const SliderNumber = styled.Text`
   letter-spacing: -0.28px;
   font-size: 14px;
   font-family: Gilroy-SemiBold;
+  text-align: center;
 `
 
 const FlexContent = styled.View`
@@ -235,35 +282,29 @@ const PostDescription = styled.Text`
   margin-top: 4px;
 `
 
-const SliderDots = styled.Text``
-
 const ImageContent = styled.View`
   background-color: ${COLORS.imageContentClr};
-  padding: 16px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 `
 
-const TShirtImg = styled.Image`
-  height: 300px;
-  flex-shrink: 0;
-  margin-vertical: 30px;
-  margin-horizontal: 14px;
-`
+const TShirtImg = styled.Image``
 
 const CardContent = styled.View`
   position: absolute;
   padding-left: 16px;
-  bottom: 10px;
   display: flex;
+  bottom: 145px;
   flex-direction: row;
-  gap: 16px;
+  gap: 8px;
 `
 
-const ContentView = styled.View`
+const ContentView = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   gap: 5px;
+  padding: 5px;
+  border-radius: 30px;
 `
 
 const LikeText = styled.Text`
@@ -273,29 +314,19 @@ const LikeText = styled.Text`
   font-size: 14px;
 `
 
-const EyeContent = styled.View`
-  position: absolute;
-  right: 25px;
-  bottom: 10px;
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-`
-
-const EyeText = styled.Text`
-  color: white;
-  align-items: center;
-  font-style: normal;
-  font-size: 14px;
-  margin-top: -3px;
-`
-
 const PostCardContent = styled.View`
-  width: auto;
-  background-color: white;
   padding: 16px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
 `
+
+const styles = StyleSheet.create({
+  linearGradient: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+})
 
 export default PostCard

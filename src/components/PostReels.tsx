@@ -15,12 +15,7 @@ import IsHeartIcon from '../assets/icons/PostPageIcon/isHeartIcon'
 import IsFireIcon from '../assets/icons/PostPageIcon/isFire'
 import SubscriptionModal from '../screens/Subscription'
 import { useNavigation } from '@react-navigation/native'
-import Animated, {
-  BounceInUp,
-  BounceOutUp,
-  FlipInXDown,
-  FlipOutXDown,
-} from 'react-native-reanimated'
+import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 
 const { width, height } = Dimensions.get('window')
 
@@ -93,17 +88,23 @@ const ReelsComponent: React.FC<ReelsComponentProps> = ({ reelsData }) => {
     padding: 5,
   }
 
+  const dynamicLikeIconStyle = activeIcon === 'like' ? LikeIconStyle : {}
+
   const FireIconStyle = {
     backgroundColor: isPressed ? '#fb6304' : 'transparent',
     borderRadius: 30,
     padding: 5,
   }
 
+  const dynamicFireIconStyle = activeIcon === 'fire' ? FireIconStyle : {}
+
   const HeartIconStyle = {
     backgroundColor: isPressed ? '#DB00FF' : 'transparent',
     borderRadius: 30,
     padding: 5,
   }
+
+  const dynamicHeartIconStyle = activeIcon === 'heart' ? HeartIconStyle : {}
 
   return (
     <View style={{ height: reelsHeight }}>
@@ -172,7 +173,7 @@ const ReelsComponent: React.FC<ReelsComponentProps> = ({ reelsData }) => {
                     onPress={() => handleIconPress('like')}
                     onPressIn={handlePressIn}
                     onPressOut={handlePressOut}
-                    // style={LikeIconStyle}
+                    style={dynamicLikeIconStyle}
                   >
                     <View>
                       {activeIcon === 'like' ? (
@@ -193,7 +194,7 @@ const ReelsComponent: React.FC<ReelsComponentProps> = ({ reelsData }) => {
                     onPress={() => handleIconPress('fire')}
                     onPressIn={handlePressIn}
                     onPressOut={handlePressOut}
-                    // style={FireIconStyle}
+                    style={dynamicFireIconStyle}
                   >
                     <View>
                       {activeIcon === 'fire' ? (
@@ -214,7 +215,7 @@ const ReelsComponent: React.FC<ReelsComponentProps> = ({ reelsData }) => {
                     onPress={() => handleIconPress('heart')}
                     onPressIn={handlePressIn}
                     onPressOut={handlePressOut}
-                    // style={HeartIconStyle}
+                    style={dynamicHeartIconStyle}
                   >
                     <View>
                       {activeIcon === 'heart' ? (

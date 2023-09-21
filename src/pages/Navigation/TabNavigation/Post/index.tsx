@@ -146,7 +146,11 @@
 //           <PlusIcon width={24} height={24} />
 //         </Pressable>
 //       </LinearGradient>
-//       <SubscriptionModal isVisible={isSubscriptionModal} onClose={closeSubscriptionModal} />
+//       <SubscriptionModal
+//         isVisible={isSubscriptionModal}
+//         onClose={closeSubscriptionModal}
+//         navigation={navigation}
+//       />
 //     </PostContainer>
 //   )
 // }
@@ -234,16 +238,30 @@
 
 // export default Post
 
+// // import React from 'react'
+// // import { SafeAreaView } from 'react-native'
+// // import ReelsComponent from '../../../../components/PostReels'
+// // import { reelsData } from '../../../../utils/postData'
+
+// // const Post: React.FC = () => {
+// //   return (
+// //     <SafeAreaView style={{ flex: 1 }}>
+// //       <ReelsComponent reelsData={reelsData} />
+// //     </SafeAreaView>
+// //   )
+// // }
+
+// // export default Post
+
+import { View } from 'react-native'
 import React from 'react'
-import { SafeAreaView } from 'react-native'
-import ReelsComponent from '../../../../components/PostReels'
-import { reelsData } from '../../../../utils/postData'
+import PostCard from '../../../../components/PostCard'
 
 const Post: React.FC = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ReelsComponent reelsData={reelsData} />
-    </SafeAreaView>
+    <View>
+      <PostCard />
+    </View>
   )
 }
 
