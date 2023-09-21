@@ -256,11 +256,13 @@
 import { View } from 'react-native'
 import React from 'react'
 import PostCard from '../../../../components/PostCard'
+import { useNavigation } from '@react-navigation/native'
 
 const Post: React.FC = () => {
+  const navigation = useNavigation()
   return (
     <View>
-      <PostCard />
+      <PostCard navigation={navigation} />
     </View>
   )
 }
