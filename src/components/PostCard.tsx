@@ -15,16 +15,23 @@ import { StyleSheet } from 'react-native'
 import IsLikeIcon from '../assets/icons/PostPageIcon/isLikeIcon'
 import IsFireIcon from '../assets/icons/PostPageIcon/isFire'
 import IsHeartIcon from '../assets/icons/PostPageIcon/isHeartIcon'
+import HomePlusIcon from '../assets/icons/PostPlusIcon'
+import SubscriptionModal from '../screens/Subscription'
 
 const { width, height } = Dimensions.get('window')
 
-const PostCard: React.FC = () => {
+interface IPost {
+  navigation: any
+}
+
+const PostCard: React.FC<IPost> = ({ navigation }) => {
   const [userMail, setUserMail] = useState<string | null>('')
   const [currentIndex, setCurrentIndex] = useState(0)
   const [activeIcon, setActiveIcon] = useState<string | null>(null)
   const [isLiked, setIsLiked] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
   const [isFireActive, setIsFireActive] = useState(false)
+  const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [isHeartActive, setIsHeartActive] = useState(false)
   const tabHeight = 120
   const reelsHeight = height - tabHeight
@@ -53,6 +60,13 @@ const PostCard: React.FC = () => {
     console.log('datas', data)
     setUserMail(data)
   }, [])
+
+  const openSubscriptionModal = () => {
+    setSubscriptionModal(true)
+  }
+  const closeSubscriptionModal = () => {
+    setSubscriptionModal(false)
+  }
 
   useEffect(() => {
     getMail()
@@ -215,6 +229,21 @@ const PostCard: React.FC = () => {
           </View>
         )}
       />
+      <PlusIconStyle onPress={openSubscriptionModal}>
+        <LinearGradient
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          colors={['#462D85', '#DB00FF']}
+          style={styles.plusIconGradientColor}
+        >
+          <HomePlusIcon width={20} height={20} />
+        </LinearGradient>
+      </PlusIconStyle>
+      <SubscriptionModal
+        isVisible={isSubscriptionModal}
+        onClose={closeSubscriptionModal}
+        navigation={navigation}
+      />
     </PostCardWrapper>
   )
 }
@@ -233,6 +262,16 @@ const SliderCountContent = styled.View`
   position: absolute;
   top: 16px;
   right: 16px;
+`
+
+const PlusIconStyle = styled.Pressable`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
 `
 
 const IconPressable = styled.View`
@@ -326,6 +365,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  plusIconGradientColor: {
+    backgroundColor: '#462d85',
+    borderRadius: 70,
+    padding: 10,
+    width: 40,
+    height: 40,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.24,
+    shadowRadius: 0,
+    elevation: 5,
   },
 })
 
