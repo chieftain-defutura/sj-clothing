@@ -109,7 +109,7 @@ const AddImage: React.FC<IAddImage> = ({ navigation, setPostCreationSteps }) => 
                   style={{
                     textAlign: 'center',
                     borderBottomColor: COLORS.borderClr,
-                    borderBottomWidth: 2,
+                    borderBottomWidth: 1,
                     paddingVertical: 20,
                     color: COLORS.textClr,
                     fontSize: 14,

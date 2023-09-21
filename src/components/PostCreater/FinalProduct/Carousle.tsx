@@ -4,7 +4,7 @@ import Slick from 'react-native-slick'
 import * as ImagePicker from 'expo-image-picker'
 import UndrawGiftBox from '../../../assets/icons/Undraw-gift-box'
 import { COLORS } from '../../../styles/theme'
-import { Video } from 'expo-av'
+import { Video, ResizeMode } from 'expo-av'
 
 const Carousle = () => {
   const [selectedVideo, setSelectedVideo] = useState<any>(null)
@@ -58,6 +58,8 @@ const Carousle = () => {
               source={{ uri: selectedVideo }}
               style={{ width: 400, height: 400 }}
               shouldPlay
+              isLooping
+              resizeMode={ResizeMode.COVER}
               useNativeControls
             />
           </View>

@@ -12,7 +12,7 @@ interface IPostCreation {
 }
 const PostCreation: React.FC<IPostCreation> = ({ navigation }) => {
   const [isPostCreationSteps, setPostCreationSteps] = useState(0)
-  console.log(isPostCreationSteps)
+
   return (
     <PostCreationContainer style={{ flex: 1 }}>
       {isPostCreationSteps === 0 && (
