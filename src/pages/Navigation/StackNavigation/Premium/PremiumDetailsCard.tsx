@@ -21,7 +21,7 @@ const PremiumDetailsCard: React.FC = () => {
 
   return (
     <ScrollView>
-      <PremiumDetails />
+      <PremiumDetails navigation={navigation} />
       {cardPairs.map((pair, index) => (
         <CardPairContainer key={index}>
           {pair.map((item) => (

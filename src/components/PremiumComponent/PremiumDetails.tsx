@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, Pressable, Share, Image, View } from 'react-native'
 import styled from 'styled-components/native'
-import { useNavigation } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import LeftArrow from '../../assets/icons/LeftArrow'
 import ShareArrow from '../../assets/icons/ShareArrow'
@@ -10,8 +9,12 @@ import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
 import CustomButton from '../Button'
 
-const PremiumDetails: React.FC = () => {
-  const navigation = useNavigation()
+interface IPremiumDetails {
+  navigation: any
+}
+
+const PremiumDetails: React.FC<IPremiumDetails> = ({ navigation }) => {
+  // const navigation = useNavigation()
 
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
@@ -91,6 +94,7 @@ const PremiumDetails: React.FC = () => {
         text='Add more'
         fontFamily='Arvo-Regular'
         fontSize={12}
+        onPress={() => navigation.navigate('PremiumThreeSixtyDegreePage')}
         style={{ marginBottom: 30 }}
       />
     </LinearGradient>
