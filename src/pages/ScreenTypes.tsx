@@ -9,6 +9,7 @@ export type RootStackParamList = {
   MyOrders: undefined
   GiftOptions: undefined
   Notification: undefined
+  PremiumDetailsCard: undefined
   Search: undefined
   Post: undefined
   Home: undefined

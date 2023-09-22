@@ -6,10 +6,7 @@ import Animated, {
   BounceOutUp,
   FlipInXDown,
   FlipOutXDown,
-  LightSpeedInLeft,
-  LightSpeedOutRight,
 } from 'react-native-reanimated'
-
 import SelectText from './SelectText'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'

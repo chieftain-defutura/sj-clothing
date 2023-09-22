@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Image, Pressable, Dimensions, Share, View } from 'react-native'
+import { Image, Pressable, Dimensions, Share, View, StyleSheet } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { COLORS } from '../styles/theme'
 import styled from 'styled-components/native'
@@ -11,7 +11,6 @@ import { useState, useEffect } from 'react'
 import SwiperFlatList from 'react-native-swiper-flatlist'
 import { reelsData } from '../utils/postData'
 import { LinearGradient } from 'expo-linear-gradient'
-import { StyleSheet } from 'react-native'
 import IsLikeIcon from '../assets/icons/PostPageIcon/isLikeIcon'
 import IsFireIcon from '../assets/icons/PostPageIcon/isFire'
 import IsHeartIcon from '../assets/icons/PostPageIcon/isHeartIcon'
@@ -336,7 +335,7 @@ const CardContent = styled.View`
   position: absolute;
   padding-left: 16px;
   display: flex;
-  bottom: 145px;
+  bottom: 130px;
   flex-direction: row;
   gap: 8px;
 `

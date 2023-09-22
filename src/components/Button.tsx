@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleProp, ViewStyle, View, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { COLORS } from '../styles/theme'
+import { COLORS, FONT_FAMILY } from '../styles/theme'
 
 type Props = {
   text: string
@@ -80,7 +80,7 @@ const ButtonText = styled.Text<{ variant: 'primary' | 'secondary' | undefined }>
   font-size: 14px;
   text-align: center;
   color: white;
-  background: ${(p) => (p.variant === 'primary' ? 'transparent' : COLORS.textSecondaryClr)};
+  background: ${(p) => (p.variant === 'primary' ? 'transparent' : 'transparent')};
 `
 
 export default CustomButton

@@ -1,6 +1,5 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-
 import BuyNow from './BuyNow'
 import CartPage from './Cart'
 import Checkout from './Checkout'
@@ -17,6 +16,7 @@ import TabNavigationRoutes from '../TabNavigation'
 import OrderPlaced from '../../../screens/OrderPlaced'
 import PostCreation from '../../../components/PostCreater'
 import { HeaderLeft, HeaderRight } from '../../../components/Header'
+import PremiumDetailsCard from './Premium/PremiumDetailsCard'
 
 const Stack = createNativeStackNavigator()
 
@@ -40,6 +40,7 @@ const StackNavigationRoutes: React.FC = () => {
       <Stack.Screen name='TrackOrder' component={TrackOrder} />
       <Stack.Screen name='GiftOptions' component={GiftOptions} />
       <Stack.Screen name='Notification' component={NotificationPage} />
+      <Stack.Screen name='PremiumDetailsCard' component={PremiumDetailsCard} />
 
       <Stack.Screen name='Login' options={{ headerShown: false }} component={LoginModal} />
       <Stack.Screen name='Signup' options={{ headerShown: false }} component={SignupModal} />

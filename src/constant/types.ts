@@ -9,3 +9,10 @@ interface Reel {
 export interface ReelsComponentProps {
   reelsData: Reel[]
 }
+
+export interface PremiumCardProps {
+  image: any
+  productName: string
+  price: number
+  inr: string
+}

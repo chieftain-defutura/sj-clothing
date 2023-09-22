@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { Pressable, ScrollView, View } from 'react-native'
+import { Pressable, View } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import SearchBar from '../../../components/SearchBar'
 import SearchGrayIcon from '../../../assets/icons/SearchGrayIcon'

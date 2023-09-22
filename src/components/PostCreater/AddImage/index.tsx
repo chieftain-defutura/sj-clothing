@@ -5,8 +5,6 @@ import Animated, {
   BounceOutUp,
   FlipInXDown,
   FlipOutXDown,
-  LightSpeedInLeft,
-  LightSpeedOutRight,
 } from 'react-native-reanimated'
 
 import SelectDesign from './SelectDesign'

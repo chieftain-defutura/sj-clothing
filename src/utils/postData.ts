@@ -3,14 +3,6 @@ export const reelsData = [
     id: '1',
     text: '#Round neck',
     title: 'John david',
-    description:
-      'Imperdiet in sit rhoncus , eleifend tellus augue lec Imperdiet in sit rhoncus , eleifend tellus augue Imperdiet in sit rhoncu.',
-    images: [require('../assets/images/shirtImgOne.png'), require('../assets/images/t-shirt.png')],
-  },
-  {
-    id: '2',
-    text: '#Round neck',
-    title: 'John david',
     description: 'Imperdiet in sit rhoncus , eleifend tellus augue lec',
     images: [
       require('../assets/images/added-image-shirt.png'),
@@ -18,7 +10,7 @@ export const reelsData = [
     ],
   },
   {
-    id: '3',
+    id: '2',
     text: '#Round neck',
     title: 'John david',
     description: 'Imperdiet in sit rhoncus , eleifend tellus augue lec',
@@ -28,7 +20,7 @@ export const reelsData = [
     ],
   },
   {
-    id: '4',
+    id: '3',
     text: '#Round neck',
     title: 'John david',
     description: 'Imperdiet in sit rhoncus , eleifend tellus augue lec',
@@ -38,7 +30,7 @@ export const reelsData = [
     ],
   },
   {
-    id: '5',
+    id: '4',
     text: '#Round neck',
     title: 'John david',
     description: 'Imperdiet in sit rhoncus , eleifend tellus augue lec',
