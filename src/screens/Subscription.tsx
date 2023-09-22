@@ -5,7 +5,6 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import CloseIcon from '../assets/icons/Close'
 import CustomButton from '../components/Button'
-import { useNavigation } from '@react-navigation/native'
 import CloseRedIcon from '../assets/icons/CloseRedIcon'
 
 interface SubscriptionModalProps {

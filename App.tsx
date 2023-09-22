@@ -23,13 +23,13 @@ const App: React.FC = () => {
   }, [updateUser])
 
   const [fontsLoaded] = useFonts({
-    'Arvo-Regular': require('./src/assets/fonts/Arvo-Regular.ttf'), //400
-    'Gilroy-Medium': require('./src/assets/fonts/Gilroy-Medium.ttf'), //500
-    'Gilroy-Regular': require('./src/assets/fonts/Gilroy-Regular.ttf'), //400
-    'Gilroy-SemiBold': require('./src/assets/fonts/Gilroy-SemiBold.ttf'), //600
-    'Montserrat-Regular': require('./src/assets/fonts/Montserrat-Regular.ttf'), //400
-    'Montserrat-Medium': require('./src/assets/fonts/Montserrat-Medium.ttf'), //500
-    'Montserrat-SemiBold': require('./src/assets/fonts/Montserrat-SemiBold.ttf'), //600
+    'Arvo-Regular': require('./src/assets/fonts/Arvo-Regular.ttf'), //font-weight 400
+    'Gilroy-Medium': require('./src/assets/fonts/Gilroy-Medium.ttf'), //font-weight 500
+    'Gilroy-Regular': require('./src/assets/fonts/Gilroy-Regular.ttf'), //font-weight 400
+    'Gilroy-SemiBold': require('./src/assets/fonts/Gilroy-SemiBold.ttf'), //font-weight 600
+    'Montserrat-Regular': require('./src/assets/fonts/Montserrat-Regular.ttf'), //font-weight 400
+    'Montserrat-Medium': require('./src/assets/fonts/Montserrat-Medium.ttf'), //font-weight 500
+    'Montserrat-SemiBold': require('./src/assets/fonts/Montserrat-SemiBold.ttf'), //font-weight 600
   })
 
   if (!fontsLoaded) {

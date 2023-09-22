@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Image, Pressable, Dimensions, Share, View } from 'react-native'
+import { Image, Pressable, Dimensions, Share, View, StyleSheet } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { COLORS } from '../styles/theme'
 import styled from 'styled-components/native'
@@ -11,7 +11,6 @@ import { useState, useEffect } from 'react'
 import SwiperFlatList from 'react-native-swiper-flatlist'
 import { reelsData } from '../utils/postData'
 import { LinearGradient } from 'expo-linear-gradient'
-import { StyleSheet } from 'react-native'
 import IsLikeIcon from '../assets/icons/PostPageIcon/isLikeIcon'
 import IsFireIcon from '../assets/icons/PostPageIcon/isFire'
 import IsHeartIcon from '../assets/icons/PostPageIcon/isHeartIcon'
@@ -108,6 +107,8 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
 
   const dynamicHeartIconStyle = activeIcon === 'heart' ? HeartIconStyle : {}
 
+  const gradientColors = ['#BF94E4', '#D7B4E8', '#ECD1EC', '#F6E5F6', '#CADAF1', '#91B1E1']
+
   return (
     <PostCardWrapper>
       <SwiperFlatList
@@ -126,7 +127,8 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
               onChangeIndex={({ index }) => setCurrentIndex(index)}
               showPagination={false}
               renderItem={({ item: image }) => (
-                <ImageContent>
+                <LinearGradient colors={gradientColors} style={{ borderRadius: 10 }}>
+                  {/* <ImageContent> */}
                   <View style={styles.container}>
                     <Image
                       source={image}
@@ -143,7 +145,8 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
                       style={styles.linearGradient}
                     ></LinearGradient>
                   </View>
-                </ImageContent>
+                  {/* </ImageContent> */}
+                </LinearGradient>
               )}
             />
 
@@ -322,7 +325,6 @@ const PostDescription = styled.Text`
 `
 
 const ImageContent = styled.View`
-  background-color: ${COLORS.imageContentClr};
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 `
@@ -333,7 +335,7 @@ const CardContent = styled.View`
   position: absolute;
   padding-left: 16px;
   display: flex;
-  bottom: 145px;
+  bottom: 130px;
   flex-direction: row;
   gap: 8px;
 `
@@ -360,12 +362,15 @@ const PostCardContent = styled.View`
 const styles = StyleSheet.create({
   linearGradient: {
     ...StyleSheet.absoluteFillObject,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   plusIconGradientColor: {
     backgroundColor: '#462d85',
     borderRadius: 70,

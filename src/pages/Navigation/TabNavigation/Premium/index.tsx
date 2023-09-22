@@ -1,28 +1,53 @@
 import React from 'react'
 import styled from 'styled-components/native'
 import AuthNavigate from '../../../../screens/AuthNavigate'
-import { useIsFocused } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { PremiumData } from '../../../../utils/premiumData'
+import PremiumCard from '../../../../components/PremiumComponent/PremiumCard'
 
 const Premium: React.FC = () => {
   const isFocused = useIsFocused()
+  const navigation = useNavigation()
+
+  const getCardPairs = (data: any[]) => {
+    const pairs = []
+    for (let i = 0; i < data.length; i += 2) {
+      pairs.push(data.slice(i, i + 2))
+    }
+    return pairs
+  }
+
+  const cardPairs = getCardPairs(PremiumData)
 
   return (
     <PremiumWrapper>
       <AuthNavigate focus={isFocused}>
-        <PremiumText>Premium</PremiumText>
+        {cardPairs.map((pair, index) => (
+          <CardPairContainer key={index}>
+            {pair.map((item) => (
+              <PremiumCard
+                key={item.id}
+                image={item.image}
+                productName={item.productName}
+                price={item.price}
+                inr={item.inr}
+                navigation={navigation}
+              />
+            ))}
+          </CardPairContainer>
+        ))}
       </AuthNavigate>
     </PremiumWrapper>
   )
 }
 
-const PremiumWrapper = styled.View`
+const PremiumWrapper = styled.ScrollView`
   flex: 1;
-  justify-content: center;
-  align-items: center;
 `
 
-const PremiumText = styled.Text`
-  font-size: 28px;
+const CardPairContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
 `
 
 export default Premium

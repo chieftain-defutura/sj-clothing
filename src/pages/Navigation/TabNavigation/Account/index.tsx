@@ -3,7 +3,6 @@ import styled from 'styled-components/native'
 import { ScrollView, View } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import { auth } from '../../../../../firebase'
 import { COLORS } from '../../../../styles/theme'
 import { userStore } from '../../../../store/userStore'

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, Image, Pressable, FlatList } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
@@ -11,8 +11,6 @@ import Animated, {
   BounceOutUp,
   FlipInXDown,
   FlipOutXDown,
-  LightSpeedInLeft,
-  LightSpeedOutRight,
 } from 'react-native-reanimated'
 import { PostCreationStore } from '../../../store/postCreationStore'
 

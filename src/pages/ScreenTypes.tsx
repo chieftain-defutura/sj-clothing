@@ -9,6 +9,8 @@ export type RootStackParamList = {
   MyOrders: undefined
   GiftOptions: undefined
   Notification: undefined
+  PremiumDetailsCard: undefined
+  PremiumThreeSixtyDegreePage: undefined
   Search: undefined
   Post: undefined
   Home: undefined
@@ -16,7 +18,6 @@ export type RootStackParamList = {
   Premium: undefined
   Account: undefined
   Header: undefined
-  //navigaters
   TrackOrder: undefined
 }
 
