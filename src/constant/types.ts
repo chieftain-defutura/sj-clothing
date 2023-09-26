@@ -16,3 +16,21 @@ export interface PremiumCardProps {
   price: number
   inr: string
 }
+
+interface CartItem {
+  image: any
+  product: string
+  productName: string
+  size: string
+  sizeCm: string
+  style: string
+  styleName: string
+  price: string
+  priceInr: string
+}
+
+export interface CartComponentProps {
+  cartData: CartItem[]
+  closedItems: number[]
+  handleClose: (index: number) => void
+}

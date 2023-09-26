@@ -2,9 +2,9 @@ import React from 'react'
 import { StyleSheet, Pressable, Share, Image, View } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
+import { PremiumDetailsData } from '../../utils/data/premiumDetailsData'
 import LeftArrow from '../../assets/icons/LeftArrow'
 import ShareArrow from '../../assets/icons/ShareArrow'
-import { PremiumDetailsData } from '../../utils/premiumDetailsData'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
 import CustomButton from '../Button'
@@ -14,8 +14,6 @@ interface IPremiumDetails {
 }
 
 const PremiumDetails: React.FC<IPremiumDetails> = ({ navigation }) => {
-  // const navigation = useNavigation()
-
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
     try {

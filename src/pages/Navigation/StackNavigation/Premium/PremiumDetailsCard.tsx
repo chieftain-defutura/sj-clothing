@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import { ScrollView } from 'react-native'
 import PremiumDetails from '../../../../components/PremiumComponent/PremiumDetails'
 import PremiumCard from '../../../../components/PremiumComponent/PremiumCard'
-import { PremiumData } from '../../../../utils/premiumData'
+import { PremiumData } from '../../../../utils/data/premiumData'
 
 const PremiumDetailsCard: React.FC = () => {
   const navigation = useNavigation()

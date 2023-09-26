@@ -4,57 +4,7 @@ import { View, Pressable } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { COLORS } from '../../../styles/theme'
 import ChevronLeft from '../../../assets/icons/ChevronLeft'
-
-const data = [
-  {
-    image: require('../../../assets/images/t-shirt.png'),
-    product: 'Product',
-    productName: 'purple ape t-shirt',
-    status: 'Status',
-    statusName: 'Shipping',
-    date: 'on 23 Jul, 2023',
-  },
-  {
-    image: require('../../../assets/images/t-shirt-two.png'),
-    product: 'Product',
-    productName: 'Formal plain shirt',
-    status: 'Status',
-    statusName: 'Delivered',
-    date: 'on 23 Jul, 2023',
-  },
-  {
-    image: require('../../../assets/images/t-shirt.png'),
-    product: 'Product',
-    productName: 'purple ape t-shirt',
-    status: 'Status',
-    statusName: 'Shipping',
-    date: 'on 23 Jul, 2023',
-  },
-  {
-    image: require('../../../assets/images/t-shirt-two.png'),
-    product: 'Product',
-    productName: 'Formal plain shirt',
-    status: 'Status',
-    statusName: 'Delivered',
-    date: 'on 23 Jul, 2023',
-  },
-  {
-    image: require('../../../assets/images/t-shirt.png'),
-    product: 'Product',
-    productName: 'purple ape t-shirt',
-    status: 'Status',
-    statusName: 'Shipping',
-    date: 'on 23 Jul, 2023',
-  },
-  {
-    image: require('../../../assets/images/t-shirt-two.png'),
-    product: 'Product',
-    productName: 'Formal plain shirt',
-    status: 'Status',
-    statusName: 'Delivered',
-    date: 'on 23 Jul, 2023',
-  },
-]
+import { MyOrdersData } from '../../../utils/data/myOrdersData'
 
 interface IMyOrders {
   navigation: any
@@ -73,7 +23,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
           <CartText>My orders</CartText>
         </GoBackArrowContent>
         <CartPageContent>
-          {data.map((f, index) => {
+          {MyOrdersData.map((f, index) => {
             return (
               <Pressable key={index} onPress={() => navigation.navigate('TrackOrder')}>
                 <CartPageContainer>

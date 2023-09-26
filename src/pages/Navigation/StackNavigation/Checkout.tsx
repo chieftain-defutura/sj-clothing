@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { ScrollView, View, Pressable, StyleSheet } from 'react-native'
+import { View, Pressable, StyleSheet } from 'react-native'
 import { COLORS } from '../../../styles/theme'
-import CircleClose from '../../../assets/icons/CircleClose'
 import CustomButton from '../../../components/Button'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import GiftIcon from '../../../assets/icons/GiftIcon'
@@ -13,31 +12,8 @@ import SackDollar from '../../../assets/icons/SackDollar'
 import TruckMovingIcon from '../../../assets/icons/TruckMoving'
 import ShippingIcon from '../../../assets/icons/Shipping'
 import OrderPlaced from '../../../screens/OrderPlaced'
-
-const data = [
-  {
-    image: require('../../../assets/images/t-shirt.png'),
-    product: 'Product',
-    productName: 'purple ape t-shirt',
-    size: 'size',
-    sizeCm: 'L-40cm',
-    style: 'style',
-    styleName: 'Half sleeve',
-    price: 'price',
-    priceInr: '450 INR',
-  },
-  {
-    image: require('../../../assets/images/t-shirt-two.png'),
-    product: 'Product',
-    productName: 'Formal plain shirt',
-    size: 'size',
-    sizeCm: 'L-40cm',
-    style: 'style',
-    styleName: 'Half sleeve',
-    price: 'price',
-    priceInr: '900 INR',
-  },
-]
+import { CheckoutData } from '../../../utils/data/checkoutData'
+import CartCard from '../../../components/CartCard'
 
 interface ICheckout {
   navigation: any
@@ -61,7 +37,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
 
   return (
     <View>
-      <ScrollViewContent>
+      <ScrollViewContent showsVerticalScrollIndicator={false}>
         <View style={{ paddingBottom: 80 }}>
           <GoBackArrowContent
             onPress={() => {
@@ -71,92 +47,23 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
             <LeftArrow width={24} height={24} />
             <CartText>Check Out</CartText>
           </GoBackArrowContent>
+          <CartCard cartData={CheckoutData} closedItems={closedItems} handleClose={handleClose} />
           <CartPageContent>
-            <ScrollView>
-              {data.map((f, index) => {
-                const isItemClosed = closedItems.includes(index)
-                return (
-                  <View key={index}>
-                    {!isItemClosed && (
-                      <CartPageContainer>
-                        <View>
-                          <TShirtImage source={f.image} />
-                        </View>
-                        <View>
-                          <ProductWrapper>
-                            <View>
-                              <ProductText>{f.product}</ProductText>
-                              <ProductShirtText>{f.productName}</ProductShirtText>
-                            </View>
-                            <Pressable onPress={() => handleClose(index)}>
-                              <CircleClose width={20} height={20} />
-                            </Pressable>
-                          </ProductWrapper>
-                          <ProductSizes>
-                            <ProductStyle>
-                              <ProductText>{f.size}</ProductText>
-                              <ProductShirtText>{f.sizeCm}</ProductShirtText>
-                            </ProductStyle>
-                            <ProductStyle>
-                              <ProductText>{f.style}</ProductText>
-                              <ProductShirtText>{f.styleName}</ProductShirtText>
-                            </ProductStyle>
-                          </ProductSizes>
-                          <ProductSizes>
-                            <ProductStyle>
-                              <ProductText>{f.price}</ProductText>
-                              <ProductShirtText style={{ marginBottom: 16 }}>
-                                {f.priceInr}
-                              </ProductShirtText>
-                            </ProductStyle>
-                          </ProductSizes>
-                        </View>
-                      </CartPageContainer>
-                    )}
-                  </View>
-                )
-              })}
-              <HomeFlexContent>
-                <Pressable onPress={() => navigation.navigate('AddressBook')}>
-                  <View>
-                    <HomeText>Home</HomeText>
-                    <HomeDescription>
-                      Mr John Smith. 132, My Street, Kingston, New York 12401.
-                    </HomeDescription>
-                  </View>
-                </Pressable>
-                <Pressable>
-                  <ChevronLeft width={16} height={16} />
-                </Pressable>
-              </HomeFlexContent>
-              <GiftWrapper>
-                <Pressable onPress={() => navigation.navigate('GiftOptions')}>
-                  <GiftContent>
-                    <LinearGradient
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 0 }}
-                      colors={['#462D85', '#DB00FF']}
-                      style={styles.gradientColor}
-                    >
-                      <GiftIcon width={16} height={16} />
-                    </LinearGradient>
-                    <GiftText>Gift options available</GiftText>
-                  </GiftContent>
-                </Pressable>
-                <Pressable>
-                  <ChevronLeft width={16} height={16} />
-                </Pressable>
-              </GiftWrapper>
-              <PhonepeWrapper>
-                <GiftContent>
-                  <Phonepe width={32} height={32} />
-                  <GiftText>Pay with Phonepe</GiftText>
-                </GiftContent>
-                <Pressable>
-                  <ChevronLeft width={16} height={16} />
-                </Pressable>
-              </PhonepeWrapper>
-              <PhonepeWrapper>
+            <HomeFlexContent>
+              <Pressable onPress={() => navigation.navigate('AddressBook')}>
+                <View>
+                  <HomeText>Home</HomeText>
+                  <HomeDescription>
+                    Mr John Smith. 132, My Street, Kingston, New York 12401.
+                  </HomeDescription>
+                </View>
+              </Pressable>
+              <Pressable>
+                <ChevronLeft width={16} height={16} />
+              </Pressable>
+            </HomeFlexContent>
+            <GiftWrapper>
+              <Pressable onPress={() => navigation.navigate('GiftOptions')}>
                 <GiftContent>
                   <LinearGradient
                     start={{ x: 0, y: 0 }}
@@ -164,42 +71,67 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                     colors={['#462D85', '#DB00FF']}
                     style={styles.gradientColor}
                   >
-                    <SackDollar width={16} height={16} />
+                    <GiftIcon width={16} height={16} />
                   </LinearGradient>
-                  <GiftText>Royalties</GiftText>
-                  <InrBorderRadius>
-                    <InrText>1200INR</InrText>
-                  </InrBorderRadius>
+                  <GiftText>Gift options available</GiftText>
                 </GiftContent>
-                <UseBorderRadius>
-                  <UseText>Use</UseText>
-                </UseBorderRadius>
-              </PhonepeWrapper>
-              <Content>
-                <DeliveryWrapper>
-                  <DeliveryContent>
-                    <Pressable>
-                      <TruckMovingIcon width={24} height={24} />
-                    </Pressable>
-                    <DeliveryText>Delivery fee</DeliveryText>
-                  </DeliveryContent>
-                  <INRText>900 INR</INRText>
-                </DeliveryWrapper>
-                <DeliveryWrapper style={{ marginTop: 20 }}>
-                  <DeliveryContent>
-                    <Pressable>
-                      <ShippingIcon width={24} height={24} />
-                    </Pressable>
-                    <DeliveryText>Shipping fee</DeliveryText>
-                  </DeliveryContent>
-                  <INRText>900 INR</INRText>
-                </DeliveryWrapper>
-              </Content>
-              <TotalContent>
-                <TotalText>Total</TotalText>
-                <TotalValue>900 INR</TotalValue>
-              </TotalContent>
-            </ScrollView>
+              </Pressable>
+              <Pressable>
+                <ChevronLeft width={16} height={16} />
+              </Pressable>
+            </GiftWrapper>
+            <PhonepeWrapper>
+              <GiftContent>
+                <Phonepe width={32} height={32} />
+                <GiftText>Pay with Phonepe</GiftText>
+              </GiftContent>
+              <Pressable>
+                <ChevronLeft width={16} height={16} />
+              </Pressable>
+            </PhonepeWrapper>
+            <PhonepeWrapper>
+              <GiftContent>
+                <LinearGradient
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  colors={['#462D85', '#DB00FF']}
+                  style={styles.gradientColor}
+                >
+                  <SackDollar width={16} height={16} />
+                </LinearGradient>
+                <GiftText>Royalties</GiftText>
+                <InrBorderRadius>
+                  <InrText>1200INR</InrText>
+                </InrBorderRadius>
+              </GiftContent>
+              <UseBorderRadius>
+                <UseText>Use</UseText>
+              </UseBorderRadius>
+            </PhonepeWrapper>
+            <Content>
+              <DeliveryWrapper>
+                <DeliveryContent>
+                  <Pressable>
+                    <TruckMovingIcon width={24} height={24} />
+                  </Pressable>
+                  <DeliveryText>Delivery fee</DeliveryText>
+                </DeliveryContent>
+                <INRText>900 INR</INRText>
+              </DeliveryWrapper>
+              <DeliveryWrapper style={{ marginTop: 20 }}>
+                <DeliveryContent>
+                  <Pressable>
+                    <ShippingIcon width={24} height={24} />
+                  </Pressable>
+                  <DeliveryText>Shipping fee</DeliveryText>
+                </DeliveryContent>
+                <INRText>900 INR</INRText>
+              </DeliveryWrapper>
+            </Content>
+            <TotalContent>
+              <TotalText>Total</TotalText>
+              <TotalValue>900 INR</TotalValue>
+            </TotalContent>
           </CartPageContent>
         </View>
       </ScrollViewContent>
@@ -384,57 +316,7 @@ const CartText = styled.Text`
 
 const CartPageContent = styled.View`
   padding-vertical: 16px;
-  padding-horizontal: 24px;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`
-
-const ProductSizes = styled.View`
-  flex: 1;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 16px;
-`
-
-const ProductStyle = styled.View``
-
-const ProductWrapper = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 82px;
-`
-
-const CartPageContainer = styled.View`
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-  align-items: center;
-  border-bottom-color: ${COLORS.strokeClr};
-  border-bottom-width: 1px;
-  margin-bottom: 16px;
-`
-
-const TShirtImage = styled.Image`
-  width: 80px;
-  height: 80px;
-  flex-shrink: 0;
-  object-fit: contain;
-`
-
-const ProductText = styled.Text`
-  color: ${COLORS.SecondaryTwo};
-  font-family: Gilroy-Regular;
-  font-size: 12px;
-  text-transform: uppercase;
-`
-
-const ProductShirtText = styled.Text`
-  font-size: 14px;
-  font-family: Gilroy-Medium;
-  color: ${COLORS.iconsHighlightClr};
+  padding-horizontal: 36px;
 `
 
 const styles = StyleSheet.create({

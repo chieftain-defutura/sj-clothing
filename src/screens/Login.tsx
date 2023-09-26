@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AuthErrorCodes, signInWithEmailAndPassword } from 'firebase/auth'
-
 import { auth } from '../../firebase'
 import { COLORS } from '../styles/theme'
 import { FirebaseError } from 'firebase/app'
@@ -54,12 +53,14 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
   // }
 
   const handleSubmit = async (values: typeof initialValues) => {
+    console.log('aSDASD')
     try {
       console.log(values)
       await signInWithEmailAndPassword(auth, values.email, values.password)
       await AsyncStorage.setItem('mail', values.email)
       console.log('user logged in successfully')
-      navigation.navigate('Post')
+      // navigation.navigate('Post')
+      onClose()
     } catch (error) {
       console.log(error)
       if (error instanceof FirebaseError) {
@@ -142,7 +143,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
                 variant='primary'
                 text={btnText}
                 onPress={() => {
-                  handleSubmit(), onClose
+                  handleSubmit()
                 }}
                 disabled={!isValid}
                 buttonStyle={[styles.submitBtn]}

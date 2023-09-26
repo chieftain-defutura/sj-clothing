@@ -5,8 +5,8 @@ export const reelsData = [
     title: 'John david',
     description: 'Imperdiet in sit rhoncus , eleifend tellus augue lec',
     images: [
-      require('../assets/images/added-image-shirt.png'),
-      require('../assets/images/t-shirt.png'),
+      require('../../assets/images/added-image-shirt.png'),
+      require('../../assets/images/t-shirt.png'),
     ],
   },
   {
@@ -15,8 +15,8 @@ export const reelsData = [
     title: 'John david',
     description: 'Imperdiet in sit rhoncus , eleifend tellus augue lec',
     images: [
-      require('../assets/images/shirtImgOne.png'),
-      require('../assets/images/added-image-shirt.png'),
+      require('../../assets/images/shirtImgOne.png'),
+      require('../../assets/images/added-image-shirt.png'),
     ],
   },
   {
@@ -25,8 +25,8 @@ export const reelsData = [
     title: 'John david',
     description: 'Imperdiet in sit rhoncus , eleifend tellus augue lec',
     images: [
-      require('../assets/images/added-image-shirt.png'),
-      require('../assets/images/t-shirt.png'),
+      require('../../assets/images/added-image-shirt.png'),
+      require('../../assets/images/t-shirt.png'),
     ],
   },
   {
@@ -34,6 +34,9 @@ export const reelsData = [
     text: '#Round neck',
     title: 'John david',
     description: 'Imperdiet in sit rhoncus , eleifend tellus augue lec',
-    images: [require('../assets/images/shirtImgOne.png'), require('../assets/images/t-shirt.png')],
+    images: [
+      require('../../assets/images/shirtImgOne.png'),
+      require('../../assets/images/t-shirt.png'),
+    ],
   },
 ]

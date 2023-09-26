@@ -1,6 +1,6 @@
 export const PremiumDetailsData = [
   {
-    image: require('../assets/images/PremiumImage/premium-img1.png'),
+    image: require('../../assets/images/PremiumImage/premium-img1.png'),
     product: 'Product',
     productName: 'Black blazer',
     size: 'Size',

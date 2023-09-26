@@ -4,6 +4,7 @@ import { PremiumCardProps } from '../../constant/types'
 import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import { LinearGradient } from 'expo-linear-gradient'
+import { SharedElement } from 'react-navigation-shared-element'
 
 interface IPremiumCard {
   navigation: any
@@ -21,10 +22,6 @@ const PremiumCard: React.FC<PremiumCardProps & IPremiumCard> = ({
   inr,
   navigation,
 }) => {
-  const Data = () => {
-    console.log('data')
-  }
-
   return (
     <LinearGradient
       start={{ x: 0, y: 0 }}
@@ -33,17 +30,19 @@ const PremiumCard: React.FC<PremiumCardProps & IPremiumCard> = ({
       style={styles.linearGradient}
     >
       <View style={{ width: cardWidth, height: cardHeight }}>
-        <Pressable onPress={() => navigation.navigate('PremiumDetailsCard')}>
-          <ImageContainer>
-            <Image
-              source={image}
-              style={{
-                resizeMode: 'cover',
-                flex: 1,
-                alignSelf: 'center',
-              }}
-            />
-          </ImageContainer>
+        <Pressable onPress={() => navigation.navigate('PremiumDetailsCard', { image })}>
+          <SharedElement id={`test${image}`}>
+            <ImageContainer>
+              <Image
+                source={image}
+                style={{
+                  resizeMode: 'cover',
+                  flex: 1,
+                  alignSelf: 'center',
+                }}
+              />
+            </ImageContainer>
+          </SharedElement>
         </Pressable>
         <View style={{ alignItems: 'center', marginTop: 14 }}>
           <ProductText>{productName}</ProductText>

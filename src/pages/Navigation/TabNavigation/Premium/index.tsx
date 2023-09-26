@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components/native'
 import AuthNavigate from '../../../../screens/AuthNavigate'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
-import { PremiumData } from '../../../../utils/premiumData'
 import PremiumCard from '../../../../components/PremiumComponent/PremiumCard'
+import { PremiumData } from '../../../../utils/data/premiumData'
 
 const Premium: React.FC = () => {
   const isFocused = useIsFocused()

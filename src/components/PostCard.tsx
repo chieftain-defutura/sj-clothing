@@ -8,8 +8,8 @@ import Fire from '../assets/icons/fire'
 import Heart from '../assets/icons/heart'
 import SaveIcon from '../assets/icons/SaveIcon'
 import { useState, useEffect } from 'react'
+import { reelsData } from '../utils/data/postData'
 import SwiperFlatList from 'react-native-swiper-flatlist'
-import { reelsData } from '../utils/postData'
 import { LinearGradient } from 'expo-linear-gradient'
 import IsLikeIcon from '../assets/icons/PostPageIcon/isLikeIcon'
 import IsFireIcon from '../assets/icons/PostPageIcon/isFire'
@@ -374,9 +374,9 @@ const styles = StyleSheet.create({
   plusIconGradientColor: {
     backgroundColor: '#462d85',
     borderRadius: 70,
-    padding: 10,
-    width: 40,
-    height: 40,
+    padding: 15,
+    width: 50,
+    height: 50,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.24,
