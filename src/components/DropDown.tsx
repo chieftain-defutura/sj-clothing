@@ -1,18 +1,12 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Pressable } from 'react-native'
 
 import Animated, {
   BounceInUp,
-  BounceOut,
   BounceOutUp,
   Easing,
-  FadeIn,
   FadeInDown,
   FadeOut,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming,
 } from 'react-native-reanimated'
 import { COLORS } from '../styles/theme'
 import ArrowCircleRight from '../assets/icons/ArrowCircleRight'
@@ -96,8 +90,6 @@ const SimpleDropdownWithAnimation: React.FC<ISelectColor> = ({ setPostCreationSt
                       <View
                         style={{
                           backgroundColor: `${color}`,
-                          // width: 40,
-                          // height: 40,
                           borderRadius: 50,
                           padding: 23,
                         }}
@@ -128,7 +120,6 @@ const SimpleDropdownWithAnimation: React.FC<ISelectColor> = ({ setPostCreationSt
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
-              //   paddingVertical: 10,
             }}
           >
             <Pressable

@@ -1,13 +1,11 @@
-import { View, Text } from 'react-native'
 import React from 'react'
 import { createSharedElementStackNavigator } from 'react-navigation-shared-element'
-import PremiumBuyNow from './PremiumBuyNow'
 import PremiumDetailsCard from './PremiumDetailsCard'
 import Premium from '../../TabNavigation/Premium'
 
 const SharedNavigater = createSharedElementStackNavigator()
 
-const PremiumNavigation = () => {
+const PremiumNavigation: React.FC = () => {
   return (
     <SharedNavigater.Navigator initialRouteName='Premiumm'>
       <SharedNavigater.Screen

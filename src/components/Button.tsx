@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleProp, ViewStyle, View, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { COLORS, FONT_FAMILY } from '../styles/theme'
+import { COLORS } from '../styles/theme'
 
 type Props = {
   text: string

@@ -8,62 +8,10 @@ import { COLORS } from '../../../../styles/theme'
 import { userStore } from '../../../../store/userStore'
 import AuthNavigate from '../../../../screens/AuthNavigate'
 import ChevronLeft from '../../../../assets/icons/ChevronLeft'
-import Cart from '../../../../assets/icons/AccountPageIcon/CartIcon'
 import LogoutIcon from '../../../../assets/icons/AccountPageIcon/Logout'
 import UserIcon from '../../../../assets/icons/AccountPageIcon/UserIcon'
-import CopyIcon from '../../../../assets/icons/AccountPageIcon/CopyIcon'
-import UsersMore from '../../../../assets/icons/AccountPageIcon/UsersMore'
-import SackDollar from '../../../../assets/icons/AccountPageIcon/SackDollar'
-import ShoppingBag from '../../../../assets/icons/AccountPageIcon/ShoppingBag'
-import WishListIcon from '../../../../assets/icons/AccountPageIcon/WishlistIcon'
-import HomeLocation from '../../../../assets/icons/AccountPageIcon/HomeLocation'
-import CustomerCare from '../../../../assets/icons/AccountPageIcon/CustomerCare'
-import HelpQuestion from '../../../../assets/icons/AccountPageIcon/HelpQuestion'
+import { AccountData } from '../../../../utils/data/AccountData'
 
-const data = [
-  {
-    leftIcon: CopyIcon,
-    name: 'My posts',
-    rightText: '44 posts',
-  },
-  {
-    leftIcon: SackDollar,
-    name: 'Royalties',
-    rightText: '1500 INR',
-  },
-  {
-    leftIcon: Cart,
-    name: 'My cart',
-    rightText: '2 items',
-  },
-  {
-    leftIcon: ShoppingBag,
-    name: 'My orders',
-    rightText: '2 items',
-  },
-  {
-    leftIcon: WishListIcon,
-    name: 'Wishlist',
-    rightText: '5 items',
-  },
-  {
-    leftIcon: HomeLocation,
-    name: 'Addressbook',
-    rightText: 'Home',
-  },
-  {
-    leftIcon: CustomerCare,
-    name: 'Customer care',
-  },
-  {
-    leftIcon: HelpQuestion,
-    name: 'Help & FAQ',
-  },
-  {
-    leftIcon: UsersMore,
-    name: 'About us',
-  },
-]
 interface IAccount {
   navigation: any
 }
@@ -120,7 +68,7 @@ const Account: React.FC<IAccount> = ({ navigation }) => {
             </FlexIcon>
             <ChevronLeft width={16} height={16} />
           </ProfileUserContent>
-          {data.map((f, index) => {
+          {AccountData.map((f, index) => {
             return (
               <View key={index}>
                 <ProfileUserContent>
