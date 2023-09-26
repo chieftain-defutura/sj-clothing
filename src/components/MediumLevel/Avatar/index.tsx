@@ -4,9 +4,11 @@ import Gender from './Gender'
 import Skintone from './Skintone'
 import { COLORS } from '../../../styles/theme'
 
-const Avatar = () => {
+interface IAvatart {
+  setToggleAvatar: React.Dispatch<React.SetStateAction<boolean>>
+}
+const Avatar: React.FC<IAvatart> = ({ setToggleAvatar }) => {
   const [toggle, setToggle] = useState(false)
-  console.log(toggle)
   return (
     <View style={styles.avatarContainer}>
       <View style={styles.genderWrapper}>
@@ -15,7 +17,11 @@ const Avatar = () => {
           <Image style={styles.image} source={require('../../../assets/images/girl-modal.png')} />
         </View>
       </View>
-      {!toggle ? <Gender setToggle={setToggle} /> : <Skintone setToggle={setToggle} />}
+      {!toggle ? (
+        <Gender setToggle={setToggle} />
+      ) : (
+        <Skintone setToggle={setToggle} setToggleAvatar={setToggleAvatar} />
+      )}
     </View>
   )
 }

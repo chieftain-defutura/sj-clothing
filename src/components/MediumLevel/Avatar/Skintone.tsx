@@ -6,8 +6,9 @@ import { COLORS } from '../../../styles/theme'
 
 interface ISkintone {
   setToggle: React.Dispatch<React.SetStateAction<boolean>>
+  setToggleAvatar: React.Dispatch<React.SetStateAction<boolean>>
 }
-const Skintone: React.FC<ISkintone> = ({ setToggle }) => {
+const Skintone: React.FC<ISkintone> = ({ setToggle, setToggleAvatar }) => {
   return (
     <View style={styles.SkintoneContainer}>
       <View style={styles.bottomWrapper}>
@@ -19,7 +20,12 @@ const Skintone: React.FC<ISkintone> = ({ setToggle }) => {
             style={{ paddingTop: 56, width: 180 }}
             onPress={() => setToggle(false)}
           />
-          <CustomButton text='Done' variant='primary' style={{ paddingTop: 56, width: 180 }} />
+          <CustomButton
+            onPress={() => setToggleAvatar(true)}
+            text='Done'
+            variant='primary'
+            style={{ paddingTop: 56, width: 180 }}
+          />
         </View>
       </View>
     </View>
