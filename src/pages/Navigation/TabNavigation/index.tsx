@@ -10,6 +10,7 @@ import MidLevel from './MidLevel'
 import Premium from './Premium'
 import Account from './Account'
 import TabHomeIcon from '../../../assets/icons/TabHomeIcon'
+import PremiumNavigation from '../StackNavigation/Premium'
 
 const Tab = createBottomTabNavigator()
 

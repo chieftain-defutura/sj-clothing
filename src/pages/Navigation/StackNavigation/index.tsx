@@ -16,8 +16,11 @@ import TabNavigationRoutes from '../TabNavigation'
 import OrderPlaced from '../../../screens/OrderPlaced'
 import PostCreation from '../../../components/PostCreater'
 import { HeaderLeft, HeaderRight } from '../../../components/Header'
-import PremiumDetailsCard from './Premium/PremiumDetailsCard'
 import PremiumThreeSixtyDegree from './Premium/PremiumThreeSixtyDegree'
+import PremiumBuyNow from './Premium/PremiumBuyNow'
+import PremiumNavigation from './Premium'
+import Premium from '../TabNavigation/Premium'
+import PremiumDetailsCard from './Premium/PremiumDetailsCard'
 
 const Stack = createNativeStackNavigator()
 
@@ -41,14 +44,15 @@ const StackNavigationRoutes: React.FC = () => {
       <Stack.Screen name='TrackOrder' component={TrackOrder} />
       <Stack.Screen name='GiftOptions' component={GiftOptions} />
       <Stack.Screen name='Notification' component={NotificationPage} />
+      <Stack.Screen name='Premiumm' component={Premium} />
       <Stack.Screen name='PremiumDetailsCard' component={PremiumDetailsCard} />
+      {/* <Stack.Screen name='PremiumNavigation' component={PremiumNavigation} /> */}
       <Stack.Screen name='PremiumThreeSixtyDegreePage' component={PremiumThreeSixtyDegree} />
-
+      <Stack.Screen name='PremiumBuynow' component={PremiumBuyNow} />
       <Stack.Screen name='Login' options={{ headerShown: false }} component={LoginModal} />
       <Stack.Screen name='Signup' options={{ headerShown: false }} component={SignupModal} />
       <Stack.Screen name='Forgot' options={{ headerShown: false }} component={ForgotModal} />
       <Stack.Screen name='OrderPlaced' options={{ headerShown: false }} component={OrderPlaced} />
-
       <Stack.Screen name='Search' component={MostSearches} />
     </Stack.Navigator>
   )

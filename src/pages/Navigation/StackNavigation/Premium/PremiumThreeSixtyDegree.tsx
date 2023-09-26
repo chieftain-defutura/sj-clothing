@@ -28,7 +28,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({ navigatio
         >
           <LeftArrow width={24} height={24} />
         </Pressable>
-        <Pressable>
+        <Pressable onPress={() => navigation.navigate('PremiumBuynow')}>
           <DoneText>Done</DoneText>
         </Pressable>
       </FlexContent>
