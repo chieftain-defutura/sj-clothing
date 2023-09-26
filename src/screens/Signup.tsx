@@ -50,11 +50,28 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const user = userStore((state) => state.user)
   const updateFetching = userStore((state) => state.updateFetching)
   const { setMail } = userStore()
+  const { name, updateUserName } = userStore((state) => ({
+    name: state.name,
+    updateUserName: state.updateUserName,
+  }))
+  console.log('name', name)
+  console.log('updateUsername', updateUserName)
+
   const navigation = useNavigation()
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
+
+  // const handleVerify = async () => {
+  //   if (!user) {
+  //     console.error('User is null. Cannot send email verification.')
+  //     return
+  //   }
+
+  //   await sendEmailVerification(user)
+  //   console.log('Verify')
+  // }
 
   const handleVerify = async () => {
     if (!user) {
@@ -62,8 +79,13 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       return
     }
 
-    await sendEmailVerification(user)
-    console.log('Verify')
+    try {
+      await sendEmailVerification(user)
+      setIsVerificationEmailSent(true)
+      console.log('Email verification sent successfully.')
+    } catch (error) {
+      console.error('Error sending email verification:', error)
+    }
   }
 
   useEffect(() => {
@@ -99,7 +121,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password)
       await updateProfile(user, { displayName: values.name })
       await AsyncStorage.setItem('mail', values.email)
-      await AsyncStorage.setItem('name', values.name)
+      await AsyncStorage.setItem('name', values.name) // Store the name as well
       navigation.navigate('Post')
     } catch (error) {
       if (error instanceof FirebaseError) {

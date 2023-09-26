@@ -41,10 +41,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
     setShowPassword(!showPassword)
   }
 
-  const handleVerify = () => {
-    console.log('asdasd')
-  }
-
   // const onForgotClick = () => {
   //   console.log('ihi')
   //   onForgot()
@@ -99,9 +95,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
                     onBlur={handleBlur('email')}
                     placeholderTextColor={COLORS.SecondaryTwo}
                   />
-                  <Pressable onPress={handleVerify}>
-                    <VerifyText>Verify</VerifyText>
-                  </Pressable>
                 </InputBorder>
                 {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
               </View>
@@ -222,12 +215,6 @@ const InputStyle = styled.TextInput`
   font-family: Gilroy-Medium;
   width: 100%;
   font-size: 12px;
-`
-
-const VerifyText = styled.Text`
-  font-size: 12px;
-  color: ${COLORS.textSecondaryClr};
-  font-family: Gilroy-Regular;
 `
 
 const ErrorText = styled.Text`
