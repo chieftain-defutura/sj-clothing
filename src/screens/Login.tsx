@@ -2,7 +2,6 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { useNavigation } from '@react-navigation/native'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AuthErrorCodes, signInWithEmailAndPassword } from 'firebase/auth'
@@ -35,9 +34,8 @@ const ValidationSchema = Yup.object({
 
 const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const navigation = useNavigation()
-  const [btnText, setBtnText] = useState('Login')
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -53,14 +51,12 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
   // }
 
   const handleSubmit = async (values: typeof initialValues) => {
-    console.log('aSDASD')
     try {
+      setIsLoading(true)
       console.log(values)
       await signInWithEmailAndPassword(auth, values.email, values.password)
       await AsyncStorage.setItem('mail', values.email)
       console.log('user logged in successfully')
-      // navigation.navigate('Post')
-      onClose()
     } catch (error) {
       console.log(error)
       if (error instanceof FirebaseError) {
@@ -70,6 +66,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
           setErrorMessage('User not found')
         }
       }
+    } finally {
+      setIsLoading(false)
+      onClose?.()
     }
   }
 
@@ -139,19 +138,28 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
 
               {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
 
-              <CustomButton
+              {/* <CustomButton
                 variant='primary'
-                text={btnText}
+                text={'Login'}
                 onPress={() => {
                   handleSubmit()
                 }}
                 disabled={!isValid}
                 buttonStyle={[styles.submitBtn]}
+              /> */}
+              <CustomButton
+                variant='primary'
+                text={isLoading ? 'Logging in...' : 'Login'}
+                onPress={() => {
+                  handleSubmit()
+                }}
+                disabled={!isValid || isLoading}
+                buttonStyle={[styles.submitBtn]}
               />
 
               <AccountView>
                 <AccountViewText>Don’t have an account?</AccountViewText>
-                <Pressable onPress={() => onSignClick()}>
+                <Pressable onPress={() => onSignClick?.()}>
                   <SignUpLink>Sign up</SignUpLink>
                 </Pressable>
               </AccountView>

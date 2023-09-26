@@ -1,5 +1,5 @@
 import React from 'react'
-import { Pressable, StyleSheet, Dimensions, Image, View } from 'react-native'
+import { Pressable, StyleSheet, Dimensions, Image } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import LeftArrow from '../../../../assets/icons/LeftArrow'

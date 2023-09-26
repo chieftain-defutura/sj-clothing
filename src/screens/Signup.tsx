@@ -11,7 +11,6 @@ import {
   updateProfile,
   onAuthStateChanged,
 } from 'firebase/auth'
-
 import { auth } from '../../firebase'
 import { COLORS } from '../styles/theme'
 import { FirebaseError } from 'firebase/app'
@@ -43,6 +42,7 @@ const ValidationSchema = Yup.object({
 
 const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginClick }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const updateUser = userStore((state) => state.updateUser)
   const updateFetching = userStore((state) => state.updateFetching)
@@ -86,6 +86,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
 
   const handleSubmit = async (values: typeof initialValues) => {
     try {
+      setIsLoading(true)
       const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password)
       await updateProfile(user, { displayName: values.name })
       await AsyncStorage.setItem('mail', values.email)
@@ -96,8 +97,12 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           setErrorMessage('Email is already in use. Please choose a different email.')
         }
       }
+    } finally {
+      setIsLoading(false)
+      onClose?.()
     }
   }
+
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <SignUpWrapper>
@@ -106,16 +111,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           validationSchema={ValidationSchema}
           onSubmit={handleSubmit}
         >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            isValid,
-            handleSubmit,
-            handleBlur,
-            isSubmitting,
-          }) => (
+          {({ values, errors, touched, handleChange, isValid, handleSubmit, handleBlur }) => (
             <SignUpContainer>
               <SignUpHead>
                 <SignUpHeading>Sign up</SignUpHeading>
@@ -178,11 +174,11 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
 
               <CustomButton
                 variant='primary'
-                text={isSubmitting ? 'Sign up...' : 'Sign up'}
+                text={isLoading ? 'Signing up...' : 'Sign up'}
                 onPress={() => {
-                  handleSubmit(), onClose
+                  handleSubmit()
                 }}
-                disabled={!isValid}
+                disabled={!isValid || isLoading}
                 buttonStyle={[styles.submitBtn]}
               />
 
