@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
+import { sendEmailVerification } from 'firebase/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
   AuthErrorCodes,
@@ -42,9 +43,11 @@ const ValidationSchema = Yup.object({
 
 const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginClick }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [isVerificationEmailSent, setIsVerificationEmailSent] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const updateUser = userStore((state) => state.updateUser)
+  const user = userStore((state) => state.user)
   const updateFetching = userStore((state) => state.updateFetching)
   const navigation = useNavigation()
 
@@ -52,9 +55,14 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
     setShowPassword(!showPassword)
   }
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
+    if (!user) {
+      console.error('User is null. Cannot send email verification.')
+      return
+    }
+
+    await sendEmailVerification(user)
     console.log('Verify')
-    // sendEmailVerification(user)
   }
 
   useEffect(() => {

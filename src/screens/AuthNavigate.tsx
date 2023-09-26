@@ -20,6 +20,7 @@ const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus }) => {
   const [userMail, setUserMail] = useState<string | null>('')
   const user = userStore((state) => state.user)
   const navigation = useNavigation()
+  console.log('user', user)
 
   const onSignUpClick = () => {
     setLoginModalVisible(false)
