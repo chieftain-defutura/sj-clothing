@@ -8,20 +8,12 @@ import Animated, {
 } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
-import TShirt from '../T-Shirt'
 import ColorNavigation from '../../../screens/ColorNavigation'
 import { useNavigation } from '@react-navigation/native'
 
 interface ISelectColor {
   isDropDown: boolean
   isSelectedColor: string
-  // data?: {
-  //   title: string
-  //   type: {
-  //     name: string
-  //     value: string
-  //   }[]
-  // }
   handleIncreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setSelectedColor: React.Dispatch<React.SetStateAction<string>>
@@ -177,5 +169,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: width,
+    zIndex: 10,
   },
 })

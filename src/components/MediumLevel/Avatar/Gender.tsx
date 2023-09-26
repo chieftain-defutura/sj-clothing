@@ -66,13 +66,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 16,
+    gap: 8,
   },
   genderButton: {
     borderWidth: 1,
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 30,
-    width: 120,
+    width: 110,
   },
   buttonText: {
     textAlign: 'center',

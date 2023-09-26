@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import Gender from './Gender'
 import Skintone from './Skintone'
@@ -10,7 +10,7 @@ interface IAvatart {
 const Avatar: React.FC<IAvatart> = ({ setToggleAvatar }) => {
   const [toggle, setToggle] = useState(false)
   return (
-    <View style={styles.avatarContainer}>
+    <ScrollView style={styles.avatarContainer}>
       <View style={styles.genderWrapper}>
         <View>
           <Text style={styles.title}>Create your avatar.</Text>
@@ -22,7 +22,7 @@ const Avatar: React.FC<IAvatart> = ({ setToggleAvatar }) => {
       ) : (
         <Skintone setToggle={setToggle} setToggleAvatar={setToggleAvatar} />
       )}
-    </View>
+    </ScrollView>
   )
 }
 

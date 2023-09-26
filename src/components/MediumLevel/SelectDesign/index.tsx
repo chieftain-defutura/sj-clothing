@@ -97,7 +97,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
                   color:
                     isHashtag === item.hashTag ? COLORS.textSecondaryClr : COLORS.textTertiaryClr,
                   fontFamily: 'Gilroy-Regular',
-                  width: 89,
+                  width: 'auto',
                   textAlign: 'center',
                 }}
               >

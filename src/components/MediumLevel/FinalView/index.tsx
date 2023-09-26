@@ -103,7 +103,7 @@ const FinalView: React.FC<IFinalView> = ({
           style={{
             display: 'flex',
             flexDirection: 'column',
-            width: 105,
+            width: 95,
             paddingTop: 16,
           }}
         >
@@ -124,7 +124,7 @@ const FinalView: React.FC<IFinalView> = ({
           style={{
             display: 'flex',
             flexDirection: 'column',
-            width: 105,
+            width: 95,
             paddingTop: 16,
           }}
         >
@@ -145,7 +145,7 @@ const FinalView: React.FC<IFinalView> = ({
           style={{
             display: 'flex',
             flexDirection: 'column',
-            width: 105,
+            width: 95,
             paddingTop: 16,
           }}
         >
@@ -179,7 +179,7 @@ const FinalView: React.FC<IFinalView> = ({
             style={{
               display: 'flex',
               flexDirection: 'column',
-              width: 105,
+              width: 95,
               paddingTop: 16,
             }}
           >
