@@ -86,9 +86,6 @@ const AddImage: React.FC<IAddImage> = ({ isDropDown, setDropDown, setOpenDesign 
             >
               {Images.slice(0, 2).map((data, index) => (
                 <Pressable
-                  // onPress={() => {
-                  //   setSelect(data.title), setAddImage(false), setImageAdded(true)
-                  // }}
                   onPress={() => {
                     setOpenDesign(true), setDropDown(false), setSelect(data.title)
                   }}
