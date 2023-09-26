@@ -36,15 +36,9 @@ const SelectColor: React.FC<ISelectColor> = ({
   handleIncreaseSteps,
 }) => {
   const navigation = useNavigation()
-  const [isOpenModal, setOpenModal] = useState(true)
-  const handleSelect = (color: string) => {
-    setSelectedColor(color)
-    handleIncreaseSteps()
-  }
+  const [isOpenModal, setOpenModal] = useState(false)
 
-  const handleOpen = () => {
-    setOpenModal(false)
-  }
+  console.log(isOpenModal)
 
   return (
     <View style={styles.selectColorContainer}>
@@ -99,7 +93,7 @@ const SelectColor: React.FC<ISelectColor> = ({
                 {Colors.map((color, index) => (
                   <Pressable
                     onPress={() => {
-                      setOpenModal(true)
+                      setSelectedColor(color), setOpenModal(true)
                     }}
                     key={index}
                   >
@@ -165,7 +159,12 @@ const SelectColor: React.FC<ISelectColor> = ({
         </Animated.View>
       )}
 
-      <ColorNavigation isVisible={!isOpenModal} navigation={navigation} onClose={handleOpen} />
+      <ColorNavigation
+        isVisible={isOpenModal}
+        navigation={navigation}
+        onClose={() => setOpenModal(false)}
+        handleIncreaseSteps={handleIncreaseSteps}
+      />
     </View>
   )
 }

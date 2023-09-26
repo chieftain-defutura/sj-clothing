@@ -1,21 +1,22 @@
 import React from 'react'
-import { View, Text, Image, Modal, StyleSheet, Pressable } from 'react-native'
+import { View, Modal, StyleSheet, Pressable } from 'react-native'
 import { COLORS } from '../styles/theme'
-import { Formik } from 'formik'
-import * as Yup from 'yup'
 import CloseIcon from '../assets/icons/Close'
 import CustomButton from '../components/Button'
-import CloseRedIcon from '../assets/icons/CloseRedIcon'
 
 interface ColorNavigationProps {
   isVisible: boolean
   onClose: () => void
+  handleIncreaseSteps: () => void
   navigation: any
 }
 
-const ValidationSchema = Yup.object().shape({})
-
-const ColorNavigation: React.FC<ColorNavigationProps> = ({ isVisible, onClose, navigation }) => {
+const ColorNavigation: React.FC<ColorNavigationProps> = ({
+  isVisible,
+  onClose,
+  navigation,
+  handleIncreaseSteps,
+}) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <View
@@ -26,50 +27,42 @@ const ColorNavigation: React.FC<ColorNavigationProps> = ({ isVisible, onClose, n
           backgroundColor: 'rgba(0,0,0,0.5)',
         }}
       >
-        <Formik
-          initialValues={{}}
-          validationSchema={ValidationSchema}
-          onSubmit={(values) => console.log(values)}
-        >
-          {({}) => (
-            <View style={styles.SubscriptionWrapper}>
-              <View style={styles.SubscriptionHead}>
-                <Pressable onPress={onClose}>
-                  <CloseIcon width={24} height={24} />
-                </Pressable>
-              </View>
+        <View style={styles.SubscriptionWrapper}>
+          <View style={styles.SubscriptionHead}>
+            <Pressable onPress={onClose}>
+              <CloseIcon width={24} height={24} />
+            </Pressable>
+          </View>
 
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  paddingTop: 30,
-                }}
-              >
-                <CustomButton
-                  variant='primary'
-                  text='Buy now'
-                  onPress={() => {
-                    navigation.navigate('PostCreation'), onClose()
-                  }}
-                  fontFamily='Arvo-Regular'
-                  buttonStyle={[styles.submitBtn]}
-                />
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingTop: 30,
+            }}
+          >
+            <CustomButton
+              variant='primary'
+              text='Buy now'
+              onPress={() => {
+                navigation.navigate('Checkout'), onClose()
+              }}
+              fontFamily='Arvo-Regular'
+              buttonStyle={[styles.submitBtn]}
+            />
 
-                <CustomButton
-                  variant='primary'
-                  text='Continue'
-                  onPress={() => {
-                    navigation.navigate('PostCreation'), onClose()
-                  }}
-                  fontFamily='Arvo-Regular'
-                  buttonStyle={[styles.submitBtn]}
-                />
-              </View>
-            </View>
-          )}
-        </Formik>
+            <CustomButton
+              variant='primary'
+              text='Continue'
+              onPress={() => {
+                handleIncreaseSteps(), onClose()
+              }}
+              fontFamily='Arvo-Regular'
+              buttonStyle={[styles.submitBtn]}
+            />
+          </View>
+        </View>
       </View>
     </Modal>
   )

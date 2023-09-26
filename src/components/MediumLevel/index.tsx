@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import Avatar from './Avatar'
 import Navigator from './Navigator'
 import SelectStyle from './SelectStyle'
@@ -10,8 +10,9 @@ import AddImage from './AddImage'
 import AddText from './AddText'
 import TShirt from './T-Shirt'
 import SelectDesign from './SelectDesign'
-import { COLORS } from '../../styles/theme'
-import CustomButton from '../Button'
+import FinalView from './FinalView'
+import { useNavigation } from '@react-navigation/native'
+import { colors } from 'react-native-swiper-flatlist/src/themes'
 
 const Designs = [
   {
@@ -221,14 +222,7 @@ const Data = [
     title: 'Product',
     content: 'Black blazer',
   },
-  {
-    title: 'Style',
-    content: 'Round neck',
-  },
-  {
-    title: 'Quantity',
-    content: 'x1',
-  },
+
   {
     title: 'Material',
     content: '70% Wool, 30% Mohair',
@@ -243,10 +237,9 @@ const Data = [
   },
 ]
 
-interface IMediumLevel {
-  navigation: any
-}
-const MediumLevel: React.FC<IMediumLevel> = ({ navigation }) => {
+interface IMediumLevel {}
+const MediumLevel: React.FC<IMediumLevel> = () => {
+  const navigation = useNavigation()
   const [toggleAvatar, setToggleAvatar] = useState(false)
   const [isSteps, setSteps] = useState(1)
   const [isImageOrText, setImageOrText] = useState(false)
@@ -266,7 +259,9 @@ const MediumLevel: React.FC<IMediumLevel> = ({ navigation }) => {
   const [isHashtag, setHashtag] = useState('')
   const [isImage, setImage] = useState(0)
   const [isDone, setDone] = useState(false)
-
+  //finalview
+  const [quantity, setQuantity] = useState('')
+  const [approved, setApproved] = useState(false)
   const handleIncreaseSteps = () => {
     setSteps(isSteps + 1)
     setDropDown(false)
@@ -287,135 +282,106 @@ const MediumLevel: React.FC<IMediumLevel> = ({ navigation }) => {
     }
   }
 
+  console.log(isSelectedColor)
   return (
     <View style={styles.midiumlevelContainer}>
-      {/* <Avatar setToggleAvatar={setToggleAvatar} /> */}
-      <View
-        style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Navigator
-          steps={isSteps}
-          isOpenDesign={isOpenDesign}
-          isDone={isDone}
-          setDone={setDone}
-          setDropDown={setDropDown}
-          setOpenDesign={setOpenDesign}
-          setImageOrText={setImageOrText}
-          handleDecreaseSteps={handleDecreaseSteps}
-          handleIncreaseSteps={handleIncreaseSteps}
-        />
-        {isSteps === 1 && (
-          <SelectStyle
-            isDropDown={isDropDown}
-            isSelectedStyle={isSelectedStyle}
-            isType={isType}
-            setDropDown={setDropDown}
-            setSelectedStyle={setSelectedStyle}
-            setType={setType}
-            handleIncreaseSteps={handleIncreaseSteps}
-          />
-        )}
-        {isSteps === 2 && (
-          <SelectSize
-            isDropDown={isDropDown}
-            isSelectedSize={isSelectedSize}
-            isSelectCountry={isSelectCountry}
-            setSelectCountry={setSelectCountry}
-            setDropDown={setDropDown}
-            setSelectedSize={setSelectedSize}
-            handleIncreaseSteps={handleIncreaseSteps}
-          />
-        )}
-        {isSteps === 3 && (
-          <SelectColor
-            isDropDown={isDropDown}
-            isSelectedColor={isSelectedColor}
-            setDropDown={setDropDown}
-            setSelectedColor={setSelectedColor}
-            handleIncreaseSteps={handleIncreaseSteps}
-          />
-        )}
-        {isSteps === 4 && !isImageOrText && (
-          <AddImage
-            isDropDown={isDropDown}
-            setDropDown={setDropDown}
-            setOpenDesign={setOpenDesign}
-          />
-        )}
-
-        {isSteps === 4 && isImageOrText && (
-          <AddText
-            isDropDown={isDropDown}
-            setDropDown={setDropDown}
-            setOpenDesign={setOpenDesign}
-          />
-        )}
-        <TShirt />
-
-        {isOpenDesign && !isDone && isSteps === 4 && (
-          <SelectDesign
-            designs={isImageOrText ? TextDesigns : Designs}
-            setOpenDesign={setOpenDesign}
-            setHashtag={setHashtag}
-            isHashtag={isHashtag}
-            isImage={isImage}
-            setImage={setImage}
+      {!toggleAvatar ? (
+        <Avatar setToggleAvatar={setToggleAvatar} />
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Navigator
+            steps={isSteps}
+            isOpenDesign={isOpenDesign}
             isDone={isDone}
             setDone={setDone}
+            setDropDown={setDropDown}
+            setOpenDesign={setOpenDesign}
+            setImageOrText={setImageOrText}
+            handleDecreaseSteps={handleDecreaseSteps}
+            handleIncreaseSteps={handleIncreaseSteps}
           />
-        )}
-        {isSteps === 5 && (
-          <>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                flexWrap: 'wrap',
-                paddingBottom: 8,
-              }}
-            >
-              {Data.map((item, index) => (
-                <View
-                  key={index}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'flex-start',
-                    columnGap: 30,
-                    width: 100,
-                    paddingTop: 16,
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: COLORS.textClr,
-                      fontFamily: 'Montserrat-Regular',
-                      fontSize: 10,
-                    }}
-                  >
-                    {item.title}
-                  </Text>
-                  <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-                    {item.content}
-                  </Text>
-                </View>
-              ))}
-            </View>
-            <CustomButton
-              variant='primary'
-              text='Post'
-              onPress={() => navigation.navigate('Stack')}
-              buttonStyle={[styles.submitBtn]}
+          {isSteps === 1 && (
+            <SelectStyle
+              isDropDown={isDropDown}
+              isSelectedStyle={isSelectedStyle}
+              isType={isType}
+              setDropDown={setDropDown}
+              setSelectedStyle={setSelectedStyle}
+              setType={setType}
+              handleIncreaseSteps={handleIncreaseSteps}
             />
-          </>
-        )}
-      </View>
+          )}
+          {isSteps === 2 && (
+            <SelectSize
+              isDropDown={isDropDown}
+              isSelectedSize={isSelectedSize}
+              isSelectCountry={isSelectCountry}
+              setSelectCountry={setSelectCountry}
+              setDropDown={setDropDown}
+              setSelectedSize={setSelectedSize}
+              handleIncreaseSteps={handleIncreaseSteps}
+            />
+          )}
+          {isSteps === 3 && (
+            <SelectColor
+              isDropDown={isDropDown}
+              isSelectedColor={isSelectedColor}
+              setDropDown={setDropDown}
+              setSelectedColor={setSelectedColor}
+              handleIncreaseSteps={handleIncreaseSteps}
+            />
+          )}
+          {isSteps === 4 && !isImageOrText && (
+            <AddImage
+              isDropDown={isDropDown}
+              setDropDown={setDropDown}
+              setOpenDesign={setOpenDesign}
+            />
+          )}
+
+          {isSteps === 4 && isImageOrText && (
+            <AddText
+              isDropDown={isDropDown}
+              setDropDown={setDropDown}
+              setOpenDesign={setOpenDesign}
+            />
+          )}
+          <View>
+            <ScrollView>
+              <TShirt />
+              {isSteps === 5 && (
+                <FinalView
+                  Data={Data}
+                  navigation={navigation}
+                  setQuantity={setQuantity}
+                  approved={approved}
+                  setApproved={setApproved}
+                  quantity={quantity}
+                />
+              )}
+            </ScrollView>
+          </View>
+          {isOpenDesign && !isDone && isSteps === 4 && (
+            <SelectDesign
+              designs={isImageOrText ? TextDesigns : Designs}
+              setOpenDesign={setOpenDesign}
+              setHashtag={setHashtag}
+              isHashtag={isHashtag}
+              isImage={isImage}
+              setImage={setImage}
+              isDone={isDone}
+              setDone={setDone}
+            />
+          )}
+        </View>
+      )}
     </View>
   )
 }
