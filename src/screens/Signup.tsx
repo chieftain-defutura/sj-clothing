@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import styled from 'styled-components/native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -46,6 +46,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const updateUser = userStore((state) => state.updateUser)
   const updateFetching = userStore((state) => state.updateFetching)
+  const { setMail } = userStore()
   const navigation = useNavigation()
 
   const togglePasswordVisibility = () => {
@@ -90,6 +91,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password)
       await updateProfile(user, { displayName: values.name })
       await AsyncStorage.setItem('mail', values.email)
+      await AsyncStorage.setItem('name', values.name)
       navigation.navigate('Post')
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -102,6 +104,17 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       onClose?.()
     }
   }
+
+  const getData = useCallback(async () => {
+    await AsyncStorage.getItem('mail')
+    const data = await AsyncStorage.getItem('mail')
+    setMail(data)
+    console.log(data)
+  }, [])
+
+  useEffect(() => {
+    getData()
+  }, [getData])
 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>

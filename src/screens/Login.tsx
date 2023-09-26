@@ -55,7 +55,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
       setIsLoading(true)
       console.log(values)
       await signInWithEmailAndPassword(auth, values.email, values.password)
-      await AsyncStorage.setItem('mail', values.email)
       console.log('user logged in successfully')
     } catch (error) {
       console.log(error)

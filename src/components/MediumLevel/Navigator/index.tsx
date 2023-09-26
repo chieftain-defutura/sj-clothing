@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { Pressable, StyleSheet, Text, View, Share } from 'react-native'
 
 import { COLORS } from '../../../styles/theme'
