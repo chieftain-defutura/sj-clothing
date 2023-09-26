@@ -13,6 +13,7 @@ import SelectDesign from './SelectDesign'
 import FinalView from './FinalView'
 import { useNavigation } from '@react-navigation/native'
 import { colors } from 'react-native-swiper-flatlist/src/themes'
+import Animated, { BounceIn, BounceOut } from 'react-native-reanimated'
 
 interface IMediumLevel {}
 
@@ -74,17 +75,19 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
             justifyContent: 'space-between',
           }}
         >
-          <Navigator
-            steps={isSteps}
-            isOpenDesign={isOpenDesign}
-            isDone={isDone}
-            setDone={setDone}
-            setDropDown={setDropDown}
-            setOpenDesign={setOpenDesign}
-            setImageOrText={setImageOrText}
-            handleDecreaseSteps={handleDecreaseSteps}
-            handleIncreaseSteps={handleIncreaseSteps}
-          />
+          <Animated.View entering={BounceIn} exiting={BounceOut}>
+            <Navigator
+              steps={isSteps}
+              isOpenDesign={isOpenDesign}
+              isDone={isDone}
+              setDone={setDone}
+              setDropDown={setDropDown}
+              setOpenDesign={setOpenDesign}
+              setImageOrText={setImageOrText}
+              handleDecreaseSteps={handleDecreaseSteps}
+              handleIncreaseSteps={handleIncreaseSteps}
+            />
+          </Animated.View>
           {isSteps === 1 && (
             <SelectStyle
               isDropDown={isDropDown}
