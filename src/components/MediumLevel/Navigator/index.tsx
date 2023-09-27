@@ -50,7 +50,7 @@ const Navigator: React.FC<INavigator> = ({
   }
 
   return (
-    <View style={styles.Navigator}>
+    <View style={[styles.Navigator]}>
       {isOpenDesign ? (
         <Pressable onPress={() => (isDone ? setDone(false) : setOpenDesign(false))}>
           <LeftArrow width={24} height={24} />

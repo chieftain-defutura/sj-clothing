@@ -5,6 +5,8 @@ import Animated, {
   BounceOutUp,
   FlipInXDown,
   FlipOutXDown,
+  PinwheelIn,
+  PinwheelOut,
 } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
@@ -29,8 +31,6 @@ const SelectColor: React.FC<ISelectColor> = ({
 }) => {
   const navigation = useNavigation()
   const [isOpenModal, setOpenModal] = useState(false)
-
-  console.log(isOpenModal)
 
   return (
     <View style={styles.selectColorContainer}>
@@ -85,7 +85,7 @@ const SelectColor: React.FC<ISelectColor> = ({
                 {Colors.map((color, index) => (
                   <Pressable
                     onPress={() => {
-                      setSelectedColor(color), setOpenModal(true)
+                      setSelectedColor(color), setOpenModal(true), setDropDown(false)
                     }}
                     key={index}
                   >
@@ -150,7 +150,6 @@ const SelectColor: React.FC<ISelectColor> = ({
           </Animated.View>
         </Animated.View>
       )}
-
       <ColorNavigation
         isVisible={isOpenModal}
         navigation={navigation}

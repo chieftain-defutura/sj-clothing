@@ -1,5 +1,5 @@
 import React from 'react'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack'
 import BuyNow from './BuyNow'
 import CartPage from './Cart'
 import Checkout from './Checkout'
@@ -18,11 +18,10 @@ import PostCreation from '../../../components/PostCreater'
 import { HeaderLeft, HeaderRight } from '../../../components/Header'
 import PremiumThreeSixtyDegree from './Premium/PremiumThreeSixtyDegree'
 import PremiumBuyNow from './Premium/PremiumBuyNow'
-import PremiumNavigation from './Premium'
 import Premium from '../TabNavigation/Premium'
 import PremiumDetailsCard from './Premium/PremiumDetailsCard'
 
-const Stack = createNativeStackNavigator()
+const Stack = createStackNavigator()
 
 const StackNavigationRoutes: React.FC = () => {
   return (
@@ -34,12 +33,36 @@ const StackNavigationRoutes: React.FC = () => {
         headerTitle: '',
       }}
     >
-      <Stack.Screen name='Stack' component={TabNavigationRoutes} />
-      <Stack.Screen name='AddressBook' component={AddressBook} />
-      <Stack.Screen name='Buynow' component={BuyNow} />
-      <Stack.Screen name='PostCreation' component={PostCreation} />
-      <Stack.Screen name='Cart' component={CartPage} />
-      <Stack.Screen name='Checkout' component={Checkout} />
+      <Stack.Screen
+        name='Stack'
+        component={TabNavigationRoutes}
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+      />
+      <Stack.Screen
+        name='AddressBook'
+        component={AddressBook}
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+      />
+      <Stack.Screen
+        name='Buynow'
+        component={BuyNow}
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+      />
+      <Stack.Screen
+        name='PostCreation'
+        component={PostCreation}
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+      />
+      <Stack.Screen
+        name='Cart'
+        component={CartPage}
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+      />
+      <Stack.Screen
+        name='Checkout'
+        component={Checkout}
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+      />
       <Stack.Screen name='MyOrders' component={MyOrders} />
       <Stack.Screen name='TrackOrder' component={TrackOrder} />
       <Stack.Screen name='GiftOptions' component={GiftOptions} />

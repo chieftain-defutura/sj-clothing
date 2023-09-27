@@ -244,6 +244,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: width,
-    zIndex: 10,
+    zIndex: 1000,
   },
 })

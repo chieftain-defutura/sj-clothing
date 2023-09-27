@@ -3,6 +3,7 @@ import { View, Modal, StyleSheet, Pressable } from 'react-native'
 import { COLORS } from '../styles/theme'
 import CloseIcon from '../assets/icons/Close'
 import CustomButton from '../components/Button'
+import Animated, { PinwheelIn } from 'react-native-reanimated'
 
 interface ColorNavigationProps {
   isVisible: boolean
@@ -27,7 +28,7 @@ const ColorNavigation: React.FC<ColorNavigationProps> = ({
           backgroundColor: 'rgba(0,0,0,0.5)',
         }}
       >
-        <View style={styles.SubscriptionWrapper}>
+        <Animated.View entering={PinwheelIn.duration(800)} style={[styles.SubscriptionWrapper]}>
           <View style={styles.SubscriptionHead}>
             <Pressable onPress={onClose}>
               <CloseIcon width={24} height={24} />
@@ -62,7 +63,7 @@ const ColorNavigation: React.FC<ColorNavigationProps> = ({
               buttonStyle={[styles.submitBtn]}
             />
           </View>
-        </View>
+        </Animated.View>
       </View>
     </Modal>
   )
