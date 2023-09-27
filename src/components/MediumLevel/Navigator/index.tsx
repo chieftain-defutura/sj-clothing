@@ -7,6 +7,7 @@ import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
 import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 import ShareArrow from '../../../assets/icons/ShareArrow'
+import Animated, { SlideInLeft, SlideOutLeft } from 'react-native-reanimated'
 
 interface INavigator {
   steps: number
@@ -50,15 +51,19 @@ const Navigator: React.FC<INavigator> = ({
   }
 
   return (
-    <View style={[styles.Navigator]}>
+    <Animated.View style={[styles.Navigator]}>
       {isOpenDesign ? (
-        <Pressable onPress={() => (isDone ? setDone(false) : setOpenDesign(false))}>
-          <LeftArrow width={24} height={24} />
-        </Pressable>
+        <Animated.View>
+          <Pressable onPress={() => (isDone ? setDone(false) : setOpenDesign(false))}>
+            <LeftArrow width={24} height={24} />
+          </Pressable>
+        </Animated.View>
       ) : (
-        <Pressable onPress={handleDecreaseSteps}>
-          <ArrowCircleLeft width={24} height={24} />
-        </Pressable>
+        <Animated.View>
+          <Pressable onPress={handleDecreaseSteps}>
+            <ArrowCircleLeft width={24} height={24} />
+          </Pressable>
+        </Animated.View>
       )}
 
       {steps !== 5 && (
@@ -135,7 +140,7 @@ const Navigator: React.FC<INavigator> = ({
           <ShareArrow width={24} height={24} />
         </Pressable>
       )}
-    </View>
+    </Animated.View>
   )
 }
 

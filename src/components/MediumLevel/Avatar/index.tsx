@@ -3,7 +3,14 @@ import React, { useState } from 'react'
 import Gender from './Gender'
 import Skintone from './Skintone'
 import { COLORS } from '../../../styles/theme'
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeInUp,
+  FadeOut,
+  FlipInXDown,
+  StretchInY,
+} from 'react-native-reanimated'
 
 interface IAvatart {
   setToggleAvatar: React.Dispatch<React.SetStateAction<boolean>>
@@ -13,7 +20,7 @@ const Avatar: React.FC<IAvatart> = ({ setToggleAvatar }) => {
   return (
     <ScrollView style={styles.avatarContainer}>
       <Animated.View
-        entering={FadeIn.duration(8000)}
+        entering={FadeInUp.duration(800)}
         exiting={FadeOut}
         style={styles.genderWrapper}
       >
@@ -23,7 +30,9 @@ const Avatar: React.FC<IAvatart> = ({ setToggleAvatar }) => {
         </View>
       </Animated.View>
       {!toggle ? (
-        <Gender setToggle={setToggle} />
+        <Animated.View entering={FadeInDown.duration(800)} exiting={FadeOut}>
+          <Gender setToggle={setToggle} />
+        </Animated.View>
       ) : (
         <Skintone setToggle={setToggle} setToggleAvatar={setToggleAvatar} />
       )}

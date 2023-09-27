@@ -27,6 +27,7 @@ const TabNavigationRoutes: React.FC = () => {
           borderTopWidth: 0,
           height: 60,
         },
+        unmountOnBlur: true,
       }}
     >
       <Tab.Screen
