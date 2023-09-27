@@ -12,5 +12,10 @@ export const PremiumDetailsData = [
     oldPrice: 450,
     inr: 'INR',
     newPrice: 350,
+    detailsPara: [
+      'Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus , eleifend tellus augue lec.',
+      'Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet',
+      'Imperdiet in sit rhoncus.',
+    ],
   },
 ]

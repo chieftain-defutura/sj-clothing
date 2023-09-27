@@ -93,6 +93,7 @@ const PremiumBuyNow: React.FC<IPremiumBuyNow> = ({ navigation }) => {
                   fontFamily='Arvo-Regular'
                   fontSize={16}
                   style={{ marginTop: 6 }}
+                  onPress={() => navigation.navigate('Checkout')}
                 />
               </View>
             </View>
