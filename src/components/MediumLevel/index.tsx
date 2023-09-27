@@ -74,19 +74,17 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
             justifyContent: 'space-between',
           }}
         >
-          <Animated.View entering={BounceIn} exiting={BounceOut}>
-            <Navigator
-              steps={isSteps}
-              isOpenDesign={isOpenDesign}
-              isDone={isDone}
-              setDone={setDone}
-              setDropDown={setDropDown}
-              setOpenDesign={setOpenDesign}
-              setImageOrText={setImageOrText}
-              handleDecreaseSteps={handleDecreaseSteps}
-              handleIncreaseSteps={handleIncreaseSteps}
-            />
-          </Animated.View>
+          <Navigator
+            steps={isSteps}
+            isOpenDesign={isOpenDesign}
+            isDone={isDone}
+            setDone={setDone}
+            setDropDown={setDropDown}
+            setOpenDesign={setOpenDesign}
+            setImageOrText={setImageOrText}
+            handleDecreaseSteps={handleDecreaseSteps}
+            handleIncreaseSteps={handleIncreaseSteps}
+          />
           {isSteps === 1 && (
             <SelectStyle
               isDropDown={isDropDown}

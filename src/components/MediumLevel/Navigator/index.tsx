@@ -7,7 +7,7 @@ import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
 import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 import ShareArrow from '../../../assets/icons/ShareArrow'
-import Animated, { SlideInLeft, SlideOutLeft } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 
 interface INavigator {
   steps: number
