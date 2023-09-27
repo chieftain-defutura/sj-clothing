@@ -6,6 +6,7 @@ import ShareArrow from '../../../../assets/icons/ShareArrow'
 import { COLORS, FONT_FAMILY } from '../../../../styles/theme'
 import CustomButton from '../../../../components/Button'
 import { PremiumBuynowData } from '../../../../utils/data/premiumBuynow'
+import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 
 interface IPremiumBuyNow {
   navigation: any
@@ -32,68 +33,73 @@ const PremiumBuyNow: React.FC<IPremiumBuyNow> = ({ navigation }) => {
   }
 
   return (
-    <PremiumBuyNowWrapper>
-      <FlexContent>
-        <Pressable
-          onPress={() => {
-            navigation.goBack()
-          }}
-        >
-          <LeftArrow width={24} height={24} />
-        </Pressable>
-        <Pressable onPress={share}>
-          <ShareArrow width={24} height={24} />
-        </Pressable>
-      </FlexContent>
-      {PremiumBuynowData.map((f, index) => {
-        return (
-          <View key={index}>
-            <ImageCenterPosition>
-              <Image source={f.image} style={{ resizeMode: 'cover' }} />
-            </ImageCenterPosition>
-            <View style={{ padding: 16 }}>
-              <RowContainer>
-                <View>
-                  <ProductText>{f.product}</ProductText>
-                  <ProductName>{f.productName}</ProductName>
-                </View>
-                <View>
-                  <ProductText>{f.style}</ProductText>
-                  <ProductName>{f.styleName}</ProductName>
-                </View>
-                <View>
-                  <ProductText>{f.quantity}</ProductText>
-                  <ProductName>{f.quantityPrice}</ProductName>
-                </View>
-              </RowContainer>
-              <RowContainer style={{ paddingVertical: 16 }}>
-                <View>
-                  <ProductText>{f.material}</ProductText>
-                  <ProductName>{f.materialWool}</ProductName>
-                  <ProductName>{f.materialMohair}</ProductName>
-                </View>
-                <View>
-                  <ProductText>{f.lining}</ProductText>
-                  <ProductName>{f.liningSilk}</ProductName>
-                </View>
-                <View>
-                  <ProductText>{f.priceHeading}</ProductText>
-                  <ProductName>
-                    {f.price} {f.inr}
-                  </ProductName>
-                </View>
-              </RowContainer>
-              <CustomButton
-                text='Buy Now'
-                fontFamily='Arvo-Regular'
-                fontSize={16}
-                style={{ marginTop: 6 }}
-              />
+    <Animated.View
+      entering={SlideInRight.duration(500).delay(200)}
+      exiting={SlideOutRight.duration(500).delay(200)}
+    >
+      <PremiumBuyNowWrapper>
+        <FlexContent>
+          <Pressable
+            onPress={() => {
+              navigation.goBack()
+            }}
+          >
+            <LeftArrow width={24} height={24} />
+          </Pressable>
+          <Pressable onPress={share}>
+            <ShareArrow width={24} height={24} />
+          </Pressable>
+        </FlexContent>
+        {PremiumBuynowData.map((f, index) => {
+          return (
+            <View key={index}>
+              <ImageCenterPosition>
+                <Image source={f.image} style={{ resizeMode: 'cover' }} />
+              </ImageCenterPosition>
+              <View style={{ padding: 16 }}>
+                <RowContainer>
+                  <View>
+                    <ProductText>{f.product}</ProductText>
+                    <ProductName>{f.productName}</ProductName>
+                  </View>
+                  <View>
+                    <ProductText>{f.style}</ProductText>
+                    <ProductName>{f.styleName}</ProductName>
+                  </View>
+                  <View>
+                    <ProductText>{f.quantity}</ProductText>
+                    <ProductName>{f.quantityPrice}</ProductName>
+                  </View>
+                </RowContainer>
+                <RowContainer style={{ paddingVertical: 16 }}>
+                  <View>
+                    <ProductText>{f.material}</ProductText>
+                    <ProductName>{f.materialWool}</ProductName>
+                    <ProductName>{f.materialMohair}</ProductName>
+                  </View>
+                  <View>
+                    <ProductText>{f.lining}</ProductText>
+                    <ProductName>{f.liningSilk}</ProductName>
+                  </View>
+                  <View>
+                    <ProductText>{f.priceHeading}</ProductText>
+                    <ProductName>
+                      {f.price} {f.inr}
+                    </ProductName>
+                  </View>
+                </RowContainer>
+                <CustomButton
+                  text='Buy Now'
+                  fontFamily='Arvo-Regular'
+                  fontSize={16}
+                  style={{ marginTop: 6 }}
+                />
+              </View>
             </View>
-          </View>
-        )
-      })}
-    </PremiumBuyNowWrapper>
+          )
+        })}
+      </PremiumBuyNowWrapper>
+    </Animated.View>
   )
 }
 

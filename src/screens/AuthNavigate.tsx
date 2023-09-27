@@ -19,7 +19,6 @@ const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus }) => {
   const [userMail, setUserMail] = useState<string | null>('')
   const user = userStore((state) => state.user)
   const navigation = useNavigation()
-  console.log('user', user)
 
   const onSignUpClick = () => {
     setLoginModalVisible(false)
@@ -32,10 +31,8 @@ const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus }) => {
   }, [])
 
   const onForgot = () => {
-    console.log('ASUI')
-    // setForgotModalVisible(true)
-    // setLoginModalVisible(false)
-    // console.log('asa')
+    setForgotModalVisible(true)
+    setLoginModalVisible(false)
   }
 
   const closeSignUpModal = () => {
@@ -47,6 +44,13 @@ const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus }) => {
 
   const closeLoginModal = () => {
     setLoginModalVisible(false)
+    if (!userMail) {
+      navigation.navigate('Post')
+    }
+  }
+
+  const closeForgotModel = () => {
+    setForgotModalVisible(false)
     if (!userMail) {
       navigation.navigate('Post')
     }
@@ -66,11 +70,18 @@ const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus }) => {
           isVisible={isLoginModalVisible}
           onClose={closeLoginModal}
           onSignClick={onSignUpClick}
-          // onForgot={onForgot}
+          onForgotClick={onForgot}
         />
       )}
-      {!userMail && isLoginModalVisible && (
-        <ForgotModal isVisible={isForgotModalVisible} onClose={closeLoginModal} />
+      {!userMail && isForgotModalVisible && (
+        <ForgotModal
+          isVisible={isForgotModalVisible}
+          onClose={closeForgotModel}
+          onLoginClick={() => {
+            setForgotModalVisible(false)
+            setLoginModalVisible(true)
+          }}
+        />
       )}
       {!userMail && isSignUpModal && (
         <SignupModal

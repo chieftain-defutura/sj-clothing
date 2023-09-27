@@ -12,17 +12,22 @@ import CloseIcon from '../assets/icons/Close'
 import EyeIcon from '../assets/icons/EyeIcon'
 import CustomButton from '../components/Button'
 import EyeHideIcon from '../assets/icons/EyeIconHide'
+import { userStore } from '../store/userStore'
 
 interface LoginModalProps {
   isVisible?: boolean
   onClose?: () => void
   onSignClick?: () => void
+  onForgotClick?: () => void
 }
 
 const initialValues = { email: '', password: '' }
 
 const ValidationSchema = Yup.object({
-  email: Yup.string().email('Invalid email').required('Please enter your email address'),
+  email: Yup.string()
+    .transform((value, originalValue) => originalValue.toLowerCase())
+    .email('Enter a valid email')
+    .required('Please enter your email address'),
   password: Yup.string()
     .min(8)
     .required('Please enter your password')
@@ -32,25 +37,27 @@ const ValidationSchema = Yup.object({
     ),
 })
 
-const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick }) => {
+const LoginModal: React.FC<LoginModalProps> = ({
+  isVisible,
+  onClose,
+  onSignClick,
+  onForgotClick,
+}) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const user = userStore((state) => state.user)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
-
-  // const onForgotClick = () => {
-  //   console.log('ihi')
-  //   onForgot()
-  // }
 
   const handleSubmit = async (values: typeof initialValues) => {
     try {
       setIsLoading(true)
       console.log(values)
       await signInWithEmailAndPassword(auth, values.email, values.password)
+      await AsyncStorage.setItem('mail', user?.email)
       console.log('user logged in successfully')
     } catch (error) {
       console.log(error)
@@ -130,22 +137,14 @@ const LoginModal: React.FC<LoginModalProps> = ({ isVisible, onClose, onSignClick
 
               {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
 
-              {/* <CustomButton
-                variant='primary'
-                text={'Login'}
-                onPress={() => {
-                  handleSubmit()
-                }}
-                disabled={!isValid}
-                buttonStyle={[styles.submitBtn]}
-              /> */}
               <CustomButton
                 variant='primary'
                 text={isLoading ? 'Logging in...' : 'Login'}
                 onPress={() => {
                   handleSubmit()
                 }}
-                disabled={!isValid || isLoading}
+                fontFamily='Arvo-Regular'
+                fontSize={14}
                 buttonStyle={[styles.submitBtn]}
               />
 

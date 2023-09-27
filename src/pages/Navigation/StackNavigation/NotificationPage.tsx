@@ -2,72 +2,47 @@ import React from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 import { COLORS } from '../../../styles/theme'
-import NotificationInActive from '../../../assets/icons/NotificationInActive'
-
-const data = [
-  {
-    notificationIcon: NotificationInActive,
-    name: 'Upload video',
-    description:
-      'Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus , eleifend tellus augue lec.',
-    date: '12 July,2023',
-  },
-  {
-    notificationIcon: NotificationInActive,
-    name: 'New collections',
-    description:
-      'Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus , eleifend tellus augue lec.',
-    date: '12 July,2023',
-  },
-  {
-    notificationIcon: NotificationInActive,
-    name: 'Shipping',
-    description:
-      'Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus , eleifend tellus augue lec.',
-    date: '12 July,2023',
-  },
-  {
-    notificationIcon: NotificationInActive,
-    name: 'Shipping',
-    description:
-      'Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus , eleifend tellus augue lec.',
-    date: '12 July,2023',
-  },
-]
+import { NotificationData } from '../../../utils/data/NotificationData'
+import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
 
 const NotificationPage: React.FC = () => {
   return (
     <ScrollViewContent>
-      <NotificationHead>Today</NotificationHead>
-      {data.map((f, index) => {
-        return (
-          <NotificationFlexContent key={index}>
-            <IconView>
-              <f.notificationIcon width={24} height={24} />
-            </IconView>
-            <View>
-              <TextHead>{f.name}</TextHead>
-              <TextDescription>{f.description}</TextDescription>
-              <DateText>{f.date}</DateText>
-            </View>
-          </NotificationFlexContent>
-        )
-      })}
-      <NotificationHead>YESTERDAY</NotificationHead>
-      {data.map((f, index) => {
-        return (
-          <NotificationFlexContent key={index}>
-            <IconView>
-              <f.notificationIcon width={24} height={24} />
-            </IconView>
-            <View>
-              <TextHead>{f.name}</TextHead>
-              <TextDescription>{f.description}</TextDescription>
-              <DateText>{f.date}</DateText>
-            </View>
-          </NotificationFlexContent>
-        )
-      })}
+      <Animated.View
+        entering={SlideInDown.duration(500).delay(200)}
+        exiting={SlideOutDown.duration(500).delay(200)}
+      >
+        <NotificationHead>Today</NotificationHead>
+        {NotificationData.map((f, index) => {
+          return (
+            <NotificationFlexContent key={index}>
+              <IconView>
+                <f.notificationIcon width={24} height={24} />
+              </IconView>
+              <View>
+                <TextHead>{f.name}</TextHead>
+                <TextDescription>{f.description}</TextDescription>
+                <DateText>{f.date}</DateText>
+              </View>
+            </NotificationFlexContent>
+          )
+        })}
+        <NotificationHead>YESTERDAY</NotificationHead>
+        {NotificationData.map((f, index) => {
+          return (
+            <NotificationFlexContent key={index}>
+              <IconView>
+                <f.notificationIcon width={24} height={24} />
+              </IconView>
+              <View>
+                <TextHead>{f.name}</TextHead>
+                <TextDescription>{f.description}</TextDescription>
+                <DateText>{f.date}</DateText>
+              </View>
+            </NotificationFlexContent>
+          )
+        })}
+      </Animated.View>
     </ScrollViewContent>
   )
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/native'
 import { View, Pressable } from 'react-native'
+import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
@@ -12,107 +13,112 @@ interface ITrackOrder {
 
 const TrackOrder: React.FC<ITrackOrder> = ({ navigation }) => {
   return (
-    <ScrollViewContent>
-      <View>
-        <GoBackArrowContent
-          onPress={() => {
-            navigation.goBack()
-          }}
-        >
-          <LeftArrow width={24} height={24} />
-          <CartText>Track order</CartText>
-        </GoBackArrowContent>
-        <TShirtImageWrapper>
-          <TShirtImage source={require('../../../assets/images/t-shirt.png')} />
-          <ThreeSixtyDegreeImage>
-            <ThreeSixtyDegree width={40} height={40} />
-          </ThreeSixtyDegreeImage>
-        </TShirtImageWrapper>
-        <TrackOrderContent>
-          <FlexContent>
-            <View>
-              <TrackOrderText>Product</TrackOrderText>
-              <TrackOrderDate>Purple ape t-shirt</TrackOrderDate>
-            </View>
-            <View>
-              <TrackOrderText>Style</TrackOrderText>
-              <TrackOrderDate>Half sleeve</TrackOrderDate>
-            </View>
-            <View>
-              <TrackOrderText>Quantity</TrackOrderText>
-              <TrackOrderDate>x50</TrackOrderDate>
-            </View>
-          </FlexContent>
-          <FlexContentTwo>
-            <View>
-              <TrackOrderText>Ordered on</TrackOrderText>
-              <TrackOrderDate>23 June, 2023</TrackOrderDate>
-            </View>
-            <View>
-              <TrackOrderText>Delivery on</TrackOrderText>
-              <TrackOrderDate>23 Jul, 2023</TrackOrderDate>
-            </View>
-            <View>
-              <TrackOrderText>Price</TrackOrderText>
-              <TrackOrderDate>450 INR</TrackOrderDate>
-            </View>
-          </FlexContentTwo>
+    <Animated.View
+      entering={SlideInRight.duration(500).delay(200)}
+      exiting={SlideOutRight.duration(500).delay(200)}
+    >
+      <ScrollViewContent>
+        <View>
+          <GoBackArrowContent
+            onPress={() => {
+              navigation.goBack()
+            }}
+          >
+            <LeftArrow width={24} height={24} />
+            <CartText>Track order</CartText>
+          </GoBackArrowContent>
+          <TShirtImageWrapper>
+            <TShirtImage source={require('../../../assets/images/t-shirt.png')} />
+            <ThreeSixtyDegreeImage>
+              <ThreeSixtyDegree width={40} height={40} />
+            </ThreeSixtyDegreeImage>
+          </TShirtImageWrapper>
+          <TrackOrderContent>
+            <FlexContent>
+              <View>
+                <TrackOrderText>Product</TrackOrderText>
+                <TrackOrderDate>Purple ape t-shirt</TrackOrderDate>
+              </View>
+              <View>
+                <TrackOrderText>Style</TrackOrderText>
+                <TrackOrderDate>Half sleeve</TrackOrderDate>
+              </View>
+              <View>
+                <TrackOrderText>Quantity</TrackOrderText>
+                <TrackOrderDate>x50</TrackOrderDate>
+              </View>
+            </FlexContent>
+            <FlexContentTwo>
+              <View>
+                <TrackOrderText>Ordered on</TrackOrderText>
+                <TrackOrderDate>23 June, 2023</TrackOrderDate>
+              </View>
+              <View>
+                <TrackOrderText>Delivery on</TrackOrderText>
+                <TrackOrderDate>23 Jul, 2023</TrackOrderDate>
+              </View>
+              <View>
+                <TrackOrderText>Price</TrackOrderText>
+                <TrackOrderDate>450 INR</TrackOrderDate>
+              </View>
+            </FlexContentTwo>
 
-          <OrderGroupContent>
-            <Pressable>
-              <OrderGroup width={25} height={203} />
-            </Pressable>
-            <View>
-              <FlexOrder>
-                <OrderPlacedFlexContent>
-                  <View>
-                    <OrderPlacedText>Order placed</OrderPlacedText>
-                  </View>
-                  <View>
-                    <OrderPlacedDate>23 Jul, 2023</OrderPlacedDate>
-                  </View>
-                </OrderPlacedFlexContent>
+            <OrderGroupContent>
+              <Pressable>
+                <OrderGroup width={25} height={203} />
+              </Pressable>
+              <View>
+                <FlexOrder>
+                  <OrderPlacedFlexContent>
+                    <View>
+                      <OrderPlacedText>Order placed</OrderPlacedText>
+                    </View>
+                    <View>
+                      <OrderPlacedDate>23 Jul, 2023</OrderPlacedDate>
+                    </View>
+                  </OrderPlacedFlexContent>
 
-                <OrderDescription>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut
-                  laboredolore aliqua.
-                </OrderDescription>
-              </FlexOrder>
-              <FlexOrder>
-                <OrderPlacedFlexContent>
-                  <View>
-                    <OrderPlacedText>Shipping</OrderPlacedText>
-                  </View>
-                  <View>
-                    <OrderPlacedDate>23 Jul, 2023</OrderPlacedDate>
-                  </View>
-                </OrderPlacedFlexContent>
+                  <OrderDescription>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut
+                    laboredolore aliqua.
+                  </OrderDescription>
+                </FlexOrder>
+                <FlexOrder>
+                  <OrderPlacedFlexContent>
+                    <View>
+                      <OrderPlacedText>Shipping</OrderPlacedText>
+                    </View>
+                    <View>
+                      <OrderPlacedDate>23 Jul, 2023</OrderPlacedDate>
+                    </View>
+                  </OrderPlacedFlexContent>
 
-                <OrderDescription>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut
-                  laboredolore aliqua.
-                </OrderDescription>
-              </FlexOrder>
-              <FlexOrder>
-                <OrderPlacedFlexContent>
-                  <View>
-                    <OrderPlacedText>Delivery</OrderPlacedText>
-                  </View>
-                  <View>
-                    <OrderPlacedDate>23 Jul, 2023</OrderPlacedDate>
-                  </View>
-                </OrderPlacedFlexContent>
+                  <OrderDescription>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut
+                    laboredolore aliqua.
+                  </OrderDescription>
+                </FlexOrder>
+                <FlexOrder>
+                  <OrderPlacedFlexContent>
+                    <View>
+                      <OrderPlacedText>Delivery</OrderPlacedText>
+                    </View>
+                    <View>
+                      <OrderPlacedDate>23 Jul, 2023</OrderPlacedDate>
+                    </View>
+                  </OrderPlacedFlexContent>
 
-                <OrderDescription>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut
-                  laboredolore aliqua.
-                </OrderDescription>
-              </FlexOrder>
-            </View>
-          </OrderGroupContent>
-        </TrackOrderContent>
-      </View>
-    </ScrollViewContent>
+                  <OrderDescription>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut
+                    laboredolore aliqua.
+                  </OrderDescription>
+                </FlexOrder>
+              </View>
+            </OrderGroupContent>
+          </TrackOrderContent>
+        </View>
+      </ScrollViewContent>
+    </Animated.View>
   )
 }
 

@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import LeftArrow from '../../../../assets/icons/LeftArrow'
 import { COLORS, FONT_FAMILY } from '../../../../styles/theme'
 import ThreeSixtyDegree from '../../../../assets/icons/360-degree'
+import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 
 interface IPremiumThreeSixtyDegree {
   navigation: any
@@ -14,40 +15,45 @@ const { width, height } = Dimensions.get('window')
 
 const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({ navigation }) => {
   return (
-    <LinearGradient
-      start={{ x: 0, y: 0 }}
-      end={{ x: 0, y: 1 }}
-      colors={['#FFEFFF', '#FFF']}
-      style={styles.linearGradient}
+    <Animated.View
+      entering={SlideInRight.duration(500).delay(200)}
+      exiting={SlideOutRight.duration(500).delay(200)}
     >
-      <FlexContent>
-        <Pressable
-          onPress={() => {
-            navigation.goBack()
-          }}
-        >
-          <LeftArrow width={24} height={24} />
-        </Pressable>
-        <Pressable onPress={() => navigation.navigate('PremiumBuynow')}>
-          <DoneText>Done</DoneText>
-        </Pressable>
-      </FlexContent>
-      <ThreeSixtyDegreeImageWrapper>
-        <ThreeSixtyDegreeImage>
-          <Image
-            source={require('../../../../assets/images/PremiumImage/premium-img2.png')}
-            style={{
-              resizeMode: 'contain',
-              width: width * 0.9,
-              height: height * 0.7,
+      <LinearGradient
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        colors={['#FFEFFF', '#FFF']}
+        style={styles.linearGradient}
+      >
+        <FlexContent>
+          <Pressable
+            onPress={() => {
+              navigation.goBack()
             }}
-          />
-        </ThreeSixtyDegreeImage>
-        <SelectStyle360Degree>
-          <ThreeSixtyDegree width={40} height={40} />
-        </SelectStyle360Degree>
-      </ThreeSixtyDegreeImageWrapper>
-    </LinearGradient>
+          >
+            <LeftArrow width={24} height={24} />
+          </Pressable>
+          <Pressable onPress={() => navigation.navigate('PremiumBuynow')}>
+            <DoneText>Done</DoneText>
+          </Pressable>
+        </FlexContent>
+        <ThreeSixtyDegreeImageWrapper>
+          <ThreeSixtyDegreeImage>
+            <Image
+              source={require('../../../../assets/images/PremiumImage/premium-img2.png')}
+              style={{
+                resizeMode: 'contain',
+                width: width * 0.9,
+                height: height * 0.7,
+              }}
+            />
+          </ThreeSixtyDegreeImage>
+          <SelectStyle360Degree>
+            <ThreeSixtyDegree width={40} height={40} />
+          </SelectStyle360Degree>
+        </ThreeSixtyDegreeImageWrapper>
+      </LinearGradient>
+    </Animated.View>
   )
 }
 

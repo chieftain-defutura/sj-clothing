@@ -30,8 +30,6 @@ const SelectColor: React.FC<ISelectColor> = ({
   const navigation = useNavigation()
   const [isOpenModal, setOpenModal] = useState(false)
 
-  console.log(isOpenModal)
-
   return (
     <View style={styles.selectColorContainer}>
       {isDropDown && (

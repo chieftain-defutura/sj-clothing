@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components/native'
+import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { View, Pressable } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { COLORS } from '../../../styles/theme'
@@ -12,45 +13,50 @@ interface IMyOrders {
 
 const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
   return (
-    <ScrollViewContent>
-      <View>
-        <GoBackArrowContent
-          onPress={() => {
-            navigation.goBack()
-          }}
-        >
-          <LeftArrow width={24} height={24} />
-          <CartText>My orders</CartText>
-        </GoBackArrowContent>
-        <CartPageContent>
-          {MyOrdersData.map((f, index) => {
-            return (
-              <Pressable key={index} onPress={() => navigation.navigate('TrackOrder')}>
-                <CartPageContainer>
-                  <View>
-                    <TShirtImage source={f.image} />
-                  </View>
-                  <View>
-                    <ProductWrapper>
-                      <View>
-                        <ProductText>{f.product}</ProductText>
-                        <ProductShirtText>{f.productName}</ProductShirtText>
-                        <StatusText>{f.status}</StatusText>
-                        <ProductShirtText>{f.statusName}</ProductShirtText>
-                        <ProductShirtText>{f.date}</ProductShirtText>
-                      </View>
-                      <Pressable>
-                        <ChevronLeft width={16} height={16} />
-                      </Pressable>
-                    </ProductWrapper>
-                  </View>
-                </CartPageContainer>
-              </Pressable>
-            )
-          })}
-        </CartPageContent>
-      </View>
-    </ScrollViewContent>
+    <Animated.View
+      entering={SlideInRight.duration(500).delay(200)}
+      exiting={SlideOutRight.duration(500).delay(200)}
+    >
+      <ScrollViewContent>
+        <View>
+          <GoBackArrowContent
+            onPress={() => {
+              navigation.goBack()
+            }}
+          >
+            <LeftArrow width={24} height={24} />
+            <CartText>My orders</CartText>
+          </GoBackArrowContent>
+          <CartPageContent>
+            {MyOrdersData.map((f, index) => {
+              return (
+                <Pressable key={index} onPress={() => navigation.navigate('TrackOrder')}>
+                  <CartPageContainer>
+                    <View>
+                      <TShirtImage source={f.image} />
+                    </View>
+                    <View>
+                      <ProductWrapper>
+                        <View>
+                          <ProductText>{f.product}</ProductText>
+                          <ProductShirtText>{f.productName}</ProductShirtText>
+                          <StatusText>{f.status}</StatusText>
+                          <ProductShirtText>{f.statusName}</ProductShirtText>
+                          <ProductShirtText>{f.date}</ProductShirtText>
+                        </View>
+                        <Pressable>
+                          <ChevronLeft width={16} height={16} />
+                        </Pressable>
+                      </ProductWrapper>
+                    </View>
+                  </CartPageContainer>
+                </Pressable>
+              )
+            })}
+          </CartPageContent>
+        </View>
+      </ScrollViewContent>
+    </Animated.View>
   )
 }
 

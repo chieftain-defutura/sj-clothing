@@ -10,11 +10,13 @@ import MidLevel from './MidLevel'
 import Premium from './Premium'
 import Account from './Account'
 import TabHomeIcon from '../../../assets/icons/TabHomeIcon'
-import PremiumNavigation from '../StackNavigation/Premium'
+import { useSharedValue } from 'react-native-reanimated'
 
 const Tab = createBottomTabNavigator()
 
 const TabNavigationRoutes: React.FC = () => {
+  const opacityValue = useSharedValue(2)
+
   return (
     <Tab.Navigator
       initialRouteName='Home'
@@ -33,7 +35,13 @@ const TabNavigationRoutes: React.FC = () => {
           tabBarLabel: '',
           tabBarIcon: ({ focused, color }) =>
             focused ? (
-              <View style={{ backgroundColor: 'white', borderRadius: 50 }}>
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  borderRadius: 50,
+                  opacity: focused ? opacityValue.value : 2,
+                }}
+              >
                 <TabHomeIcon color={color} width={40} height={40} />
               </View>
             ) : (
@@ -49,7 +57,13 @@ const TabNavigationRoutes: React.FC = () => {
           tabBarLabel: '',
           tabBarIcon: ({ focused, color }) =>
             focused ? (
-              <View style={{ backgroundColor: 'white', borderRadius: 50 }}>
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  borderRadius: 50,
+                  opacity: focused ? opacityValue.value : 2,
+                }}
+              >
                 <MidLevelIcon color={color} width={40} height={40} />
               </View>
             ) : (
@@ -65,7 +79,13 @@ const TabNavigationRoutes: React.FC = () => {
           tabBarLabel: '',
           tabBarIcon: ({ focused, color }) =>
             focused ? (
-              <View style={{ backgroundColor: 'white', borderRadius: 50 }}>
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  borderRadius: 50,
+                  opacity: focused ? opacityValue.value : 2,
+                }}
+              >
                 <PremiumIcon color={color} width={40} height={40} />
               </View>
             ) : (
@@ -81,7 +101,13 @@ const TabNavigationRoutes: React.FC = () => {
           tabBarLabel: '',
           tabBarIcon: ({ focused, color }) =>
             focused ? (
-              <View style={{ backgroundColor: 'white', borderRadius: 50 }}>
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  borderRadius: 50,
+                  opacity: focused ? opacityValue.value : 2,
+                }}
+              >
                 <AccountIcon color={color} width={40} height={40} />
               </View>
             ) : (

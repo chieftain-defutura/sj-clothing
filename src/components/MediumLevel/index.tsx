@@ -12,7 +12,6 @@ import TShirt from './T-Shirt'
 import SelectDesign from './SelectDesign'
 import FinalView from './FinalView'
 import { useNavigation } from '@react-navigation/native'
-import { colors } from 'react-native-swiper-flatlist/src/themes'
 import Animated, { BounceIn, BounceOut } from 'react-native-reanimated'
 
 interface IMediumLevel {}
@@ -61,7 +60,6 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
     }
   }
 
-  console.log(isSelectedColor)
   return (
     <View style={styles.midiumlevelContainer}>
       {!toggleAvatar ? (

@@ -56,9 +56,13 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
 
   const getMail = React.useCallback(async () => {
     const data = await AsyncStorage.getItem('mail')
-    console.log('datas', data)
+    console.log('current mail:', data)
     setUserMail(data)
   }, [])
+
+  useEffect(() => {
+    getMail()
+  }, [getMail])
 
   const openSubscriptionModal = () => {
     setSubscriptionModal(true)
@@ -66,10 +70,6 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
   const closeSubscriptionModal = () => {
     setSubscriptionModal(false)
   }
-
-  useEffect(() => {
-    getMail()
-  }, [getMail])
 
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
