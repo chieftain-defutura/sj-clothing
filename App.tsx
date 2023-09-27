@@ -14,13 +14,14 @@ const App: React.FC = () => {
   const updateUser = userStore((store) => store.updateUser)
   useEffect(() => {
     return onAuthStateChanged(auth, (data) => {
+      // console.log('user', data)
       if (data) {
         updateUser(data)
       } else {
         // no user
       }
     })
-  }, [updateUser])
+  }, [])
 
   const [fontsLoaded] = useFonts({
     'Arvo-Regular': require('./src/assets/fonts/Arvo-Regular.ttf'), //font-weight 400

@@ -1,9 +1,9 @@
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import styled from 'styled-components/native'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import React, { useEffect, useState, useCallback } from 'react'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
+import { sendEmailVerification } from 'firebase/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
   AuthErrorCodes,
@@ -30,7 +30,10 @@ const initialValues = { name: '', email: '', password: '' }
 
 const ValidationSchema = Yup.object({
   name: Yup.string().required('Please enter your name'),
-  email: Yup.string().email('Invalid email').required('Please enter your email address'),
+  email: Yup.string()
+    .transform((value, originalValue) => originalValue.toLowerCase())
+    .email('Enter a valid email')
+    .required('Please enter your email address'),
   password: Yup.string()
     .min(8)
     .required('Please enter your password')
@@ -42,20 +45,31 @@ const ValidationSchema = Yup.object({
 
 const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginClick }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [isVerificationEmailSent, setIsVerificationEmailSent] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const updateUser = userStore((state) => state.updateUser)
+  const user = userStore((state) => state.user)
   const updateFetching = userStore((state) => state.updateFetching)
   const { setMail } = userStore()
-  const navigation = useNavigation()
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
 
-  const handleVerify = () => {
-    console.log('Verify')
-    // sendEmailVerification(user)
+  const handleVerify = async () => {
+    if (!user) {
+      console.error('User is null. Cannot send email verification.')
+      return
+    }
+
+    try {
+      await sendEmailVerification(user)
+      setIsVerificationEmailSent(true)
+      console.log('Email verification sent successfully.')
+    } catch (error) {
+      console.error('Error sending email verification:', error)
+    }
   }
 
   useEffect(() => {
@@ -86,22 +100,28 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   }, [errorMessage])
 
   const handleSubmit = async (values: typeof initialValues) => {
-    try {
-      setIsLoading(true)
-      const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password)
-      await updateProfile(user, { displayName: values.name })
-      await AsyncStorage.setItem('mail', values.email)
-      await AsyncStorage.setItem('name', values.name)
-      navigation.navigate('Post')
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
-          setErrorMessage('Email is already in use. Please choose a different email.')
+    if (!user) {
+      try {
+        setIsLoading(true)
+        const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password)
+        await updateProfile(user, { displayName: values.name })
+        await AsyncStorage.setItem('mail', values.email)
+        await AsyncStorage.setItem('name', values.name)
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
+            setErrorMessage('Email is already in use. Please choose a different email.')
+          }
+        } else {
+          setErrorMessage('An error occurred while signing up. Please try again.')
         }
+      } finally {
+        setIsLoading(false)
+        onClose?.()
       }
-    } finally {
-      setIsLoading(false)
-      onClose?.()
+    } else {
+      // User is already signed in
+      // You can handle this case as needed
     }
   }
 
@@ -191,7 +211,8 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                 onPress={() => {
                   handleSubmit()
                 }}
-                disabled={!isValid || isLoading}
+                fontFamily='Arvo-Regular'
+                fontSize={14}
                 buttonStyle={[styles.submitBtn]}
               />
 

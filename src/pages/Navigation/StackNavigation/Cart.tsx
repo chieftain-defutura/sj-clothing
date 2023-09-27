@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
+import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { View } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import CustomButton from '../../../components/Button'
@@ -19,7 +20,10 @@ const CartPage: React.FC<ICartPage> = ({ navigation }) => {
   }
 
   return (
-    <View>
+    <Animated.View
+      entering={SlideInRight.duration(500).delay(200)}
+      exiting={SlideOutRight.duration(500).delay(200)}
+    >
       <ScrollViewContent style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
         <View style={{ paddingBottom: 150 }}>
           <GoBackArrowContent
@@ -49,7 +53,7 @@ const CartPage: React.FC<ICartPage> = ({ navigation }) => {
           padding: 16,
         }}
       />
-    </View>
+    </Animated.View>
   )
 }
 

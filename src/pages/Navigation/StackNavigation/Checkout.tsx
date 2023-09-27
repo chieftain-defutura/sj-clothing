@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
 import { View, Pressable, StyleSheet } from 'react-native'
+import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
 import CustomButton from '../../../components/Button'
 import LeftArrow from '../../../assets/icons/LeftArrow'
@@ -36,7 +37,10 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   }
 
   return (
-    <View>
+    <Animated.View
+      entering={SlideInRight.duration(500).delay(200)}
+      exiting={SlideOutRight.duration(500).delay(200)}
+    >
       <ScrollViewContent showsVerticalScrollIndicator={false}>
         <View style={{ paddingBottom: 80 }}>
           <GoBackArrowContent
@@ -152,7 +156,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
         }}
       />
       <OrderPlaced isVisible={isOrderPlacedVisible} onClose={closeOrderPlaced} />
-    </View>
+    </Animated.View>
   )
 }
 

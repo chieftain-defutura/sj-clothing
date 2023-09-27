@@ -50,7 +50,7 @@ const PostCard: React.FC<PostCardProps> = ({ props: componentNameProps, onPress 
 
   const getMail = React.useCallback(async () => {
     const data = await AsyncStorage.getItem('mail')
-    console.log('datas', data)
+    console.log('current mail:', data)
     setUserMail(data)
   }, [])
 

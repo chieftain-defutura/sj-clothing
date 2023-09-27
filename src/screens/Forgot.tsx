@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
+import { getAuth, confirmPasswordReset } from 'firebase/auth'
 import styled from 'styled-components/native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -12,10 +13,16 @@ import EyeHideIcon from '../assets/icons/EyeIconHide'
 interface ForgotModalProps {
   isVisible?: boolean
   onClose?: () => void
+  onLoginClick?: () => void
 }
 
+const initialValues = { email: '', password: '', confirmPassword: '' }
+
 const ValidationSchema = Yup.object({
-  email: Yup.string().email('Invalid email').required('Please enter your email address'),
+  email: Yup.string()
+    .transform((value, originalValue) => originalValue.toLowerCase())
+    .email('Enter a valid email')
+    .required('Please enter your email address'),
   password: Yup.string()
     .min(8)
     .required('Please enter your password')
@@ -28,28 +35,37 @@ const ValidationSchema = Yup.object({
     .required('Please confirm your password'),
 })
 
-const ForgotModal: React.FC<ForgotModalProps> = ({ isVisible, onClose }) => {
+const ForgotModal: React.FC<ForgotModalProps> = ({ isVisible, onClose, onLoginClick }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
+
+  const handleSubmit = async (values: typeof initialValues) => {
+    const auth = getAuth()
+    try {
+      await confirmPasswordReset(auth, values.email, values.password)
+      console.log('Password reset successful!')
+    } catch (error) {
+      console.error('Error resetting password:', error)
+      setErrorMessage('Error resetting password. Please try again.')
+    }
+  }
+
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <SignUpWrapper>
         <Formik
-          initialValues={{
-            email: '',
-            password: '',
-            confirmPassword: '',
-          }}
+          initialValues={initialValues}
           validationSchema={ValidationSchema}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={handleSubmit}
         >
-          {({ values, errors, touched, handleChange, isValid, handleSubmit, handleBlur }) => (
+          {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
             <SignUpContainer>
               <SignUpHead>
-                <SignUpHeading>Forgot</SignUpHeading>
+                <SignUpHeading>Forgot password</SignUpHeading>
                 <Pressable onPress={onClose}>
                   <CloseIcon width={24} height={24} />
                 </Pressable>
@@ -65,7 +81,6 @@ const ForgotModal: React.FC<ForgotModalProps> = ({ isVisible, onClose }) => {
                     onBlur={handleBlur('email')}
                     placeholderTextColor={COLORS.SecondaryTwo}
                   />
-                  <VerifyText>Verify</VerifyText>
                 </InputBorder>
                 {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
               </View>
@@ -90,18 +105,42 @@ const ForgotModal: React.FC<ForgotModalProps> = ({ isVisible, onClose }) => {
                 </InputBorder>
                 {touched.password && errors.password && <ErrorText>{errors.password}</ErrorText>}
               </View>
+              <View>
+                <LabelText>Confirm password</LabelText>
+                <InputBorder>
+                  <InputStyle
+                    secureTextEntry={!showPassword}
+                    placeholder='Enter confirm password'
+                    value={values.confirmPassword}
+                    onChangeText={handleChange('confirmPassword')}
+                    onBlur={() => handleBlur('confirmPassword')}
+                    placeholderTextColor={COLORS.SecondaryTwo}
+                  />
+                  <Pressable onPress={togglePasswordVisibility}>
+                    {showPassword ? (
+                      <EyeIcon width={14} height={14} />
+                    ) : (
+                      <EyeHideIcon width={14} height={14} />
+                    )}
+                  </Pressable>
+                </InputBorder>
+                {touched.confirmPassword && errors.confirmPassword && (
+                  <ErrorText>{errors.confirmPassword}</ErrorText>
+                )}
+              </View>
 
               <CustomButton
                 variant='primary'
-                text='Sign up'
+                text='Create password'
                 onPress={() => handleSubmit()}
-                disabled={!isValid}
+                fontFamily='Arvo-Regular'
+                fontSize={14}
                 buttonStyle={[styles.submitBtn]}
               />
 
               <AccountView>
                 <AccountViewText>Already have an account?</AccountViewText>
-                <Pressable>
+                <Pressable onPress={onLoginClick}>
                   <LoginLink>Log in</LoginLink>
                 </Pressable>
               </AccountView>
@@ -164,12 +203,6 @@ const InputBorder = styled.View`
   flex-direction: row;
   padding-vertical: 8px;
   padding-horizontal: 16px;
-`
-
-const VerifyText = styled.Text`
-  font-size: 12px;
-  color: ${COLORS.textSecondaryClr};
-  font-family: Gilroy-Regular;
 `
 
 const InputStyle = styled.TextInput`
