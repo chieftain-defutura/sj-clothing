@@ -64,6 +64,7 @@ const ForgotMail: React.FC<ForgotMailProps> = ({ isVisible, onClose, onLoginClic
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
                     placeholderTextColor={COLORS.SecondaryTwo}
+                    autoCorrect={false}
                   />
                 </InputBorder>
                 {errorMessage && <ErrorText style={{ color: 'green' }}>{errorMessage}</ErrorText>}

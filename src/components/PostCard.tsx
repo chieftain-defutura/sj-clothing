@@ -54,15 +54,15 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
     setIsPressed(false)
   }
 
-  const getMail = React.useCallback(async () => {
-    const data = await AsyncStorage.getItem('mail')
-    console.log('current mail:', data)
-    setUserMail(data)
-  }, [])
+  // const getMail = React.useCallback(async () => {
+  //   const data = await AsyncStorage.getItem('mail')
+  //   console.log('current mail:', data)
+  //   setUserMail(data)
+  // }, [])
 
-  useEffect(() => {
-    getMail()
-  }, [getMail])
+  // useEffect(() => {
+  //   getMail()
+  // }, [getMail])
 
   const openSubscriptionModal = () => {
     setSubscriptionModal(true)

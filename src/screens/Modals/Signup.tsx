@@ -124,15 +124,15 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
     }
   }
 
-  const getData = useCallback(async () => {
-    await AsyncStorage.getItem('mail')
-    const data = await AsyncStorage.getItem('mail')
-    console.log(data)
-  }, [])
+  // const getData = useCallback(async () => {
+  //   await AsyncStorage.getItem('mail')
+  //   const data = await AsyncStorage.getItem('mail')
+  //   console.log('data', data)
+  // }, [])
 
-  useEffect(() => {
-    getData()
-  }, [getData])
+  // useEffect(() => {
+  //   getData()
+  // }, [getData])
 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
@@ -159,6 +159,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                     onChangeText={handleChange('name')}
                     onBlur={handleBlur('name')}
                     placeholderTextColor={COLORS.SecondaryTwo}
+                    autoCorrect={false}
                   />
                 </InputBorder>
                 {touched.name && errors.name && <ErrorText>{errors.name}</ErrorText>}
@@ -172,6 +173,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
                     placeholderTextColor={COLORS.SecondaryTwo}
+                    autoCorrect={false}
                   />
                   <Pressable onPress={handleVerify}>
                     <VerifyText>Verify</VerifyText>
@@ -189,6 +191,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                     onChangeText={handleChange('password')}
                     onBlur={() => handleBlur('password')}
                     placeholderTextColor={COLORS.SecondaryTwo}
+                    autoCorrect={false}
                   />
                   <Pressable onPress={togglePasswordVisibility}>
                     {showPassword ? (

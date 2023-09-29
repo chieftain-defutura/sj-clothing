@@ -18,7 +18,8 @@ const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus }) => {
   const [isForgotModalVisible, setForgotModalVisible] = useState(false)
   const [userMail, setUserMail] = useState<string | null>('')
   const user = userStore((state) => state.user)
-  console.log('user', user?.displayName, user?.email)
+  console.log('userName:', user?.displayName)
+  console.log('userMail:', user?.email)
 
   const navigation = useNavigation()
 
