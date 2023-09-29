@@ -7,7 +7,7 @@ import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
 import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 import ShareArrow from '../../../assets/icons/ShareArrow'
-import Animated from 'react-native-reanimated'
+import Animated, { BounceIn, BounceOut } from 'react-native-reanimated'
 
 interface INavigator {
   steps: number
@@ -52,18 +52,20 @@ const Navigator: React.FC<INavigator> = ({
 
   return (
     <Animated.View style={[styles.Navigator]}>
-      {isOpenDesign ? (
-        <Animated.View>
-          <Pressable onPress={() => (isDone ? setDone(false) : setOpenDesign(false))}>
+      {isOpenDesign && (
+        <Pressable onPress={() => (isDone ? setDone(false) : setOpenDesign(false))}>
+          <Animated.View entering={BounceIn.duration(800)} exiting={BounceOut}>
             <LeftArrow width={24} height={24} />
-          </Pressable>
-        </Animated.View>
-      ) : (
-        <Animated.View>
-          <Pressable onPress={handleDecreaseSteps}>
+          </Animated.View>
+        </Pressable>
+      )}
+
+      {!isOpenDesign && (
+        <Pressable onPress={handleDecreaseSteps}>
+          <Animated.View entering={BounceIn.duration(800)} exiting={BounceOut}>
             <ArrowCircleLeft width={24} height={24} />
-          </Pressable>
-        </Animated.View>
+          </Animated.View>
+        </Pressable>
       )}
 
       {steps !== 5 && (
@@ -153,7 +155,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 16,
-    zIndex: -1,
   },
   Dropdown: {
     display: 'flex',

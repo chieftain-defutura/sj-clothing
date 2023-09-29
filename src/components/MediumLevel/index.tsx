@@ -13,6 +13,7 @@ import SelectDesign from './SelectDesign'
 import FinalView from './FinalView'
 import { useNavigation } from '@react-navigation/native'
 import Animated, { BounceIn, BounceOut } from 'react-native-reanimated'
+import { LinearGradient } from 'expo-linear-gradient'
 
 interface IMediumLevel {}
 
@@ -21,8 +22,12 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
   const [toggleAvatar, setToggleAvatar] = useState(false)
   const [isSteps, setSteps] = useState(1)
   const [isImageOrText, setImageOrText] = useState(false)
+
+  const gradientColors = ['#BF94E4', '#D7B4E8', '#ECD1EC', '#F6E5F6', '#CADAF1', '#91B1E1']
+
   //data
   const [data, setData] = useState(MidLevelData)
+
   //style
   const [isType, setType] = useState('shirt')
   const [isDropDown, setDropDown] = useState(false)
@@ -40,7 +45,6 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
   //finalview
   const [quantity, setQuantity] = useState('')
   const [approved, setApproved] = useState(false)
-
   const handleIncreaseSteps = () => {
     setSteps(isSteps + 1)
     setDropDown(false)
@@ -66,7 +70,8 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
       {!toggleAvatar ? (
         <Avatar setToggleAvatar={setToggleAvatar} />
       ) : (
-        <View
+        <LinearGradient
+          colors={gradientColors}
           style={{
             flex: 1,
             display: 'flex',
@@ -158,7 +163,7 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
               setDone={setDone}
             />
           )}
-        </View>
+        </LinearGradient>
       )}
     </View>
   )
@@ -169,7 +174,7 @@ export default MediumLevel
 const styles = StyleSheet.create({
   midiumlevelContainer: {
     flex: 1,
-    backgroundColor: '#FFEFFF',
+    // backgroundColor: '#FFEFFF',
   },
   submitBtn: {
     marginVertical: 8,
