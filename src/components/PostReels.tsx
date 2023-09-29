@@ -13,7 +13,7 @@ import Heart from '../assets/icons/heart'
 import IsLikeIcon from '../assets/icons/PostPageIcon/isLikeIcon'
 import IsHeartIcon from '../assets/icons/PostPageIcon/isHeartIcon'
 import IsFireIcon from '../assets/icons/PostPageIcon/isFire'
-import SubscriptionModal from '../screens/Subscription'
+import SubscriptionModal from '../screens/Modals/Subscription'
 import { useNavigation } from '@react-navigation/native'
 import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 

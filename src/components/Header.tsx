@@ -59,7 +59,8 @@ const LogoContent = styled.View`
   display: flex;
   align-items: center;
   flex-direction: row;
-  gap: 8px;
+  gap: 4px;
+  margin-left: 16px;
   padding-vertical: 12px;
 `
 
@@ -82,5 +83,6 @@ const Icons = styled.View`
   justify-content: space-between;
   align-items: center;
   padding-vertical: 12px;
+  margin-right: 16px;
   gap: 24px;
 `

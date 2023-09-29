@@ -90,15 +90,15 @@ const PremiumDetails: React.FC<IPremiumDetails> = ({ navigation }) => {
                 </WatchVideoBorder>
               </View>
             </PremiumDetailsContent>
-            <CustomButton
+            {/* <CustomButton
               text='Add more'
               fontFamily='Arvo-Regular'
               fontSize={12}
               onPress={() => navigation.navigate('PremiumThreeSixtyDegreePage')}
               style={{ marginBottom: 30 }}
-            />
-            {/* <DetailsHeading>Detailed features</DetailsHeading> */}
-            {/* {f.detailsPara.map((para, paraIndex) => (
+            /> */}
+            <DetailsHeading>Detailed features</DetailsHeading>
+            {f.detailsPara.map((para, paraIndex) => (
               <View
                 key={paraIndex}
                 style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}
@@ -108,11 +108,11 @@ const PremiumDetails: React.FC<IPremiumDetails> = ({ navigation }) => {
                 </Svg>
                 <DetailsParaText style={{ marginLeft: 8 }}>{para}</DetailsParaText>
               </View>
-            ))} */}
+            ))}
           </PremiumDetailsWrapper>
         )
       })}
-      {/* <Btns>
+      <Btns>
         <HideDetailsBorder>
           <HideDetailsText>Hide details</HideDetailsText>
         </HideDetailsBorder>
@@ -123,7 +123,7 @@ const PremiumDetails: React.FC<IPremiumDetails> = ({ navigation }) => {
           style={{ width: 170 }}
           onPress={() => navigation.navigate('PremiumThreeSixtyDegreePage')}
         />
-      </Btns> */}
+      </Btns>
     </LinearGradient>
   )
 }

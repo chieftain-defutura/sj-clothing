@@ -2,10 +2,10 @@ import { View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import React, { useCallback, useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import LoginModal from './Login'
-import SignupModal from './Signup'
-import ForgotModal from './Forgot'
+import LoginModal from './Modals/Login'
+import SignupModal from './Modals/Signup'
 import { userStore } from '../store/userStore'
+import ForgotMail from './Modals/ForgotMail'
 
 interface AuthNavigateProps {
   children: React.ReactNode
@@ -18,6 +18,8 @@ const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus }) => {
   const [isForgotModalVisible, setForgotModalVisible] = useState(false)
   const [userMail, setUserMail] = useState<string | null>('')
   const user = userStore((state) => state.user)
+  console.log('user', user?.displayName, user?.email)
+
   const navigation = useNavigation()
 
   const onSignUpClick = () => {
@@ -38,7 +40,8 @@ const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus }) => {
   const closeSignUpModal = () => {
     setSignupModal(false)
     if (!userMail) {
-      navigation.navigate('Post')
+      // navigation.navigate('Post')
+      navigation.navigate('Post', { showToolTip: true })
     }
   }
 
@@ -65,7 +68,7 @@ const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus }) => {
 
   return (
     <View>
-      {!userMail && isLoginModalVisible && (
+      {!user && isLoginModalVisible && (
         <LoginModal
           isVisible={isLoginModalVisible}
           onClose={closeLoginModal}
@@ -73,8 +76,8 @@ const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus }) => {
           onForgotClick={onForgot}
         />
       )}
-      {!userMail && isForgotModalVisible && (
-        <ForgotModal
+      {!user && isForgotModalVisible && (
+        <ForgotMail
           isVisible={isForgotModalVisible}
           onClose={closeForgotModel}
           onLoginClick={() => {
@@ -83,7 +86,7 @@ const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus }) => {
           }}
         />
       )}
-      {!userMail && isSignUpModal && (
+      {!user && isSignUpModal && (
         <SignupModal
           isVisible={isSignUpModal}
           onLoginClick={() => {

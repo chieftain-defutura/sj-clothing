@@ -11,14 +11,14 @@ import {
   updateProfile,
   onAuthStateChanged,
 } from 'firebase/auth'
-import { auth } from '../../firebase'
-import { COLORS } from '../styles/theme'
+import { auth } from '../../../firebase'
+import { COLORS } from '../../styles/theme'
 import { FirebaseError } from 'firebase/app'
-import CloseIcon from '../assets/icons/Close'
-import EyeIcon from '../assets/icons/EyeIcon'
-import { userStore } from '../store/userStore'
-import CustomButton from '../components/Button'
-import EyeHideIcon from '../assets/icons/EyeIconHide'
+import CloseIcon from '../../assets/icons/Close'
+import EyeIcon from '../../assets/icons/EyeIcon'
+import { userStore } from '../../store/userStore'
+import CustomButton from '../../components/Button'
+import EyeHideIcon from '../../assets/icons/EyeIconHide'
 
 interface SignupModalProps {
   isVisible?: boolean
@@ -31,7 +31,7 @@ const initialValues = { name: '', email: '', password: '' }
 const ValidationSchema = Yup.object({
   name: Yup.string().required('Please enter your name'),
   email: Yup.string()
-    .transform((value, originalValue) => originalValue.toLowerCase())
+    .transform((value, originalValue) => originalValue.toLowerCase().trim())
     .email('Enter a valid email')
     .required('Please enter your email address'),
   password: Yup.string()
@@ -51,7 +51,6 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const updateUser = userStore((state) => state.updateUser)
   const user = userStore((state) => state.user)
   const updateFetching = userStore((state) => state.updateFetching)
-  const { setMail } = userStore()
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -107,6 +106,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
         await updateProfile(user, { displayName: values.name })
         await AsyncStorage.setItem('mail', values.email)
         await AsyncStorage.setItem('name', values.name)
+        onClose?.()
       } catch (error) {
         if (error instanceof FirebaseError) {
           if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
@@ -117,7 +117,6 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
         }
       } finally {
         setIsLoading(false)
-        onClose?.()
       }
     } else {
       // User is already signed in
@@ -128,7 +127,6 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const getData = useCallback(async () => {
     await AsyncStorage.getItem('mail')
     const data = await AsyncStorage.getItem('mail')
-    setMail(data)
     console.log(data)
   }, [])
 

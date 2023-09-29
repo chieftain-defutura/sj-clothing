@@ -254,15 +254,41 @@
 // // export default Post
 
 import { View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PostCard from '../../../../components/PostCard'
 import { useNavigation } from '@react-navigation/native'
+import Tooltip from '../../../../screens/Modals/TooltipModel'
 
-const Post: React.FC = () => {
+interface postProps {
+  route: any
+}
+
+const Post: React.FC<postProps> = ({ route }) => {
   const navigation = useNavigation()
+  const [showTooltip, setTooltip] = useState<boolean>(false)
+
+  if (route) {
+    console.log('asdsd', route)
+  }
+  useEffect(() => {
+    if (route.params) {
+      console.log('show tool tip', route.params.showToolTip)
+      setTooltip(route.params.showToolTip)
+    }
+  }, [])
+
   return (
     <View>
       <PostCard navigation={navigation} />
+      {showTooltip && (
+        <Tooltip
+          onClose={() => {
+            setTooltip(false)
+            navigation.navigate('Post')
+          }}
+          isVisible={showTooltip}
+        />
+      )}
     </View>
   )
 }

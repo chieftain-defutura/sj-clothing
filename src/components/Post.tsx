@@ -7,10 +7,10 @@ import Like from '../assets/icons/like'
 import EyeIcon from '../assets/icons/EyeIcon'
 import Fire from '../assets/icons/fire'
 import Heart from '../assets/icons/heart'
-import LoginModal from '../screens/Login'
+import LoginModal from '../screens/Modals/Login'
 import SaveIcon from '../assets/icons/SaveIcon'
 import { useState, useEffect } from 'react'
-import SignupModal from '../screens/Signup'
+import SignupModal from '../screens/Modals/Signup'
 import { userStore } from '../store/userStore'
 
 interface componentNameProps {}
