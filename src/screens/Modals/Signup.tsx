@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import styled from 'styled-components/native'
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
 import { sendEmailVerification } from 'firebase/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -142,7 +142,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           validationSchema={ValidationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, errors, touched, handleChange, isValid, handleSubmit, handleBlur }) => (
+          {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
             <SignUpContainer>
               <SignUpHead>
                 <SignUpHeading>Sign up</SignUpHeading>

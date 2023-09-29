@@ -11,10 +11,38 @@ import ChevronLeft from '../../../../assets/icons/ChevronLeft'
 import LogoutIcon from '../../../../assets/icons/AccountPageIcon/Logout'
 import UserIcon from '../../../../assets/icons/AccountPageIcon/UserIcon'
 import { AccountData } from '../../../../utils/data/AccountData'
+import Animated, { FadeInDown, FadeInUp, FadeOutDown, FadeOutUp } from 'react-native-reanimated'
 
 interface IAccount {
   navigation: any
 }
+
+const data = [
+  {
+    image: require('../../../../assets/images/accountProfile.png'),
+    profileName: 'John David',
+    viewData: [
+      {
+        postName: 'Posts',
+        postView: 298,
+        view: 'K',
+      },
+      {
+        postName: 'Royalties',
+        postView: 24,
+        inr: 'INR',
+      },
+      {
+        postName: 'Orders',
+        postView: 0,
+      },
+      {
+        postName: 'Cart',
+        postView: 2,
+      },
+    ],
+  },
+]
 
 const Account: React.FC<IAccount> = ({ navigation }) => {
   const isFocused = useIsFocused()
@@ -23,7 +51,6 @@ const Account: React.FC<IAccount> = ({ navigation }) => {
   const handleLogout = async () => {
     try {
       await auth.signOut()
-      const user = auth.currentUser
       const data = await AsyncStorage.getItem('mail')
       await AsyncStorage.removeItem('mail')
       if (!data) {
@@ -40,55 +67,59 @@ const Account: React.FC<IAccount> = ({ navigation }) => {
     <ScrollView>
       <AuthNavigate focus={isFocused}>
         <AccountWrapper>
-          <ProfileImage source={require('../../../../assets/images/accountProfile.png')} />
-          <ProfileName>John David</ProfileName>
+          <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
+            <View>
+              {data.map((item, index) => (
+                <View key={index}>
+                  <ProfileImage source={item.image} />
+                  <ProfileName>{item.profileName}</ProfileName>
+                  <FlexContent>
+                    {item.viewData.map((viewItem, viewIndex) => (
+                      <View key={viewIndex}>
+                        <PostText>{viewItem.postName}</PostText>
+                        <ViewText>
+                          {viewItem.postView}
+                          {viewItem.view}
+                          {viewItem.inr}
+                        </ViewText>
+                      </View>
+                    ))}
+                  </FlexContent>
+                </View>
+              ))}
+            </View>
+          </Animated.View>
 
-          <FlexContent>
-            <View>
-              <PostText>Posts</PostText>
-              <ViewText>298K</ViewText>
-            </View>
-            <View>
-              <PostText>Royalties</PostText>
-              <ViewText>24 INR</ViewText>
-            </View>
-            <View>
-              <PostText>Orders</PostText>
-              <ViewText>0</ViewText>
-            </View>
-            <View>
-              <PostText>Cart</PostText>
-              <ViewText>2</ViewText>
-            </View>
-          </FlexContent>
-          <ProfileUserContent>
-            <FlexIcon>
-              <UserIcon width={20} height={20} />
-              <UserText>Avatar</UserText>
-            </FlexIcon>
-            <ChevronLeft width={16} height={16} />
-          </ProfileUserContent>
-          {AccountData.map((f, index) => {
-            return (
-              <View key={index}>
-                <ProfileUserContent>
-                  <FlexIcon>
-                    <f.leftIcon width={20} height={20} />
-                    <UserText>{f.name}</UserText>
-                  </FlexIcon>
-                  <RightText>{f.rightText}</RightText>
-                </ProfileUserContent>
-              </View>
-            )
-          })}
-          <LogoutPressable onPress={handleLogout}>
+          <Animated.View entering={FadeInDown.duration(800).delay(200)} exiting={FadeOutDown}>
             <ProfileUserContent>
               <FlexIcon>
-                <LogoutIcon width={24} height={24} />
-                <LogoutText>Log out</LogoutText>
+                <UserIcon width={20} height={20} />
+                <UserText>Avatar</UserText>
               </FlexIcon>
+              <ChevronLeft width={16} height={16} />
             </ProfileUserContent>
-          </LogoutPressable>
+            {AccountData.map((f, index) => {
+              return (
+                <View key={index}>
+                  <ProfileUserContent>
+                    <FlexIcon>
+                      <f.leftIcon width={20} height={20} />
+                      <UserText>{f.name}</UserText>
+                    </FlexIcon>
+                    <RightText>{f.rightText}</RightText>
+                  </ProfileUserContent>
+                </View>
+              )
+            })}
+            <LogoutPressable onPress={handleLogout}>
+              <ProfileUserContent>
+                <FlexIcon>
+                  <LogoutIcon width={24} height={24} />
+                  <LogoutText>Log out</LogoutText>
+                </FlexIcon>
+              </ProfileUserContent>
+            </LogoutPressable>
+          </Animated.View>
         </AccountWrapper>
       </AuthNavigate>
     </ScrollView>

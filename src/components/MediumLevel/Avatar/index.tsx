@@ -3,14 +3,7 @@ import React, { useState } from 'react'
 import Gender from './Gender'
 import Skintone from './Skintone'
 import { COLORS } from '../../../styles/theme'
-import Animated, {
-  FadeIn,
-  FadeInDown,
-  FadeInUp,
-  FadeOut,
-  FlipInXDown,
-  StretchInY,
-} from 'react-native-reanimated'
+import Animated, { FadeInDown, FadeInUp, FadeOut } from 'react-native-reanimated'
 
 interface IAvatart {
   setToggleAvatar: React.Dispatch<React.SetStateAction<boolean>>
