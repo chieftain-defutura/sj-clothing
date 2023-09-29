@@ -15,8 +15,6 @@ const MidLevel: React.FC = () => {
   const isFocused = useIsFocused()
   return (
     <Animated.View style={{ flex: 1 }}>
-      {/* <AuthNavigate focus={isFocused}>
-      </AuthNavigate> */}
       <MediumLevel />
     </Animated.View>
   )
