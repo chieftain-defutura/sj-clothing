@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { COLORS } from '../../../styles/theme'
@@ -16,6 +16,7 @@ const Tab = createBottomTabNavigator()
 
 const TabNavigationRoutes: React.FC = () => {
   const opacityValue = useSharedValue(2)
+  useEffect(() => {}, [])
 
   return (
     <Tab.Navigator

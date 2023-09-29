@@ -3,16 +3,14 @@ import { Formik } from 'formik'
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AuthErrorCodes, signInWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../../firebase'
-import { COLORS } from '../styles/theme'
+import { auth } from '../../../firebase'
+import { COLORS } from '../../styles/theme'
 import { FirebaseError } from 'firebase/app'
-import CloseIcon from '../assets/icons/Close'
-import EyeIcon from '../assets/icons/EyeIcon'
-import CustomButton from '../components/Button'
-import EyeHideIcon from '../assets/icons/EyeIconHide'
-import { userStore } from '../store/userStore'
+import CloseIcon from '../../assets/icons/Close'
+import EyeIcon from '../../assets/icons/EyeIcon'
+import CustomButton from '../../components/Button'
+import EyeHideIcon from '../../assets/icons/EyeIconHide'
 
 interface LoginModalProps {
   isVisible?: boolean
@@ -25,7 +23,7 @@ const initialValues = { email: '', password: '' }
 
 const ValidationSchema = Yup.object({
   email: Yup.string()
-    .transform((value, originalValue) => originalValue.toLowerCase())
+    .transform((value, originalValue) => originalValue.toLowerCase().trim())
     .email('Enter a valid email')
     .required('Please enter your email address'),
   password: Yup.string()
@@ -46,7 +44,6 @@ const LoginModal: React.FC<LoginModalProps> = ({
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const user = userStore((state) => state.user)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -55,10 +52,9 @@ const LoginModal: React.FC<LoginModalProps> = ({
   const handleSubmit = async (values: typeof initialValues) => {
     try {
       setIsLoading(true)
-      console.log(values)
       await signInWithEmailAndPassword(auth, values.email, values.password)
-      await AsyncStorage.setItem('mail', user?.email)
-      console.log('user logged in successfully')
+      console.log('User logged in successfully')
+      onClose?.()
     } catch (error) {
       console.log(error)
       if (error instanceof FirebaseError) {
@@ -66,11 +62,12 @@ const LoginModal: React.FC<LoginModalProps> = ({
           setErrorMessage('Invalid password')
         } else if (error.code === AuthErrorCodes.USER_DELETED) {
           setErrorMessage('User not found')
+        } else if (error.code === AuthErrorCodes.NETWORK_REQUEST_FAILED) {
+          setErrorMessage('Network Error')
         }
       }
     } finally {
       setIsLoading(false)
-      onClose?.()
     }
   }
 
@@ -82,7 +79,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
           validationSchema={ValidationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, errors, touched, handleChange, isValid, handleSubmit, handleBlur }) => (
+          {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
             <LoginContainer>
               <LoginHead>
                 <LoginHeading>Log in</LoginHeading>
@@ -93,7 +90,6 @@ const LoginModal: React.FC<LoginModalProps> = ({
 
               <View>
                 <LabelText>E-mail</LabelText>
-
                 <InputBorder>
                   <InputStyle
                     placeholder='Enter your e-mail'
@@ -101,11 +97,12 @@ const LoginModal: React.FC<LoginModalProps> = ({
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
                     placeholderTextColor={COLORS.SecondaryTwo}
+                    autoCorrect={false}
                   />
                 </InputBorder>
                 {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
               </View>
-              <View style={{ marginBottom: 16 }}>
+              <View>
                 <LabelText>Password</LabelText>
                 <InputBorder>
                   <InputStyle
@@ -115,6 +112,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
                     onChangeText={handleChange('password')}
                     onBlur={() => handleBlur('password')}
                     placeholderTextColor={COLORS.SecondaryTwo}
+                    autoCorrect={false}
                   />
                   <Pressable
                     onPress={(event) => {
@@ -131,9 +129,9 @@ const LoginModal: React.FC<LoginModalProps> = ({
                 </InputBorder>
                 {touched.password && errors.password && <ErrorText>{errors.password}</ErrorText>}
               </View>
-              {/* <Pressable onPress={onForgotClick}>
+              <Pressable onPress={onForgotClick}>
                 <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
-              </Pressable> */}
+              </Pressable>
 
               {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
 

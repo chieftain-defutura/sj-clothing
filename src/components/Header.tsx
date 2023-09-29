@@ -59,7 +59,7 @@ const LogoContent = styled.View`
   display: flex;
   align-items: center;
   flex-direction: row;
-  gap: 8px;
+  gap: 4px;
   margin-left: 16px;
   padding-vertical: 12px;
 `

@@ -15,7 +15,7 @@ import IsLikeIcon from '../assets/icons/PostPageIcon/isLikeIcon'
 import IsFireIcon from '../assets/icons/PostPageIcon/isFire'
 import IsHeartIcon from '../assets/icons/PostPageIcon/isHeartIcon'
 import HomePlusIcon from '../assets/icons/PostPlusIcon'
-import SubscriptionModal from '../screens/Subscription'
+import SubscriptionModal from '../screens/Modals/Subscription'
 
 const { width, height } = Dimensions.get('window')
 

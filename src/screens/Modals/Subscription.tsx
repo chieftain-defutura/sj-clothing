@@ -1,11 +1,11 @@
 import React from 'react'
 import { View, Text, Image, Modal, StyleSheet, Pressable } from 'react-native'
-import { COLORS } from '../styles/theme'
+import { COLORS } from '../../styles/theme'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import CloseIcon from '../assets/icons/Close'
-import CustomButton from '../components/Button'
-import CloseRedIcon from '../assets/icons/CloseRedIcon'
+import CloseIcon from '../../assets/icons/Close'
+import CustomButton from '../../components/Button'
+import CloseRedIcon from '../../assets/icons/CloseRedIcon'
 
 interface SubscriptionModalProps {
   isVisible: boolean
@@ -57,7 +57,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                   <View>
                     <Image
                       style={styles.diamond}
-                      source={require('../assets/images/diamond.png')}
+                      source={require('../../assets/images/diamond.png')}
                     />
                   </View>
                   <View>
