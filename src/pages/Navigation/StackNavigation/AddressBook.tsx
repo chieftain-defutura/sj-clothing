@@ -132,6 +132,7 @@ const GoBackArrowContent = styled.Pressable`
   align-items: center;
   gap: 8px;
   padding: 16px;
+  background: #fff;
 `
 
 const FlexContent = styled.View`

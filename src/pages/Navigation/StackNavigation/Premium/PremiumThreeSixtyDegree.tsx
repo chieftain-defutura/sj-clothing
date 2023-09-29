@@ -1,11 +1,12 @@
-import React from 'react'
-import { Pressable, StyleSheet, Dimensions, Image } from 'react-native'
+import React, { useState } from 'react'
+import { Pressable, StyleSheet, Dimensions, Image, View } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import LeftArrow from '../../../../assets/icons/LeftArrow'
-import { COLORS, FONT_FAMILY } from '../../../../styles/theme'
 import ThreeSixtyDegree from '../../../../assets/icons/360-degree'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
+import CustomButton from '../../../../components/Button'
+import { gradientColors } from '../../../../styles/theme'
 
 interface IPremiumThreeSixtyDegree {
   navigation: any
@@ -14,15 +15,18 @@ interface IPremiumThreeSixtyDegree {
 const { width, height } = Dimensions.get('window')
 
 const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({ navigation }) => {
+  const [isPressed, setIsPressed] = useState(false)
+
   return (
     <Animated.View
       entering={SlideInRight.duration(500).delay(200)}
       exiting={SlideOutRight.duration(500).delay(200)}
     >
       <LinearGradient
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        colors={['#FFEFFF', '#FFF']}
+        // start={{ x: 0, y: 0 }}
+        // end={{ x: 0, y: 1 }}
+        // colors={['#FFEFFF', '#FFF']}
+        colors={gradientColors}
         style={styles.linearGradient}
       >
         <FlexContent>
@@ -30,12 +34,22 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({ navigatio
             onPress={() => {
               navigation.goBack()
             }}
+            onPressIn={() => setIsPressed(true)}
+            onPressOut={() => setIsPressed(false)}
           >
-            <LeftArrow width={24} height={24} />
+            {() => (
+              <IconHoverClr
+                style={{ backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent' }}
+              >
+                <IconHoverPressable>
+                  <LeftArrow width={24} height={24} />
+                </IconHoverPressable>
+              </IconHoverClr>
+            )}
           </Pressable>
-          <Pressable onPress={() => navigation.navigate('PremiumBuynow')}>
-            <DoneText>Done</DoneText>
-          </Pressable>
+          {/* <Pressable onPress={share}>
+          <ShareArrow width={24} height={24} />
+        </Pressable> */}
         </FlexContent>
         <ThreeSixtyDegreeImageWrapper>
           <ThreeSixtyDegreeImage>
@@ -51,31 +65,31 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({ navigatio
           <SelectStyle360Degree>
             <ThreeSixtyDegree width={40} height={40} />
           </SelectStyle360Degree>
+          <CustomButton
+            text='Buy Now'
+            fontFamily='Arvo-Regular'
+            fontSize={16}
+            style={{ width: '100%', position: 'absolute', left: 0, right: 0, bottom: -90 }}
+            onPress={() => navigation.navigate('Checkout')}
+          />
         </ThreeSixtyDegreeImageWrapper>
       </LinearGradient>
     </Animated.View>
   )
 }
 
-const FlexContent = styled.View`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-`
-
-const DoneText = styled.Text`
-  font-size: 14px;
-  font-family: ${FONT_FAMILY.GilroySemiBold};
-  color: ${COLORS.iconsHighlightClr};
-`
-
 const ThreeSixtyDegreeImage = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 16px;
+  margin-top: -20px;
+`
+const FlexContent = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `
 
 const ThreeSixtyDegreeImageWrapper = styled.View`
@@ -85,12 +99,26 @@ const ThreeSixtyDegreeImageWrapper = styled.View`
   align-items: center;
 `
 
+const IconHoverPressable = styled.View`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 2px;
+  margin-top: 2px;
+`
+
+const IconHoverClr = styled.View`
+  border-radius: 20px;
+  width: 32px;
+  height: 32px;
+`
+
 const SelectStyle360Degree = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 16px;
+  margin-top: 4px;
 `
 
 export default PremiumThreeSixtyDegree

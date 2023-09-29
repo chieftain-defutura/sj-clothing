@@ -5,6 +5,7 @@ import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import { LinearGradient } from 'expo-linear-gradient'
 import { SharedElement } from 'react-navigation-shared-element'
+import Animated, { FadeInLeft, FadeOutLeft } from 'react-native-reanimated'
 
 interface IPremiumCard {
   navigation: any
@@ -27,22 +28,25 @@ const PremiumCard: React.FC<PremiumCardProps & IPremiumCard> = ({
       start={{ x: 0, y: 0 }}
       end={{ x: 0, y: 1 }}
       colors={['#FFEFFF', '#FFF']}
+      // colors={gradientColors}
       style={styles.linearGradient}
     >
       <View style={{ width: cardWidth, height: cardHeight }}>
         <Pressable onPress={() => navigation.navigate('PremiumDetailsCard', { image })}>
-          <SharedElement id={`test${image}`}>
-            <ImageContainer>
-              <Image
-                source={image}
-                style={{
-                  resizeMode: 'cover',
-                  flex: 1,
-                  alignSelf: 'center',
-                }}
-              />
-            </ImageContainer>
-          </SharedElement>
+          <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>
+            <SharedElement id={`test${image}`}>
+              <ImageContainer>
+                <Image
+                  source={image}
+                  style={{
+                    resizeMode: 'cover',
+                    flex: 1,
+                    alignSelf: 'center',
+                  }}
+                />
+              </ImageContainer>
+            </SharedElement>
+          </Animated.View>
         </Pressable>
         <View style={{ alignItems: 'center', marginTop: 14 }}>
           <ProductText>{productName}</ProductText>

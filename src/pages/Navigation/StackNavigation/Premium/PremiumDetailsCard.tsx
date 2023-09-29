@@ -22,26 +22,26 @@ const PremiumDetailsCard: React.FC = () => {
 
   return (
     <ScrollView>
-      <Animated.View
+      {/* <Animated.View
         entering={SlideInRight.duration(500).delay(200)}
         exiting={SlideOutRight.duration(500).delay(200)}
-      >
-        <PremiumDetails navigation={navigation} />
-        {cardPairs.map((pair, index) => (
-          <CardPairContainer key={index}>
-            {pair.map((item) => (
-              <PremiumCard
-                key={item.id}
-                image={item.image}
-                productName={item.productName}
-                price={item.price}
-                inr={item.inr}
-                navigation={navigation}
-              />
-            ))}
-          </CardPairContainer>
-        ))}
-      </Animated.View>
+      > */}
+      <PremiumDetails navigation={navigation} />
+      {cardPairs.map((pair, index) => (
+        <CardPairContainer key={index}>
+          {pair.map((item) => (
+            <PremiumCard
+              key={item.id}
+              image={item.image}
+              productName={item.productName}
+              price={item.price}
+              inr={item.inr}
+              navigation={navigation}
+            />
+          ))}
+        </CardPairContainer>
+      ))}
+      {/* </Animated.View> */}
     </ScrollView>
   )
 }

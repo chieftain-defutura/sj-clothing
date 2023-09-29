@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-// import { Dimensions } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
 import { useFonts } from 'expo-font'
@@ -7,14 +6,10 @@ import { userStore } from './src/store/userStore'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './firebase'
 
-// const windowWidth = Dimensions.get('window').width
-// const windowHeight = Dimensions.get('window').height
-
 const App: React.FC = () => {
   const updateUser = userStore((store) => store.updateUser)
   useEffect(() => {
     return onAuthStateChanged(auth, (data) => {
-      // console.log('user', data)
       if (data) {
         updateUser(data)
       } else {

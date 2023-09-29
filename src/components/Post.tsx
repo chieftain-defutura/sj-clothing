@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { TouchableOpacity, Pressable, FlatList, View, Dimensions, Share } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+// import AsyncStorage from '@react-native-async-storage/async-storage'
 import { COLORS } from '../styles/theme'
 import styled from 'styled-components/native'
 import Like from '../assets/icons/like'
@@ -48,15 +48,15 @@ const PostCard: React.FC<PostCardProps> = ({ props: componentNameProps, onPress 
   const tabHeight = 110
   const reelsHeight = height - tabHeight
 
-  const getMail = React.useCallback(async () => {
-    const data = await AsyncStorage.getItem('mail')
-    console.log('current mail:', data)
-    setUserMail(data)
-  }, [])
+  // const getMail = React.useCallback(async () => {
+  //   const data = await AsyncStorage.getItem('mail')
+  //   console.log('current mail:', data)
+  //   setUserMail(data)
+  // }, [])
 
-  useEffect(() => {
-    getMail()
-  }, [getMail])
+  // useEffect(() => {
+  //   getMail()
+  // }, [getMail])
 
   const handleClick = () => {
     if (!userMail) {

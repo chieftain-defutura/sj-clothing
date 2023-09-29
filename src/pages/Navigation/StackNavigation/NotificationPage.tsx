@@ -7,7 +7,8 @@ import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
 
 const NotificationPage: React.FC = () => {
   return (
-    <ScrollViewContent>
+    <ScrollViewContent showsVerticalScrollIndicator={false}>
+      {/* <LinearGradient colors={gradientColors} style={{ paddingHorizontal: 16 }}> */}
       <Animated.View
         entering={SlideInDown.duration(500).delay(200)}
         exiting={SlideOutDown.duration(500).delay(200)}
@@ -43,6 +44,7 @@ const NotificationPage: React.FC = () => {
           )
         })}
       </Animated.View>
+      {/* </LinearGradient> */}
     </ScrollViewContent>
   )
 }

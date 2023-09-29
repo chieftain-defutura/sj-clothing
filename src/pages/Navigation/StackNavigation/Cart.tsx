@@ -25,6 +25,7 @@ const CartPage: React.FC<ICartPage> = ({ navigation }) => {
       exiting={SlideOutRight.duration(500).delay(200)}
     >
       <ScrollViewContent style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
+        {/* <LinearGradient colors={gradientColors}> */}
         <View style={{ paddingBottom: 150 }}>
           <GoBackArrowContent
             onPress={() => {
@@ -36,6 +37,7 @@ const CartPage: React.FC<ICartPage> = ({ navigation }) => {
           </GoBackArrowContent>
           <CartCard cartData={CartData} closedItems={closedItems} handleClose={handleClose} />
         </View>
+        {/* </LinearGradient> */}
       </ScrollViewContent>
       <CustomButton
         variant='primary'

@@ -33,3 +33,5 @@ export const FONT_FAMILY = {
   MontserratMedium: 'Montserrat-Medium', //font-weight 500
   MontserratSemiBold: 'Montserrat-SemiBold', //font-weight 600
 }
+
+export const gradientColors = ['#BF94E4', '#D7B4E8', '#ECD1EC', '#F6E5F6', '#CADAF1', '#91B1E1']

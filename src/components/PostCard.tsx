@@ -1,13 +1,12 @@
 import * as React from 'react'
 import { Image, Pressable, Dimensions, Share, View, StyleSheet } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { COLORS } from '../styles/theme'
+import { COLORS, gradientColors } from '../styles/theme'
 import styled from 'styled-components/native'
 import Like from '../assets/icons/like'
 import Fire from '../assets/icons/fire'
 import Heart from '../assets/icons/heart'
 import SaveIcon from '../assets/icons/SaveIcon'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { reelsData } from '../utils/data/postData'
 import SwiperFlatList from 'react-native-swiper-flatlist'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -16,6 +15,12 @@ import IsFireIcon from '../assets/icons/PostPageIcon/isFire'
 import IsHeartIcon from '../assets/icons/PostPageIcon/isHeartIcon'
 import HomePlusIcon from '../assets/icons/PostPlusIcon'
 import SubscriptionModal from '../screens/Modals/Subscription'
+import Animated, {
+  FlipInEasyY,
+  FlipOutEasyY,
+  LightSpeedInRight,
+  LightSpeedOutRight,
+} from 'react-native-reanimated'
 
 const { width, height } = Dimensions.get('window')
 
@@ -24,7 +29,6 @@ interface IPost {
 }
 
 const PostCard: React.FC<IPost> = ({ navigation }) => {
-  const [userMail, setUserMail] = useState<string | null>('')
   const [currentIndex, setCurrentIndex] = useState(0)
   const [activeIcon, setActiveIcon] = useState<string | null>(null)
   const [isLiked, setIsLiked] = useState(false)
@@ -54,15 +58,15 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
     setIsPressed(false)
   }
 
-  const getMail = React.useCallback(async () => {
-    const data = await AsyncStorage.getItem('mail')
-    console.log('current mail:', data)
-    setUserMail(data)
-  }, [])
+  // const getMail = React.useCallback(async () => {
+  //   const data = await AsyncStorage.getItem('mail')
+  //   console.log('current mail:', data)
+  //   setUserMail(data)
+  // }, [])
 
-  useEffect(() => {
-    getMail()
-  }, [getMail])
+  // useEffect(() => {
+  //   getMail()
+  // }, [getMail])
 
   const openSubscriptionModal = () => {
     setSubscriptionModal(true)
@@ -107,8 +111,6 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
 
   const dynamicHeartIconStyle = activeIcon === 'heart' ? HeartIconStyle : {}
 
-  const gradientColors = ['#BF94E4', '#D7B4E8', '#ECD1EC', '#F6E5F6', '#CADAF1', '#91B1E1']
-
   return (
     <PostCardWrapper>
       <SwiperFlatList
@@ -129,6 +131,7 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
               renderItem={({ item: image }) => (
                 <LinearGradient colors={gradientColors} style={{ borderRadius: 10 }}>
                   {/* <ImageContent> */}
+
                   <View style={styles.container}>
                     <Image
                       source={image}
@@ -149,7 +152,6 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
                 </LinearGradient>
               )}
             />
-
             <SliderCountContent>
               <SliderNumber>
                 {currentIndex + 1}/{item.images.length}
@@ -216,32 +218,38 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
                 <LikeText>1.5k</LikeText>
               </IconPressable>
             </CardContent>
-
-            <PostCardContent>
-              <FlexContent>
-                <TextHead>{item.text}</TextHead>
-                <Pressable onPress={share}>
-                  <SaveIcon width={24} height={24} />
-                </Pressable>
-              </FlexContent>
-              <Content>
-                <PostCardText>{item.title}</PostCardText>
-                <PostDescription>{item.description}</PostDescription>
-              </Content>
-            </PostCardContent>
+            <Animated.View
+              entering={LightSpeedInRight.duration(1000).delay(200)}
+              exiting={LightSpeedOutRight}
+            >
+              <PostCardContent>
+                <FlexContent>
+                  <TextHead>{item.text}</TextHead>
+                  <Pressable onPress={share}>
+                    <SaveIcon width={24} height={24} />
+                  </Pressable>
+                </FlexContent>
+                <Content>
+                  <PostCardText>{item.title}</PostCardText>
+                  <PostDescription>{item.description}</PostDescription>
+                </Content>
+              </PostCardContent>
+            </Animated.View>
           </View>
         )}
       />
-      <PlusIconStyle onPress={openSubscriptionModal}>
-        <LinearGradient
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          colors={['#462D85', '#DB00FF']}
-          style={styles.plusIconGradientColor}
-        >
-          <HomePlusIcon width={20} height={20} />
-        </LinearGradient>
-      </PlusIconStyle>
+      <Animated.View entering={FlipInEasyY.duration(800).delay(200)} exiting={FlipOutEasyY}>
+        <PlusIconStyle onPress={openSubscriptionModal}>
+          <LinearGradient
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            colors={['#462D85', '#DB00FF']}
+            style={styles.plusIconGradientColor}
+          >
+            <HomePlusIcon width={20} height={20} />
+          </LinearGradient>
+        </PlusIconStyle>
+      </Animated.View>
       <SubscriptionModal
         isVisible={isSubscriptionModal}
         onClose={closeSubscriptionModal}
