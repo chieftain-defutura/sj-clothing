@@ -11,6 +11,7 @@ export const COLORS = {
   imageContentClr: '#FFBBE9',
   borderClr: '#EEE',
   backgroundBlurClr: 'rgba(0,0,0,0.5)',
+  backgroundBlurClrTooltip: 'rgba(0,0,0,0.2)',
   secondaryRGBAClr: 'rgba(70, 45, 133, 0.60)',
   errorClr: '#ff6347',
   SecondaryTwo: '#8C73CB',

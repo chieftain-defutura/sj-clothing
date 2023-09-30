@@ -1,17 +1,17 @@
-import * as Yup from 'yup'
-import { Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, Modal, StyleSheet, Pressable, Text } from 'react-native'
-import { AuthErrorCodes, signInWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../../../firebase'
-import { COLORS } from '../../styles/theme'
-import { FirebaseError } from 'firebase/app'
-import CloseIcon from '../../assets/icons/Close'
-import EyeIcon from '../../assets/icons/EyeIcon'
-import CustomButton from '../../components/Button'
-import EyeHideIcon from '../../assets/icons/EyeIconHide'
+import { Modal, View, StyleSheet, Pressable } from 'react-native'
+import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import { TooltipData } from '../../utils/data/TooltipData'
+import CloudIcon from '../../assets/icons/PostPageIcon/CloudIcon'
+import { LinearGradient } from 'expo-linear-gradient'
+import CloudRightArrow from '../../assets/icons/PostPageIcon/CloudRightArrow'
+import Animated, {
+  LightSpeedInLeft,
+  LightSpeedOutLeft,
+  ZoomIn,
+  ZoomOut,
+} from 'react-native-reanimated'
 
 interface TooltipProps {
   isVisible?: boolean
@@ -20,13 +20,15 @@ interface TooltipProps {
 const Tooltip: React.FC<TooltipProps> = ({ isVisible, onClose }) => {
   const [header, setHeader] = useState<string | null>(null)
   const [body, setBody] = useState<string | null>(null)
+  const [image, setImage] = useState<string | null>(null)
   const [index, setIndex] = useState<number>(0)
 
   const handleNext = () => {
     if (index < TooltipData.length - 1) {
       setIndex(index + 1)
-      setHeader(TooltipData[index + 1][0])
-      setBody(TooltipData[index + 1][1])
+      setHeader(TooltipData[index + 1].title)
+      setBody(TooltipData[index + 1].description)
+      setImage(TooltipData[index + 1].image)
     } else {
       onClose?.()
     }
@@ -34,111 +36,88 @@ const Tooltip: React.FC<TooltipProps> = ({ isVisible, onClose }) => {
 
   useEffect(() => {
     setIndex(0)
-    setHeader(TooltipData[0][0])
-    setBody(TooltipData[0][1])
+    setHeader(TooltipData[0].title)
+    setBody(TooltipData[0].description)
+    setImage(TooltipData[0].image)
   }, [])
 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
-      <View style={{ width: 328, backgroundColor: 'pink' }}>
-        <Text>{header}</Text>
-        <Text>{body}</Text>
-        <CustomButton text='Next' onPress={handleNext} />
-      </View>
+      <TooltipWrapper>
+        <TooltipContainer>
+          <Animated.View entering={ZoomIn.duration(600).delay(200)} exiting={ZoomOut}>
+            <CloudIcon width={328} height={210} />
+          </Animated.View>
+        </TooltipContainer>
+        <View style={{ position: 'absolute', bottom: 160 }}>
+          <Heading>{header}</Heading>
+          <Paragraph>{body}</Paragraph>
+          <Animated.View
+            entering={LightSpeedInLeft.duration(1000).delay(200)}
+            exiting={LightSpeedOutLeft}
+          >
+            <LinearGradient
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              colors={['#462D85', '#DB00FF']}
+              style={styles.plusIconGradientColor}
+            >
+              <Pressable onPress={handleNext}>
+                <CloudRightArrow width={20} height={20} />
+              </Pressable>
+            </LinearGradient>
+          </Animated.View>
+        </View>
+      </TooltipWrapper>
     </Modal>
   )
 }
 
 export default Tooltip
 
-const LoginWrapper = styled.View`
+const TooltipWrapper = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  background-color: ${COLORS.backgroundBlurClr};
+  background-color: ${COLORS.backgroundBlurClrTooltip};
+  position: relative;
 `
 
-const LoginContainer = styled.View`
-  background-color: ${COLORS.iconsNormalClr};
+const TooltipContainer = styled.View`
   padding: 20px;
-  border-radius: 10px;
   width: 328px;
+  position: absolute;
+  bottom: 81px;
+  right: 55px;
 `
 
-const LoginHead = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`
-
-const LoginHeading = styled.Text`
-  font-size: 20px;
-  letter-spacing: -0.4px;
-  font-family: Arvo-Regular;
-  color: ${COLORS.textClr};
-`
-
-const LabelText = styled.Text`
-  font-size: 14px;
-  letter-spacing: -0.28px;
-  color: ${COLORS.textClr};
-  font-family: Gilroy-Medium;
-  margin-top: 16px;
+const Heading = styled.Text`
+  font-size: 16px;
+  color: ${COLORS.iconsHighlightClr};
+  font-family: ${FONT_FAMILY.ArvoRegular};
   margin-bottom: 8px;
+  text-align: center;
 `
-
-const InputBorder = styled.View`
-  border-color: ${COLORS.strokeClr};
-  border-width: 1px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-direction: row;
-  padding-vertical: 8px;
-  padding-horizontal: 16px;
-`
-
-const InputStyle = styled.TextInput`
-  font-family: Gilroy-Medium;
-  width: 100%;
-  font-size: 12px;
-`
-
-const ErrorText = styled.Text`
-  font-size: 12px;
-  color: ${COLORS.errorClr};
-`
-
-const ForgotPasswordText = styled.Text`
-  font-family: Gilroy-Regular;
-  color: ${COLORS.textSecondaryClr};
+const Paragraph = styled.Text`
   font-size: 14px;
-  margin-top: 8px;
+  color: rgba(70, 45, 133, 0.6);
+  font-family: ${FONT_FAMILY.GilroyRegular};
+  line-height: 18px;
+  letter-spacing: -0.28px;
   margin-bottom: 16px;
-`
-
-const AccountView = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 8px;
-`
-
-const AccountViewText = styled.Text`
-  color: ${COLORS.SecondaryTwo};
-  font-family: Gilroy-Regular;
-`
-
-const SignUpLink = styled.Text`
-  color: ${COLORS.textSecondaryClr};
-  font-size: 14px;
-  font-family: Gilroy-Medium;
+  text-align: center;
+  width: 250px;
 `
 
 const styles = StyleSheet.create({
-  submitBtn: {
-    marginBottom: 16,
-    fontFamily: 'Montserrat-Medium',
+  plusIconGradientColor: {
+    backgroundColor: '#462d85',
+    borderRadius: 70,
+    padding: 16,
+    width: 40,
+    height: 40,
+    position: 'absolute',
+    left: 90,
+    bottom: -35,
   },
 })
