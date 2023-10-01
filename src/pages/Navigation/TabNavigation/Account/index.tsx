@@ -45,6 +45,7 @@ const data = [
 ]
 
 const Account: React.FC<IAccount> = ({ navigation }) => {
+  const user = userStore((state) => state.user)
   const isFocused = useIsFocused()
   const { updateUser } = userStore()
 
@@ -72,7 +73,7 @@ const Account: React.FC<IAccount> = ({ navigation }) => {
               {data.map((item, index) => (
                 <View key={index}>
                   <ProfileImage source={item.image} />
-                  <ProfileName>{item.profileName}</ProfileName>
+                  <ProfileName>{user?.displayName}</ProfileName>
                   <FlexContent>
                     {item.viewData.map((viewItem, viewIndex) => (
                       <View key={viewIndex}>

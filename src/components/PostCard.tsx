@@ -58,16 +58,6 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
     setIsPressed(false)
   }
 
-  // const getMail = React.useCallback(async () => {
-  //   const data = await AsyncStorage.getItem('mail')
-  //   console.log('current mail:', data)
-  //   setUserMail(data)
-  // }, [])
-
-  // useEffect(() => {
-  //   getMail()
-  // }, [getMail])
-
   const openSubscriptionModal = () => {
     setSubscriptionModal(true)
   }
@@ -130,8 +120,6 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
               showPagination={false}
               renderItem={({ item: image }) => (
                 <LinearGradient colors={gradientColors} style={{ borderRadius: 10 }}>
-                  {/* <ImageContent> */}
-
                   <View style={styles.container}>
                     <Image
                       source={image}
@@ -148,7 +136,6 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
                       style={styles.linearGradient}
                     ></LinearGradient>
                   </View>
-                  {/* </ImageContent> */}
                 </LinearGradient>
               )}
             />
@@ -331,13 +318,6 @@ const PostDescription = styled.Text`
   letter-spacing: -0.24px;
   margin-top: 4px;
 `
-
-const ImageContent = styled.View`
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-`
-
-const TShirtImg = styled.Image``
 
 const CardContent = styled.View`
   position: absolute;
