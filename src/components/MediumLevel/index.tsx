@@ -12,8 +12,8 @@ import TShirt from './T-Shirt'
 import SelectDesign from './SelectDesign'
 import FinalView from './FinalView'
 import { useNavigation } from '@react-navigation/native'
-import Animated, { BounceIn, BounceOut } from 'react-native-reanimated'
 import { LinearGradient } from 'expo-linear-gradient'
+import { gradientColors } from '../../styles/theme'
 
 interface IMediumLevel {}
 
@@ -23,20 +23,23 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
   const [isSteps, setSteps] = useState(1)
   const [isImageOrText, setImageOrText] = useState(false)
 
-  const gradientColors = ['#BF94E4', '#D7B4E8', '#ECD1EC', '#F6E5F6', '#CADAF1', '#91B1E1']
-
   //data
   const [data, setData] = useState(MidLevelData)
 
   //style
-  const [isType, setType] = useState('shirt')
   const [isDropDown, setDropDown] = useState(false)
   const [isSelectedStyle, setSelectedStyle] = useState('Half sleeve')
   //size
-  const [isSelectCountry, setSelectCountry] = useState('India')
-  const [isSelectedSize, setSelectedSize] = useState('s')
+  const [isSize, setSize] = useState({
+    country: '',
+    sizeVarient: { size: '', measurement: '', unit: '' },
+  })
   //color
-  const [isSelectedColor, setSelectedColor] = useState('white')
+  const [isColor, setColor] = useState({
+    colorName: '',
+    hexCode: '',
+  })
+
   //image&text
   const [isOpenDesign, setOpenDesign] = useState(false)
   const [isHashtag, setHashtag] = useState('')
@@ -94,30 +97,26 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
             <SelectStyle
               isDropDown={isDropDown}
               isSelectedStyle={isSelectedStyle}
-              isType={isType}
               setDropDown={setDropDown}
               setSelectedStyle={setSelectedStyle}
-              setType={setType}
               handleIncreaseSteps={handleIncreaseSteps}
             />
           )}
           {isSteps === 2 && (
             <SelectSize
+              isSize={isSize}
+              setSize={setSize}
               isDropDown={isDropDown}
-              isSelectedSize={isSelectedSize}
-              isSelectCountry={isSelectCountry}
-              setSelectCountry={setSelectCountry}
               setDropDown={setDropDown}
-              setSelectedSize={setSelectedSize}
               handleIncreaseSteps={handleIncreaseSteps}
             />
           )}
           {isSteps === 3 && (
             <SelectColor
+              isColor={isColor}
               isDropDown={isDropDown}
-              isSelectedColor={isSelectedColor}
               setDropDown={setDropDown}
-              setSelectedColor={setSelectedColor}
+              setColor={setColor}
               handleIncreaseSteps={handleIncreaseSteps}
             />
           )}

@@ -4,7 +4,6 @@ import { create } from 'zustand'
 export interface IPostCreationData {
   style?: {
     title: string | null
-    type: string | null
   }
   color?: string | null
   image?: {
@@ -25,7 +24,7 @@ export interface IPostCreationData {
     product: string | null
     caption: string | null
   }
-  setStyle?: (style?: { title: string | null; type: string | null }) => void
+  setStyle?: (style?: { title: string | null }) => void
   setColor?: (color?: string | null) => void
   setImage?: (image?: {
     title: string | null
@@ -50,7 +49,6 @@ export interface IPostCreationData {
 type State = {
   style?: {
     title: string | null
-    type: string | null
   }
   color?: string | null
   image?: {
@@ -74,7 +72,7 @@ type State = {
 }
 
 type Action = {
-  setStyle: (style?: { title: string | null; type: string | null }) => void
+  setStyle: (style?: { title: string | null }) => void
   setColor: (color?: string | null) => void
   setImage: (image?: {
     title: string | null
@@ -100,7 +98,6 @@ type Action = {
 export const PostCreationStore = create<State & Action>((set) => ({
   style: {
     title: '',
-    type: '',
   },
   color: '',
   image: {

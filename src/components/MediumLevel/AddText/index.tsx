@@ -30,13 +30,7 @@ const Images = [
 const { width } = Dimensions.get('window')
 interface IAddText {
   isDropDown: boolean
-  // data?: {
-  //   title: string
-  //   type: {
-  //     name: string
-  //     value: string
-  //   }[]
-  // }
+
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDesign: React.Dispatch<React.SetStateAction<boolean>>
 }

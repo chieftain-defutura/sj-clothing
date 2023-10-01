@@ -1,12 +1,10 @@
-import { StyleSheet, Text, View, Pressable, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Pressable, Dimensions, FlatList } from 'react-native'
 import React, { useState } from 'react'
 import Animated, {
   BounceInUp,
   BounceOutUp,
   FlipInXDown,
   FlipOutXDown,
-  PinwheelIn,
-  PinwheelOut,
 } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
@@ -15,18 +13,33 @@ import { useNavigation } from '@react-navigation/native'
 
 interface ISelectColor {
   isDropDown: boolean
-  isSelectedColor: string
+  isColor: {
+    colorName: string
+    hexCode: string
+  }
   handleIncreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
-  setSelectedColor: React.Dispatch<React.SetStateAction<string>>
+  setColor: React.Dispatch<
+    React.SetStateAction<{
+      colorName: string
+      hexCode: string
+    }>
+  >
 }
-const Colors = ['white', 'violet', 'blue', 'red', 'orange', 'green']
+const Colors = [
+  { colorName: 'PaleVioletRed', hexCode: '#D87093' },
+  { colorName: 'MidnightBlue', hexCode: '#191970' },
+  { colorName: 'Maroon', hexCode: '#800000' },
+  { colorName: 'GoldenRod', hexCode: '#DAA520' },
+  { colorName: 'DarkSlateGray', hexCode: '#2F4F4F' },
+  { colorName: 'DarkKhaki', hexCode: '#BDB76B' },
+]
 const { width } = Dimensions.get('window')
 const SelectColor: React.FC<ISelectColor> = ({
   isDropDown,
-  isSelectedColor,
+  isColor,
   setDropDown,
-  setSelectedColor,
+  setColor,
   handleIncreaseSteps,
 }) => {
   const navigation = useNavigation()
@@ -72,58 +85,75 @@ const SelectColor: React.FC<ISelectColor> = ({
             >
               Colors
             </Text>
-            <View>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  gap: 15,
-                  paddingVertical: 20,
-                }}
-              >
-                {Colors.map((color, index) => (
-                  <Pressable
-                    onPress={() => {
-                      setSelectedColor(color), setOpenModal(true), setDropDown(false)
+            <FlatList
+              data={Colors}
+              numColumns={4}
+              contentContainerStyle={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 8,
+                paddingVertical: 16,
+              }}
+              columnWrapperStyle={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                // alignItems: 'center',
+                columnGap: 26,
+              }}
+              renderItem={({ item, index }) => (
+                <Pressable
+                  onPress={() => {
+                    setColor((prevState) => ({
+                      ...prevState,
+                      sizeVarient: { ...item },
+                    })),
+                      setOpenModal(true),
+                      setDropDown(false)
+                  }}
+                  key={index}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <View
+                    style={{
+                      borderRadius: 50,
+                      borderColor: COLORS.textTertiaryClr,
+                      borderWidth: 1,
+                      padding: 1,
                     }}
-                    key={index}
                   >
                     <View
                       style={{
+                        backgroundColor: `${item.hexCode}`,
+
                         borderRadius: 50,
-                        borderColor: COLORS.textTertiaryClr,
-                        borderWidth: 1,
-                        padding: 1,
+                        padding: 23,
                       }}
-                    >
-                      <View
-                        style={{
-                          backgroundColor: `${color}`,
-                          // width: 40,
-                          // height: 40,
-                          borderRadius: 50,
-                          padding: 23,
-                        }}
-                      ></View>
-                    </View>
-                    <Text
-                      style={{
-                        color:
-                          isSelectedColor === color
-                            ? COLORS.textSecondaryClr
-                            : COLORS.textTertiaryClr,
-                        textAlign: 'center',
-                        textTransform: 'capitalize',
-                        fontFamily: 'Gilroy-Regular',
-                      }}
-                    >
-                      {color}
-                    </Text>
-                  </Pressable>
-                ))}
-              </View>
-            </View>
+                    ></View>
+                  </View>
+                  <Text
+                    style={{
+                      color:
+                        isColor.hexCode === item.hexCode
+                          ? COLORS.textSecondaryClr
+                          : COLORS.textTertiaryClr,
+                      textAlign: 'center',
+                      textTransform: 'capitalize',
+                      fontFamily: 'Gilroy-Regular',
+                    }}
+                  >
+                    {item.colorName}
+                  </Text>
+                </Pressable>
+              )}
+            />
           </Animated.View>
           <Animated.View
             entering={BounceInUp.duration(800)}

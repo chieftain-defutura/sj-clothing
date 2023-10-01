@@ -16,7 +16,16 @@ interface INavigator {
   handleIncreaseSteps: () => void
   handleDecreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
-  setImageOrText: React.Dispatch<React.SetStateAction<boolean>>
+  setImageOrText: React.Dispatch<
+    React.SetStateAction<{
+      title: string
+      position: string
+      designs: {
+        hashtag: string
+        image: string
+      }
+    }>
+  >
   setDone: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDesign: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -75,7 +84,11 @@ const Navigator: React.FC<INavigator> = ({
               <View>
                 <Pressable
                   onPress={() => {
-                    setDropDown(true), setImageOrText(false)
+                    setDropDown(true),
+                      setImageOrText((prevState) => ({
+                        ...prevState,
+                        title: 'image',
+                      }))
                   }}
                   style={styles.Dropdown}
                 >
@@ -107,7 +120,11 @@ const Navigator: React.FC<INavigator> = ({
                 <View>
                   <Pressable
                     onPress={() => {
-                      setDropDown(true), setImageOrText(true)
+                      setDropDown(true),
+                        setImageOrText((prevState) => ({
+                          ...prevState,
+                          title: 'text image',
+                        }))
                     }}
                     style={styles.Dropdown}
                   >

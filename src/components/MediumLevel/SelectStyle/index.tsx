@@ -10,7 +10,6 @@ import Animated, {
 } from 'react-native-reanimated'
 
 interface ISelectStyle {
-  isType: string
   isDropDown: boolean
   isSelectedStyle: string
   data?: {
@@ -21,7 +20,6 @@ interface ISelectStyle {
     }[]
   }
   handleIncreaseSteps: () => void
-  setType: React.Dispatch<React.SetStateAction<string>>
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setSelectedStyle: React.Dispatch<React.SetStateAction<string>>
 }
@@ -52,43 +50,15 @@ const StyleShirtData = [
     Image: '../../../assets/images/plain-shirt.png',
   },
 ]
-const StyleTShirtData = [
-  {
-    Title: 'Half sleeve',
-    Image: '../../../assets/images/plain-shirt.png',
-  },
-  {
-    Title: 'Sleeveless',
-    Image: '../../../assets/images/t-shirt.png',
-  },
-  {
-    Title: 'Round neck',
-    Image: '../../../assets/images/t-shirt.png',
-  },
-  {
-    Title: 'Full sleeve',
-    Image: '../../../assets/images/plain-shirt.png',
-  },
-  {
-    Title: 'V neck',
-    Image: '../../../assets/images/t-shirt.png',
-  },
-  {
-    Title: 'Polo',
-    Image: '../../../assets/images/plain-shirt.png',
-  },
-]
 
 const { width } = Dimensions.get('window')
 
 const SelectStyle: React.FC<ISelectStyle> = ({
   isDropDown,
   isSelectedStyle,
-  isType,
   handleIncreaseSteps,
   setSelectedStyle,
   setDropDown,
-  setType,
   data,
 }) => {
   const handleSelect = (title: string) => {
@@ -131,110 +101,55 @@ const SelectStyle: React.FC<ISelectStyle> = ({
                 paddingTop: 15,
               }}
             >
-              <Pressable onPress={() => setType('shirt')}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: isType === 'shirt' ? COLORS.iconsHighlightClr : COLORS.textTertiaryClr,
-                  }}
-                >
-                  Shirt
-                </Text>
-              </Pressable>
-              <Pressable onPress={() => setType('t-shirt')}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: isType === 't-shirt' ? COLORS.iconsHighlightClr : COLORS.textTertiaryClr,
-                  }}
-                >
-                  T-Shirt
-                </Text>
-              </Pressable>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: COLORS.iconsHighlightClr,
+                }}
+              >
+                Styles
+              </Text>
             </View>
-            {isType === 'shirt' ? (
-              <View
-                style={{
-                  padding: 16,
+            <View
+              style={{
+                padding: 16,
+              }}
+            >
+              <FlatList
+                data={StyleShirtData}
+                numColumns={3}
+                columnWrapperStyle={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexGrow: 1,
+                  gap: 5,
+                  paddingVertical: 5,
                 }}
-              >
-                <FlatList
-                  data={StyleShirtData}
-                  numColumns={3}
-                  columnWrapperStyle={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    flexGrow: 1,
-                    gap: 5,
-                    paddingVertical: 5,
-                  }}
-                  renderItem={({ item }) => (
-                    <Pressable
-                      onPress={() => handleSelect(item.Title)}
+                renderItem={({ item }) => (
+                  <Pressable
+                    onPress={() => handleSelect(item.Title)}
+                    style={{
+                      paddingVertical: 4,
+                    }}
+                  >
+                    <Text
                       style={{
-                        paddingVertical: 4,
+                        textAlign: 'left',
+                        fontFamily: 'Gilroy-Medium',
+                        color:
+                          isSelectedStyle === item.Title
+                            ? COLORS.textSecondaryClr
+                            : COLORS.textTertiaryClr,
                       }}
                     >
-                      <Text
-                        style={{
-                          textAlign: 'left',
-                          fontFamily: 'Gilroy-Medium',
-                          color:
-                            isSelectedStyle === item.Title
-                              ? COLORS.textSecondaryClr
-                              : COLORS.textTertiaryClr,
-                        }}
-                      >
-                        {item.Title}
-                      </Text>
-                    </Pressable>
-                  )}
-                />
-              </View>
-            ) : (
-              <View
-                style={{
-                  padding: 16,
-                }}
-              >
-                <FlatList
-                  data={StyleTShirtData}
-                  numColumns={3}
-                  columnWrapperStyle={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    flexGrow: 1,
-                    gap: 5,
-                    paddingVertical: 5,
-                  }}
-                  renderItem={({ item }) => (
-                    <Pressable
-                      onPress={() => handleSelect(item.Title)}
-                      style={{
-                        paddingVertical: 4,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          textAlign: 'left',
-                          fontFamily: 'Gilroy-Medium',
-                          color:
-                            isSelectedStyle === item.Title
-                              ? COLORS.textSecondaryClr
-                              : COLORS.textTertiaryClr,
-                        }}
-                      >
-                        {item.Title}
-                      </Text>
-                    </Pressable>
-                  )}
-                />
-              </View>
-            )}
+                      {item.Title}
+                    </Text>
+                  </Pressable>
+                )}
+              />
+            </View>
           </Animated.View>
           <Animated.View
             entering={BounceInUp.duration(800)}

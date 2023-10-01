@@ -71,32 +71,41 @@ const { width } = Dimensions.get('window')
 
 interface ISelectSize {
   isDropDown: boolean
-  isSelectedSize: string
-  // data?: {
-  //   title: string
-  //   type: {
-  //     name: string
-  //     value: string
-  //   }[]
-  // }
-  isSelectCountry: string
+  isSize: {
+    country: string
+    sizeVarient: {
+      size: string
+      measurement: string
+      unit: string
+    }
+  }
   handleIncreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
-  setSelectedSize: React.Dispatch<React.SetStateAction<string>>
-  setSelectCountry: React.Dispatch<React.SetStateAction<string>>
+  setSize: React.Dispatch<
+    React.SetStateAction<{
+      country: string
+      sizeVarient: {
+        size: string
+        measurement: string
+        unit: string
+      }
+    }>
+  >
 }
 
 const SelectSize: React.FC<ISelectSize> = ({
   isDropDown,
-  isSelectedSize,
-  isSelectCountry,
+  isSize,
   setDropDown,
-  setSelectedSize,
-  setSelectCountry,
+  setSize,
   handleIncreaseSteps,
 }) => {
-  const handleSelect = (size: string) => {
-    setSelectedSize(size)
+  console.log(isSize)
+  const handleSelect = (size: { size: string; measurement: string; unit: string }) => {
+    setSize((prevState) => ({
+      ...prevState,
+      sizeVarient: { ...size },
+    }))
     handleIncreaseSteps()
   }
   return (
@@ -148,13 +157,21 @@ const SelectSize: React.FC<ISelectSize> = ({
                 }}
                 numColumns={3}
                 renderItem={({ item, index }) => (
-                  <Pressable onPress={() => setSelectCountry(item.country)} key={index}>
+                  <Pressable
+                    onPress={() =>
+                      setSize((prevState) => ({
+                        ...prevState,
+                        country: item.country,
+                      }))
+                    }
+                    key={index}
+                  >
                     <Text
                       style={{
                         textAlign: 'center',
                         fontSize: 12,
                         color:
-                          isSelectCountry === item.country
+                          isSize.country === item.country
                             ? COLORS.textSecondaryClr
                             : COLORS.SecondaryTwo,
                       }}
@@ -174,7 +191,7 @@ const SelectSize: React.FC<ISelectSize> = ({
                 Select Size
               </Text>
               {Sizes.filter(
-                (country) => country.country.toLowerCase() === isSelectCountry.toLowerCase(),
+                (country) => country.country.toLowerCase() === isSize.country.toLowerCase(),
               ).map((item, index) => (
                 <View
                   key={index}
@@ -188,13 +205,13 @@ const SelectSize: React.FC<ISelectSize> = ({
                   }}
                 >
                   {item.sizeVariant?.map((sizes, index) => (
-                    <Pressable onPress={() => handleSelect(sizes.size)} key={index}>
+                    <Pressable onPress={() => handleSelect(sizes)} key={index}>
                       <Text
                         style={{
                           textAlign: 'center',
                           fontSize: 12,
                           color:
-                            isSelectedSize === sizes.size
+                            isSize.sizeVarient.size === sizes.size
                               ? COLORS.textSecondaryClr
                               : COLORS.SecondaryTwo,
                         }}
