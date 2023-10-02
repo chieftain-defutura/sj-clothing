@@ -5,32 +5,46 @@ import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
 
 interface ISelectDesign {
+  isDone: boolean
   designs: {
     hashTag: string
     image: any
   }[]
-  isHashtag: string
-  isImage: number
-  isDone: boolean
+  isImageOrText: {
+    title: string
+    position: string
+    designs: {
+      hashtag: string
+      image: string
+    }
+  }
   setDone: React.Dispatch<React.SetStateAction<boolean>>
-  setImage: React.Dispatch<React.SetStateAction<number>>
-  setHashtag: React.Dispatch<React.SetStateAction<string>>
   setOpenDesign: React.Dispatch<React.SetStateAction<boolean>>
+  setImageOrText: React.Dispatch<
+    React.SetStateAction<{
+      title: string
+      position: string
+      designs: {
+        hashtag: string
+        image: string
+      }
+    }>
+  >
 }
 
 const SelectDesign: React.FC<ISelectDesign> = ({
   designs,
-  isHashtag,
-  isImage,
+  isImageOrText,
   isDone,
   setOpenDesign,
-  setHashtag,
-  setImage,
+  setImageOrText,
   setDone,
 }) => {
   const uniqueArr = [...new Map(designs.map((v) => [v.hashTag, v])).values()]
   const FilteredData =
-    isHashtag === '' ? designs : designs.filter((design) => design.hashTag === isHashtag)
+    isImageOrText.designs.hashtag === ''
+      ? designs
+      : designs.filter((design) => design.hashTag === isImageOrText.designs.hashtag)
   return (
     <Animated.View
       entering={SlideInDown.duration(800)}
@@ -80,12 +94,17 @@ const SelectDesign: React.FC<ISelectDesign> = ({
           horizontal
           renderItem={({ item }) => (
             <Pressable
-              onPress={() => {
-                setHashtag(item.hashTag), setImage(0)
-              }}
+              onPress={() =>
+                setImageOrText((prevState) => ({
+                  ...prevState,
+                  designs: { hashtag: item.hashTag, image: isImageOrText.designs.image },
+                }))
+              }
               style={{
                 borderColor:
-                  isHashtag === item.hashTag ? COLORS.textSecondaryClr : COLORS.textTertiaryClr,
+                  isImageOrText.designs.hashtag === item.hashTag
+                    ? COLORS.textSecondaryClr
+                    : COLORS.textTertiaryClr,
                 borderWidth: 1,
                 paddingHorizontal: 10,
                 borderRadius: 50,
@@ -95,7 +114,9 @@ const SelectDesign: React.FC<ISelectDesign> = ({
               <Text
                 style={{
                   color:
-                    isHashtag === item.hashTag ? COLORS.textSecondaryClr : COLORS.textTertiaryClr,
+                    isImageOrText.designs.hashtag === item.hashTag
+                      ? COLORS.textSecondaryClr
+                      : COLORS.textTertiaryClr,
                   fontFamily: 'Gilroy-Regular',
                   width: 'auto',
                   textAlign: 'center',
@@ -122,14 +143,19 @@ const SelectDesign: React.FC<ISelectDesign> = ({
         renderItem={({ item, index }) => (
           <Pressable
             onPress={() => {
-              setImage(index), setDone(true)
+              setImageOrText((prevState) => ({
+                ...prevState,
+                designs: { hashtag: isImageOrText.designs.hashtag, image: item.image },
+              })),
+                setDone(true)
             }}
             style={{
               backgroundColor: COLORS.cardClr,
               padding: 5,
               borderRadius: 5,
-              borderColor: isImage === index ? COLORS.textSecondaryClr : 'red',
-              borderWidth: isImage === index ? 1 : 0,
+              borderColor:
+                isImageOrText.designs.image === item.image ? COLORS.textSecondaryClr : 'red',
+              borderWidth: isImageOrText.designs.image === item.image ? 1 : 0,
             }}
           >
             <Image style={{ width: 100, height: 100 }} source={{ uri: item.image }} />

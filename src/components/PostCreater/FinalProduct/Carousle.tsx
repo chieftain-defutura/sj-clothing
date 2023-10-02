@@ -6,9 +6,12 @@ import UndrawGiftBox from '../../../assets/icons/Undraw-gift-box'
 import { COLORS } from '../../../styles/theme'
 import { Video, ResizeMode } from 'expo-av'
 
-const Carousle = () => {
-  const [selectedVideo, setSelectedVideo] = useState<any>(null)
+interface ICarousle {
+  isGiftVideo: any
+  setGiftVideo: React.Dispatch<any>
+}
 
+const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo }) => {
   useEffect(() => {
     ;(async () => {
       // Request permission to access the user's media library
@@ -28,7 +31,7 @@ const Carousle = () => {
       })
 
       if (!result.canceled) {
-        result.assets?.map((s) => setSelectedVideo(s.uri))
+        result.assets?.map((s) => setGiftVideo(s.uri))
       }
     } catch (error) {
       console.error('Error picking a video', error)
@@ -52,10 +55,10 @@ const Carousle = () => {
         />
       </View>
       <View style={styles.slide3}>
-        {selectedVideo ? (
+        {isGiftVideo ? (
           <View>
             <Video
-              source={{ uri: selectedVideo }}
+              source={{ uri: isGiftVideo }}
               style={{ width: 400, height: 400 }}
               shouldPlay
               isLooping

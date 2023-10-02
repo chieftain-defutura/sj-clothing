@@ -11,6 +11,14 @@ import { db } from '../../../firebase'
 import CustomButton from '../Button'
 import SelectSize from '../MediumLevel/SelectSize'
 import SelectColor from '../MediumLevel/SlectColor'
+import AddImageOrText from '../MediumLevel/AddImageOrText'
+import ProductAndCaption from './ProductAndCaption'
+import FinalProduct from './FinalProduct'
+import PostNavigator from './PostNavigator'
+import { ScrollView, View } from 'react-native'
+import TShirt from '../MediumLevel/T-Shirt'
+import SelectDesign from '../MediumLevel/SelectDesign'
+import { Designs, TextDesigns } from '../../utils/PostCreationData'
 
 interface IPostCreation {}
 const PostCreation: React.FC<IPostCreation> = () => {
@@ -22,7 +30,7 @@ const PostCreation: React.FC<IPostCreation> = () => {
   const [isSelectedStyle, setSelectedStyle] = useState('Half sleeve')
   //size
   const [isSize, setSize] = useState({
-    country: '',
+    country: 'India',
     sizeVarient: { size: '', measurement: '', unit: '' },
   })
   //color
@@ -32,28 +40,37 @@ const PostCreation: React.FC<IPostCreation> = () => {
   })
 
   //image&text
-  const [isImageOrText, setImageOrText] = useState(false)
   const [isOpenDesign, setOpenDesign] = useState(false)
-  const [isHashtag, setHashtag] = useState('')
   const [isDone, setDone] = useState(false)
+  const [isImageOrText, setImageOrText] = useState({
+    title: '',
+    position: 'front',
+    designs: {
+      hashtag: 'friends',
+      image: '',
+    },
+  })
+
+  //product and caption
+  const [isCaption, setCaption] = useState('')
+  const [isProduct, setProduct] = useState('')
+  //final product
+  const [isGiftVideo, setGiftVideo] = useState<any>(null)
 
   const handleIncreaseSteps = () => {
     setPostCreationSteps(isPostCreationSteps + 1)
     setDropDown(false)
     setOpenDesign(false)
     setDone(false)
-    if (isPostCreationSteps === 4) {
-      setHashtag('')
-    }
   }
   const handleDecreaseSteps = () => {
     if (isPostCreationSteps !== 1) {
       setPostCreationSteps(isPostCreationSteps - 1)
       setDropDown(false)
       setOpenDesign(false)
-      if (isPostCreationSteps === 4) {
-        setHashtag('')
-      }
+    }
+    if (isPostCreationSteps === 1) {
+      navigation.navigate('Post')
     }
   }
 
@@ -68,21 +85,7 @@ const PostCreation: React.FC<IPostCreation> = () => {
         colorName: '',
         hexCode: '',
       },
-      image: {
-        position: 'front',
-        designs: {
-          hashtag: 'friends',
-          image: '',
-        },
-      },
-      textImage: {
-        position: 'rightarm',
-        designs: {
-          hashtag: 'family',
-          image: '',
-        },
-      },
-
+      textAndImage: isImageOrText,
       detailedFeatures: [
         {
           title: 'Material',
@@ -92,9 +95,10 @@ const PostCreation: React.FC<IPostCreation> = () => {
       price: '400',
       offerPrice: '20',
       giftVideo: '',
-      productName: '',
-      productCaption: '',
+      productName: isProduct,
+      productCaption: isCaption,
     })
+    navigation.navigate('Stack')
   }
 
   return (
@@ -108,7 +112,7 @@ const PostCreation: React.FC<IPostCreation> = () => {
           justifyContent: 'space-between',
         }}
       >
-        <Navigator
+        <PostNavigator
           steps={isPostCreationSteps}
           isOpenDesign={isOpenDesign}
           isDone={isDone}
@@ -147,6 +151,41 @@ const PostCreation: React.FC<IPostCreation> = () => {
             handleIncreaseSteps={handleIncreaseSteps}
           />
         )}
+        {isPostCreationSteps === 4 && (
+          <AddImageOrText
+            isDropDown={isDropDown}
+            setDropDown={setDropDown}
+            setOpenDesign={setOpenDesign}
+          />
+        )}
+        <View>
+          <ScrollView>
+            {isPostCreationSteps !== 6 && <TShirt />}
+
+            {isPostCreationSteps === 6 && (
+              <FinalProduct
+                navigation={navigation}
+                handleSubmit={handleSubmit}
+                isGiftVideo={isGiftVideo}
+                setGiftVideo={setGiftVideo}
+              />
+            )}
+          </ScrollView>
+        </View>
+        {isPostCreationSteps === 5 && (
+          <ProductAndCaption setCaption={setCaption} setProduct={setProduct} />
+        )}
+        {isOpenDesign && !isDone && isPostCreationSteps === 4 && (
+          <SelectDesign
+            isImageOrText={isImageOrText}
+            designs={isImageOrText.title === 'text image' ? TextDesigns : Designs}
+            setOpenDesign={setOpenDesign}
+            isDone={isDone}
+            setDone={setDone}
+            setImageOrText={setImageOrText}
+          />
+        )}
+
         {/* <CustomButton text='create' onPress={handleSubmit} /> */}
       </LinearGradient>
     </Animated.View>

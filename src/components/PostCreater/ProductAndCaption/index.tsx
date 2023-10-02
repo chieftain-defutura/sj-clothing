@@ -19,8 +19,8 @@ import Animated, { LightSpeedInLeft, LightSpeedOutRight } from 'react-native-rea
 // ]
 
 interface IProductAndCaption {
-  navigation: any
-  setPostCreationSteps: React.Dispatch<React.SetStateAction<number>>
+  setProduct: React.Dispatch<React.SetStateAction<string>>
+  setCaption: React.Dispatch<React.SetStateAction<string>>
 }
 
 const ValidationSchema = Yup.object({
@@ -28,72 +28,9 @@ const ValidationSchema = Yup.object({
   caption: Yup.string().required('Please enter your caption'),
 })
 
-const ProductAndCaption: React.FC<IProductAndCaption> = ({ navigation, setPostCreationSteps }) => {
-  const { setproductandcaption } = PostCreationStore()
-  const [isCaption, setCaption] = useState('')
-  const [isProduct, setProduct] = useState('')
+const ProductAndCaption: React.FC<IProductAndCaption> = ({ setProduct, setCaption }) => {
   return (
     <ScrollView style={styles.ProductAndCaptionContainer}>
-      <Animated.View style={styles.ProductAndCaptionNavigator}>
-        <Pressable onPress={() => setPostCreationSteps(3)}>
-          <ArrowCircleLeft width={24} height={24} />
-        </Pressable>
-        <Pressable
-          onPress={() => {
-            setPostCreationSteps(5),
-              setproductandcaption({ caption: isCaption, product: isProduct })
-          }}
-        >
-          <ArrowCircleRight width={24} height={24} />
-        </Pressable>
-      </Animated.View>
-      <View style={styles.TShirt}>
-        <Image source={require('../../../assets/images/plain-shirt.png')} />
-      </View>
-      <View style={styles.ProductAndCaption360Degree}>
-        <ThreeSixtyDegree width={40} height={40} />
-      </View>
-
-      {/* <Formik
-        initialValues={{
-          productname: '',
-          caption: '',
-        }}
-        validationSchema={ValidationSchema}
-        onSubmit={(values) => {
-          setCaption(values.caption), setProduct(values.productname)
-        }}
-      >
-        {({ values, errors, touched, handleChange, isValid, handleSubmit, handleBlur }) => (
-          <SignUpContainer>
-            <View>
-              <LabelText>Product name</LabelText>
-              <InputStyle
-                placeholder='Name'
-                value={values.productname}
-                onChangeText={handleChange('productname')}
-                onBlur={handleBlur('productname')}
-                placeholderTextColor={COLORS.SecondaryTwo}
-              />
-              {touched.productname && errors.productname && (
-                <ErrorText>{errors.productname}</ErrorText>
-              )}
-            </View>
-            <View>
-              <LabelText>Caption</LabelText>
-              <InputStyle
-                placeholder='Caption'
-                value={values.caption}
-                onChangeText={handleChange('caption')}
-                onBlur={handleBlur('caption')}
-                placeholderTextColor={COLORS.SecondaryTwo}
-              />
-              {touched.caption && errors.caption && <ErrorText>{errors.caption}</ErrorText>}
-            </View>
-          </SignUpContainer>
-        )}
-      </Formik> */}
-
       <SignUpContainer>
         <View>
           <LabelText>Product name</LabelText>
@@ -121,7 +58,6 @@ export default ProductAndCaption
 const styles = StyleSheet.create({
   ProductAndCaptionContainer: {
     flex: 1,
-    backgroundColor: '#FFEFFF',
   },
   ProductAndCaptionNavigator: {
     display: 'flex',

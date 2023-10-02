@@ -31,15 +31,15 @@ const Images = [
 
 const { width } = Dimensions.get('window')
 
-interface IAddImage {
+interface IAddImageOrText {
   isDropDown: boolean
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDesign: React.Dispatch<React.SetStateAction<boolean>>
 }
-const AddImage: React.FC<IAddImage> = ({ isDropDown, setDropDown, setOpenDesign }) => {
+const AddImageOrText: React.FC<IAddImageOrText> = ({ isDropDown, setDropDown, setOpenDesign }) => {
   const [isSelect, setSelect] = useState('Front')
   return (
-    <View style={styles.addImageContainer}>
+    <View style={styles.AddImageOrTextContainer}>
       {isDropDown && (
         <Animated.View
           style={[
@@ -186,10 +186,10 @@ const AddImage: React.FC<IAddImage> = ({ isDropDown, setDropDown, setOpenDesign 
   )
 }
 
-export default AddImage
+export default AddImageOrText
 
 const styles = StyleSheet.create({
-  addImageContainer: {
+  AddImageOrTextContainer: {
     flex: 1,
     position: 'absolute',
     top: 0,

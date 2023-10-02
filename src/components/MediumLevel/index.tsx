@@ -6,14 +6,13 @@ import SelectStyle from './SelectStyle'
 import { Data, Designs, MidLevelData, TextDesigns } from '../../utils/PostCreationData'
 import SelectSize from './SelectSize'
 import SelectColor from './SlectColor'
-import AddImage from './AddImage'
-import AddText from './AddText'
 import TShirt from './T-Shirt'
 import SelectDesign from './SelectDesign'
 import FinalView from './FinalView'
 import { useNavigation } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { gradientColors } from '../../styles/theme'
+import AddImageOrText from './AddImageOrText'
 
 interface IMediumLevel {}
 
@@ -21,7 +20,6 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
   const navigation = useNavigation()
   const [toggleAvatar, setToggleAvatar] = useState(false)
   const [isSteps, setSteps] = useState(1)
-  const [isImageOrText, setImageOrText] = useState(false)
 
   //data
   const [data, setData] = useState(MidLevelData)
@@ -42,9 +40,15 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
 
   //image&text
   const [isOpenDesign, setOpenDesign] = useState(false)
-  const [isHashtag, setHashtag] = useState('')
-  const [isImage, setImage] = useState(0)
   const [isDone, setDone] = useState(false)
+  const [isImageOrText, setImageOrText] = useState({
+    title: '',
+    position: 'front',
+    designs: {
+      hashtag: 'friends',
+      image: '',
+    },
+  })
   //finalview
   const [quantity, setQuantity] = useState('')
   const [approved, setApproved] = useState(false)
@@ -53,18 +57,12 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
     setDropDown(false)
     setOpenDesign(false)
     setDone(false)
-    if (isSteps === 4) {
-      setHashtag('')
-    }
   }
   const handleDecreaseSteps = () => {
     if (isSteps !== 1) {
       setSteps(isSteps - 1)
       setDropDown(false)
       setOpenDesign(false)
-      if (isSteps === 4) {
-        setHashtag('')
-      }
     }
   }
 
@@ -120,16 +118,8 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
               handleIncreaseSteps={handleIncreaseSteps}
             />
           )}
-          {isSteps === 4 && !isImageOrText && (
-            <AddImage
-              isDropDown={isDropDown}
-              setDropDown={setDropDown}
-              setOpenDesign={setOpenDesign}
-            />
-          )}
-
-          {isSteps === 4 && isImageOrText && (
-            <AddText
+          {isSteps === 4 && (
+            <AddImageOrText
               isDropDown={isDropDown}
               setDropDown={setDropDown}
               setOpenDesign={setOpenDesign}
@@ -152,14 +142,12 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
           </View>
           {isOpenDesign && !isDone && isSteps === 4 && (
             <SelectDesign
-              designs={isImageOrText ? TextDesigns : Designs}
+              isImageOrText={isImageOrText}
+              designs={isImageOrText.title === 'text image' ? TextDesigns : Designs}
               setOpenDesign={setOpenDesign}
-              setHashtag={setHashtag}
-              isHashtag={isHashtag}
-              isImage={isImage}
-              setImage={setImage}
               isDone={isDone}
               setDone={setDone}
+              setImageOrText={setImageOrText}
             />
           )}
         </LinearGradient>
@@ -173,7 +161,6 @@ export default MediumLevel
 const styles = StyleSheet.create({
   midiumlevelContainer: {
     flex: 1,
-    // backgroundColor: '#FFEFFF',
   },
   submitBtn: {
     marginVertical: 8,
