@@ -7,14 +7,27 @@ interface InputProps extends TextInputProps {
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
   placeholder?: string
+  value?: string
+  onChangeText?: (text: string) => void
 }
 
-const Input: React.FC<InputProps> = ({ placeholder, leftIcon, rightIcon, ...rest }) => {
+const Input: React.FC<InputProps> = ({
+  placeholder,
+  leftIcon,
+  rightIcon,
+  value,
+  onChangeText,
+  ...rest
+}) => {
   return (
     <InputContainer>
       {leftIcon && <View>{leftIcon}</View>}
       <StyledTextInput
         placeholder={placeholder}
+        value={value}
+        onChangeText={(text) => {
+          onChangeText?.(text)
+        }}
         {...rest}
         placeholderTextColor={COLORS.SecondaryTwo}
       />
@@ -31,7 +44,6 @@ const InputContainer = styled.View`
   align-items: center;
   justify-content: space-between;
   gap: 4px;
-  margin-bottom: 50px;
   border-radius: 6px;
   padding-vertical: 10px;
   padding-horizontal: 16px;

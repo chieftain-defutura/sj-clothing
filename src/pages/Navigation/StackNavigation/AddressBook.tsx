@@ -1,9 +1,7 @@
-import { StyleSheet, View, TextInput } from 'react-native'
-import React from 'react'
+import { StyleSheet, View, KeyboardAvoidingView } from 'react-native'
+import React, { useState } from 'react'
 import MapView from 'react-native-maps'
-import CustomRadioButton from '../../../components/CustomRadioButton'
 import CustomButton from '../../../components/Button'
-import TickIcon from '../../../assets/icons/TickIcon'
 import styled from 'styled-components/native'
 import { Pressable } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
@@ -11,8 +9,8 @@ import { COLORS } from '../../../styles/theme'
 import CurrentLocationIcon from '../../../assets/icons/CurrentLocationIcon'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import CloseIcon from '../../../assets/icons/Close'
-import Search from '../../../assets/icons/SearchIcon'
-import Plus from '../../../assets/icons/PlusIcon'
+import AddAddress from '../../../components/AddressBook/AddAddress'
+import ChooseLocation from '../../../components/AddressBook/ChooseLocation'
 
 interface IAddressBook {
   navigation: any
@@ -21,13 +19,10 @@ interface IAddressBook {
 const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
   const height = useSharedValue('0%')
   const displayAddressSelection = useSharedValue('none')
-  const [onText, setOnSearchChange] = React.useState<string>()
+  const [showDisplay, setDisplay] = useState(1)
 
-  const handleSearchText = (text: string) => {
-    setOnSearchChange(text)
-  }
   const handlePress = () => {
-    height.value = withTiming('51%')
+    height.value = withTiming('52%')
     displayAddressSelection.value = 'flex'
   }
 
@@ -36,13 +31,18 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
     display: displayAddressSelection.value as any,
   }))
 
+  const changeHeight = (value: string) => {
+    height.value = withTiming(value)
+  }
+
   const handleClose = () => {
+    setDisplay(1)
     height.value = withTiming('0%', { duration: 300 })
     setTimeout(() => (displayAddressSelection.value = 'none'), 300)
   }
 
   return (
-    <View style={[styles.container]}>
+    <KeyboardAvoidingView style={[styles.container]} contentContainerStyle={{ height: 900 }}>
       <GoBackArrowContent
         onPress={() => {
           navigation.goBack()
@@ -91,38 +91,24 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
             <CloseIcon width={24} height={24} />
           </Pressable>
         </View>
-        <View style={styles.searchInputBox}>
-          <Search width={16} height={16} />
-          <TextInput
-            placeholder='Search for area, street name'
-            onChangeText={(text) => handleSearchText(text)}
-            value={onText}
-            style={styles.inputBox}
-            placeholderTextColor={COLORS.SecondaryTwo}
+        {showDisplay == 1 && (
+          <AddAddress
+            onAddPress={() => {
+              setDisplay(2)
+              changeHeight('80%')
+            }}
           />
-        </View>
-        <View>
-          <View>
-            <CustomRadioButton />
-          </View>
-          <FlexContent>
-            <Pressable>
-              <AddAddressBtn>
-                <Plus width={16} height={16} />
-                <BtnText>Add new Address</BtnText>
-              </AddAddressBtn>
-            </Pressable>
-            <View style={{ width: 175 }}>
-              <CustomButton
-                variant='primary'
-                text='Deliver here'
-                leftIcon={<TickIcon width={16} height={16} />}
-              />
-            </View>
-          </FlexContent>
-        </View>
+        )}
+        {showDisplay == 2 && (
+          <ChooseLocation
+            onSavePress={() => {
+              setDisplay(1)
+              changeHeight('52%')
+            }}
+          />
+        )}
       </Animated.View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -132,16 +118,9 @@ const GoBackArrowContent = styled.Pressable`
   align-items: center;
   gap: 8px;
   padding: 16px;
-  background: #fff;
-`
-
-const FlexContent = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 16px;
+  position: absolute;
+  z-index: 10000;
+  top: 0;
 `
 
 const CartText = styled.Text`
@@ -176,26 +155,6 @@ const FlexRow = styled.View`
   padding-horizontal: 16px;
   padding-vertical: 12px;
   background: ${COLORS.iconsNormalClr};
-  max-width: 188px;
-  width: 100%;
-`
-
-const AddAddressBtn = styled.View`
-  border-color: #db00ff;
-  border-width: 1px;
-  padding-horizontal: 14px;
-  padding-vertical: 12px;
-  border-radius: 32px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 2px;
-  width: 165px;
-`
-const BtnText = styled.Text`
-  font-size: 12px;
-  font-family: Arvo-Regular;
-  color: #db00ff;
 `
 
 export default AddressBook
@@ -206,6 +165,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'transparent',
+    position: 'relative',
   },
 
   parent: {
@@ -218,32 +178,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     zIndex: 10,
   },
-  inputBox: {
-    borderRadius: 20,
-    backgroundColor: 'white',
-    color: 'black',
-    fontSize: 14,
-    marginVertical: 8,
-  },
+
   cancelContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     marginBottom: 8,
-  },
-
-  searchInputBox: {
-    borderColor: '#efcef5',
-    borderWidth: 1,
-    borderRadius: 36,
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 2,
-    marginVertical: 8,
-    gap: 8,
   },
   map: {
     flex: 1,
