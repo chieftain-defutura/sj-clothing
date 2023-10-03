@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { Pressable, StyleSheet, Dimensions, Image, View } from 'react-native'
+import { Pressable, StyleSheet, Dimensions, Image } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import LeftArrow from '../../../../assets/icons/LeftArrow'
 import ThreeSixtyDegree from '../../../../assets/icons/360-degree'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import CustomButton from '../../../../components/Button'
-import { gradientColors } from '../../../../styles/theme'
+import { gradientOpacityColors } from '../../../../styles/theme'
 
 interface IPremiumThreeSixtyDegree {
   navigation: any
@@ -22,13 +22,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({ navigatio
       entering={SlideInRight.duration(500).delay(200)}
       exiting={SlideOutRight.duration(500).delay(200)}
     >
-      <LinearGradient
-        // start={{ x: 0, y: 0 }}
-        // end={{ x: 0, y: 1 }}
-        // colors={['#FFEFFF', '#FFF']}
-        colors={gradientColors}
-        style={styles.linearGradient}
-      >
+      <LinearGradient colors={gradientOpacityColors} style={styles.linearGradient}>
         <FlexContent>
           <Pressable
             onPress={() => {
@@ -47,9 +41,6 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({ navigatio
               </IconHoverClr>
             )}
           </Pressable>
-          {/* <Pressable onPress={share}>
-          <ShareArrow width={24} height={24} />
-        </Pressable> */}
         </FlexContent>
         <ThreeSixtyDegreeImageWrapper>
           <ThreeSixtyDegreeImage>

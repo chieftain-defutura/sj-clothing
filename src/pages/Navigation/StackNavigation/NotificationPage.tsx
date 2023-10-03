@@ -1,58 +1,59 @@
 import React from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
-import { COLORS } from '../../../styles/theme'
+import { COLORS, gradientOpacityColors } from '../../../styles/theme'
 import { NotificationData } from '../../../utils/data/NotificationData'
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const NotificationPage: React.FC = () => {
   return (
-    <ScrollViewContent showsVerticalScrollIndicator={false}>
-      {/* <LinearGradient colors={gradientColors} style={{ paddingHorizontal: 16 }}> */}
+    <LinearGradient colors={gradientOpacityColors}>
       <Animated.View
         entering={SlideInDown.duration(500).delay(200)}
         exiting={SlideOutDown.duration(500).delay(200)}
       >
-        <NotificationHead>Today</NotificationHead>
-        {NotificationData.map((f, index) => {
-          return (
-            <NotificationFlexContent key={index}>
-              <IconView>
-                <f.notificationIcon width={24} height={24} />
-              </IconView>
-              <View>
-                <TextHead>{f.name}</TextHead>
-                <TextDescription>{f.description}</TextDescription>
-                <DateText>{f.date}</DateText>
-              </View>
-            </NotificationFlexContent>
-          )
-        })}
-        <NotificationHead>YESTERDAY</NotificationHead>
-        {NotificationData.map((f, index) => {
-          return (
-            <NotificationFlexContent key={index}>
-              <IconView>
-                <f.notificationIcon width={24} height={24} />
-              </IconView>
-              <View>
-                <TextHead>{f.name}</TextHead>
-                <TextDescription>{f.description}</TextDescription>
-                <DateText>{f.date}</DateText>
-              </View>
-            </NotificationFlexContent>
-          )
-        })}
+        <ScrollViewContent showsVerticalScrollIndicator={false}>
+          <View>
+            <NotificationHead>Today</NotificationHead>
+            {NotificationData.map((f, index) => {
+              return (
+                <NotificationFlexContent key={index}>
+                  <IconView>
+                    <f.notificationIcon width={24} height={24} />
+                  </IconView>
+                  <View>
+                    <TextHead>{f.name}</TextHead>
+                    <TextDescription>{f.description}</TextDescription>
+                    <DateText>{f.date}</DateText>
+                  </View>
+                </NotificationFlexContent>
+              )
+            })}
+            <NotificationHead>YESTERDAY</NotificationHead>
+            {NotificationData.map((f, index) => {
+              return (
+                <NotificationFlexContent key={index}>
+                  <IconView>
+                    <f.notificationIcon width={24} height={24} />
+                  </IconView>
+                  <View>
+                    <TextHead>{f.name}</TextHead>
+                    <TextDescription>{f.description}</TextDescription>
+                    <DateText>{f.date}</DateText>
+                  </View>
+                </NotificationFlexContent>
+              )
+            })}
+          </View>
+        </ScrollViewContent>
       </Animated.View>
-      {/* </LinearGradient> */}
-    </ScrollViewContent>
+    </LinearGradient>
   )
 }
 
 const ScrollViewContent = styled.ScrollView`
-  background: ${COLORS.backgroundClr};
   height: 100%;
-  flex: 1;
   padding-horizontal: 16px;
 `
 

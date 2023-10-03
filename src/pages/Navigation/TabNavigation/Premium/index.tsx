@@ -4,6 +4,8 @@ import AuthNavigate from '../../../../screens/AuthNavigate'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import PremiumCard from '../../../../components/PremiumComponent/PremiumCard'
 import { PremiumData } from '../../../../utils/data/premiumData'
+import { LinearGradient } from 'expo-linear-gradient'
+import { gradientOpacityColors } from '../../../../styles/theme'
 
 const Premium: React.FC = () => {
   const isFocused = useIsFocused()
@@ -20,29 +22,32 @@ const Premium: React.FC = () => {
   const cardPairs = getCardPairs(PremiumData)
 
   return (
-    <PremiumWrapper>
-      <AuthNavigate focus={isFocused}>
-        {cardPairs.map((pair, index) => (
-          <CardPairContainer key={index}>
-            {pair.map((item) => (
-              <PremiumCard
-                key={item.id}
-                image={item.image}
-                productName={item.productName}
-                price={item.price}
-                inr={item.inr}
-                navigation={navigation}
-              />
-            ))}
-          </CardPairContainer>
-        ))}
-      </AuthNavigate>
-    </PremiumWrapper>
+    <LinearGradient colors={gradientOpacityColors}>
+      <PremiumWrapper>
+        <AuthNavigate focus={isFocused}>
+          {cardPairs.map((pair, index) => (
+            <CardPairContainer key={index}>
+              {pair.map((item) => (
+                <PremiumCard
+                  key={item.id}
+                  image={item.image}
+                  productName={item.productName}
+                  price={item.price}
+                  inr={item.inr}
+                  navigation={navigation}
+                />
+              ))}
+            </CardPairContainer>
+          ))}
+        </AuthNavigate>
+      </PremiumWrapper>
+    </LinearGradient>
   )
 }
 
 const PremiumWrapper = styled.ScrollView`
-  flex: 1;
+  height: 100%;
+  /* flex:1 */
 `
 
 const CardPairContainer = styled.View`

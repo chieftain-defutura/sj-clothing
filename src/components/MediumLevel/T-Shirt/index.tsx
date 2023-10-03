@@ -1,10 +1,8 @@
-import { StyleSheet, Image, View, Dimensions } from 'react-native'
+import { StyleSheet, Image, View } from 'react-native'
 import React from 'react'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 
-const { height, width } = Dimensions.get('window')
-
-const TShirt = () => {
+const TShirt: React.FC = () => {
   return (
     <View
       style={{

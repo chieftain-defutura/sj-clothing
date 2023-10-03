@@ -1,15 +1,66 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import { View, Pressable } from 'react-native'
+import { View, StyleSheet, Dimensions } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
-import { COLORS } from '../../../styles/theme'
+import { COLORS, gradientOpacityColors } from '../../../styles/theme'
 import LeftArrow from '../../../assets/icons/LeftArrow'
+import { RadioButton } from 'react-native-paper'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
-import OrderGroup from '../../../assets/icons/OrderGroup'
+import { LinearGradient } from 'expo-linear-gradient'
 
 interface ITrackOrder {
   navigation: any
 }
+
+const { width, height } = Dimensions.get('window')
+
+const data = [
+  {
+    orderName: 'Order placed',
+    orderDate: '23 Jul, 2023',
+    orderDescription:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut laboredolore aliqua.',
+  },
+  {
+    orderName: 'Shipping',
+    orderDate: '23 Jul, 2023',
+    orderDescription:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut laboredolore aliqua.',
+  },
+  {
+    orderName: 'Delivery',
+    orderDate: '23 Jul, 2023',
+    orderDescription:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut laboredolore aliqua.',
+  },
+]
+
+const ProductData = [
+  {
+    product: 'Product',
+    productName: 'purple ape t-shirt',
+  },
+  {
+    product: 'Style',
+    productName: 'Half sleeve',
+  },
+  {
+    product: 'Quantity',
+    productName: 'x50',
+  },
+  {
+    product: 'Ordered on',
+    productName: '23 June, 2023',
+  },
+  {
+    product: 'Delivery on',
+    productName: '23 June, 2023',
+  },
+  {
+    product: 'Price',
+    productName: '450 INR',
+  },
+]
 
 const TrackOrder: React.FC<ITrackOrder> = ({ navigation }) => {
   return (
@@ -33,89 +84,50 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation }) => {
               <ThreeSixtyDegree width={40} height={40} />
             </ThreeSixtyDegreeImage>
           </TShirtImageWrapper>
-          <TrackOrderContent>
-            <FlexContent>
-              <View>
-                <TrackOrderText>Product</TrackOrderText>
-                <TrackOrderDate>Purple ape t-shirt</TrackOrderDate>
-              </View>
-              <View>
-                <TrackOrderText>Style</TrackOrderText>
-                <TrackOrderDate>Half sleeve</TrackOrderDate>
-              </View>
-              <View>
-                <TrackOrderText>Quantity</TrackOrderText>
-                <TrackOrderDate>x50</TrackOrderDate>
-              </View>
-            </FlexContent>
-            <FlexContentTwo>
-              <View>
-                <TrackOrderText>Ordered on</TrackOrderText>
-                <TrackOrderDate>23 June, 2023</TrackOrderDate>
-              </View>
-              <View>
-                <TrackOrderText>Delivery on</TrackOrderText>
-                <TrackOrderDate>23 Jul, 2023</TrackOrderDate>
-              </View>
-              <View>
-                <TrackOrderText>Price</TrackOrderText>
-                <TrackOrderDate>450 INR</TrackOrderDate>
-              </View>
-            </FlexContentTwo>
+          <LinearGradient colors={gradientOpacityColors}>
+            <TrackOrderContent>
+              <FlexContent>
+                {ProductData.slice(0, 3).map((f, index) => (
+                  <View key={index}>
+                    <TrackOrderText>{f.product}</TrackOrderText>
+                    <TrackOrderDate>{f.productName}</TrackOrderDate>
+                  </View>
+                ))}
+              </FlexContent>
+              <FlexContent style={{ marginTop: 16 }}>
+                {ProductData.slice(3, 6).map((f, index) => (
+                  <View key={index}>
+                    <TrackOrderText>{f.product}</TrackOrderText>
+                    <TrackOrderDate>{f.productName}</TrackOrderDate>
+                  </View>
+                ))}
+              </FlexContent>
+            </TrackOrderContent>
 
-            <OrderGroupContent>
-              <Pressable>
-                <OrderGroup width={25} height={203} />
-              </Pressable>
-              <View>
-                <FlexOrder>
-                  <OrderPlacedFlexContent>
-                    <View>
-                      <OrderPlacedText>Order placed</OrderPlacedText>
+            <TrackOrderContent>
+              <OrderGroupContent>
+                {data.map((f, index) => (
+                  <View key={index} style={styles.radioBtn}>
+                    <View style={{ marginTop: -4 }}>
+                      <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
                     </View>
-                    <View>
-                      <OrderPlacedDate>23 Jul, 2023</OrderPlacedDate>
-                    </View>
-                  </OrderPlacedFlexContent>
+                    <FlexOrder>
+                      <OrderPlacedFlexContent>
+                        <View>
+                          <OrderPlacedText>{f.orderName}</OrderPlacedText>
+                        </View>
+                        <View>
+                          <OrderPlacedDate>{f.orderDate}</OrderPlacedDate>
+                        </View>
+                      </OrderPlacedFlexContent>
 
-                  <OrderDescription>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut
-                    laboredolore aliqua.
-                  </OrderDescription>
-                </FlexOrder>
-                <FlexOrder>
-                  <OrderPlacedFlexContent>
-                    <View>
-                      <OrderPlacedText>Shipping</OrderPlacedText>
-                    </View>
-                    <View>
-                      <OrderPlacedDate>23 Jul, 2023</OrderPlacedDate>
-                    </View>
-                  </OrderPlacedFlexContent>
-
-                  <OrderDescription>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut
-                    laboredolore aliqua.
-                  </OrderDescription>
-                </FlexOrder>
-                <FlexOrder>
-                  <OrderPlacedFlexContent>
-                    <View>
-                      <OrderPlacedText>Delivery</OrderPlacedText>
-                    </View>
-                    <View>
-                      <OrderPlacedDate>23 Jul, 2023</OrderPlacedDate>
-                    </View>
-                  </OrderPlacedFlexContent>
-
-                  <OrderDescription>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut
-                    laboredolore aliqua.
-                  </OrderDescription>
-                </FlexOrder>
-              </View>
-            </OrderGroupContent>
-          </TrackOrderContent>
+                      <OrderDescription>{f.orderDescription}</OrderDescription>
+                    </FlexOrder>
+                  </View>
+                ))}
+              </OrderGroupContent>
+            </TrackOrderContent>
+          </LinearGradient>
         </View>
       </ScrollViewContent>
     </Animated.View>
@@ -126,12 +138,11 @@ const ScrollViewContent = styled.ScrollView`
   background: ${COLORS.iconsNormalClr};
 `
 
-const FlexOrder = styled.Pressable`
+const FlexOrder = styled.View`
   margin-bottom: 25px;
 `
 
 const TrackOrderContent = styled.View`
-  background: ${COLORS.backgroundClr};
   padding: 24px;
 `
 
@@ -163,23 +174,13 @@ const OrderPlacedDate = styled.Text`
 `
 
 const OrderGroupContent = styled.View`
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
   padding-right: 24px;
-  margin-top: 30px;
 `
 
 const FlexContent = styled.View`
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-`
-const FlexContentTwo = styled.View`
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  margin-top: 16px;
 `
 
 const TrackOrderText = styled.Text`
@@ -225,5 +226,13 @@ const CartText = styled.Text`
   font-size: 20px;
   letter-spacing: -0.4px;
 `
+
+const styles = StyleSheet.create({
+  radioBtn: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 8,
+  },
+})
 
 export default TrackOrder

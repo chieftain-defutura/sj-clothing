@@ -15,8 +15,6 @@ import TickIcon from '../../assets/icons/TickIcon'
 import CustomButton from '../Button'
 import { COLORS } from '../../styles/theme'
 import { RadioButton } from 'react-native-paper'
-import Briefcase from '../../assets/icons/Briefcase'
-import HomeIcon from '../../assets/icons/HomeIcon'
 import { AddressBookData } from '../../utils/data/AddressBookData'
 
 interface AddAddressProps {

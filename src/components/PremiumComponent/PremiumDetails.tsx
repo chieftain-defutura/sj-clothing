@@ -1,11 +1,18 @@
 import React, { useState } from 'react'
-import { StyleSheet, Pressable, Share, Image, View, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  Pressable,
+  Share,
+  Image,
+  View,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native'
 import styled from 'styled-components/native'
-import { LinearGradient } from 'expo-linear-gradient'
 import { PremiumDetailsData } from '../../utils/data/premiumDetailsData'
 import LeftArrow from '../../assets/icons/LeftArrow'
 import ShareArrow from '../../assets/icons/ShareArrow'
-import { COLORS, FONT_FAMILY, gradientColors } from '../../styles/theme'
+import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
 import { Svg, Circle } from 'react-native-svg'
 import CustomButton from '../Button'
@@ -21,6 +28,8 @@ import Animated, {
 interface IPremiumDetails {
   navigation: any
 }
+
+const { width, height } = Dimensions.get('window')
 
 const PremiumDetails: React.FC<IPremiumDetails> = ({ navigation }) => {
   const [showDetails, setShowDetails] = useState(false)
@@ -45,13 +54,14 @@ const PremiumDetails: React.FC<IPremiumDetails> = ({ navigation }) => {
   }
 
   return (
-    <LinearGradient
-      start={{ x: 0, y: 0 }}
-      end={{ x: 0, y: 1 }}
-      colors={['#FFEFFF', '#FFF']}
-      // colors={gradientColors}
-      style={styles.linearGradient}
-    >
+    // <LinearGradient
+    //   start={{ x: 0, y: 0 }}
+    //   end={{ x: 0, y: 1 }}
+    //   // colors={['#FFEFFF', '#FFF']}
+    //   colors={gradientOpacityColors}
+    //   style={styles.linearGradient}
+    // >
+    <View style={styles.linearGradient}>
       <FlexContent>
         <Pressable
           onPress={() => {
@@ -84,7 +94,7 @@ const PremiumDetails: React.FC<IPremiumDetails> = ({ navigation }) => {
                 >
                   <Image
                     source={f.image}
-                    style={{ width: 196, height: 320, resizeMode: 'cover' }}
+                    style={{ width: width * 0.6, height: height * 0.4, resizeMode: 'cover' }}
                   />
                 </TouchableOpacity>
               </Animated.View>
@@ -170,7 +180,8 @@ const PremiumDetails: React.FC<IPremiumDetails> = ({ navigation }) => {
           />
         </Btns>
       </Animated.View>
-    </LinearGradient>
+    </View>
+    //</LinearGradient>
   )
 }
 
@@ -220,6 +231,7 @@ const PremiumDetailsContent = styled.View`
   align-items: center;
   justify-content: center;
   margin-bottom: 8px;
+  margin-top: -20px;
 `
 
 const DetailsParaText = styled.Text`

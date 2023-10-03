@@ -72,7 +72,6 @@ const CartPageContainer = styled.View`
   border-bottom-color: ${COLORS.strokeClr};
   border-bottom-width: 1px;
   padding-vertical: 16px;
-  width: 100%;
 `
 
 const TShirtImage = styled.Image`
@@ -86,7 +85,7 @@ const ProductWrapper = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 90px;
+  gap: 88px;
 `
 
 const ProductSizes = styled.View`

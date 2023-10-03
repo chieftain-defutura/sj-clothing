@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, Image, ScrollView } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useState } from 'react'
 import Gender from './Gender'

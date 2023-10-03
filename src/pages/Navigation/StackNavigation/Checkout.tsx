@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components/native'
 import { View, Pressable, StyleSheet } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
-import { COLORS } from '../../../styles/theme'
+import { COLORS, gradientOpacityColors } from '../../../styles/theme'
 import CustomButton from '../../../components/Button'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import GiftIcon from '../../../assets/icons/GiftIcon'
@@ -37,37 +37,64 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   }
 
   return (
-    <Animated.View
-      entering={SlideInRight.duration(500).delay(200)}
-      exiting={SlideOutRight.duration(500).delay(200)}
-    >
-      <ScrollViewContent showsVerticalScrollIndicator={false}>
-        <View style={{ paddingBottom: 80 }}>
-          <GoBackArrowContent
-            onPress={() => {
-              navigation.goBack()
-            }}
-          >
-            <LeftArrow width={24} height={24} />
-            <CartText>Check Out</CartText>
-          </GoBackArrowContent>
-          <CartCard cartData={CheckoutData} closedItems={closedItems} handleClose={handleClose} />
-          <CartPageContent>
-            <HomeFlexContent>
-              <Pressable onPress={() => navigation.navigate('AddressBook')}>
-                <View>
-                  <HomeText>Home</HomeText>
-                  <HomeDescription>
-                    Mr John Smith. 132, My Street, Kingston, New York 12401.
-                  </HomeDescription>
-                </View>
-              </Pressable>
-              <Pressable>
-                <ChevronLeft width={16} height={16} />
-              </Pressable>
-            </HomeFlexContent>
-            <GiftWrapper>
-              <Pressable onPress={() => navigation.navigate('GiftOptions')}>
+    <LinearGradient colors={gradientOpacityColors}>
+      <Animated.View
+        entering={SlideInRight.duration(500).delay(200)}
+        exiting={SlideOutRight.duration(500).delay(200)}
+      >
+        <ScrollViewContent showsVerticalScrollIndicator={false}>
+          <View style={{ paddingBottom: 80 }}>
+            <GoBackArrowContent
+              onPress={() => {
+                navigation.goBack()
+              }}
+            >
+              <LeftArrow width={24} height={24} />
+              <CartText>Check Out</CartText>
+            </GoBackArrowContent>
+            <CartCard cartData={CheckoutData} closedItems={closedItems} handleClose={handleClose} />
+            <CartPageContent>
+              <HomeFlexContent>
+                <Pressable onPress={() => navigation.navigate('AddressBook')}>
+                  <View>
+                    <HomeText>Home</HomeText>
+                    <HomeDescription>
+                      Mr John Smith. 132, My Street, Kingston, New York 12401.
+                    </HomeDescription>
+                  </View>
+                </Pressable>
+                <Pressable>
+                  <ChevronLeft width={16} height={16} />
+                </Pressable>
+              </HomeFlexContent>
+              <GiftWrapper>
+                <Pressable onPress={() => navigation.navigate('GiftOptions')}>
+                  <GiftContent>
+                    <LinearGradient
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                      colors={['#462D85', '#DB00FF']}
+                      style={styles.gradientColor}
+                    >
+                      <GiftIcon width={16} height={16} />
+                    </LinearGradient>
+                    <GiftText>Gift options available</GiftText>
+                  </GiftContent>
+                </Pressable>
+                <Pressable>
+                  <ChevronLeft width={16} height={16} />
+                </Pressable>
+              </GiftWrapper>
+              <PhonepeWrapper>
+                <GiftContent>
+                  <Phonepe width={32} height={32} />
+                  <GiftText>Pay with Phonepe</GiftText>
+                </GiftContent>
+                <Pressable>
+                  <ChevronLeft width={16} height={16} />
+                </Pressable>
+              </PhonepeWrapper>
+              <PhonepeWrapper>
                 <GiftContent>
                   <LinearGradient
                     start={{ x: 0, y: 0 }}
@@ -75,93 +102,67 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                     colors={['#462D85', '#DB00FF']}
                     style={styles.gradientColor}
                   >
-                    <GiftIcon width={16} height={16} />
+                    <SackDollar width={16} height={16} />
                   </LinearGradient>
-                  <GiftText>Gift options available</GiftText>
+                  <GiftText>Royalties</GiftText>
+                  <InrBorderRadius>
+                    <InrText>1200INR</InrText>
+                  </InrBorderRadius>
                 </GiftContent>
-              </Pressable>
-              <Pressable>
-                <ChevronLeft width={16} height={16} />
-              </Pressable>
-            </GiftWrapper>
-            <PhonepeWrapper>
-              <GiftContent>
-                <Phonepe width={32} height={32} />
-                <GiftText>Pay with Phonepe</GiftText>
-              </GiftContent>
-              <Pressable>
-                <ChevronLeft width={16} height={16} />
-              </Pressable>
-            </PhonepeWrapper>
-            <PhonepeWrapper>
-              <GiftContent>
-                <LinearGradient
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  colors={['#462D85', '#DB00FF']}
-                  style={styles.gradientColor}
-                >
-                  <SackDollar width={16} height={16} />
-                </LinearGradient>
-                <GiftText>Royalties</GiftText>
-                <InrBorderRadius>
-                  <InrText>1200INR</InrText>
-                </InrBorderRadius>
-              </GiftContent>
-              <UseBorderRadius>
-                <UseText>Use</UseText>
-              </UseBorderRadius>
-            </PhonepeWrapper>
-            <Content>
-              <DeliveryWrapper>
-                <DeliveryContent>
-                  <Pressable>
-                    <TruckMovingIcon width={24} height={24} />
-                  </Pressable>
-                  <DeliveryText>Delivery fee</DeliveryText>
-                </DeliveryContent>
-                <INRText>900 INR</INRText>
-              </DeliveryWrapper>
-              <DeliveryWrapper style={{ marginTop: 20 }}>
-                <DeliveryContent>
-                  <Pressable>
-                    <ShippingIcon width={24} height={24} />
-                  </Pressable>
-                  <DeliveryText>Shipping fee</DeliveryText>
-                </DeliveryContent>
-                <INRText>900 INR</INRText>
-              </DeliveryWrapper>
-            </Content>
-            <TotalContent>
-              <TotalText>Total</TotalText>
-              <TotalValue>900 INR</TotalValue>
-            </TotalContent>
-          </CartPageContent>
-        </View>
-      </ScrollViewContent>
-      <CustomButton
-        variant='primary'
-        text='Place order'
-        fontFamily='Arvo-Regular'
-        onPress={openOrderPlaced}
-        fontSize={16}
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          width: '100%',
-          backgroundColor: '#FFF',
-          padding: 16,
-        }}
-      />
-      <OrderPlaced isVisible={isOrderPlacedVisible} onClose={closeOrderPlaced} />
-    </Animated.View>
+                <UseBorderRadius>
+                  <UseText>Use</UseText>
+                </UseBorderRadius>
+              </PhonepeWrapper>
+              <Content>
+                <DeliveryWrapper>
+                  <DeliveryContent>
+                    <Pressable>
+                      <TruckMovingIcon width={24} height={24} />
+                    </Pressable>
+                    <DeliveryText>Delivery fee</DeliveryText>
+                  </DeliveryContent>
+                  <INRText>900 INR</INRText>
+                </DeliveryWrapper>
+                <DeliveryWrapper style={{ marginTop: 20 }}>
+                  <DeliveryContent>
+                    <Pressable>
+                      <ShippingIcon width={24} height={24} />
+                    </Pressable>
+                    <DeliveryText>Shipping fee</DeliveryText>
+                  </DeliveryContent>
+                  <INRText>900 INR</INRText>
+                </DeliveryWrapper>
+              </Content>
+              <TotalContent>
+                <TotalText>Total</TotalText>
+                <TotalValue>900 INR</TotalValue>
+              </TotalContent>
+            </CartPageContent>
+          </View>
+        </ScrollViewContent>
+        <CustomButton
+          variant='primary'
+          text='Place order'
+          fontFamily='Arvo-Regular'
+          onPress={openOrderPlaced}
+          fontSize={16}
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            width: '100%',
+            backgroundColor: '#FFF',
+            padding: 16,
+          }}
+        />
+        <OrderPlaced isVisible={isOrderPlacedVisible} onClose={closeOrderPlaced} />
+      </Animated.View>
+    </LinearGradient>
   )
 }
 
 const ScrollViewContent = styled.ScrollView`
-  background: ${COLORS.backgroundClr};
   height: 100%;
 `
 

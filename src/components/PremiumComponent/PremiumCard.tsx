@@ -3,7 +3,6 @@ import { View, Image, Dimensions, StyleSheet, Pressable } from 'react-native'
 import { PremiumCardProps } from '../../constant/types'
 import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
-import { LinearGradient } from 'expo-linear-gradient'
 import { SharedElement } from 'react-navigation-shared-element'
 import Animated, { FadeInLeft, FadeOutLeft } from 'react-native-reanimated'
 
@@ -24,13 +23,14 @@ const PremiumCard: React.FC<PremiumCardProps & IPremiumCard> = ({
   navigation,
 }) => {
   return (
-    <LinearGradient
-      start={{ x: 0, y: 0 }}
-      end={{ x: 0, y: 1 }}
-      colors={['#FFEFFF', '#FFF']}
-      // colors={gradientColors}
-      style={styles.linearGradient}
-    >
+    // <LinearGradient
+    //   // start={{ x: 0, y: 0 }}
+    //   // end={{ x: 0, y: 1 }}
+    //   // colors={['#FFEFFF', '#FFF']}
+    //   colors={gradientOpacityColors}
+    //   style={styles.linearGradient}
+    // >
+    <View style={{ marginTop: 30 }}>
       <View style={{ width: cardWidth, height: cardHeight }}>
         <Pressable onPress={() => navigation.navigate('PremiumDetailsCard', { image })}>
           <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>
@@ -56,7 +56,8 @@ const PremiumCard: React.FC<PremiumCardProps & IPremiumCard> = ({
           </FlexContent>
         </View>
       </View>
-    </LinearGradient>
+    </View>
+    //</LinearGradient>
   )
 }
 

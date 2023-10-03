@@ -1,16 +1,19 @@
 import React from 'react'
-import { View } from 'react-native'
+import { Dimensions, View } from 'react-native'
 import styled from 'styled-components/native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import LeftArrow from '../../../assets/icons/LeftArrow'
-import { COLORS } from '../../../styles/theme'
+import { COLORS, gradientOpacityColors } from '../../../styles/theme'
 import CustomButton from '../../../components/Button'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
+import { LinearGradient } from 'expo-linear-gradient'
 
 interface IGiftOption {
   navigation: any
 }
+
+const { height } = Dimensions.get('window')
 
 const validationSchema = Yup.object({
   yourGift: Yup.string()
@@ -29,48 +32,53 @@ const validationSchema = Yup.object({
 
 const GiftOptions: React.FC<IGiftOption> = ({ navigation }) => {
   return (
-    <ScrollViewContent>
-      <Animated.View
-        entering={SlideInRight.duration(500).delay(200)}
-        exiting={SlideOutRight.duration(500).delay(200)}
-      >
-        <View>
-          <GiftContent style={{ backgroundColor: '#FFF' }}>
-            <GoBackArrowContent
-              onPress={() => {
-                navigation.goBack()
-              }}
-            >
-              <LeftArrow width={24} height={24} />
-              <CartText>Gift options</CartText>
-            </GoBackArrowContent>
-            <GiftImage>
-              <TShirtImage source={require('../../../assets/images/t-shirt.png')} />
-            </GiftImage>
-            <Formik
-              initialValues={{
-                yourGift: '',
-                from: '',
-              }}
-              validationSchema={validationSchema}
-              onSubmit={(values) => console.log(values)}
-            >
-              {({ values, errors, touched, handleChange, isValid, handleSubmit, handleBlur }) => (
-                <GiftMessageWrapper>
+    <Animated.View
+      entering={SlideInRight.duration(500).delay(200)}
+      exiting={SlideOutRight.duration(500).delay(200)}
+    >
+      <GiftContent style={{ backgroundColor: '#FFF' }}>
+        <View style={{ height: height - 400 }}>
+          <GoBackArrowContent
+            onPress={() => {
+              navigation.goBack()
+            }}
+          >
+            <LeftArrow width={24} height={24} />
+            <CartText>Gift options</CartText>
+          </GoBackArrowContent>
+
+          <GiftImage>
+            <TShirtImage source={require('../../../assets/images/t-shirt.png')} />
+          </GiftImage>
+        </View>
+        <Formik
+          initialValues={{
+            yourGift: '',
+            from: '',
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values) => console.log(values)}
+        >
+          {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
+            <GiftMessageWrapper>
+              <LinearGradient colors={gradientOpacityColors}>
+                <View style={{ padding: 16, height: '100%' }}>
                   <View>
                     <GiftMessageText>Gift message</GiftMessageText>
-                    <TextArea
-                      multiline={true}
-                      numberOfLines={2}
-                      value={values.yourGift}
-                      onChangeText={handleChange('yourGift')}
-                      onBlur={handleBlur('yourGift')}
-                      placeholder='Enjoy your gift!'
-                      placeholderTextColor={COLORS.SecondaryTwo}
-                    />
-                    {touched.yourGift && errors.yourGift && (
-                      <ErrorText>{errors.yourGift}</ErrorText>
-                    )}
+                    <View>
+                      <TextArea
+                        multiline={true}
+                        numberOfLines={2}
+                        value={values.yourGift}
+                        onChangeText={handleChange('yourGift')}
+                        onBlur={handleBlur('yourGift')}
+                        placeholder='Enjoy your gift!'
+                        placeholderTextColor={COLORS.SecondaryTwo}
+                      />
+                      {touched.yourGift && errors.yourGift && (
+                        <ErrorText>{errors.yourGift}</ErrorText>
+                      )}
+                    </View>
                   </View>
                   <InputStyleContent>
                     <GiftMessageText>From</GiftMessageText>
@@ -83,41 +91,40 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation }) => {
                     />
                     {touched.from && errors.from && <ErrorText>{errors.from}</ErrorText>}
                   </InputStyleContent>
+                </View>
+              </LinearGradient>
 
-                  <CustomButton
-                    variant='primary'
-                    text='Continue'
-                    onPress={() => {
-                      handleSubmit(), navigation.navigate('Checkout')
-                    }}
-                    disabled={!isValid}
-                    fontFamily='Arvo-Regular'
-                    fontSize={16}
-                    style={{ marginTop: 24 }}
-                  />
-                </GiftMessageWrapper>
-              )}
-            </Formik>
-          </GiftContent>
-        </View>
-      </Animated.View>
-    </ScrollViewContent>
+              <CustomButton
+                variant='primary'
+                text='Continue'
+                fontFamily='Arvo-Regular'
+                fontSize={16}
+                onPress={() => {
+                  handleSubmit(), navigation.navigate('Checkout')
+                }}
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  width: '100%',
+                  backgroundColor: '#FFF',
+                  padding: 16,
+                }}
+              />
+            </GiftMessageWrapper>
+          )}
+        </Formik>
+      </GiftContent>
+    </Animated.View>
   )
 }
-
-const ScrollViewContent = styled.ScrollView`
-  background: ${COLORS.backgroundClr};
-  height: 100%;
-  flex: 1;
-`
 
 const GiftContent = styled.View`
   height: 100%;
 `
 
 const GiftMessageWrapper = styled.View`
-  background: ${COLORS.backgroundClr};
-  padding: 16px;
   flex: 1;
 `
 

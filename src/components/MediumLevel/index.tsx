@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import Avatar from './Avatar'
 import Navigator from './Navigator'
@@ -11,7 +11,7 @@ import SelectDesign from './SelectDesign'
 import FinalView from './FinalView'
 import { useNavigation } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { gradientColors } from '../../styles/theme'
+import { gradientOpacityColors } from '../../styles/theme'
 import AddImageOrText from './AddImageOrText'
 
 interface IMediumLevel {}
@@ -72,7 +72,7 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
         <Avatar setToggleAvatar={setToggleAvatar} />
       ) : (
         <LinearGradient
-          colors={gradientColors}
+          colors={gradientOpacityColors}
           style={{
             flex: 1,
             display: 'flex',

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import { ScrollView, View } from 'react-native'
+import { Pressable, ScrollView, View } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { auth } from '../../../../../firebase'
@@ -101,7 +101,7 @@ const Account: React.FC<IAccount> = ({ navigation }) => {
             </ProfileUserContent>
             {AccountData.map((f, index) => {
               return (
-                <View key={index}>
+                <Pressable key={index} onPress={() => navigation.navigate(f.navigation)}>
                   <ProfileUserContent>
                     <FlexIcon>
                       <f.leftIcon width={20} height={20} />
@@ -109,7 +109,7 @@ const Account: React.FC<IAccount> = ({ navigation }) => {
                     </FlexIcon>
                     <RightText>{f.rightText}</RightText>
                   </ProfileUserContent>
-                </View>
+                </Pressable>
               )
             })}
             <LogoutPressable onPress={handleLogout}>

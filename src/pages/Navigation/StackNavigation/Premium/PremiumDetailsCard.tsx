@@ -5,7 +5,8 @@ import { ScrollView } from 'react-native'
 import PremiumDetails from '../../../../components/PremiumComponent/PremiumDetails'
 import PremiumCard from '../../../../components/PremiumComponent/PremiumCard'
 import { PremiumData } from '../../../../utils/data/premiumData'
-import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
+import { gradientOpacityColors } from '../../../../styles/theme'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const PremiumDetailsCard: React.FC = () => {
   const navigation = useNavigation()
@@ -21,28 +22,25 @@ const PremiumDetailsCard: React.FC = () => {
   const cardPairs = getCardPairs(PremiumData)
 
   return (
-    <ScrollView>
-      {/* <Animated.View
-        entering={SlideInRight.duration(500).delay(200)}
-        exiting={SlideOutRight.duration(500).delay(200)}
-      > */}
-      <PremiumDetails navigation={navigation} />
-      {cardPairs.map((pair, index) => (
-        <CardPairContainer key={index}>
-          {pair.map((item) => (
-            <PremiumCard
-              key={item.id}
-              image={item.image}
-              productName={item.productName}
-              price={item.price}
-              inr={item.inr}
-              navigation={navigation}
-            />
-          ))}
-        </CardPairContainer>
-      ))}
-      {/* </Animated.View> */}
-    </ScrollView>
+    <LinearGradient colors={gradientOpacityColors}>
+      <ScrollView>
+        <PremiumDetails navigation={navigation} />
+        {cardPairs.map((pair, index) => (
+          <CardPairContainer key={index}>
+            {pair.map((item) => (
+              <PremiumCard
+                key={item.id}
+                image={item.image}
+                productName={item.productName}
+                price={item.price}
+                inr={item.inr}
+                navigation={navigation}
+              />
+            ))}
+          </CardPairContainer>
+        ))}
+      </ScrollView>
+    </LinearGradient>
   )
 }
 

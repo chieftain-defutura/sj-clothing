@@ -20,6 +20,7 @@ import PremiumThreeSixtyDegree from './Premium/PremiumThreeSixtyDegree'
 import PremiumBuyNow from './Premium/PremiumBuyNow'
 import Premium from '../TabNavigation/Premium'
 import PremiumDetailsCard from './Premium/PremiumDetailsCard'
+import MyPosts from './Account/MyPosts'
 
 const Stack = createStackNavigator()
 
@@ -63,13 +64,18 @@ const StackNavigationRoutes: React.FC = () => {
         component={Checkout}
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
       />
+      <Stack.Screen
+        name='MyPosts'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={MyPosts}
+      />
+
       <Stack.Screen name='MyOrders' component={MyOrders} />
       <Stack.Screen name='TrackOrder' component={TrackOrder} />
       <Stack.Screen name='GiftOptions' component={GiftOptions} />
       <Stack.Screen name='Notification' component={NotificationPage} />
       <Stack.Screen name='Premiumm' component={Premium} />
       <Stack.Screen name='PremiumDetailsCard' component={PremiumDetailsCard} />
-      {/* <Stack.Screen name='PremiumNavigation' component={PremiumNavigation} /> */}
       <Stack.Screen name='PremiumThreeSixtyDegreePage' component={PremiumThreeSixtyDegree} />
       <Stack.Screen name='PremiumBuynow' component={PremiumBuyNow} />
       <Stack.Screen name='Login' options={{ headerShown: false }} component={LoginModal} />

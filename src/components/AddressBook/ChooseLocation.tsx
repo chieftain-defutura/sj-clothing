@@ -18,7 +18,7 @@ import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import CurrentLocationIcon from '../../assets/icons/CurrentLocationIcon'
 import ChevronLeft from '../../assets/icons/ChevronLeft'
 import Input from '../Input'
-import { useFormik, yupToFormErrors } from 'formik'
+import { useFormik } from 'formik'
 import * as yup from 'yup'
 
 interface ChooseLocationProps {
