@@ -1,15 +1,32 @@
 import React from 'react'
-import { View, Image } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import styled from 'styled-components/native'
 import LeftArrow from '../../../../assets/icons/LeftArrow'
 import { COLORS } from '../../../../styles/theme'
+import { Dimensions } from 'react-native'
 
 interface IMyPosts {
   navigation: any
 }
 
+const { width } = Dimensions.get('window')
+
 const MyPostData = [
+  {
+    image: require('../../../../assets/images/t-shirt.png'),
+  },
+  {
+    image: require('../../../../assets/images/t-shirt.png'),
+  },
+  {
+    image: require('../../../../assets/images/t-shirt.png'),
+  },
+  {
+    image: require('../../../../assets/images/t-shirt.png'),
+  },
+  {
+    image: require('../../../../assets/images/t-shirt.png'),
+  },
   {
     image: require('../../../../assets/images/t-shirt.png'),
   },
@@ -28,6 +45,8 @@ const MyPostData = [
 ]
 
 const MyPosts: React.FC<IMyPosts> = ({ navigation }) => {
+  const halfWidth = width / 2.1
+
   const getCardPairs = (data: any[]) => {
     const pairs = []
     for (let i = 0; i < data.length; i += 2) {
@@ -56,7 +75,10 @@ const MyPosts: React.FC<IMyPosts> = ({ navigation }) => {
             {cardPairs.map((pair, index) => (
               <CardPairContainer key={index}>
                 {pair.map((item, subIndex) => (
-                  <GiftImage key={subIndex}>
+                  <GiftImage
+                    key={subIndex}
+                    style={{ width: halfWidth, height: 174, marginRight: 4 }}
+                  >
                     <TShirtImage source={item.image} />
                   </GiftImage>
                 ))}
@@ -88,7 +110,8 @@ const GoBackArrowContent = styled.Pressable`
 `
 
 const MyPostContainer = styled.View`
-  padding: 4px;
+  padding: 6px;
+  margin-bottom: 8px;
 `
 
 const MyPostText = styled.Text`
@@ -101,8 +124,6 @@ const MyPostText = styled.Text`
 const GiftImage = styled.View`
   border-radius: 10px;
   background: #ffbbe9;
-  width: 174px;
-  height: 174px;
   justify-content: center;
   align-items: center;
 `

@@ -77,7 +77,7 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation }) => {
             validationSchema={validationSchema}
             onSubmit={(values) => console.log(values)}
           >
-            {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
+            {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
               <GiftMessageWrapper>
                 <LinearGradient colors={gradientOpacityColors}>
                   <View style={{ padding: 16, height: '100%' }}>
@@ -189,8 +189,8 @@ const GiftImage = styled.View`
 `
 
 const TShirtImage = styled.Image`
-  width: 300px;
-  height: 300px;
+  width: 280px;
+  height: 280px;
   flex-shrink: 0;
 `
 

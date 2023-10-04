@@ -21,6 +21,10 @@ import PremiumBuyNow from './Premium/PremiumBuyNow'
 import Premium from '../TabNavigation/Premium'
 import PremiumDetailsCard from './Premium/PremiumDetailsCard'
 import MyPosts from './Account/MyPosts'
+import PlayVideo from '../../../components/PremiumComponent/PlayVideo'
+import EditProfile from './Account/EditProfile'
+import AboutUs from './Account/AboutUs'
+import Royalties from './Account/Royalties'
 
 const Stack = createStackNavigator()
 
@@ -68,6 +72,29 @@ const StackNavigationRoutes: React.FC = () => {
         name='MyPosts'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={MyPosts}
+      />
+      <Stack.Screen
+        name='PlayVideo'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={PlayVideo}
+      />
+
+      <Stack.Screen
+        name='EditProfile'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={EditProfile}
+      />
+
+      <Stack.Screen
+        name='Aboutus'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={AboutUs}
+      />
+
+      <Stack.Screen
+        name='Royalties'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={Royalties}
       />
 
       <Stack.Screen name='MyOrders' component={MyOrders} />

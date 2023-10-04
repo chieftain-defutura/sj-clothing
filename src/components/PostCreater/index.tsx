@@ -1,14 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/native'
 import Animated from 'react-native-reanimated'
 import { addDoc, collection } from 'firebase/firestore/lite'
 import { useNavigation } from '@react-navigation/native'
-import { gradientColors } from '../../styles/theme'
+import { gradientOpacityColors } from '../../styles/theme'
 import { LinearGradient } from 'expo-linear-gradient'
-import Navigator from '../MediumLevel/Navigator'
 import SelectStyle from '../MediumLevel/SelectStyle'
 import { db } from '../../../firebase'
-import CustomButton from '../Button'
 import SelectSize from '../MediumLevel/SelectSize'
 import SelectColor from '../MediumLevel/SlectColor'
 import AddImageOrText from '../MediumLevel/AddImageOrText'
@@ -104,7 +102,7 @@ const PostCreation: React.FC<IPostCreation> = () => {
   return (
     <Animated.View style={{ flex: 1 }}>
       <LinearGradient
-        colors={gradientColors}
+        colors={gradientOpacityColors}
         style={{
           flex: 1,
           display: 'flex',
