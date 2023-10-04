@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/native'
 import { View, StyleSheet, Dimensions } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
@@ -7,7 +7,8 @@ import LeftArrow from '../../../assets/icons/LeftArrow'
 import { RadioButton } from 'react-native-paper'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import { LinearGradient } from 'expo-linear-gradient'
-
+import RadioButtonGroup from 'react-native-paper/lib/typescript/components/RadioButton/RadioButtonGroup'
+//radio button
 interface ITrackOrder {
   navigation: any
 }
@@ -63,6 +64,7 @@ const ProductData = [
 ]
 
 const TrackOrder: React.FC<ITrackOrder> = ({ navigation }) => {
+  const [onCheckChange, setCheck] = useState('first')
   return (
     <Animated.View
       entering={SlideInRight.duration(500).delay(200)}
@@ -106,25 +108,30 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation }) => {
 
             <TrackOrderContent>
               <OrderGroupContent>
-                {data.map((f, index) => (
-                  <View key={index} style={styles.radioBtn}>
-                    <View style={{ marginTop: -4 }}>
-                      <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
-                    </View>
-                    <FlexOrder>
-                      <OrderPlacedFlexContent>
-                        <View>
-                          <OrderPlacedText>{f.orderName}</OrderPlacedText>
-                        </View>
-                        <View>
-                          <OrderPlacedDate>{f.orderDate}</OrderPlacedDate>
-                        </View>
-                      </OrderPlacedFlexContent>
+                <RadioButton.Group
+                  value={onCheckChange}
+                  onValueChange={(newValue) => setCheck(newValue)}
+                >
+                  {data.map((f, index) => (
+                    <View key={index} style={styles.radioBtn}>
+                      <View style={{ marginTop: -4 }}>
+                        <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
+                      </View>
+                      <FlexOrder>
+                        <OrderPlacedFlexContent>
+                          <View>
+                            <OrderPlacedText>{f.orderName}</OrderPlacedText>
+                          </View>
+                          <View>
+                            <OrderPlacedDate>{f.orderDate}</OrderPlacedDate>
+                          </View>
+                        </OrderPlacedFlexContent>
 
-                      <OrderDescription>{f.orderDescription}</OrderDescription>
-                    </FlexOrder>
-                  </View>
-                ))}
+                        <OrderDescription>{f.orderDescription}</OrderDescription>
+                      </FlexOrder>
+                    </View>
+                  ))}
+                </RadioButton.Group>
               </OrderGroupContent>
             </TrackOrderContent>
           </LinearGradient>

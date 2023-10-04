@@ -1,5 +1,5 @@
-import React from 'react'
-import { Dimensions, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Dimensions, Keyboard, TouchableWithoutFeedback, View } from 'react-native'
 import styled from 'styled-components/native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -31,91 +31,110 @@ const validationSchema = Yup.object({
 })
 
 const GiftOptions: React.FC<IGiftOption> = ({ navigation }) => {
+  const [imgVisible, setImgVisible] = useState(true)
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setImgVisible(false)
+    })
+
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setImgVisible(true)
+    })
+
+    return () => {
+      keyboardDidShowListener.remove()
+      keyboardDidHideListener.remove()
+    }
+  }, [])
   return (
     <Animated.View
       entering={SlideInRight.duration(500).delay(200)}
       exiting={SlideOutRight.duration(500).delay(200)}
     >
-      <GiftContent style={{ backgroundColor: '#FFF' }}>
-        <View style={{ height: height - 400 }}>
-          <GoBackArrowContent
-            onPress={() => {
-              navigation.goBack()
-            }}
-          >
-            <LeftArrow width={24} height={24} />
-            <CartText>Gift options</CartText>
-          </GoBackArrowContent>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <GiftContent style={{ backgroundColor: '#FFF' }}>
+          {imgVisible && (
+            <View style={{ paddingBottom: 50 }}>
+              <GoBackArrowContent
+                onPress={() => {
+                  navigation.goBack()
+                }}
+              >
+                <LeftArrow width={24} height={24} />
+                <CartText>Gift options</CartText>
+              </GoBackArrowContent>
 
-          <GiftImage>
-            <TShirtImage source={require('../../../assets/images/t-shirt.png')} />
-          </GiftImage>
-        </View>
-        <Formik
-          initialValues={{
-            yourGift: '',
-            from: '',
-          }}
-          validationSchema={validationSchema}
-          onSubmit={(values) => console.log(values)}
-        >
-          {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
-            <GiftMessageWrapper>
-              <LinearGradient colors={gradientOpacityColors}>
-                <View style={{ padding: 16, height: '100%' }}>
-                  <View>
-                    <GiftMessageText>Gift message</GiftMessageText>
+              <GiftImage>
+                <TShirtImage source={require('../../../assets/images/t-shirt.png')} />
+              </GiftImage>
+            </View>
+          )}
+          <Formik
+            initialValues={{
+              yourGift: '',
+              from: '',
+            }}
+            validationSchema={validationSchema}
+            onSubmit={(values) => console.log(values)}
+          >
+            {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
+              <GiftMessageWrapper>
+                <LinearGradient colors={gradientOpacityColors}>
+                  <View style={{ padding: 16, height: '100%' }}>
                     <View>
-                      <TextArea
-                        multiline={true}
-                        numberOfLines={2}
-                        value={values.yourGift}
-                        onChangeText={handleChange('yourGift')}
-                        onBlur={handleBlur('yourGift')}
-                        placeholder='Enjoy your gift!'
+                      <GiftMessageText>Gift message</GiftMessageText>
+                      <View>
+                        <TextArea
+                          multiline={true}
+                          numberOfLines={2}
+                          value={values.yourGift}
+                          onChangeText={handleChange('yourGift')}
+                          onBlur={handleBlur('yourGift')}
+                          placeholder='Enjoy your gift!'
+                          placeholderTextColor={COLORS.SecondaryTwo}
+                        />
+                        {touched.yourGift && errors.yourGift && (
+                          <ErrorText>{errors.yourGift}</ErrorText>
+                        )}
+                      </View>
+                    </View>
+                    <InputStyleContent>
+                      <GiftMessageText>From</GiftMessageText>
+                      <InputStyle
+                        value={values.from}
+                        onChangeText={handleChange('from')}
+                        onBlur={handleBlur('from')}
+                        placeholder='David'
                         placeholderTextColor={COLORS.SecondaryTwo}
                       />
-                      {touched.yourGift && errors.yourGift && (
-                        <ErrorText>{errors.yourGift}</ErrorText>
-                      )}
-                    </View>
+                      {touched.from && errors.from && <ErrorText>{errors.from}</ErrorText>}
+                    </InputStyleContent>
                   </View>
-                  <InputStyleContent>
-                    <GiftMessageText>From</GiftMessageText>
-                    <InputStyle
-                      value={values.from}
-                      onChangeText={handleChange('from')}
-                      onBlur={handleBlur('from')}
-                      placeholder='David'
-                      placeholderTextColor={COLORS.SecondaryTwo}
-                    />
-                    {touched.from && errors.from && <ErrorText>{errors.from}</ErrorText>}
-                  </InputStyleContent>
-                </View>
-              </LinearGradient>
+                </LinearGradient>
 
-              <CustomButton
-                variant='primary'
-                text='Continue'
-                fontFamily='Arvo-Regular'
-                fontSize={16}
-                onPress={() => {
-                  handleSubmit(), navigation.navigate('Checkout')
-                }}
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  width: '100%',
-                  backgroundColor: '#FFF',
-                  padding: 16,
-                }}
-              />
-            </GiftMessageWrapper>
-          )}
-        </Formik>
-      </GiftContent>
+                <CustomButton
+                  variant='primary'
+                  text='Continue'
+                  fontFamily='Arvo-Regular'
+                  fontSize={16}
+                  onPress={() => {
+                    handleSubmit(), navigation.navigate('Checkout')
+                  }}
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    width: '100%',
+                    backgroundColor: '#FFF',
+                    padding: 16,
+                  }}
+                />
+              </GiftMessageWrapper>
+            )}
+          </Formik>
+        </GiftContent>
+      </TouchableWithoutFeedback>
     </Animated.View>
   )
 }

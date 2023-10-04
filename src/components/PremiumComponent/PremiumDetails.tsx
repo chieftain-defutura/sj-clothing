@@ -124,7 +124,7 @@ const PremiumDetails: React.FC<IPremiumDetails> = ({ navigation }) => {
                       </ProductName>
                     </View>
                   </View>
-                  <WatchVideoBorder>
+                  <WatchVideoBorder onPress={() => navigation.navigate('PlayVideo')}>
                     <PlayCircleIcon width={12} height={12} />
                     <WatchVideoText>Watch video</WatchVideoText>
                   </WatchVideoBorder>
