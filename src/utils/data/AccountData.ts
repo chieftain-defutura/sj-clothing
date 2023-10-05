@@ -6,7 +6,7 @@ import ShoppingBag from '../../assets/icons/AccountPageIcon/ShoppingBag'
 import UserIcon from '../../assets/icons/AccountPageIcon/UserIcon'
 import ChevronLeft from '../../assets/icons/ChevronLeft'
 import HomeLocation from '../../assets/icons/AccountPageIcon/HomeLocation'
-import CustomerCare from '../../assets/icons/AccountPageIcon/CustomerCare'
+// import CustomerCare from '../../assets/icons/AccountPageIcon/CustomerCare'
 import HelpQuestion from '../../assets/icons/AccountPageIcon/HelpQuestion'
 import Cart from '../../assets/icons/AccountPageIcon/CartIcon'
 
@@ -41,23 +41,17 @@ export const AccountData = [
     rightText: '2 items',
     navigation: 'MyOrders',
   },
-  // {
-  //   leftIcon: WishListIcon,
-  //   name: 'Wishlist',
-  //   rightText: '5 items',
-  //   navigation: 'MyPosts',
-  // },
   {
     leftIcon: HomeLocation,
     name: 'Addressbook',
     rightText: 'Home',
     navigation: 'AddressBook',
   },
-  {
-    leftIcon: CustomerCare,
-    name: 'Customer care',
-    navigation: 'MyPosts',
-  },
+  // {
+  //   leftIcon: CustomerCare,
+  //   name: 'Customer care',
+  //   navigation: 'Customer',
+  // },
   {
     leftIcon: HelpQuestion,
     name: 'Help & FAQ',

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { Pressable, ScrollView, View, StyleSheet, Dimensions } from 'react-native'
+import { Pressable, ScrollView, View, StyleSheet, Dimensions, Linking } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { auth } from '../../../../../firebase'
@@ -13,6 +13,7 @@ import Animated, { FadeInDown, FadeInUp, FadeOutDown, FadeOutUp } from 'react-na
 import CustomButton from '../../../../components/Button'
 import SubscriptionModal from '../../../../screens/Modals/Subscription'
 import EditIcon from '../../../../assets/icons/AccountPageIcon/EditIcon'
+import CustomerCare from '../../../../assets/icons/AccountPageIcon/CustomerCare'
 import { LinearGradient } from 'expo-linear-gradient'
 import NotUserIcon from '../../../../assets/icons/AccountPageIcon/NotUserIcon'
 
@@ -49,6 +50,11 @@ const Account: React.FC<IAccount> = ({ navigation }) => {
   const user = userStore((state) => state.user)
   const isFocused = useIsFocused()
   const { updateUser } = userStore()
+
+  const handleCustomerCarePress = () => {
+    const phoneNumber = '1234567890'
+    Linking.openURL(`tel:${phoneNumber}`)
+  }
 
   const openSubscriptionModal = () => {
     setSubscriptionModal(true)
@@ -151,6 +157,15 @@ const Account: React.FC<IAccount> = ({ navigation }) => {
                 </Pressable>
               )
             })}
+            <Pressable onPress={handleCustomerCarePress}>
+              <ProfileUserContent>
+                <FlexIcon>
+                  <CustomerCare width={20} height={20} />
+                  <UserText>Customer care</UserText>
+                </FlexIcon>
+              </ProfileUserContent>
+            </Pressable>
+
             <LogoutPressable onPress={handleLogout}>
               <ProfileUserContent>
                 <FlexIcon>

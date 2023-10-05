@@ -40,6 +40,8 @@ const Gender: React.FC<IGender> = ({ setToggle }) => {
         <CustomButton
           text='Next'
           variant='primary'
+          fontFamily='Arvo-Regular'
+          fontSize={16}
           style={{ paddingTop: 56 }}
           onPress={() => setToggle(true)}
         />
@@ -77,5 +79,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: 'center',
+    fontFamily: 'Arvo-Regular',
   },
 })

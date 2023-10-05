@@ -26,6 +26,7 @@ import EditProfile from './Account/EditProfile'
 import AboutUs from './Account/AboutUs'
 import Royalties from './Account/Royalties'
 import FAQ from './Account/FAQ'
+import Customer from './Account/CustomerCare'
 
 const Stack = createStackNavigator()
 
@@ -95,6 +96,11 @@ const StackNavigationRoutes: React.FC = () => {
         name='FAQ'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={FAQ}
+      />
+      <Stack.Screen
+        name='Customer'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={Customer}
       />
 
       <Stack.Screen

@@ -17,6 +17,8 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, setToggleAvatar }) => {
           <CustomButton
             text='Previous'
             variant='primary'
+            fontFamily='Arvo-Regular'
+            fontSize={16}
             style={{ paddingTop: 56, width: 180 }}
             onPress={() => setToggle(false)}
           />
@@ -24,6 +26,8 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, setToggleAvatar }) => {
             onPress={() => setToggleAvatar(true)}
             text='Done'
             variant='primary'
+            fontFamily='Arvo-Regular'
+            fontSize={16}
             style={{ paddingTop: 56, width: 180 }}
           />
         </View>

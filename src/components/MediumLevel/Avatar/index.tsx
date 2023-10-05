@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import React, { useState } from 'react'
 import Gender from './Gender'
 import Skintone from './Skintone'
-import { COLORS, gradientColors } from '../../../styles/theme'
+import { COLORS, gradientOpacityColors } from '../../../styles/theme'
 import Animated, { FadeInUp, FadeOut, FadeOutDown } from 'react-native-reanimated'
 
 interface IAvatart {
@@ -14,7 +14,7 @@ const Avatar: React.FC<IAvatart> = ({ setToggleAvatar }) => {
 
   return (
     <ScrollView style={styles.avatarContainer}>
-      <LinearGradient colors={gradientColors} style={styles.genderWrapper}>
+      <LinearGradient colors={gradientOpacityColors} style={styles.genderWrapper}>
         <Animated.View
           entering={FadeInUp.duration(800)}
           exiting={FadeOut}

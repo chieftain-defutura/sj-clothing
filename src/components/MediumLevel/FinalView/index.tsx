@@ -201,6 +201,8 @@ const FinalView: React.FC<IFinalView> = ({
       <CustomButton
         variant='primary'
         text='Buy now'
+        fontFamily='Arvo-Regular'
+        fontSize={16}
         onPress={() => navigation.navigate('Checkout')}
         buttonStyle={[styles.submitBtn]}
       />
