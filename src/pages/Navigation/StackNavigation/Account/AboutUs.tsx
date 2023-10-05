@@ -10,7 +10,7 @@ interface IAboutUs {
   navigation: any
 }
 
-const { width, height } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 const AboutUs: React.FC<IAboutUs> = ({ navigation }) => {
   return (
@@ -33,7 +33,7 @@ const AboutUs: React.FC<IAboutUs> = ({ navigation }) => {
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
               <Image
                 source={require('../../../../assets/images/AccountImage/aboutusImg.png')}
-                style={{ width: 328, height: 218, resizeMode: 'cover' }}
+                style={{ width: width - 32, height: 218, resizeMode: 'cover' }}
               />
             </View>
             <View style={{ padding: 16 }}>
@@ -88,6 +88,7 @@ const Paragraph = styled.Text`
   color: ${COLORS.SecondaryTwo};
   font-size: 12px;
   line-height: 18px;
+  text-align: justify;
 `
 
 export default AboutUs

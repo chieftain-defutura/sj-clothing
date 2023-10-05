@@ -25,6 +25,7 @@ import PlayVideo from '../../../components/PremiumComponent/PlayVideo'
 import EditProfile from './Account/EditProfile'
 import AboutUs from './Account/AboutUs'
 import Royalties from './Account/Royalties'
+import FAQ from './Account/FAQ'
 
 const Stack = createStackNavigator()
 
@@ -89,6 +90,11 @@ const StackNavigationRoutes: React.FC = () => {
         name='Aboutus'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={AboutUs}
+      />
+      <Stack.Screen
+        name='FAQ'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={FAQ}
       />
 
       <Stack.Screen

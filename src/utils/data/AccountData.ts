@@ -61,7 +61,7 @@ export const AccountData = [
   {
     leftIcon: HelpQuestion,
     name: 'Help & FAQ',
-    navigation: 'MyPosts',
+    navigation: 'FAQ',
   },
   {
     leftIcon: UsersMore,
