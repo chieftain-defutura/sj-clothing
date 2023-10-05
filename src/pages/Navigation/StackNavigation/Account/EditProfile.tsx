@@ -8,8 +8,11 @@ import { COLORS, FONT_FAMILY } from '../../../../styles/theme'
 import NotUserIcon from '../../../../assets/icons/AccountPageIcon/NotUserIcon'
 import LeftArrow from '../../../../assets/icons/LeftArrow'
 import Input from '../../../../components/Input'
-import { auth, db, storage } from '../../../../../firebase'
-import { ref, getDownloadURL, uploadString } from 'firebase/storage'
+// import { auth, db, storage } from '../../../../../firebase'
+// import { ref, getDownloadURL, uploadString } from 'firebase/storage'
+import storage from '@react-native-firebase/storage'
+import { updateProfile } from 'firebase/auth'
+import { userStore } from '../../../../store/userStore'
 
 const { width, height } = Dimensions.get('window')
 
@@ -23,8 +26,13 @@ const validationSchema = yup.object({
 
 const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   const [image, setImage] = React.useState<string | null>(null)
+  const user = userStore((state) => state.user)
 
-  const onSubmit = async () => {}
+  const onSubmit = async (values: { fullName: string }) => {
+    if (user) updateProfile(user, { displayName: values.fullName })
+    else console.log('error')
+    navigation.navigate('Account')
+  }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -43,18 +51,26 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   }
 
   const uploadImage = async (uri: string) => {
-    const storageRef = ref(storage, 'images/' + 'profileImage.jpg')
     try {
-      const response = await uploadString(storageRef, uri, 'data_url')
-      console.log('Image uploaded successfully', response)
-      const downloadUrl = await getDownloadURL(storageRef)
-      console.log('Download URL:', downloadUrl)
+      const reference = storage().ref('black-t-shirt-sm.png')
+      const task = reference.putFile(uri)
+
+      task.on('state_changed', (taskSnapshot) => {
+        console.log(
+          `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+        )
+      })
+
+      await task // Wait for the upload to complete
+
+      console.log('Image uploaded to the bucket!')
     } catch (error) {
       console.error('Error uploading image:', error)
       Alert.alert('Error', 'Failed to upload image')
+      // You can also throw the error to handle it elsewhere if needed
+      throw error
     }
   }
-
   const formik = useFormik({
     initialValues: {
       fullName: '',
@@ -74,7 +90,11 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
           >
             <LeftArrow width={24} height={24} />
           </Pressable>
-          <Pressable onPress={() => navigation.navigate('Account')}>
+          <Pressable
+            onPress={() => {
+              formik.handleSubmit()
+            }}
+          >
             <LocationText>Done</LocationText>
           </Pressable>
         </FlexContent>

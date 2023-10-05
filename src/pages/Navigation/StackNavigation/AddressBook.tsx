@@ -11,6 +11,7 @@ import LeftArrow from '../../../assets/icons/LeftArrow'
 import CloseIcon from '../../../assets/icons/Close'
 import AddAddress from '../../../components/AddressBook/AddAddress'
 import ChooseLocation from '../../../components/AddressBook/ChooseLocation'
+import EditAddress from '../../../components/AddressBook/EditAddress'
 
 interface IAddressBook {
   navigation: any
@@ -92,7 +93,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
           </Pressable>
         </View>
         {showDisplay == 1 && (
-          <AddAddress
+          <ChooseLocation
             onAddPress={() => {
               setDisplay(2)
               changeHeight('80%')
@@ -100,9 +101,17 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
           />
         )}
         {showDisplay == 2 && (
-          <ChooseLocation
+          <AddAddress
             onSavePress={() => {
               setDisplay(1)
+              changeHeight('52%')
+            }}
+          />
+        )}
+        {showDisplay == 3 && (
+          <EditAddress
+            onEditPress={() => {
+              setDisplay(3)
               changeHeight('52%')
             }}
           />
