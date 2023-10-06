@@ -27,11 +27,14 @@ const validationSchema = yup.object({
 const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   const [image, setImage] = React.useState<string | null>(null)
   const user = userStore((state) => state.user)
+  const updateName = userStore((name) => name.updateName)
 
   const onSubmit = async (values: { fullName: string }) => {
-    if (user) updateProfile(user, { displayName: values.fullName })
-    else console.log('error')
-    navigation.navigate('Account')
+    if (user) {
+      updateName(user?.displayName)
+      updateProfile(user, { displayName: values.fullName })
+    } else console.log('error')
+    navigation.navigate('Account', { dName: values.fullName })
   }
 
   const pickImage = async () => {

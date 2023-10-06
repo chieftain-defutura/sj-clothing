@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import { Pressable, ScrollView, View, StyleSheet, Dimensions, Linking } from 'react-native'
-import { useIsFocused } from '@react-navigation/native'
+import { useFocusEffect, useIsFocused } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { auth } from '../../../../../firebase'
 import { COLORS } from '../../../../styles/theme'
@@ -16,9 +16,12 @@ import EditIcon from '../../../../assets/icons/AccountPageIcon/EditIcon'
 import CustomerCare from '../../../../assets/icons/AccountPageIcon/CustomerCare'
 import { LinearGradient } from 'expo-linear-gradient'
 import NotUserIcon from '../../../../assets/icons/AccountPageIcon/NotUserIcon'
+import { RouteProp } from '@react-navigation/native'
+import { RootStackParamList } from '../../../ScreenTypes'
 
 interface IAccount {
   navigation: any
+  route: RouteProp<RootStackParamList, 'Account'>
 }
 
 const { width, height } = Dimensions.get('window')
@@ -44,12 +47,14 @@ const Data = [
   },
 ]
 
-const Account: React.FC<IAccount> = ({ navigation }) => {
+const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [image, setImage] = React.useState<string | null>(null)
   const user = userStore((state) => state.user)
   const isFocused = useIsFocused()
   const { updateUser } = userStore()
+  const { displayName } = userStore()
+  const [name, setName] = useState<string | null>('')
 
   const handleCustomerCarePress = () => {
     const phoneNumber = '1234567890'
@@ -62,6 +67,16 @@ const Account: React.FC<IAccount> = ({ navigation }) => {
   const closeSubscriptionModal = () => {
     setSubscriptionModal(false)
   }
+
+  useEffect(() => {
+    console.log(route.params)
+    if (user) setName(user.displayName)
+  }, [displayName])
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     if (user) setName(user.displayName)
+  //   }, []),
+  // )
 
   const handleLogout = async () => {
     try {
@@ -112,7 +127,11 @@ const Account: React.FC<IAccount> = ({ navigation }) => {
                 </LinearGradient>
               </EditContent>
             </UserWrapper>
-            <ProfileName>{user?.displayName}</ProfileName>
+            {route.params?.dName ? (
+              <ProfileName>{route.params.dName}</ProfileName>
+            ) : (
+              <ProfileName>{displayName}</ProfileName>
+            )}
             <View style={{ padding: 16 }}>
               <CustomButton
                 text='Subscribe now'
