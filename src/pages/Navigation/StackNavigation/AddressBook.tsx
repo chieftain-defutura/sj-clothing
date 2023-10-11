@@ -96,7 +96,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
           <ChooseLocation
             onAddPress={() => {
               setDisplay(2)
-              changeHeight('80%')
+              changeHeight('77%')
             }}
           />
         )}
