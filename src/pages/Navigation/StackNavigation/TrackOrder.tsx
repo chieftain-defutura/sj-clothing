@@ -1,23 +1,32 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { View, StyleSheet, Dimensions } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS, gradientOpacityColors } from '../../../styles/theme'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { RadioButton } from 'react-native-paper'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import { LinearGradient } from 'expo-linear-gradient'
-import RadioButtonGroup from 'react-native-paper/lib/typescript/components/RadioButton/RadioButtonGroup'
-//radio button
+
 interface ITrackOrder {
   navigation: any
 }
 
-const { width, height } = Dimensions.get('window')
-
 const data = [
   {
     orderName: 'Order placed',
+    orderDate: '23 Jul, 2023',
+    orderDescription:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut laboredolore aliqua.',
+  },
+  {
+    orderName: 'Manufacturing',
+    orderDate: '23 Jul, 2023',
+    orderDescription:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut laboredolore aliqua.',
+  },
+  {
+    orderName: 'Ready to ship',
     orderDate: '23 Jul, 2023',
     orderDescription:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut laboredolore aliqua.',

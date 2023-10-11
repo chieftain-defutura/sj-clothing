@@ -28,6 +28,7 @@ import Royalties from './Account/Royalties'
 import FAQ from './Account/FAQ'
 import Customer from './Account/CustomerCare'
 import Accessories from './Accessories'
+import AccessoriesDetails from './Accessories/AccessoriesDetails.tsx'
 
 const Stack = createStackNavigator()
 
@@ -81,13 +82,11 @@ const StackNavigationRoutes: React.FC = () => {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={PlayVideo}
       />
-
       <Stack.Screen
         name='EditProfile'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={EditProfile}
       />
-
       <Stack.Screen
         name='Aboutus'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
@@ -103,17 +102,20 @@ const StackNavigationRoutes: React.FC = () => {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={Customer}
       />
-
       <Stack.Screen
         name='Royalties'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={Royalties}
       />
-
       <Stack.Screen
         name='Accessories'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={Accessories}
+      />
+      <Stack.Screen
+        name='AccessoriesDetails'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={AccessoriesDetails}
       />
 
       <Stack.Screen name='MyOrders' component={MyOrders} />
