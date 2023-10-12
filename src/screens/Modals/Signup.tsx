@@ -11,7 +11,7 @@ import {
   updateProfile,
   onAuthStateChanged,
 } from 'firebase/auth'
-import { auth } from '../../../firebase'
+import { auth, db } from '../../../firebase'
 import { COLORS } from '../../styles/theme'
 import { FirebaseError } from 'firebase/app'
 import CloseIcon from '../../assets/icons/Close'
@@ -19,6 +19,7 @@ import EyeIcon from '../../assets/icons/EyeIcon'
 import { userStore } from '../../store/userStore'
 import CustomButton from '../../components/Button'
 import EyeHideIcon from '../../assets/icons/EyeIconHide'
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore/lite'
 
 interface SignupModalProps {
   isVisible?: boolean
@@ -106,6 +107,27 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
         await updateProfile(user, { displayName: values.name })
         await AsyncStorage.setItem('mail', values.email)
         await AsyncStorage.setItem('name', values.name)
+        const userDocRef = doc(db, 'users', user.uid)
+
+        await setDoc(userDocRef, {
+          name: values.name,
+          mail: values.email,
+          address: null,
+          profile: null,
+          phoneNo: null,
+          avatar: null,
+        })
+
+        // const nameStore = await addDoc(collection(db, 'user'), {
+        //   name: values.name,
+        //   mail: values.email,
+        //   address: null,
+        //   profile: null,
+        //   phoneNo: null,
+        //   avatar: null,
+        // })
+        // console.log('nameStore', nameStore)
+
         onClose?.()
       } catch (error) {
         if (error instanceof FirebaseError) {
@@ -123,16 +145,6 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       // You can handle this case as needed
     }
   }
-
-  // const getData = useCallback(async () => {
-  //   await AsyncStorage.getItem('mail')
-  //   const data = await AsyncStorage.getItem('mail')
-  //   console.log('data', data)
-  // }, [])
-
-  // useEffect(() => {
-  //   getData()
-  // }, [getData])
 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
