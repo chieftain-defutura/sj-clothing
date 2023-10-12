@@ -1,27 +1,22 @@
-import React from 'react'
-import { View, Image, Dimensions, StyleSheet, Pressable } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, Image, Dimensions, StyleSheet, Pressable } from 'react-native'
 import { PremiumCardProps } from '../../constant/types'
 import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import { SharedElement } from 'react-navigation-shared-element'
 import Animated, { FadeInLeft, FadeOutLeft } from 'react-native-reanimated'
-
-interface IPremiumCard {
-  navigation: any
-}
+import PremiumDetailsCard from '../../pages/Navigation/StackNavigation/Premium/PremiumDetailsCard'
 
 const { width, height } = Dimensions.get('window')
 
-const cardWidth = width / 2
-const cardHeight = (height - 180) / 2
+interface IPremiumCard {
+  data: any
+}
 
-const PremiumCard: React.FC<PremiumCardProps & IPremiumCard> = ({
-  image,
-  productName,
-  price,
-  inr,
-  navigation,
-}) => {
+const PremiumCard: React.FC<IPremiumCard> = ({ data }) => {
+  const [openCard, setOpenCard] = useState(false)
+
+  console.log('dattaas', data)
   return (
     // <LinearGradient
     //   // start={{ x: 0, y: 0 }}
@@ -30,30 +25,31 @@ const PremiumCard: React.FC<PremiumCardProps & IPremiumCard> = ({
     //   colors={gradientOpacityColors}
     //   style={styles.linearGradient}
     // >
-    <View style={{ marginTop: 30 }}>
-      <View style={{ width: cardWidth, height: cardHeight }}>
-        <Pressable onPress={() => navigation.navigate('PremiumDetailsCard', { image })}>
-          <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>
-            <SharedElement id={`test${image}`}>
-              <ImageContainer>
-                <Image
-                  source={image}
-                  style={{
-                    resizeMode: 'cover',
-                    flex: 1,
-                    alignSelf: 'center',
-                  }}
-                />
-              </ImageContainer>
-            </SharedElement>
-          </Animated.View>
-        </Pressable>
-        <View style={{ alignItems: 'center', marginTop: 14 }}>
-          <ProductText>{productName}</ProductText>
-          <FlexContent>
-            <PriceText>{price}</PriceText>
-            <PriceText>{inr}</PriceText>
-          </FlexContent>
+    <View>
+      {openCard && <PremiumDetailsCard data={data} />}
+      <View style={{ marginTop: 30 }}>
+        <View>
+          <Pressable onPress={() => setOpenCard(true)}>
+            <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>
+              <SharedElement id={`test${data.productImage}`}>
+                <ImageContainer>
+                  <Image
+                    source={{
+                      uri: data.productImage,
+                    }}
+                    style={{ width: width / 2, height: height - 640, resizeMode: 'contain' }}
+                  />
+                </ImageContainer>
+              </SharedElement>
+            </Animated.View>
+          </Pressable>
+          <View style={{ alignItems: 'center', marginTop: 14 }}>
+            <ProductText>{data.productName}</ProductText>
+            <FlexContent>
+              <PriceText>{data.normalPrice}</PriceText>
+              <PriceText>INR</PriceText>
+            </FlexContent>
+          </View>
         </View>
       </View>
     </View>

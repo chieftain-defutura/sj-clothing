@@ -147,7 +147,6 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
 
   const FilteredData = data?.filter((f: any) => f.styles === isSelectedStyle) as any
   const Designs = designs?.filter((f: ImageorTextProps) => f.type === isImageOrText.title)
-  console.log(FilteredData)
 
   return (
     <View style={styles.midiumlevelContainer}>

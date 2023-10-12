@@ -48,16 +48,6 @@ const PostCard: React.FC<PostCardProps> = ({ props: componentNameProps, onPress 
   const tabHeight = 110
   const reelsHeight = height - tabHeight
 
-  // const getMail = React.useCallback(async () => {
-  //   const data = await AsyncStorage.getItem('mail')
-  //   console.log('current mail:', data)
-  //   setUserMail(data)
-  // }, [])
-
-  // useEffect(() => {
-  //   getMail()
-  // }, [getMail])
-
   const handleClick = () => {
     if (!userMail) {
       setLoginModalVisible(true)

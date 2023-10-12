@@ -102,8 +102,6 @@ const SelectSize: React.FC<ISelectSize> = ({
   setSize,
   handleIncreaseSteps,
 }) => {
-  console.log(data[0].sizes)
-  console.log(isGender)
   const filteredData = data[0].sizes
     .filter((f: { gender: string }) => f.gender.toLowerCase() === isGender.toLowerCase())
     .map((f: any) => f)
@@ -125,7 +123,6 @@ const SelectSize: React.FC<ISelectSize> = ({
     }))
     handleIncreaseSteps()
   }
-  console.log(isSize)
 
   return (
     <View style={styles.selectSizeContainer}>

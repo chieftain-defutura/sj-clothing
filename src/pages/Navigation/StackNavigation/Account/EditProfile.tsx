@@ -45,8 +45,6 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
       quality: 1,
     })
 
-    console.log(result)
-
     if (!result.canceled) {
       setImage(result.assets[0].uri)
       await uploadImage(result.assets[0].uri)
