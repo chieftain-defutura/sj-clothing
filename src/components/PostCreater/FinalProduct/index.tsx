@@ -4,48 +4,36 @@ import { COLORS } from '../../../styles/theme'
 import CustomButton from '../../Button'
 import Carousle from './Carousle'
 import { PostCreationStore } from '../../../store/postCreationStore'
-const Data = [
-  {
-    title: 'Product',
-    content: 'Black blazer',
-  },
-  {
-    title: 'Style',
-    content: 'Round neck',
-  },
-  {
-    title: 'Quantity',
-    content: 'x1',
-  },
-  {
-    title: 'Material',
-    content: '70% Wool, 30% Mohair',
-  },
-  {
-    title: 'Lining',
-    content: '100% Silk',
-  },
-  {
-    title: 'Price',
-    content: '450 INR',
-  },
-]
 
 interface IFinalProduct {
-  navigation: any
   isGiftVideo: any
   handleSubmit: () => Promise<void>
   setGiftVideo: React.Dispatch<any>
+  price: string
+  offerPrice: string
+  size: string
+  style: string
+  caption: string
+  color: string
+  product: string
+  Data: {
+    cloth: string
+    materials: string
+  }[]
 }
 const FinalProduct: React.FC<IFinalProduct> = ({
-  navigation,
   handleSubmit,
   setGiftVideo,
   isGiftVideo,
+  size,
+  style,
+  price,
+  offerPrice,
+  caption,
+  product,
+  Data,
+  color,
 }) => {
-  const { color, image, text, style, productandcaption } = PostCreationStore()
-
-  console.log(style, text, color, image, productandcaption)
   return (
     <ScrollView style={styles.selectContainer}>
       <View style={styles.selectColorTShirt}>
@@ -53,12 +41,161 @@ const FinalProduct: React.FC<IFinalProduct> = ({
       </View>
 
       <View style={{ paddingVertical: 8, display: 'flex', gap: 4 }}>
-        <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>#{style?.title}</Text>
+        <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>#{product}</Text>
         <Text style={{ color: COLORS.textTertiaryClr, fontFamily: 'Gilroy-Regular' }}>
-          {productandcaption?.caption === ''
+          {caption === ''
             ? 'Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus , eleifend tellus augue lec.'
-            : productandcaption?.caption}
+            : caption}
         </Text>
+      </View>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          gap: 37,
+        }}
+      >
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: 95,
+            paddingTop: 16,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.textClr,
+              fontFamily: 'Montserrat-Regular',
+              fontSize: 10,
+            }}
+          >
+            Style
+          </Text>
+          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+            {style}
+          </Text>
+        </View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: 95,
+            paddingTop: 16,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.textClr,
+              fontFamily: 'Montserrat-Regular',
+              fontSize: 10,
+            }}
+          >
+            Size
+          </Text>
+          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+            {size}
+          </Text>
+        </View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: 95,
+            paddingTop: 16,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.textClr,
+              fontFamily: 'Montserrat-Regular',
+              fontSize: 10,
+            }}
+          >
+            Quantity
+          </Text>
+          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+            x1
+          </Text>
+        </View>
+      </View>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          gap: 37,
+        }}
+      >
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: 95,
+            paddingTop: 16,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.textClr,
+              fontFamily: 'Montserrat-Regular',
+              fontSize: 10,
+            }}
+          >
+            Price
+          </Text>
+          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+            {price ? price : 0}
+          </Text>
+        </View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: 95,
+            paddingTop: 16,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.textClr,
+              fontFamily: 'Montserrat-Regular',
+              fontSize: 10,
+            }}
+          >
+            Offer Price
+          </Text>
+          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+            {offerPrice ? offerPrice : '-'}
+          </Text>
+        </View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: 95,
+            paddingTop: 16,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.textClr,
+              fontFamily: 'Montserrat-Regular',
+              fontSize: 10,
+            }}
+          >
+            Color
+          </Text>
+          <Text
+            style={{
+              color: COLORS.textClr,
+              fontFamily: 'Arvo-Regular',
+              fontSize: 14,
+              backgroundColor: color,
+            }}
+          ></Text>
+        </View>
       </View>
       <View
         style={{
@@ -67,6 +204,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           justifyContent: 'space-between',
           flexWrap: 'wrap',
           paddingBottom: 8,
+          columnGap: 37,
         }}
       >
         {Data.map((item, index) => (
@@ -75,17 +213,21 @@ const FinalProduct: React.FC<IFinalProduct> = ({
             style={{
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'flex-start',
-              columnGap: 30,
-              width: 100,
+              width: 95,
               paddingTop: 16,
             }}
           >
-            <Text style={{ color: COLORS.textClr, fontFamily: 'Montserrat-Regular', fontSize: 10 }}>
-              {item.title}
+            <Text
+              style={{
+                color: COLORS.textClr,
+                fontFamily: 'Montserrat-Regular',
+                fontSize: 10,
+              }}
+            >
+              {item.cloth}
             </Text>
             <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-              {item.content}
+              {item.materials}
             </Text>
           </View>
         ))}

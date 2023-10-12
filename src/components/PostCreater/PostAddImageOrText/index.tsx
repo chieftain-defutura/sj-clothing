@@ -13,37 +13,30 @@ import { COLORS } from '../../../styles/theme'
 const Images = [
   {
     title: 'Front',
-    boolean: true,
     image: require('../../../assets/images/front-design.png'),
   },
   {
     title: 'Back',
-    boolean: true,
     image: require('../../../assets/images/front-design.png'),
   },
   {
     title: 'Right arm',
-    boolean: true,
     image: require('../../../assets/images/left-arm-design.png'),
   },
   {
     title: 'Left arm',
-    boolean: true,
     image: require('../../../assets/images/left-arm-design.png'),
   },
 ]
 
 const { width } = Dimensions.get('window')
 
-interface IAddImageOrText {
+interface IPostAddImageOrText {
   isDropDown: boolean
   isImageOrText: {
     title: string
+    image: string
     position: string
-    designs: {
-      hashtag: string
-      image: string
-    }
   }
   data: any
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
@@ -51,15 +44,12 @@ interface IAddImageOrText {
   setImageOrText: React.Dispatch<
     React.SetStateAction<{
       title: string
+      image: string
       position: string
-      designs: {
-        hashtag: string
-        image: string
-      }
     }>
   >
 }
-const AddImageOrText: React.FC<IAddImageOrText> = ({
+const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
   isDropDown,
   isImageOrText,
   data,
@@ -68,7 +58,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
   setImageOrText,
 }) => {
   return (
-    <View style={styles.AddImageOrTextContainer}>
+    <View style={styles.PostAddImageOrTextContainer}>
       {isDropDown && (
         <Animated.View
           style={[
@@ -109,7 +99,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                 flexDirection: 'row',
                 justifyContent: 'center',
                 paddingVertical: 20,
-                paddingHorizontal: 24,
+                paddingHorizontal: 1,
                 gap: 10,
               }}
             >
@@ -292,10 +282,10 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
   )
 }
 
-export default AddImageOrText
+export default PostAddImageOrText
 
 const styles = StyleSheet.create({
-  AddImageOrTextContainer: {
+  PostAddImageOrTextContainer: {
     flex: 1,
     position: 'absolute',
     top: 0,

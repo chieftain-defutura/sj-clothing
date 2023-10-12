@@ -1,18 +1,26 @@
-import React, { useCallback, useEffect } from 'react'
-import { Pressable, StyleSheet, Text, View, Share } from 'react-native'
-
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Pressable, Animated as ReactAnimated, StyleSheet, Text, View, Share } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
 import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 import ShareArrow from '../../../assets/icons/ShareArrow'
-import Animated, { BounceIn, BounceOut } from 'react-native-reanimated'
+import Animated, {
+  BounceIn,
+  BounceOut,
+  SharedValue,
+  useAnimatedStyle,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated'
 
 interface INavigator {
   steps: number
   isOpenDesign: boolean
   isDone: boolean
+  data: any
+  slideValue: SharedValue<number>
   handleIncreaseSteps: () => void
   handleDecreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
@@ -32,6 +40,7 @@ interface INavigator {
 
 const Navigator: React.FC<INavigator> = ({
   steps,
+  data,
   handleDecreaseSteps,
   handleIncreaseSteps,
   setDropDown,
@@ -39,9 +48,17 @@ const Navigator: React.FC<INavigator> = ({
   setOpenDesign,
   isOpenDesign,
   isDone,
+  slideValue,
   setDone,
 }) => {
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
+
+  const slideX = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: slideValue.value * 400 }], // Slide 400 units (assuming a screen width of 400)
+    }
+  })
+
   const share = async () => {
     try {
       const result = await Share.share({ message: 'Bug:' + `\n` + url })
@@ -60,7 +77,7 @@ const Navigator: React.FC<INavigator> = ({
   }
 
   return (
-    <Animated.View style={[styles.Navigator]}>
+    <Animated.View style={[styles.Navigator, slideX]}>
       {isOpenDesign && (
         <Pressable onPress={() => (isDone ? setDone(false) : setOpenDesign(false))}>
           <Animated.View entering={BounceIn.duration(800)} exiting={BounceOut}>
@@ -71,7 +88,7 @@ const Navigator: React.FC<INavigator> = ({
 
       {!isOpenDesign && (
         <Pressable onPress={handleDecreaseSteps}>
-          <Animated.View entering={BounceIn.duration(800)} exiting={BounceOut}>
+          <Animated.View>
             <ArrowCircleLeft width={24} height={24} />
           </Animated.View>
         </Pressable>
@@ -80,50 +97,66 @@ const Navigator: React.FC<INavigator> = ({
       {steps !== 5 && (
         <>
           {!isOpenDesign && (
-            <>
-              <View>
-                <Pressable
-                  onPress={() => {
-                    setDropDown(true),
-                      setImageOrText((prevState) => ({
-                        ...prevState,
-                        title: 'image',
-                      }))
-                  }}
-                  style={styles.Dropdown}
-                >
-                  {steps === 1 && (
-                    <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                      Select Style
-                    </Text>
-                  )}
-                  {steps === 2 && (
-                    <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                      Select Size
-                    </Text>
-                  )}
-                  {steps === 3 && (
-                    <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                      Select Color
-                    </Text>
-                  )}
-                  {steps === 4 && (
-                    <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                      Add Image
-                    </Text>
-                  )}
-
-                  <DropDownArrowIcon />
-                </Pressable>
-              </View>
-              {steps === 4 && (
+            <> 
+              {steps !== 4 && (
                 <View>
                   <Pressable
                     onPress={() => {
                       setDropDown(true),
                         setImageOrText((prevState) => ({
                           ...prevState,
-                          title: 'text image',
+                          title: 'design-images',
+                        }))
+                    }}
+                    style={styles.Dropdown}
+                  >
+                    {steps === 1 && (
+                      <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                        Select Style
+                      </Text>
+                    )}
+                    {steps === 2 && (
+                      <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                        Select Size
+                      </Text>
+                    )}
+                    {steps === 3 && (
+                      <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                        Select Color
+                      </Text>
+                    )}
+
+                    <DropDownArrowIcon />
+                  </Pressable>
+                </View>
+              )}
+              {steps === 4 && data[0].showDesign && (
+                <View>
+                  <Pressable
+                    onPress={() => {
+                      setDropDown(true),
+                        setImageOrText((prevState) => ({
+                          ...prevState,
+                          title: 'text-images',
+                        }))
+                    }}
+                    style={styles.Dropdown}
+                  >
+                    <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                      Add Image
+                    </Text>
+                    <DropDownArrowIcon />
+                  </Pressable>
+                </View>
+              )}
+              {steps === 4 && data[0].showTextDesign && (
+                <View>
+                  <Pressable
+                    onPress={() => {
+                      setDropDown(true),
+                        setImageOrText((prevState) => ({
+                          ...prevState,
+                          title: 'text-images',
                         }))
                     }}
                     style={styles.Dropdown}

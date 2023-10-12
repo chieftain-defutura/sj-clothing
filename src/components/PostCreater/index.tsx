@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import Animated from 'react-native-reanimated'
-import { addDoc, collection } from 'firebase/firestore/lite'
+import Animated, { useSharedValue, withSequence, withTiming } from 'react-native-reanimated'
+import { addDoc, collection, getDocs } from 'firebase/firestore/lite'
 import { useNavigation } from '@react-navigation/native'
 import { gradientOpacityColors } from '../../styles/theme'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -15,38 +15,39 @@ import FinalProduct from './FinalProduct'
 import PostNavigator from './PostNavigator'
 import { ScrollView, View } from 'react-native'
 import TShirt from '../MediumLevel/T-Shirt'
-import SelectDesign from '../MediumLevel/SelectDesign'
-import { Designs, TextDesigns } from '../../utils/PostCreationData'
+import UploadDesign from './UploadDesign'
+import PostAddImageOrText from './PostAddImageOrText'
+import { userStore } from '../../store/userStore'
 
 interface IPostCreation {}
 const PostCreation: React.FC<IPostCreation> = () => {
+  const user = userStore((state) => state.user)
   const navigation = useNavigation()
+  const slideValue = useSharedValue(0)
   const [isPostCreationSteps, setPostCreationSteps] = useState(1)
   const [isDropDown, setDropDown] = useState(false)
 
+  const [isGender, setGender] = useState('Male')
+  //data
+  const [data, setData] = useState<any[]>()
+
   //style
-  const [isSelectedStyle, setSelectedStyle] = useState('Half sleeve')
+  const [isSelectedStyle, setSelectedStyle] = useState('Round Neck')
   //size
   const [isSize, setSize] = useState({
     country: 'India',
-    sizeVarient: { size: '', measurement: '', unit: '' },
+    sizeVarient: { size: '', measurement: '' },
   })
   //color
-  const [isColor, setColor] = useState({
-    colorName: '',
-    hexCode: '',
-  })
+  const [isColor, setColor] = useState('')
 
   //image&text
   const [isOpenDesign, setOpenDesign] = useState(false)
   const [isDone, setDone] = useState(false)
   const [isImageOrText, setImageOrText] = useState({
     title: '',
-    position: 'front',
-    designs: {
-      hashtag: 'friends',
-      image: '',
-    },
+    image: '',
+    position: 'Front',
   })
 
   //product and caption
@@ -60,6 +61,10 @@ const PostCreation: React.FC<IPostCreation> = () => {
     setDropDown(false)
     setOpenDesign(false)
     setDone(false)
+    slideValue.value = withSequence(
+      withTiming(1, { duration: 400 }), // Slide out
+      withTiming(0, { duration: 400 }), // Slide back to original state
+    )
   }
   const handleDecreaseSteps = () => {
     if (isPostCreationSteps !== 1) {
@@ -70,35 +75,47 @@ const PostCreation: React.FC<IPostCreation> = () => {
     if (isPostCreationSteps === 1) {
       navigation.navigate('Post')
     }
+    slideValue.value = withSequence(
+      withTiming(-1, { duration: 400 }), // Slide out
+      withTiming(0, { duration: 400 }),
+    )
   }
 
+  const getData = useCallback(async () => {
+    const ProductRef = await getDocs(collection(db, 'Products'))
+    const fetchProduct = ProductRef.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as any),
+    }))
+    const data = fetchProduct.filter((f) => f.type === 'MIDLEVEL-PRODUCTS')
+    setData(data)
+  }, [db])
+  useEffect(() => {
+    getData()
+  }, [getData])
+
   const handleSubmit = async () => {
-    const docRef = await addDoc(collection(db, 'PostCreation'), {
+    const docRef = await addDoc(collection(db, 'Posts'), {
       style: isSelectedStyle,
-      sizes: {
-        country: 'India',
-        sizeVarient: { size: 'S', measurement: '38', unit: 'cm' },
-      },
-      color: {
-        colorName: '',
-        hexCode: '',
-      },
+      sizes: isSize,
+      color: isColor,
       textAndImage: isImageOrText,
-      detailedFeatures: [
-        {
-          title: 'Material',
-          detail: '70% cotton',
-        },
-      ],
-      price: '400',
-      offerPrice: '20',
-      giftVideo: '',
+      detailedFeatures: [...FilteredData[0].detailedFutures],
+      price: FilteredData[0].normalPrice,
+      offerPrice: FilteredData[0].offerPrice,
+      giftVideo: isGiftVideo,
       productName: isProduct,
       productCaption: isCaption,
+      quantity: '1',
+      status: 'pending',
+      userId: user?.uid,
+      gender: isGender,
     })
     navigation.navigate('Stack')
   }
 
+  const FilteredData = data?.filter((f: any) => f.styles === isSelectedStyle) as any
+  console.log('uerid:', user?.uid)
   return (
     <Animated.View style={{ flex: 1 }}>
       <LinearGradient
@@ -111,6 +128,8 @@ const PostCreation: React.FC<IPostCreation> = () => {
         }}
       >
         <PostNavigator
+          data={FilteredData}
+          slideValue={slideValue}
           steps={isPostCreationSteps}
           isOpenDesign={isOpenDesign}
           isDone={isDone}
@@ -123,6 +142,7 @@ const PostCreation: React.FC<IPostCreation> = () => {
         />
         {isPostCreationSteps === 1 && (
           <SelectStyle
+            data={data}
             isDropDown={isDropDown}
             isSelectedStyle={isSelectedStyle}
             setDropDown={setDropDown}
@@ -137,11 +157,14 @@ const PostCreation: React.FC<IPostCreation> = () => {
             setSize={setSize}
             setDropDown={setDropDown}
             handleIncreaseSteps={handleIncreaseSteps}
+            data={FilteredData}
+            isGender={isGender}
           />
         )}
 
         {isPostCreationSteps === 3 && (
           <SelectColor
+            data={FilteredData}
             isDropDown={isDropDown}
             isColor={isColor}
             setDropDown={setDropDown}
@@ -150,10 +173,13 @@ const PostCreation: React.FC<IPostCreation> = () => {
           />
         )}
         {isPostCreationSteps === 4 && (
-          <AddImageOrText
+          <PostAddImageOrText
+            data={FilteredData}
+            isImageOrText={isImageOrText}
             isDropDown={isDropDown}
             setDropDown={setDropDown}
             setOpenDesign={setOpenDesign}
+            setImageOrText={setImageOrText}
           />
         )}
         <View>
@@ -162,25 +188,30 @@ const PostCreation: React.FC<IPostCreation> = () => {
 
             {isPostCreationSteps === 6 && (
               <FinalProduct
-                navigation={navigation}
                 handleSubmit={handleSubmit}
                 isGiftVideo={isGiftVideo}
                 setGiftVideo={setGiftVideo}
+                Data={FilteredData[0].detailedFutures}
+                size={isSize.sizeVarient.size}
+                style={isSelectedStyle}
+                price={FilteredData[0].normalPrice}
+                offerPrice={FilteredData[0].offerPrice}
+                caption={isCaption}
+                product={isProduct}
+                color={isColor}
               />
+            )}
+            {isPostCreationSteps === 5 && (
+              <ProductAndCaption setCaption={setCaption} setProduct={setProduct} />
             )}
           </ScrollView>
         </View>
-        {isPostCreationSteps === 5 && (
-          <ProductAndCaption setCaption={setCaption} setProduct={setProduct} />
-        )}
+
         {isOpenDesign && !isDone && isPostCreationSteps === 4 && (
-          <SelectDesign
-            isImageOrText={isImageOrText}
-            designs={isImageOrText.title === 'text image' ? TextDesigns : Designs}
-            setOpenDesign={setOpenDesign}
-            isDone={isDone}
-            setDone={setDone}
+          <UploadDesign
             setImageOrText={setImageOrText}
+            setDone={setDone}
+            isImageOrText={isImageOrText}
           />
         )}
 

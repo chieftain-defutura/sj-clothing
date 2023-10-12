@@ -76,9 +76,10 @@ interface ISelectSize {
     sizeVarient: {
       size: string
       measurement: string
-      unit: string
     }
   }
+  isGender: string
+  data: any
   handleIncreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setSize: React.Dispatch<
@@ -87,7 +88,6 @@ interface ISelectSize {
       sizeVarient: {
         size: string
         measurement: string
-        unit: string
       }
     }>
   >
@@ -96,18 +96,37 @@ interface ISelectSize {
 const SelectSize: React.FC<ISelectSize> = ({
   isDropDown,
   isSize,
+  data,
+  isGender,
   setDropDown,
   setSize,
   handleIncreaseSteps,
 }) => {
-  console.log(isSize)
-  const handleSelect = (size: { size: string; measurement: string; unit: string }) => {
+  console.log(data[0].sizes)
+  console.log(isGender)
+  const filteredData = data[0].sizes
+    .filter((f: { gender: string }) => f.gender.toLowerCase() === isGender.toLowerCase())
+    .map((f: any) => f)
+
+  const sizesData = filteredData
+    .filter(
+      (f: any) => f.gender.toLowerCase() === isGender.toLowerCase() && f.country === isSize.country,
+    )
+    .map((f: any) => f.sizeVarients)
+
+  const handleSelect = (size: string, measurement: string) => {
     setSize((prevState) => ({
       ...prevState,
-      sizeVarient: { ...size },
+      sizeVarient: {
+        measurement: measurement,
+        size: size,
+        unit: 'cm',
+      },
     }))
     handleIncreaseSteps()
   }
+  console.log(isSize)
+
   return (
     <View style={styles.selectSizeContainer}>
       {isDropDown && (
@@ -141,7 +160,7 @@ const SelectSize: React.FC<ISelectSize> = ({
                 Select Country
               </Text>
               <FlatList
-                data={Sizes}
+                data={filteredData}
                 contentContainerStyle={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -190,11 +209,8 @@ const SelectSize: React.FC<ISelectSize> = ({
               >
                 Select Size
               </Text>
-              {Sizes.filter(
-                (country) => country.country.toLowerCase() === isSize.country.toLowerCase(),
-              ).map((item, index) => (
+              {isSize.country && (
                 <View
-                  key={index}
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -204,24 +220,31 @@ const SelectSize: React.FC<ISelectSize> = ({
                     rowGap: 16,
                   }}
                 >
-                  {item.sizeVariant?.map((sizes, index) => (
-                    <Pressable onPress={() => handleSelect(sizes)} key={index}>
-                      <Text
-                        style={{
-                          textAlign: 'center',
-                          fontSize: 12,
-                          color:
-                            isSize.sizeVarient.size === sizes.size
-                              ? COLORS.textSecondaryClr
-                              : COLORS.SecondaryTwo,
-                        }}
-                      >
-                        {sizes.size} - {sizes.measurement}
-                      </Text>
-                    </Pressable>
+                  {sizesData[0].map((item: any, index: number) => (
+                    <View key={index}>
+                      {item.show && (
+                        <Pressable
+                          onPress={() => handleSelect(item.size, item.measurement)}
+                          key={index}
+                        >
+                          <Text
+                            style={{
+                              textAlign: 'center',
+                              fontSize: 12,
+                              color:
+                                isSize.sizeVarient.size === item.size
+                                  ? COLORS.textSecondaryClr
+                                  : COLORS.SecondaryTwo,
+                            }}
+                          >
+                            {item.size} - {item.measurement} cm
+                          </Text>
+                        </Pressable>
+                      )}
+                    </View>
                   ))}
                 </View>
-              ))}
+              )}
             </View>
           </Animated.View>
           <Animated.View

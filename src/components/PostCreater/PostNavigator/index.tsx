@@ -7,23 +7,27 @@ import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
 import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 import ShareArrow from '../../../assets/icons/ShareArrow'
-import Animated, { BounceIn, BounceOut } from 'react-native-reanimated'
+import Animated, {
+  BounceIn,
+  BounceOut,
+  SharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated'
 
 interface IPostNavigator {
   steps: number
   isOpenDesign: boolean
   isDone: boolean
+  data: any
+  slideValue: SharedValue<number>
   handleIncreaseSteps: () => void
   handleDecreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setImageOrText: React.Dispatch<
     React.SetStateAction<{
       title: string
+      image: string
       position: string
-      designs: {
-        hashtag: string
-        image: string
-      }
     }>
   >
   setDone: React.Dispatch<React.SetStateAction<boolean>>
@@ -39,6 +43,7 @@ const PostNavigator: React.FC<IPostNavigator> = ({
   setOpenDesign,
   isOpenDesign,
   isDone,
+  slideValue,
   setDone,
 }) => {
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
@@ -59,11 +64,16 @@ const PostNavigator: React.FC<IPostNavigator> = ({
     }
   }
 
+  const slideX = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: slideValue.value * 400 }], // Slide 400 units (assuming a screen width of 400)
+    }
+  })
   return (
-    <Animated.View style={[styles.PostNavigator]}>
+    <Animated.View style={[styles.PostNavigator, slideX]}>
       {isOpenDesign && (
         <Pressable onPress={() => (isDone ? setDone(false) : setOpenDesign(false))}>
-          <Animated.View entering={BounceIn.duration(800)} exiting={BounceOut}>
+          <Animated.View>
             <LeftArrow width={24} height={24} />
           </Animated.View>
         </Pressable>
@@ -71,7 +81,7 @@ const PostNavigator: React.FC<IPostNavigator> = ({
 
       {!isOpenDesign && (
         <Pressable onPress={handleDecreaseSteps}>
-          <Animated.View entering={BounceIn.duration(800)} exiting={BounceOut}>
+          <Animated.View>
             <ArrowCircleLeft width={24} height={24} />
           </Animated.View>
         </Pressable>

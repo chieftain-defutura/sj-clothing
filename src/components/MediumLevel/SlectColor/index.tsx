@@ -13,18 +13,11 @@ import { useNavigation } from '@react-navigation/native'
 
 interface ISelectColor {
   isDropDown: boolean
-  isColor: {
-    colorName: string
-    hexCode: string
-  }
+  isColor: string
+  data: any
   handleIncreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
-  setColor: React.Dispatch<
-    React.SetStateAction<{
-      colorName: string
-      hexCode: string
-    }>
-  >
+  setColor: React.Dispatch<React.SetStateAction<string>>
 }
 const Colors = [
   { colorName: 'PaleVioletRed', hexCode: '#D87093' },
@@ -38,13 +31,13 @@ const { width } = Dimensions.get('window')
 const SelectColor: React.FC<ISelectColor> = ({
   isDropDown,
   isColor,
+  data,
   setDropDown,
   setColor,
   handleIncreaseSteps,
 }) => {
   const navigation = useNavigation()
   const [isOpenModal, setOpenModal] = useState(false)
-
   return (
     <View style={styles.selectColorContainer}>
       {isDropDown && (
@@ -86,7 +79,7 @@ const SelectColor: React.FC<ISelectColor> = ({
               Colors
             </Text>
             <FlatList
-              data={Colors}
+              data={data[0].colors}
               numColumns={4}
               contentContainerStyle={{
                 display: 'flex',
@@ -106,12 +99,7 @@ const SelectColor: React.FC<ISelectColor> = ({
               renderItem={({ item, index }) => (
                 <Pressable
                   onPress={() => {
-                    setColor((prevState) => ({
-                      ...prevState,
-                      sizeVarient: { ...item },
-                    })),
-                      setOpenModal(true),
-                      setDropDown(false)
+                    setColor(item), setOpenModal(true), setDropDown(false)
                   }}
                   key={index}
                   style={{
@@ -131,14 +119,13 @@ const SelectColor: React.FC<ISelectColor> = ({
                   >
                     <View
                       style={{
-                        backgroundColor: `${item.hexCode}`,
-
-                        borderRadius: 50,
+                        backgroundColor: `${item}`,
+                        borderRadius: 100,
                         padding: 23,
                       }}
                     ></View>
                   </View>
-                  <Text
+                  {/* <Text
                     style={{
                       color:
                         isColor.hexCode === item.hexCode
@@ -150,7 +137,7 @@ const SelectColor: React.FC<ISelectColor> = ({
                     }}
                   >
                     {item.colorName}
-                  </Text>
+                  </Text> */}
                 </Pressable>
               )}
             />

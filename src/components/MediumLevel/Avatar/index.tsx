@@ -7,9 +7,11 @@ import { COLORS, gradientOpacityColors } from '../../../styles/theme'
 import Animated, { FadeInUp, FadeOut, FadeOutDown } from 'react-native-reanimated'
 
 interface IAvatart {
+  isGender: string
+  setGender: React.Dispatch<React.SetStateAction<string>>
   setToggleAvatar: React.Dispatch<React.SetStateAction<boolean>>
 }
-const Avatar: React.FC<IAvatart> = ({ setToggleAvatar }) => {
+const Avatar: React.FC<IAvatart> = ({ setToggleAvatar, isGender, setGender }) => {
   const [toggle, setToggle] = useState(false)
 
   return (
@@ -33,7 +35,7 @@ const Avatar: React.FC<IAvatart> = ({ setToggleAvatar }) => {
 
       {!toggle && (
         <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
-          <Gender setToggle={setToggle} />
+          <Gender setToggle={setToggle} isGender={isGender} setGender={setGender} />
         </Animated.View>
       )}
     </ScrollView>

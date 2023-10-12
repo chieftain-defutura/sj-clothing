@@ -7,18 +7,15 @@ import Animated, {
   BounceOutUp,
   FlipInXDown,
   FlipOutXDown,
+  SharedValue,
+  withSequence,
+  withTiming,
 } from 'react-native-reanimated'
 
 interface ISelectStyle {
   isDropDown: boolean
   isSelectedStyle: string
-  data?: {
-    title: string
-    type: {
-      name: string
-      value: string
-    }[]
-  }
+  data: any
   handleIncreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setSelectedStyle: React.Dispatch<React.SetStateAction<string>>
@@ -116,7 +113,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
               }}
             >
               <FlatList
-                data={StyleShirtData}
+                data={data}
                 numColumns={3}
                 columnWrapperStyle={{
                   display: 'flex',
@@ -129,7 +126,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
                 }}
                 renderItem={({ item }) => (
                   <Pressable
-                    onPress={() => handleSelect(item.Title)}
+                    onPress={() => handleSelect(item.styles)}
                     style={{
                       paddingVertical: 4,
                     }}
@@ -139,12 +136,12 @@ const SelectStyle: React.FC<ISelectStyle> = ({
                         textAlign: 'left',
                         fontFamily: 'Gilroy-Medium',
                         color:
-                          isSelectedStyle === item.Title
+                          isSelectedStyle === item.styles
                             ? COLORS.textSecondaryClr
                             : COLORS.textTertiaryClr,
                       }}
                     >
-                      {item.Title}
+                      {item.styles}
                     </Text>
                   </Pressable>
                 )}

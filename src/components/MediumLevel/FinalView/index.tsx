@@ -9,23 +9,33 @@ import { Checkbox } from 'react-native-paper'
 
 interface IFinalView {
   Data: {
-    title: string
-    content: string
+    cloth: string
+    materials: string
   }[]
-  navigation: any
+  price: string
+  offerPrice: string
+  size: string
+  style: string
+  color: string
   quantity: string
   approved: boolean
+  handleSubmit: () => Promise<void>
   setQuantity: React.Dispatch<React.SetStateAction<string>>
   setApproved: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const FinalView: React.FC<IFinalView> = ({
   Data,
-  navigation,
   setQuantity,
   quantity,
+  handleSubmit,
   setApproved,
   approved,
+  size,
+  style,
+  price,
+  color,
+  offerPrice,
 }) => {
   const number = Number(quantity)
   const handleIncrease = () => {
@@ -117,7 +127,7 @@ const FinalView: React.FC<IFinalView> = ({
             Style
           </Text>
           <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-            Round Neck
+            {style}
           </Text>
         </View>
         <View
@@ -138,7 +148,7 @@ const FinalView: React.FC<IFinalView> = ({
             Size
           </Text>
           <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-            XXL
+            {size}
           </Text>
         </View>
         <View
@@ -159,8 +169,85 @@ const FinalView: React.FC<IFinalView> = ({
             Quantity
           </Text>
           <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-            X1
+            {quantity ? quantity : 0}
           </Text>
+        </View>
+      </View>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          gap: 37,
+        }}
+      >
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: 95,
+            paddingTop: 16,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.textClr,
+              fontFamily: 'Montserrat-Regular',
+              fontSize: 10,
+            }}
+          >
+            Price
+          </Text>
+          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+            {price ? price : 0}
+          </Text>
+        </View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: 95,
+            paddingTop: 16,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.textClr,
+              fontFamily: 'Montserrat-Regular',
+              fontSize: 10,
+            }}
+          >
+            Offer Price
+          </Text>
+          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+            {offerPrice ? offerPrice : '-'}
+          </Text>
+        </View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: 95,
+            paddingTop: 16,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.textClr,
+              fontFamily: 'Montserrat-Regular',
+              fontSize: 10,
+            }}
+          >
+            Color
+          </Text>
+          <Text
+            style={{
+              color: COLORS.textClr,
+              fontFamily: 'Arvo-Regular',
+              fontSize: 14,
+              backgroundColor: color,
+            }}
+          ></Text>
         </View>
       </View>
       <View
@@ -190,10 +277,10 @@ const FinalView: React.FC<IFinalView> = ({
                 fontSize: 10,
               }}
             >
-              {item.title}
+              {item.cloth}
             </Text>
             <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-              {item.content}
+              {item.materials}
             </Text>
           </View>
         ))}
@@ -203,7 +290,8 @@ const FinalView: React.FC<IFinalView> = ({
         text='Buy now'
         fontFamily='Arvo-Regular'
         fontSize={16}
-        onPress={() => navigation.navigate('Checkout')}
+        disabled={!approved}
+        onPress={handleSubmit}
         buttonStyle={[styles.submitBtn]}
       />
     </View>

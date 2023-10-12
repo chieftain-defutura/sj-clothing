@@ -1,15 +1,13 @@
-import { FlatList, Pressable, StyleSheet, Text, View, Image } from 'react-native'
+import { FlatList, Pressable, StyleSheet, Text, View, Image, Dimensions } from 'react-native'
 import React from 'react'
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
+import { ImageorTextProps } from '../../../constant/types'
 
 interface ISelectDesign {
   isDone: boolean
-  designs: {
-    hashTag: string
-    image: any
-  }[]
+  designs: ImageorTextProps[] | undefined
   isImageOrText: {
     title: string
     position: string
@@ -31,7 +29,7 @@ interface ISelectDesign {
     }>
   >
 }
-
+const { height, width } = Dimensions.get('window')
 const SelectDesign: React.FC<ISelectDesign> = ({
   designs,
   isImageOrText,
@@ -40,11 +38,11 @@ const SelectDesign: React.FC<ISelectDesign> = ({
   setImageOrText,
   setDone,
 }) => {
-  const uniqueArr = [...new Map(designs.map((v) => [v.hashTag, v])).values()]
+  const uniqueArr = [...new Map(designs?.map((v) => [v.hashTag, v])).values()]
   const FilteredData =
     isImageOrText.designs.hashtag === ''
       ? designs
-      : designs.filter((design) => design.hashTag === isImageOrText.designs.hashtag)
+      : designs?.filter((design) => design.hashTag === isImageOrText.designs.hashtag)
   return (
     <Animated.View
       entering={SlideInDown.duration(800)}
@@ -57,6 +55,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
         position: 'absolute',
         bottom: 0,
         flex: 1,
+        width: width,
       }}
     >
       <View
@@ -141,25 +140,29 @@ const SelectDesign: React.FC<ISelectDesign> = ({
         data={FilteredData}
         horizontal
         renderItem={({ item, index }) => (
-          <Pressable
-            onPress={() => {
-              setImageOrText((prevState) => ({
-                ...prevState,
-                designs: { hashtag: isImageOrText.designs.hashtag, image: item.image },
-              })),
-                setDone(true)
-            }}
-            style={{
-              backgroundColor: COLORS.cardClr,
-              padding: 5,
-              borderRadius: 5,
-              borderColor:
-                isImageOrText.designs.image === item.image ? COLORS.textSecondaryClr : 'red',
-              borderWidth: isImageOrText.designs.image === item.image ? 1 : 0,
-            }}
-          >
-            <Image style={{ width: 100, height: 100 }} source={{ uri: item.image }} />
-          </Pressable>
+          <View key={index}>
+            {item.active && (
+              <Pressable
+                onPress={() => {
+                  setImageOrText((prevState) => ({
+                    ...prevState,
+                    designs: { hashtag: isImageOrText.designs.hashtag, image: item.Images },
+                  })),
+                    setDone(true)
+                }}
+                style={{
+                  backgroundColor: COLORS.cardClr,
+                  padding: 5,
+                  borderRadius: 5,
+                  borderColor:
+                    isImageOrText.designs.image === item.Images ? COLORS.textSecondaryClr : 'red',
+                  borderWidth: isImageOrText.designs.image === item.Images ? 1 : 0,
+                }}
+              >
+                <Image style={{ width: 100, height: 100 }} source={{ uri: item.Images }} />
+              </Pressable>
+            )}
+          </View>
         )}
       />
     </Animated.View>

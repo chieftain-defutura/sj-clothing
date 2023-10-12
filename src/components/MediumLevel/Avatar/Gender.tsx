@@ -5,10 +5,11 @@ import CustomButton from '../../Button'
 
 const GenderData = ['Male', 'Female', 'Other']
 interface IGender {
+  isGender: string
+  setGender: React.Dispatch<React.SetStateAction<string>>
   setToggle: React.Dispatch<React.SetStateAction<boolean>>
 }
-const Gender: React.FC<IGender> = ({ setToggle }) => {
-  const [isGender, setGender] = useState('Male')
+const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
   return (
     <View style={styles.genderContainer}>
       <View style={styles.bottomWrapper}>

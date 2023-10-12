@@ -5,18 +5,6 @@ import styled from 'styled-components/native'
 import { StyleSheet, View, Image, Pressable, ScrollView } from 'react-native'
 
 import { COLORS } from '../../../styles/theme'
-import ThreeSixtyDegree from '../../../assets/icons/360-degree'
-import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
-import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
-import { PostCreationStore } from '../../../store/postCreationStore'
-import Animated, { LightSpeedInLeft, LightSpeedOutRight } from 'react-native-reanimated'
-
-// const Data = [
-//   require('../../../assets/images/text-tshirt.png'),
-//   require('../../../assets/images/plain-shirt.png'),
-//   require('../../../assets/images/t-shirt.png'),
-//   require('../../../assets/images/imaged-tshirt.png'),
-// ]
 
 interface IProductAndCaption {
   setProduct: React.Dispatch<React.SetStateAction<string>>
@@ -30,7 +18,7 @@ const ValidationSchema = Yup.object({
 
 const ProductAndCaption: React.FC<IProductAndCaption> = ({ setProduct, setCaption }) => {
   return (
-    <ScrollView style={styles.ProductAndCaptionContainer}>
+    <View style={styles.ProductAndCaptionContainer}>
       <SignUpContainer>
         <View>
           <LabelText>Product name</LabelText>
@@ -49,7 +37,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({ setProduct, setCaptio
           />
         </View>
       </SignUpContainer>
-    </ScrollView>
+    </View>
   )
 }
 
