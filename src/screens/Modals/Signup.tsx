@@ -111,7 +111,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
 
         await setDoc(userDocRef, {
           name: values.name,
-          mail: values.email,
+          email: values.email,
           address: null,
           profile: null,
           phoneNo: null,

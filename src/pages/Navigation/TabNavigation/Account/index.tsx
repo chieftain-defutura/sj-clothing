@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { Pressable, ScrollView, View, StyleSheet, Dimensions, Linking } from 'react-native'
-import { useFocusEffect, useIsFocused } from '@react-navigation/native'
+import { Pressable, ScrollView, View, StyleSheet, Dimensions, Linking, Image } from 'react-native'
+import { useIsFocused } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { auth } from '../../../../../firebase'
+import { auth, db } from '../../../../../firebase'
 import { COLORS } from '../../../../styles/theme'
 import { userStore } from '../../../../store/userStore'
 import AuthNavigate from '../../../../screens/AuthNavigate'
@@ -18,6 +18,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import NotUserIcon from '../../../../assets/icons/AccountPageIcon/NotUserIcon'
 import { RouteProp } from '@react-navigation/native'
 import { RootStackParamList } from '../../../ScreenTypes'
+import { doc, getDoc } from 'firebase/firestore/lite'
 
 interface IAccount {
   navigation: any
@@ -26,35 +27,30 @@ interface IAccount {
 
 const { width, height } = Dimensions.get('window')
 
-const Data = [
-  {
-    postName: 'Posts',
-    postView: 298,
-    view: 'K',
-  },
-  {
-    postName: 'Royalties',
-    postView: 24,
-    inr: 'INR',
-  },
-  {
-    postName: 'Orders',
-    postView: 0,
-  },
-  {
-    postName: 'Cart',
-    postView: 2,
-  },
-]
-
 const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
-  const [image, setImage] = React.useState<string | null>(null)
   const user = userStore((state) => state.user)
   const isFocused = useIsFocused()
-  const { updateUser } = userStore()
-  const { displayName } = userStore()
-  const [name, setName] = useState<string | null>('')
+  const { updateUser, updateProfile, profile, displayName, updateName, name } = userStore()
+
+  const fetchDataFromFirestore = useCallback(async () => {
+    try {
+      if (!user) return
+      const q = doc(db, 'users', user.uid)
+      const querySnapshot = await getDoc(q)
+      console.log(querySnapshot.data())
+
+      const fetchData = querySnapshot.data()
+      updateProfile(fetchData?.profile)
+      updateName(fetchData?.name)
+    } catch (error) {
+      console.error('Error fetching data from Firestore:', error)
+    }
+  }, [user, updateProfile])
+
+  useEffect(() => {
+    fetchDataFromFirestore()
+  }, [fetchDataFromFirestore])
 
   const handleCustomerCarePress = () => {
     const phoneNumber = '1234567890'
@@ -67,16 +63,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const closeSubscriptionModal = () => {
     setSubscriptionModal(false)
   }
-
-  useEffect(() => {
-    console.log(route.params)
-    if (user) setName(user.displayName)
-  }, [displayName])
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     if (user) setName(user.displayName)
-  //   }, []),
-  // )
 
   const handleLogout = async () => {
     try {
@@ -100,22 +86,21 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
           <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
             <UserWrapper style={{ width: width, height: height / 2.5 }}>
               <NotUserContent>
-                <NotUserIcon width={128} height={128} />
-              </NotUserContent>
-              {/* <View style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
-                {image && (
-                  <ProfileImage
-                    source={{ uri: image }}
+                {profile ? (
+                  <Image
+                    source={{ uri: profile }}
                     style={{
                       width: width,
-                      height: height / 2.4,
-                      resizeMode: 'cover',
+                      height: height / 2.5,
                       borderBottomLeftRadius: 50,
                       borderBottomRightRadius: 50,
                     }}
                   />
+                ) : (
+                  <NotUserIcon width={128} height={128} />
                 )}
-              </View> */}
+              </NotUserContent>
+
               <EditContent onPress={() => navigation.navigate('EditProfile')}>
                 <LinearGradient
                   start={{ x: 0, y: 0 }}
@@ -130,7 +115,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
             {route.params?.dName ? (
               <ProfileName>{route.params.dName}</ProfileName>
             ) : (
-              <ProfileName>{displayName}</ProfileName>
+              <ProfileName>{name}</ProfileName>
             )}
             <View style={{ padding: 16 }}>
               <CustomButton
