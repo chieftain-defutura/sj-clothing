@@ -16,7 +16,6 @@ interface IPremiumCard {
 }
 
 const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId }) => {
-  console.log('dattaas', data)
   return (
     <View style={{ display: 'flex', flexDirection: 'column' }}>
       <View style={{ marginTop: 30 }}>

@@ -27,6 +27,7 @@ import Animated, {
 import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
 import { Svg, Circle } from 'react-native-svg'
 import CustomButton from '../Button'
+import { Text } from 'react-native'
 
 const { height, width } = Dimensions.get('window')
 
@@ -62,7 +63,7 @@ const PremiumDetailsCard: React.FC<any> = ({ data, setOpenCard, setOpenDetails, 
   const navigation = useNavigation()
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
-  const [countryData, setCountryData] = useState('Canada')
+  const [countryData, setCountryData] = useState('India')
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
     try {
@@ -80,9 +81,11 @@ const PremiumDetailsCard: React.FC<any> = ({ data, setOpenCard, setOpenDetails, 
       console.log(error)
     }
   }
-  const Country = data[0].sizes.map((f: any) => f.country)
-  const Sizes = data[0].sizes.filter((f: any) => f.country === countryData).map((f: any) => f.sizes)
-  console.log(Country)
+  const Country = data[0].sizes.filter((f: any) => f.gender === 'MALE').map((f: any) => f.country)
+  const Sizes = data[0].sizes
+    .filter((f: any) => f.country === countryData)
+    .map((f: any) => f.sizeVarients)
+  console.log('Country', Sizes)
   return (
     <LinearGradient colors={gradientOpacityColors} style={{ flex: 1, width: width, zIndex: 6 }}>
       <ScrollView>
@@ -170,37 +173,24 @@ const PremiumDetailsCard: React.FC<any> = ({ data, setOpenCard, setOpenDetails, 
             )}
           </PremiumDetailsWrapper>
 
-          {/* <View
-            style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingVertical: 12,
-            }}
-          >
-            <SelectList
-              setSelected={(val: any) => console.log(val)}
-              data={Country}
-              save='value'
-              boxStyles={{ borderColor: '#E5CEF5', borderWidth: 1, borderRadius: 5, width: 170 }}
-              inputStyles={{ color: '#462D85', fontSize: 14, fontFamily: 'Gilroy-Medium' }}
-              dropdownStyles={{ borderColor: '#E5CEF5', borderWidth: 1 }}
-              dropdownTextStyles={{ color: '#462D85' }}
-            />
+          <View>
+            {data[0].sizes.map((f: any, index: number) => (
+              <Pressable key={index} onPress={() => setCountryData(f.country)}>
+                <Text>{f.country}</Text>
+              </Pressable>
+            ))}
+          </View>
 
+          <View>
+            {Sizes[0].map((f: any, index: number) => (
+              <Pressable key={index}>
+                <Text>
+                  {f.size}-{f.measurement}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
 
-            <SelectList
-              setSelected={(val: any) => setSelected(val)}
-              data={IndiaSizes}
-              save='value'
-              boxStyles={{ borderColor: '#E5CEF5', borderWidth: 1, borderRadius: 5, width: 170 }}
-              inputStyles={{ color: '#462D85', fontSize: 14, fontFamily: 'Gilroy-Medium' }}
-              dropdownStyles={{ borderColor: '#E5CEF5', borderWidth: 1 }}
-              dropdownTextStyles={{ color: '#462D85' }}
-              defaultOption={{ key: '1', value: 'S     -   28' }}
-            />
-          </View> */}
           <Animated.View entering={FadeInUp.duration(2000)} exiting={FadeOut}>
             <Btns>
               {showDetails ? (

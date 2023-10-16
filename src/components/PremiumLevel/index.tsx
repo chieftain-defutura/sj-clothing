@@ -15,7 +15,7 @@ const PremiumLevel = () => {
   const [productId, setProductId] = useState(0)
   const [openDetails, setOpenDetails] = useState(false)
   const [isSize, setSize] = useState({
-    country: 'America',
+    country: 'India',
     sizeVarient: { size: '', measurement: '' },
   })
 

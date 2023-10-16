@@ -20,7 +20,6 @@ const { width, height } = Dimensions.get('window')
 
 const PremiumThreeSixtyDegree: React.FC<any> = ({ navigation, setOpenDetails, data, size }) => {
   const [isPressed, setIsPressed] = useState(false)
-  console.log(data)
 
   const handleSubmit = async () => {
     const docRef = await addDoc(collection(db, 'Posts'), {
