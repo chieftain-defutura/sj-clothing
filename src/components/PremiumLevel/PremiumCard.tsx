@@ -25,7 +25,12 @@ interface IPremiumCard {
 
 const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, setSize }) => {
   return (
-    <View style={{ display: 'flex', flexDirection: 'column' }}>
+    <View
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <View style={{ marginTop: 30 }}>
         <View>
           <Pressable

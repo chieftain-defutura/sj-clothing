@@ -28,6 +28,7 @@ import { Svg, Circle } from 'react-native-svg'
 import CustomButton from '../Button'
 import { Text } from 'react-native'
 import { IPremiumData } from '../../constant/types'
+import PremiumVideo from '../../screens/PremiumVideo'
 
 const { height, width } = Dimensions.get('window')
 
@@ -49,20 +50,21 @@ interface IPremiumDetailsCard {
       }
     }>
   >
-  setOpenCard: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>
+  handleBack: () => void
 }
 
 const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   data,
-  setOpenCard,
-  setOpenDetails,
+  handleBack,
   setSize,
   isSize,
+  setOpenDetails,
 }) => {
   const navigation = useNavigation()
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
 
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
@@ -85,15 +87,15 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   const Sizes = data?.sizes
     .filter((f: any) => f.country === isSize.country)
     .map((f: any) => f.sizeVarients)
+
+  const Description = data.description.split(',')
   return (
     <View style={{ flex: 1, width: width, zIndex: 6 }}>
       <ScrollView>
         <View style={styles.linearGradient}>
           <FlexContent>
             <Pressable
-              onPress={() => {
-                navigation.goBack(), setOpenCard(false), setOpenDetails(false)
-              }}
+              onPress={handleBack}
               onPressIn={() => setIsPressed(true)}
               onPressOut={() => setIsPressed(false)}
             >
@@ -124,7 +126,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
               </Animated.View>
               <Animated.View entering={FadeInRight.duration(800).delay(200)} exiting={FadeOutRight}>
                 <View>
-                  {/* <ProductText>{f.product}</ProductText> */}
+                  <ProductText>product</ProductText>
                   <ProductName>{data.productName}</ProductName>
                   <View style={{ marginVertical: 16 }}>
                     {/* <ProductText>{f.size}</ProductText> */}
@@ -144,74 +146,100 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                       alignItems: 'center',
                     }}
                   >
-                    <OldPriceText>{data.normalPrice}INR</OldPriceText>
-                    <View>
-                      <ProductName>{data.offerPrice}INR</ProductName>
-                    </View>
+                    {!data.offerPrice ? (
+                      <>
+                        <ProductText>price</ProductText>
+                        <ProductName>{data.normalPrice}INR</ProductName>
+                      </>
+                    ) : (
+                      <>
+                        <OldPriceText>{data.normalPrice}INR</OldPriceText>
+                        <View>
+                          <ProductName>{data.offerPrice}INR</ProductName>
+                        </View>
+                      </>
+                    )}
                   </View>
-                  <WatchVideoBorder onPress={() => navigation.navigate('PlayVideo')}>
-                    <PlayCircleIcon width={12} height={12} />
-                    <WatchVideoText>Watch video</WatchVideoText>
-                  </WatchVideoBorder>
+                  {data.productVideo && (
+                    <WatchVideoBorder onPress={() => setOpenModal(true)}>
+                      <PlayCircleIcon width={12} height={12} />
+                      <WatchVideoText>Watch video</WatchVideoText>
+                    </WatchVideoBorder>
+                  )}
+                  {openModal && (
+                    <PremiumVideo
+                      video={data.productVideo}
+                      onClose={() => setOpenModal(false)}
+                      isVisible={openModal}
+                    />
+                  )}
                 </View>
               </Animated.View>
             </PremiumDetailsContent>
 
-            {showDetails && (
-              <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
-                <View>
-                  <DetailsHeading>Detailed features</DetailsHeading>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
-                    <Svg width={8} height={8}>
-                      <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
-                    </Svg>
-                    <DetailsParaText style={{ marginLeft: 8 }}>para</DetailsParaText>
-                  </View>
-                </View>
-              </Animated.View>
-            )}
-          </PremiumDetailsWrapper>
-
-          <View>
-            {data?.sizes.map((f: any, index: number) => (
-              <Pressable
-                key={index}
-                onPress={() =>
-                  setSize((prevState) => ({
-                    ...prevState,
-                    country: f.country,
-                  }))
-                }
-              >
-                <Text>{f.country}</Text>
-              </Pressable>
-            ))}
-          </View>
-
-          {isSize.country ? (
             <View>
-              {Sizes[0].map((f: any, index: number) => (
+              {data?.sizes.map((f: any, index: number) => (
                 <Pressable
                   key={index}
                   onPress={() =>
                     setSize((prevState) => ({
                       ...prevState,
-                      sizeVarient: {
-                        measurement: f.measurement,
-                        size: f.size,
-                      },
+                      country: f.country,
                     }))
                   }
                 >
-                  <Text>
-                    {f.size}-{f.measurement}
-                  </Text>
+                  <Text>{f.country}</Text>
                 </Pressable>
               ))}
             </View>
-          ) : (
-            <Text>Select region</Text>
-          )}
+
+            {isSize.country ? (
+              <View>
+                {Sizes[0].map((f: any, index: number) => (
+                  <Pressable
+                    key={index}
+                    onPress={() =>
+                      setSize((prevState) => ({
+                        ...prevState,
+                        sizeVarient: {
+                          measurement: f.measurement,
+                          size: f.size,
+                        },
+                      }))
+                    }
+                  >
+                    <Text>
+                      {f.size}-{f.measurement}
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
+            ) : (
+              <Text>Select region</Text>
+            )}
+
+            {showDetails && (
+              <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
+                <View>
+                  <DetailsHeading>Detailed features</DetailsHeading>
+                  {Description.map((f, index) => (
+                    <View
+                      key={index}
+                      style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}
+                    >
+                      <Svg width={8} height={8}>
+                        <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
+                      </Svg>
+
+                      <DetailsParaText key={index} style={{ marginLeft: 8 }}>
+                        {f}
+                      </DetailsParaText>
+                    </View>
+                  ))}
+                </View>
+              </Animated.View>
+            )}
+          </PremiumDetailsWrapper>
 
           <Animated.View entering={FadeInUp.duration(2000)} exiting={FadeOut}>
             <Btns>
