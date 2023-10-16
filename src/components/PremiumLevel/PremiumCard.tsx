@@ -29,11 +29,6 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
       style={{
         display: 'flex',
         flexDirection: 'column',
-        // backgroundColor: 'red',
-        borderColor: '#E5CEF5',
-        elevation: 3,
-        shadowColor: '#52006A',
-        // borderWidth: 1,
         width: width / 2.2,
         height: height / 3,
         marginLeft: 8,
@@ -59,7 +54,7 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
                     source={{
                       uri: data.productImage,
                     }}
-                    style={{ width: width / 2.6, height: height - 640, resizeMode: 'cover' }}
+                    style={{ width: width / 2.6, height: height - 610, resizeMode: 'cover' }}
                   />
                 </ImageContainer>
               </SharedElement>

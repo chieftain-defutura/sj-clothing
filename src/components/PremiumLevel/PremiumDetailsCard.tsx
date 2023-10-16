@@ -28,6 +28,7 @@ import { Svg, Circle } from 'react-native-svg'
 import CustomButton from '../Button'
 import { Text } from 'react-native'
 import { IPremiumData } from '../../constant/types'
+import ChevronLeft from '../../assets/icons/PremiumPageIcon/ChevronLeftIcon'
 
 const { height, width } = Dimensions.get('window')
 
@@ -63,6 +64,28 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   const navigation = useNavigation()
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
+  const [selectedSizes, setSelectedSizes] = useState<string | null>(null)
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
+  const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prevState) => !prevState)
+  }
+
+  const handleSelectCountry = (country: string) => {
+    setSelectedCountry(country)
+    setIsDropdownOpen(false)
+  }
+
+  const toggleDropdownSizes = () => {
+    setIsDropdownSizesOpen((prevState) => !prevState)
+  }
+
+  const handleSelectSizes = (sizes: string) => {
+    setSelectedSizes(sizes)
+    setIsDropdownSizesOpen(false)
+  }
 
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
@@ -172,7 +195,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
             )}
           </PremiumDetailsWrapper>
 
-          <View>
+          {/* <View>
             {data?.sizes.map((f: any, index: number) => (
               <Pressable
                 key={index}
@@ -186,32 +209,70 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                 <Text>{f.country}</Text>
               </Pressable>
             ))}
-          </View>
+          </View> */}
+          <DropDownWrapper>
+            <CountryWrapper>
+              <SelectContent onPress={toggleDropdown}>
+                <SelectText>{selectedCountry || 'Select a country'}</SelectText>
+                <ChevronLeft width={20} height={20} />
+              </SelectContent>
 
-          {isSize.country ? (
-            <View>
-              {Sizes[0].map((f: any, index: number) => (
-                <Pressable
-                  key={index}
-                  onPress={() =>
-                    setSize((prevState) => ({
-                      ...prevState,
-                      sizeVarient: {
-                        measurement: f.measurement,
-                        size: f.size,
-                      },
-                    }))
-                  }
-                >
-                  <Text>
-                    {f.size}-{f.measurement}
-                  </Text>
-                </Pressable>
-              ))}
-            </View>
-          ) : (
-            <Text>Select region</Text>
-          )}
+              {isDropdownOpen && (
+                <SelectList>
+                  {data?.sizes.map((item: any, index: number) => (
+                    <Pressable
+                      key={index}
+                      onPress={() => {
+                        setSize((prevState) => ({
+                          ...prevState,
+                          country: item.country,
+                        }))
+                        handleSelectCountry(item.country)
+                      }}
+                    >
+                      <SelectListText>{item.country}</SelectListText>
+                    </Pressable>
+                  ))}
+                </SelectList>
+              )}
+            </CountryWrapper>
+
+            <CountryWrapper>
+              <SelectContent onPress={toggleDropdownSizes}>
+                <SelectText>{selectedSizes || 'Select a Sizes'}</SelectText>
+                <ChevronLeft width={20} height={20} />
+              </SelectContent>
+              {isDropdownOpen && (
+                <SelectList>
+                  {isSize.country ? (
+                    <View>
+                      {Sizes[0].map((f: any, index: number) => (
+                        <Pressable
+                          key={index}
+                          onPress={() => {
+                            setSize((prevState) => ({
+                              ...prevState,
+                              sizeVarient: {
+                                measurement: f.measurement,
+                                size: f.size,
+                              },
+                            }))
+                            handleSelectSizes(f.sizes)
+                          }}
+                        >
+                          <SelectListText>
+                            {f.size} - {f.measurement}
+                          </SelectListText>
+                        </Pressable>
+                      ))}
+                    </View>
+                  ) : (
+                    <SelectListText>Select region</SelectListText>
+                  )}
+                </SelectList>
+              )}
+            </CountryWrapper>
+          </DropDownWrapper>
 
           <Animated.View entering={FadeInUp.duration(2000)} exiting={FadeOut}>
             <Btns>
@@ -246,6 +307,47 @@ const styles = StyleSheet.create({
 })
 
 const CardPairContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+`
+const SelectList = styled.View`
+  border-color: #e5cef5;
+  border-radius: 5px;
+  border-width: 1px;
+  margin-top: 8px;
+  padding: 12px;
+`
+
+const CountryWrapper = styled.View`
+  width: 170px;
+  position: relative;
+`
+
+const SelectText = styled.Text`
+  font-size: 14px;
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  color: ${COLORS.iconsHighlightClr};
+`
+const SelectListText = styled.Text`
+  font-size: 14px;
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  color: ${COLORS.iconsHighlightClr};
+  padding-bottom: 12px;
+`
+
+const DropDownWrapper = styled.View`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+`
+const SelectContent = styled.Pressable`
+  border-color: #e5cef5;
+  border-width: 1px;
+  padding: 12px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
   flex-direction: row;
   justify-content: space-between;
 `
