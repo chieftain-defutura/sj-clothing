@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, Dimensions, StyleSheet, Pressable } from 'react-native'
+import { View, Image, Dimensions, Pressable } from 'react-native'
 import { IPremiumData } from '../../constant/types'
 import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
@@ -16,7 +16,21 @@ interface IPremiumCard {
 
 const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId }) => {
   return (
-    <View style={{ display: 'flex', flexDirection: 'column' }}>
+    <View
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        // backgroundColor: 'red',
+        borderColor: '#E5CEF5',
+        elevation: 3,
+        shadowColor: '#52006A',
+        // borderWidth: 1,
+        width: width / 2.2,
+        height: height / 3,
+        marginLeft: 8,
+        marginBottom: 18,
+      }}
+    >
       <View style={{ marginTop: 30 }}>
         <View>
           <Pressable
@@ -31,7 +45,7 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId }
                     source={{
                       uri: data.productImage,
                     }}
-                    style={{ width: width / 2.2, height: height - 640, resizeMode: 'contain' }}
+                    style={{ width: width / 2.6, height: height - 640, resizeMode: 'cover' }}
                   />
                 </ImageContainer>
               </SharedElement>
@@ -60,8 +74,10 @@ const FlexContent = styled.View`
 `
 
 const ImageContainer = styled.View`
-  aspect-ratio: 1/1.2;
-  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `
 
 const ProductText = styled.Text`
@@ -77,9 +93,3 @@ const PriceText = styled.Text`
 `
 
 export default PremiumCard
-
-const styles = StyleSheet.create({
-  linearGradient: {
-    paddingTop: 40,
-  },
-})
