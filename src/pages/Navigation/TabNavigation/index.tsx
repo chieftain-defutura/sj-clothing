@@ -22,10 +22,11 @@ const TabNavigationRoutes: React.FC = () => {
       initialRouteName='Home'
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: '#c0d3ee',
+          backgroundColor: 'rgba(145, 177, 225, 0.8)',
           paddingVertical: 16,
           borderTopWidth: 0,
           height: 62,
+          elevation: 0,
         },
         unmountOnBlur: false,
       }}
@@ -43,10 +44,10 @@ const TabNavigationRoutes: React.FC = () => {
                   opacity: focused ? opacityValue.value : 2,
                 }}
               >
-                <TabHomeIcon color={color} width={40} height={40} />
+                <TabHomeIcon color='#DB00FF' width={40} height={40} />
               </View>
             ) : (
-              <TabHomeIcon color={color} width={40} height={40} />
+              <TabHomeIcon color='#462D85' width={40} height={40} />
             ),
           headerShown: false,
         }}
@@ -65,10 +66,10 @@ const TabNavigationRoutes: React.FC = () => {
                   opacity: focused ? opacityValue.value : 2,
                 }}
               >
-                <MidLevelIcon color={color} width={40} height={40} />
+                <MidLevelIcon color='#DB00FF' width={40} height={40} />
               </View>
             ) : (
-              <MidLevelIcon color={color} width={40} height={40} />
+              <MidLevelIcon color='#462D85' width={40} height={40} />
             ),
           headerShown: false,
         }}
@@ -87,10 +88,10 @@ const TabNavigationRoutes: React.FC = () => {
                   opacity: focused ? opacityValue.value : 2,
                 }}
               >
-                <PremiumIcon color={color} width={40} height={40} />
+                <PremiumIcon color='#DB00FF' width={40} height={40} />
               </View>
             ) : (
-              <PremiumIcon color={color} width={40} height={40} />
+              <PremiumIcon color='#462D85' width={40} height={40} />
             ),
           headerShown: false,
         }}
@@ -109,10 +110,10 @@ const TabNavigationRoutes: React.FC = () => {
                   opacity: focused ? opacityValue.value : 2,
                 }}
               >
-                <AccountIcon color={color} width={40} height={40} />
+                <AccountIcon color='#DB00FF' width={40} height={40} />
               </View>
             ) : (
-              <AccountIcon color={color} width={40} height={40} />
+              <AccountIcon color='#462D85' width={40} height={40} />
             ),
           headerShown: false,
         }}

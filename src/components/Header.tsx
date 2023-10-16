@@ -3,8 +3,8 @@ import { Pressable, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components/native'
 import ShoppingCart from '../assets/icons/ShoppingCart'
-import NotificationInActive from '../assets/icons/NotificationInActive'
-import NotificationActive from '../assets/icons/NotificationActive'
+// import NotificationInActive from '../assets/icons/NotificationInActive'
+// import NotificationActive from '../assets/icons/NotificationActive'
 import { COLORS } from '../styles/theme'
 
 export const HeaderLeft = () => {

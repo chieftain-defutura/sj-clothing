@@ -4,7 +4,7 @@ import { collection, getDocs } from 'firebase/firestore/lite'
 import styled from 'styled-components/native'
 import { db } from '../../../firebase'
 import PremiumCard from './PremiumCard'
-import PremiumDetailsCard, { IPremiumData } from './PremiumDetailsCard'
+import PremiumDetailsCard from './PremiumDetailsCard'
 import PremiumThreeSixtyDegree from './PremiumThreeSixtyDegree'
 import { useNavigation } from '@react-navigation/native'
 

@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
-import { View, Text, Image, Dimensions, StyleSheet, Pressable } from 'react-native'
-import { PremiumCardProps } from '../../constant/types'
+import React from 'react'
+import { View, Image, Dimensions, StyleSheet, Pressable } from 'react-native'
 import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import { SharedElement } from 'react-navigation-shared-element'
 import Animated, { FadeInLeft, FadeOutLeft } from 'react-native-reanimated'
-import PremiumDetailsCard from './PremiumDetailsCard'
 
 const { width, height } = Dimensions.get('window')
 
@@ -32,7 +30,7 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId }
                     source={{
                       uri: data.productImage,
                     }}
-                    style={{ width: width / 2, height: height - 640, resizeMode: 'contain' }}
+                    style={{ width: width / 2.2, height: height - 640, resizeMode: 'contain' }}
                   />
                 </ImageContainer>
               </SharedElement>

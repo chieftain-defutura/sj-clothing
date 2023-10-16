@@ -11,7 +11,6 @@ import {
   TouchableOpacity,
   Share,
 } from 'react-native'
-import { SelectList } from 'react-native-dropdown-select-list'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../styles/theme'
 import { LinearGradient } from 'expo-linear-gradient'
 import LeftArrow from '../../assets/icons/LeftArrow'
@@ -53,11 +52,6 @@ export interface IPremiumData {
   styles: string
   type: string
 }
-// interface IPremiumData {
-//   data: any
-//   setOpenCard: React.Dispatch<React.SetStateAction<boolean>>
-//   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>
-// }
 
 const PremiumDetailsCard: React.FC<any> = ({ data, setOpenCard, setOpenDetails, setSize }) => {
   const navigation = useNavigation()

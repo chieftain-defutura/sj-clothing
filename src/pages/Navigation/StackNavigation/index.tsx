@@ -36,10 +36,11 @@ const StackNavigationRoutes: React.FC = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: 'rgba(191, 148, 228, 0.5)' },
+        headerStyle: { backgroundColor: 'rgba(191, 148, 228, 0.8)' },
         headerLeft: HeaderLeft,
         headerRight: HeaderRight,
         headerTitle: '',
+        headerShadowVisible: false,
       }}
     >
       <Stack.Screen
