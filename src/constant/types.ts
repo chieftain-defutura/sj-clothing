@@ -36,11 +36,9 @@ export interface CartComponentProps {
 }
 
 export interface IPremiumData {
-  detailedFutures: {
-    cloth: string
-    materials: string
-  }[]
+  description: string
   gender: string
+  productVideo: string
   id: string
   normalPrice: string
   offerPrice: string

@@ -33,19 +33,26 @@ const PremiumLevel = () => {
     getData()
   }, [getData])
 
+  const handleBack = () => {
+    setOpenCard(false), setOpenDetails(false), setProductId('')
+  }
   const FilteredData = data?.filter((f) => f.id === productId)
 
   if (!data) return <Text>No Data</Text>
-  console.log(FilteredData)
   return (
     <View>
       {openDetails ? (
-        <PremiumThreeSixtyDegree
-          navigation={navigation}
-          setOpenDetails={setOpenDetails}
-          data={FilteredData}
-          size={isSize}
-        />
+        <View>
+          {FilteredData?.map((item, index) => (
+            <PremiumThreeSixtyDegree
+              key={index}
+              navigation={navigation}
+              setOpenDetails={setOpenDetails}
+              data={item}
+              size={isSize}
+            />
+          ))}
+        </View>
       ) : (
         <View>
           {openCard && (
@@ -54,9 +61,9 @@ const PremiumLevel = () => {
                 <PremiumDetailsCard
                   key={index}
                   data={item}
-                  setOpenCard={setOpenCard}
                   setOpenDetails={setOpenDetails}
                   setSize={setSize}
+                  handleBack={handleBack}
                   isSize={isSize}
                 />
               ))}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Pressable, StyleSheet, Dimensions, Image } from 'react-native'
+import { Pressable, StyleSheet, Dimensions, Image, View } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import LeftArrow from '../../assets/icons/LeftArrow'
@@ -7,31 +7,44 @@ import ThreeSixtyDegree from '../../assets/icons/360-degree'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import CustomButton from '../Button'
 import { gradientOpacityColors } from '../../styles/theme'
-import { IPremiumData } from './PremiumDetailsCard'
 import { addDoc, collection } from 'firebase/firestore/lite'
 import { db } from '../../../firebase'
+import { IPremiumData } from '../../constant/types'
 
 interface IPremiumThreeSixtyDegree {
   navigation: any
+  size: {
+    country: string
+    sizeVarient: {
+      size: string
+      measurement: string
+    }
+  }
+  data: IPremiumData
   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const { width, height } = Dimensions.get('window')
 
-const PremiumThreeSixtyDegree: React.FC<any> = ({ navigation, setOpenDetails, data, size }) => {
+const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
+  navigation,
+  setOpenDetails,
+  data,
+  size,
+}) => {
   const [isPressed, setIsPressed] = useState(false)
 
   const handleSubmit = async () => {
     const docRef = await addDoc(collection(db, 'Posts'), {
       sizes: size,
-      detailedFeatures: [...data[0].detailedFutures],
-      price: data[0].normalPrice,
-      offerPrice: data[0].offerPrice,
+      detailedFeatures: data.description,
+      price: data.normalPrice,
+      offerPrice: data.offerPrice,
       status: 'pending',
       // userId: user?.uid,
       // gender: isGender,
       type: 'Premium-Level',
-      productName: data[0].productName,
+      productName: data.productName,
       orderStatus: {
         orderplaced: {
           createdAt: null,
@@ -67,11 +80,11 @@ const PremiumThreeSixtyDegree: React.FC<any> = ({ navigation, setOpenDetails, da
       entering={SlideInRight.duration(500).delay(200)}
       exiting={SlideOutRight.duration(500).delay(200)}
     >
-      <LinearGradient colors={gradientOpacityColors} style={styles.linearGradient}>
+      <View style={styles.linearGradient}>
         <FlexContent>
           <Pressable
             onPress={() => {
-              navigation.goBack(), setOpenDetails(false)
+              setOpenDetails(false)
             }}
             onPressIn={() => setIsPressed(true)}
             onPressOut={() => setIsPressed(false)}
@@ -90,7 +103,7 @@ const PremiumThreeSixtyDegree: React.FC<any> = ({ navigation, setOpenDetails, da
         <ThreeSixtyDegreeImageWrapper>
           <ThreeSixtyDegreeImage>
             <Image
-              source={{ uri: data[0].productImage }}
+              source={{ uri: data.productImage }}
               style={{
                 resizeMode: 'contain',
                 width: width * 0.9,
@@ -109,7 +122,7 @@ const PremiumThreeSixtyDegree: React.FC<any> = ({ navigation, setOpenDetails, da
             onPress={handleSubmit}
           />
         </ThreeSixtyDegreeImageWrapper>
-      </LinearGradient>
+      </View>
     </Animated.View>
   )
 }

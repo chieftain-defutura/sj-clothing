@@ -14,7 +14,7 @@ interface PlaceOrderModalProps {
 const OrderPlaced: React.FC<PlaceOrderModalProps> = ({ isVisible, onClose }) => {
   const navigation = useNavigation()
   return (
-    <Modal visible={isVisible} animationType='fade' transparent={true}>
+    <Modal visible={isVisible} animationType='fade' onRequestClose={onClose} transparent={true}>
       <OrderPlacedWrapper>
         <OrderPlacedContainer>
           <IconEnd onPress={onClose}>
