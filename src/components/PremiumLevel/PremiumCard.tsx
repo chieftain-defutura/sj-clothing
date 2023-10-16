@@ -5,31 +5,27 @@ import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import { SharedElement } from 'react-navigation-shared-element'
 import Animated, { FadeInLeft, FadeOutLeft } from 'react-native-reanimated'
-import PremiumDetailsCard from '../../pages/Navigation/StackNavigation/Premium/PremiumDetailsCard'
+import PremiumDetailsCard from './PremiumDetailsCard'
 
 const { width, height } = Dimensions.get('window')
 
 interface IPremiumCard {
   data: any
+  setProductId: React.Dispatch<React.SetStateAction<number>>
+  setOpenCard: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const PremiumCard: React.FC<IPremiumCard> = ({ data }) => {
-  const [openCard, setOpenCard] = useState(false)
-
+const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId }) => {
   console.log('dattaas', data)
   return (
-    // <LinearGradient
-    //   // start={{ x: 0, y: 0 }}
-    //   // end={{ x: 0, y: 1 }}
-    //   // colors={['#FFEFFF', '#FFF']}
-    //   colors={gradientOpacityColors}
-    //   style={styles.linearGradient}
-    // >
-    <View>
-      {openCard && <PremiumDetailsCard data={data} />}
+    <View style={{ display: 'flex', flexDirection: 'column' }}>
       <View style={{ marginTop: 30 }}>
         <View>
-          <Pressable onPress={() => setOpenCard(true)}>
+          <Pressable
+            onPress={() => {
+              setOpenCard(true), setProductId(data.id)
+            }}
+          >
             <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>
               <SharedElement id={`test${data.productImage}`}>
                 <ImageContainer>

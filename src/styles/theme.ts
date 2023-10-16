@@ -38,10 +38,10 @@ export const FONT_FAMILY = {
 export const gradientColors = ['#BF94E4', '#D7B4E8', '#ECD1EC', '#F6E5F6', '#CADAF1', '#91B1E1']
 
 export const gradientOpacityColors = [
-  'rgba(191, 148, 228, 0.4)',
-  'rgba(215, 180, 232, 0.4)',
-  'rgba(236, 209, 236, 0.4)',
-  'rgba(246, 229, 246, 0.4)',
-  'rgba(202, 218, 241, 0.4)',
-  'rgba(145, 177, 225, 0.4)',
+  'rgba(191, 148, 228, 0.5)',
+  'rgba(215, 180, 232, 0.5)',
+  'rgba(236, 209, 236, 0.5)',
+  'rgba(246, 229, 246, 0.5)',
+  'rgba(202, 218, 241, 0.5)',
+  'rgba(145, 177, 225, 0.5)',
 ]

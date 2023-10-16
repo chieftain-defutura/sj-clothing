@@ -36,7 +36,7 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
   const [isSelectedStyle, setSelectedStyle] = useState('Round Neck')
   //size
   const [isSize, setSize] = useState({
-    country: 'India',
+    country: 'Canada',
     sizeVarient: { size: '', measurement: '' },
   })
   //color

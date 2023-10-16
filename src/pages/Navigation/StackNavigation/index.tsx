@@ -16,10 +16,10 @@ import TabNavigationRoutes from '../TabNavigation'
 import OrderPlaced from '../../../screens/OrderPlaced'
 import PostCreation from '../../../components/PostCreater'
 import { HeaderLeft, HeaderRight } from '../../../components/Header'
-import PremiumThreeSixtyDegree from './Premium/PremiumThreeSixtyDegree'
+import PremiumThreeSixtyDegree from '../../../components/PremiumLevel/PremiumThreeSixtyDegree'
 import PremiumBuyNow from './Premium/PremiumBuyNow'
 import Premium from '../TabNavigation/Premium'
-import PremiumDetailsCard from './Premium/PremiumDetailsCard'
+import PremiumDetailsCard from '../../../components/PremiumLevel/PremiumDetailsCard'
 import MyPosts from './Account/MyPosts'
 import PlayVideo from '../../../components/PremiumComponent/PlayVideo'
 import EditProfile from './Account/EditProfile'
@@ -36,7 +36,7 @@ const StackNavigationRoutes: React.FC = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: '#fff' },
+        headerStyle: { backgroundColor: 'rgba(191, 148, 228, 0.5)' },
         headerLeft: HeaderLeft,
         headerRight: HeaderRight,
         headerTitle: '',

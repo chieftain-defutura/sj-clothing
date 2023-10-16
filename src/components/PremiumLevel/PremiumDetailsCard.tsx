@@ -11,48 +11,58 @@ import {
   TouchableOpacity,
   Share,
 } from 'react-native'
-
-import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../../styles/theme'
+import { SelectList } from 'react-native-dropdown-select-list'
+import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../styles/theme'
 import { LinearGradient } from 'expo-linear-gradient'
-import LeftArrow from '../../../../assets/icons/LeftArrow'
-import ShareArrow from '../../../../assets/icons/ShareArrow'
-import Animated, { FadeInUp, FadeOut } from 'react-native-reanimated'
-import PlayCircleIcon from '../../../../assets/icons/PremiumPageIcon/PlayCircle'
+import LeftArrow from '../../assets/icons/LeftArrow'
+import ShareArrow from '../../assets/icons/ShareArrow'
+import Animated, {
+  FadeInLeft,
+  FadeInRight,
+  FadeInUp,
+  FadeOut,
+  FadeOutLeft,
+  FadeOutRight,
+} from 'react-native-reanimated'
+import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
 import { Svg, Circle } from 'react-native-svg'
-import CustomButton from '../../../../components/Button'
+import CustomButton from '../Button'
 
 const { height, width } = Dimensions.get('window')
 
-// export interface IPremiumData {
-//   detailedFeatures: {
-//     cloth: string
-//     materials: string
-//   }[]
-//   id: string
-//   normalPrice: string
-//   offerPrice: string
-//   productImage: string
-//   productName: string
-//   sizes: {
-//     country: string
-//     gender: string
-//     sizeVarients: {
-//       measurement: number
-//       show: boolean
-//       size: string
-//     }
-//   }[]
-//   styles: string
-//   type: string
-// }
-interface IPremiumData {
-  data: any
+export interface IPremiumData {
+  detailedFeatures: {
+    cloth: string
+    materials: string
+  }[]
+  id: string
+  normalPrice: string
+  offerPrice: string
+  productImage: string
+  productName: string
+  sizes: {
+    country: string
+    gender: string
+    sizeVarients: {
+      measurement: number
+      show: boolean
+      size: string
+    }
+  }[]
+  styles: string
+  type: string
 }
+// interface IPremiumData {
+//   data: any
+//   setOpenCard: React.Dispatch<React.SetStateAction<boolean>>
+//   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>
+// }
 
-const PremiumDetailsCard: React.FC<IPremiumData> = ({ data }) => {
+const PremiumDetailsCard: React.FC<any> = ({ data, setOpenCard, setOpenDetails, setSize }) => {
   const navigation = useNavigation()
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
+  const [countryData, setCountryData] = useState('Canada')
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
     try {
@@ -70,16 +80,9 @@ const PremiumDetailsCard: React.FC<IPremiumData> = ({ data }) => {
       console.log(error)
     }
   }
-  // const getCardPairs = (data: any[]) => {
-  //   const pairs = []
-  //   for (let i = 0; i < data.length; i += 2) {
-  //     pairs.push(data.slice(i, i + 2))
-  //   }
-  //   return pairs
-  // }
-
-  // const cardPairs = getCardPairs(PremiumData)
-
+  const Country = data[0].sizes.map((f: any) => f.country)
+  const Sizes = data[0].sizes.filter((f: any) => f.country === countryData).map((f: any) => f.sizes)
+  console.log(Country)
   return (
     <LinearGradient colors={gradientOpacityColors} style={{ flex: 1, width: width, zIndex: 6 }}>
       <ScrollView>
@@ -87,7 +90,7 @@ const PremiumDetailsCard: React.FC<IPremiumData> = ({ data }) => {
           <FlexContent>
             <Pressable
               onPress={() => {
-                navigation.goBack()
+                navigation.goBack(), setOpenCard(false)
               }}
               onPressIn={() => setIsPressed(true)}
               onPressOut={() => setIsPressed(false)}
@@ -106,87 +109,98 @@ const PremiumDetailsCard: React.FC<IPremiumData> = ({ data }) => {
               <ShareArrow width={24} height={24} />
             </Pressable>
           </FlexContent>
-          {/* {PremiumDetailsData.map((f, index) => {
-            return (
-              <PremiumDetailsWrapper key={index}>
-                <PremiumDetailsContent>
-                  <Animated.View
-                    entering={FadeInLeft.duration(800).delay(200)}
-                    exiting={FadeOutLeft}
-                  >
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('PremiumThreeSixtyDegreePage')}
-                    >
-                      <Image
-                        source={f.image}
-                        style={{ width: width * 0.6, height: height * 0.4, resizeMode: 'cover' }}
-                      />
-                    </TouchableOpacity>
-                  </Animated.View>
-                  <Animated.View
-                    entering={FadeInRight.duration(800).delay(200)}
-                    exiting={FadeOutRight}
-                  >
-                    <View>
-                      <ProductText>{f.product}</ProductText>
-                      <ProductName>{f.productName}</ProductName>
-                      <View style={{ marginVertical: 16 }}>
-                        <ProductText>{f.size}</ProductText>
-                        <ProductName>{f.productSize}</ProductName>
-                      </View>
-                      <View style={{ marginBottom: 16 }}>
+
+          <PremiumDetailsWrapper>
+            <PremiumDetailsContent>
+              <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>
+                <TouchableOpacity onPress={() => setOpenDetails(true)}>
+                  <Image
+                    source={{ uri: data[0].productImage }}
+                    style={{ width: width / 2, height: height * 0.5, resizeMode: 'contain' }}
+                  />
+                </TouchableOpacity>
+              </Animated.View>
+              <Animated.View entering={FadeInRight.duration(800).delay(200)} exiting={FadeOutRight}>
+                <View>
+                  {/* <ProductText>{f.product}</ProductText> */}
+                  <ProductName>{data[0].productName}</ProductName>
+                  <View style={{ marginVertical: 16 }}>
+                    {/* <ProductText>{f.size}</ProductText> */}
+                    {/* <ProductName>{f.productSize}</ProductName> */}
+                  </View>
+                  {/* <View style={{ marginBottom: 16 }}>
                         <ProductText>{f.material}</ProductText>
                         <ProductName>{f.wool}</ProductName>
                         <ProductName>{f.mohair}</ProductName>
-                      </View>
-                      <ProductText>{f.price}</ProductText>
-                      <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          gap: 6,
-                          alignItems: 'center',
-                        }}
-                      >
-                        <OldPriceText>
-                          {f.oldPrice} {f.inr}
-                        </OldPriceText>
-                        <View>
-                          <ProductName>
-                            {f.newPrice} {f.inr}
-                          </ProductName>
-                        </View>
-                      </View>
-                      <WatchVideoBorder onPress={() => navigation.navigate('PlayVideo')}>
-                        <PlayCircleIcon width={12} height={12} />
-                        <WatchVideoText>Watch video</WatchVideoText>
-                      </WatchVideoBorder>
-                    </View>
-                  </Animated.View>
-                </PremiumDetailsContent>
-              
-
-                {showDetails && (
-                  <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
+                      </View> */}
+                  <ProductText>{data[0].normalPrice}</ProductText>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      gap: 6,
+                      alignItems: 'center',
+                    }}
+                  >
+                    <OldPriceText>{data[0].normalPrice}INR</OldPriceText>
                     <View>
-                      <DetailsHeading>Detailed features</DetailsHeading>
-                      {f.detailsPara.map((para, paraIndex) => (
-                        <View
-                          key={paraIndex}
-                          style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}
-                        >
-                          <Svg width={8} height={8}>
-                            <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
-                          </Svg>
-                          <DetailsParaText style={{ marginLeft: 8 }}>{para}</DetailsParaText>
-                        </View>
-                      ))}
+                      <ProductName>{data[0].offerPrice}INR</ProductName>
                     </View>
-                  </Animated.View>
-                )}
-              </PremiumDetailsWrapper>
-            )
-          })} */}
+                  </View>
+                  <WatchVideoBorder onPress={() => navigation.navigate('PlayVideo')}>
+                    <PlayCircleIcon width={12} height={12} />
+                    <WatchVideoText>Watch video</WatchVideoText>
+                  </WatchVideoBorder>
+                </View>
+              </Animated.View>
+            </PremiumDetailsContent>
+
+            {showDetails && (
+              <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
+                <View>
+                  <DetailsHeading>Detailed features</DetailsHeading>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+                    <Svg width={8} height={8}>
+                      <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
+                    </Svg>
+                    <DetailsParaText style={{ marginLeft: 8 }}>para</DetailsParaText>
+                  </View>
+                </View>
+              </Animated.View>
+            )}
+          </PremiumDetailsWrapper>
+
+          {/* <View
+            style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingVertical: 12,
+            }}
+          >
+            <SelectList
+              setSelected={(val: any) => console.log(val)}
+              data={Country}
+              save='value'
+              boxStyles={{ borderColor: '#E5CEF5', borderWidth: 1, borderRadius: 5, width: 170 }}
+              inputStyles={{ color: '#462D85', fontSize: 14, fontFamily: 'Gilroy-Medium' }}
+              dropdownStyles={{ borderColor: '#E5CEF5', borderWidth: 1 }}
+              dropdownTextStyles={{ color: '#462D85' }}
+            />
+
+
+            <SelectList
+              setSelected={(val: any) => setSelected(val)}
+              data={IndiaSizes}
+              save='value'
+              boxStyles={{ borderColor: '#E5CEF5', borderWidth: 1, borderRadius: 5, width: 170 }}
+              inputStyles={{ color: '#462D85', fontSize: 14, fontFamily: 'Gilroy-Medium' }}
+              dropdownStyles={{ borderColor: '#E5CEF5', borderWidth: 1 }}
+              dropdownTextStyles={{ color: '#462D85' }}
+              defaultOption={{ key: '1', value: 'S     -   28' }}
+            />
+          </View> */}
           <Animated.View entering={FadeInUp.duration(2000)} exiting={FadeOut}>
             <Btns>
               {showDetails ? (
@@ -268,7 +282,7 @@ const PremiumDetailsContent = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   margin-bottom: 8px;
   margin-top: -20px;
 `

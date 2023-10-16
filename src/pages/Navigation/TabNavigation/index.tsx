@@ -16,18 +16,18 @@ const Tab = createBottomTabNavigator()
 
 const TabNavigationRoutes: React.FC = () => {
   const opacityValue = useSharedValue(2)
-
+  //
   return (
     <Tab.Navigator
       initialRouteName='Home'
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: COLORS.textClr,
+          backgroundColor: '#c0d3ee',
           paddingVertical: 16,
           borderTopWidth: 0,
-          height: 60,
+          height: 62,
         },
-        unmountOnBlur: true,
+        unmountOnBlur: false,
       }}
     >
       <Tab.Screen

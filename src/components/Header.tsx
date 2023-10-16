@@ -15,7 +15,10 @@ export const HeaderLeft = () => {
       <Pressable onPress={() => navigation.navigate('Stack')}>
         <TShirtImg source={require('../assets/logo/HeaderLogo.png')} />
       </Pressable>
-      <LogoText>SPRINKLE</LogoText>
+      <View>
+        <LogoText>SPRINKLE</LogoText>
+        <NadarText>NADAR</NadarText>
+      </View>
     </LogoContent>
   )
 }
@@ -42,7 +45,7 @@ export const HeaderRight = () => {
       <Pressable onPress={goToCart}>
         <ShoppingCart height={24} width={24} />
       </Pressable>
-      <View>
+      {/* <View>
         <Pressable onPress={toggleNotification}>
           {isNotificationActive ? (
             <NotificationActive height={24} width={24} />
@@ -50,7 +53,7 @@ export const HeaderRight = () => {
             <NotificationInActive height={24} width={24} />
           )}
         </Pressable>
-      </View>
+      </View> */}
     </Icons>
   )
 }
@@ -59,8 +62,9 @@ const LogoContent = styled.View`
   display: flex;
   align-items: center;
   flex-direction: row;
+  justify-content: center;
   gap: 4px;
-  margin-left: 16px;
+  margin-left: 140px;
   padding-vertical: 12px;
 `
 
@@ -70,8 +74,16 @@ const TShirtImg = styled.Image`
   object-fit: contain;
 `
 
+const NadarText = styled.Text`
+  letter-spacing: 5.5px;
+  font-size: 12px;
+  color: ${COLORS.iconsHighlightClr};
+  font-family: Gilroy-Medium;
+  margin-top: 1px;
+`
+
 const LogoText = styled.Text`
-  letter-spacing: 5.6px;
+  letter-spacing: 5.4px;
   font-size: 14px;
   color: ${COLORS.iconsHighlightClr};
   font-family: Gilroy-Medium;

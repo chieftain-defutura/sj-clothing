@@ -27,7 +27,7 @@ const PostCreation: React.FC<IPostCreation> = () => {
   const [isPostCreationSteps, setPostCreationSteps] = useState(1)
   const [isDropDown, setDropDown] = useState(false)
 
-  const [isGender, setGender] = useState('Male')
+  const [isGender, setGender] = useState('MALE')
   //data
   const [data, setData] = useState<any[]>()
 
@@ -35,7 +35,7 @@ const PostCreation: React.FC<IPostCreation> = () => {
   const [isSelectedStyle, setSelectedStyle] = useState('Round Neck')
   //size
   const [isSize, setSize] = useState({
-    country: 'India',
+    country: 'Canada',
     sizeVarient: { size: '', measurement: '' },
   })
   //color

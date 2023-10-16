@@ -118,7 +118,6 @@ const SelectSize: React.FC<ISelectSize> = ({
       sizeVarient: {
         measurement: measurement,
         size: size,
-        unit: 'cm',
       },
     }))
     handleIncreaseSteps()
