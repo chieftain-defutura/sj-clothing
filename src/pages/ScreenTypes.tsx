@@ -16,7 +16,7 @@ export type RootStackParamList = {
   Home: undefined
   MidLevel: undefined
   Premium: undefined
-  Account: { dName: string }
+  Account: { dName: string; profileImg: string | null }
   Header: undefined
   TrackOrder: undefined
 }

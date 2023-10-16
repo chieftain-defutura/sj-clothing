@@ -2,6 +2,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -68,7 +69,7 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress }) => {
   return (
     <KeyboardAvoidingView style={styles.flexBox} enabled={true} behavior={'padding'}>
       <TouchableWithoutFeedback style={styles.flexBox} onPress={() => Keyboard.dismiss()}>
-        <View>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View>
             <View style={styles.currentLocation}>
               <View
@@ -147,11 +148,14 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress }) => {
                 variant='primary'
                 text='Save address'
                 leftIcon={<TickIcon width={16} height={16} />}
-                onPress={onEditPress}
+                onPress={() => {
+                  console.log('asd')
+                  onEditPress()
+                }}
               />
             </View>
           </View>
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   )

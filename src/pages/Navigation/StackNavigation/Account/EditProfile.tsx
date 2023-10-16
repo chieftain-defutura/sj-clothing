@@ -40,7 +40,8 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
         profile: image,
       })
     } else console.log('error')
-    navigation.navigate('Account', { dName: values.fullName })
+    navigation.navigate('Account', { dName: values.fullName, profileImg: image })
+    console.log('navigated ', { dName: values.fullName, profileImg: image })
   }
 
   console.log('image', image)
