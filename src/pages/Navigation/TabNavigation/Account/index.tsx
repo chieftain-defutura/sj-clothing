@@ -31,6 +31,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const user = userStore((state) => state.user)
   const isFocused = useIsFocused()
+  const [image, setImage] = useState<string | null>(null)
   const { updateUser, updateProfile, profile, displayName, updateName, name } = userStore()
 
   const fetchDataFromFirestore = useCallback(async () => {
@@ -50,6 +51,15 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchDataFromFirestore()
+    if (route.params) {
+      if (route.params.profileImg) {
+        setImage(profile)
+      } else {
+        setImage(profile)
+      }
+    } else {
+      setImage(profile)
+    }
   }, [fetchDataFromFirestore])
 
   const handleCustomerCarePress = () => {
@@ -86,7 +96,17 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
           <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
             <UserWrapper style={{ width: width, height: height / 2.5 }}>
               <NotUserContent>
-                {profile ? (
+                {route.params?.profileImg ? (
+                  <Image
+                    source={{ uri: route.params.profileImg }}
+                    style={{
+                      width: width,
+                      height: height / 2.5,
+                      borderBottomLeftRadius: 50,
+                      borderBottomRightRadius: 50,
+                    }}
+                  />
+                ) : profile ? (
                   <Image
                     source={{ uri: profile }}
                     style={{
@@ -100,7 +120,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                   <NotUserIcon width={128} height={128} />
                 )}
               </NotUserContent>
-
               <EditContent onPress={() => navigation.navigate('EditProfile')}>
                 <LinearGradient
                   start={{ x: 0, y: 0 }}

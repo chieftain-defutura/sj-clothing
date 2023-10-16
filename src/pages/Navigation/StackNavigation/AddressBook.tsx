@@ -85,7 +85,6 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
           fontSize={16}
         />
       </SelectAddressBtn>
-
       <Animated.View style={[styles.parent, editAnimationStyle]}>
         <View style={styles.cancelContainer}>
           <Pressable onPress={handleClose}>
@@ -97,6 +96,11 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
             onAddPress={() => {
               setDisplay(2)
               changeHeight('77%')
+            }}
+            onEditPress={() => {
+              console.log('asdasd')
+              setDisplay(3)
+              changeHeight('75%')
             }}
           />
         )}
@@ -111,6 +115,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
         {showDisplay == 3 && (
           <EditAddress
             onEditPress={() => {
+              console.log('asdasd')
               setDisplay(3)
               changeHeight('52%')
             }}
