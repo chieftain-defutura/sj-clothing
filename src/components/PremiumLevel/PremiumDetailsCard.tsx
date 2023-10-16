@@ -11,8 +11,7 @@ import {
   TouchableOpacity,
   Share,
 } from 'react-native'
-import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../styles/theme'
-import { LinearGradient } from 'expo-linear-gradient'
+import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import LeftArrow from '../../assets/icons/LeftArrow'
 import ShareArrow from '../../assets/icons/ShareArrow'
 import Animated, {
@@ -22,11 +21,11 @@ import Animated, {
   FadeOut,
   FadeOutLeft,
   FadeOutRight,
+  FadeOutUp,
 } from 'react-native-reanimated'
 import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
 import { Svg, Circle } from 'react-native-svg'
 import CustomButton from '../Button'
-import { Text } from 'react-native'
 import { IPremiumData } from '../../constant/types'
 import ChevronLeft from '../../assets/icons/PremiumPageIcon/ChevronLeftIcon'
 import PremiumVideo from '../../screens/PremiumVideo'
@@ -143,15 +142,15 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                 <TouchableOpacity onPress={() => setOpenDetails(true)}>
                   <Image
                     source={{ uri: data.productImage }}
-                    style={{ width: width / 2, height: height * 0.5, resizeMode: 'contain' }}
+                    style={{ width: width / 1.8, height: height * 0.4, resizeMode: 'contain' }}
                   />
                 </TouchableOpacity>
               </Animated.View>
               <Animated.View entering={FadeInRight.duration(800).delay(200)} exiting={FadeOutRight}>
-                <View>
+                <View style={{ marginRight: 26 }}>
                   <ProductText>product</ProductText>
                   <ProductName>{data.productName}</ProductName>
-                  <View style={{ marginVertical: 16 }}>
+                  <View style={{ marginVertical: 10 }}>
                     {/* <ProductText>{f.size}</ProductText> */}
                     {/* <ProductName>{f.productSize}</ProductName> */}
                   </View>
@@ -170,10 +169,10 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                     }}
                   >
                     {!data.offerPrice ? (
-                      <>
+                      <View>
                         <ProductText>price</ProductText>
                         <ProductName>{data.normalPrice}INR</ProductName>
-                      </>
+                      </View>
                     ) : (
                       <>
                         <OldPriceText>{data.normalPrice}INR</OldPriceText>
@@ -200,50 +199,75 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
               </Animated.View>
             </PremiumDetailsContent>
 
-            <View>
-              {data?.sizes.map((f: any, index: number) => (
-                <Pressable
-                  key={index}
-                  onPress={() =>
-                    setSize((prevState) => ({
-                      ...prevState,
-                      country: f.country,
-                    }))
-                  }
-                >
-                  <Text>{f.country}</Text>
-                </Pressable>
-              ))}
-            </View>
-
-            {isSize.country ? (
-              <View>
-                {Sizes[0].map((f: any, index: number) => (
-                  <Pressable
-                    key={index}
-                    onPress={() =>
-                      setSize((prevState) => ({
-                        ...prevState,
-                        sizeVarient: {
-                          measurement: f.measurement,
-                          size: f.size,
-                        },
-                      }))
-                    }
-                  >
-                    <Text>
-                      {f.size}-{f.measurement}
-                    </Text>
-                  </Pressable>
-                ))}
+            <DropDownContainer>
+              <View style={{ width: 158 }}>
+                <SelectContent onPress={toggleDropdown}>
+                  <SelectText>{selectedCountry || 'Select a country'}</SelectText>
+                  <ChevronLeft width={16} height={16} />
+                </SelectContent>
+                {isDropdownOpen && (
+                  <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
+                    <SelectDropDownList>
+                      {data?.sizes.map((f: any, index: number) => (
+                        <Pressable
+                          key={index}
+                          onPress={() => {
+                            setSize((prevState) => ({
+                              ...prevState,
+                              country: f.country,
+                            }))
+                            handleSelectCountry(f.country)
+                          }}
+                        >
+                          <SelectListText>{f.country}</SelectListText>
+                        </Pressable>
+                      ))}
+                    </SelectDropDownList>
+                  </Animated.View>
+                )}
               </View>
-            ) : (
-              <Text>Select region</Text>
-            )}
+              <View style={{ width: 158 }}>
+                <SelectContent onPress={toggleDropdownSizes}>
+                  <SelectText>{selectedSizes || 'Select a Sizes'}</SelectText>
+                  <ChevronLeft width={16} height={16} />
+                </SelectContent>
+                {isDropdownSizesOpen && (
+                  <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
+                    <SelectDropDownList>
+                      {isSize.country ? (
+                        <View>
+                          {Sizes[0].map((f: any, index: number) => (
+                            <Pressable
+                              key={index}
+                              onPress={() => {
+                                setSize((prevState) => ({
+                                  ...prevState,
+                                  sizeVarient: {
+                                    measurement: f.measurement,
+                                    size: f.size,
+                                  },
+                                }))
+                                handleSelectSizes(f.sizes)
+                              }}
+                            >
+                              <SelectListText>
+                                {f.size} - {f.measurement}
+                              </SelectListText>
+                            </Pressable>
+                          ))}
+                        </View>
+                      ) : (
+                        <SelectListText>Select region</SelectListText>
+                      )}
+                    </SelectDropDownList>
+                  </Animated.View>
+                )}
+              </View>
+            </DropDownContainer>
 
             {showDetails && (
               <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
-                <View>
+                <View style={{ marginTop: 14 }}>
                   <DetailsHeading>Detailed features</DetailsHeading>
                   {Description.map((f, index) => (
                     <View
@@ -300,17 +324,22 @@ const CardPairContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
 `
-const SelectList = styled.View`
-  border-color: #e5cef5;
-  border-radius: 5px;
-  border-width: 1px;
-  margin-top: 8px;
-  padding: 12px;
+
+const DropDownContainer = styled.View`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-horizontal: 16px;
 `
 
-const CountryWrapper = styled.View`
-  width: 170px;
-  position: relative;
+const SelectDropDownList = styled.View`
+  border-color: #e5cef5;
+  border-width: 1px;
+  border-radius: 5px;
+  margin-top: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
 `
 
 const SelectText = styled.Text`
@@ -322,15 +351,10 @@ const SelectListText = styled.Text`
   font-size: 14px;
   font-family: ${FONT_FAMILY.ArvoRegular};
   color: ${COLORS.iconsHighlightClr};
-  padding-bottom: 12px;
+  padding-horizontal: 12px;
+  padding-vertical: 7px;
 `
 
-const DropDownWrapper = styled.View`
-  display: flex;
-  align-items: flex-start;
-  flex-direction: row;
-  justify-content: space-between;
-`
 const SelectContent = styled.Pressable`
   border-color: #e5cef5;
   border-width: 1px;
@@ -387,8 +411,6 @@ const PremiumDetailsContent = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
-  margin-top: -20px;
 `
 
 const DetailsParaText = styled.Text`
@@ -396,11 +418,12 @@ const DetailsParaText = styled.Text`
   color: rgba(70, 45, 133, 0.6);
   letter-spacing: -0.24px;
   line-height: 16px;
+  text-transform: capitalize;
   font-family: ${FONT_FAMILY.GilroyRegular};
 `
 
 const ProductText = styled.Text`
-  font-size: 10px;
+  font-size: 12px;
   font-family: ${FONT_FAMILY.MontserratRegular};
   color: ${COLORS.SecondaryTwo};
 `
