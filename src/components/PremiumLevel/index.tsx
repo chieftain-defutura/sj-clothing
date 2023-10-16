@@ -16,7 +16,7 @@ const PremiumLevel = () => {
   const [productId, setProductId] = useState('')
   const [openDetails, setOpenDetails] = useState(false)
   const [isSize, setSize] = useState({
-    country: 'India',
+    country: '',
     sizeVarient: { size: '', measurement: '' },
   })
 
@@ -36,7 +36,7 @@ const PremiumLevel = () => {
   const FilteredData = data?.filter((f) => f.id === productId)
 
   if (!data) return <Text>No Data</Text>
-
+  console.log(FilteredData)
   return (
     <View>
       {openDetails ? (
@@ -48,14 +48,18 @@ const PremiumLevel = () => {
         />
       ) : (
         <View>
-          {openCard && FilteredData && (
+          {openCard && (
             <View>
-              <PremiumDetailsCard
-                data={FilteredData[0]}
-                setOpenCard={setOpenCard}
-                setOpenDetails={setOpenDetails}
-                setSize={setSize}
-              />
+              {FilteredData?.map((item, index) => (
+                <PremiumDetailsCard
+                  key={index}
+                  data={item}
+                  setOpenCard={setOpenCard}
+                  setOpenDetails={setOpenDetails}
+                  setSize={setSize}
+                  isSize={isSize}
+                />
+              ))}
             </View>
           )}
           <FlatList
@@ -64,7 +68,12 @@ const PremiumLevel = () => {
             renderItem={({ item, index }) => (
               <View key={index} style={{ flex: 1 }}>
                 <CardPairContainer>
-                  <PremiumCard data={item} setOpenCard={setOpenCard} setProductId={setProductId} />
+                  <PremiumCard
+                    data={item}
+                    setSize={setSize}
+                    setOpenCard={setOpenCard}
+                    setProductId={setProductId}
+                  />
                 </CardPairContainer>
               </View>
             )}

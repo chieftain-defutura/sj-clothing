@@ -10,18 +10,32 @@ const { width, height } = Dimensions.get('window')
 
 interface IPremiumCard {
   data: IPremiumData
+  setSize: React.Dispatch<
+    React.SetStateAction<{
+      country: string
+      sizeVarient: {
+        size: string
+        measurement: string
+      }
+    }>
+  >
   setProductId: React.Dispatch<React.SetStateAction<string>>
   setOpenCard: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId }) => {
+const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, setSize }) => {
   return (
     <View style={{ display: 'flex', flexDirection: 'column' }}>
       <View style={{ marginTop: 30 }}>
         <View>
           <Pressable
             onPress={() => {
-              setOpenCard(true), setProductId(data.id)
+              setOpenCard(true),
+                setProductId(data.id),
+                setSize((prevState) => ({
+                  ...prevState,
+                  country: '',
+                }))
             }}
           >
             <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>

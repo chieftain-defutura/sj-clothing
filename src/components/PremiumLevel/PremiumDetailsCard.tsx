@@ -33,6 +33,13 @@ const { height, width } = Dimensions.get('window')
 
 interface IPremiumDetailsCard {
   data: IPremiumData
+  isSize: {
+    country: string
+    sizeVarient: {
+      size: string
+      measurement: string
+    }
+  }
   setSize: React.Dispatch<
     React.SetStateAction<{
       country: string
@@ -51,11 +58,12 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   setOpenCard,
   setOpenDetails,
   setSize,
+  isSize,
 }) => {
   const navigation = useNavigation()
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
-  const [countryData, setCountryData] = useState('India')
+
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
     try {
@@ -73,18 +81,18 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
       console.log(error)
     }
   }
-  const Country = data.sizes.filter((f: any) => f.gender === 'MALE').map((f: any) => f.country)
-  const Sizes = data.sizes
-    .filter((f: any) => f.country === countryData)
+
+  const Sizes = data?.sizes
+    .filter((f: any) => f.country === isSize.country)
     .map((f: any) => f.sizeVarients)
   return (
-    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1, width: width, zIndex: 6 }}>
+    <View style={{ flex: 1, width: width, zIndex: 6 }}>
       <ScrollView>
         <View style={styles.linearGradient}>
           <FlexContent>
             <Pressable
               onPress={() => {
-                navigation.goBack(), setOpenCard(false)
+                navigation.goBack(), setOpenCard(false), setOpenDetails(false)
               }}
               onPressIn={() => setIsPressed(true)}
               onPressOut={() => setIsPressed(false)}
@@ -127,7 +135,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                         <ProductName>{f.wool}</ProductName>
                         <ProductName>{f.mohair}</ProductName>
                       </View> */}
-                  <ProductText>{data.normalPrice}</ProductText>
+                  {/* <ProductText>{data.normalPrice}</ProductText> */}
                   <View
                     style={{
                       display: 'flex',
@@ -165,22 +173,45 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
           </PremiumDetailsWrapper>
 
           <View>
-            {data.sizes.map((f: any, index: number) => (
-              <Pressable key={index} onPress={() => setCountryData(f.country)}>
+            {data?.sizes.map((f: any, index: number) => (
+              <Pressable
+                key={index}
+                onPress={() =>
+                  setSize((prevState) => ({
+                    ...prevState,
+                    country: f.country,
+                  }))
+                }
+              >
                 <Text>{f.country}</Text>
               </Pressable>
             ))}
           </View>
 
-          <View>
-            {Sizes[0].map((f: any, index: number) => (
-              <Pressable key={index}>
-                <Text>
-                  {f.size}-{f.measurement}
-                </Text>
-              </Pressable>
-            ))}
-          </View>
+          {isSize.country ? (
+            <View>
+              {Sizes[0].map((f: any, index: number) => (
+                <Pressable
+                  key={index}
+                  onPress={() =>
+                    setSize((prevState) => ({
+                      ...prevState,
+                      sizeVarient: {
+                        measurement: f.measurement,
+                        size: f.size,
+                      },
+                    }))
+                  }
+                >
+                  <Text>
+                    {f.size}-{f.measurement}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          ) : (
+            <Text>Select region</Text>
+          )}
 
           <Animated.View entering={FadeInUp.duration(2000)} exiting={FadeOut}>
             <Btns>
@@ -204,7 +235,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
           </Animated.View>
         </View>
       </ScrollView>
-    </LinearGradient>
+    </View>
   )
 }
 
