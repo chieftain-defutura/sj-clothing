@@ -34,3 +34,27 @@ export interface CartComponentProps {
   closedItems: number[]
   handleClose: (index: number) => void
 }
+
+export interface IPremiumData {
+  detailedFutures: {
+    cloth: string
+    materials: string
+  }[]
+  gender: string
+  id: string
+  normalPrice: string
+  offerPrice: string
+  productImage: string
+  productName: string
+  sizes: {
+    country: string
+    gender: string
+    sizeVarients: {
+      measurement: number
+      show: boolean
+      size: string
+    }
+  }[]
+  styles: string
+  type: string
+}

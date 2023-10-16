@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Image, Dimensions, StyleSheet, Pressable } from 'react-native'
+import { IPremiumData } from '../../constant/types'
 import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import { SharedElement } from 'react-navigation-shared-element'
@@ -8,8 +9,8 @@ import Animated, { FadeInLeft, FadeOutLeft } from 'react-native-reanimated'
 const { width, height } = Dimensions.get('window')
 
 interface IPremiumCard {
-  data: any
-  setProductId: React.Dispatch<React.SetStateAction<number>>
+  data: IPremiumData
+  setProductId: React.Dispatch<React.SetStateAction<string>>
   setOpenCard: React.Dispatch<React.SetStateAction<boolean>>
 }
 
