@@ -4,15 +4,16 @@ import { collection, getDocs } from 'firebase/firestore/lite'
 import styled from 'styled-components/native'
 import { db } from '../../../firebase'
 import PremiumCard from './PremiumCard'
-import PremiumDetailsCard, { IPremiumData } from './PremiumDetailsCard'
+import PremiumDetailsCard from './PremiumDetailsCard'
 import PremiumThreeSixtyDegree from './PremiumThreeSixtyDegree'
 import { useNavigation } from '@react-navigation/native'
+import { IPremiumData } from '../../constant/types'
 
 const PremiumLevel = () => {
   const navigation = useNavigation()
-  const [data, setData] = useState<any[]>()
+  const [data, setData] = useState<IPremiumData[]>()
   const [openCard, setOpenCard] = useState(false)
-  const [productId, setProductId] = useState(0)
+  const [productId, setProductId] = useState('')
   const [openDetails, setOpenDetails] = useState(false)
   const [isSize, setSize] = useState({
     country: 'India',
@@ -34,7 +35,8 @@ const PremiumLevel = () => {
 
   const FilteredData = data?.filter((f) => f.id === productId)
 
-  if (!data && !FilteredData) return <Text>No Data</Text>
+  if (!data) return <Text>No Data</Text>
+
   return (
     <View>
       {openDetails ? (
@@ -46,10 +48,10 @@ const PremiumLevel = () => {
         />
       ) : (
         <View>
-          {openCard && (
+          {openCard && FilteredData && (
             <View>
               <PremiumDetailsCard
-                data={FilteredData}
+                data={FilteredData[0]}
                 setOpenCard={setOpenCard}
                 setOpenDetails={setOpenDetails}
                 setSize={setSize}
@@ -57,7 +59,7 @@ const PremiumLevel = () => {
             </View>
           )}
           <FlatList
-            data={data}
+            data={data.filter((f) => f.id !== productId)}
             numColumns={2}
             renderItem={({ item, index }) => (
               <View key={index} style={{ flex: 1 }}>

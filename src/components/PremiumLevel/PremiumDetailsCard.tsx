@@ -28,38 +28,31 @@ import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
 import { Svg, Circle } from 'react-native-svg'
 import CustomButton from '../Button'
 import { Text } from 'react-native'
+import { IPremiumData } from '../../constant/types'
 
 const { height, width } = Dimensions.get('window')
 
-export interface IPremiumData {
-  detailedFeatures: {
-    cloth: string
-    materials: string
-  }[]
-  id: string
-  normalPrice: string
-  offerPrice: string
-  productImage: string
-  productName: string
-  sizes: {
-    country: string
-    gender: string
-    sizeVarients: {
-      measurement: number
-      show: boolean
-      size: string
-    }
-  }[]
-  styles: string
-  type: string
+interface IPremiumDetailsCard {
+  data: IPremiumData
+  setSize: React.Dispatch<
+    React.SetStateAction<{
+      country: string
+      sizeVarient: {
+        size: string
+        measurement: string
+      }
+    }>
+  >
+  setOpenCard: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>
 }
-// interface IPremiumData {
-//   data: any
-//   setOpenCard: React.Dispatch<React.SetStateAction<boolean>>
-//   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>
-// }
 
-const PremiumDetailsCard: React.FC<any> = ({ data, setOpenCard, setOpenDetails, setSize }) => {
+const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
+  data,
+  setOpenCard,
+  setOpenDetails,
+  setSize,
+}) => {
   const navigation = useNavigation()
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
@@ -81,11 +74,10 @@ const PremiumDetailsCard: React.FC<any> = ({ data, setOpenCard, setOpenDetails, 
       console.log(error)
     }
   }
-  const Country = data[0].sizes.filter((f: any) => f.gender === 'MALE').map((f: any) => f.country)
-  const Sizes = data[0].sizes
+  const Country = data.sizes.filter((f: any) => f.gender === 'MALE').map((f: any) => f.country)
+  const Sizes = data.sizes
     .filter((f: any) => f.country === countryData)
     .map((f: any) => f.sizeVarients)
-  console.log('Country', Sizes)
   return (
     <LinearGradient colors={gradientOpacityColors} style={{ flex: 1, width: width, zIndex: 6 }}>
       <ScrollView>
@@ -118,7 +110,7 @@ const PremiumDetailsCard: React.FC<any> = ({ data, setOpenCard, setOpenDetails, 
               <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>
                 <TouchableOpacity onPress={() => setOpenDetails(true)}>
                   <Image
-                    source={{ uri: data[0].productImage }}
+                    source={{ uri: data.productImage }}
                     style={{ width: width / 2, height: height * 0.5, resizeMode: 'contain' }}
                   />
                 </TouchableOpacity>
@@ -126,7 +118,7 @@ const PremiumDetailsCard: React.FC<any> = ({ data, setOpenCard, setOpenDetails, 
               <Animated.View entering={FadeInRight.duration(800).delay(200)} exiting={FadeOutRight}>
                 <View>
                   {/* <ProductText>{f.product}</ProductText> */}
-                  <ProductName>{data[0].productName}</ProductName>
+                  <ProductName>{data.productName}</ProductName>
                   <View style={{ marginVertical: 16 }}>
                     {/* <ProductText>{f.size}</ProductText> */}
                     {/* <ProductName>{f.productSize}</ProductName> */}
@@ -136,7 +128,7 @@ const PremiumDetailsCard: React.FC<any> = ({ data, setOpenCard, setOpenDetails, 
                         <ProductName>{f.wool}</ProductName>
                         <ProductName>{f.mohair}</ProductName>
                       </View> */}
-                  <ProductText>{data[0].normalPrice}</ProductText>
+                  <ProductText>{data.normalPrice}</ProductText>
                   <View
                     style={{
                       display: 'flex',
@@ -145,9 +137,9 @@ const PremiumDetailsCard: React.FC<any> = ({ data, setOpenCard, setOpenDetails, 
                       alignItems: 'center',
                     }}
                   >
-                    <OldPriceText>{data[0].normalPrice}INR</OldPriceText>
+                    <OldPriceText>{data.normalPrice}INR</OldPriceText>
                     <View>
-                      <ProductName>{data[0].offerPrice}INR</ProductName>
+                      <ProductName>{data.offerPrice}INR</ProductName>
                     </View>
                   </View>
                   <WatchVideoBorder onPress={() => navigation.navigate('PlayVideo')}>
@@ -174,7 +166,7 @@ const PremiumDetailsCard: React.FC<any> = ({ data, setOpenCard, setOpenDetails, 
           </PremiumDetailsWrapper>
 
           <View>
-            {data[0].sizes.map((f: any, index: number) => (
+            {data.sizes.map((f: any, index: number) => (
               <Pressable key={index} onPress={() => setCountryData(f.country)}>
                 <Text>{f.country}</Text>
               </Pressable>
