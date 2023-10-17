@@ -30,12 +30,12 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
         display: 'flex',
         flexDirection: 'column',
         width: width / 2.2,
-        height: height / 3,
+        height: height / 3.2,
         marginLeft: 8,
         marginBottom: 18,
       }}
     >
-      <View style={{ marginTop: 30 }}>
+      <View style={{ marginTop: 10 }}>
         <View>
           <Pressable
             onPress={() => {
@@ -54,7 +54,7 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
                     source={{
                       uri: data.productImage,
                     }}
-                    style={{ width: width / 2.6, height: height - 610, resizeMode: 'cover' }}
+                    style={{ width: width / 2.6, height: height / 4, resizeMode: 'cover' }}
                   />
                 </ImageContainer>
               </SharedElement>

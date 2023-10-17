@@ -35,45 +35,49 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   const [isPressed, setIsPressed] = useState(false)
 
   const handleSubmit = async () => {
-    const docRef = await addDoc(collection(db, 'Posts'), {
-      sizes: size,
-      detailedFeatures: data.description,
-      price: data.normalPrice,
-      offerPrice: data.offerPrice,
-      status: 'pending',
-      // userId: user?.uid,
-      // gender: isGender,
-      type: 'Premium-Level',
-      productName: data.productName,
-      orderStatus: {
-        orderplaced: {
-          createdAt: null,
-          description: '',
-          status: false,
+    try {
+      const docRef = await addDoc(collection(db, 'Posts'), {
+        sizes: size,
+        detailedFeatures: data.description,
+        price: data.normalPrice,
+        offerPrice: data.offerPrice,
+        status: 'pending',
+        type: 'Premium-Level',
+        productName: data.productName,
+        orderStatus: {
+          orderplaced: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          manufacturing: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          readyToShip: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          shipping: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          delivery: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
         },
-        manufacturing: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        readyToShip: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        shipping: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        delivery: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-      },
-    })
-    navigation.navigate('Checkout')
+      })
+
+      navigation.navigate('Checkout')
+      console.log('Checkout')
+    } catch (error) {
+      console.error('Error submitting data:', error)
+    }
   }
   return (
     <Animated.View
@@ -108,6 +112,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
                 resizeMode: 'contain',
                 width: width * 0.9,
                 height: height * 0.65,
+                marginTop: 20,
               }}
             />
           </ThreeSixtyDegreeImage>

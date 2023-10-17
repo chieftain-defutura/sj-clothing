@@ -59,7 +59,7 @@ const CartPage: React.FC<ICartPage> = ({ navigation }) => {
             left: 0,
             right: 0,
             width: '100%',
-            backgroundColor: '#FFF',
+            backgroundColor: 'rgba(145, 177, 225, 0.2)',
             padding: 16,
           }}
         />

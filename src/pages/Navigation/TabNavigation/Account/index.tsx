@@ -4,7 +4,7 @@ import { Pressable, ScrollView, View, StyleSheet, Dimensions, Linking, Image } f
 import { useIsFocused } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { auth, db } from '../../../../../firebase'
-import { COLORS } from '../../../../styles/theme'
+import { COLORS, gradientOpacityColors } from '../../../../styles/theme'
 import { userStore } from '../../../../store/userStore'
 import AuthNavigate from '../../../../screens/AuthNavigate'
 import LogoutIcon from '../../../../assets/icons/AccountPageIcon/Logout'
@@ -90,68 +90,69 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   }
 
   return (
-    <ScrollView>
-      <AuthNavigate focus={isFocused}>
-        <AccountWrapper>
-          <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
-            <UserWrapper style={{ width: width, height: height / 2.5 }}>
-              <NotUserContent>
-                {route.params?.profileImg ? (
-                  <Image
-                    source={{ uri: route.params.profileImg }}
-                    style={{
-                      width: width,
-                      height: height / 2.5,
-                      borderBottomLeftRadius: 50,
-                      borderBottomRightRadius: 50,
-                    }}
-                  />
-                ) : profile ? (
-                  <Image
-                    source={{ uri: profile }}
-                    style={{
-                      width: width,
-                      height: height / 2.5,
-                      borderBottomLeftRadius: 50,
-                      borderBottomRightRadius: 50,
-                    }}
-                  />
-                ) : (
-                  <NotUserIcon width={128} height={128} />
-                )}
-              </NotUserContent>
-              <EditContent onPress={() => navigation.navigate('EditProfile')}>
-                <LinearGradient
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  colors={['#462D85', '#DB00FF']}
-                  style={styles.plusIconGradientColor}
-                >
-                  <EditIcon width={20} height={20} />
-                </LinearGradient>
-              </EditContent>
-            </UserWrapper>
-            {route.params?.dName ? (
-              <ProfileName>{route.params.dName}</ProfileName>
-            ) : (
-              <ProfileName>{name}</ProfileName>
-            )}
-            <View style={{ padding: 16 }}>
-              <CustomButton
-                text='Subscribe now'
-                fontFamily='Arvo-Regular'
-                fontSize={16}
-                onPress={openSubscriptionModal}
+    <LinearGradient colors={gradientOpacityColors}>
+      <ScrollView>
+        <AuthNavigate focus={isFocused}>
+          <AccountWrapper>
+            <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
+              <UserWrapper style={{ width: width, height: height / 2.5 }}>
+                <NotUserContent>
+                  {route.params?.profileImg ? (
+                    <Image
+                      source={{ uri: route.params.profileImg }}
+                      style={{
+                        width: width,
+                        height: height / 2.5,
+                        borderBottomLeftRadius: 50,
+                        borderBottomRightRadius: 50,
+                      }}
+                    />
+                  ) : profile ? (
+                    <Image
+                      source={{ uri: profile }}
+                      style={{
+                        width: width,
+                        height: height / 2.5,
+                        borderBottomLeftRadius: 50,
+                        borderBottomRightRadius: 50,
+                      }}
+                    />
+                  ) : (
+                    <NotUserIcon width={128} height={128} />
+                  )}
+                </NotUserContent>
+                <EditContent onPress={() => navigation.navigate('EditProfile')}>
+                  <LinearGradient
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={['#462D85', '#DB00FF']}
+                    style={styles.plusIconGradientColor}
+                  >
+                    <EditIcon width={20} height={20} />
+                  </LinearGradient>
+                </EditContent>
+              </UserWrapper>
+              {route.params?.dName ? (
+                <ProfileName>{route.params.dName}</ProfileName>
+              ) : (
+                <ProfileName>{name}</ProfileName>
+              )}
+              <View style={{ padding: 16 }}>
+                <CustomButton
+                  text='Subscribe now'
+                  fontFamily='Arvo-Regular'
+                  fontSize={16}
+                  onPress={openSubscriptionModal}
+                />
+              </View>
+
+              <SubscriptionModal
+                isVisible={isSubscriptionModal}
+                onClose={closeSubscriptionModal}
+                navigation={navigation}
               />
-            </View>
 
-            <SubscriptionModal
-              isVisible={isSubscriptionModal}
-              onClose={closeSubscriptionModal}
-              navigation={navigation}
-            />
-
-            {/* <FlexContent>
+              {/* <FlexContent>
               {Data.map((viewItem, viewIndex) => (
                 <View key={viewIndex}>
                   <PostText>{viewItem.postName}</PostText>
@@ -163,44 +164,45 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                 </View>
               ))}
             </FlexContent> */}
-          </Animated.View>
+            </Animated.View>
 
-          <Animated.View entering={FadeInDown.duration(800).delay(200)} exiting={FadeOutDown}>
-            {AccountData.map((f, index) => {
-              return (
-                <Pressable key={index} onPress={() => navigation.navigate(f.navigation)}>
-                  <ProfileUserContent>
-                    <FlexIcon>
-                      <f.leftIcon width={20} height={20} />
-                      <UserText>{f.name}</UserText>
-                    </FlexIcon>
-                    {f.rightIcon && <f.rightIcon width={20} height={20} />}
-                    {f.rightText && <RightText>{f.rightText}</RightText>}
-                  </ProfileUserContent>
-                </Pressable>
-              )
-            })}
-            <Pressable onPress={handleCustomerCarePress}>
-              <ProfileUserContent>
-                <FlexIcon>
-                  <CustomerCare width={20} height={20} />
-                  <UserText>Customer care</UserText>
-                </FlexIcon>
-              </ProfileUserContent>
-            </Pressable>
+            <Animated.View entering={FadeInDown.duration(800).delay(200)} exiting={FadeOutDown}>
+              {AccountData.map((f, index) => {
+                return (
+                  <Pressable key={index} onPress={() => navigation.navigate(f.navigation)}>
+                    <ProfileUserContent>
+                      <FlexIcon>
+                        <f.leftIcon width={20} height={20} />
+                        <UserText>{f.name}</UserText>
+                      </FlexIcon>
+                      {f.rightIcon && <f.rightIcon width={20} height={20} />}
+                      {f.rightText && <RightText>{f.rightText}</RightText>}
+                    </ProfileUserContent>
+                  </Pressable>
+                )
+              })}
+              <Pressable onPress={handleCustomerCarePress}>
+                <ProfileUserContent>
+                  <FlexIcon>
+                    <CustomerCare width={20} height={20} />
+                    <UserText>Customer care</UserText>
+                  </FlexIcon>
+                </ProfileUserContent>
+              </Pressable>
 
-            <LogoutPressable onPress={handleLogout}>
-              <ProfileUserContent>
-                <FlexIcon>
-                  <LogoutIcon width={24} height={24} />
-                  <LogoutText>Log out</LogoutText>
-                </FlexIcon>
-              </ProfileUserContent>
-            </LogoutPressable>
-          </Animated.View>
-        </AccountWrapper>
-      </AuthNavigate>
-    </ScrollView>
+              <LogoutPressable onPress={handleLogout}>
+                <ProfileUserContent>
+                  <FlexIcon>
+                    <LogoutIcon width={24} height={24} />
+                    <LogoutText>Log out</LogoutText>
+                  </FlexIcon>
+                </ProfileUserContent>
+              </LogoutPressable>
+            </Animated.View>
+          </AccountWrapper>
+        </AuthNavigate>
+      </ScrollView>
+    </LinearGradient>
   )
 }
 
