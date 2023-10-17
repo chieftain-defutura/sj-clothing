@@ -3,12 +3,23 @@ import { StyleSheet, Text, View, Image, Pressable, TouchableOpacity } from 'reac
 
 import CustomButton from '../../Button'
 import { COLORS } from '../../../styles/theme'
+import { doc, updateDoc } from 'firebase/firestore/lite'
+import { db } from '../../../../firebase'
+import { userStore } from '../../../store/userStore'
 
 interface ISkintone {
+  isGender: string
   setToggle: React.Dispatch<React.SetStateAction<boolean>>
-  setToggleAvatar: React.Dispatch<React.SetStateAction<boolean>>
 }
-const Skintone: React.FC<ISkintone> = ({ setToggle, setToggleAvatar }) => {
+const Skintone: React.FC<ISkintone> = ({ setToggle, isGender }) => {
+  const { user } = userStore()
+  const handleSubmit = async () => {
+    if (user) {
+      await updateDoc(doc(db, 'users', user.uid), {
+        avatar: isGender,
+      })
+    }
+  }
   return (
     <View style={styles.SkintoneContainer}>
       <View style={styles.bottomWrapper}>
@@ -23,7 +34,7 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, setToggleAvatar }) => {
             onPress={() => setToggle(false)}
           />
           <CustomButton
-            onPress={() => setToggleAvatar(true)}
+            onPress={handleSubmit}
             text='Done'
             variant='primary'
             fontFamily='Arvo-Regular'

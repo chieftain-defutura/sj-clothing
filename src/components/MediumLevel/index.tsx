@@ -20,13 +20,11 @@ import { userStore } from '../../store/userStore'
 interface IMediumLevel {}
 
 const MediumLevel: React.FC<IMediumLevel> = () => {
-  const user = userStore((state) => state.user)
+  const { avatar, user } = userStore()
+
   const navigation = useNavigation()
   const slideValue = useSharedValue(0)
-  const [toggleAvatar, setToggleAvatar] = useState(false)
   const [isSteps, setSteps] = useState(1)
-  //avatar
-  const [isGender, setGender] = useState('Male')
   //data
   const [data, setData] = useState<any[]>()
   const [designs, setDesigns] = useState<any[]>()
@@ -111,7 +109,7 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
       productId: FilteredData[0].id,
       approved: approved,
       userId: user?.uid,
-      gender: isGender,
+      gender: avatar,
       type: 'Mid-Level',
       productName: FilteredData[0].productName,
       orderStatus: {
@@ -147,11 +145,10 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
 
   const FilteredData = data?.filter((f: any) => f.styles === isSelectedStyle) as any
   const Designs = designs?.filter((f: ImageorTextProps) => f.type === isImageOrText.title)
-
   return (
     <View style={styles.midiumlevelContainer}>
-      {!toggleAvatar ? (
-        <Avatar setToggleAvatar={setToggleAvatar} isGender={isGender} setGender={setGender} />
+      {!avatar ? (
+        <Avatar />
       ) : (
         <LinearGradient
           colors={gradientOpacityColors}
@@ -187,7 +184,7 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
           )}
           {isSteps === 2 && (
             <SelectSize
-              isGender={isGender}
+              isGender={avatar}
               isSize={isSize}
               setSize={setSize}
               isDropDown={isDropDown}

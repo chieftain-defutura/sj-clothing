@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { COLORS } from '../../../styles/theme'
 import CustomButton from '../../Button'
 
-const GenderData = ['Male', 'Female', 'Other']
+const GenderData = ['Male', 'Female']
 interface IGender {
   isGender: string
   setGender: React.Dispatch<React.SetStateAction<string>>

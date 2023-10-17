@@ -15,7 +15,7 @@ export const AccountData = [
     leftIcon: UserIcon,
     name: 'Avatar',
     rightIcon: ChevronLeft,
-    navigation: 'MidLevel',
+    navigation: 'Avatar',
   },
   {
     leftIcon: CopyIcon,
