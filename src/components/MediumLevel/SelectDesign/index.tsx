@@ -38,6 +38,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
   setImageOrText,
   setDone,
 }) => {
+  console.log(designs)
   const uniqueArr = [...new Map(designs?.map((v) => [v.hashTag, v])).values()]
   const FilteredData =
     isImageOrText.designs.hashtag === ''
@@ -137,7 +138,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
           gap: 8,
           paddingVertical: 16,
         }}
-        data={FilteredData?.filter((f) => f.active === true)}
+        data={FilteredData?.filter((f) => f.activePost === true)}
         horizontal
         renderItem={({ item, index }) => (
           <View key={index}>

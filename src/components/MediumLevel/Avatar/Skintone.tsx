@@ -1,28 +1,58 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Image, Pressable, TouchableOpacity } from 'react-native'
 
 import CustomButton from '../../Button'
 import { COLORS } from '../../../styles/theme'
-import { doc, updateDoc } from 'firebase/firestore/lite'
-import { db } from '../../../../firebase'
-import { userStore } from '../../../store/userStore'
 import { useNavigation } from '@react-navigation/native'
+import { userStore } from '../../../store/userStore'
+import { doc, getDoc, updateDoc } from 'firebase/firestore/lite'
+import { db } from '../../../../firebase'
 
 interface ISkintone {
   isGender: string
+  path: string
   setToggle: React.Dispatch<React.SetStateAction<boolean>>
 }
-const Skintone: React.FC<ISkintone> = ({ setToggle, isGender }) => {
+const Skintone: React.FC<ISkintone> = ({ setToggle, isGender, path }) => {
   const navigation = useNavigation()
-  const { user } = userStore()
+  const { updateProfile, updateAvatar, updateAddress, updatePhoneNo, updateName, user } =
+    userStore()
+
   const handleSubmit = async () => {
     if (user) {
       await updateDoc(doc(db, 'users', user.uid), {
         avatar: isGender,
       })
     }
-    navigation.goBack()
+    if (path === 'MidLevel') {
+      navigation.navigate('MidLevel')
+    } else {
+      navigation.goBack()
+    }
   }
+
+  const fetchDataFromFirestore = useCallback(async () => {
+    try {
+      if (!user) return
+      const q = doc(db, 'users', user.uid)
+      const querySnapshot = await getDoc(q)
+      console.log(querySnapshot.data())
+
+      const fetchData = querySnapshot.data()
+
+      updateProfile(fetchData?.profile)
+      updateName(fetchData?.name)
+      updateAddress(fetchData?.address)
+      updateAvatar(fetchData?.avatar)
+      updatePhoneNo(fetchData?.phoneNo)
+    } catch (error) {
+      console.error('Error fetching data from Firestore:', error)
+    }
+  }, [user, updateProfile])
+
+  useEffect(() => {
+    fetchDataFromFirestore()
+  }, [fetchDataFromFirestore])
   return (
     <View style={styles.SkintoneContainer}>
       <View style={styles.bottomWrapper}>

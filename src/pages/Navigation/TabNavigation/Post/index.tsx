@@ -298,7 +298,6 @@ const Post: React.FC<postProps> = ({ route }) => {
     }
   }, [user, updateProfile])
 
-  console.log(avatar)
   if (route) {
     console.log('asdsd', route)
   }

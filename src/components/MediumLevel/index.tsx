@@ -59,6 +59,7 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
   const Designs = designs?.filter((f: ImageorTextProps) => f.type === isImageOrText.title)
 
   const handleIncreaseSteps = () => {
+    if (!FilteredData) return
     if (FilteredData[0].gender.toLowerCase() !== avatar?.toLowerCase()) {
       Alert.alert(`Alert ${avatar}`, 'Not Available', [
         {
@@ -160,7 +161,7 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
   return (
     <View style={styles.midiumlevelContainer}>
       {!avatar ? (
-        <Avatar />
+        <Avatar path='MidLevel' />
       ) : (
         <LinearGradient
           colors={gradientOpacityColors}

@@ -8,7 +8,11 @@ import Animated, { FadeInUp, FadeOut, FadeOutDown } from 'react-native-reanimate
 import { WebView } from 'react-native-webview'
 
 const { height, width } = Dimensions.get('window')
-const Avatar: React.FC = () => {
+
+interface IAvatar {
+  path?: string
+}
+const Avatar: React.FC<IAvatar> = ({ path }) => {
   const [toggle, setToggle] = useState(false)
   const [isGender, setGender] = useState('')
   return (
@@ -39,7 +43,7 @@ const Avatar: React.FC = () => {
 
           {toggle && (
             <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
-              <Skintone isGender={isGender} setToggle={setToggle} />
+              <Skintone path={path} isGender={isGender} setToggle={setToggle} />
             </Animated.View>
           )}
 
