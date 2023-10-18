@@ -32,7 +32,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const user = userStore((state) => state.user)
   const isFocused = useIsFocused()
   const [image, setImage] = useState<string | null>(null)
-  const { updateUser, updateProfile, profile, displayName, updateName, name } = userStore()
+  const { updateUser, updateProfile, profile, updateName, name } = userStore()
 
   const fetchDataFromFirestore = useCallback(async () => {
     try {
