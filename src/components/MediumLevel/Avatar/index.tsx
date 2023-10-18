@@ -21,12 +21,12 @@ const Avatar: React.FC = () => {
         >
           <Text style={styles.title}>Create your avatar.</Text>
           {/* <Image style={styles.image} source={require('../../../assets/images/girl-modal.png')} /> */}
-          <View style={{ width: width / 1.1, height: height / 2 }}>
+          <View style={{ width: width / 1.1, height: height / 2, paddingBottom: 1 }}>
             <WebView
               source={{
                 uri: 'https://sj-threejs-development.netlify.app/',
               }}
-              style={{ flex: 1 }}
+              // style={{ flex: 1 }}
             />
           </View>
         </Animated.View>

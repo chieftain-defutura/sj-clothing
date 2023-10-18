@@ -65,7 +65,6 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
-  const [selectedSizes, setSelectedSizes] = useState<string | null>(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
 
@@ -83,7 +82,6 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   }
 
   const handleSelectSizes = (sizes: string) => {
-    setSelectedSizes(sizes)
     setIsDropdownSizesOpen(false)
   }
   const [openModal, setOpenModal] = useState(false)
@@ -240,7 +238,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                   </SelectText>
                   <ChevronLeft width={16} height={16} />
                 </SelectContent>
-                {isDropdownSizesOpen && (
+                {isDropdownSizesOpen && selectedCountry && (
                   <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
                     <SelectDropDownList>
                       <View>

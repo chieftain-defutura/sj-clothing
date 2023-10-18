@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native'
+import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { collection, getDocs } from 'firebase/firestore/lite'
 import styled from 'styled-components/native'
@@ -8,6 +8,8 @@ import PremiumDetailsCard from './PremiumDetailsCard'
 import PremiumThreeSixtyDegree from './PremiumThreeSixtyDegree'
 import { useNavigation } from '@react-navigation/native'
 import { IPremiumData } from '../../constant/types'
+
+const { width } = Dimensions.get('window')
 
 const PremiumLevel = () => {
   const navigation = useNavigation()
@@ -69,7 +71,30 @@ const PremiumLevel = () => {
               ))}
             </View>
           )}
-          <FlatList
+          <View
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              flexDirection: 'row',
+              width: width / 1.6,
+              columnGap: 150,
+            }}
+          >
+            {data
+              .filter((f) => f.id !== productId)
+              .map((item, index) => (
+                <View key={index} style={{ flex: 1 }}>
+                  <PremiumCard
+                    data={item}
+                    setSize={setSize}
+                    setOpenCard={setOpenCard}
+                    setProductId={setProductId}
+                  />
+                </View>
+              ))}
+          </View>
+          {/* <FlatList
             data={data.filter((f) => f.id !== productId)}
             numColumns={2}
             renderItem={({ item, index }) => (
@@ -84,7 +109,7 @@ const PremiumLevel = () => {
                 </CardPairContainer>
               </View>
             )}
-          />
+          /> */}
         </View>
       )}
     </View>
