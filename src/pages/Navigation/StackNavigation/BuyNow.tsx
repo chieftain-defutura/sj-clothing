@@ -133,6 +133,8 @@ const BuyNow: React.FC<IBuyNow> = ({ navigation }) => {
         text='Buy now'
         onPress={() => navigation.navigate('Stack')}
         buttonStyle={[styles.submitBtn]}
+        fontFamily='Arvo-Regular'
+        fontSize={16}
       />
     </ScrollView>
   )
