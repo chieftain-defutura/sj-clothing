@@ -100,7 +100,7 @@ const PostCreation: React.FC<IPostCreation> = () => {
       sizes: isSize,
       color: isColor,
       textAndImage: isImageOrText,
-      detailedFeatures: [...FilteredData[0].detailedFutures],
+      description: FilteredData[0].description,
       price: FilteredData[0].normalPrice,
       offerPrice: FilteredData[0].offerPrice,
       giftVideo: isGiftVideo,
@@ -115,7 +115,6 @@ const PostCreation: React.FC<IPostCreation> = () => {
   }
 
   const FilteredData = data?.filter((f: any) => f.styles === isSelectedStyle) as any
-  console.log('uerid:', user?.uid)
   return (
     <Animated.View style={{ flex: 1 }}>
       <LinearGradient
@@ -191,7 +190,7 @@ const PostCreation: React.FC<IPostCreation> = () => {
                 handleSubmit={handleSubmit}
                 isGiftVideo={isGiftVideo}
                 setGiftVideo={setGiftVideo}
-                Data={FilteredData[0].detailedFutures}
+                Data={FilteredData[0].description}
                 size={isSize.sizeVarient.size}
                 style={isSelectedStyle}
                 price={FilteredData[0].normalPrice}

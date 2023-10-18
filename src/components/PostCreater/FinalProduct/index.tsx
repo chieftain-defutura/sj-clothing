@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
-import { COLORS } from '../../../styles/theme'
+import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import CustomButton from '../../Button'
 import Carousle from './Carousle'
-import { PostCreationStore } from '../../../store/postCreationStore'
+import { Svg, Circle } from 'react-native-svg'
+import styled from 'styled-components/native'
 
 interface IFinalProduct {
   isGiftVideo: any
@@ -16,10 +17,7 @@ interface IFinalProduct {
   caption: string
   color: string
   product: string
-  Data: {
-    cloth: string
-    materials: string
-  }[]
+  Data: string
 }
 const FinalProduct: React.FC<IFinalProduct> = ({
   handleSubmit,
@@ -34,6 +32,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
   Data,
   color,
 }) => {
+  const Description = Data.split(',')
   return (
     <ScrollView style={styles.selectContainer}>
       <View style={styles.selectColorTShirt}>
@@ -197,38 +196,17 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           ></Text>
         </View>
       </View>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          paddingBottom: 8,
-          columnGap: 37,
-        }}
-      >
-        {Data.map((item, index) => (
-          <View
-            key={index}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: 95,
-              paddingTop: 16,
-            }}
-          >
-            <Text
-              style={{
-                color: COLORS.textClr,
-                fontFamily: 'Montserrat-Regular',
-                fontSize: 10,
-              }}
-            >
-              {item.cloth}
-            </Text>
-            <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-              {item.materials}
-            </Text>
+      <View style={{ marginTop: 14 }}>
+        <DetailsHeading>Detailed features</DetailsHeading>
+        {Description.map((f, index) => (
+          <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+            <Svg width={8} height={8}>
+              <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
+            </Svg>
+
+            <DetailsParaText key={index} style={{ marginLeft: 8 }}>
+              {f}
+            </DetailsParaText>
           </View>
         ))}
       </View>
@@ -272,3 +250,19 @@ const styles = StyleSheet.create({
     marginBottom: 54,
   },
 })
+
+const DetailsParaText = styled.Text`
+  font-size: 12px;
+  color: rgba(70, 45, 133, 0.6);
+  letter-spacing: -0.24px;
+  line-height: 16px;
+  text-transform: capitalize;
+  font-family: ${FONT_FAMILY.GilroyRegular};
+`
+
+const DetailsHeading = styled.Text`
+  font-size: 14px;
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  color: ${COLORS.iconsHighlightClr};
+  margin-bottom: 8px;
+`

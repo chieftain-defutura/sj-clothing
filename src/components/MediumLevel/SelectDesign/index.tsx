@@ -76,9 +76,9 @@ const SelectDesign: React.FC<ISelectDesign> = ({
         </Pressable>
       </View>
 
-      <Text style={{ fontSize: 10, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>
+      {/* <Text style={{ fontSize: 10, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>
         MOST SEARCHES
-      </Text>
+      </Text> */}
       <View style={{ paddingVertical: 16 }}>
         <FlatList
           data={uniqueArr}

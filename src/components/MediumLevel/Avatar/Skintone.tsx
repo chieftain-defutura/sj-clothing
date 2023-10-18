@@ -21,7 +21,7 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, isGender }) => {
         avatar: isGender,
       })
     }
-    navigation.navigate('Stack')
+    navigation.goBack()
   }
   return (
     <View style={styles.SkintoneContainer}>

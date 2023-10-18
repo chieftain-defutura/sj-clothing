@@ -10,63 +10,6 @@ import Animated, {
   FlipOutXDown,
 } from 'react-native-reanimated'
 
-const Sizes = [
-  {
-    country: 'India',
-    sizeVariant: [
-      { size: 'M', measurement: '40', unit: 'cm' },
-      { size: 'L', measurement: '42', unit: 'cm' },
-      { size: 'XL', measurement: '44', unit: 'cm' },
-      { size: 'XXL', measurement: '46', unit: 'cm' },
-    ],
-  },
-  {
-    country: 'America',
-    sizeVariant: [
-      { size: 'S', measurement: '38', unit: 'cm' },
-      { size: 'M', measurement: '40', unit: 'cm' },
-      { size: 'XL', measurement: '44', unit: 'cm' },
-      { size: 'XXL', measurement: '46', unit: 'cm' },
-    ],
-  },
-  {
-    country: 'Russia',
-    sizeVariant: [
-      { size: 'S', measurement: '38', unit: 'cm' },
-      { size: 'M', measurement: '40', unit: 'cm' },
-      { size: 'L', measurement: '42', unit: 'cm' },
-      { size: 'XXL', measurement: '46', unit: 'cm' },
-    ],
-  },
-  {
-    country: 'Japan',
-    sizeVariant: [
-      { size: 'M', measurement: '40', unit: 'cm' },
-      { size: 'L', measurement: '42', unit: 'cm' },
-      { size: 'XL', measurement: '44', unit: 'cm' },
-      { size: 'XXL', measurement: '46', unit: 'cm' },
-    ],
-  },
-  {
-    country: 'China',
-    sizeVariant: [
-      { size: 'S', measurement: '38', unit: 'cm' },
-      { size: 'M', measurement: '40', unit: 'cm' },
-      { size: 'XXL', measurement: '46', unit: 'cm' },
-    ],
-  },
-  {
-    country: 'Sri Lanka',
-    sizeVariant: [
-      { size: 'S', measurement: '38', unit: 'cm' },
-      { size: 'M', measurement: '40', unit: 'cm' },
-      { size: 'L', measurement: '42', unit: 'cm' },
-      { size: 'XL', measurement: '44', unit: 'cm' },
-      { size: 'XXL', measurement: '46', unit: 'cm' },
-    ],
-  },
-]
-
 const { width } = Dimensions.get('window')
 
 interface ISelectSize {

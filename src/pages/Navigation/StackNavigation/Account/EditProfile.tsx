@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Dimensions, Pressable, Alert } from 'react-native'
 import styled from 'styled-components/native'
-import ImagePicker, { ImageLibraryOptions } from 'react-native-image-picker'
+import * as ImagePicker from 'expo-image-picker'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { COLORS, FONT_FAMILY } from '../../../../styles/theme'
@@ -10,11 +10,11 @@ import LeftArrow from '../../../../assets/icons/LeftArrow'
 import Input from '../../../../components/Input'
 // import { auth, db, storage } from '../../../../../firebase'
 // import { ref, getDownloadURL, uploadString } from 'firebase/storage'
+import storage from '@react-native-firebase/storage'
 import { updateProfile } from 'firebase/auth'
 import { userStore } from '../../../../store/userStore'
 import { doc, updateDoc } from 'firebase/firestore/lite'
-import { db, storage } from '../../../../../firebase'
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import { db } from '../../../../../firebase'
 
 const { width, height } = Dimensions.get('window')
 
@@ -27,7 +27,7 @@ const validationSchema = yup.object({
 })
 
 const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
-  const [image, setImage] = React.useState<null | undefined>(null)
+  const [image, setImage] = React.useState<string | null>(null)
   const user = userStore((state) => state.user)
   const updateName = userStore((name) => name.updateName)
 
@@ -35,17 +35,9 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
     if (user) {
       updateName(user?.displayName)
       updateProfile(user, { displayName: values.fullName })
-      const imageRef = ref(storage, `UsersProfile/${user.uid}`)
-
-      await imageRef.putFile(imageUri, { contentType: 'image/jpeg' })
-      console.log('Image uploaded successfully.')
-
-      await uploadTask
-
-      const downloadURL = await getDownloadURL(uploadTask.snapshot.ref)
       await updateDoc(doc(db, 'users', user.uid), {
         name: values.fullName,
-        profile: downloadURL,
+        profile: image,
       })
     } else console.log('error')
     navigation.navigate('Account', { dName: values.fullName, profileImg: image })
@@ -54,22 +46,20 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
 
   console.log('image', image)
 
-  // Function to open the image picker
   const pickImage = async () => {
-    const options: ImageLibraryOptions = {
-      mediaType: 'photo',
-    }
-
-    await ImagePicker.launchImageLibrary(options, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker')
-      } else if (response.errorMessage) {
-        console.log('ImagePicker Error: ', response.errorMessage)
-      } else if (response) {
-        setImage(response.assets[0].uri)
-      }
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
     })
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri)
+      // await uploadImage(result.assets[0].uri)
+    }
   }
+
   // const uploadImage = async (uri: string) => {
   //   try {
   //     const reference = storage().ref('black-t-shirt-sm.png')

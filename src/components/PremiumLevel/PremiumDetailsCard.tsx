@@ -142,12 +142,17 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                 <TouchableOpacity onPress={() => setOpenDetails(true)}>
                   <Image
                     source={{ uri: data.productImage }}
-                    style={{ width: width / 1.8, height: height * 0.4, resizeMode: 'contain' }}
+                    style={{
+                      width: width / 1.8,
+                      height: height * 0.4,
+                      resizeMode: 'contain',
+                      marginBottom: 12,
+                    }}
                   />
                 </TouchableOpacity>
               </Animated.View>
               <Animated.View entering={FadeInRight.duration(800).delay(200)} exiting={FadeOutRight}>
-                <View style={{ marginRight: 26 }}>
+                <View style={{ marginRight: 32 }}>
                   <ProductText>product</ProductText>
                   <ProductName>{data.productName}</ProductName>
                   <View style={{ marginVertical: 10 }}>
@@ -228,37 +233,37 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
               </View>
               <View style={{ width: 158 }}>
                 <SelectContent onPress={toggleDropdownSizes}>
-                  <SelectText>{selectedSizes || 'Select a Sizes'}</SelectText>
+                  <SelectText>
+                    {isSize.sizeVarient.size
+                      ? `${isSize.sizeVarient.size}-${isSize.sizeVarient.measurement}`
+                      : 'Select a Sizes'}
+                  </SelectText>
                   <ChevronLeft width={16} height={16} />
                 </SelectContent>
                 {isDropdownSizesOpen && (
                   <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
                     <SelectDropDownList>
-                      {isSize.country ? (
-                        <View>
-                          {Sizes[0].map((f: any, index: number) => (
-                            <Pressable
-                              key={index}
-                              onPress={() => {
-                                setSize((prevState) => ({
-                                  ...prevState,
-                                  sizeVarient: {
-                                    measurement: f.measurement,
-                                    size: f.size,
-                                  },
-                                }))
-                                handleSelectSizes(f.sizes)
-                              }}
-                            >
-                              <SelectListText>
-                                {f.size} - {f.measurement}
-                              </SelectListText>
-                            </Pressable>
-                          ))}
-                        </View>
-                      ) : (
-                        <SelectListText>Select region</SelectListText>
-                      )}
+                      <View>
+                        {Sizes[0].map((f: any, index: number) => (
+                          <Pressable
+                            key={index}
+                            onPress={() => {
+                              setSize((prevState) => ({
+                                ...prevState,
+                                sizeVarient: {
+                                  measurement: f.measurement,
+                                  size: f.size,
+                                },
+                              }))
+                              handleSelectSizes(f.sizes)
+                            }}
+                          >
+                            <SelectListText>
+                              {f.size} - {f.measurement}
+                            </SelectListText>
+                          </Pressable>
+                        ))}
+                      </View>
                     </SelectDropDownList>
                   </Animated.View>
                 )}
@@ -393,7 +398,7 @@ const Btns = styled.View`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 8px;
+  margin-top: 16px;
   margin-bottom: 4px;
 `
 
@@ -411,6 +416,7 @@ const PremiumDetailsContent = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 `
 
 const DetailsParaText = styled.Text`
@@ -435,10 +441,9 @@ const WatchVideoBorder = styled.Pressable`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
   gap: 4px;
-  padding-vertical: 8px;
-  margin-top: 16px;
+  padding: 8px;
+  margin-top: 22px;
 `
 
 const HideDetailsBorder = styled.TouchableOpacity`

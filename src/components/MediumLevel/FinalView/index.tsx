@@ -1,17 +1,15 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { COLORS } from '../../../styles/theme'
+import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import CustomButton from '../../Button'
 import styled from 'styled-components/native'
 import PlusIcon from '../../../assets/icons/MidlevelIcon/PlusIcon'
 import MinusIcon from '../../../assets/icons/MidlevelIcon/MinusIcon'
 import { Checkbox } from 'react-native-paper'
+import { Svg, Circle } from 'react-native-svg'
 
 interface IFinalView {
-  Data: {
-    cloth: string
-    materials: string
-  }[]
+  Data: string
   price: string
   offerPrice: string
   size: string
@@ -48,6 +46,7 @@ const FinalView: React.FC<IFinalView> = ({
       setQuantity((number - 1).toString())
     }
   }
+  const Description = Data.split(',')
   return (
     <View style={styles.finalViewContainer}>
       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
@@ -250,38 +249,17 @@ const FinalView: React.FC<IFinalView> = ({
           ></Text>
         </View>
       </View>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          paddingBottom: 8,
-          columnGap: 37,
-        }}
-      >
-        {Data.map((item, index) => (
-          <View
-            key={index}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: 95,
-              paddingTop: 16,
-            }}
-          >
-            <Text
-              style={{
-                color: COLORS.textClr,
-                fontFamily: 'Montserrat-Regular',
-                fontSize: 10,
-              }}
-            >
-              {item.cloth}
-            </Text>
-            <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-              {item.materials}
-            </Text>
+      <View style={{ marginTop: 14 }}>
+        <DetailsHeading>Detailed features</DetailsHeading>
+        {Description.map((f, index) => (
+          <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+            <Svg width={8} height={8}>
+              <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
+            </Svg>
+
+            <DetailsParaText key={index} style={{ marginLeft: 8 }}>
+              {f}
+            </DetailsParaText>
           </View>
         ))}
       </View>
@@ -317,6 +295,21 @@ const AddSubButton = styled.Pressable`
   border-radius: 5px;
   background: ${COLORS.addSubButtonBackgroundColor};
   padding: 11px;
+`
+const DetailsParaText = styled.Text`
+  font-size: 12px;
+  color: rgba(70, 45, 133, 0.6);
+  letter-spacing: -0.24px;
+  line-height: 16px;
+  text-transform: capitalize;
+  font-family: ${FONT_FAMILY.GilroyRegular};
+`
+
+const DetailsHeading = styled.Text`
+  font-size: 14px;
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  color: ${COLORS.iconsHighlightClr};
+  margin-bottom: 8px;
 `
 
 const InputBorder = styled.View`
