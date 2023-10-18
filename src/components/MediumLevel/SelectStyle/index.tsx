@@ -21,33 +21,6 @@ interface ISelectStyle {
   setSelectedStyle: React.Dispatch<React.SetStateAction<string>>
 }
 
-const StyleShirtData = [
-  {
-    Title: 'Half sleeve',
-    Image: '../../../assets/images/plain-shirt.png',
-  },
-  {
-    Title: 'Round neck',
-    Image: '../../../assets/images/t-shirt.png',
-  },
-  {
-    Title: 'Sleeveless',
-    Image: '../../../assets/images/t-shirt.png',
-  },
-  {
-    Title: 'Full sleeve',
-    Image: '../../../assets/images/plain-shirt.png',
-  },
-  {
-    Title: 'V neck',
-    Image: '../../../assets/images/t-shirt.png',
-  },
-  {
-    Title: 'Polo',
-    Image: '../../../assets/images/plain-shirt.png',
-  },
-]
-
 const { width } = Dimensions.get('window')
 
 const SelectStyle: React.FC<ISelectStyle> = ({
@@ -118,10 +91,10 @@ const SelectStyle: React.FC<ISelectStyle> = ({
                 columnWrapperStyle={{
                   display: 'flex',
                   flexDirection: 'row',
-                  justifyContent: 'space-between',
+                  justifyContent: 'center',
                   alignItems: 'center',
                   flexGrow: 1,
-                  gap: 5,
+                  gap: 65,
                   paddingVertical: 5,
                 }}
                 renderItem={({ item }) => (

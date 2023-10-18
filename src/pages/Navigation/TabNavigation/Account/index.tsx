@@ -32,7 +32,16 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const user = userStore((state) => state.user)
   const isFocused = useIsFocused()
   const [image, setImage] = useState<string | null>(null)
-  const { updateUser, updateProfile, profile, updateName, name } = userStore()
+  const {
+    updateUser,
+    updateProfile,
+    profile,
+    updateAvatar,
+    updateAddress,
+    updatePhoneNo,
+    updateName,
+    name,
+  } = userStore()
 
   const fetchDataFromFirestore = useCallback(async () => {
     try {
@@ -44,6 +53,9 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
       const fetchData = querySnapshot.data()
       updateProfile(fetchData?.profile)
       updateName(fetchData?.name)
+      updateAddress(fetchData?.address)
+      updateAvatar(fetchData?.avatar)
+      updatePhoneNo(fetchData?.phoneNo)
     } catch (error) {
       console.error('Error fetching data from Firestore:', error)
     }

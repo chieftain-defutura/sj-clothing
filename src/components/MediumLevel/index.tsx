@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
-import Avatar from './Avatar'
+import { ScrollView, StyleSheet, View, Alert } from 'react-native'
 import Navigator from './Navigator'
 import SelectStyle from './SelectStyle'
 import SelectSize from './SelectSize'
@@ -17,16 +16,15 @@ import { addDoc, collection, getDocs } from 'firebase/firestore/lite'
 import { ImageorTextProps } from '../../constant/types'
 import { useSharedValue, withSequence, withTiming } from 'react-native-reanimated'
 import { userStore } from '../../store/userStore'
+import Avatar from './Avatar'
 interface IMediumLevel {}
 
 const MediumLevel: React.FC<IMediumLevel> = () => {
-  const user = userStore((state) => state.user)
+  const { avatar, user } = userStore()
+
   const navigation = useNavigation()
   const slideValue = useSharedValue(0)
-  const [toggleAvatar, setToggleAvatar] = useState(false)
   const [isSteps, setSteps] = useState(1)
-  //avatar
-  const [isGender, setGender] = useState('Male')
   //data
   const [data, setData] = useState<any[]>()
   const [designs, setDesigns] = useState<any[]>()
@@ -56,7 +54,21 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
   //finalview
   const [quantity, setQuantity] = useState('1')
   const [approved, setApproved] = useState(false)
+
+  const FilteredData = data?.filter((f: any) => f.styles === isSelectedStyle) as any
+  const Designs = designs?.filter((f: ImageorTextProps) => f.type === isImageOrText.title)
+
   const handleIncreaseSteps = () => {
+    if (FilteredData[0].gender.toLowerCase() !== avatar?.toLowerCase()) {
+      Alert.alert(`Alert ${avatar}`, 'Not Available', [
+        {
+          text: 'Cancel',
+          onPress: () => setSteps(1),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => setSteps(1) },
+      ])
+    }
     setSteps(isSteps + 1)
     setDropDown(false)
     setOpenDesign(false)
@@ -105,13 +117,13 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
       color: isColor,
       quantity: quantity,
       textAndImage: isImageOrText,
-      detailedFeatures: [...FilteredData[0].detailedFutures],
+      description: FilteredData[0].description,
       price: FilteredData[0].normalPrice,
       offerPrice: FilteredData[0].offerPrice,
       productId: FilteredData[0].id,
       approved: approved,
       userId: user?.uid,
-      gender: isGender,
+      gender: avatar,
       type: 'Mid-Level',
       productName: FilteredData[0].productName,
       orderStatus: {
@@ -145,13 +157,10 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
     navigation.navigate('Checkout')
   }
 
-  const FilteredData = data?.filter((f: any) => f.styles === isSelectedStyle) as any
-  const Designs = designs?.filter((f: ImageorTextProps) => f.type === isImageOrText.title)
-
   return (
     <View style={styles.midiumlevelContainer}>
-      {!toggleAvatar ? (
-        <Avatar setToggleAvatar={setToggleAvatar} isGender={isGender} setGender={setGender} />
+      {!avatar ? (
+        <Avatar />
       ) : (
         <LinearGradient
           colors={gradientOpacityColors}
@@ -187,7 +196,7 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
           )}
           {isSteps === 2 && (
             <SelectSize
-              isGender={isGender}
+              isGender={avatar}
               isSize={isSize}
               setSize={setSize}
               isDropDown={isDropDown}
@@ -222,7 +231,7 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
               {isSteps === 5 && (
                 <FinalView
                   color={isColor}
-                  Data={FilteredData[0].detailedFutures}
+                  Data={FilteredData[0].description}
                   size={isSize.sizeVarient.size}
                   style={isSelectedStyle}
                   setQuantity={setQuantity}

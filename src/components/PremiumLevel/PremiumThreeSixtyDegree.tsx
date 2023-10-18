@@ -10,6 +10,7 @@ import { gradientOpacityColors } from '../../styles/theme'
 import { addDoc, collection } from 'firebase/firestore/lite'
 import { db } from '../../../firebase'
 import { IPremiumData } from '../../constant/types'
+import { userStore } from '../../store/userStore'
 
 interface IPremiumThreeSixtyDegree {
   navigation: any
@@ -33,51 +34,50 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   size,
 }) => {
   const [isPressed, setIsPressed] = useState(false)
-
+  const { user } = userStore()
+  console.log(size)
+  console.log(data)
   const handleSubmit = async () => {
-    try {
-      const docRef = await addDoc(collection(db, 'Posts'), {
-        sizes: size,
-        detailedFeatures: data.description,
-        price: data.normalPrice,
-        offerPrice: data.offerPrice,
-        status: 'pending',
-        type: 'Premium-Level',
-        productName: data.productName,
-        orderStatus: {
-          orderplaced: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          manufacturing: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          readyToShip: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          shipping: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          delivery: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
+    const docRef = await addDoc(collection(db, 'Orders'), {
+      sizes: size,
+      description: data.description,
+      price: data.normalPrice,
+      offerPrice: data.offerPrice,
+      status: 'pending',
+      userId: user?.uid,
+      gender: data.gender,
+      type: 'Premium-Level',
+      productName: data.productName,
+      orderStatus: {
+        orderplaced: {
+          createdAt: null,
+          description: '',
+          status: false,
         },
-      })
-
-      navigation.navigate('Checkout')
-      console.log('Checkout')
-    } catch (error) {
-      console.error('Error submitting data:', error)
-    }
+        manufacturing: {
+          createdAt: null,
+          description: '',
+          status: false,
+        },
+        readyToShip: {
+          createdAt: null,
+          description: '',
+          status: false,
+        },
+        shipping: {
+          createdAt: null,
+          description: '',
+          status: false,
+        },
+        delivery: {
+          createdAt: null,
+          description: '',
+          status: false,
+        },
+      },
+    })
+    navigation.navigate('Checkout')
+    console.log(docRef)
   }
   return (
     <Animated.View

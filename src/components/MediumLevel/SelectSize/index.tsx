@@ -10,63 +10,6 @@ import Animated, {
   FlipOutXDown,
 } from 'react-native-reanimated'
 
-const Sizes = [
-  {
-    country: 'India',
-    sizeVariant: [
-      { size: 'M', measurement: '40', unit: 'cm' },
-      { size: 'L', measurement: '42', unit: 'cm' },
-      { size: 'XL', measurement: '44', unit: 'cm' },
-      { size: 'XXL', measurement: '46', unit: 'cm' },
-    ],
-  },
-  {
-    country: 'America',
-    sizeVariant: [
-      { size: 'S', measurement: '38', unit: 'cm' },
-      { size: 'M', measurement: '40', unit: 'cm' },
-      { size: 'XL', measurement: '44', unit: 'cm' },
-      { size: 'XXL', measurement: '46', unit: 'cm' },
-    ],
-  },
-  {
-    country: 'Russia',
-    sizeVariant: [
-      { size: 'S', measurement: '38', unit: 'cm' },
-      { size: 'M', measurement: '40', unit: 'cm' },
-      { size: 'L', measurement: '42', unit: 'cm' },
-      { size: 'XXL', measurement: '46', unit: 'cm' },
-    ],
-  },
-  {
-    country: 'Japan',
-    sizeVariant: [
-      { size: 'M', measurement: '40', unit: 'cm' },
-      { size: 'L', measurement: '42', unit: 'cm' },
-      { size: 'XL', measurement: '44', unit: 'cm' },
-      { size: 'XXL', measurement: '46', unit: 'cm' },
-    ],
-  },
-  {
-    country: 'China',
-    sizeVariant: [
-      { size: 'S', measurement: '38', unit: 'cm' },
-      { size: 'M', measurement: '40', unit: 'cm' },
-      { size: 'XXL', measurement: '46', unit: 'cm' },
-    ],
-  },
-  {
-    country: 'Sri Lanka',
-    sizeVariant: [
-      { size: 'S', measurement: '38', unit: 'cm' },
-      { size: 'M', measurement: '40', unit: 'cm' },
-      { size: 'L', measurement: '42', unit: 'cm' },
-      { size: 'XL', measurement: '44', unit: 'cm' },
-      { size: 'XXL', measurement: '46', unit: 'cm' },
-    ],
-  },
-]
-
 const { width } = Dimensions.get('window')
 
 interface ISelectSize {
@@ -165,9 +108,9 @@ const SelectSize: React.FC<ISelectSize> = ({
                 columnWrapperStyle={{
                   display: 'flex',
                   flexDirection: 'row',
-                  justifyContent: 'space-between',
+                  justifyContent: 'flex-start',
                   alignItems: 'flex-start',
-                  gap: 5,
+                  gap: 65,
                   paddingVertical: 8,
                 }}
                 numColumns={3}
@@ -198,7 +141,7 @@ const SelectSize: React.FC<ISelectSize> = ({
               />
 
               <View
-                style={{ borderWidth: 1, borderColor: COLORS.borderClr, marginVertical: 8 }}
+                style={{ borderBottomWidth: 1, borderColor: COLORS.borderClr, marginVertical: 8 }}
               ></View>
               <Text
                 style={{ paddingTop: 8, paddingBottom: 16, fontSize: 14, color: COLORS.textClr }}
@@ -206,40 +149,43 @@ const SelectSize: React.FC<ISelectSize> = ({
                 Select Size
               </Text>
               {isSize.country && (
-                <View
-                  style={{
+                <FlatList
+                  data={sizesData[0].filter((f: any) => f.show === true)}
+                  contentContainerStyle={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                  }}
+                  columnWrapperStyle={{
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    flexWrap: 'wrap',
-                    columnGap: 65,
-                    rowGap: 16,
+                    justifyContent: 'center',
+                    // alignItems: 'flex-start',
+                    gap: 65,
+                    paddingVertical: 8,
                   }}
-                >
-                  {sizesData[0].map((item: any, index: number) => (
+                  numColumns={3}
+                  renderItem={({ item, index }) => (
                     <View key={index}>
-                      {item.show && (
-                        <Pressable
-                          onPress={() => handleSelect(item.size, item.measurement)}
-                          key={index}
+                      <Pressable
+                        onPress={() => handleSelect(item.size, item.measurement)}
+                        key={index}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color:
+                              isSize.sizeVarient.size === item.size
+                                ? COLORS.textSecondaryClr
+                                : COLORS.SecondaryTwo,
+                          }}
                         >
-                          <Text
-                            style={{
-                              textAlign: 'center',
-                              fontSize: 12,
-                              color:
-                                isSize.sizeVarient.size === item.size
-                                  ? COLORS.textSecondaryClr
-                                  : COLORS.SecondaryTwo,
-                            }}
-                          >
-                            {item.size} - {item.measurement} cm
-                          </Text>
-                        </Pressable>
-                      )}
+                          {item.size} - {item.measurement} cm
+                        </Text>
+                      </Pressable>
                     </View>
-                  ))}
-                </View>
+                  )}
+                />
               )}
             </View>
           </Animated.View>
