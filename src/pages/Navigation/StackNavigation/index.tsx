@@ -28,6 +28,7 @@ import Customer from './Account/CustomerCare'
 import Accessories from './Accessories'
 import AccessoriesDetails from './Accessories/AccessoriesDetails.tsx'
 import Avatar from '../../../components/MediumLevel/Avatar'
+import EditTest from './Account/EditTest'
 
 const Stack = createStackNavigator()
 

@@ -1,19 +1,20 @@
-import React, { useState } from 'react'
-import { View, Dimensions, Pressable } from 'react-native'
+import React from 'react'
+import { View, Dimensions, Pressable, Alert } from 'react-native'
 import styled from 'styled-components/native'
 import * as ImagePicker from 'expo-image-picker'
-import * as yup from 'yup'
 import { useFormik } from 'formik'
+import * as yup from 'yup'
 import { COLORS, FONT_FAMILY } from '../../../../styles/theme'
 import NotUserIcon from '../../../../assets/icons/AccountPageIcon/NotUserIcon'
 import LeftArrow from '../../../../assets/icons/LeftArrow'
 import Input from '../../../../components/Input'
+// import { auth, db, storage } from '../../../../../firebase'
+// import { ref, getDownloadURL, uploadString } from 'firebase/storage'
+import storage from '@react-native-firebase/storage'
 import { updateProfile } from 'firebase/auth'
 import { userStore } from '../../../../store/userStore'
 import { doc, updateDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../../firebase'
-import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
-import { storage } from '../../../../../firebase'
 
 const { width, height } = Dimensions.get('window')
 
@@ -26,8 +27,7 @@ const validationSchema = yup.object({
 })
 
 const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
-  const [image, setImage] = React.useState<any>()
-  const [uploading, setUploading] = useState(false)
+  const [image, setImage] = React.useState<string | null>(null)
   const user = userStore((state) => state.user)
   const updateName = userStore((name) => name.updateName)
 
@@ -44,39 +44,11 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
     console.log('navigated ', { dName: values.fullName, profileImg: image })
   }
 
-  // const onSubmit = async (values: { fullName: string }) => {
-  //   if (user) {
-  //     updateName(user?.displayName)
-
-  //     // Upload the image to Firebase Storage
-  //     if (image) {
-  //       const storageRef = ref(storage, 'profile_images/' + user.uid)
-  //       try {
-  //         const response = await uploadFile(storageRef, image, 'data_url')
-  //         const downloadURL = await getDownloadURL(response.ref)
-  //         await updateDoc(doc(db, 'users', user.uid), {
-  //           name: values.fullName,
-  //           profile: downloadURL,
-  //         })
-  //       } catch (error) {
-  //         console.error('Error uploading file to Firebase Storage:', error)
-  //       }
-  //     } else {
-  //       await updateDoc(doc(db, 'users', user.uid), {
-  //         name: values.fullName,
-  //       })
-  //     }
-
-  //     navigation.navigate('Account', { dName: values.fullName, profileImg: image })
-  //     console.log('navigated ', { dName: values.fullName, profileImg: image })
-  //   } else {
-  //     console.log('error')
-  //   }
-  // }
+  console.log('image', image)
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
@@ -84,57 +56,31 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri)
+      // await uploadImage(result.assets[0].uri)
     }
   }
 
-  /** @type {any} */
-  const metadata = {
-    contentType: 'image/jpeg',
-  }
+  // const uploadImage = async (uri: string) => {
+  //   try {
+  //     const reference = storage().ref('black-t-shirt-sm.png')
+  //     const task = reference.putFile(uri)
 
-  const storageRef = ref(storage, 'images/')
-  const uploadTask = uploadBytesResumable(storageRef, image, metadata)
+  //     task.on('state_changed', (taskSnapshot) => {
+  //       console.log(
+  //         `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+  //       )
+  //     })
 
-  console.log('storageRef', storageRef)
+  //     await task // Wait for the upload to complete
 
-  uploadTask.on(
-    'state_changed',
-    (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-      // console.log('Upload is ' + progress + '% done')
-      switch (snapshot.state) {
-        case 'paused':
-          console.log('Upload is paused')
-          break
-        case 'running':
-          console.log('Upload is running')
-          break
-      }
-    },
-    (error) => {
-      switch (error.code) {
-        case 'storage/unauthorized':
-          // User doesn't have permission to access the object
-          break
-        case 'storage/canceled':
-          // User canceled the upload
-          break
-
-        // ...
-
-        case 'storage/unknown':
-          // Unknown error occurred, inspect error.serverResponse
-          break
-      }
-    },
-    () => {
-      // Upload completed successfully, now we can get the download URL
-      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        console.log('File available at', downloadURL)
-      })
-    },
-  )
-
+  //     console.log('Image uploaded to the bucket!')
+  //   } catch (error) {
+  //     console.error('Error uploading image:', error)
+  //     Alert.alert('Error', 'Failed to upload image')
+  //     // You can also throw the error to handle it elsewhere if needed
+  //     throw error
+  //   }
+  // }
   const formik = useFormik({
     initialValues: {
       fullName: '',

@@ -254,10 +254,13 @@
 // // export default Post
 
 import { View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import PostCard from '../../../../components/PostCard'
 import { useNavigation } from '@react-navigation/native'
 import Tooltip from '../../../../screens/Modals/TooltipModel'
+import { userStore } from '../../../../store/userStore'
+import { doc, getDoc } from 'firebase/firestore/lite'
+import { db } from '../../../../../firebase'
 
 interface postProps {
   route: any
@@ -266,16 +269,46 @@ interface postProps {
 const Post: React.FC<postProps> = ({ route }) => {
   const navigation = useNavigation()
   const [showTooltip, setTooltip] = useState<boolean>(false)
+  const {
+    updateUser,
+    updateProfile,
+    updateAvatar,
+    updateAddress,
+    updatePhoneNo,
+    updateName,
+    user,
+    avatar,
+  } = userStore()
 
+  const fetchDataFromFirestore = useCallback(async () => {
+    try {
+      if (!user) return
+      const q = doc(db, 'users', user.uid)
+      const querySnapshot = await getDoc(q)
+      console.log(querySnapshot.data())
+
+      const fetchData = querySnapshot.data()
+      updateProfile(fetchData?.profile)
+      updateName(fetchData?.name)
+      updateAddress(fetchData?.address)
+      updateAvatar(fetchData?.avatar)
+      updatePhoneNo(fetchData?.phoneNo)
+    } catch (error) {
+      console.error('Error fetching data from Firestore:', error)
+    }
+  }, [user, updateProfile])
+
+  console.log(avatar)
   if (route) {
     console.log('asdsd', route)
   }
   useEffect(() => {
+    fetchDataFromFirestore()
     if (route.params) {
       console.log('show tool tip', route.params.showToolTip)
       setTooltip(route.params.showToolTip)
     }
-  }, [])
+  }, [fetchDataFromFirestore])
 
   return (
     <View>
