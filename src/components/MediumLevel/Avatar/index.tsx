@@ -12,55 +12,56 @@ const Avatar: React.FC = () => {
   const [toggle, setToggle] = useState(false)
   const [isGender, setGender] = useState('')
   return (
-    <ScrollView style={styles.avatarContainer}>
-      <LinearGradient colors={gradientOpacityColors} style={styles.genderWrapper}>
-        <Animated.View
-          entering={FadeInUp.duration(800)}
-          exiting={FadeOut}
-          style={styles.genderWrapper}
-        >
-          <Text style={styles.title}>Create your avatar.</Text>
-          {/* <Image style={styles.image} source={require('../../../assets/images/girl-modal.png')} /> */}
-          <View style={{ width: width / 1.1, height: height / 2, paddingBottom: 1 }}>
-            <WebView
-              source={{
-                uri: 'https://sj-threejs-development.netlify.app/',
+    <LinearGradient colors={gradientOpacityColors} style={styles.genderWrapper}>
+      <ScrollView>
+        <View>
+          <Animated.View
+            entering={FadeInUp.duration(800)}
+            exiting={FadeOut}
+            style={styles.genderWrapper}
+          >
+            <Text style={styles.title}>Create your avatar.</Text>
+            {/* <Image style={styles.image} source={require('../../../assets/images/girl-modal.png')} /> */}
+            <View
+              style={{
+                width: width / 1,
+                height: height / 2,
+                paddingBottom: 1,
               }}
-              // style={{ flex: 1 }}
-            />
-          </View>
-        </Animated.View>
-      </LinearGradient>
+            >
+              <WebView
+                source={{
+                  uri: 'https://sj-threejs-development.netlify.app/',
+                }}
+              />
+            </View>
+          </Animated.View>
 
-      {toggle && (
-        <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
-          <Skintone isGender={isGender} setToggle={setToggle} />
-        </Animated.View>
-      )}
+          {toggle && (
+            <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
+              <Skintone isGender={isGender} setToggle={setToggle} />
+            </Animated.View>
+          )}
 
-      {!toggle && (
-        <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
-          <Gender setToggle={setToggle} isGender={isGender} setGender={setGender} />
-        </Animated.View>
-      )}
-    </ScrollView>
+          {!toggle && (
+            <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
+              <Gender setToggle={setToggle} isGender={isGender} setGender={setGender} />
+            </Animated.View>
+          )}
+        </View>
+      </ScrollView>
+    </LinearGradient>
   )
 }
 
 export default Avatar
 
 const styles = StyleSheet.create({
-  avatarContainer: {
-    flex: 1,
-    backgroundColor: COLORS.iconsNormalClr,
-  },
   genderWrapper: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    borderBottomRightRadius: 50,
-    borderBottomLeftRadius: 50,
   },
   title: {
     textAlign: 'center',

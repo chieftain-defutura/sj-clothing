@@ -12,6 +12,8 @@ export const COLORS = {
   borderClr: '#EEE',
   backgroundBlurClr: 'rgba(0,0,0,0.5)',
   backgroundBlurClrTooltip: 'rgba(0,0,0,0.2)',
+  dropDownClr: 'rgba(0,0,0,0.1)',
+  textRGBAClr: 'rgba(70, 45, 133, 0.60)',
   secondaryRGBAClr: 'rgba(70, 45, 133, 0.60)',
   errorClr: '#ff6347',
   SecondaryTwo: '#8C73CB',

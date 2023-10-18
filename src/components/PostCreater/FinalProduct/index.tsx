@@ -215,6 +215,8 @@ const FinalProduct: React.FC<IFinalProduct> = ({
         text='Post'
         onPress={handleSubmit}
         buttonStyle={[styles.submitBtn]}
+        fontFamily='Arvo-Regular'
+        fontSize={16}
       />
     </ScrollView>
   )

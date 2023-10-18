@@ -13,7 +13,7 @@ export const HeaderLeft = () => {
   return (
     <LogoContent>
       <Pressable onPress={() => navigation.navigate('Stack')}>
-        <TShirtImg source={require('../assets/logo/logo-img-4.png')} />
+        <TShirtImg source={require('../assets/logo/logo-img-2.png')} />
       </Pressable>
       {/* <View>
         <LogoText>SPRINKLE</LogoText>
@@ -64,13 +64,13 @@ const LogoContent = styled.View`
   flex-direction: row;
   justify-content: center;
   gap: 4px;
-  margin-left: 16px;
+  margin-left: 100px;
   padding-vertical: 12px;
 `
 
 const TShirtImg = styled.Image`
   height: 100%;
-  width: 85px;
+  width: 190px;
   height: 55px;
   object-fit: contain;
 `

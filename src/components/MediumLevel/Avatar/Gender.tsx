@@ -22,15 +22,14 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
               style={[
                 styles.genderButton,
                 {
-                  borderColor:
-                    isGender === gender ? COLORS.textSecondaryClr : COLORS.backgroundSecondaryClr,
+                  borderColor: isGender === gender ? COLORS.textSecondaryClr : COLORS.textRGBAClr,
                 },
               ]}
             >
               <Text
                 style={[
                   styles.buttonText,
-                  { color: isGender === gender ? COLORS.textSecondaryClr : COLORS.slickDotClr },
+                  { color: isGender === gender ? COLORS.textSecondaryClr : COLORS.textRGBAClr },
                 ]}
               >
                 {gender}
@@ -43,7 +42,7 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
           variant='primary'
           fontFamily='Arvo-Regular'
           fontSize={16}
-          style={{ paddingTop: 56 }}
+          style={{ paddingTop: 32 }}
           onPress={() => setToggle(true)}
         />
       </View>
@@ -69,6 +68,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     paddingVertical: 16,
+    marginTop: 12,
     gap: 8,
   },
   genderButton: {

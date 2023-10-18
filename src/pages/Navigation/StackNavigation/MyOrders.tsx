@@ -1,18 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
-import { View, Pressable } from 'react-native'
+import { View, Pressable, TouchableOpacity } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
-import { COLORS, gradientOpacityColors } from '../../../styles/theme'
+import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import ChevronLeft from '../../../assets/icons/ChevronLeft'
 import { MyOrdersData } from '../../../utils/data/myOrdersData'
 import { LinearGradient } from 'expo-linear-gradient'
+import StarActive from '../../../assets/icons/PostPageIcon/StarActive'
+import StarInActive from '../../../assets/icons/PostPageIcon/StarInActive'
 
 interface IMyOrders {
   navigation: any
 }
 
 const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
+  const [stars, setStars] = useState([
+    { active: true },
+    { active: true },
+    { active: false },
+    { active: false },
+    { active: false },
+  ])
+
+  const toggleStar = (index: number) => {
+    const updatedStars = [...stars]
+    updatedStars[index].active = !updatedStars[index].active
+    setStars(updatedStars)
+  }
+
   return (
     <LinearGradient colors={gradientOpacityColors}>
       <Animated.View
@@ -32,27 +48,52 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
             <CartPageContent>
               {MyOrdersData.map((f, index) => {
                 return (
-                  <Pressable key={index} onPress={() => navigation.navigate('TrackOrder')}>
+                  <View key={index}>
                     <CartPageContainer>
-                      <View>
-                        <TShirtImage source={f.image} />
-                      </View>
-                      <View>
-                        <ProductWrapper>
-                          <View>
-                            <ProductText>{f.product}</ProductText>
-                            <ProductShirtText>{f.productName}</ProductShirtText>
-                            <StatusText>{f.status}</StatusText>
-                            <ProductShirtText>{f.statusName}</ProductShirtText>
-                            <ProductShirtText>{f.date}</ProductShirtText>
-                          </View>
-                          <Pressable>
-                            <ChevronLeft width={16} height={16} />
-                          </Pressable>
-                        </ProductWrapper>
-                      </View>
+                      <CartPageData onPress={() => navigation.navigate('TrackOrder')}>
+                        <View>
+                          <TShirtImage source={f.image} />
+                        </View>
+                        <View>
+                          <ProductWrapper>
+                            <View>
+                              <ProductText>{f.product}</ProductText>
+                              <ProductShirtText>{f.productName}</ProductShirtText>
+                              <StatusText>{f.status}</StatusText>
+                              <ProductShirtText>{f.statusName}</ProductShirtText>
+                              <ProductShirtText>{f.date}</ProductShirtText>
+                            </View>
+                            <Pressable>
+                              <ChevronLeft width={16} height={16} />
+                            </Pressable>
+                          </ProductWrapper>
+                        </View>
+                      </CartPageData>
+                      <StarWrapper>
+                        <View
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 1,
+                          }}
+                        >
+                          {stars.map((star, index) => (
+                            <TouchableOpacity key={index} onPress={() => toggleStar(index)}>
+                              {star.active ? (
+                                <StarActive width={24} height={24} />
+                              ) : (
+                                <StarInActive width={24} height={24} />
+                              )}
+                            </TouchableOpacity>
+                          ))}
+                        </View>
+                        <View>
+                          <DateText>18, Oct 2023</DateText>
+                        </View>
+                      </StarWrapper>
                     </CartPageContainer>
-                  </Pressable>
+                  </View>
                 )
               })}
             </CartPageContent>
@@ -73,6 +114,11 @@ const GoBackArrowContent = styled.Pressable`
   align-items: center;
   gap: 8px;
   padding: 16px;
+`
+const DateText = styled.Text`
+  font-size: 12px;
+  font-family: ${FONT_FAMILY.GilroySemiBold};
+  color: ${COLORS.SecondaryTwo};
 `
 
 const StatusText = styled.Text`
@@ -117,13 +163,26 @@ const TShirtImage = styled.Image`
   object-fit: contain;
 `
 
+const StarWrapper = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-vertical: 8px;
+  border-radius: 5px;
+  padding-horizontal: 16px;
+`
+
 const CartPageContainer = styled.View`
+  border-bottom-color: ${COLORS.strokeClr};
+  border-bottom-width: 1px;
+  padding-bottom: 16px;
+`
+const CartPageData = styled.Pressable`
   display: flex;
   flex-direction: row;
   gap: 16px;
-  border-bottom-color: ${COLORS.strokeClr};
-  border-bottom-width: 1px;
-  padding-vertical: 24px;
+  padding-vertical: 12px;
 `
 
 const CartPageContent = styled.View`

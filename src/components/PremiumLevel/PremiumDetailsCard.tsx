@@ -14,6 +14,7 @@ import {
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import LeftArrow from '../../assets/icons/LeftArrow'
 import ShareArrow from '../../assets/icons/ShareArrow'
+import * as Animatable from 'react-native-animatable'
 import Animated, {
   FadeInLeft,
   FadeInRight,
@@ -206,7 +207,13 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
               <View style={{ width: 158 }}>
                 <SelectContent onPress={toggleDropdown}>
                   <SelectText>{selectedCountry || 'Select a country'}</SelectText>
-                  <ChevronLeft width={16} height={16} />
+                  <Animatable.View
+                    animation={isDropdownOpen ? 'rotate' : ''}
+                    duration={500}
+                    easing='ease-out'
+                  >
+                    <ChevronLeft width={16} height={16} />
+                  </Animatable.View>
                 </SelectContent>
                 {isDropdownOpen && (
                   <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
@@ -236,7 +243,13 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                       ? `${isSize.sizeVarient.size}-${isSize.sizeVarient.measurement}`
                       : 'Select a Sizes'}
                   </SelectText>
-                  <ChevronLeft width={16} height={16} />
+                  <Animatable.View
+                    animation={isDropdownSizesOpen ? 'rotate' : ''}
+                    duration={500}
+                    easing='ease-out'
+                  >
+                    <ChevronLeft width={16} height={16} />
+                  </Animatable.View>
                 </SelectContent>
                 {isDropdownSizesOpen && selectedCountry && (
                   <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
@@ -337,7 +350,7 @@ const DropDownContainer = styled.View`
 `
 
 const SelectDropDownList = styled.View`
-  border-color: #e5cef5;
+  border-color: ${COLORS.dropDownClr};
   border-width: 1px;
   border-radius: 5px;
   margin-top: 8px;
@@ -359,7 +372,7 @@ const SelectListText = styled.Text`
 `
 
 const SelectContent = styled.Pressable`
-  border-color: #e5cef5;
+  border-color: ${COLORS.dropDownClr};
   border-width: 1px;
   padding: 12px;
   border-radius: 5px;
