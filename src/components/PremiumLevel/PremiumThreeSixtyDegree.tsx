@@ -10,6 +10,7 @@ import { gradientOpacityColors } from '../../styles/theme'
 import { addDoc, collection } from 'firebase/firestore/lite'
 import { db } from '../../../firebase'
 import { IPremiumData } from '../../constant/types'
+import { userStore } from '../../store/userStore'
 
 interface IPremiumThreeSixtyDegree {
   navigation: any
@@ -33,16 +34,18 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   size,
 }) => {
   const [isPressed, setIsPressed] = useState(false)
-
+  const { user } = userStore()
+  console.log(size)
+  console.log(data)
   const handleSubmit = async () => {
-    const docRef = await addDoc(collection(db, 'Posts'), {
+    const docRef = await addDoc(collection(db, 'Orders'), {
       sizes: size,
-      detailedFeatures: data.description,
+      description: data.description,
       price: data.normalPrice,
       offerPrice: data.offerPrice,
       status: 'pending',
-      // userId: user?.uid,
-      // gender: isGender,
+      userId: user?.uid,
+      gender: data.gender,
       type: 'Premium-Level',
       productName: data.productName,
       orderStatus: {
@@ -74,6 +77,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
       },
     })
     navigation.navigate('Checkout')
+    console.log(docRef)
   }
   return (
     <Animated.View

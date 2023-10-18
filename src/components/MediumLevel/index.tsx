@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, View, Alert } from 'react-native'
 import Avatar from './Avatar'
 import Navigator from './Navigator'
 import SelectStyle from './SelectStyle'
@@ -55,6 +55,16 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
   const [quantity, setQuantity] = useState('1')
   const [approved, setApproved] = useState(false)
   const handleIncreaseSteps = () => {
+    if (FilteredData[0].gender !== Avatar) {
+      Alert.alert(`Alert ${Avatar}`, 'Not Available', [
+        {
+          text: 'Cancel',
+          onPress: () => setSteps(1),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => setSteps(1) },
+      ])
+    }
     setSteps(isSteps + 1)
     setDropDown(false)
     setOpenDesign(false)
@@ -145,6 +155,7 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
 
   const FilteredData = data?.filter((f: any) => f.styles === isSelectedStyle) as any
   const Designs = designs?.filter((f: ImageorTextProps) => f.type === isImageOrText.title)
+
   return (
     <View style={styles.midiumlevelContainer}>
       {!avatar ? (
@@ -219,7 +230,7 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
               {isSteps === 5 && (
                 <FinalView
                   color={isColor}
-                  Data={FilteredData[0].detailedFutures}
+                  Data={FilteredData[0].description}
                   size={isSize.sizeVarient.size}
                   style={isSelectedStyle}
                   setQuantity={setQuantity}

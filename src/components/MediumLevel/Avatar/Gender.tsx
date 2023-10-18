@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   genderButtonWrapper: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingVertical: 16,
     gap: 8,
   },

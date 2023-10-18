@@ -10,29 +10,6 @@ import Animated, {
 import CloseIcon from '../../../assets/icons/Close'
 import { COLORS } from '../../../styles/theme'
 
-const Images = [
-  {
-    title: 'Front',
-    boolean: true,
-    image: require('../../../assets/images/front-design.png'),
-  },
-  {
-    title: 'Back',
-    boolean: true,
-    image: require('../../../assets/images/front-design.png'),
-  },
-  {
-    title: 'Right arm',
-    boolean: true,
-    image: require('../../../assets/images/left-arm-design.png'),
-  },
-  {
-    title: 'Left arm',
-    boolean: true,
-    image: require('../../../assets/images/left-arm-design.png'),
-  },
-]
-
 const { width } = Dimensions.get('window')
 
 interface IAddImageOrText {

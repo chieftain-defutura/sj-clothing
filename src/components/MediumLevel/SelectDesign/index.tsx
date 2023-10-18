@@ -137,31 +137,29 @@ const SelectDesign: React.FC<ISelectDesign> = ({
           gap: 8,
           paddingVertical: 16,
         }}
-        data={FilteredData}
+        data={FilteredData?.filter((f) => f.active === true)}
         horizontal
         renderItem={({ item, index }) => (
           <View key={index}>
-            {item.active && (
-              <Pressable
-                onPress={() => {
-                  setImageOrText((prevState) => ({
-                    ...prevState,
-                    designs: { hashtag: isImageOrText.designs.hashtag, image: item.Images },
-                  })),
-                    setDone(true)
-                }}
-                style={{
-                  backgroundColor: COLORS.cardClr,
-                  padding: 5,
-                  borderRadius: 5,
-                  borderColor:
-                    isImageOrText.designs.image === item.Images ? COLORS.textSecondaryClr : 'red',
-                  borderWidth: isImageOrText.designs.image === item.Images ? 1 : 0,
-                }}
-              >
-                <Image style={{ width: 100, height: 100 }} source={{ uri: item.Images }} />
-              </Pressable>
-            )}
+            <Pressable
+              onPress={() => {
+                setImageOrText((prevState) => ({
+                  ...prevState,
+                  designs: { hashtag: isImageOrText.designs.hashtag, image: item.Images },
+                })),
+                  setDone(true)
+              }}
+              style={{
+                backgroundColor: COLORS.cardClr,
+                padding: 5,
+                borderRadius: 5,
+                borderColor:
+                  isImageOrText.designs.image === item.Images ? COLORS.textSecondaryClr : 'red',
+                borderWidth: isImageOrText.designs.image === item.Images ? 1 : 0,
+              }}
+            >
+              <Image style={{ width: 100, height: 100 }} source={{ uri: item.Images }} />
+            </Pressable>
           </View>
         )}
       />

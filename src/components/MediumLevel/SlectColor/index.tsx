@@ -71,7 +71,7 @@ const SelectColor: React.FC<ISelectColor> = ({
                 textAlign: 'center',
                 fontFamily: 'Gilroy-Medium',
                 borderBottomColor: COLORS.borderClr,
-                borderBottomWidth: 2,
+                borderBottomWidth: 1,
                 paddingVertical: 20,
                 color: COLORS.textClr,
               }}

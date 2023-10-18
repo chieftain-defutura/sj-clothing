@@ -1,11 +1,13 @@
-import { StyleSheet, Text, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useState } from 'react'
 import Gender from './Gender'
 import Skintone from './Skintone'
 import { COLORS, gradientOpacityColors } from '../../../styles/theme'
 import Animated, { FadeInUp, FadeOut, FadeOutDown } from 'react-native-reanimated'
+import { WebView } from 'react-native-webview'
 
+const { height, width } = Dimensions.get('window')
 const Avatar: React.FC = () => {
   const [toggle, setToggle] = useState(false)
   const [isGender, setGender] = useState('')
@@ -18,7 +20,15 @@ const Avatar: React.FC = () => {
           style={styles.genderWrapper}
         >
           <Text style={styles.title}>Create your avatar.</Text>
-          <Image style={styles.image} source={require('../../../assets/images/girl-modal.png')} />
+          {/* <Image style={styles.image} source={require('../../../assets/images/girl-modal.png')} /> */}
+          <View style={{ width: width / 1.1, height: height / 2 }}>
+            <WebView
+              source={{
+                uri: 'https://sj-threejs-development.netlify.app/',
+              }}
+              style={{ flex: 1 }}
+            />
+          </View>
         </Animated.View>
       </LinearGradient>
 

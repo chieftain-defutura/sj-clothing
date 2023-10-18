@@ -6,12 +6,14 @@ import { COLORS } from '../../../styles/theme'
 import { doc, updateDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
+import { useNavigation } from '@react-navigation/native'
 
 interface ISkintone {
   isGender: string
   setToggle: React.Dispatch<React.SetStateAction<boolean>>
 }
 const Skintone: React.FC<ISkintone> = ({ setToggle, isGender }) => {
+  const navigation = useNavigation()
   const { user } = userStore()
   const handleSubmit = async () => {
     if (user) {
@@ -19,6 +21,7 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, isGender }) => {
         avatar: isGender,
       })
     }
+    navigation.navigate('Stack')
   }
   return (
     <View style={styles.SkintoneContainer}>
