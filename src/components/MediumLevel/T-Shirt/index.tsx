@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
+    zIndex: -100,
   },
   selectSize360Degree: {
     display: 'flex',

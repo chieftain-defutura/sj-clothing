@@ -163,99 +163,109 @@ const MediumLevel: React.FC<IMediumLevel> = () => {
       {!avatar ? (
         <Avatar path='MidLevel' />
       ) : (
-        <LinearGradient
-          colors={gradientOpacityColors}
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Navigator
-            data={FilteredData}
-            steps={isSteps}
-            slideValue={slideValue}
-            isOpenDesign={isOpenDesign}
-            isDone={isDone}
-            setDone={setDone}
-            setDropDown={setDropDown}
-            setOpenDesign={setOpenDesign}
-            setImageOrText={setImageOrText}
-            handleDecreaseSteps={handleDecreaseSteps}
-            handleIncreaseSteps={handleIncreaseSteps}
-          />
-          {isSteps === 1 && (
-            <SelectStyle
-              isDropDown={isDropDown}
-              isSelectedStyle={isSelectedStyle}
-              setDropDown={setDropDown}
-              setSelectedStyle={setSelectedStyle}
-              handleIncreaseSteps={handleIncreaseSteps}
-              data={data}
-            />
-          )}
-          {isSteps === 2 && (
-            <SelectSize
-              isGender={avatar}
-              isSize={isSize}
-              setSize={setSize}
-              isDropDown={isDropDown}
-              setDropDown={setDropDown}
-              handleIncreaseSteps={handleIncreaseSteps}
+        <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              position: 'relative',
+              zIndex: 100,
+            }}
+          >
+            <Navigator
               data={FilteredData}
-            />
-          )}
-          {isSteps === 3 && (
-            <SelectColor
-              data={FilteredData}
-              isColor={isColor}
-              isDropDown={isDropDown}
-              setDropDown={setDropDown}
-              setColor={setColor}
-              handleIncreaseSteps={handleIncreaseSteps}
-            />
-          )}
-          {isSteps === 4 && (
-            <AddImageOrText
-              data={FilteredData}
-              isImageOrText={isImageOrText}
-              isDropDown={isDropDown}
-              setDropDown={setDropDown}
-              setOpenDesign={setOpenDesign}
-              setImageOrText={setImageOrText}
-            />
-          )}
-          <View>
-            <ScrollView>
-              <TShirt />
-              {isSteps === 5 && (
-                <FinalView
-                  color={isColor}
-                  Data={FilteredData[0].description}
-                  size={isSize.sizeVarient.size}
-                  style={isSelectedStyle}
-                  setQuantity={setQuantity}
-                  approved={approved}
-                  setApproved={setApproved}
-                  handleSubmit={handleSubmit}
-                  quantity={quantity}
-                  price={FilteredData[0].normalPrice}
-                  offerPrice={FilteredData[0].offerPrice}
-                />
-              )}
-            </ScrollView>
-          </View>
-          {isOpenDesign && !isDone && isSteps === 4 && (
-            <SelectDesign
-              isImageOrText={isImageOrText}
-              designs={Designs}
-              setOpenDesign={setOpenDesign}
+              steps={isSteps}
+              slideValue={slideValue}
+              isOpenDesign={isOpenDesign}
               isDone={isDone}
               setDone={setDone}
+              setDropDown={setDropDown}
+              setOpenDesign={setOpenDesign}
               setImageOrText={setImageOrText}
+              handleDecreaseSteps={handleDecreaseSteps}
+              handleIncreaseSteps={handleIncreaseSteps}
             />
-          )}
+            {isSteps === 1 && (
+              <SelectStyle
+                isDropDown={isDropDown}
+                isSelectedStyle={isSelectedStyle}
+                setDropDown={setDropDown}
+                setSelectedStyle={setSelectedStyle}
+                handleIncreaseSteps={handleIncreaseSteps}
+                data={data}
+              />
+            )}
+            {isSteps === 2 && (
+              <SelectSize
+                isGender={avatar}
+                isSize={isSize}
+                setSize={setSize}
+                isDropDown={isDropDown}
+                setDropDown={setDropDown}
+                handleIncreaseSteps={handleIncreaseSteps}
+                data={FilteredData}
+              />
+            )}
+            {isSteps === 3 && (
+              <SelectColor
+                data={FilteredData}
+                isColor={isColor}
+                isDropDown={isDropDown}
+                setDropDown={setDropDown}
+                setColor={setColor}
+                handleIncreaseSteps={handleIncreaseSteps}
+              />
+            )}
+            {isSteps === 4 && (
+              <AddImageOrText
+                data={FilteredData}
+                isImageOrText={isImageOrText}
+                isDropDown={isDropDown}
+                setDropDown={setDropDown}
+                setOpenDesign={setOpenDesign}
+                setImageOrText={setImageOrText}
+              />
+            )}
+
+            {isSteps !== 5 && (
+              <View style={{ marginBottom: 80, zIndex: -20 }}>
+                <TShirt />
+              </View>
+            )}
+            {isSteps === 5 && (
+              <View style={{ marginBottom: 80 }}>
+                <ScrollView>
+                  <TShirt />
+
+                  <FinalView
+                    color={isColor}
+                    Data={FilteredData[0].description}
+                    size={isSize.sizeVarient.size}
+                    style={isSelectedStyle}
+                    setQuantity={setQuantity}
+                    approved={approved}
+                    setApproved={setApproved}
+                    handleSubmit={handleSubmit}
+                    quantity={quantity}
+                    price={FilteredData[0].normalPrice}
+                    offerPrice={FilteredData[0].offerPrice}
+                  />
+                </ScrollView>
+              </View>
+            )}
+            {isOpenDesign && !isDone && isSteps === 4 && (
+              <SelectDesign
+                isImageOrText={isImageOrText}
+                designs={Designs}
+                setOpenDesign={setOpenDesign}
+                isDone={isDone}
+                setDone={setDone}
+                setImageOrText={setImageOrText}
+              />
+            )}
+          </View>
         </LinearGradient>
       )}
     </View>
