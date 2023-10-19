@@ -14,6 +14,7 @@ interface IPremiumCard {
     React.SetStateAction<{
       country: string
       sizeVarient: {
+        quantity: number
         size: string
         measurement: string
       }

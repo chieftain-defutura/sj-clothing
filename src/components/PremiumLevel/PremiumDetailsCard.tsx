@@ -38,6 +38,7 @@ interface IPremiumDetailsCard {
   isSize: {
     country: string
     sizeVarient: {
+      quantity: number
       size: string
       measurement: string
     }
@@ -46,6 +47,7 @@ interface IPremiumDetailsCard {
     React.SetStateAction<{
       country: string
       sizeVarient: {
+        quantity: number
         size: string
         measurement: string
       }
@@ -178,12 +180,15 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                         <ProductName>{data.normalPrice}INR</ProductName>
                       </View>
                     ) : (
-                      <>
-                        <OldPriceText>{data.normalPrice}INR</OldPriceText>
+                      <View>
                         <View>
+                          <ProductText>price</ProductText>
+                        </View>
+                        <View style={{ display: 'flex', flexDirection: 'row', gap: 6 }}>
+                          <OldPriceText>{data.normalPrice}INR</OldPriceText>
                           <ProductName>{data.offerPrice}INR</ProductName>
                         </View>
-                      </>
+                      </View>
                     )}
                   </View>
                   {data.productVideo && (
@@ -264,6 +269,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                                 sizeVarient: {
                                   measurement: f.measurement,
                                   size: f.size,
+                                  quantity: f.quantity,
                                 },
                               }))
                               handleSelectSizes(f.sizes)

@@ -19,7 +19,7 @@ const PremiumLevel = () => {
   const [openDetails, setOpenDetails] = useState(false)
   const [isSize, setSize] = useState({
     country: '',
-    sizeVarient: { size: '', measurement: '' },
+    sizeVarient: { size: '', measurement: '', quantity: 1 },
   })
 
   const getData = useCallback(async () => {

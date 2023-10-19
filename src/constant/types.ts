@@ -48,6 +48,7 @@ export interface IPremiumData {
     country: string
     gender: string
     sizeVarients: {
+      quantity: number
       measurement: number
       show: boolean
       size: string
