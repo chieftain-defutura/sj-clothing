@@ -13,7 +13,7 @@ export const HeaderLeft = () => {
   return (
     <LogoContent>
       <Pressable onPress={() => navigation.navigate('Stack')}>
-        <TShirtImg source={require('../assets/logo/logo-img-2.png')} />
+        <TShirtImg source={require('../assets/logo/logo-img-3.png')} />
       </Pressable>
       {/* <View>
         <LogoText>SPRINKLE</LogoText>
