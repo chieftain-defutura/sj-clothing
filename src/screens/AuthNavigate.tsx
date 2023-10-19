@@ -40,21 +40,21 @@ const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus }) => {
     setSignupModal(false)
     if (!userMail) {
       // navigation.navigate('Post')
-      navigation.navigate('Post', { showToolTip: true })
+      navigation.navigate('Account', { showToolTip: true })
     }
   }
 
   const closeLoginModal = () => {
     setLoginModalVisible(false)
     if (!userMail) {
-      navigation.navigate('Post')
+      navigation.navigate('Account')
     }
   }
 
   const closeForgotModel = () => {
     setForgotModalVisible(false)
     if (!userMail) {
-      navigation.navigate('Post')
+      navigation.navigate('Account')
     }
   }
 

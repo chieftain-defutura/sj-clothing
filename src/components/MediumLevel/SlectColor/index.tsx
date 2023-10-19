@@ -46,6 +46,7 @@ const SelectColor: React.FC<ISelectColor> = ({
             {
               position: 'absolute',
               width: '100%',
+              zIndex: 100000,
               borderBottomRightRadius: 50,
               borderBottomLeftRadius: 50,
               display: 'flex',
@@ -159,7 +160,7 @@ const SelectColor: React.FC<ISelectColor> = ({
                 height: 42,
                 borderRadius: 50,
                 padding: 10,
-                zIndex: 10,
+                zIndex: 1000000,
               }}
             >
               <CloseIcon />
@@ -185,6 +186,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: width,
-    zIndex: 10,
+    zIndex: 1000000,
   },
 })

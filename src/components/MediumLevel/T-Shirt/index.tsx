@@ -4,14 +4,7 @@ import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 
 const TShirt: React.FC = () => {
   return (
-    <View
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        marginBottom: 80,
-      }}
-    >
+    <View>
       <View style={[styles.selectSizeTShirt]}>
         <Image source={require('../../../assets/images/plain-shirt.png')} />
       </View>
@@ -29,7 +22,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    zIndex: -1000,
   },
   selectSize360Degree: {
     display: 'flex',

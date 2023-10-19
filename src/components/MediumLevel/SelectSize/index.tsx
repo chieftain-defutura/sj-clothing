@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View, Image, Pressable, FlatList, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Pressable, FlatList, Dimensions } from 'react-native'
 import React from 'react'
-import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import CloseIcon from '../../../assets/icons/Close'
 import { COLORS } from '../../../styles/theme'
 import Animated, {
@@ -79,6 +78,7 @@ const SelectSize: React.FC<ISelectSize> = ({
               display: 'flex',
               flexDirection: 'column',
               gap: 15,
+              zIndex: 10000000,
             },
           ]}
         >
@@ -206,7 +206,6 @@ const SelectSize: React.FC<ISelectSize> = ({
                 height: 42,
                 borderRadius: 50,
                 padding: 10,
-                zIndex: 10,
               }}
             >
               <CloseIcon />
@@ -226,6 +225,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: width,
-    zIndex: 1000,
+    zIndex: 10000000,
   },
 })

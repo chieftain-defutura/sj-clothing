@@ -79,7 +79,10 @@ const Navigator: React.FC<INavigator> = ({
   return (
     <Animated.View style={[styles.Navigator, slideX]}>
       {isOpenDesign && (
-        <Pressable onPress={() => (isDone ? setDone(false) : setOpenDesign(false))}>
+        <Pressable
+          disabled={steps === 1}
+          onPress={() => (isDone ? setDone(false) : setOpenDesign(false))}
+        >
           <Animated.View entering={BounceIn.duration(800)} exiting={BounceOut}>
             <LeftArrow width={24} height={24} />
           </Animated.View>
@@ -97,7 +100,7 @@ const Navigator: React.FC<INavigator> = ({
       {steps !== 5 && (
         <>
           {!isOpenDesign && (
-            <> 
+            <>
               {steps !== 4 && (
                 <View>
                   <Pressable

@@ -4,8 +4,11 @@ import Animated from 'react-native-reanimated'
 import { userStore } from '../../../../store/userStore'
 import { doc, getDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../../firebase'
+import AuthNavigate from '../../../../screens/AuthNavigate'
+import { useIsFocused } from '@react-navigation/native'
 
 const MidLevel: React.FC = () => {
+  const isFocused = useIsFocused()
   const { updateProfile, updateAvatar, updateAddress, updatePhoneNo, updateName, user } =
     userStore()
 
@@ -31,9 +34,12 @@ const MidLevel: React.FC = () => {
     fetchDataFromFirestore()
   }, [fetchDataFromFirestore])
   return (
-    <Animated.View style={{ flex: 1 }}>
-      <MediumLevel />
-    </Animated.View>
+    <>
+      <AuthNavigate focus={isFocused} children={null} />
+      <Animated.View style={{ flex: 1 }}>
+        <MediumLevel />
+      </Animated.View>
+    </>
   )
 }
 

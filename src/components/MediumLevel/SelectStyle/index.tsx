@@ -7,9 +7,6 @@ import Animated, {
   BounceOutUp,
   FlipInXDown,
   FlipOutXDown,
-  SharedValue,
-  withSequence,
-  withTiming,
 } from 'react-native-reanimated'
 
 interface ISelectStyle {
@@ -44,6 +41,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
               position: 'absolute',
               width: '100%',
               top: 0,
+              zIndex: 1000000,
               borderBottomRightRadius: 50,
               borderBottomLeftRadius: 50,
             },
@@ -129,7 +127,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({
               flexDirection: 'row',
               justifyContent: 'center',
               paddingVertical: 10,
-              zIndex: 10,
             }}
           >
             <Pressable
@@ -140,6 +137,9 @@ const SelectStyle: React.FC<ISelectStyle> = ({
                 height: 42,
                 borderRadius: 50,
                 padding: 10,
+                position: 'absolute',
+                zIndex: 10000,
+                top: 10,
               }}
             >
               <CloseIcon />
@@ -159,6 +159,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: width,
-    zIndex: 10,
+    zIndex: 1000000,
   },
 })

@@ -187,9 +187,9 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                     placeholderTextColor={COLORS.SecondaryTwo}
                     autoCorrect={false}
                   />
-                  <Pressable onPress={handleVerify}>
+                  {/* <Pressable onPress={handleVerify}>
                     <VerifyText>Verify</VerifyText>
-                  </Pressable>
+                  </Pressable> */}
                 </InputBorder>
                 {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
               </View>
