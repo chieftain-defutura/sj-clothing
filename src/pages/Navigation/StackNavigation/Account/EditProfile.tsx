@@ -10,16 +10,43 @@ import LeftArrow from '../../../../assets/icons/LeftArrow'
 import Input from '../../../../components/Input'
 // import { auth, db, storage } from '../../../../../firebase'
 // import { ref, getDownloadURL, uploadString } from 'firebase/storage'
-import storage from '@react-native-firebase/storage'
 import { updateProfile } from 'firebase/auth'
 import { userStore } from '../../../../store/userStore'
 import { doc, updateDoc } from 'firebase/firestore/lite'
-import { db } from '../../../../../firebase'
+import { db, storage } from '../../../../../firebase'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 
 const { width, height } = Dimensions.get('window')
 
 interface IEditProfile {
   navigation: any
+}
+
+export function uriToBlob(uri: string): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+
+    // If successful -> return with blob
+    xhr.onload = function () {
+      resolve(xhr.response)
+    }
+
+    // reject on error
+    xhr.onerror = function () {
+      reject(new Error('uriToBlob failed'))
+    }
+
+    // Set the response type to 'blob' - this means the server's response
+    // will be accessed as a binary object
+    xhr.responseType = 'blob'
+
+    // Initialize the request. The third argument set to 'true' denotes
+    // that the request is asynchronous
+    xhr.open('GET', uri, true)
+
+    // Send the request. The 'null' argument means that no body content is given for the request
+    xhr.send(null)
+  })
 }
 
 const validationSchema = yup.object({
@@ -56,31 +83,37 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri)
-      // await uploadImage(result.assets[0].uri)
+      uploadImage(result.assets[0].uri)
     }
   }
 
-  // const uploadImage = async (uri: string) => {
-  //   try {
-  //     const reference = storage().ref('black-t-shirt-sm.png')
-  //     const task = reference.putFile(uri)
+  const uploadImage = async (uri: string) => {
+    try {
+      console.log(uri)
+      // const response = await fetch(uri)
+      // const blob = await response.blob()
+      const blob = await uriToBlob(uri)
 
-  //     task.on('state_changed', (taskSnapshot) => {
-  //       console.log(
-  //         `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
-  //       )
-  //     })
+      const imageRef = ref(storage, user?.uid)
+      const task = uploadBytesResumable(imageRef, blob)
 
-  //     await task // Wait for the upload to complete
+      task.on('state_changed', (taskSnapshot) => {
+        console.log(
+          `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+        )
+      })
 
-  //     console.log('Image uploaded to the bucket!')
-  //   } catch (error) {
-  //     console.error('Error uploading image:', error)
-  //     Alert.alert('Error', 'Failed to upload image')
-  //     // You can also throw the error to handle it elsewhere if needed
-  //     throw error
-  //   }
-  // }
+      await task // Wait for the upload to complete
+
+      const url = await getDownloadURL(imageRef)
+      console.log('Image uploaded to the bucket!')
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      Alert.alert('Error', 'Failed to upload image')
+      // You can also throw the error to handle it elsewhere if needed
+      throw error
+    }
+  }
   const formik = useFormik({
     initialValues: {
       fullName: '',

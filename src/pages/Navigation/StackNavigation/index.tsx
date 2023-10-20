@@ -29,6 +29,7 @@ import Accessories from './Accessories'
 import AccessoriesDetails from './Accessories/AccessoriesDetails.tsx'
 import Avatar from '../../../components/MediumLevel/Avatar'
 import EditTest from './Account/EditTest'
+import Accessory from '../../../components/Accessory'
 
 const Stack = createStackNavigator()
 
@@ -111,7 +112,7 @@ const StackNavigationRoutes: React.FC = () => {
       <Stack.Screen
         name='Accessories'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-        component={Accessories}
+        component={Accessory}
       />
       <Stack.Screen
         name='AccessoriesDetails'

@@ -57,3 +57,15 @@ export interface IPremiumData {
   styles: string
   type: string
 }
+
+export interface IAccessory {
+  description: string
+  normalPrice: string
+  offerPrice: string
+  productImage: string
+  productName: string
+  productVideo: string
+  styles: string
+  type: string
+  id: string
+}
