@@ -14,12 +14,13 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated'
+import { IMidlevel } from '../../../constant/types'
 
 interface INavigator {
   steps: number
   isOpenDesign: boolean
   isDone: boolean
-  data: any
+  data: IMidlevel
   slideValue: SharedValue<number>
   handleIncreaseSteps: () => void
   handleDecreaseSteps: () => void
@@ -133,7 +134,7 @@ const Navigator: React.FC<INavigator> = ({
                   </Pressable>
                 </View>
               )}
-              {steps === 4 && data[0].showDesign && (
+              {steps === 4 && data.showDesign && (
                 <View>
                   <Pressable
                     onPress={() => {
@@ -152,7 +153,7 @@ const Navigator: React.FC<INavigator> = ({
                   </Pressable>
                 </View>
               )}
-              {steps === 4 && data[0].showTextDesign && (
+              {steps === 4 && data.showTextDesign && (
                 <View>
                   <Pressable
                     onPress={() => {

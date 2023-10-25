@@ -9,6 +9,7 @@ import Animated, {
 } from 'react-native-reanimated'
 import CloseIcon from '../../../assets/icons/Close'
 import { COLORS } from '../../../styles/theme'
+import { IDesigns, IMidlevel } from '../../../constant/types'
 
 const { width } = Dimensions.get('window')
 
@@ -22,7 +23,7 @@ interface IAddImageOrText {
       image: string
     }
   }
-  data: any
+  data: IMidlevel
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDesign: React.Dispatch<React.SetStateAction<boolean>>
   setImageOrText: React.Dispatch<
@@ -44,6 +45,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
   setOpenDesign,
   setImageOrText,
 }) => {
+  console.log(data)
   return (
     <View style={styles.AddImageOrTextContainer}>
       {isDropDown && (
@@ -90,7 +92,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                 gap: 10,
               }}
             >
-              {data[0].backSide && (
+              {data.backSide && (
                 <Pressable
                   onPress={() => {
                     setOpenDesign(true),
@@ -126,7 +128,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                   <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Front</Text>
                 </Pressable>
               )}
-              {data[0].frontSide && (
+              {data.frontSide && (
                 <Pressable
                   onPress={() => {
                     setOpenDesign(true),
@@ -161,7 +163,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                   <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Back</Text>
                 </Pressable>
               )}
-              {data[0].rightSide && (
+              {data.rightSide && (
                 <Pressable
                   onPress={() => {
                     setOpenDesign(true),
@@ -199,7 +201,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                   </Text>
                 </Pressable>
               )}
-              {data[0].leftSide && (
+              {data.leftSide && (
                 <Pressable
                   onPress={() => {
                     setOpenDesign(true),

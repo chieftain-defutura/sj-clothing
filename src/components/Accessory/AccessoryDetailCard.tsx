@@ -44,26 +44,6 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
   const navigation = useNavigation()
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
-  const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen((prevState) => !prevState)
-  }
-
-  const handleSelectCountry = (country: string) => {
-    setSelectedCountry(country)
-    setIsDropdownOpen(false)
-  }
-
-  const toggleDropdownSizes = () => {
-    setIsDropdownSizesOpen((prevState) => !prevState)
-  }
-
-  const handleSelectSizes = (sizes: string) => {
-    setIsDropdownSizesOpen(false)
-  }
   const [openModal, setOpenModal] = useState(false)
 
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
@@ -117,28 +97,37 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                   <Image
                     source={{ uri: data.productImage }}
                     style={{
-                      width: width / 1.8,
-                      height: height * 0.4,
-                      resizeMode: 'contain',
-                      marginBottom: 12,
+                      width: width / 1.4,
+                      height: height * 0.3,
+                      resizeMode: 'cover',
+                      borderRadius: 6,
                     }}
                   />
                 </TouchableOpacity>
               </Animated.View>
               <Animated.View entering={FadeInRight.duration(800).delay(200)} exiting={FadeOutRight}>
-                <View style={{ marginRight: 32 }}>
-                  <ProductText>product</ProductText>
-                  <ProductName>{data.productName}</ProductName>
-                  <View style={{ marginVertical: 10 }}>
-                    {/* <ProductText>{f.size}</ProductText> */}
-                    {/* <ProductName>{f.productSize}</ProductName> */}
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: 30,
+
+                    paddingBottom: 20,
+                  }}
+                >
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'flex-start',
+                    }}
+                  >
+                    <ProductText>product</ProductText>
+                    <ProductName>{data.productName}</ProductName>
                   </View>
-                  {/* <View style={{ marginBottom: 16 }}>
-                        <ProductText>{f.material}</ProductText>
-                        <ProductName>{f.wool}</ProductName>
-                        <ProductName>{f.mohair}</ProductName>
-                      </View> */}
-                  {/* <ProductText>{data.normalPrice}</ProductText> */}
+
                   <View
                     style={{
                       display: 'flex',
@@ -170,14 +159,14 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                       <WatchVideoText>Watch video</WatchVideoText>
                     </WatchVideoBorder>
                   )}
-                  {openModal && (
-                    <PremiumVideo
-                      video={data.productVideo}
-                      onClose={() => setOpenModal(false)}
-                      isVisible={openModal}
-                    />
-                  )}
                 </View>
+                {openModal && (
+                  <PremiumVideo
+                    video={data.productVideo}
+                    onClose={() => setOpenModal(false)}
+                    isVisible={openModal}
+                  />
+                )}
               </Animated.View>
             </AccessoryDetailsContent>
 
@@ -203,7 +192,6 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
               </Animated.View>
             )}
           </AccessoryDetailsWrapper>
-
           <Animated.View entering={FadeInUp.duration(2000)} exiting={FadeOut}>
             <Btns>
               {showDetails ? (
@@ -235,52 +223,6 @@ const styles = StyleSheet.create({
     padding: 16,
   },
 })
-
-const CardPairContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-`
-
-const DropDownContainer = styled.View`
-  display: flex;
-  align-items: flex-start;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-horizontal: 16px;
-`
-
-const SelectDropDownList = styled.View`
-  border-color: ${COLORS.dropDownClr};
-  border-width: 1px;
-  border-radius: 5px;
-  margin-top: 8px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-`
-
-const SelectText = styled.Text`
-  font-size: 14px;
-  font-family: ${FONT_FAMILY.ArvoRegular};
-  color: ${COLORS.iconsHighlightClr};
-`
-const SelectListText = styled.Text`
-  font-size: 14px;
-  font-family: ${FONT_FAMILY.ArvoRegular};
-  color: ${COLORS.iconsHighlightClr};
-  padding-horizontal: 12px;
-  padding-vertical: 7px;
-`
-
-const SelectContent = styled.Pressable`
-  border-color: ${COLORS.dropDownClr};
-  border-width: 1px;
-  padding: 12px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-`
 
 const FlexContent = styled.View`
   display: flex;
@@ -324,7 +266,7 @@ const AccessoryDetailsWrapper = styled.View``
 
 const AccessoryDetailsContent = styled.View`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   gap: 12px;

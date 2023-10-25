@@ -69,3 +69,39 @@ export interface IAccessory {
   type: string
   id: string
 }
+
+export interface IMidlevel {
+  backSide: boolean
+  frontSide: boolean
+  leftSide: boolean
+  rightSide: boolean
+  colors: string[]
+  description: string
+  gender: string
+  normalPrice: string
+  offerPrice: string
+  productImage: string
+  productName: string
+  showDesign: boolean
+  showTextDesign: boolean
+  sizes: {
+    country: string
+    gender: string
+    sizeVarients: {
+      measurement: string
+      quantity: number
+      show: boolean
+      size: string
+    }[]
+  }[]
+  styles: string
+  type: string
+  id: string
+}
+
+export interface IDesigns {
+  Images: string
+  activePost: boolean
+  hashTag: string
+  type: string
+}

@@ -13,11 +13,12 @@ import AddImageOrText from '../MediumLevel/AddImageOrText'
 import ProductAndCaption from './ProductAndCaption'
 import FinalProduct from './FinalProduct'
 import PostNavigator from './PostNavigator'
-import { ScrollView, View } from 'react-native'
+import { Alert, ScrollView, View } from 'react-native'
 import TShirt from '../MediumLevel/T-Shirt'
 import UploadDesign from './UploadDesign'
 import PostAddImageOrText from './PostAddImageOrText'
 import { userStore } from '../../store/userStore'
+import { IMidlevel } from '../../constant/types'
 
 interface IPostCreation {}
 const PostCreation: React.FC<IPostCreation> = () => {
@@ -25,18 +26,19 @@ const PostCreation: React.FC<IPostCreation> = () => {
   const navigation = useNavigation()
   const slideValue = useSharedValue(0)
   const [isPostCreationSteps, setPostCreationSteps] = useState(1)
+  const [FilteredData, setFilteredData] = useState<IMidlevel>()
   const [isDropDown, setDropDown] = useState(false)
 
   const [isGender, setGender] = useState('MALE')
   //data
-  const [data, setData] = useState<any[]>()
+  const [data, setData] = useState<IMidlevel[]>()
 
   //style
-  const [isSelectedStyle, setSelectedStyle] = useState('Round Neck')
+  const [isSelectedStyle, setSelectedStyle] = useState('')
   //size
   const [isSize, setSize] = useState({
     country: 'Canada',
-    sizeVarient: { size: '', measurement: '' },
+    sizeVarient: [{ size: '', measurement: '', quantity: '' }],
   })
   //color
   const [isColor, setColor] = useState('')
@@ -94,15 +96,39 @@ const PostCreation: React.FC<IPostCreation> = () => {
     getData()
   }, [getData])
 
+  useEffect(() => {
+    const FilteredData = data?.find((f) => f.styles === isSelectedStyle)
+
+    setFilteredData(FilteredData)
+    if (!FilteredData) return
+    if (FilteredData.gender.toLowerCase() !== 'Male'?.toLowerCase() && isSelectedStyle !== '') {
+      Alert.alert(`Alert Male`, 'Not Available', [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            setPostCreationSteps(1)
+          },
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            setPostCreationSteps(1)
+          },
+        },
+      ])
+    }
+  }, [isSelectedStyle, data])
+
   const handleSubmit = async () => {
     const docRef = await addDoc(collection(db, 'Posts'), {
       style: isSelectedStyle,
       sizes: isSize,
       color: isColor,
       textAndImage: isImageOrText,
-      description: FilteredData[0].description,
-      price: FilteredData[0].normalPrice,
-      offerPrice: FilteredData[0].offerPrice,
+      description: FilteredData?.description,
+      price: FilteredData?.normalPrice,
+      offerPrice: FilteredData?.offerPrice,
       giftVideo: isGiftVideo,
       productName: isProduct,
       productCaption: isCaption,
@@ -114,7 +140,7 @@ const PostCreation: React.FC<IPostCreation> = () => {
     navigation.navigate('Stack')
   }
 
-  const FilteredData = data?.filter((f: any) => f.styles === isSelectedStyle) as any
+  if (!data) return
   return (
     <Animated.View style={{ flex: 1 }}>
       <LinearGradient
@@ -149,7 +175,7 @@ const PostCreation: React.FC<IPostCreation> = () => {
             handleIncreaseSteps={handleIncreaseSteps}
           />
         )}
-        {isPostCreationSteps === 2 && (
+        {isPostCreationSteps === 2 && FilteredData && (
           <SelectSize
             isDropDown={isDropDown}
             isSize={isSize}
@@ -157,11 +183,10 @@ const PostCreation: React.FC<IPostCreation> = () => {
             setDropDown={setDropDown}
             handleIncreaseSteps={handleIncreaseSteps}
             data={FilteredData}
-            isGender={isGender}
           />
         )}
 
-        {isPostCreationSteps === 3 && (
+        {isPostCreationSteps === 3 && FilteredData && (
           <SelectColor
             data={FilteredData}
             isDropDown={isDropDown}
@@ -185,16 +210,16 @@ const PostCreation: React.FC<IPostCreation> = () => {
           <ScrollView>
             {isPostCreationSteps !== 6 && <TShirt />}
 
-            {isPostCreationSteps === 6 && (
+            {isPostCreationSteps === 6 && FilteredData && (
               <FinalProduct
                 handleSubmit={handleSubmit}
                 isGiftVideo={isGiftVideo}
                 setGiftVideo={setGiftVideo}
-                Data={FilteredData[0].description}
-                size={isSize.sizeVarient.size}
+                Data={FilteredData.description}
+                size={isSize}
                 style={isSelectedStyle}
-                price={FilteredData[0].normalPrice}
-                offerPrice={FilteredData[0].offerPrice}
+                price={FilteredData.normalPrice}
+                offerPrice={FilteredData.offerPrice}
                 caption={isCaption}
                 product={isProduct}
                 color={isColor}

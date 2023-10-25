@@ -149,7 +149,6 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress }) => {
                 text='Save address'
                 leftIcon={<TickIcon width={16} height={16} />}
                 onPress={() => {
-                  console.log('asd')
                   onEditPress()
                 }}
               />

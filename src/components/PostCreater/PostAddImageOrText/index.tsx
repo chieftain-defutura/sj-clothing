@@ -103,7 +103,7 @@ const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
                 gap: 10,
               }}
             >
-              {data[0].backSide && (
+              {data.backSide && (
                 <Pressable
                   onPress={() => {
                     setOpenDesign(true),
@@ -139,7 +139,7 @@ const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
                   <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Front</Text>
                 </Pressable>
               )}
-              {data[0].frontSide && (
+              {data.frontSide && (
                 <Pressable
                   onPress={() => {
                     setOpenDesign(true),
@@ -174,7 +174,7 @@ const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
                   <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Back</Text>
                 </Pressable>
               )}
-              {data[0].rightSide && (
+              {data.rightSide && (
                 <Pressable
                   onPress={() => {
                     setOpenDesign(true),
@@ -212,7 +212,7 @@ const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
                   </Text>
                 </Pressable>
               )}
-              {data[0].leftSide && (
+              {data.leftSide && (
                 <Pressable
                   onPress={() => {
                     setOpenDesign(true),

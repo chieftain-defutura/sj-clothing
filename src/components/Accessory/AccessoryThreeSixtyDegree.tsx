@@ -65,7 +65,6 @@ const AccessoryThreeSixtyDegree: React.FC<IAccessoryThreeSixtyDegree> = ({
       },
     })
     navigation.navigate('Checkout')
-    console.log(docRef)
   }
   return (
     <Animated.View

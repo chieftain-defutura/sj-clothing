@@ -8,11 +8,12 @@ import Animated, {
   FlipInXDown,
   FlipOutXDown,
 } from 'react-native-reanimated'
+import { IMidlevel } from '../../../constant/types'
 
 interface ISelectStyle {
   isDropDown: boolean
   isSelectedStyle: string
-  data: any
+  data: IMidlevel[]
   handleIncreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setSelectedStyle: React.Dispatch<React.SetStateAction<string>>
@@ -32,6 +33,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
     setSelectedStyle(title)
     handleIncreaseSteps()
   }
+
   return (
     <View style={styles.selectStyleContainer}>
       {isDropDown && (
@@ -95,8 +97,9 @@ const SelectStyle: React.FC<ISelectStyle> = ({
                   gap: 65,
                   paddingVertical: 5,
                 }}
-                renderItem={({ item }) => (
+                renderItem={({ item, index }) => (
                   <Pressable
+                    key={index}
                     onPress={() => handleSelect(item.styles)}
                     style={{
                       paddingVertical: 4,

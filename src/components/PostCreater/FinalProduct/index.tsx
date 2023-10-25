@@ -12,7 +12,14 @@ interface IFinalProduct {
   setGiftVideo: React.Dispatch<any>
   price: string
   offerPrice: string
-  size: string
+  size: {
+    country: string
+    sizeVarient: {
+      size: string
+      measurement: string
+      quantity: string
+    }[]
+  }
   style: string
   caption: string
   color: string
@@ -94,7 +101,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
             Size
           </Text>
           <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-            {size}
+            s {/* {size} */}
           </Text>
         </View>
         <View

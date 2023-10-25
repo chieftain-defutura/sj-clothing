@@ -71,8 +71,6 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
     console.log('navigated ', { dName: values.fullName, profileImg: image })
   }
 
-  console.log('image', image)
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -89,9 +87,6 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
 
   const uploadImage = async (uri: string) => {
     try {
-      console.log(uri)
-      // const response = await fetch(uri)
-      // const blob = await response.blob()
       const blob = await uriToBlob(uri)
 
       const imageRef = ref(storage, user?.uid)

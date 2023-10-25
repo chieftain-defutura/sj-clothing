@@ -33,8 +33,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
 }) => {
   const [isPressed, setIsPressed] = useState(false)
   const { user } = userStore()
-  console.log(size)
-  console.log(data)
+
   const handleSubmit = async () => {
     const docRef = await addDoc(collection(db, 'Orders'), {
       sizes: size,
@@ -75,7 +74,6 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
       },
     })
     navigation.navigate('Checkout')
-    console.log(docRef)
   }
   return (
     <Animated.View

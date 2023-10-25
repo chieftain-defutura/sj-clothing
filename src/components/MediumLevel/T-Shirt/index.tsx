@@ -1,4 +1,5 @@
 import { StyleSheet, Image, View } from 'react-native'
+import styled from 'styled-components/native'
 import React from 'react'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 
@@ -6,7 +7,7 @@ const TShirt: React.FC = () => {
   return (
     <View>
       <View style={[styles.selectSizeTShirt]}>
-        <Image source={require('../../../assets/images/plain-shirt.png')} />
+        <ShirtImg source={require('../../../assets/images/plain-shirt.png')} />
       </View>
       <View style={styles.selectSize360Degree}>
         <ThreeSixtyDegree width={40} height={40} />
@@ -14,6 +15,11 @@ const TShirt: React.FC = () => {
     </View>
   )
 }
+
+const ShirtImg = styled.Image`
+  width: 60%;
+  height: 350px;
+`
 
 export default TShirt
 

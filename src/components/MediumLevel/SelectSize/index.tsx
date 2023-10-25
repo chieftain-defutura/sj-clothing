@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Pressable, FlatList, Dimensions } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CloseIcon from '../../../assets/icons/Close'
 import { COLORS } from '../../../styles/theme'
 import Animated, {
@@ -8,6 +8,8 @@ import Animated, {
   FlipInXDown,
   FlipOutXDown,
 } from 'react-native-reanimated'
+import { IMidlevel } from '../../../constant/types'
+import { userStore } from '../../../store/userStore'
 
 const { width } = Dimensions.get('window')
 
@@ -18,10 +20,10 @@ interface ISelectSize {
     sizeVarient: {
       size: string
       measurement: string
-    }
+      quantity: string
+    }[]
   }
-  isGender: string
-  data: any
+  data: IMidlevel
   handleIncreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setSize: React.Dispatch<
@@ -30,7 +32,8 @@ interface ISelectSize {
       sizeVarient: {
         size: string
         measurement: string
-      }
+        quantity: string
+      }[]
     }>
   >
 }
@@ -39,29 +42,53 @@ const SelectSize: React.FC<ISelectSize> = ({
   isDropDown,
   isSize,
   data,
-  isGender,
   setDropDown,
   setSize,
   handleIncreaseSteps,
 }) => {
-  const filteredData = data[0].sizes
-    .filter((f: { gender: string }) => f.gender.toLowerCase() === isGender.toLowerCase())
-    .map((f: any) => f)
+  const { avatar } = userStore()
+  const [country, setCountry] = useState<
+    {
+      country: string
+      gender: string
+      sizeVarients: {
+        measurement: string
+        quantity: number
+        show: boolean
+        size: string
+      }[]
+    }[]
+  >([])
+  const [sizeData, setSizeData] = useState<
+    {
+      measurement: string
+      quantity: number
+      show: boolean
+      size: string
+    }[]
+  >([])
 
-  const sizesData = filteredData
-    .filter(
-      (f: any) => f.gender.toLowerCase() === isGender.toLowerCase() && f.country === isSize.country,
-    )
-    .map((f: any) => f.sizeVarients)
+  useEffect(() => {
+    const filteredData = data.sizes
+      .filter((f) => f.gender.toLowerCase() === avatar?.toLowerCase())
+      .map((f) => f)
+    setCountry(filteredData)
+  }, [data, avatar])
 
-  const handleSelect = (size: string, measurement: string) => {
+  const handleSelectCountry = (item: string) => {
     setSize((prevState) => ({
       ...prevState,
-      sizeVarient: {
-        measurement: measurement,
-        size: size,
-      },
+      country: item,
     }))
+    if (isSize.country !== '') {
+      const sizesData = country?.filter((f) => f.country === item).map((f) => f.sizeVarients)
+
+      setSizeData(sizesData[0])
+    }
+  }
+
+  const handleSelect = (size: string, measurement: string) => {
+    setSize({ ...isSize, sizeVarient: [{ size: size, measurement: measurement, quantity: '1' }] })
     handleIncreaseSteps()
   }
 
@@ -99,7 +126,7 @@ const SelectSize: React.FC<ISelectSize> = ({
                 Select Country
               </Text>
               <FlatList
-                data={filteredData}
+                data={country}
                 contentContainerStyle={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -115,15 +142,7 @@ const SelectSize: React.FC<ISelectSize> = ({
                 }}
                 numColumns={3}
                 renderItem={({ item, index }) => (
-                  <Pressable
-                    onPress={() =>
-                      setSize((prevState) => ({
-                        ...prevState,
-                        country: item.country,
-                      }))
-                    }
-                    key={index}
-                  >
+                  <Pressable onPress={() => handleSelectCountry(item.country)} key={index}>
                     <Text
                       style={{
                         textAlign: 'center',
@@ -150,7 +169,7 @@ const SelectSize: React.FC<ISelectSize> = ({
               </Text>
               {isSize.country && (
                 <FlatList
-                  data={sizesData[0].filter((f: any) => f.show === true)}
+                  data={sizeData.filter((f) => f.show === true)}
                   contentContainerStyle={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -175,7 +194,7 @@ const SelectSize: React.FC<ISelectSize> = ({
                           style={{
                             fontSize: 12,
                             color:
-                              isSize.sizeVarient.size === item.size
+                              isSize.sizeVarient[0].size === item.size
                                 ? COLORS.textSecondaryClr
                                 : COLORS.SecondaryTwo,
                           }}

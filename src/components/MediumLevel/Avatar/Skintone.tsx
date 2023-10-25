@@ -36,7 +36,6 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, isGender, path }) => {
       if (!user) return
       const q = doc(db, 'users', user.uid)
       const querySnapshot = await getDoc(q)
-      console.log(querySnapshot.data())
 
       const fetchData = querySnapshot.data()
 

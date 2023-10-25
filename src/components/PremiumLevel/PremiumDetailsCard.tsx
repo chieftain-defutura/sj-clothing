@@ -23,6 +23,7 @@ import Animated, {
   FadeOutLeft,
   FadeOutRight,
   FadeOutUp,
+  RotateInDownLeft,
 } from 'react-native-reanimated'
 import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
 import { Svg, Circle } from 'react-native-svg'
@@ -30,6 +31,7 @@ import CustomButton from '../Button'
 import { IPremiumData } from '../../constant/types'
 import ChevronLeft from '../../assets/icons/PremiumPageIcon/ChevronLeftIcon'
 import PremiumVideo from '../../screens/PremiumVideo'
+import DownArrow from '../../assets/icons/DownArrow'
 
 const { height, width } = Dimensions.get('window')
 
@@ -144,28 +146,37 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                   <Image
                     source={{ uri: data.productImage }}
                     style={{
-                      width: width / 1.8,
-                      height: height * 0.4,
-                      resizeMode: 'contain',
-                      marginBottom: 12,
+                      width: width / 1.4,
+                      height: height * 0.3,
+                      resizeMode: 'cover',
+                      borderRadius: 6,
                     }}
                   />
                 </TouchableOpacity>
               </Animated.View>
               <Animated.View entering={FadeInRight.duration(800).delay(200)} exiting={FadeOutRight}>
-                <View style={{ marginRight: 32 }}>
-                  <ProductText>product</ProductText>
-                  <ProductName>{data.productName}</ProductName>
-                  <View style={{ marginVertical: 10 }}>
-                    {/* <ProductText>{f.size}</ProductText> */}
-                    {/* <ProductName>{f.productSize}</ProductName> */}
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: 30,
+
+                    paddingBottom: 20,
+                  }}
+                >
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'flex-start',
+                    }}
+                  >
+                    <ProductText>product</ProductText>
+                    <ProductName>{data.productName}</ProductName>
                   </View>
-                  {/* <View style={{ marginBottom: 16 }}>
-                        <ProductText>{f.material}</ProductText>
-                        <ProductName>{f.wool}</ProductName>
-                        <ProductName>{f.mohair}</ProductName>
-                      </View> */}
-                  {/* <ProductText>{data.normalPrice}</ProductText> */}
+
                   <View
                     style={{
                       display: 'flex',
@@ -197,19 +208,19 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                       <WatchVideoText>Watch video</WatchVideoText>
                     </WatchVideoBorder>
                   )}
-                  {openModal && (
-                    <PremiumVideo
-                      video={data.productVideo}
-                      onClose={() => setOpenModal(false)}
-                      isVisible={openModal}
-                    />
-                  )}
                 </View>
+                {openModal && (
+                  <PremiumVideo
+                    video={data.productVideo}
+                    onClose={() => setOpenModal(false)}
+                    isVisible={openModal}
+                  />
+                )}
               </Animated.View>
             </PremiumDetailsContent>
 
             <DropDownContainer>
-              <View style={{ width: 158 }}>
+              <View style={{ width: 160 }}>
                 <SelectContent onPress={toggleDropdown}>
                   <SelectText>{selectedCountry || 'Select a country'}</SelectText>
                   <Animatable.View
@@ -217,7 +228,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                     duration={500}
                     easing='ease-out'
                   >
-                    <ChevronLeft width={16} height={16} />
+                    <DownArrow width={16} height={16} />
                   </Animatable.View>
                 </SelectContent>
                 {isDropdownOpen && (
@@ -253,7 +264,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                     duration={500}
                     easing='ease-out'
                   >
-                    <ChevronLeft width={16} height={16} />
+                    <DownArrow width={16} height={16} />
                   </Animatable.View>
                 </SelectContent>
                 {isDropdownSizesOpen && selectedCountry && (
@@ -430,7 +441,7 @@ const PremiumDetailsWrapper = styled.View``
 
 const PremiumDetailsContent = styled.View`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
@@ -460,7 +471,6 @@ const WatchVideoBorder = styled.Pressable`
   align-items: center;
   gap: 4px;
   padding: 8px;
-  margin-top: 22px;
 `
 
 const HideDetailsBorder = styled.TouchableOpacity`

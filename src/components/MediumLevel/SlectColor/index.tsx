@@ -10,27 +10,20 @@ import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
 import ColorNavigation from '../../../screens/ColorNavigation'
 import { useNavigation } from '@react-navigation/native'
+import { IMidlevel } from '../../../constant/types'
 
 interface ISelectColor {
   isDropDown: boolean
   isColor: string
-  data: any
+  data: IMidlevel
   handleIncreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setColor: React.Dispatch<React.SetStateAction<string>>
 }
-const Colors = [
-  { colorName: 'PaleVioletRed', hexCode: '#D87093' },
-  { colorName: 'MidnightBlue', hexCode: '#191970' },
-  { colorName: 'Maroon', hexCode: '#800000' },
-  { colorName: 'GoldenRod', hexCode: '#DAA520' },
-  { colorName: 'DarkSlateGray', hexCode: '#2F4F4F' },
-  { colorName: 'DarkKhaki', hexCode: '#BDB76B' },
-]
+
 const { width } = Dimensions.get('window')
 const SelectColor: React.FC<ISelectColor> = ({
   isDropDown,
-  isColor,
   data,
   setDropDown,
   setColor,
@@ -80,7 +73,7 @@ const SelectColor: React.FC<ISelectColor> = ({
               Colors
             </Text>
             <FlatList
-              data={data[0].colors}
+              data={data.colors}
               numColumns={4}
               contentContainerStyle={{
                 display: 'flex',

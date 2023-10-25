@@ -285,7 +285,6 @@ const Post: React.FC<postProps> = ({ route }) => {
       if (!user) return
       const q = doc(db, 'users', user.uid)
       const querySnapshot = await getDoc(q)
-      console.log(querySnapshot.data())
 
       const fetchData = querySnapshot.data()
       updateProfile(fetchData?.profile)
@@ -298,9 +297,6 @@ const Post: React.FC<postProps> = ({ route }) => {
     }
   }, [user, updateProfile])
 
-  if (route) {
-    console.log('asdsd', route)
-  }
   useEffect(() => {
     fetchDataFromFirestore()
     if (route.params) {

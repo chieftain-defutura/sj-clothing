@@ -3,11 +3,11 @@ import React from 'react'
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
-import { ImageorTextProps } from '../../../constant/types'
+import { IDesigns } from '../../../constant/types'
 
 interface ISelectDesign {
   isDone: boolean
-  designs: ImageorTextProps[] | undefined
+  designs: IDesigns[]
   isImageOrText: {
     title: string
     position: string
@@ -38,12 +38,12 @@ const SelectDesign: React.FC<ISelectDesign> = ({
   setImageOrText,
   setDone,
 }) => {
-  console.log(designs)
   const uniqueArr = [...new Map(designs?.map((v) => [v.hashTag, v])).values()]
   const FilteredData =
     isImageOrText.designs.hashtag === ''
       ? designs
       : designs?.filter((design) => design.hashTag === isImageOrText.designs.hashtag)
+  console.log(designs)
   return (
     <Animated.View
       entering={SlideInDown.duration(800)}

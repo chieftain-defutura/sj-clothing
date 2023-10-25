@@ -98,7 +98,6 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
               changeHeight('77%')
             }}
             onEditPress={() => {
-              console.log('asdasd')
               setDisplay(3)
               changeHeight('75%')
             }}
@@ -115,7 +114,6 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
         {showDisplay == 3 && (
           <EditAddress
             onEditPress={() => {
-              console.log('asdasd')
               setDisplay(3)
               changeHeight('52%')
             }}

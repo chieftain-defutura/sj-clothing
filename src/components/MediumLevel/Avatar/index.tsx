@@ -16,44 +16,51 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
   const [toggle, setToggle] = useState(false)
   const [isGender, setGender] = useState('')
   return (
-    <LinearGradient colors={gradientOpacityColors} style={styles.genderWrapper}>
-      <ScrollView>
-        <View>
-          <Animated.View
-            entering={FadeInUp.duration(800)}
-            exiting={FadeOut}
-            style={styles.genderWrapper}
+    <LinearGradient
+      colors={gradientOpacityColors}
+      style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+      }}
+    >
+      <View>
+        <Animated.View
+          entering={FadeInUp.duration(800)}
+          exiting={FadeOut}
+          style={styles.genderWrapper}
+        >
+          <Text style={styles.title}>Create your avatar.</Text>
+          {/* <Image style={styles.image} source={require('../../../assets/images/girl-modal.png')} /> */}
+          <View
+            style={{
+              width: width / 1,
+              height: height / 2.5,
+              paddingBottom: 1,
+            }}
           >
-            <Text style={styles.title}>Create your avatar.</Text>
-            {/* <Image style={styles.image} source={require('../../../assets/images/girl-modal.png')} /> */}
-            <View
-              style={{
-                width: width / 1,
-                height: height / 2,
-                paddingBottom: 1,
+            <WebView
+              source={{
+                uri: 'https://sj-threejs-development.netlify.app/',
               }}
-            >
-              <WebView
-                source={{
-                  uri: 'https://sj-threejs-development.netlify.app/',
-                }}
-              />
-            </View>
+            />
+          </View>
+        </Animated.View>
+
+        {toggle && (
+          <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
+            <Skintone path={path} isGender={isGender} setToggle={setToggle} />
           </Animated.View>
+        )}
 
-          {toggle && (
-            <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
-              <Skintone path={path} isGender={isGender} setToggle={setToggle} />
-            </Animated.View>
-          )}
-
-          {!toggle && (
-            <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
-              <Gender setToggle={setToggle} isGender={isGender} setGender={setGender} />
-            </Animated.View>
-          )}
-        </View>
-      </ScrollView>
+        {!toggle && (
+          <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
+            <Gender setToggle={setToggle} isGender={isGender} setGender={setGender} />
+          </Animated.View>
+        )}
+      </View>
     </LinearGradient>
   )
 }

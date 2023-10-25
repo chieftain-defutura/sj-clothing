@@ -1,7 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { COLORS } from '../../../styles/theme'
 import MidLevelIcon from '../../../assets/icons/MidLevelIcon'
 import PremiumIcon from '../../../assets/icons/PremiumIcon'
 import AccountIcon from '../../../assets/icons/AccountIcon'
