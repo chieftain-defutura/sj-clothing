@@ -107,7 +107,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               style={{
                 resizeMode: 'contain',
                 width: width * 0.9,
-                height: height * 0.65,
+                height: height * 0.55,
                 marginTop: 20,
               }}
             />

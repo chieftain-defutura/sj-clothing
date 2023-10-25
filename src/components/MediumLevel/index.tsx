@@ -181,24 +181,23 @@ const MediumLevel: React.FC = () => {
               flexDirection: 'column',
               justifyContent: 'space-between',
               position: 'relative',
-              zIndex: 100,
+              zIndex: 10,
             }}
           >
-            {FilteredData && (
-              <Navigator
-                data={FilteredData}
-                steps={isSteps}
-                slideValue={slideValue}
-                isOpenDesign={isOpenDesign}
-                isDone={isDone}
-                setDone={setDone}
-                setDropDown={setDropDown}
-                setOpenDesign={setOpenDesign}
-                setImageOrText={setImageOrText}
-                handleDecreaseSteps={handleDecreaseSteps}
-                handleIncreaseSteps={handleIncreaseSteps}
-              />
-            )}
+            <Navigator
+              showDesign={FilteredData?.showDesign}
+              showTextDesign={FilteredData?.showTextDesign}
+              steps={isSteps}
+              slideValue={slideValue}
+              isOpenDesign={isOpenDesign}
+              isDone={isDone}
+              setDone={setDone}
+              setDropDown={setDropDown}
+              setOpenDesign={setOpenDesign}
+              setImageOrText={setImageOrText}
+              handleDecreaseSteps={handleDecreaseSteps}
+              handleIncreaseSteps={handleIncreaseSteps}
+            />
             {isSteps === 1 && (
               <SelectStyle
                 isDropDown={isDropDown}
@@ -242,10 +241,12 @@ const MediumLevel: React.FC = () => {
                   />
                 )}
 
-                {isSteps === 5 && (
-                  <View style={{ marginBottom: 80 }}>
+                {isSteps === 4 && !isOpenDesign && (
+                  <View style={{ marginBottom: 80, zIndex: -100 }}>
                     <ScrollView>
-                      <TShirt />
+                      <View>
+                        <TShirt />
+                      </View>
 
                       <FinalView
                         data={FilteredData}
@@ -266,13 +267,18 @@ const MediumLevel: React.FC = () => {
 
             {Design && (
               <View>
-                {isSteps !== 5 && (
-                  <View style={{ marginBottom: 80, zIndex: -20 }}>
+                {isSteps !== 4 && (
+                  <View>
+                    <TShirt />
+                  </View>
+                )}
+                {isOpenDesign && (
+                  <View style={{ marginBottom: 80 }}>
                     <TShirt />
                   </View>
                 )}
 
-                {isOpenDesign && !isDone && isSteps === 4 && (
+                {isOpenDesign && (
                   <SelectDesign
                     isImageOrText={isImageOrText}
                     designs={Design}

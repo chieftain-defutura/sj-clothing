@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/native'
 import AuthNavigate from '../../../../screens/AuthNavigate'
 import { useIsFocused } from '@react-navigation/native'
@@ -8,12 +8,12 @@ import PremiumLevel from '../../../../components/PremiumLevel'
 
 const Premium: React.FC = () => {
   const isFocused = useIsFocused()
-
+  const [openDetails, setOpenDetails] = useState(false)
   return (
     <LinearGradient colors={gradientOpacityColors}>
-      <PremiumWrapper>
+      <PremiumWrapper scrollEnabled={openDetails ? false : true}>
         <AuthNavigate focus={isFocused}>
-          <PremiumLevel />
+          <PremiumLevel openDetails={openDetails} setOpenDetails={setOpenDetails} />
         </AuthNavigate>
       </PremiumWrapper>
     </LinearGradient>

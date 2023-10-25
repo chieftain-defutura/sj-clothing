@@ -141,7 +141,16 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
 
           <PremiumDetailsWrapper>
             <PremiumDetailsContent>
-              <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>
+              <Animated.View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                entering={FadeInLeft.duration(800).delay(200)}
+                exiting={FadeOutLeft}
+              >
                 <TouchableOpacity onPress={() => setOpenDetails(true)}>
                   <Image
                     source={{ uri: data.productImage }}
@@ -162,8 +171,8 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     gap: 30,
-
                     paddingBottom: 20,
+                    paddingHorizontal: 16,
                   }}
                 >
                   <View
@@ -202,12 +211,10 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                       </View>
                     )}
                   </View>
-                  {data.productVideo && (
-                    <WatchVideoBorder onPress={() => setOpenModal(true)}>
-                      <PlayCircleIcon width={12} height={12} />
-                      <WatchVideoText>Watch video</WatchVideoText>
-                    </WatchVideoBorder>
-                  )}
+                  <WatchVideoBorder onPress={() => setOpenModal(true)}>
+                    <PlayCircleIcon width={12} height={12} />
+                    <WatchVideoText>Watch video</WatchVideoText>
+                  </WatchVideoBorder>
                 </View>
                 {openModal && (
                   <PremiumVideo
@@ -437,14 +444,16 @@ const DetailsHeading = styled.Text`
   margin-bottom: 8px;
 `
 
-const PremiumDetailsWrapper = styled.View``
+const PremiumDetailsWrapper = styled.View`
+  flex: 1;
+`
 
 const PremiumDetailsContent = styled.View`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+
   gap: 12px;
+  flex: 1;
 `
 
 const DetailsParaText = styled.Text`

@@ -1,4 +1,4 @@
-import { StyleSheet, Image, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import styled from 'styled-components/native'
 import React from 'react'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
@@ -17,7 +17,7 @@ const TShirt: React.FC = () => {
 }
 
 const ShirtImg = styled.Image`
-  width: 60%;
+  width: 65%;
   height: 350px;
 `
 
@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    zIndex: -100,
   },
   selectSize360Degree: {
     display: 'flex',

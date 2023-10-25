@@ -5,6 +5,7 @@ import { Dimensions, Modal, View } from 'react-native'
 
 import { COLORS } from '../styles/theme'
 import CloseIcon from '../assets/icons/Close'
+import { Text } from 'react-native'
 const { width, height } = Dimensions.get('window')
 
 interface PremiumVideoModalProps {
@@ -14,17 +15,22 @@ interface PremiumVideoModalProps {
 }
 
 const PremiumVideo: React.FC<PremiumVideoModalProps> = ({ isVisible, onClose, video }) => {
+  console.log(video)
   return (
     <Modal visible={isVisible} animationType='slide' onRequestClose={onClose} transparent={true}>
       <PremiumVideoWrapper onPress={onClose}>
-        <Video
-          source={{ uri: video }}
-          style={{ width: 400, height: 300 }}
-          shouldPlay
-          isLooping
-          resizeMode={ResizeMode.COVER}
-          useNativeControls
-        />
+        {video ? (
+          <Video
+            source={{ uri: video }}
+            style={{ width: 400, height: 300 }}
+            shouldPlay
+            isLooping
+            resizeMode={ResizeMode.COVER}
+            useNativeControls
+          />
+        ) : (
+          <Text style={{ color: 'white' }}>No Video</Text>
+        )}
       </PremiumVideoWrapper>
     </Modal>
   )

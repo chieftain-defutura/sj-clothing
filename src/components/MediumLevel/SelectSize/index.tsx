@@ -95,20 +95,7 @@ const SelectSize: React.FC<ISelectSize> = ({
   return (
     <View style={styles.selectSizeContainer}>
       {isDropDown && (
-        <Animated.View
-          style={[
-            {
-              position: 'absolute',
-              width: '100%',
-              borderBottomRightRadius: 50,
-              borderBottomLeftRadius: 50,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 15,
-              zIndex: 10000000,
-            },
-          ]}
-        >
+        <Animated.View>
           <Animated.View
             entering={FlipInXDown}
             exiting={FlipOutXDown.duration(400)}

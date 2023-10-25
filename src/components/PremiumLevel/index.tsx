@@ -11,12 +11,17 @@ import { IPremiumData } from '../../constant/types'
 
 const { width } = Dimensions.get('window')
 
-const PremiumLevel = () => {
+interface IPremiumLevel {
+  openDetails: boolean
+  setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) => {
   const navigation = useNavigation()
   const [data, setData] = useState<IPremiumData[]>()
   const [openCard, setOpenCard] = useState(false)
   const [productId, setProductId] = useState('')
-  const [openDetails, setOpenDetails] = useState(false)
+
   const [isSize, setSize] = useState({
     country: '',
     sizeVarient: { size: '', measurement: '', quantity: 1 },

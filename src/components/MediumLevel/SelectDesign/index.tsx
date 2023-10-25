@@ -72,7 +72,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
             Select Design
           </Text>
         </View>
-        <Pressable onPress={() => setDone(true)}>
+        <Pressable onPress={() => setOpenDesign(false)}>
           <CloseIcon width={20} height={20} />
         </Pressable>
       </View>

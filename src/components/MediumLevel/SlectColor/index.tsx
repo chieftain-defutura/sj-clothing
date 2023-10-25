@@ -37,9 +37,6 @@ const SelectColor: React.FC<ISelectColor> = ({
         <Animated.View
           style={[
             {
-              position: 'absolute',
-              width: '100%',
-              zIndex: 100000,
               borderBottomRightRadius: 50,
               borderBottomLeftRadius: 50,
               display: 'flex',
@@ -93,7 +90,7 @@ const SelectColor: React.FC<ISelectColor> = ({
               renderItem={({ item, index }) => (
                 <Pressable
                   onPress={() => {
-                    setColor(item), setOpenModal(true), setDropDown(false)
+                    setColor(item), handleIncreaseSteps(), setDropDown(false)
                   }}
                   key={index}
                   style={{
@@ -119,19 +116,6 @@ const SelectColor: React.FC<ISelectColor> = ({
                       }}
                     ></View>
                   </View>
-                  {/* <Text
-                    style={{
-                      color:
-                        isColor.hexCode === item.hexCode
-                          ? COLORS.textSecondaryClr
-                          : COLORS.textTertiaryClr,
-                      textAlign: 'center',
-                      textTransform: 'capitalize',
-                      fontFamily: 'Gilroy-Regular',
-                    }}
-                  >
-                    {item.colorName}
-                  </Text> */}
                 </Pressable>
               )}
             />
@@ -161,12 +145,12 @@ const SelectColor: React.FC<ISelectColor> = ({
           </Animated.View>
         </Animated.View>
       )}
-      <ColorNavigation
+      {/* <ColorNavigation
         isVisible={isOpenModal}
         navigation={navigation}
         onClose={() => setOpenModal(false)}
         handleIncreaseSteps={handleIncreaseSteps}
-      />
+      /> */}
     </View>
   )
 }

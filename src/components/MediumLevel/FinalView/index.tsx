@@ -2,14 +2,12 @@ import { Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-nati
 import React, { useState } from 'react'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import CustomButton from '../../Button'
-import * as Animatable from 'react-native-animatable'
 import styled from 'styled-components/native'
 import PlusIcon from '../../../assets/icons/MidlevelIcon/PlusIcon'
 import MinusIcon from '../../../assets/icons/MidlevelIcon/MinusIcon'
-import { Checkbox } from 'react-native-paper'
 import { Svg, Circle } from 'react-native-svg'
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
-import ChevronLeft from '../../../assets/icons/ChevronLeft'
+import DownArrow from '../../../assets/icons/DownArrow'
 import { IMidlevel } from '../../../constant/types'
 
 interface IFinalView {
@@ -372,13 +370,14 @@ const DropdownContainer: React.FC<DropDownContainer> = ({
     .map((f: any) => f.sizeVarients)
 
   const stringIndex = Number(index) + 1
-
+  const measurementAndSizes = isSize.sizeVarient.find((f) => f.quantity === stringIndex.toString())
   return (
     <View style={{ width: 108 }}>
       <SelectContent onPress={toggleDropdownSizes}>
         <SelectText>
-          {selectedSizes.size}-{selectedSizes.measurement}
+          {measurementAndSizes?.size}-{measurementAndSizes?.measurement}
         </SelectText>
+        <DownArrow />
       </SelectContent>
       {isDropdownSizesOpen && (
         <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>

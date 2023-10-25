@@ -20,8 +20,9 @@ interface INavigator {
   steps: number
   isOpenDesign: boolean
   isDone: boolean
-  data: IMidlevel
+  showDesign: boolean | undefined
   slideValue: SharedValue<number>
+  showTextDesign: boolean | undefined
   handleIncreaseSteps: () => void
   handleDecreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
@@ -41,7 +42,8 @@ interface INavigator {
 
 const Navigator: React.FC<INavigator> = ({
   steps,
-  data,
+  showDesign,
+  showTextDesign,
   handleDecreaseSteps,
   handleIncreaseSteps,
   setDropDown,
@@ -134,7 +136,7 @@ const Navigator: React.FC<INavigator> = ({
                   </Pressable>
                 </View>
               )}
-              {steps === 4 && data.showDesign && (
+              {steps === 4 && showDesign && (
                 <View>
                   <Pressable
                     onPress={() => {
@@ -153,7 +155,7 @@ const Navigator: React.FC<INavigator> = ({
                   </Pressable>
                 </View>
               )}
-              {steps === 4 && data.showTextDesign && (
+              {steps === 4 && showTextDesign && (
                 <View>
                   <Pressable
                     onPress={() => {
@@ -175,7 +177,7 @@ const Navigator: React.FC<INavigator> = ({
             </>
           )}
 
-          {!isOpenDesign && (
+          {!isOpenDesign && steps !== 4 && (
             <Pressable onPress={handleIncreaseSteps}>
               <View>
                 <ArrowCircleRight width={24} height={24} />
@@ -185,13 +187,13 @@ const Navigator: React.FC<INavigator> = ({
         </>
       )}
 
-      {isDone && (
-        <Pressable onPress={handleIncreaseSteps}>
+      {isDone && isOpenDesign && (
+        <Pressable onPress={() => setOpenDesign(false)}>
           <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>Done</Text>
         </Pressable>
       )}
 
-      {steps === 5 && (
+      {steps === 4 && !isOpenDesign && (
         <Pressable onPress={share}>
           <ShareArrow width={24} height={24} />
         </Pressable>

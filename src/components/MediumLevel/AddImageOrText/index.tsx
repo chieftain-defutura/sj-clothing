@@ -45,20 +45,10 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
   setOpenDesign,
   setImageOrText,
 }) => {
-  console.log(data)
   return (
     <View style={styles.AddImageOrTextContainer}>
       {isDropDown && (
-        <Animated.View
-          style={[
-            {
-              position: 'absolute',
-              width: '100%',
-              borderBottomRightRadius: 50,
-              borderBottomLeftRadius: 50,
-            },
-          ]}
-        >
+        <Animated.View>
           <Animated.View
             entering={FlipInXDown}
             exiting={FlipOutXDown.duration(400)}
@@ -279,6 +269,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: width,
-    zIndex: 10,
+    zIndex: 100,
   },
 })

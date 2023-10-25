@@ -27,10 +27,10 @@ const TabNavigationRoutes: React.FC = () => {
           height: 62,
           elevation: 0,
         },
-        unmountOnBlur: false,
+        unmountOnBlur: true,
       }}
     >
-      <Tab.Screen
+      {/* <Tab.Screen
         name='Post'
         options={{
           tabBarLabel: '',
@@ -51,7 +51,7 @@ const TabNavigationRoutes: React.FC = () => {
           headerShown: false,
         }}
         component={Post}
-      />
+      /> */}
       <Tab.Screen
         name='MidLevel'
         options={{
