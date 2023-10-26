@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components/native'
 import { View, StyleSheet } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
-import { COLORS, gradientOpacityColors } from '../../../styles/theme'
+import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { RadioButton } from 'react-native-paper'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
@@ -97,22 +97,25 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation }) => {
           </TShirtImageWrapper>
           <LinearGradient colors={gradientOpacityColors}>
             <TrackOrderContent>
-              <FlexContent>
-                {ProductData.slice(0, 3).map((f, index) => (
-                  <View key={index}>
-                    <TrackOrderText>{f.product}</TrackOrderText>
-                    <TrackOrderDate>{f.productName}</TrackOrderDate>
-                  </View>
-                ))}
-              </FlexContent>
-              <FlexContent style={{ marginTop: 16 }}>
-                {ProductData.slice(3, 6).map((f, index) => (
-                  <View key={index}>
-                    <TrackOrderText>{f.product}</TrackOrderText>
-                    <TrackOrderDate>{f.productName}</TrackOrderDate>
-                  </View>
-                ))}
-              </FlexContent>
+              <Container>
+                <Row>
+                  {ProductData.slice(0, 3).map((f, index) => (
+                    <Column key={index}>
+                      <ProductText>{f.product}</ProductText>
+                      <ProductName>{f.productName}</ProductName>
+                    </Column>
+                  ))}
+                </Row>
+
+                <Row>
+                  {ProductData.slice(3, 6).map((f, index) => (
+                    <Column key={index}>
+                      <ProductText>{f.product}</ProductText>
+                      <ProductName>{f.productName}</ProductName>
+                    </Column>
+                  ))}
+                </Row>
+              </Container>
             </TrackOrderContent>
 
             <TrackOrderContent>
@@ -191,24 +194,36 @@ const OrderPlacedDate = styled.Text`
 
 const OrderGroupContent = styled.View`
   padding-right: 24px;
+  margin-top: -20px;
 `
 
-const FlexContent = styled.View`
-  display: flex;
-  justify-content: space-between;
+const Container = styled.View`
+  flex-direction: column;
+  align-items: center;
+  margin-left: 12px;
+`
+
+const Row = styled.View`
   flex-direction: row;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 32px;
+`
+const Column = styled.View`
+  flex: 1;
 `
 
-const TrackOrderText = styled.Text`
-  font-size: 10px;
-  font-family: Montserrat-Regular;
+const ProductText = styled.Text`
+  text-align: left;
+  font-size: 11px;
+  font-family: ${FONT_FAMILY.MontserratRegular};
   color: ${COLORS.SecondaryTwo};
 `
-
-const TrackOrderDate = styled.Text`
-  font-family: Gilroy-Medium;
+const ProductName = styled.Text`
+  font-family: ${FONT_FAMILY.ArvoRegular};
   font-size: 14px;
   color: ${COLORS.iconsHighlightClr};
+  margin-top: 4px;
 `
 
 const GoBackArrowContent = styled.Pressable`

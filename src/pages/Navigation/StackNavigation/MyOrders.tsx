@@ -14,19 +14,18 @@ interface IMyOrders {
   navigation: any
 }
 
-const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
-  const [stars, setStars] = useState([
-    { active: true },
-    { active: true },
-    { active: false },
-    { active: false },
-    { active: false },
-  ])
+const StartIcons = [
+  { startActive: StarActive, startInActive: StarInActive },
+  { startActive: StarActive, startInActive: StarInActive },
+  { startActive: StarActive, startInActive: StarInActive },
+  { startActive: StarActive, startInActive: StarInActive },
+]
 
-  const toggleStar = (index: number) => {
-    const updatedStars = [...stars]
-    updatedStars[index].active = !updatedStars[index].active
-    setStars(updatedStars)
+const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
+  const [stars, setStars] = useState(4)
+
+  const handleStarClick = (index: number) => {
+    setStars(index + 1)
   }
 
   return (
@@ -57,11 +56,25 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
                         <View>
                           <ProductWrapper>
                             <View>
-                              <ProductText>{f.product}</ProductText>
                               <ProductShirtText>{f.productName}</ProductShirtText>
-                              <StatusText>{f.status}</StatusText>
-                              <ProductShirtText>{f.statusName}</ProductShirtText>
-                              <ProductShirtText>{f.date}</ProductShirtText>
+                              <ProductText>{f.product}</ProductText>
+                              <StarContainer>
+                                {StartIcons.map((star, index) => (
+                                  <TouchableOpacity
+                                    key={index}
+                                    onPress={() => handleStarClick(index)}
+                                  >
+                                    {index < stars ? (
+                                      <star.startActive width={24} height={24} />
+                                    ) : (
+                                      <star.startInActive width={24} height={24} />
+                                    )}
+                                  </TouchableOpacity>
+                                ))}
+                              </StarContainer>
+                              <StatusText>Write a review</StatusText>
+                              {/* <ProductShirtText>{f.statusName}</ProductShirtText> */}
+                              {/* <ProductShirtText>{f.date}</ProductShirtText> */}
                             </View>
                             <Pressable>
                               <ChevronLeft width={16} height={16} />
@@ -69,29 +82,6 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
                           </ProductWrapper>
                         </View>
                       </CartPageData>
-                      <StarWrapper>
-                        <View
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 1,
-                          }}
-                        >
-                          {stars.map((star, index) => (
-                            <TouchableOpacity key={index} onPress={() => toggleStar(index)}>
-                              {star.active ? (
-                                <StarActive width={24} height={24} />
-                              ) : (
-                                <StarInActive width={24} height={24} />
-                              )}
-                            </TouchableOpacity>
-                          ))}
-                        </View>
-                        <View>
-                          <DateText>18, Oct 2023</DateText>
-                        </View>
-                      </StarWrapper>
                     </CartPageContainer>
                   </View>
                 )
@@ -115,35 +105,28 @@ const GoBackArrowContent = styled.Pressable`
   gap: 8px;
   padding: 16px;
 `
-const DateText = styled.Text`
-  font-size: 12px;
-  font-family: ${FONT_FAMILY.GilroySemiBold};
-  color: ${COLORS.SecondaryTwo};
-`
 
 const StatusText = styled.Text`
-  color: ${COLORS.SecondaryTwo};
-  font-family: Gilroy-Regular;
   font-size: 12px;
-  text-transform: uppercase;
-  margin-top: 16px;
+  font-family: ${FONT_FAMILY.GilroyMedium};
+  color: ${COLORS.textSecondaryClr};
+  margin-top: 8px;
 `
 
 const ProductText = styled.Text`
   color: ${COLORS.SecondaryTwo};
-  font-family: Gilroy-Regular;
+  font-family: ${FONT_FAMILY.GilroyMedium};
   font-size: 12px;
-  text-transform: uppercase;
 `
 const ProductShirtText = styled.Text`
   font-size: 14px;
-  font-family: Gilroy-Medium;
+  font-family: ${FONT_FAMILY.GilroyMedium};
   color: ${COLORS.iconsHighlightClr};
 `
 
 const CartText = styled.Text`
   color: ${COLORS.textClr};
-  font-family: Arvo-Regular;
+  font-family: ${FONT_FAMILY.ArvoRegular};
   font-size: 20px;
   letter-spacing: -0.4px;
 `
@@ -153,7 +136,7 @@ const ProductWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 95px;
+  gap: 25px;
 `
 
 const TShirtImage = styled.Image`
@@ -163,14 +146,12 @@ const TShirtImage = styled.Image`
   object-fit: contain;
 `
 
-const StarWrapper = styled.View`
+const StarContainer = styled.View`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  padding-vertical: 8px;
-  border-radius: 5px;
-  padding-horizontal: 16px;
+  gap: 1px;
+  margin-top: 16px;
 `
 
 const CartPageContainer = styled.View`
@@ -183,6 +164,7 @@ const CartPageData = styled.Pressable`
   flex-direction: row;
   gap: 16px;
   padding-vertical: 12px;
+  width: 350px;
 `
 
 const CartPageContent = styled.View`
