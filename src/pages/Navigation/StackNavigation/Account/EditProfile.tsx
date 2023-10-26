@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Dimensions, Pressable, Alert } from 'react-native'
 import styled from 'styled-components/native'
 import * as ImagePicker from 'expo-image-picker'
@@ -55,6 +55,7 @@ const validationSchema = yup.object({
 
 const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   const [image, setImage] = React.useState<string | null>(null)
+  const [url, setUrl] = useState<string | null>(null)
   const user = userStore((state) => state.user)
   const updateName = userStore((name) => name.updateName)
 
@@ -64,7 +65,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
       updateProfile(user, { displayName: values.fullName })
       await updateDoc(doc(db, 'users', user.uid), {
         name: values.fullName,
-        profile: image,
+        profile: url,
       })
     } else console.log('error')
     navigation.navigate('Account', { dName: values.fullName, profileImg: image })
@@ -101,6 +102,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
       await task // Wait for the upload to complete
 
       const url = await getDownloadURL(imageRef)
+      setUrl(url)
       console.log('Image uploaded to the bucket!')
     } catch (error) {
       console.error('Error uploading image:', error)

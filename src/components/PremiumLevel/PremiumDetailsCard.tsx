@@ -147,6 +147,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  paddingVertical: 10,
                 }}
                 entering={FadeInLeft.duration(800).delay(200)}
                 exiting={FadeOutLeft}
@@ -156,8 +157,8 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                     source={{ uri: data.productImage }}
                     style={{
                       width: width / 1.4,
-                      height: height * 0.3,
-                      resizeMode: 'cover',
+                      height: height * 0.45,
+                      resizeMode: 'contain',
                       borderRadius: 6,
                     }}
                   />
@@ -307,7 +308,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
 
             {showDetails && (
               <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
-                <View style={{ marginTop: 14 }}>
+                <View style={{ margin: 14 }}>
                   <DetailsHeading>Detailed features</DetailsHeading>
                   {Description.map((f, index) => (
                     <View
@@ -357,6 +358,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
 const styles = StyleSheet.create({
   linearGradient: {
     padding: 16,
+    marginBottom: 15,
   },
 })
 
@@ -432,9 +434,8 @@ const Btns = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-top: 20px;
   gap: 8px;
-  margin-top: 16px;
-  margin-bottom: 4px;
 `
 
 const DetailsHeading = styled.Text`
@@ -451,7 +452,6 @@ const PremiumDetailsWrapper = styled.View`
 const PremiumDetailsContent = styled.View`
   display: flex;
   flex-direction: column;
-
   gap: 12px;
   flex: 1;
 `

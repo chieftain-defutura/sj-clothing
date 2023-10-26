@@ -239,7 +239,6 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
               flexDirection: 'row',
               justifyContent: 'center',
               paddingVertical: 10,
-              zIndex: 10,
             }}
           >
             <Pressable

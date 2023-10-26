@@ -136,6 +136,34 @@ const PostCreation: React.FC<IPostCreation> = () => {
       status: 'pending',
       userId: user?.uid,
       gender: isGender,
+      type: 'Post',
+      orderStatus: {
+        orderplaced: {
+          createdAt: null,
+          description: '',
+          status: false,
+        },
+        manufacturing: {
+          createdAt: null,
+          description: '',
+          status: false,
+        },
+        readyToShip: {
+          createdAt: null,
+          description: '',
+          status: false,
+        },
+        shipping: {
+          createdAt: null,
+          description: '',
+          status: false,
+        },
+        delivery: {
+          createdAt: null,
+          description: '',
+          status: false,
+        },
+      },
     })
     navigation.navigate('Stack')
   }

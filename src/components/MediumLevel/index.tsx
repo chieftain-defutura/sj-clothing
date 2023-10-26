@@ -124,7 +124,7 @@ const MediumLevel: React.FC = () => {
 
   const handleSubmit = async () => {
     if (!FilteredData) return
-    const docRef = await addDoc(collection(db, 'Orders'), {
+    const docRef = await addDoc(collection(db, 'Posts'), {
       style: isSelectedStyle,
       sizes: isSize,
       color: isColor,
@@ -135,35 +135,7 @@ const MediumLevel: React.FC = () => {
       productId: FilteredData.id,
       userId: user?.uid,
       gender: avatar,
-      type: 'Mid-Level',
       productName: FilteredData.productName,
-      orderStatus: {
-        orderplaced: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        manufacturing: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        readyToShip: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        shipping: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        delivery: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-      },
     })
     navigation.navigate('Checkout')
   }
@@ -181,7 +153,7 @@ const MediumLevel: React.FC = () => {
               flexDirection: 'column',
               justifyContent: 'space-between',
               position: 'relative',
-              zIndex: 10,
+              zIndex: 1,
             }}
           >
             <Navigator
@@ -198,6 +170,7 @@ const MediumLevel: React.FC = () => {
               handleDecreaseSteps={handleDecreaseSteps}
               handleIncreaseSteps={handleIncreaseSteps}
             />
+
             {isSteps === 1 && (
               <SelectStyle
                 isDropDown={isDropDown}
@@ -230,7 +203,7 @@ const MediumLevel: React.FC = () => {
                     handleIncreaseSteps={handleIncreaseSteps}
                   />
                 )}
-                {isSteps === 4 && (
+                {isSteps === 5 && (
                   <AddImageOrText
                     data={FilteredData}
                     isImageOrText={isImageOrText}
@@ -242,7 +215,7 @@ const MediumLevel: React.FC = () => {
                 )}
 
                 {isSteps === 4 && !isOpenDesign && (
-                  <View style={{ marginBottom: 80, zIndex: -100 }}>
+                  <View style={{ marginBottom: 80, zIndex: -10 }}>
                     <ScrollView>
                       <View>
                         <TShirt />
@@ -268,15 +241,15 @@ const MediumLevel: React.FC = () => {
             {Design && (
               <View>
                 {isSteps !== 4 && (
-                  <View>
-                    <TShirt />
-                  </View>
-                )}
-                {isOpenDesign && (
                   <View style={{ marginBottom: 80 }}>
                     <TShirt />
                   </View>
                 )}
+                {/* {isOpenDesign && (
+                  <View style={{ marginBottom: 80 }}>
+                    <TShirt />
+                  </View>
+                )} */}
 
                 {isOpenDesign && (
                   <SelectDesign

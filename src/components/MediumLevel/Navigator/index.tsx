@@ -62,6 +62,8 @@ const Navigator: React.FC<INavigator> = ({
     }
   })
 
+  console.log(steps)
+
   const share = async () => {
     try {
       const result = await Share.share({ message: 'Bug:' + `\n` + url })
@@ -100,104 +102,110 @@ const Navigator: React.FC<INavigator> = ({
         </Pressable>
       )}
 
-      {steps !== 5 && (
+      {!isOpenDesign && (
         <>
-          {!isOpenDesign && (
-            <>
-              {steps !== 4 && (
-                <View>
-                  <Pressable
-                    onPress={() => {
-                      setDropDown(true),
-                        setImageOrText((prevState) => ({
-                          ...prevState,
-                          title: 'design-images',
-                        }))
-                    }}
-                    style={styles.Dropdown}
-                  >
-                    {steps === 1 && (
-                      <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                        Select Style
-                      </Text>
-                    )}
-                    {steps === 2 && (
-                      <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                        Select Size
-                      </Text>
-                    )}
-                    {steps === 3 && (
-                      <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                        Select Color
-                      </Text>
-                    )}
+          {steps !== 4 && steps !== 5 && (
+            <View>
+              <Pressable
+                onPress={() => {
+                  setDropDown(true),
+                    setImageOrText((prevState) => ({
+                      ...prevState,
+                      title: 'design-images',
+                    }))
+                }}
+                style={styles.Dropdown}
+              >
+                {steps === 1 && (
+                  <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                    Select Style
+                  </Text>
+                )}
+                {steps === 2 && (
+                  <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                    Select Size
+                  </Text>
+                )}
+                {steps === 3 && (
+                  <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                    Select Color
+                  </Text>
+                )}
 
-                    <DropDownArrowIcon />
-                  </Pressable>
-                </View>
-              )}
-              {steps === 4 && showDesign && (
-                <View>
-                  <Pressable
-                    onPress={() => {
-                      setDropDown(true),
-                        setImageOrText((prevState) => ({
-                          ...prevState,
-                          title: 'text-images',
-                        }))
-                    }}
-                    style={styles.Dropdown}
-                  >
-                    <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                      Add Image
-                    </Text>
-                    <DropDownArrowIcon />
-                  </Pressable>
-                </View>
-              )}
-              {steps === 4 && showTextDesign && (
-                <View>
-                  <Pressable
-                    onPress={() => {
-                      setDropDown(true),
-                        setImageOrText((prevState) => ({
-                          ...prevState,
-                          title: 'text-images',
-                        }))
-                    }}
-                    style={styles.Dropdown}
-                  >
-                    <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                      Add Text
-                    </Text>
-                    <DropDownArrowIcon />
-                  </Pressable>
-                </View>
-              )}
-            </>
+                <DropDownArrowIcon />
+              </Pressable>
+            </View>
           )}
-
-          {!isOpenDesign && steps !== 4 && (
-            <Pressable onPress={handleIncreaseSteps}>
-              <View>
-                <ArrowCircleRight width={24} height={24} />
-              </View>
-            </Pressable>
+          {steps === 5 && showDesign && (
+            <View>
+              <Pressable
+                onPress={() => {
+                  setDropDown(true),
+                    setImageOrText((prevState) => ({
+                      ...prevState,
+                      title: 'text-images',
+                    }))
+                }}
+                style={styles.Dropdown}
+              >
+                <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                  Add Image
+                </Text>
+                <DropDownArrowIcon />
+              </Pressable>
+            </View>
+          )}
+          {steps === 5 && showTextDesign && (
+            <View>
+              <Pressable
+                onPress={() => {
+                  setDropDown(true),
+                    setImageOrText((prevState) => ({
+                      ...prevState,
+                      title: 'text-images',
+                    }))
+                }}
+                style={styles.Dropdown}
+              >
+                <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Add Text</Text>
+                <DropDownArrowIcon />
+              </Pressable>
+            </View>
+          )}
+          {steps === 4 && (
+            <View>
+              <Pressable onPress={handleIncreaseSteps} style={styles.Dropdown}>
+                <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Add More</Text>
+              </Pressable>
+            </View>
           )}
         </>
       )}
 
+      {!isOpenDesign && steps !== 4 && steps !== 5 && (
+        <Pressable onPress={handleIncreaseSteps}>
+          <View>
+            <ArrowCircleRight width={24} height={24} />
+          </View>
+        </Pressable>
+      )}
+
       {isDone && isOpenDesign && (
-        <Pressable onPress={() => setOpenDesign(false)}>
+        <Pressable
+          onPress={() => {
+            setOpenDesign(false), handleDecreaseSteps()
+          }}
+        >
           <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>Done</Text>
         </Pressable>
       )}
 
+      {/* 
       {steps === 4 && !isOpenDesign && (
         <Pressable onPress={share}>
           <ShareArrow width={24} height={24} />
         </Pressable>
-      )}
+      )} */}
     </Animated.View>
   )
 }

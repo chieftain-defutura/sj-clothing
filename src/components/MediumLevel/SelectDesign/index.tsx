@@ -159,7 +159,10 @@ const SelectDesign: React.FC<ISelectDesign> = ({
                 borderWidth: isImageOrText.designs.image === item.Images ? 1 : 0,
               }}
             >
-              <Image style={{ width: 100, height: 100 }} source={{ uri: item.Images }} />
+              <Image
+                style={{ width: 100, height: 100, objectFit: 'cover' }}
+                source={{ uri: item.Images }}
+              />
             </Pressable>
           </View>
         )}
