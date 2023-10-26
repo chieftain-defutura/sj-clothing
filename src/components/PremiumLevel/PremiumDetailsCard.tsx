@@ -156,7 +156,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                   <Image
                     source={{ uri: data.productImage }}
                     style={{
-                      width: width / 1.4,
+                      width: width / 1.2,
                       height: height * 0.45,
                       resizeMode: 'contain',
                       borderRadius: 6,

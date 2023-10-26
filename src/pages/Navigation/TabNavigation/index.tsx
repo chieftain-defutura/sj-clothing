@@ -1,5 +1,5 @@
-import React from 'react'
-import { View } from 'react-native'
+import React, { useEffect } from 'react'
+import { View, Platform, NativeModules } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import MidLevelIcon from '../../../assets/icons/MidLevelIcon'
 import PremiumIcon from '../../../assets/icons/PremiumIcon'
@@ -10,12 +10,14 @@ import Premium from './Premium'
 import Account from './Account'
 import TabHomeIcon from '../../../assets/icons/TabHomeIcon'
 import { useSharedValue } from 'react-native-reanimated'
+import * as NavigationBar from 'expo-navigation-bar'
 
 const Tab = createBottomTabNavigator()
 
 const TabNavigationRoutes: React.FC = () => {
   const opacityValue = useSharedValue(2)
-  //
+  NavigationBar.setPositionAsync('relative')
+  NavigationBar.setBackgroundColorAsync('rgba(145, 177, 225, 0.85)')
   return (
     <Tab.Navigator
       initialRouteName='Home'

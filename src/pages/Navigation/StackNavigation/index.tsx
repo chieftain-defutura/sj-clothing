@@ -30,6 +30,7 @@ import AccessoriesDetails from './Accessories/AccessoriesDetails.tsx'
 import Avatar from '../../../components/MediumLevel/Avatar'
 import EditTest from './Account/EditTest'
 import Accessory from '../../../components/Accessory'
+import AuthNavigate from '../../../screens/AuthNavigate'
 
 const Stack = createStackNavigator()
 
@@ -119,6 +120,12 @@ const StackNavigationRoutes: React.FC = () => {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={AccessoriesDetails}
       />
+      {/* 
+      <Stack.Screen
+        name='AuthNavigate'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={AuthNavigate}
+      /> */}
 
       <Stack.Screen name='MyOrders' component={MyOrders} />
       <Stack.Screen name='TrackOrder' component={TrackOrder} />
