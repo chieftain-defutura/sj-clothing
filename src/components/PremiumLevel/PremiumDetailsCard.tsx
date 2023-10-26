@@ -23,13 +23,11 @@ import Animated, {
   FadeOutLeft,
   FadeOutRight,
   FadeOutUp,
-  RotateInDownLeft,
 } from 'react-native-reanimated'
 import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
 import { Svg, Circle } from 'react-native-svg'
 import CustomButton from '../Button'
 import { IPremiumData } from '../../constant/types'
-import ChevronLeft from '../../assets/icons/PremiumPageIcon/ChevronLeftIcon'
 import PremiumVideo from '../../screens/PremiumVideo'
 import DownArrow from '../../assets/icons/DownArrow'
 

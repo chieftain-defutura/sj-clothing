@@ -9,7 +9,7 @@ import Fire from '../assets/icons/fire'
 import Heart from '../assets/icons/heart'
 import LoginModal from '../screens/Modals/Login'
 import SaveIcon from '../assets/icons/SaveIcon'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import SignupModal from '../screens/Modals/Signup'
 import { userStore } from '../store/userStore'
 

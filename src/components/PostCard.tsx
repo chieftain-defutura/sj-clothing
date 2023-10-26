@@ -1,5 +1,13 @@
 import * as React from 'react'
-import { Image, Pressable, Dimensions, Share, View, StyleSheet } from 'react-native'
+import {
+  Image,
+  Pressable,
+  Dimensions,
+  Share,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native'
 import { COLORS, gradientColors } from '../styles/theme'
 import styled from 'styled-components/native'
 import Like from '../assets/icons/like'
@@ -120,7 +128,10 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
               showPagination={false}
               renderItem={({ item: image }) => (
                 <LinearGradient colors={gradientColors} style={{ borderRadius: 10 }}>
-                  <View style={styles.container}>
+                  <TouchableOpacity
+                    style={styles.container}
+                    onPress={() => navigation.navigate('PostDetails')}
+                  >
                     <Image
                       source={image}
                       style={{
@@ -135,7 +146,7 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
                       colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.38)']}
                       style={styles.linearGradient}
                     ></LinearGradient>
-                  </View>
+                  </TouchableOpacity>
                 </LinearGradient>
               )}
             />
