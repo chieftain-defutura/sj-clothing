@@ -1,11 +1,16 @@
+import React from 'react'
 import { StyleSheet, View, Dimensions } from 'react-native'
 import styled from 'styled-components/native'
-import React from 'react'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import { WebView } from 'react-native-webview'
 
 const { height, width } = Dimensions.get('window')
-const TShirt: React.FC = () => {
+
+interface ITShirtProps {
+  uid: string
+}
+
+const TShirt: React.FC<ITShirtProps> = ({ uid }) => {
   return (
     <View>
       <View
@@ -17,7 +22,8 @@ const TShirt: React.FC = () => {
       >
         <WebView
           source={{
-            uri: 'https://sj-threejs-development.netlify.app?uid=',
+            uri: `http://localhost:5173/midlevel/?uid=${uid}`,
+            // uri: `https://sj-threejs-development.netlify.app/create-avatar/?uid=${uid}`,
           }}
         />
       </View>

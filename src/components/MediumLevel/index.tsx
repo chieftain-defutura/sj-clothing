@@ -1,5 +1,9 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, View, Alert } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import uuid from 'react-native-uuid'
+import { doc, setDoc, updateDoc } from 'firebase/firestore/lite'
+
 import Navigator from './Navigator'
 import SelectStyle from './SelectStyle'
 import SelectSize from './SelectSize'
@@ -7,7 +11,6 @@ import SelectColor from './SlectColor'
 import TShirt from './T-Shirt'
 import SelectDesign from './SelectDesign'
 import FinalView from './FinalView'
-import { useNavigation } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { gradientOpacityColors } from '../../styles/theme'
 import AddImageOrText from './AddImageOrText'
@@ -40,7 +43,7 @@ const MediumLevel: React.FC = () => {
     sizeVarient: [{ size: '', measurement: '', quantity: '' }],
   })
   //color
-  const [isColor, setColor] = useState('')
+  const [isColor, setColor] = useState('#ff0000')
 
   //image&text
   const [isOpenDesign, setOpenDesign] = useState(false)
@@ -53,6 +56,43 @@ const MediumLevel: React.FC = () => {
       image: '',
     },
   })
+
+  const [uid, setUid] = useState<string | null>(null)
+  const isMounted = useRef(false)
+
+  const handleSetUid = useCallback(async () => {
+    if (!isMounted.current) {
+      try {
+        console.log('rendered')
+        isMounted.current = true
+        const tempUid = uuid.v4().toString()
+        const docRef = doc(db, 'ModelsMidlevel', tempUid)
+        await setDoc(docRef, { uid: tempUid })
+        console.log('added')
+
+        setUid(tempUid)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }, [])
+
+  const handleUpdateGender = useCallback(async () => {
+    if (!isColor || !uid) return
+    try {
+      const docRef = doc(db, 'ModelsMidlevel', uid)
+      await updateDoc(docRef, { color: isColor })
+      console.log('updated')
+    } catch (error) {
+      console.log(error)
+    }
+  }, [isColor])
+
+  useEffect(() => {
+    handleSetUid()
+    handleUpdateGender()
+  }, [handleSetUid, handleUpdateGender])
+
   //finalview
   useEffect(() => {
     const FilteredData = data?.find((f) => f.styles === isSelectedStyle)
@@ -230,9 +270,7 @@ const MediumLevel: React.FC = () => {
                 {isSteps === 4 && !isOpenDesign && (
                   <View style={{ marginBottom: 80, zIndex: -10 }}>
                     <ScrollView>
-                      <View>
-                        <TShirt />
-                      </View>
+                      <View>{uid && <TShirt uid={uid} />}</View>
 
                       <FinalView
                         focus={focus}
@@ -257,9 +295,7 @@ const MediumLevel: React.FC = () => {
             {Design && (
               <View>
                 {isSteps !== 4 && (
-                  <View style={{ marginBottom: 80 }}>
-                    <TShirt />
-                  </View>
+                  <View style={{ marginBottom: 80 }}>{uid && <TShirt uid={uid} />}</View>
                 )}
                 {/* {isOpenDesign && (
                   <View style={{ marginBottom: 80 }}>
