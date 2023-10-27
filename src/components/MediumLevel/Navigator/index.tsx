@@ -137,7 +137,7 @@ const Navigator: React.FC<INavigator> = ({
             </View>
           )}
           {steps === 5 && showDesign && (
-            <View>
+            <View style={{ marginLeft: 80 }}>
               <Pressable
                 onPress={() => {
                   setDropDown(true),

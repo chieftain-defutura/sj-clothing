@@ -192,7 +192,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                       alignItems: 'center',
-                      gap: 30,
+                      gap: 15,
                       paddingBottom: 20,
                       paddingHorizontal: 16,
                     }}
@@ -226,7 +226,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                           <View>
                             <ProductText>price</ProductText>
                           </View>
-                          <View style={{ display: 'flex', flexDirection: 'row', gap: 6 }}>
+                          <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
                             <OldPriceText>{data.normalPrice}INR</OldPriceText>
                             <ProductName>{data.offerPrice}INR</ProductName>
                           </View>

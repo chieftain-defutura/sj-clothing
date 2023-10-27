@@ -212,6 +212,7 @@ const SelectSize: React.FC<ISelectSize> = ({
                 height: 42,
                 borderRadius: 50,
                 padding: 10,
+                marginTop: 6,
               }}
             >
               <CloseIcon />
