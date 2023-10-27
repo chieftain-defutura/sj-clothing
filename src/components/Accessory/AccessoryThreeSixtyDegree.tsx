@@ -9,6 +9,7 @@ import { addDoc, collection } from 'firebase/firestore/lite'
 import { db } from '../../../firebase'
 import { IAccessory } from '../../constant/types'
 import { userStore } from '../../store/userStore'
+import AuthNavigate from '../../screens/AuthNavigate'
 
 interface IAccessoryThreeSixtyDegree {
   navigation: any
@@ -25,96 +26,108 @@ const AccessoryThreeSixtyDegree: React.FC<IAccessoryThreeSixtyDegree> = ({
   data,
 }) => {
   const [isPressed, setIsPressed] = useState(false)
-  const { user } = userStore()
+  const [focus, setFocus] = useState(false)
+  const user = userStore((state) => state.user)
+
+  const onClose = () => {
+    setFocus(false)
+  }
 
   const handleSubmit = async () => {
-    const docRef = await addDoc(collection(db, 'Orders'), {
-      description: data.description,
-      price: data.normalPrice,
-      offerPrice: data.offerPrice,
-      status: 'pending',
-      userId: user?.uid,
-      type: 'Accessory-Level',
-      productName: data.productName,
-      orderStatus: {
-        orderplaced: {
-          createdAt: null,
-          description: '',
-          status: false,
+    if (!user) {
+      setFocus(true)
+    } else {
+      navigation.navigate('Checkout')
+      setFocus(true)
+      const docRef = await addDoc(collection(db, 'Orders'), {
+        description: data.description,
+        price: data.normalPrice,
+        offerPrice: data.offerPrice,
+        status: 'pending',
+        userId: user?.uid,
+        type: 'Accessory-Level',
+        productName: data.productName,
+        orderStatus: {
+          orderplaced: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          manufacturing: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          readyToShip: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          shipping: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          delivery: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
         },
-        manufacturing: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        readyToShip: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        shipping: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        delivery: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-      },
-    })
-    navigation.navigate('Checkout')
+      })
+    }
   }
   return (
     <Animated.View
       entering={SlideInRight.duration(500).delay(200)}
       exiting={SlideOutRight.duration(500).delay(200)}
     >
-      <View style={styles.linearGradient}>
-        <FlexContent>
-          <Pressable
-            onPress={() => {
-              setOpenDetails(false)
-            }}
-            onPressIn={() => setIsPressed(true)}
-            onPressOut={() => setIsPressed(false)}
-          >
-            {() => (
-              <IconHoverClr
-                style={{ backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent' }}
-              >
-                <IconHoverPressable>
-                  <LeftArrow width={24} height={24} />
-                </IconHoverPressable>
-              </IconHoverClr>
-            )}
-          </Pressable>
-        </FlexContent>
-        <ThreeSixtyDegreeImageWrapper>
-          <ThreeSixtyDegreeImage>
-            <Image
-              source={{ uri: data.productImage }}
-              style={{
-                resizeMode: 'contain',
-                width: width * 0.9,
-                height: height * 0.65,
-                marginTop: 20,
+      <AuthNavigate focus={focus} onClose={onClose}>
+        <View style={styles.linearGradient}>
+          <FlexContent>
+            <Pressable
+              onPress={() => {
+                setOpenDetails(false)
               }}
+              onPressIn={() => setIsPressed(true)}
+              onPressOut={() => setIsPressed(false)}
+            >
+              {() => (
+                <IconHoverClr
+                  style={{ backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent' }}
+                >
+                  <IconHoverPressable>
+                    <LeftArrow width={24} height={24} />
+                  </IconHoverPressable>
+                </IconHoverClr>
+              )}
+            </Pressable>
+          </FlexContent>
+          <ThreeSixtyDegreeImageWrapper>
+            <ThreeSixtyDegreeImage>
+              <Image
+                source={{ uri: data.productImage }}
+                style={{
+                  resizeMode: 'contain',
+                  width: width * 0.9,
+                  height: height * 0.65,
+                  marginTop: 20,
+                }}
+              />
+            </ThreeSixtyDegreeImage>
+            <SelectStyle360Degree>
+              <ThreeSixtyDegree width={40} height={40} />
+            </SelectStyle360Degree>
+            <CustomButton
+              text='Buy Now'
+              fontFamily='Arvo-Regular'
+              fontSize={16}
+              style={{ width: '100%', position: 'absolute', left: 0, right: 0, bottom: -90 }}
+              onPress={handleSubmit}
             />
-          </ThreeSixtyDegreeImage>
-          <SelectStyle360Degree>
-            <ThreeSixtyDegree width={40} height={40} />
-          </SelectStyle360Degree>
-          <CustomButton
-            text='Buy Now'
-            fontFamily='Arvo-Regular'
-            fontSize={16}
-            style={{ width: '100%', position: 'absolute', left: 0, right: 0, bottom: -90 }}
-            onPress={handleSubmit}
-          />
-        </ThreeSixtyDegreeImageWrapper>
-      </View>
+          </ThreeSixtyDegreeImageWrapper>
+        </View>
+      </AuthNavigate>
     </Animated.View>
   )
 }
