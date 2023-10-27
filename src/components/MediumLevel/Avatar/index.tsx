@@ -112,7 +112,6 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
     fetchDataFromFirestore()
   }, [fetchDataFromFirestore])
 
-  console.log('111', isGender)
   return (
     <LinearGradient
       colors={gradientOpacityColors}

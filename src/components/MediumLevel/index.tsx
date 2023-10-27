@@ -244,7 +244,7 @@ const MediumLevel: React.FC = () => {
               <View>
                 {isSteps !== 4 && (
                   <View style={{ marginBottom: 80 }}>
-                    <TShirt />
+                    <TShirt color={isColor} />
                   </View>
                 )}
                 {/* {isOpenDesign && (
