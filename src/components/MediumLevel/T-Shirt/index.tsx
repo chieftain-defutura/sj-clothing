@@ -8,15 +8,16 @@ const { height, width } = Dimensions.get('window')
 
 interface ITShirtProps {
   uid: string
+  steps: number
 }
 
-const TShirt: React.FC<ITShirtProps> = ({ uid }) => {
+const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
   return (
     <View>
       <View
         style={{
           width: width / 1,
-          height: height / 2.5,
+          height: steps === 1 ? height / 2 : height / 2.5,
           paddingBottom: 1,
         }}
       >

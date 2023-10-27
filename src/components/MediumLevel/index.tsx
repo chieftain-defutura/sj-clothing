@@ -284,7 +284,7 @@ const MediumLevel: React.FC = () => {
                 {isSteps === 4 && !isOpenDesign && (
                   <View style={{ marginBottom: 80, zIndex: -10 }}>
                     <ScrollView>
-                      <View>{uid && <TShirt uid={uid} />}</View>
+                      <View>{uid && <TShirt steps={isSteps} uid={uid} />}</View>
 
                       <FinalView
                         focus={focus}
@@ -309,7 +309,9 @@ const MediumLevel: React.FC = () => {
             {Design && (
               <View>
                 {isSteps !== 4 && (
-                  <View style={{ marginBottom: 80 }}>{uid && <TShirt uid={uid} />}</View>
+                  <View style={{ marginBottom: 10 }}>
+                    {uid && <TShirt steps={isSteps} uid={uid} />}
+                  </View>
                 )}
                 {/* {isOpenDesign && (
                   <View style={{ marginBottom: 80 }}>
