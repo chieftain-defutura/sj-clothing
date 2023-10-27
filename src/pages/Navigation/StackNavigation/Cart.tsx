@@ -9,8 +9,6 @@ import { CartData } from '../../../utils/data/cartData'
 import CartCard from '../../../components/CartCard'
 import { LinearGradient } from 'expo-linear-gradient'
 import LocationIcon from '../../../assets/icons/Location'
-import { userStore } from '../../../store/userStore'
-import AuthNavigate from '../../../screens/AuthNavigate'
 
 interface ICartPage {
   navigation: any
@@ -18,72 +16,54 @@ interface ICartPage {
 
 const CartPage: React.FC<ICartPage> = ({ navigation }) => {
   const [closedItems, setClosedItems] = useState<number[]>([])
-  const [focus, setFocus] = useState(false)
-  const user = userStore((state) => state.user)
-  // const focus = useIsFocused()
 
   const handleClose = (index: number) => {
     setClosedItems([...closedItems, index])
   }
 
-  const handleCheckout = () => {
-    if (!user) {
-      setFocus(true)
-    } else {
-      navigation.navigate('Checkout')
-      setFocus(true)
-    }
-  }
-
-  const onClose = () => {
-    setFocus(false)
-  }
-
   return (
     <LinearGradient colors={gradientOpacityColors}>
-      <AuthNavigate focus={focus} onClose={onClose}>
-        <Animated.View
-          entering={SlideInRight.duration(500).delay(200)}
-          exiting={SlideOutRight.duration(500).delay(200)}
-        >
-          <ScrollViewContent style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
-            <View style={{ paddingBottom: 130 }}>
-              <FlexContent>
-                <GoBackArrowContent
-                  onPress={() => {
-                    navigation.goBack()
-                  }}
-                >
-                  <LeftArrow width={24} height={24} />
-                  <CartText>Cart</CartText>
-                </GoBackArrowContent>
-                <View style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
-                  <LocationIcon width={16} height={16} />
-                  <LocationText>Home</LocationText>
-                </View>
-              </FlexContent>
+      <Animated.View
+        entering={SlideInRight.duration(500).delay(200)}
+        exiting={SlideOutRight.duration(500).delay(200)}
+      >
+        <ScrollViewContent style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
+          <View style={{ paddingBottom: 130 }}>
+            <FlexContent>
+              <GoBackArrowContent
+                onPress={() => {
+                  navigation.goBack()
+                }}
+              >
+                <LeftArrow width={24} height={24} />
+                <CartText>Cart</CartText>
+              </GoBackArrowContent>
+              <View style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
+                <LocationIcon width={16} height={16} />
+                <LocationText>Home</LocationText>
+              </View>
+            </FlexContent>
 
-              <CartCard cartData={CartData} closedItems={closedItems} handleClose={handleClose} />
-            </View>
-          </ScrollViewContent>
-          <CustomButton
-            variant='primary'
-            text='Check out'
-            fontFamily='Arvo-Regular'
-            fontSize={16}
-            onPress={() => handleCheckout()}
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              width: '100%',
-              backgroundColor: 'rgba(145, 177, 225, 0.2)',
-              padding: 16,
-            }}
-          />
-        </Animated.View>
-      </AuthNavigate>
+            <CartCard cartData={CartData} closedItems={closedItems} handleClose={handleClose} />
+          </View>
+        </ScrollViewContent>
+        <CustomButton
+          variant='primary'
+          text='Check out'
+          fontFamily='Arvo-Regular'
+          fontSize={16}
+          onPress={() => navigation.navigate('Checkout')}
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            width: '100%',
+            backgroundColor: 'rgba(145, 177, 225, 0.2)',
+            padding: 16,
+          }}
+        />
+      </Animated.View>
     </LinearGradient>
   )
 }
