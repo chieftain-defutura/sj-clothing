@@ -1,13 +1,25 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Dimensions } from 'react-native'
 import styled from 'styled-components/native'
 import React from 'react'
 import ThreeSixtyDegree from '../../../assets/icons/360-degree'
+import { WebView } from 'react-native-webview'
 
+const { height, width } = Dimensions.get('window')
 const TShirt: React.FC = () => {
   return (
     <View>
-      <View style={[styles.selectSizeTShirt]}>
-        <ShirtImg source={require('../../../assets/images/plain-shirt.png')} />
+      <View
+        style={{
+          width: width / 1,
+          height: height / 2.5,
+          paddingBottom: 1,
+        }}
+      >
+        <WebView
+          source={{
+            uri: 'https://sj-threejs-development.netlify.app/',
+          }}
+        />
       </View>
       <View style={styles.selectSize360Degree}>
         <ThreeSixtyDegree width={40} height={40} />

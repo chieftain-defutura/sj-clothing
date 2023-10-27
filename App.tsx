@@ -40,9 +40,9 @@ const App: React.FC = () => {
         <NavigationContainer>
           <StatusBar
             animated={true}
-            backgroundColor='rgba(191, 148, 228, 0.85)'
+            backgroundColor='rgba(191, 148, 228, 0.8)'
             // barStyle={'dark-content'}
-            style='light'
+            style='dark'
           />
           <StackNavigationRoutes />
         </NavigationContainer>
