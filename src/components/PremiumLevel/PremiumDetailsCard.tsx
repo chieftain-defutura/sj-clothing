@@ -30,6 +30,8 @@ import CustomButton from '../Button'
 import { IPremiumData } from '../../constant/types'
 import PremiumVideo from '../../screens/PremiumVideo'
 import DownArrow from '../../assets/icons/DownArrow'
+import { userStore } from '../../store/userStore'
+import AuthNavigate from '../../screens/AuthNavigate'
 
 const { height, width } = Dimensions.get('window')
 
@@ -70,6 +72,8 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
+  const [focus, setFocus] = useState(false)
+  const user = userStore((state) => state.user)
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prevState) => !prevState)
@@ -107,6 +111,19 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
     }
   }
 
+  const handleLogin = () => {
+    if (!user) {
+      setFocus(true)
+    } else {
+      navigation.navigate('Checkout')
+      setFocus(true)
+    }
+  }
+
+  const onClose = () => {
+    setFocus(false)
+  }
+
   const Sizes = data?.sizes
     .filter((f: any) => f.country === isSize.country)
     .map((f: any) => f.sizeVarients)
@@ -114,241 +131,249 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   const Description = data.description.split(',')
   return (
     <View style={{ flex: 1, width: width, zIndex: 6 }}>
-      <ScrollView>
-        <View style={styles.linearGradient}>
-          <FlexContent>
-            <Pressable
-              onPress={handleBack}
-              onPressIn={() => setIsPressed(true)}
-              onPressOut={() => setIsPressed(false)}
-            >
-              {() => (
-                <IconHoverClr
-                  style={{ backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent' }}
-                >
-                  <IconHoverPressable>
-                    <LeftArrow width={24} height={24} />
-                  </IconHoverPressable>
-                </IconHoverClr>
-              )}
-            </Pressable>
-            <Pressable onPress={share}>
-              <ShareArrow width={24} height={24} />
-            </Pressable>
-          </FlexContent>
-
-          <PremiumDetailsWrapper>
-            <PremiumDetailsContent>
-              <Animated.View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingVertical: 10,
-                }}
-                entering={FadeInLeft.duration(800).delay(200)}
-                exiting={FadeOutLeft}
+      <AuthNavigate focus={focus} onClose={onClose}>
+        <ScrollView>
+          <View style={styles.linearGradient}>
+            <FlexContent>
+              <Pressable
+                onPress={handleBack}
+                onPressIn={() => setIsPressed(true)}
+                onPressOut={() => setIsPressed(false)}
               >
-                <TouchableOpacity onPress={() => setOpenDetails(true)}>
-                  <Image
-                    source={{ uri: data.productImage }}
+                {() => (
+                  <IconHoverClr
                     style={{
-                      width: width / 1.2,
-                      height: height * 0.45,
-                      resizeMode: 'contain',
-                      borderRadius: 6,
+                      backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
                     }}
-                  />
-                </TouchableOpacity>
-              </Animated.View>
-              <Animated.View entering={FadeInRight.duration(800).delay(200)} exiting={FadeOutRight}>
-                <View
+                  >
+                    <IconHoverPressable>
+                      <LeftArrow width={24} height={24} />
+                    </IconHoverPressable>
+                  </IconHoverClr>
+                )}
+              </Pressable>
+              <Pressable onPress={share}>
+                <ShareArrow width={24} height={24} />
+              </Pressable>
+            </FlexContent>
+
+            <PremiumDetailsWrapper>
+              <PremiumDetailsContent>
+                <Animated.View
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'space-between',
                     alignItems: 'center',
-                    gap: 30,
-                    paddingBottom: 20,
-                    paddingHorizontal: 16,
+                    justifyContent: 'center',
+                    paddingVertical: 10,
                   }}
+                  entering={FadeInLeft.duration(800).delay(200)}
+                  exiting={FadeOutLeft}
                 >
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                    }}
-                  >
-                    <ProductText>product</ProductText>
-                    <ProductName>{data.productName}</ProductName>
-                  </View>
-
+                  <TouchableOpacity onPress={() => setOpenDetails(true)}>
+                    <Image
+                      source={{ uri: data.productImage }}
+                      style={{
+                        width: width / 1.2,
+                        height: height * 0.45,
+                        resizeMode: 'contain',
+                        borderRadius: 6,
+                      }}
+                    />
+                  </TouchableOpacity>
+                </Animated.View>
+                <Animated.View
+                  entering={FadeInRight.duration(800).delay(200)}
+                  exiting={FadeOutRight}
+                >
                   <View
                     style={{
                       display: 'flex',
                       flexDirection: 'row',
-                      gap: 6,
+                      justifyContent: 'space-between',
                       alignItems: 'center',
+                      gap: 30,
+                      paddingBottom: 20,
+                      paddingHorizontal: 16,
                     }}
                   >
-                    {!data.offerPrice ? (
-                      <View>
-                        <ProductText>price</ProductText>
-                        <ProductName>{data.normalPrice}INR</ProductName>
-                      </View>
-                    ) : (
-                      <View>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                      }}
+                    >
+                      <ProductText>product</ProductText>
+                      <ProductName>{data.productName}</ProductName>
+                    </View>
+
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: 6,
+                        alignItems: 'center',
+                      }}
+                    >
+                      {!data.offerPrice ? (
                         <View>
                           <ProductText>price</ProductText>
+                          <ProductName>{data.normalPrice}INR</ProductName>
                         </View>
-                        <View style={{ display: 'flex', flexDirection: 'row', gap: 6 }}>
-                          <OldPriceText>{data.normalPrice}INR</OldPriceText>
-                          <ProductName>{data.offerPrice}INR</ProductName>
+                      ) : (
+                        <View>
+                          <View>
+                            <ProductText>price</ProductText>
+                          </View>
+                          <View style={{ display: 'flex', flexDirection: 'row', gap: 6 }}>
+                            <OldPriceText>{data.normalPrice}INR</OldPriceText>
+                            <ProductName>{data.offerPrice}INR</ProductName>
+                          </View>
                         </View>
-                      </View>
-                    )}
+                      )}
+                    </View>
+                    <WatchVideoBorder onPress={() => setOpenModal(true)}>
+                      <PlayCircleIcon width={12} height={12} />
+                      <WatchVideoText>Watch video</WatchVideoText>
+                    </WatchVideoBorder>
                   </View>
-                  <WatchVideoBorder onPress={() => setOpenModal(true)}>
-                    <PlayCircleIcon width={12} height={12} />
-                    <WatchVideoText>Watch video</WatchVideoText>
-                  </WatchVideoBorder>
-                </View>
-                {openModal && (
-                  <PremiumVideo
-                    video={data.productVideo}
-                    onClose={() => setOpenModal(false)}
-                    isVisible={openModal}
-                  />
-                )}
-              </Animated.View>
-            </PremiumDetailsContent>
+                  {openModal && (
+                    <PremiumVideo
+                      video={data.productVideo}
+                      onClose={() => setOpenModal(false)}
+                      isVisible={openModal}
+                    />
+                  )}
+                </Animated.View>
+              </PremiumDetailsContent>
 
-            <DropDownContainer>
-              <View style={{ width: 160 }}>
-                <SelectContent onPress={toggleDropdown}>
-                  <SelectText>{selectedCountry || 'Select a country'}</SelectText>
-                  <Animatable.View
-                    animation={isDropdownOpen ? 'rotate' : ''}
-                    duration={500}
-                    easing='ease-out'
-                  >
-                    <DownArrow width={16} height={16} />
-                  </Animatable.View>
-                </SelectContent>
-                {isDropdownOpen && (
-                  <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
-                    <SelectDropDownList>
-                      {data?.sizes.map((f: any, index: number) => (
-                        <Pressable
-                          key={index}
-                          onPress={() => {
-                            setSize((prevState) => ({
-                              ...prevState,
-                              country: f.country,
-                            }))
-                            handleSelectCountry(f.country)
-                          }}
-                        >
-                          <SelectListText>{f.country}</SelectListText>
-                        </Pressable>
-                      ))}
-                    </SelectDropDownList>
-                  </Animated.View>
-                )}
-              </View>
-              <View style={{ width: 158 }}>
-                <SelectContent onPress={toggleDropdownSizes}>
-                  <SelectText>
-                    {isSize.sizeVarient.size
-                      ? `${isSize.sizeVarient.size}-${isSize.sizeVarient.measurement}`
-                      : 'Select a Sizes'}
-                  </SelectText>
-                  <Animatable.View
-                    animation={isDropdownSizesOpen ? 'rotate' : ''}
-                    duration={500}
-                    easing='ease-out'
-                  >
-                    <DownArrow width={16} height={16} />
-                  </Animatable.View>
-                </SelectContent>
-                {isDropdownSizesOpen && selectedCountry && (
-                  <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
-                    <SelectDropDownList>
-                      <View>
-                        {Sizes[0].map((f: any, index: number) => (
+              <DropDownContainer>
+                <View style={{ width: 160 }}>
+                  <SelectContent onPress={toggleDropdown}>
+                    <SelectText>{selectedCountry || 'Select a country'}</SelectText>
+                    <Animatable.View
+                      animation={isDropdownOpen ? 'rotate' : ''}
+                      duration={500}
+                      easing='ease-out'
+                    >
+                      <DownArrow width={16} height={16} />
+                    </Animatable.View>
+                  </SelectContent>
+                  {isDropdownOpen && (
+                    <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
+                      <SelectDropDownList>
+                        {data?.sizes.map((f: any, index: number) => (
                           <Pressable
                             key={index}
                             onPress={() => {
                               setSize((prevState) => ({
                                 ...prevState,
-                                sizeVarient: {
-                                  measurement: f.measurement,
-                                  size: f.size,
-                                  quantity: f.quantity,
-                                },
+                                country: f.country,
                               }))
-                              handleSelectSizes(f.sizes)
+                              handleSelectCountry(f.country)
                             }}
                           >
-                            <SelectListText>
-                              {f.size} - {f.measurement}
-                            </SelectListText>
+                            <SelectListText>{f.country}</SelectListText>
                           </Pressable>
                         ))}
-                      </View>
-                    </SelectDropDownList>
-                  </Animated.View>
-                )}
-              </View>
-            </DropDownContainer>
-
-            {showDetails && (
-              <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
-                <View style={{ margin: 14 }}>
-                  <DetailsHeading>Detailed features</DetailsHeading>
-                  {Description.map((f, index) => (
-                    <View
-                      key={index}
-                      style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}
-                    >
-                      <Svg width={8} height={8}>
-                        <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
-                      </Svg>
-
-                      <DetailsParaText key={index} style={{ marginLeft: 8 }}>
-                        {f}
-                      </DetailsParaText>
-                    </View>
-                  ))}
+                      </SelectDropDownList>
+                    </Animated.View>
+                  )}
                 </View>
-              </Animated.View>
-            )}
-          </PremiumDetailsWrapper>
+                <View style={{ width: 158 }}>
+                  <SelectContent onPress={toggleDropdownSizes}>
+                    <SelectText>
+                      {isSize.sizeVarient.size
+                        ? `${isSize.sizeVarient.size}-${isSize.sizeVarient.measurement}`
+                        : 'Select a Sizes'}
+                    </SelectText>
+                    <Animatable.View
+                      animation={isDropdownSizesOpen ? 'rotate' : ''}
+                      duration={500}
+                      easing='ease-out'
+                    >
+                      <DownArrow width={16} height={16} />
+                    </Animatable.View>
+                  </SelectContent>
+                  {isDropdownSizesOpen && selectedCountry && (
+                    <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
+                      <SelectDropDownList>
+                        <View>
+                          {Sizes[0].map((f: any, index: number) => (
+                            <Pressable
+                              key={index}
+                              onPress={() => {
+                                setSize((prevState) => ({
+                                  ...prevState,
+                                  sizeVarient: {
+                                    measurement: f.measurement,
+                                    size: f.size,
+                                    quantity: f.quantity,
+                                  },
+                                }))
+                                handleSelectSizes(f.sizes)
+                              }}
+                            >
+                              <SelectListText>
+                                {f.size} - {f.measurement}
+                              </SelectListText>
+                            </Pressable>
+                          ))}
+                        </View>
+                      </SelectDropDownList>
+                    </Animated.View>
+                  )}
+                </View>
+              </DropDownContainer>
 
-          <Animated.View entering={FadeInUp.duration(2000)} exiting={FadeOut}>
-            <Btns>
-              {showDetails ? (
-                <HideDetailsBorder onPress={() => setShowDetails(false)}>
-                  <HideDetailsText>Hide details</HideDetailsText>
-                </HideDetailsBorder>
-              ) : (
-                <HideDetailsBorder onPress={() => setShowDetails(true)}>
-                  <HideDetailsText>View details</HideDetailsText>
-                </HideDetailsBorder>
+              {showDetails && (
+                <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
+                  <View style={{ margin: 14 }}>
+                    <DetailsHeading>Detailed features</DetailsHeading>
+                    {Description.map((f, index) => (
+                      <View
+                        key={index}
+                        style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}
+                      >
+                        <Svg width={8} height={8}>
+                          <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
+                        </Svg>
+
+                        <DetailsParaText key={index} style={{ marginLeft: 8 }}>
+                          {f}
+                        </DetailsParaText>
+                      </View>
+                    ))}
+                  </View>
+                </Animated.View>
               )}
-              <CustomButton
-                text='Buy Now'
-                fontFamily='Arvo-Regular'
-                fontSize={13}
-                style={{ width: 170 }}
-                onPress={() => navigation.navigate('Checkout')}
-              />
-            </Btns>
-          </Animated.View>
-        </View>
-      </ScrollView>
+            </PremiumDetailsWrapper>
+
+            <Animated.View entering={FadeInUp.duration(2000)} exiting={FadeOut}>
+              <Btns>
+                {showDetails ? (
+                  <HideDetailsBorder onPress={() => setShowDetails(false)}>
+                    <HideDetailsText>Hide details</HideDetailsText>
+                  </HideDetailsBorder>
+                ) : (
+                  <HideDetailsBorder onPress={() => setShowDetails(true)}>
+                    <HideDetailsText>View details</HideDetailsText>
+                  </HideDetailsBorder>
+                )}
+                <CustomButton
+                  text='Buy Now'
+                  fontFamily='Arvo-Regular'
+                  fontSize={13}
+                  style={{ width: 170 }}
+                  onPress={() => handleLogin()}
+                  // onPress={() => navigation.navigate('Checkout')}
+                />
+              </Btns>
+            </Animated.View>
+          </View>
+        </ScrollView>
+      </AuthNavigate>
     </View>
   )
 }
