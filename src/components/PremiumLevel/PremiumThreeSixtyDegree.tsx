@@ -131,7 +131,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               text='Buy Now'
               fontFamily='Arvo-Regular'
               fontSize={16}
-              style={{ width: '100%', position: 'absolute', left: 0, right: 0, bottom: -90 }}
+              style={{ width: '100%', position: 'absolute', left: 0, right: 0, bottom: -100 }}
               onPress={handleSubmit}
             />
           </ThreeSixtyDegreeImageWrapper>
@@ -181,7 +181,7 @@ const SelectStyle360Degree = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 4px;
+  margin-top: 20px;
 `
 
 export default PremiumThreeSixtyDegree

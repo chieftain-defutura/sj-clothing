@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import { COLORS } from '../../../styles/theme'
 import CustomButton from '../../Button'
@@ -9,6 +9,9 @@ interface IGender {
   setGender: React.Dispatch<React.SetStateAction<string>>
   setToggle: React.Dispatch<React.SetStateAction<boolean>>
 }
+
+const { height, width } = Dimensions.get('window')
+
 const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
   return (
     <View style={styles.genderContainer}>
@@ -37,13 +40,15 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
             </TouchableOpacity>
           ))}
         </View>
+      </View>
+      <View>
         <CustomButton
           text='Next'
           variant='primary'
           fontFamily='Arvo-Regular'
           fontSize={16}
-          // style={{ paddingTop: 32 }}
           onPress={() => setToggle(true)}
+          style={{ width: width, paddingHorizontal: 24 }}
         />
       </View>
     </View>
@@ -53,7 +58,9 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
 export default Gender
 
 const styles = StyleSheet.create({
-  genderContainer: { flex: 1 },
+  genderContainer: {
+    flex: 1,
+  },
 
   bottomWrapper: {
     padding: 24,

@@ -9,7 +9,7 @@ import PremiumThreeSixtyDegree from './PremiumThreeSixtyDegree'
 import { useNavigation } from '@react-navigation/native'
 import { IPremiumData } from '../../constant/types'
 
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 interface IPremiumLevel {
   openDetails: boolean

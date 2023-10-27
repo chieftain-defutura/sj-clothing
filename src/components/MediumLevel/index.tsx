@@ -58,8 +58,11 @@ const MediumLevel: React.FC = () => {
     const FilteredData = data?.find((f) => f.styles === isSelectedStyle)
     setFilteredData(FilteredData)
     if (!FilteredData) return
-    if (FilteredData.gender.toLowerCase() !== avatar?.toLowerCase() && isSelectedStyle !== '') {
-      Alert.alert(`Alert ${avatar}`, 'Not Available', [
+    if (
+      FilteredData.gender.toLowerCase() !== avatar.gender?.toLowerCase() &&
+      isSelectedStyle !== ''
+    ) {
+      Alert.alert(`Alert ${avatar.gender}`, 'Not Available', [
         {
           text: 'Cancel',
           onPress: () => {
@@ -140,7 +143,7 @@ const MediumLevel: React.FC = () => {
         offerPrice: FilteredData.offerPrice,
         productId: FilteredData.id,
         userId: user?.uid,
-        gender: avatar,
+        gender: avatar.gender,
         productName: FilteredData.productName,
       })
       navigation.navigate('Checkout')
@@ -152,7 +155,7 @@ const MediumLevel: React.FC = () => {
   if (!data) return
   return (
     <View style={styles.midiumlevelContainer}>
-      {!avatar ? (
+      {!avatar.gender ? (
         <Avatar path='MidLevel' />
       ) : (
         <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>

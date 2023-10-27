@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { getDoc, collection, doc, setDoc, updateDoc } from 'firebase/firestore/lite'
+import { getDoc, doc, setDoc, updateDoc } from 'firebase/firestore/lite'
 import uuid from 'react-native-uuid'
 
 import Gender from './Gender'
@@ -27,7 +27,6 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
   const navigation = useNavigation()
   const { updateProfile, updateAvatar, updateAddress, updatePhoneNo, updateName, user } =
     userStore()
-
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
       try {
@@ -119,13 +118,17 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
       colors={gradientOpacityColors}
       style={{
         flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
       }}
     >
-      <View>
+      <View
+        style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <Animated.View
           entering={FadeInUp.duration(800)}
           exiting={FadeOut}
@@ -191,5 +194,11 @@ const styles = StyleSheet.create({
   },
   image: {
     paddingTop: 16,
+  },
+  button: {
+    backgroundColor: '#61e3a5',
+    padding: 10,
+    borderRadius: 10,
+    margin: 10,
   },
 })
