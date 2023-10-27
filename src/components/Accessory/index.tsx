@@ -42,7 +42,7 @@ const Accessory = () => {
   if (!data) return <Text>No Data</Text>
   return (
     <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
-      <ScrollView>
+      <ScrollView scrollEnabled={openDetails ? false : true}>
         <View>
           {openDetails ? (
             <View>

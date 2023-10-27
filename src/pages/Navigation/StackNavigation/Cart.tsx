@@ -10,9 +10,7 @@ import CartCard from '../../../components/CartCard'
 import { LinearGradient } from 'expo-linear-gradient'
 import LocationIcon from '../../../assets/icons/Location'
 import { userStore } from '../../../store/userStore'
-import LoginModal from '../../../screens/Modals/Login'
 import AuthNavigate from '../../../screens/AuthNavigate'
-import { useIsFocused } from '@react-navigation/native'
 
 interface ICartPage {
   navigation: any

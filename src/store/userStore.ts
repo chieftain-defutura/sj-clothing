@@ -7,8 +7,11 @@ export interface IUserData {
   address: string
   profile: string
   phoneNo: number
-  avatar: string
   isNewUser: boolean
+  avatar: {
+    gender: string
+    skinTone: string
+  }
 }
 
 type State = {
@@ -21,7 +24,10 @@ type State = {
   address: string | null
   profile: string | null
   phoneNo: number | null
-  avatar: string | null
+  avatar: {
+    gender: string | null
+    skinTone: string | null
+  }
 }
 
 type Action = {
@@ -34,7 +40,7 @@ type Action = {
   updateEmail: (email: string | null) => void
   updateAddress: (address: string | null) => void
   updatePhoneNo: (phoneNo: number | null) => void
-  updateAvatar: (avatar: string | null) => void
+  updateAvatar: (avatar: { gender: string | null; skinTone: string | null }) => void
 }
 
 export const userStore = create<State & Action>((set) => ({
@@ -46,7 +52,10 @@ export const userStore = create<State & Action>((set) => ({
   address: null,
   profile: null,
   phoneNo: null,
-  avatar: null,
+  avatar: {
+    gender: null,
+    skinTone: null,
+  },
   updateFetching: (fetching) => set(() => ({ isFetching: fetching })),
   updateUser: (user) => set(() => ({ user })),
   updateUserData: (userData) => set(() => ({ userData })),
