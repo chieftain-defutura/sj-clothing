@@ -220,7 +220,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                   >
                     <Image
                       style={{ width: 50, height: 72, objectFit: 'contain' }}
-                      source={require('../../../assets/images/left-arm-design.png')}
+                      source={require('../../../assets/images/left-arm.png')}
                     />
                   </View>
 

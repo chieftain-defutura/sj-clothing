@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, Platform, NativeModules } from 'react-native'
+import { View } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import MidLevelIcon from '../../../assets/icons/MidLevelIcon'
 import PremiumIcon from '../../../assets/icons/PremiumIcon'

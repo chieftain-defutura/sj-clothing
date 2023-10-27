@@ -24,6 +24,9 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, isGender, path }) => {
         avatar: isGender,
       })
     }
+    if (!user) {
+      updateAvatar(isGender)
+    }
     if (path === 'MidLevel') {
       navigation.navigate('MidLevel')
     } else {

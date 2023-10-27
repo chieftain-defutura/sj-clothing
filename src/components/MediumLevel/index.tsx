@@ -139,6 +139,8 @@ const MediumLevel: React.FC = () => {
     })
     navigation.navigate('Checkout')
   }
+
+  console.log(user)
   if (!data) return
   return (
     <View style={styles.midiumlevelContainer}>
