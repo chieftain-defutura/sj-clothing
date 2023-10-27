@@ -42,7 +42,7 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
           variant='primary'
           fontFamily='Arvo-Regular'
           fontSize={16}
-          style={{ paddingTop: 32 }}
+          // style={{ paddingTop: 32 }}
           onPress={() => setToggle(true)}
         />
       </View>

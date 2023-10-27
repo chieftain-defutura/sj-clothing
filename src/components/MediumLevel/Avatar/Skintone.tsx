@@ -1,71 +1,46 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Image, Pressable, TouchableOpacity } from 'react-native'
+import React from 'react'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
 import CustomButton from '../../Button'
 import { COLORS } from '../../../styles/theme'
-import { useNavigation } from '@react-navigation/native'
-import { userStore } from '../../../store/userStore'
-import { doc, getDoc, updateDoc } from 'firebase/firestore/lite'
-import { db } from '../../../../firebase'
 
 interface ISkintone {
-  isGender: string
-  path: string
+  skinColor: string
+  setSkinColor: React.Dispatch<React.SetStateAction<string>>
   setToggle: React.Dispatch<React.SetStateAction<boolean>>
+  handleSubmit: () => void
 }
-const Skintone: React.FC<ISkintone> = ({ setToggle, isGender, path }) => {
-  const navigation = useNavigation()
-  const { updateProfile, updateAvatar, updateAddress, updatePhoneNo, updateName, user } =
-    userStore()
-
-  const handleSubmit = async () => {
-    if (user) {
-      await updateDoc(doc(db, 'users', user.uid), {
-        avatar: isGender,
-      })
-    }
-    if (!user) {
-      updateAvatar(isGender)
-    }
-    if (path === 'MidLevel') {
-      navigation.navigate('MidLevel')
-    } else {
-      navigation.goBack()
-    }
-  }
-
-  const fetchDataFromFirestore = useCallback(async () => {
-    try {
-      if (!user) return
-      const q = doc(db, 'users', user.uid)
-      const querySnapshot = await getDoc(q)
-
-      const fetchData = querySnapshot.data()
-
-      updateProfile(fetchData?.profile)
-      updateName(fetchData?.name)
-      updateAddress(fetchData?.address)
-      updateAvatar(fetchData?.avatar)
-      updatePhoneNo(fetchData?.phoneNo)
-    } catch (error) {
-      console.error('Error fetching data from Firestore:', error)
-    }
-  }, [user, updateProfile])
-
-  useEffect(() => {
-    fetchDataFromFirestore()
-  }, [fetchDataFromFirestore])
+const Skintone: React.FC<ISkintone> = ({ setToggle, skinColor, setSkinColor, handleSubmit }) => {
   return (
     <View style={styles.SkintoneContainer}>
       <View style={styles.bottomWrapper}>
         <Text style={styles.bottomTitle}>1.Select Your Skintone.</Text>
+
+        <View style={styles.skinCollection}>
+          {['#FFCCAF', '#EBB89B', '#D7A487', '#C39073', '#AF7C5F', '#9B684B'].map((m) => (
+            <TouchableOpacity
+              key={m}
+              style={[
+                styles.skinTab,
+                {
+                  borderColor: skinColor === m ? '#DB00FF' : 'transparent',
+                  borderWidth: 1,
+                  padding: 2,
+                },
+              ]}
+              onPress={() => setSkinColor(m)}
+            >
+              <View style={{ flex: 1, backgroundColor: m, borderRadius: 20 }}></View>
+            </TouchableOpacity>
+          ))}
+        </View>
         <View style={styles.SkintoneButtonWrapper}>
           <CustomButton
             text='Previous'
             variant='primary'
             fontFamily='Arvo-Regular'
             fontSize={16}
-            style={{ paddingTop: 56, width: 180 }}
+            style={{ width: 180 }}
             onPress={() => setToggle(false)}
           />
           <CustomButton
@@ -74,7 +49,7 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, isGender, path }) => {
             variant='primary'
             fontFamily='Arvo-Regular'
             fontSize={16}
-            style={{ paddingTop: 56, width: 180 }}
+            style={{ width: 180 }}
           />
         </View>
       </View>
@@ -102,5 +77,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 16,
+  },
+
+  skinCollection: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+  },
+  skinTab: {
+    height: 72,
+    width: 40,
+    borderRadius: 30,
+    overflow: 'hidden',
   },
 })
