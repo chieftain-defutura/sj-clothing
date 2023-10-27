@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View } from 'react-native'
+import { Platform, View } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import MidLevelIcon from '../../../assets/icons/MidLevelIcon'
 import PremiumIcon from '../../../assets/icons/PremiumIcon'
@@ -16,8 +16,10 @@ const Tab = createBottomTabNavigator()
 
 const TabNavigationRoutes: React.FC = () => {
   const opacityValue = useSharedValue(2)
-  NavigationBar.setPositionAsync('relative')
-  NavigationBar.setBackgroundColorAsync('rgba(145, 177, 225, 0.85)')
+  if (Platform.OS === 'android') {
+    NavigationBar.setPositionAsync('relative')
+    NavigationBar.setBackgroundColorAsync('rgba(145, 177, 225, 0.85)')
+  }
   return (
     <Tab.Navigator
       initialRouteName='Home'

@@ -37,13 +37,14 @@ const MediumLevel: React.FC = () => {
   //style
   const [isDropDown, setDropDown] = useState(false)
   const [isSelectedStyle, setSelectedStyle] = useState('')
+  const [warning, setWarning] = useState('')
   //size
   const [isSize, setSize] = useState({
     country: 'Canada',
     sizeVarient: [{ size: '', measurement: '', quantity: '' }],
   })
   //color
-  const [isColor, setColor] = useState('#ff0000')
+  const [isColor, setColor] = useState('')
 
   //image&text
   const [isOpenDesign, setOpenDesign] = useState(false)
@@ -126,15 +127,27 @@ const MediumLevel: React.FC = () => {
   }, [isImageOrText, designs])
 
   const handleIncreaseSteps = () => {
-    setSteps(isSteps + 1)
-    setDropDown(false)
-    setOpenDesign(false)
-    setDone(false)
-    slideValue.value = withSequence(
-      withTiming(1, { duration: 400 }), // Slide out
-      withTiming(0, { duration: 400 }), // Slide back to original state
-    )
+    if (isSelectedStyle) {
+      setSteps(isSteps + 1)
+      setDropDown(false)
+      setOpenDesign(false)
+      setDone(false)
+      slideValue.value = withSequence(
+        withTiming(1, { duration: 400 }), // Slide out
+        withTiming(0, { duration: 400 }), // Slide back to original state
+      )
+    }
+    if (!isSelectedStyle) {
+      setWarning('Select Style to move further')
+      setSteps(1)
+    }
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      setWarning('') // Set the state to null after 5 seconds
+    }, 2000)
+  }, [warning])
 
   const handleDecreaseSteps = () => {
     if (isSteps !== 1) {
@@ -216,6 +229,7 @@ const MediumLevel: React.FC = () => {
               slideValue={slideValue}
               isOpenDesign={isOpenDesign}
               isDone={isDone}
+              warning={warning}
               setDone={setDone}
               setDropDown={setDropDown}
               setOpenDesign={setOpenDesign}

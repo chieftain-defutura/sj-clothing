@@ -22,8 +22,8 @@ const TShirt: React.FC<ITShirtProps> = ({ uid }) => {
       >
         <WebView
           source={{
-            uri: `http://localhost:5173/midlevel/?uid=${uid}`,
-            // uri: `https://sj-threejs-development.netlify.app/create-avatar/?uid=${uid}`,
+            // uri: `http://localhost:5173/midlevel/?uid=${uid}`,
+            uri: `https://sj-threejs-development.netlify.app/midlevel/?uid=${uid}`,
           }}
         />
       </View>

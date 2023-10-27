@@ -22,6 +22,7 @@ interface INavigator {
   isDone: boolean
   showDesign: boolean | undefined
   slideValue: SharedValue<number>
+  warning: string
   showTextDesign: boolean | undefined
   handleIncreaseSteps: () => void
   handleDecreaseSteps: () => void
@@ -53,6 +54,7 @@ const Navigator: React.FC<INavigator> = ({
   isDone,
   slideValue,
   setDone,
+  warning,
 }) => {
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
 
@@ -105,7 +107,7 @@ const Navigator: React.FC<INavigator> = ({
       {!isOpenDesign && (
         <>
           {steps !== 4 && steps !== 5 && (
-            <View>
+            <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Pressable
                 onPress={() => {
                   setDropDown(true),
@@ -117,9 +119,11 @@ const Navigator: React.FC<INavigator> = ({
                 style={styles.Dropdown}
               >
                 {steps === 1 && (
-                  <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                    Select Style
-                  </Text>
+                  <View>
+                    <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                      Select Style
+                    </Text>
+                  </View>
                 )}
                 {steps === 2 && (
                   <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
@@ -134,6 +138,17 @@ const Navigator: React.FC<INavigator> = ({
 
                 <DropDownArrowIcon />
               </Pressable>
+              {warning && (
+                <Text
+                  style={{
+                    color: COLORS.textSecondaryClr,
+                    fontFamily: 'Gilroy-Medium',
+                    paddingTop: 3,
+                  }}
+                >
+                  {warning}
+                </Text>
+              )}
             </View>
           )}
           {steps === 5 && showDesign && (
@@ -217,7 +232,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     padding: 16,
   },
   Dropdown: {
