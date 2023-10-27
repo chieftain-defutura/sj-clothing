@@ -12,13 +12,13 @@ import { getStorage } from 'firebase/storage'
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyDJ5SkpxFFasqUruu6E5PMfnm-6P9ueE7Q',
-  authDomain: 'sj-clothing.firebaseapp.com',
-  projectId: 'sj-clothing',
-  storageBucket: 'sj-clothing.appspot.com',
-  messagingSenderId: '638073995197',
-  appId: '1:638073995197:web:7beb5bb3792613ec951cd4',
-  measurementId: 'G-MGEFW61FNK',
+  apiKey: 'AIzaSyDdFp04xNN0muNQRmbmAHlzsGEYeZEp5ls',
+  authDomain: 'sj-clothing-app.firebaseapp.com',
+  projectId: 'sj-clothing-app',
+  storageBucket: 'sj-clothing-app.appspot.com',
+  messagingSenderId: '108999029592',
+  appId: '1:108999029592:web:0c0d0ac0d8973cc12a2b2d',
+  measurementId: 'G-N9M82Z3P8Q',
 }
 
 // Initialize Firebase
