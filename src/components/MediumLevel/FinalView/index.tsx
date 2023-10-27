@@ -9,6 +9,8 @@ import { Svg, Circle } from 'react-native-svg'
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
 import DownArrow from '../../../assets/icons/DownArrow'
 import { IMidlevel } from '../../../constant/types'
+import { userStore } from '../../../store/userStore'
+import AuthNavigate from '../../../screens/AuthNavigate'
 
 interface IFinalView {
   Data: string
@@ -24,6 +26,7 @@ interface IFinalView {
       quantity: string
     }[]
   }
+  focus: boolean
   data: IMidlevel
   handleSubmit: () => Promise<void>
   setSize: React.Dispatch<
@@ -36,6 +39,8 @@ interface IFinalView {
       }[]
     }>
   >
+  navigation: any
+  setFocus: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const FinalView: React.FC<IFinalView> = ({
@@ -48,7 +53,16 @@ const FinalView: React.FC<IFinalView> = ({
   color,
   offerPrice,
   setSize,
+  navigation,
+  setFocus,
+  focus,
 }) => {
+  const user = userStore((state) => state.user)
+
+  const onClose = () => {
+    setFocus(false)
+  }
+
   const handleQuantityChange = (value: string, index: string | number) => {
     const newSizeVariant = [...isSize.sizeVarient]
     newSizeVariant[index as any].quantity = value
@@ -78,246 +92,252 @@ const FinalView: React.FC<IFinalView> = ({
   const Description = Data.split(',')
 
   return (
-    <View style={styles.finalViewContainer}>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          gap: 8,
-          paddingBottom: 10,
-        }}
-      >
-        <Text
-          style={{
-            color: COLORS.textClr,
-            fontFamily: 'Gilroy-Medium',
-            fontSize: 14,
-            paddingVertical: 8,
-          }}
-        >
-          Quantity
-        </Text>
-        <AddSubButton onPress={addSizeVariant}>
-          <PlusIcon width={24} height={24} />
-        </AddSubButton>
-      </View>
-
-      {isSize.sizeVarient.map((variant, index) => (
+    <AuthNavigate focus={focus} onClose={onClose}>
+      <View style={styles.finalViewContainer}>
         <View
-          key={index}
           style={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             gap: 8,
-            paddingBottom: 3,
-          }}
-        >
-          <InputBorder>
-            <InputStyle
-              placeholderTextColor={COLORS.SecondaryTwo}
-              value={variant.quantity}
-              onChangeText={(text) => handleQuantityChange(text, index)}
-              placeholder={` ${index + 1}`}
-            />
-          </InputBorder>
-          <DropdownContainer
-            index={index}
-            updateSizeVariant={updateSizeVariant}
-            data={data}
-            isSize={isSize}
-          />
-
-          <AddSubButton onPress={() => removeSizeVariant(index)}>
-            <MinusIcon width={24} height={24} />
-          </AddSubButton>
-        </View>
-      ))}
-
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          gap: 37,
-        }}
-      >
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: 95,
-            paddingTop: 16,
+            paddingBottom: 10,
           }}
         >
           <Text
             style={{
               color: COLORS.textClr,
-              fontFamily: 'Montserrat-Regular',
-              fontSize: 10,
-            }}
-          >
-            Style
-          </Text>
-          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-            {style}
-          </Text>
-        </View>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: 95,
-            paddingTop: 16,
-          }}
-        >
-          <Text
-            style={{
-              color: COLORS.textClr,
-              fontFamily: 'Montserrat-Regular',
-              fontSize: 10,
-            }}
-          >
-            Size
-          </Text>
-          <View style={{ display: 'flex', flexDirection: 'row' }}>
-            {isSize.sizeVarient.map((f, index) => (
-              <Text
-                key={index}
-                style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
-              >
-                {f.size}
-                {f.size.length - 1 ? '' : ','}
-              </Text>
-            ))}
-          </View>
-        </View>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: 95,
-            paddingTop: 16,
-          }}
-        >
-          <Text
-            style={{
-              color: COLORS.textClr,
-              fontFamily: 'Montserrat-Regular',
-              fontSize: 10,
+              fontFamily: 'Gilroy-Medium',
+              fontSize: 14,
+              paddingVertical: 8,
             }}
           >
             Quantity
           </Text>
+          <AddSubButton onPress={addSizeVariant}>
+            <PlusIcon width={24} height={24} />
+          </AddSubButton>
+        </View>
 
-          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-            {isSize.sizeVarient.length}
-          </Text>
-        </View>
-      </View>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          gap: 37,
-        }}
-      >
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: 95,
-            paddingTop: 16,
-          }}
-        >
-          <Text
+        {isSize.sizeVarient.map((variant, index) => (
+          <View
+            key={index}
             style={{
-              color: COLORS.textClr,
-              fontFamily: 'Montserrat-Regular',
-              fontSize: 10,
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: 8,
+              paddingBottom: 3,
             }}
           >
-            Price
-          </Text>
-          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-            {price ? price : 0}
-          </Text>
-        </View>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: 95,
-            paddingTop: 16,
-          }}
-        >
-          <Text
-            style={{
-              color: COLORS.textClr,
-              fontFamily: 'Montserrat-Regular',
-              fontSize: 10,
-            }}
-          >
-            Offer Price
-          </Text>
-          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-            {offerPrice ? offerPrice : '-'}
-          </Text>
-        </View>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: 95,
-            paddingTop: 16,
-          }}
-        >
-          <Text
-            style={{
-              color: COLORS.textClr,
-              fontFamily: 'Montserrat-Regular',
-              fontSize: 10,
-            }}
-          >
-            Color
-          </Text>
-          <Text
-            style={{
-              color: COLORS.textClr,
-              fontFamily: 'Arvo-Regular',
-              fontSize: 14,
-              backgroundColor: color,
-            }}
-          ></Text>
-        </View>
-      </View>
-      <View style={{ marginTop: 14 }}>
-        <DetailsHeading>Detailed features</DetailsHeading>
-        {Description.map((f, index) => (
-          <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
-            <Svg width={8} height={8}>
-              <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
-            </Svg>
-            <DetailsParaText key={index} style={{ marginLeft: 8 }}>
-              {f}
-            </DetailsParaText>
+            <InputBorder>
+              <InputStyle
+                placeholderTextColor={COLORS.SecondaryTwo}
+                value={variant.quantity}
+                onChangeText={(text) => handleQuantityChange(text, index)}
+                placeholder={` ${index + 1}`}
+              />
+            </InputBorder>
+            <DropdownContainer
+              index={index}
+              updateSizeVariant={updateSizeVariant}
+              data={data}
+              isSize={isSize}
+              navigation={navigation}
+            />
+
+            <AddSubButton onPress={() => removeSizeVariant(index)}>
+              <MinusIcon width={24} height={24} />
+            </AddSubButton>
           </View>
         ))}
-      </View>
 
-      <CustomButton
-        variant='primary'
-        text='Buy now'
-        fontFamily='Arvo-Regular'
-        fontSize={16}
-        onPress={handleSubmit}
-        buttonStyle={[styles.submitBtn]}
-      />
-    </View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            gap: 37,
+          }}
+        >
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: 95,
+              paddingTop: 16,
+            }}
+          >
+            <Text
+              style={{
+                color: COLORS.textClr,
+                fontFamily: 'Montserrat-Regular',
+                fontSize: 10,
+              }}
+            >
+              Style
+            </Text>
+            <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+              {style}
+            </Text>
+          </View>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: 95,
+              paddingTop: 16,
+            }}
+          >
+            <Text
+              style={{
+                color: COLORS.textClr,
+                fontFamily: 'Montserrat-Regular',
+                fontSize: 10,
+              }}
+            >
+              Size
+            </Text>
+            <View style={{ display: 'flex', flexDirection: 'row' }}>
+              {isSize.sizeVarient.map((f, index) => (
+                <Text
+                  key={index}
+                  style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
+                >
+                  {f.size}
+                  {f.size.length - 1 ? '' : ','}
+                </Text>
+              ))}
+            </View>
+          </View>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: 95,
+              paddingTop: 16,
+            }}
+          >
+            <Text
+              style={{
+                color: COLORS.textClr,
+                fontFamily: 'Montserrat-Regular',
+                fontSize: 10,
+              }}
+            >
+              Quantity
+            </Text>
+
+            <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+              {isSize.sizeVarient.length}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            gap: 37,
+          }}
+        >
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: 95,
+              paddingTop: 16,
+            }}
+          >
+            <Text
+              style={{
+                color: COLORS.textClr,
+                fontFamily: 'Montserrat-Regular',
+                fontSize: 10,
+              }}
+            >
+              Price
+            </Text>
+            <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+              {price ? price : 0}
+            </Text>
+          </View>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: 95,
+              paddingTop: 16,
+            }}
+          >
+            <Text
+              style={{
+                color: COLORS.textClr,
+                fontFamily: 'Montserrat-Regular',
+                fontSize: 10,
+              }}
+            >
+              Offer Price
+            </Text>
+            <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+              {offerPrice ? offerPrice : '-'}
+            </Text>
+          </View>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: 95,
+              paddingTop: 16,
+            }}
+          >
+            <Text
+              style={{
+                color: COLORS.textClr,
+                fontFamily: 'Montserrat-Regular',
+                fontSize: 10,
+              }}
+            >
+              Color
+            </Text>
+            <Text
+              style={{
+                color: COLORS.textClr,
+                fontFamily: 'Arvo-Regular',
+                fontSize: 14,
+                backgroundColor: color,
+              }}
+            ></Text>
+          </View>
+        </View>
+        <View style={{ marginTop: 14 }}>
+          <DetailsHeading>Detailed features</DetailsHeading>
+          {Description.map((f, index) => (
+            <View
+              key={index}
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}
+            >
+              <Svg width={8} height={8}>
+                <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
+              </Svg>
+              <DetailsParaText key={index} style={{ marginLeft: 8 }}>
+                {f}
+              </DetailsParaText>
+            </View>
+          ))}
+        </View>
+
+        <CustomButton
+          variant='primary'
+          text='Buy now'
+          fontFamily='Arvo-Regular'
+          fontSize={16}
+          onPress={handleSubmit}
+          buttonStyle={[styles.submitBtn]}
+        />
+      </View>
+    </AuthNavigate>
   )
 }
 
@@ -342,6 +362,7 @@ interface DropDownContainer {
     }[]
   }
   data: IMidlevel
+  navigation: any
   index: string | number
 }
 
@@ -350,9 +371,11 @@ const DropdownContainer: React.FC<DropDownContainer> = ({
   data,
   isSize,
   index,
+  navigation,
 }) => {
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
   const [selectedSizes, setSelectedSizes] = useState({ measurement: '', size: '' })
+
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
   }

@@ -24,6 +24,8 @@ const MediumLevel: React.FC = () => {
   const navigation = useNavigation()
   const slideValue = useSharedValue(0)
   const [isSteps, setSteps] = useState(1)
+  const [focus, setFocus] = useState(false)
+
   //data
   const [data, setData] = useState<IMidlevel[]>()
   const [designs, setDesigns] = useState<IDesigns[]>()
@@ -124,20 +126,26 @@ const MediumLevel: React.FC = () => {
 
   const handleSubmit = async () => {
     if (!FilteredData) return
-    const docRef = await addDoc(collection(db, 'Posts'), {
-      style: isSelectedStyle,
-      sizes: isSize,
-      color: isColor,
-      textAndImage: isImageOrText,
-      description: FilteredData.description,
-      price: FilteredData.normalPrice,
-      offerPrice: FilteredData.offerPrice,
-      productId: FilteredData.id,
-      userId: user?.uid,
-      gender: avatar,
-      productName: FilteredData.productName,
-    })
-    navigation.navigate('Checkout')
+
+    if (!user) {
+      setFocus(true)
+    } else {
+      const docRef = await addDoc(collection(db, 'Posts'), {
+        style: isSelectedStyle,
+        sizes: isSize,
+        color: isColor,
+        textAndImage: isImageOrText,
+        description: FilteredData.description,
+        price: FilteredData.normalPrice,
+        offerPrice: FilteredData.offerPrice,
+        productId: FilteredData.id,
+        userId: user?.uid,
+        gender: avatar,
+        productName: FilteredData.productName,
+      })
+      navigation.navigate('Checkout')
+      setFocus(true)
+    }
   }
 
   console.log(user)
@@ -224,6 +232,9 @@ const MediumLevel: React.FC = () => {
                       </View>
 
                       <FinalView
+                        focus={focus}
+                        setFocus={setFocus}
+                        navigation={navigation}
                         data={FilteredData}
                         color={isColor}
                         Data={FilteredData.description}
