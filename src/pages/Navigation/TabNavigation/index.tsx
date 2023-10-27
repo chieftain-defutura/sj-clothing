@@ -4,11 +4,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import MidLevelIcon from '../../../assets/icons/MidLevelIcon'
 import PremiumIcon from '../../../assets/icons/PremiumIcon'
 import AccountIcon from '../../../assets/icons/AccountIcon'
-import Post from './Post'
+// import Post from './Post'
 import MidLevel from './MidLevel'
 import Premium from './Premium'
 import Account from './Account'
-import TabHomeIcon from '../../../assets/icons/TabHomeIcon'
+// import TabHomeIcon from '../../../assets/icons/TabHomeIcon'
 import { useSharedValue } from 'react-native-reanimated'
 import * as NavigationBar from 'expo-navigation-bar'
 
@@ -32,7 +32,7 @@ const TabNavigationRoutes: React.FC = () => {
         unmountOnBlur: true,
       }}
     >
-      <Tab.Screen
+      {/* <Tab.Screen
         name='Post'
         options={{
           tabBarLabel: '',
@@ -53,7 +53,7 @@ const TabNavigationRoutes: React.FC = () => {
           headerShown: false,
         }}
         component={Post}
-      />
+      /> */}
       <Tab.Screen
         name='MidLevel'
         options={{

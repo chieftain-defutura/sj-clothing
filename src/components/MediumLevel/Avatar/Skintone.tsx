@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   SkintoneButtonWrapper: {
     display: 'flex',
     flexDirection: 'row',
-    paddingVertical: 16,
+    paddingTop: 32,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 16,
@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 16,
     gap: 12,
   },
   skinTab: {
