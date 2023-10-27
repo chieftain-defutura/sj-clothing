@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
 import { useFonts } from 'expo-font'
 import { userStore } from './src/store/userStore'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './firebase'
-import { StatusBar } from 'react-native'
+import { SafeAreaView } from 'react-native'
+import { StatusBar } from 'expo-status-bar'
 
 const App: React.FC = () => {
   const updateUser = userStore((store) => store.updateUser)
@@ -33,14 +34,20 @@ const App: React.FC = () => {
     return null
   }
   return (
-    <NavigationContainer>
-      <StatusBar
-        animated={true}
-        backgroundColor='rgba(191, 148, 228, 0.85)'
-        barStyle={'dark-content'}
-      />
-      <StackNavigationRoutes />
-    </NavigationContainer>
+    <Fragment>
+      <SafeAreaView style={{ flex: 0, backgroundColor: 'rgba(191, 148, 228, 0.85)' }} />
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(145, 177, 225, 0.85)' }}>
+        <NavigationContainer>
+          <StatusBar
+            animated={true}
+            backgroundColor='rgba(191, 148, 228, 0.85)'
+            // barStyle={'dark-content'}
+            style='light'
+          />
+          <StackNavigationRoutes />
+        </NavigationContainer>
+      </SafeAreaView>
+    </Fragment>
   )
 }
 

@@ -9,6 +9,7 @@ import { addDoc, collection } from 'firebase/firestore/lite'
 import { db } from '../../../firebase'
 import { IPremiumData } from '../../constant/types'
 import { userStore } from '../../store/userStore'
+import AuthNavigate from '../../screens/AuthNavigate'
 
 interface IPremiumThreeSixtyDegree {
   navigation: any
@@ -35,44 +36,49 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   const { user } = userStore()
 
   const handleSubmit = async () => {
-    const docRef = await addDoc(collection(db, 'Orders'), {
-      sizes: size,
-      description: data.description,
-      price: data.normalPrice,
-      offerPrice: data.offerPrice,
-      status: 'pending',
-      userId: user?.uid,
-      gender: data.gender,
-      type: 'Premium-Level',
-      productName: data.productName,
-      orderStatus: {
-        orderplaced: {
-          createdAt: null,
-          description: '',
-          status: false,
+    if (user) {
+      const docRef = await addDoc(collection(db, 'Orders'), {
+        sizes: size,
+        description: data.description,
+        price: data.normalPrice,
+        offerPrice: data.offerPrice,
+        status: 'pending',
+        userId: user?.uid,
+        gender: data.gender,
+        type: 'Premium-Level',
+        productName: data.productName,
+        orderStatus: {
+          orderplaced: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          manufacturing: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          readyToShip: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          shipping: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          delivery: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
         },
-        manufacturing: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        readyToShip: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        shipping: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        delivery: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-      },
-    })
+      })
+    }
+    // if (!user) {
+    //   navigation.navigate('AuthNavigate')
+    // }
     navigation.navigate('Checkout')
   }
   return (

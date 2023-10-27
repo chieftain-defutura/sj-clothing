@@ -8,8 +8,7 @@
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/iPhone.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -21,6 +20,12 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.braj1410.Sprinkle"
+    },
+
+    "androidNavigationBar": {
+      "visible": false,
+      "barStyle": "dark-content",
+      "backgroundColor": "pink"
     },
     "web": {
       "favicon": "./assets/favicon.png"

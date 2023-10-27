@@ -1,11 +1,15 @@
 import React from 'react'
 import * as ImagePicker from 'expo-image-picker'
-import { Pressable, StyleSheet, Text, View, Image, Dimensions } from 'react-native'
+import { Pressable, StyleSheet, Text, View, Image, Dimensions, Alert } from 'react-native'
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
 
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
 import CustomButton from '../../Button'
+import { uriToBlob } from '../../../pages/Navigation/StackNavigation/Account/EditProfile'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import { storage } from '../../../../firebase'
+import { userStore } from '../../../store/userStore'
 
 interface IUploadDesign {
   isImageOrText: {
@@ -24,6 +28,7 @@ interface IUploadDesign {
 }
 const { height, width } = Dimensions.get('window')
 const UploadDesign: React.FC<IUploadDesign> = ({ setDone, setImageOrText, isImageOrText }) => {
+  const { user } = userStore()
   const handleSelectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -32,12 +37,35 @@ const UploadDesign: React.FC<IUploadDesign> = ({ setDone, setImageOrText, isImag
     })
 
     if (!result.canceled) {
-      result.assets?.map((s) =>
-        setImageOrText((prevState) => ({
-          ...prevState,
-          image: s.uri,
-        })),
-      )
+      uploadImage(result.assets[0].uri)
+    }
+  }
+  const uploadImage = async (uri: string) => {
+    try {
+      const blob = await uriToBlob(uri)
+
+      const imageRef = ref(storage, user?.uid)
+      const task = uploadBytesResumable(imageRef, blob)
+
+      task.on('state_changed', (taskSnapshot) => {
+        console.log(
+          `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+        )
+      })
+
+      await task // Wait for the upload to complete
+
+      const url = await getDownloadURL(imageRef)
+      setImageOrText((prevState) => ({
+        ...prevState,
+        image: url,
+      })),
+        console.log('Image uploaded to the bucket!')
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      Alert.alert('Error', 'Failed to upload image')
+      // You can also throw the error to handle it elsewhere if needed
+      throw error
     }
   }
   return (
