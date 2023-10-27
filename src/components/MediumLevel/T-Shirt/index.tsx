@@ -17,7 +17,7 @@ const TShirt: React.FC = () => {
       >
         <WebView
           source={{
-            uri: 'https://sj-threejs-development.netlify.app/',
+            uri: 'https://sj-threejs-development.netlify.app?uid=',
           }}
         />
       </View>
