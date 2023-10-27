@@ -27,6 +27,8 @@ import CustomButton from '../Button'
 import { IAccessory } from '../../constant/types'
 import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
 import PremiumVideo from '../../screens/PremiumVideo'
+import { userStore } from '../../store/userStore'
+import AuthNavigate from '../../screens/AuthNavigate'
 
 const { height, width } = Dimensions.get('window')
 
@@ -45,6 +47,21 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
   const [openModal, setOpenModal] = useState(false)
+  const [focus, setFocus] = useState(false)
+  const user = userStore((state) => state.user)
+
+  const handleLogin = () => {
+    if (!user) {
+      setFocus(true)
+    } else {
+      navigation.navigate('Checkout')
+      setFocus(true)
+    }
+  }
+
+  const onClose = () => {
+    setFocus(false)
+  }
 
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
@@ -67,153 +84,160 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
   const Description = data.description.split(',')
   return (
     <View style={{ flex: 1, width: width, zIndex: 6 }}>
-      <ScrollView>
-        <View style={styles.linearGradient}>
-          <FlexContent>
-            <Pressable
-              onPress={handleBack}
-              onPressIn={() => setIsPressed(true)}
-              onPressOut={() => setIsPressed(false)}
-            >
-              {() => (
-                <IconHoverClr
-                  style={{ backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent' }}
-                >
-                  <IconHoverPressable>
-                    <LeftArrow width={24} height={24} />
-                  </IconHoverPressable>
-                </IconHoverClr>
-              )}
-            </Pressable>
-            <Pressable onPress={share}>
-              <ShareArrow width={24} height={24} />
-            </Pressable>
-          </FlexContent>
-
-          <AccessoryDetailsWrapper>
-            <AccessoryDetailsContent>
-              <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>
-                <TouchableOpacity onPress={() => setOpenDetails(true)}>
-                  <Image
-                    source={{ uri: data.productImage }}
+      <AuthNavigate focus={focus} onClose={onClose}>
+        <ScrollView>
+          <View style={styles.linearGradient}>
+            <FlexContent>
+              <Pressable
+                onPress={handleBack}
+                onPressIn={() => setIsPressed(true)}
+                onPressOut={() => setIsPressed(false)}
+              >
+                {() => (
+                  <IconHoverClr
                     style={{
-                      width: width / 1.4,
-                      height: height * 0.3,
-                      resizeMode: 'cover',
-                      borderRadius: 6,
-                    }}
-                  />
-                </TouchableOpacity>
-              </Animated.View>
-              <Animated.View entering={FadeInRight.duration(800).delay(200)} exiting={FadeOutRight}>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    gap: 30,
-
-                    paddingBottom: 20,
-                  }}
-                >
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
+                      backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
                     }}
                   >
-                    <ProductText>product</ProductText>
-                    <ProductName>{data.productName}</ProductName>
-                  </View>
+                    <IconHoverPressable>
+                      <LeftArrow width={24} height={24} />
+                    </IconHoverPressable>
+                  </IconHoverClr>
+                )}
+              </Pressable>
+              <Pressable onPress={share}>
+                <ShareArrow width={24} height={24} />
+              </Pressable>
+            </FlexContent>
 
+            <AccessoryDetailsWrapper>
+              <AccessoryDetailsContent>
+                <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>
+                  <TouchableOpacity onPress={() => setOpenDetails(true)}>
+                    <Image
+                      source={{ uri: data.productImage }}
+                      style={{
+                        width: width / 1.4,
+                        height: height * 0.3,
+                        resizeMode: 'cover',
+                        borderRadius: 6,
+                      }}
+                    />
+                  </TouchableOpacity>
+                </Animated.View>
+                <Animated.View
+                  entering={FadeInRight.duration(800).delay(200)}
+                  exiting={FadeOutRight}
+                >
                   <View
                     style={{
                       display: 'flex',
                       flexDirection: 'row',
-                      gap: 6,
+                      justifyContent: 'space-between',
                       alignItems: 'center',
+                      gap: 30,
+
+                      paddingBottom: 20,
                     }}
                   >
-                    {!data.offerPrice ? (
-                      <View>
-                        <ProductText>price</ProductText>
-                        <ProductName>{data.normalPrice}INR</ProductName>
-                      </View>
-                    ) : (
-                      <View>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                      }}
+                    >
+                      <ProductText>product</ProductText>
+                      <ProductName>{data.productName}</ProductName>
+                    </View>
+
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: 6,
+                        alignItems: 'center',
+                      }}
+                    >
+                      {!data.offerPrice ? (
                         <View>
                           <ProductText>price</ProductText>
+                          <ProductName>{data.normalPrice}INR</ProductName>
                         </View>
-                        <View style={{ display: 'flex', flexDirection: 'row', gap: 6 }}>
-                          <OldPriceText>{data.normalPrice}INR</OldPriceText>
-                          <ProductName>{data.offerPrice}INR</ProductName>
+                      ) : (
+                        <View>
+                          <View>
+                            <ProductText>price</ProductText>
+                          </View>
+                          <View style={{ display: 'flex', flexDirection: 'row', gap: 6 }}>
+                            <OldPriceText>{data.normalPrice}INR</OldPriceText>
+                            <ProductName>{data.offerPrice}INR</ProductName>
+                          </View>
                         </View>
-                      </View>
+                      )}
+                    </View>
+                    {data.productVideo && (
+                      <WatchVideoBorder onPress={() => setOpenModal(true)}>
+                        <PlayCircleIcon width={12} height={12} />
+                        <WatchVideoText>Watch video</WatchVideoText>
+                      </WatchVideoBorder>
                     )}
                   </View>
-                  {data.productVideo && (
-                    <WatchVideoBorder onPress={() => setOpenModal(true)}>
-                      <PlayCircleIcon width={12} height={12} />
-                      <WatchVideoText>Watch video</WatchVideoText>
-                    </WatchVideoBorder>
+                  {openModal && (
+                    <PremiumVideo
+                      video={data.productVideo}
+                      onClose={() => setOpenModal(false)}
+                      isVisible={openModal}
+                    />
                   )}
-                </View>
-                {openModal && (
-                  <PremiumVideo
-                    video={data.productVideo}
-                    onClose={() => setOpenModal(false)}
-                    isVisible={openModal}
-                  />
-                )}
-              </Animated.View>
-            </AccessoryDetailsContent>
+                </Animated.View>
+              </AccessoryDetailsContent>
 
-            {showDetails && (
-              <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
-                <View style={{ marginTop: 14 }}>
-                  <DetailsHeading>Detailed features</DetailsHeading>
-                  {Description.map((f, index) => (
-                    <View
-                      key={index}
-                      style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}
-                    >
-                      <Svg width={8} height={8}>
-                        <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
-                      </Svg>
+              {showDetails && (
+                <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
+                  <View style={{ marginTop: 14 }}>
+                    <DetailsHeading>Detailed features</DetailsHeading>
+                    {Description.map((f, index) => (
+                      <View
+                        key={index}
+                        style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}
+                      >
+                        <Svg width={8} height={8}>
+                          <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
+                        </Svg>
 
-                      <DetailsParaText key={index} style={{ marginLeft: 8 }}>
-                        {f}
-                      </DetailsParaText>
-                    </View>
-                  ))}
-                </View>
-              </Animated.View>
-            )}
-          </AccessoryDetailsWrapper>
-          <Animated.View entering={FadeInUp.duration(2000)} exiting={FadeOut}>
-            <Btns>
-              {showDetails ? (
-                <HideDetailsBorder onPress={() => setShowDetails(false)}>
-                  <HideDetailsText>Hide details</HideDetailsText>
-                </HideDetailsBorder>
-              ) : (
-                <HideDetailsBorder onPress={() => setShowDetails(true)}>
-                  <HideDetailsText>View details</HideDetailsText>
-                </HideDetailsBorder>
+                        <DetailsParaText key={index} style={{ marginLeft: 8 }}>
+                          {f}
+                        </DetailsParaText>
+                      </View>
+                    ))}
+                  </View>
+                </Animated.View>
               )}
-              <CustomButton
-                text='Buy Now'
-                fontFamily='Arvo-Regular'
-                fontSize={13}
-                style={{ width: 170 }}
-                onPress={() => navigation.navigate('Checkout')}
-              />
-            </Btns>
-          </Animated.View>
-        </View>
-      </ScrollView>
+            </AccessoryDetailsWrapper>
+            <Animated.View entering={FadeInUp.duration(2000)} exiting={FadeOut}>
+              <Btns>
+                {showDetails ? (
+                  <HideDetailsBorder onPress={() => setShowDetails(false)}>
+                    <HideDetailsText>Hide details</HideDetailsText>
+                  </HideDetailsBorder>
+                ) : (
+                  <HideDetailsBorder onPress={() => setShowDetails(true)}>
+                    <HideDetailsText>View details</HideDetailsText>
+                  </HideDetailsBorder>
+                )}
+                <CustomButton
+                  text='Buy Now'
+                  fontFamily='Arvo-Regular'
+                  fontSize={13}
+                  style={{ width: 170 }}
+                  onPress={() => handleLogin()}
+                />
+              </Btns>
+            </Animated.View>
+          </View>
+        </ScrollView>
+      </AuthNavigate>
     </View>
   )
 }

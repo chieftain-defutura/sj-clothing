@@ -33,10 +33,19 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   size,
 }) => {
   const [isPressed, setIsPressed] = useState(false)
-  const { user } = userStore()
+  const [focus, setFocus] = useState(false)
+  const user = userStore((state) => state.user)
+
+  const onClose = () => {
+    setFocus(false)
+  }
 
   const handleSubmit = async () => {
-    if (user) {
+    if (!user) {
+      setFocus(true)
+    } else {
+      navigation.navigate('Checkout')
+      setFocus(true)
       const docRef = await addDoc(collection(db, 'Orders'), {
         sizes: size,
         description: data.description,
@@ -76,60 +85,58 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
         },
       })
     }
-    // if (!user) {
-    //   navigation.navigate('AuthNavigate')
-    // }
-    navigation.navigate('Checkout')
   }
   return (
     <Animated.View
       entering={SlideInRight.duration(500).delay(200)}
       exiting={SlideOutRight.duration(500).delay(200)}
     >
-      <View style={styles.linearGradient}>
-        <FlexContent>
-          <Pressable
-            onPress={() => {
-              setOpenDetails(false)
-            }}
-            onPressIn={() => setIsPressed(true)}
-            onPressOut={() => setIsPressed(false)}
-          >
-            {() => (
-              <IconHoverClr
-                style={{ backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent' }}
-              >
-                <IconHoverPressable>
-                  <LeftArrow width={24} height={24} />
-                </IconHoverPressable>
-              </IconHoverClr>
-            )}
-          </Pressable>
-        </FlexContent>
-        <ThreeSixtyDegreeImageWrapper>
-          <ThreeSixtyDegreeImage>
-            <Image
-              source={{ uri: data.productImage }}
-              style={{
-                resizeMode: 'contain',
-                width: width * 0.9,
-                height: height * 0.55,
-                marginTop: 20,
+      <AuthNavigate focus={focus} onClose={onClose}>
+        <View style={styles.linearGradient}>
+          <FlexContent>
+            <Pressable
+              onPress={() => {
+                setOpenDetails(false)
               }}
+              onPressIn={() => setIsPressed(true)}
+              onPressOut={() => setIsPressed(false)}
+            >
+              {() => (
+                <IconHoverClr
+                  style={{ backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent' }}
+                >
+                  <IconHoverPressable>
+                    <LeftArrow width={24} height={24} />
+                  </IconHoverPressable>
+                </IconHoverClr>
+              )}
+            </Pressable>
+          </FlexContent>
+          <ThreeSixtyDegreeImageWrapper>
+            <ThreeSixtyDegreeImage>
+              <Image
+                source={{ uri: data.productImage }}
+                style={{
+                  resizeMode: 'contain',
+                  width: width * 0.9,
+                  height: height * 0.55,
+                  marginTop: 30,
+                }}
+              />
+            </ThreeSixtyDegreeImage>
+            <SelectStyle360Degree>
+              <ThreeSixtyDegree width={40} height={40} />
+            </SelectStyle360Degree>
+            <CustomButton
+              text='Buy Now'
+              fontFamily='Arvo-Regular'
+              fontSize={16}
+              style={{ width: '100%', position: 'absolute', left: 0, right: 0, bottom: -90 }}
+              onPress={handleSubmit}
             />
-          </ThreeSixtyDegreeImage>
-          <SelectStyle360Degree>
-            <ThreeSixtyDegree width={40} height={40} />
-          </SelectStyle360Degree>
-          <CustomButton
-            text='Buy Now'
-            fontFamily='Arvo-Regular'
-            fontSize={16}
-            style={{ width: '100%', position: 'absolute', left: 0, right: 0, bottom: -90 }}
-            onPress={handleSubmit}
-          />
-        </ThreeSixtyDegreeImageWrapper>
-      </View>
+          </ThreeSixtyDegreeImageWrapper>
+        </View>
+      </AuthNavigate>
     </Animated.View>
   )
 }

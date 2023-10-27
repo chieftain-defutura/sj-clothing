@@ -33,7 +33,7 @@ const CartPage: React.FC<ICartPage> = ({ navigation }) => {
       setFocus(true)
     } else {
       navigation.navigate('Checkout')
-      setFocus(false)
+      setFocus(true)
     }
   }
 
