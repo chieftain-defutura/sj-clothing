@@ -10,9 +10,10 @@ import ForgotMail from './Modals/ForgotMail'
 interface AuthNavigateProps {
   children: React.ReactNode
   focus: boolean
+  onClose: () => void
 }
 
-const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus }) => {
+const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus, onClose }) => {
   const [isSignUpModal, setSignupModal] = useState(false)
   const [isLoginModalVisible, setLoginModalVisible] = useState(false)
   const [isForgotModalVisible, setForgotModalVisible] = useState(false)
@@ -38,28 +39,32 @@ const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus }) => {
 
   const closeSignUpModal = () => {
     setSignupModal(false)
+    onClose()
     if (!userMail) {
       // navigation.navigate('Post')
-      navigation.navigate('Account', { showToolTip: true })
+      // navigation.navigate('Account', { showToolTip: true })
     }
   }
 
   const closeLoginModal = () => {
     setLoginModalVisible(false)
+    onClose()
     if (!userMail) {
-      navigation.navigate('Account')
+      // navigation.navigate('Account')
     }
   }
 
   const closeForgotModel = () => {
     setForgotModalVisible(false)
+    onClose()
     if (!userMail) {
-      navigation.navigate('Account')
+      // navigation.navigate('Account')
     }
   }
 
   useEffect(() => {
     getUserMail()
+    if (focus) console.log('asdsd')
     if (focus === true && !userMail) {
       setLoginModalVisible(true)
     }
