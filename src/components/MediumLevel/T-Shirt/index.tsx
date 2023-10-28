@@ -9,15 +9,24 @@ const { height, width } = Dimensions.get('window')
 interface ITShirtProps {
   uid: string
   steps: number
+  isDropDown: boolean
 }
 
-const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
+const TShirt: React.FC<ITShirtProps> = ({ uid, isDropDown, steps }) => {
   return (
     <View>
       <View
         style={{
           width: width / 1,
-          height: steps === 1 ? height / 2 : height / 2.5,
+          height: !isDropDown
+            ? steps === 1
+              ? height / 1.5
+              : steps === 2
+              ? height / 1.5
+              : steps === 3
+              ? height / 1.5
+              : height / 1.9
+            : height / 2.4,
           paddingBottom: 1,
         }}
       >

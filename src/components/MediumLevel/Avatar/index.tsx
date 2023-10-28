@@ -3,7 +3,6 @@ import { LinearGradient } from 'expo-linear-gradient'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { getDoc, doc, setDoc, updateDoc } from 'firebase/firestore/lite'
 import uuid from 'react-native-uuid'
-
 import Gender from './Gender'
 import Skintone from './Skintone'
 import { COLORS, gradientOpacityColors } from '../../../styles/theme'
@@ -36,7 +35,6 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
         const docRef = doc(db, 'CreateAvatar', tempUid)
         await setDoc(docRef, { uid: tempUid })
         console.log('added')
-
         setUid(tempUid)
       } catch (error) {
         console.log(error)

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import { COLORS } from '../../../styles/theme'
 import CustomButton from '../../Button'
 
@@ -10,7 +10,7 @@ interface IGender {
   setToggle: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const { height, width } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
   return (
