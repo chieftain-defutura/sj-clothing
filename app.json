@@ -10,7 +10,9 @@
       "image": "./assets/iPhone.png",
       "resizeMode": "cover"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -21,14 +23,13 @@
       },
       "package": "com.braj1410.Sprinkle"
     },
-
-    "androidNavigationBar": {
-      "visible": false,
-      "barStyle": "dark-content",
-      "backgroundColor": "pink"
-    },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3f866d31-5243-45d6-b35e-7dcc398752d5"
+      }
     }
   }
 }
