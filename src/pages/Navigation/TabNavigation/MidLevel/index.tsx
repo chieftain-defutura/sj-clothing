@@ -4,6 +4,8 @@ import Animated from 'react-native-reanimated'
 import { userStore } from '../../../../store/userStore'
 import { doc, getDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../../firebase'
+import Medium from '../../../../components/Medium'
+
 // import AuthNavigate from '../../../../screens/AuthNavigate'
 // import { useIsFocused } from '@react-navigation/native'
 
@@ -33,12 +35,9 @@ const MidLevel: React.FC = () => {
     fetchDataFromFirestore()
   }, [fetchDataFromFirestore])
   return (
-    <>
-      {/* <AuthNavigate focus={isFocused} children={null} /> */}
-      <Animated.View style={{ flex: 1 }}>
-        <MediumLevel />
-      </Animated.View>
-    </>
+    <Animated.View>
+      <Medium />
+    </Animated.View>
   )
 }
 

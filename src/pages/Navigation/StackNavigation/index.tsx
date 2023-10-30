@@ -37,10 +37,12 @@ const StackNavigationRoutes: React.FC = () => {
   return (
     <Stack.Navigator
       screenOptions={{
+        headerTitleAlign: 'center',
         headerStyle: { backgroundColor: 'rgba(191, 148, 228, 0.8)' },
-        headerLeft: HeaderLeft,
-        headerRight: HeaderRight,
-        headerTitle: '',
+        // headerLeft: HeaderLeft,
+        // headerRight: HeaderRight,
+
+        headerTitle: HeaderLeft,
         headerShadowVisible: false,
       }}
     >

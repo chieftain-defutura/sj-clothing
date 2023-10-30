@@ -3,7 +3,7 @@ import React from 'react'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { COLORS } from '../../../styles/theme'
 import ShareArrow from '../../../assets/icons/ShareArrow'
-import ThreeSixtyDegree from '../../../assets/icons/360-degree'
+// import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import CustomButton from '../../../components/Button'
 
 const Data = [
@@ -84,9 +84,9 @@ const BuyNow: React.FC<IBuyNow> = ({ navigation }) => {
       <View style={styles.TShirt}>
         <Image source={require('../../../assets/images/plain-shirt.png')} />
       </View>
-      <View style={styles.threesixtyDegree}>
+      {/* <View style={styles.threesixtyDegree}>
         <ThreeSixtyDegree width={40} height={40} />
-      </View>
+      </View> */}
       <View style={{ paddingVertical: 8, display: 'flex', gap: 4 }}>
         <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>#Round neck</Text>
         <Text style={{ color: COLORS.textTertiaryClr, fontFamily: 'Gilroy-Regular' }}>

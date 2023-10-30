@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Dimensions } from 'react-native'
 import styled from 'styled-components/native'
-import ThreeSixtyDegree from '../../../assets/icons/360-degree'
+// import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import { WebView } from 'react-native-webview'
 
 const { height, width } = Dimensions.get('window')
@@ -37,9 +37,9 @@ const TShirt: React.FC<ITShirtProps> = ({ uid, isDropDown, steps }) => {
           }}
         />
       </View>
-      <View style={styles.selectSize360Degree}>
+      {/* <View style={styles.selectSize360Degree}>
         <ThreeSixtyDegree width={40} height={40} />
-      </View>
+      </View> */}
     </View>
   )
 }

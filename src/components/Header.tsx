@@ -64,7 +64,6 @@ const LogoContent = styled.View`
   flex-direction: row;
   justify-content: center;
   gap: 4px;
-  margin-left: 100px;
   padding-vertical: 12px;
 `
 
@@ -73,6 +72,8 @@ const TShirtImg = styled.Image`
   width: 190px;
   height: 55px;
   object-fit: contain;
+  margin-left: -20px;
+  margin-top: 10px;
 `
 
 const NadarText = styled.Text`

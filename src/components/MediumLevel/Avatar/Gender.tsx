@@ -59,7 +59,7 @@ export default Gender
 
 const styles = StyleSheet.create({
   genderContainer: {
-    flex: 1,
+    // flex: 1,
   },
 
   bottomWrapper: {

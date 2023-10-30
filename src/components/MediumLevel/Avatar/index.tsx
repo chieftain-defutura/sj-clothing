@@ -123,8 +123,9 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-start',
           alignItems: 'center',
+          padding: 16,
         }}
       >
         <Animated.View
@@ -134,10 +135,16 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
         >
           <Text style={styles.title}>Create your avatar.</Text>
           {/* <Image style={styles.image} source={require('../../../assets/images/girl-modal.png')} /> */}
+        </Animated.View>
+        <Animated.View
+          entering={FadeInUp.duration(800)}
+          exiting={FadeOut}
+          // style={styles.genderWrapper}
+        >
           <View
             style={{
               width: width / 1,
-              height: height / 2.5,
+              height: height / 2,
               paddingBottom: 1,
             }}
           >
@@ -151,23 +158,24 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
             }
           </View>
         </Animated.View>
+        <View style={{ position: 'absolute', bottom: 16 }}>
+          {toggle && (
+            <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
+              <Skintone
+                skinColor={skinColor}
+                setSkinColor={setSkinColor}
+                setToggle={setToggle}
+                handleSubmit={handleSubmit}
+              />
+            </Animated.View>
+          )}
 
-        {toggle && (
-          <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
-            <Skintone
-              skinColor={skinColor}
-              setSkinColor={setSkinColor}
-              setToggle={setToggle}
-              handleSubmit={handleSubmit}
-            />
-          </Animated.View>
-        )}
-
-        {!toggle && (
-          <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
-            <Gender setToggle={setToggle} isGender={isGender} setGender={setGender} />
-          </Animated.View>
-        )}
+          {!toggle && (
+            <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
+              <Gender setToggle={setToggle} isGender={isGender} setGender={setGender} />
+            </Animated.View>
+          )}
+        </View>
       </View>
     </LinearGradient>
   )
@@ -184,9 +192,9 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'center',
-    fontSize: 40,
+    fontSize: 30,
     color: COLORS.textClr,
-    paddingHorizontal: 76,
+    paddingHorizontal: 16,
     paddingVertical: 16,
     fontFamily: 'Arvo-Regular',
   },
