@@ -154,10 +154,14 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
               width: width / 1,
               height: height / 2,
               paddingBottom: 1,
+              backgroundColor: 'transparent',
             }}
           >
             {
               <WebView
+                style={{
+                  backgroundColor: 'transparent',
+                }}
                 source={{
                   // uri: `http://localhost:5173/create-avatar/?uid=${uid}`,
                   uri: `https://sj-threejs-development.netlify.app/create-avatar/?uid=${uid}`,

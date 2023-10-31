@@ -17,9 +17,13 @@ const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
         height: steps === 5 ? height / 2.2 : height / 1.3,
         // flex: 1,
         zIndex: 1,
+        backgroundColor: 'transparent',
       }}
     >
       <WebView
+        style={{
+          backgroundColor: 'transparent',
+        }}
         source={{
           // uri: `http://localhost:5173/midlevel/?uid=${uid}`,
           uri: `https://sj-threejs-development.netlify.app/midlevel/?uid=${uid}`,
