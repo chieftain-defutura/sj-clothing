@@ -11,6 +11,7 @@ import Account from './Account'
 // import TabHomeIcon from '../../../assets/icons/TabHomeIcon'
 import { useSharedValue } from 'react-native-reanimated'
 import * as NavigationBar from 'expo-navigation-bar'
+import Medium from '../../../components/Medium'
 
 const Tab = createBottomTabNavigator()
 
@@ -76,7 +77,7 @@ const TabNavigationRoutes: React.FC = () => {
             ),
           headerShown: false,
         }}
-        component={MidLevel}
+        component={Medium}
       />
       <Tab.Screen
         name='Premium'

@@ -10,9 +10,7 @@
       "image": "./assets/iPhone.png",
       "resizeMode": "cover"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },

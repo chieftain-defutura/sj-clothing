@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Pressable, StyleSheet, Dimensions, Image, View } from 'react-native'
 import styled from 'styled-components/native'
 import LeftArrow from '../../assets/icons/LeftArrow'
-import ThreeSixtyDegree from '../../assets/icons/360-degree'
+// import ThreeSixtyDegree from '../../assets/icons/360-degree'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import CustomButton from '../Button'
 import { addDoc, collection } from 'firebase/firestore/lite'
@@ -124,14 +124,14 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
                 }}
               />
             </ThreeSixtyDegreeImage>
-            <SelectStyle360Degree>
+            {/* <SelectStyle360Degree>
               <ThreeSixtyDegree width={40} height={40} />
-            </SelectStyle360Degree>
+            </SelectStyle360Degree> */}
             <CustomButton
               text='Buy Now'
               fontFamily='Arvo-Regular'
               fontSize={16}
-              style={{ width: '100%', position: 'absolute', left: 0, right: 0, bottom: -100 }}
+              style={{ width: '100%', position: 'absolute', left: 0, right: 0, bottom: -150 }}
               onPress={handleSubmit}
             />
           </ThreeSixtyDegreeImageWrapper>

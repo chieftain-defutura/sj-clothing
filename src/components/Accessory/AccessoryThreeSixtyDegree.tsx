@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Pressable, StyleSheet, Dimensions, Image, View } from 'react-native'
 import styled from 'styled-components/native'
 import LeftArrow from '../../assets/icons/LeftArrow'
-import ThreeSixtyDegree from '../../assets/icons/360-degree'
+// import ThreeSixtyDegree from '../../assets/icons/360-degree'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import CustomButton from '../Button'
 import { addDoc, collection } from 'firebase/firestore/lite'
@@ -115,9 +115,9 @@ const AccessoryThreeSixtyDegree: React.FC<IAccessoryThreeSixtyDegree> = ({
                 }}
               />
             </ThreeSixtyDegreeImage>
-            <SelectStyle360Degree>
+            {/* <SelectStyle360Degree>
               <ThreeSixtyDegree width={40} height={40} />
-            </SelectStyle360Degree>
+            </SelectStyle360Degree> */}
             <CustomButton
               text='Buy Now'
               fontFamily='Arvo-Regular'

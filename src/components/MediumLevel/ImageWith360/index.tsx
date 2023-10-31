@@ -1,7 +1,7 @@
 import React from 'react'
 import Animated from 'react-native-reanimated'
 import { StyleSheet, Image, View } from 'react-native'
-import ThreeSixtyDegree from '../../../assets/icons/360-degree'
+// import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 
 const ImageWithThreeSixty = () => {
   return (
@@ -16,9 +16,9 @@ const ImageWithThreeSixty = () => {
       <View style={[styles.tShirt]}>
         <Image source={require('../../../assets/images/plain-shirt.png')} />
       </View>
-      <View style={styles.threeSixtyDegree}>
+      {/* <View style={styles.threeSixtyDegree}>
         <ThreeSixtyDegree width={40} height={40} />
-      </View>
+      </View> */}
     </View>
   )
 }

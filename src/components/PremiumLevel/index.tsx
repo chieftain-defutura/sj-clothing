@@ -47,9 +47,9 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
 
   if (!data) return <Text>No Data</Text>
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       {openDetails ? (
-        <View>
+        <View style={{ flex: 1 }}>
           {FilteredData?.map((item, index) => (
             <PremiumThreeSixtyDegree
               key={index}

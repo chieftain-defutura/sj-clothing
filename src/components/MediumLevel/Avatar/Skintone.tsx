@@ -60,10 +60,10 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, skinColor, setSkinColor, han
 export default Skintone
 
 const styles = StyleSheet.create({
-  SkintoneContainer: { flex: 1 },
+  SkintoneContainer: {},
 
   bottomWrapper: {
-    padding: 24,
+    // padding: 24,
   },
   bottomTitle: {
     color: COLORS.textClr,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   SkintoneButtonWrapper: {
     display: 'flex',
     flexDirection: 'row',
-    paddingTop: 32,
+    paddingTop: 8,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 16,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 16,
+    paddingTop: 8,
     gap: 12,
   },
   skinTab: {

@@ -5,7 +5,7 @@ import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { RadioButton } from 'react-native-paper'
-import ThreeSixtyDegree from '../../../assets/icons/360-degree'
+// import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import { LinearGradient } from 'expo-linear-gradient'
 
 interface ITrackOrder {
@@ -91,9 +91,9 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation }) => {
           </GoBackArrowContent>
           <TShirtImageWrapper>
             <TShirtImage source={require('../../../assets/images/t-shirt.png')} />
-            <ThreeSixtyDegreeImage>
+            {/* <ThreeSixtyDegreeImage>
               <ThreeSixtyDegree width={40} height={40} />
-            </ThreeSixtyDegreeImage>
+            </ThreeSixtyDegreeImage> */}
           </TShirtImageWrapper>
           <LinearGradient colors={gradientOpacityColors}>
             <TrackOrderContent>

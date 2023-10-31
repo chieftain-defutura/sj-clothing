@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import LeftArrow from '../../../../../assets/icons/LeftArrow'
 import ShareArrow from '../../../../../assets/icons/ShareArrow'
-import ThreeSixtyDegree from '../../../../../assets/icons/360-degree'
+// import ThreeSixtyDegree from '../../../../../assets/icons/360-degree'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../../../styles/theme'
 import CustomButton from '../../../../../components/Button'
@@ -95,9 +95,9 @@ const PostDetails: React.FC<IPostDetails> = ({ navigation }) => {
             </FlexContent>
             <TShirtImageWrapper>
               <TShirtImage source={require('../../../../../assets/images/t-shirt.png')} />
-              <ThreeSixtyDegreeImage>
+              {/* <ThreeSixtyDegreeImage>
                 <ThreeSixtyDegree width={40} height={40} />
-              </ThreeSixtyDegreeImage>
+              </ThreeSixtyDegreeImage> */}
             </TShirtImageWrapper>
             <Content>
               <Head>#Round neck</Head>

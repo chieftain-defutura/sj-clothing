@@ -3,10 +3,9 @@ import { LinearGradient } from 'expo-linear-gradient'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { getDoc, doc, setDoc, updateDoc } from 'firebase/firestore/lite'
 import uuid from 'react-native-uuid'
-
 import Gender from './Gender'
 import Skintone from './Skintone'
-import { COLORS, gradientOpacityColors } from '../../../styles/theme'
+import { COLORS } from '../../../styles/theme'
 import Animated, { FadeInUp, FadeOut, FadeOutDown } from 'react-native-reanimated'
 import { WebView } from 'react-native-webview'
 import { db } from '../../../../firebase'
@@ -14,6 +13,14 @@ import { useNavigation } from '@react-navigation/native'
 import { userStore } from '../../../store/userStore'
 
 const { height, width } = Dimensions.get('window')
+export const gradientOpacityColors = [
+  // 'rgba(191, 148, 228, 0.8)',
+  'rgba(215, 180, 232, 0.1)',
+  'rgba(236, 209, 236, 0.8)',
+  'rgba(246, 229, 246, 0.8)',
+  'rgba(202, 218, 241, 0.8)',
+  'rgba(145, 177, 225, 0.2)',
+]
 
 interface IAvatar {
   path?: string
@@ -36,7 +43,6 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
         const docRef = doc(db, 'CreateAvatar', tempUid)
         await setDoc(docRef, { uid: tempUid })
         console.log('added')
-
         setUid(tempUid)
       } catch (error) {
         console.log(error)
@@ -125,8 +131,9 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-start',
           alignItems: 'center',
+          padding: 16,
         }}
       >
         <Animated.View
@@ -136,10 +143,16 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
         >
           <Text style={styles.title}>Create your avatar.</Text>
           {/* <Image style={styles.image} source={require('../../../assets/images/girl-modal.png')} /> */}
+        </Animated.View>
+        <Animated.View
+          entering={FadeInUp.duration(800)}
+          exiting={FadeOut}
+          // style={styles.genderWrapper}
+        >
           <View
             style={{
               width: width / 1,
-              height: height / 2.5,
+              height: height / 2,
               paddingBottom: 1,
             }}
           >
@@ -153,23 +166,24 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
             }
           </View>
         </Animated.View>
+        <View style={{ position: 'absolute', bottom: 16 }}>
+          {toggle && (
+            <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
+              <Skintone
+                skinColor={skinColor}
+                setSkinColor={setSkinColor}
+                setToggle={setToggle}
+                handleSubmit={handleSubmit}
+              />
+            </Animated.View>
+          )}
 
-        {toggle && (
-          <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
-            <Skintone
-              skinColor={skinColor}
-              setSkinColor={setSkinColor}
-              setToggle={setToggle}
-              handleSubmit={handleSubmit}
-            />
-          </Animated.View>
-        )}
-
-        {!toggle && (
-          <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
-            <Gender setToggle={setToggle} isGender={isGender} setGender={setGender} />
-          </Animated.View>
-        )}
+          {!toggle && (
+            <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
+              <Gender setToggle={setToggle} isGender={isGender} setGender={setGender} />
+            </Animated.View>
+          )}
+        </View>
       </View>
     </LinearGradient>
   )
@@ -186,9 +200,9 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'center',
-    fontSize: 40,
+    fontSize: 30,
     color: COLORS.textClr,
-    paddingHorizontal: 76,
+    paddingHorizontal: 16,
     paddingVertical: 16,
     fontFamily: 'Arvo-Regular',
   },

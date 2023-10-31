@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { gradientOpacityColors } from '../../../../../styles/theme'
 import LeftArrow from '../../../../../assets/icons/LeftArrow'
-import ThreeSixtyDegree from '../../../../../assets/icons/360-degree'
+// import ThreeSixtyDegree from '../../../../../assets/icons/360-degree'
 import CustomButton from '../../../../../components/Button'
 
 interface IAccessoriesDetails {
@@ -53,9 +53,9 @@ const AccessoriesDetails: React.FC<IAccessoriesDetails> = ({ navigation }) => {
               }}
             />
           </ThreeSixtyDegreeImage>
-          <SelectStyle360Degree>
+          {/* <SelectStyle360Degree>
             <ThreeSixtyDegree width={40} height={40} />
-          </SelectStyle360Degree>
+          </SelectStyle360Degree> */}
           <CustomButton
             text='Buy Now'
             fontFamily='Arvo-Regular'

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import { COLORS } from '../../../styles/theme'
 import CustomButton from '../../Button'
 
@@ -10,7 +10,7 @@ interface IGender {
   setToggle: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const { height, width } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
   return (
@@ -59,11 +59,11 @@ export default Gender
 
 const styles = StyleSheet.create({
   genderContainer: {
-    flex: 1,
+    // flex: 1,
   },
 
   bottomWrapper: {
-    padding: 24,
+    // padding: 24,
   },
   bottomTitle: {
     color: COLORS.textClr,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     paddingVertical: 16,
-    marginTop: 12,
+    // marginTop: 12,
     gap: 8,
   },
   genderButton: {
