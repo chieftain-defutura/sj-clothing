@@ -27,9 +27,11 @@ import FAQ from './Account/FAQ'
 import Customer from './Account/CustomerCare'
 // import Accessories from './Accessories'
 import AccessoriesDetails from './Accessories/AccessoriesDetails.tsx'
-import Avatar from '../../../components/MediumLevel/Avatar'
+import Avatar from '../../../components/Medium/Avatar'
 import Accessory from '../../../components/Accessory'
 import PostDetails from './Post/PostDetails'
+import Languages from './Languages'
+import Currency from './Currency'
 
 const Stack = createStackNavigator()
 
@@ -115,6 +117,16 @@ const StackNavigationRoutes: React.FC = () => {
         name='Accessories'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={Accessory}
+      />
+      <Stack.Screen
+        name='Languages'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={Languages}
+      />
+      <Stack.Screen
+        name='Currency'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={Currency}
       />
       <Stack.Screen
         name='AccessoriesDetails'

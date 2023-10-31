@@ -9,6 +9,8 @@ import HomeLocation from '../../assets/icons/AccountPageIcon/HomeLocation'
 import CustomerCare from '../../assets/icons/AccountPageIcon/CustomerCare'
 import HelpQuestion from '../../assets/icons/AccountPageIcon/HelpQuestion'
 import Cart from '../../assets/icons/AccountPageIcon/CartIcon'
+import LanguageIcon from '../../assets/icons/LanguageIcon'
+import CurrencyIcon from '../../assets/icons/CurrencyIcon'
 
 export const AccountData = [
   {
@@ -51,6 +53,16 @@ export const AccountData = [
     leftIcon: CustomerCare,
     name: 'Accessories',
     navigation: 'Accessories',
+  },
+  {
+    leftIcon: LanguageIcon,
+    name: 'Language',
+    navigation: 'Languages',
+  },
+  {
+    leftIcon: CurrencyIcon,
+    name: 'Currency',
+    navigation: 'Currency',
   },
   {
     leftIcon: HelpQuestion,

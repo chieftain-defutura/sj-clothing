@@ -59,7 +59,7 @@ const SelectColor: React.FC<ISelectColor> = ({
               style={{
                 textAlign: 'center',
                 fontFamily: 'Gilroy-Medium',
-                paddingVertical: 16,
+                paddingVertical: 8,
                 color: COLORS.textClr,
               }}
             >
@@ -67,26 +67,26 @@ const SelectColor: React.FC<ISelectColor> = ({
             </Text>
             <FlatList
               data={data.colors}
-              numColumns={6}
+              horizontal
               contentContainerStyle={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                gap: 8,
-                paddingVertical: 8,
-              }}
-              columnWrapperStyle={{
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                // alignItems: 'center',
-                columnGap: 8,
+                alignItems: 'center',
+                gap: 28,
+                paddingVertical: 18,
               }}
+              // columnWrapperStyle={{
+              //   display: 'flex',
+              //   flexDirection: 'row',
+              //   justifyContent: 'space-between',
+              //   // alignItems: 'center',
+              //   columnGap: 8,
+              // }}
               renderItem={({ item, index }) => (
                 <Pressable
                   onPress={() => {
-                    setColor(item), handleIncreaseSteps(), setDropDown(false)
+                    setColor(item), setDropDown(false)
                   }}
                   key={index}
                   style={{

@@ -87,7 +87,6 @@ const SelectSize: React.FC<ISelectSize> = ({
                 backgroundColor: 'rgba(191, 148, 228, 0.1)',
                 borderBottomRightRadius: 50,
                 borderBottomLeftRadius: 50,
-                paddingHorizontal: 15,
               },
             ]}
           >
@@ -106,20 +105,24 @@ const SelectSize: React.FC<ISelectSize> = ({
               {isSize.country && (
                 <FlatList
                   data={sizeData?.filter((f) => f.show === true)}
+                  horizontal
                   contentContainerStyle={{
                     display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                  }}
-                  columnWrapperStyle={{
-                    display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'center',
-                    // alignItems: 'flex-start',
-                    gap: 65,
+                    justifyContent: 'space-evenly',
+                    alignItems: 'center',
+                    gap: 38,
                     paddingVertical: 8,
                   }}
-                  numColumns={3}
+                  // columnWrapperStyle={{
+                  //   display: 'flex',
+                  //   flexDirection: 'row',
+                  //   justifyContent: 'space-between',
+                  //   // alignItems: 'flex-start',
+                  //   // gap: 65,
+                  //   paddingVertical: 8,
+                  // }}
+                  // numColumns={4}
                   renderItem={({ item, index }) => (
                     <View key={index}>
                       <Pressable

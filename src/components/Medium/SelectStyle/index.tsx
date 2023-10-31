@@ -16,7 +16,6 @@ interface ISelectStyle {
   isSelectedStyle: string
   data: IMidlevel[]
   handleIncreaseSteps: () => void
-  setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setSelectedStyle: React.Dispatch<React.SetStateAction<string>>
 }
 
@@ -24,7 +23,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({
   data,
   handleIncreaseSteps,
   isSelectedStyle,
-  setDropDown,
   setSelectedStyle,
 }) => {
   const handleSelect = (title: string) => {
@@ -35,6 +33,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
       handleIncreaseSteps()
     }
   }, [isSelectedStyle])
+  console.log(isSelectedStyle)
   return (
     <LinearGradient
       colors={dropDownGradient}

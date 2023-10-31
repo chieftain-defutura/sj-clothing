@@ -6,7 +6,7 @@ import { useSharedValue, withSequence, withTiming } from 'react-native-reanimate
 
 import TShirt from './T-Shirt'
 import Navigation from './Navigation'
-import Avatar from '../MediumLevel/Avatar'
+import Avatar from './Avatar'
 import { userStore } from '../../store/userStore'
 import { gradientOpacityColors } from '../../styles/theme'
 import { addDoc, collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
@@ -65,10 +65,15 @@ const Medium = () => {
   })
 
   const handleDecreaseSteps = () => {
+    console.log('isSelectedStyle', isSelectedStyle)
+    console.log(isSteps)
     if (isSteps !== 1) {
       setSteps(isSteps - 1)
       setDropDown(false)
       setOpenDesign(false)
+    }
+    if (isSteps === 2) {
+      setSelectedStyle('')
     }
     slideValue.value = withSequence(
       withTiming(-1, { duration: 400 }), // Slide out
@@ -77,7 +82,6 @@ const Medium = () => {
   }
 
   const handleIncreaseSteps = () => {
-    console.log('isSelectedStyle', isSelectedStyle)
     if (isSelectedStyle) {
       setSteps(isSteps + 1)
       setDropDown(false)
@@ -236,7 +240,6 @@ const Medium = () => {
                 data={data}
                 handleIncreaseSteps={handleIncreaseSteps}
                 isSelectedStyle={isSelectedStyle}
-                setDropDown={setDropDown}
                 setSelectedStyle={setSelectedStyle}
               />
             )}
