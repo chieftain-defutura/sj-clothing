@@ -1,0 +1,15 @@
+{
+  "avatar": {
+    "title": "创建你的头像",
+    "select your gender": "选择您的性别",
+    "male": "男性",
+    "female": "女性",
+    "next": "下一个",
+    "select your skintone": "选择您的肤色",
+    "previous": "以前的",
+    "done": "完毕"
+  },
+  "language": {
+    "Choose Your Language": "选择你的语言"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "avatar": {
+    "title": "自分のアバターを作成する",
+    "select your gender": "性別を選んでください",
+    "male": "男",
+    "female": "女性",
+    "next": "次",
+    "select your skintone": "肌の色を選択してください",
+    "previous": "前の",
+    "done": "終わり"
+  },
+  "language": {
+    "Choose Your Language": "言語を選んでください"
+  }
+}

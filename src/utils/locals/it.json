@@ -1,0 +1,15 @@
+{
+  "avatar": {
+    "title": "crea il tuo avatar",
+    "select your gender": "seleziona il tuo sesso",
+    "male": "maschio",
+    "female": "femmina",
+    "next": "prossimo",
+    "select your skintone": "seleziona la tua tonalità di pelle",
+    "previous": "precedente",
+    "done": "fatto"
+  },
+  "language": {
+    "Choose Your Language": "Scegli la tua LINGUA"
+  }
+}

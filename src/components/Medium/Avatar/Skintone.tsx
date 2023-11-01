@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
 import CustomButton from '../../Button'
 import { COLORS } from '../../../styles/theme'
+import { useTranslation } from 'react-i18next'
 
 interface ISkintone {
   skinColor: string
@@ -11,13 +12,14 @@ interface ISkintone {
   handleSubmit: () => void
 }
 const Skintone: React.FC<ISkintone> = ({ setToggle, skinColor, setSkinColor, handleSubmit }) => {
+  const { t } = useTranslation('avatar')
   return (
     <View style={styles.SkintoneContainer}>
       <View style={styles.bottomWrapper}>
-        <Text style={styles.bottomTitle}>1.Select Your Skintone.</Text>
+        <Text style={styles.bottomTitle}>1.{t('select your skintone')}.</Text>
 
         <View style={styles.skinCollection}>
-          {['#FFCCAF', '#EBB89B', '#D7A487', '#C39073', '#AF7C5F', '#9B684B'].map((m) => (
+          {['1', '2', '3', '4'].map((m) => (
             <TouchableOpacity
               key={m}
               style={[
@@ -36,7 +38,7 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, skinColor, setSkinColor, han
         </View>
         <View style={styles.SkintoneButtonWrapper}>
           <CustomButton
-            text='Previous'
+            text={`${t('previous')}`}
             variant='primary'
             fontFamily='Arvo-Regular'
             fontSize={16}
@@ -45,7 +47,7 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, skinColor, setSkinColor, han
           />
           <CustomButton
             onPress={handleSubmit}
-            text='Done'
+            text={`${t('done')}`}
             variant='primary'
             fontFamily='Arvo-Regular'
             fontSize={16}

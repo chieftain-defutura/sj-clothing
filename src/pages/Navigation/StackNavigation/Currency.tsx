@@ -1,14 +1,12 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
-import { COLORS, FONT_FAMILY, gradientColors, gradientOpacityColors } from '../../../styles/theme'
+import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import styled from 'styled-components/native'
-import LanguageGrayIcon from '../../../assets/icons/AccountPageIcon/LanguageGrayIcon'
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
 import Svg, { Path, Defs, G, Rect, ClipPath } from 'react-native-svg'
 import CurrencyGrayIcon from '../../../assets/icons/AccountPageIcon/CurrencyGrayIcon'
 import * as Localization from 'expo-localization'
-import axios from 'axios'
 const CurrencyData = [
   {
     symbol: (
@@ -174,7 +172,7 @@ const Currency = () => {
     }
 
     fetch('https://currency-exchange.p.rapidapi.com/listquotes', options)
-      .then((response) => console.log(response.blob()))
+      .then((response) => console.log(response))
       // .then(data => setQuote(data[0].quote))
       .catch((error) => console.error(error))
   }, [])

@@ -1,8 +1,15 @@
 {
-  "cards": {
-    "cardTitle": "Title",
-    "cardDescription": "Description",
-    "anotherCardTitle": "another Title",
-    "anotherCardDescription": "another card Descripción"
+  "avatar": {
+    "title": "create your avatar",
+    "select your gender": "select your gender",
+    "male": "male",
+    "female": "female",
+    "next": "next",
+    "select your skintone": "select your skintone",
+    "previous": "previous",
+    "done": "done"
+  },
+  "language": {
+    "Choose Your Language": "Choose Your Language"
   }
 }

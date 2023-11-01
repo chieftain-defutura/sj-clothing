@@ -27,7 +27,7 @@ interface IAvatar {
   path?: string
 }
 const Avatar: React.FC<IAvatar> = ({ path }) => {
-  const { t } = useTranslation('cards')
+  const { t } = useTranslation('avatar')
   const [toggle, setToggle] = useState(false)
   const [isGender, setGender] = useState('')
   const [skinColor, setSkinColor] = useState('#FFCCAF')
@@ -67,7 +67,7 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
     if (!skinColor || !uid) return
     try {
       const docRef = doc(db, 'CreateAvatar', uid)
-      await updateDoc(docRef, { skinColor: skinColor })
+      await updateDoc(docRef, { skin: skinColor })
       console.log('updated')
     } catch (error) {
       console.log(error)
@@ -133,33 +133,35 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'flex-start',
+          justifyContent: 'space-between',
           alignItems: 'center',
           padding: 16,
+          // gap: 10,
         }}
       >
         <Animated.View
           entering={FadeInUp.duration(800)}
           exiting={FadeOut}
-          style={styles.genderWrapper}
+          style={[styles.genderWrapper]}
         >
-          <Text style={styles.title}>Create your avatar.{t('cardTitle')}</Text>
+          {/* .{t('cardTitle')} */}
+          <Text style={styles.title}>{t('title')}.</Text>
           {/* <Image style={styles.image} source={require('../../../assets/images/girl-modal.png')} /> */}
         </Animated.View>
-        <Animated.View
-          entering={FadeInUp.duration(800)}
-          exiting={FadeOut}
-          // style={styles.genderWrapper}
-        >
+        <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut} style={{ flex: 1.2 }}>
           <View
             style={{
               width: width / 1,
-              height: height / 2,
-              paddingBottom: 1,
+              height: height / 1.8,
+              // paddingVertical: 16,
+              backgroundColor: 'transparent',
             }}
           >
             {
               <WebView
+                style={{
+                  backgroundColor: 'transparent',
+                }}
                 source={{
                   // uri: `http://localhost:5173/create-avatar/?uid=${uid}`,
                   uri: `https://sj-threejs-development.netlify.app/create-avatar/?uid=${uid}`,
@@ -168,7 +170,7 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
             }
           </View>
         </Animated.View>
-        <View style={{ position: 'absolute', bottom: 16 }}>
+        <View style={{ flex: 0.4 }}>
           {toggle && (
             <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
               <Skintone
@@ -199,22 +201,25 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    zIndex: 1,
   },
   title: {
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: 35,
     color: COLORS.textClr,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
+    // paddingHorizontal: 16,
+    // paddingVertical: 16,
     fontFamily: 'Arvo-Regular',
   },
-  image: {
-    paddingTop: 16,
-  },
+  // image: {
+  //   paddingTop: 16,
+  // },
   button: {
     backgroundColor: '#61e3a5',
     padding: 10,
     borderRadius: 10,
-    margin: 10,
+    // margin: 10,
   },
 })

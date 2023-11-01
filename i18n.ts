@@ -1,8 +1,13 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import en from './src/utils/locals/en.json'
-import fi from './src/utils/locals/fi.json'
-import se from './src/utils/locals/se.json'
+import de from './src/utils/locals/de.json'
+import es from './src/utils/locals/es.json'
+import fr from './src/utils/locals/fr.json'
+import it from './src/utils/locals/it.json'
+import ja from './src/utils/locals/ja.json'
+import zh from './src/utils/locals/zh.json'
+
 import * as Localization from 'expo-localization'
 
 const getLangCode = () => {
@@ -21,9 +26,13 @@ i18n.use(initReactI18next).init({
   },
   // Here you can add all your supported languages
   resources: {
-    fi: fi,
     en: en,
-    se: se,
+    de: de,
+    es: es,
+    fr: fr,
+    it: it,
+    ja: ja,
+    zh: zh,
   },
 })
 

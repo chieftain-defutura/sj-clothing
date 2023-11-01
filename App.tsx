@@ -52,7 +52,7 @@ const App: React.FC = () => {
   return (
     <Fragment>
       <I18nextProvider i18n={i18n}>
-        <SafeAreaView style={{ flex: 0, backgroundColor: 'rgba(191, 148, 228, 0.1)' }} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: 'rgba(191, 148, 228, 0.8)' }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(145, 177, 225, 0.85)' }}>
           <NavigationContainer>
             <StatusBar

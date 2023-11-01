@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
-import { COLORS, FONT_FAMILY, gradientColors, gradientOpacityColors } from '../../../styles/theme'
+import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import styled from 'styled-components/native'
 import LanguageGrayIcon from '../../../assets/icons/AccountPageIcon/LanguageGrayIcon'
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
@@ -12,18 +12,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // const LanguagesData = ['Japanese', 'Chinese', 'Italian', 'Spanish', 'French', 'German', 'English']
 const LanguagesData = [
-  { language: 'Japanese', lang: 'js' },
+  { language: 'Japanese', lang: 'ja' },
   { language: 'Chinese', lang: 'zh' },
   { language: 'Italian', lang: 'it' },
-  { language: 'Spanish', lang: 'sp' },
-  { language: 'French', lang: 'fi' },
-  { language: 'German', lang: 'gr' },
+  { language: 'Spanish', lang: 'es' },
+  { language: 'French', lang: 'fr' },
+  { language: 'German', lang: 'de' },
   { language: 'English', lang: 'en' },
 ]
 
 const Languages = () => {
   const { i18n } = useTranslation()
   const { language, updateLanguage } = userStore()
+  const { t } = useTranslation('language')
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
@@ -48,7 +49,7 @@ const Languages = () => {
         padding: 25,
       }}
     >
-      <Text style={styles.title}>Choose your language</Text>
+      <Text style={styles.title}>{t('Choose Your Language')}</Text>
       <LanguageGrayIcon width={190} height={190} />
       <View style={{ width: 208, paddingTop: 64 }}>
         <SelectContent onPress={toggleDropdownSizes}>

@@ -2,8 +2,8 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-nati
 import React from 'react'
 import { COLORS } from '../../../styles/theme'
 import CustomButton from '../../Button'
+import { useTranslation } from 'react-i18next'
 
-const GenderData = ['Male', 'Female']
 interface IGender {
   isGender: string
   setGender: React.Dispatch<React.SetStateAction<string>>
@@ -13,10 +13,12 @@ interface IGender {
 const { width } = Dimensions.get('window')
 
 const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
+  const { t } = useTranslation('avatar')
+  const GenderData = [t('male'), t('female')]
   return (
     <View style={styles.genderContainer}>
       <View style={styles.bottomWrapper}>
-        <Text style={styles.bottomTitle}>1.Select Your Gender.</Text>
+        <Text style={styles.bottomTitle}>1.{t('select your gender')}.</Text>
         <View style={styles.genderButtonWrapper}>
           {GenderData.map((gender, index) => (
             <TouchableOpacity
@@ -43,7 +45,7 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
       </View>
       <View>
         <CustomButton
-          text='Next'
+          text={`${t('next')}`}
           variant='primary'
           fontFamily='Arvo-Regular'
           fontSize={16}
