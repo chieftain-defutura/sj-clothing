@@ -19,18 +19,18 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, skinColor, setSkinColor, han
         <Text style={styles.bottomTitle}>1.{t('select your skintone')}.</Text>
 
         <View style={styles.skinCollection}>
-          {['1', '2', '3', '4'].map((m) => (
+          {['#9B684B', '#AF7C5F', '#D7A487', '#FFCCAF'].map((m, index) => (
             <TouchableOpacity
               key={m}
               style={[
                 styles.skinTab,
                 {
-                  borderColor: skinColor === m ? '#DB00FF' : 'transparent',
+                  borderColor: skinColor === (index + 1).toString() ? '#DB00FF' : 'transparent',
                   borderWidth: 1,
                   padding: 2,
                 },
               ]}
-              onPress={() => setSkinColor(m)}
+              onPress={() => setSkinColor((index + 1).toString())}
             >
               <View style={{ flex: 1, backgroundColor: m, borderRadius: 20 }}></View>
             </TouchableOpacity>
