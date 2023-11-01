@@ -131,7 +131,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               text='Buy Now'
               fontFamily='Arvo-Regular'
               fontSize={16}
-              style={{ width: '100%', position: 'absolute', left: 0, right: 0, bottom: -150 }}
+              style={{ width: '100%', position: 'absolute', left: 0, right: 0, bottom: -120 }}
               onPress={handleSubmit}
             />
           </ThreeSixtyDegreeImageWrapper>

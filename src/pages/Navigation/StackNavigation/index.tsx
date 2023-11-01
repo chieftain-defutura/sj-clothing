@@ -32,6 +32,7 @@ import Accessory from '../../../components/Accessory'
 import PostDetails from './Post/PostDetails'
 import Languages from './Languages'
 import Currency from './Currency'
+import AvatarNavigation from './Avatar'
 
 const Stack = createStackNavigator()
 
@@ -150,7 +151,7 @@ const StackNavigationRoutes: React.FC = () => {
       <Stack.Screen name='Forgot' options={{ headerShown: false }} component={ForgotModal} />
       <Stack.Screen name='OrderPlaced' options={{ headerShown: false }} component={OrderPlaced} />
       <Stack.Screen name='Search' component={MostSearches} />
-      <Stack.Screen name='Avatar' component={Avatar} />
+      <Stack.Screen name='Avatar' component={AvatarNavigation} />
     </Stack.Navigator>
   )
 }

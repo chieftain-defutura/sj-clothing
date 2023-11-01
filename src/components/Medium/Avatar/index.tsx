@@ -5,7 +5,7 @@ import { getDoc, doc, setDoc, updateDoc } from 'firebase/firestore/lite'
 import uuid from 'react-native-uuid'
 import Gender from './Gender'
 import Skintone from './Skintone'
-import { COLORS } from '../../../styles/theme'
+import { COLORS, gradientColors } from '../../../styles/theme'
 import Animated, { FadeInUp, FadeOut, FadeOutDown } from 'react-native-reanimated'
 import { WebView } from 'react-native-webview'
 import { db } from '../../../../firebase'
@@ -137,6 +137,7 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
           alignItems: 'center',
           padding: 16,
           // gap: 10,
+          backgroundColor: 'transparent',
         }}
       >
         <Animated.View
@@ -144,16 +145,13 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
           exiting={FadeOut}
           style={[styles.genderWrapper]}
         >
-          {/* .{t('cardTitle')} */}
           <Text style={styles.title}>{t('title')}.</Text>
-          {/* <Image style={styles.image} source={require('../../../assets/images/girl-modal.png')} /> */}
         </Animated.View>
-        <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut} style={{ flex: 1.2 }}>
+        <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
           <View
             style={{
               width: width / 1,
-              height: height / 1.8,
-              // paddingVertical: 16,
+              height: height / 2,
               backgroundColor: 'transparent',
             }}
           >
@@ -170,7 +168,7 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
             }
           </View>
         </Animated.View>
-        <View style={{ flex: 0.4 }}>
+        <View>
           {toggle && (
             <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
               <Skintone
@@ -201,9 +199,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    top: 0,
-    zIndex: 1,
+    // position: 'absolute',
+    // top: 0,
+    // zIndex: 1,
   },
   title: {
     textAlign: 'center',
