@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY, gradientColors, gradientOpacityColors } from '../../../styles/theme'
 import styled from 'styled-components/native'
@@ -7,8 +7,8 @@ import LanguageGrayIcon from '../../../assets/icons/AccountPageIcon/LanguageGray
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
 import Svg, { Path, Defs, G, Rect, ClipPath } from 'react-native-svg'
 import CurrencyGrayIcon from '../../../assets/icons/AccountPageIcon/CurrencyGrayIcon'
-import { Image } from 'react-native'
-
+import * as Localization from 'expo-localization'
+import axios from 'axios'
 const CurrencyData = [
   {
     symbol: (
@@ -128,9 +128,57 @@ const Currency = () => {
     symbol: null,
     currency: 'EUR',
   })
+
+  const locale = Localization.locale
+  const currencies = Localization.currency
+  const currencyFormatter = new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currencies as string,
+  })
+
+  const formattedCurrency = currencyFormatter.format(1234.56)
+  console.log(formattedCurrency)
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
   }
+
+  // const changeCurrency = useCallback(async()=>{
+
+  //   const options = {
+  //     method: 'GET',
+  //     url: 'https://currency-exchange.p.rapidapi.com/listquotes',
+  //     headers: {
+  //       'X-RapidAPI-Key': 'SIGN-UP-FOR-KEY',
+  //       'X-RapidAPI-Host': 'currency-exchange.p.rapidapi.com'
+  //     }
+  //   };
+
+  //   try {
+  //     const response = await axios.request(options);
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // },[])
+  // useEffect(()=>{
+  //   changeCurrency()
+  // },[changeCurrency])
+
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': 'SIGN-UP-FOR-KEY',
+        'X-RapidAPI-Host': 'currency-exchange.p.rapidapi.com',
+      },
+    }
+
+    fetch('https://currency-exchange.p.rapidapi.com/listquotes', options)
+      .then((response) => console.log(response.blob()))
+      // .then(data => setQuote(data[0].quote))
+      .catch((error) => console.error(error))
+  }, [])
+
   return (
     <LinearGradient
       colors={gradientOpacityColors}

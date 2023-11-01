@@ -1,3 +1,8 @@
 {
-  "hello": "Hello"
+  "cards": {
+    "cardTitle": "Title",
+    "cardDescription": "Description",
+    "anotherCardTitle": "another Title",
+    "anotherCardDescription": "another card Descripción"
+  }
 }

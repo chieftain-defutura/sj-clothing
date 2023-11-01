@@ -1,20 +1,42 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY, gradientColors, gradientOpacityColors } from '../../../styles/theme'
 import styled from 'styled-components/native'
 import LanguageGrayIcon from '../../../assets/icons/AccountPageIcon/LanguageGrayIcon'
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
 import Svg, { Path } from 'react-native-svg'
+import { useTranslation } from 'react-i18next'
+import { userStore } from '../../../store/userStore'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const LanguagesData = ['Japanese', 'Chinese', 'Italian', 'Spanish', 'French', 'German', 'English']
+// const LanguagesData = ['Japanese', 'Chinese', 'Italian', 'Spanish', 'French', 'German', 'English']
+const LanguagesData = [
+  { language: 'Japanese', lang: 'js' },
+  { language: 'Chinese', lang: 'zh' },
+  { language: 'Italian', lang: 'it' },
+  { language: 'Spanish', lang: 'sp' },
+  { language: 'French', lang: 'fi' },
+  { language: 'German', lang: 'gr' },
+  { language: 'English', lang: 'en' },
+]
 
 const Languages = () => {
+  const { i18n } = useTranslation()
+  const { language, updateLanguage } = userStore()
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
-  const [language, setLanguage] = useState('English')
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
   }
+  const changeLanguage = async (lng: string) => {
+    await AsyncStorage.setItem('language', lng)
+    const getLanguage = await AsyncStorage.getItem('language')
+    if (!getLanguage) {
+      i18n.changeLanguage('en')
+    }
+    i18n.changeLanguage(getLanguage as string)
+  }
+
   return (
     <LinearGradient
       colors={gradientOpacityColors}
@@ -30,7 +52,7 @@ const Languages = () => {
       <LanguageGrayIcon width={190} height={190} />
       <View style={{ width: 208, paddingTop: 64 }}>
         <SelectContent onPress={toggleDropdownSizes}>
-          <SelectText>{language}</SelectText>
+          <SelectText> {LanguagesData.find((f) => f.lang === language)?.language}</SelectText>
           <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
             <Path
               d='M5 7.5L10 12.5L15 7.5'
@@ -44,9 +66,16 @@ const Languages = () => {
           <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
             <SelectDropDownList>
               <View>
-                {LanguagesData.filter((f) => f !== language).map((f: any, i: number) => (
-                  <Pressable key={i} onPress={() => [setLanguage(f), toggleDropdownSizes()]}>
-                    <SelectListText>{f}</SelectListText>
+                {LanguagesData.filter((f) => f.lang !== language).map((f: any, i: number) => (
+                  <Pressable
+                    key={i}
+                    onPress={() => [
+                      updateLanguage(f.lang),
+                      toggleDropdownSizes(),
+                      changeLanguage(f.lang),
+                    ]}
+                  >
+                    <SelectListText>{f.language}</SelectListText>
                   </Pressable>
                 ))}
               </View>

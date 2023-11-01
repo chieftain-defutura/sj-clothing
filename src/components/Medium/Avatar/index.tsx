@@ -11,6 +11,7 @@ import { WebView } from 'react-native-webview'
 import { db } from '../../../../firebase'
 import { useNavigation } from '@react-navigation/native'
 import { userStore } from '../../../store/userStore'
+import { useTranslation } from 'react-i18next'
 
 const { height, width } = Dimensions.get('window')
 export const gradientOpacityColors = [
@@ -26,6 +27,7 @@ interface IAvatar {
   path?: string
 }
 const Avatar: React.FC<IAvatar> = ({ path }) => {
+  const { t } = useTranslation('cards')
   const [toggle, setToggle] = useState(false)
   const [isGender, setGender] = useState('')
   const [skinColor, setSkinColor] = useState('#FFCCAF')
@@ -141,7 +143,7 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
           exiting={FadeOut}
           style={styles.genderWrapper}
         >
-          <Text style={styles.title}>Create your avatar.</Text>
+          <Text style={styles.title}>Create your avatar.{t('cardTitle')}</Text>
           {/* <Image style={styles.image} source={require('../../../assets/images/girl-modal.png')} /> */}
         </Animated.View>
         <Animated.View

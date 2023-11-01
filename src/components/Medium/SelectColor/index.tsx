@@ -1,14 +1,10 @@
-import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native'
-import React, { useState } from 'react'
-import Animated, {
-  BounceInUp,
-  BounceOutUp,
-  FlipInXDown,
-  FlipOutXDown,
-} from 'react-native-reanimated'
-import { COLORS, dropDownGradient } from '../../../styles/theme'
-import { IMidlevel } from '../../../constant/types'
+import React from 'react'
+import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 import { LinearGradient } from 'expo-linear-gradient'
+import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native'
+
+import { IMidlevel } from '../../../constant/types'
+import { COLORS, dropDownGradient } from '../../../styles/theme'
 
 interface ISelectColor {
   isDropDown: boolean

@@ -1,16 +1,11 @@
-import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
-import { COLORS, dropDownGradient } from '../../../styles/theme'
-import CloseIcon from '../../../assets/icons/Close'
-import Animated, {
-  BounceInUp,
-  BounceOutUp,
-  FlipInXDown,
-  FlipOutXDown,
-} from 'react-native-reanimated'
-import { FlatList } from 'react-native-gesture-handler'
-import { IMidlevel } from '../../../constant/types'
 import { LinearGradient } from 'expo-linear-gradient'
+import { FlatList } from 'react-native-gesture-handler'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
+import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
+
+import { IMidlevel } from '../../../constant/types'
+import { COLORS, dropDownGradient } from '../../../styles/theme'
 
 interface ISelectStyle {
   isSelectedStyle: string
