@@ -1,17 +1,18 @@
 import React, { useCallback, useEffect } from 'react'
-import MediumLevel from '../../../../components/MediumLevel'
 import Animated from 'react-native-reanimated'
 import { userStore } from '../../../../store/userStore'
 import { doc, getDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../../firebase'
 import Medium from '../../../../components/Medium'
+import Avatar from '../../../../components/Medium/Avatar'
+import { LinearGradient } from 'expo-linear-gradient'
+import { gradientColors, gradientOpacityColors } from '../../../../styles/theme'
 
 // import AuthNavigate from '../../../../screens/AuthNavigate'
 // import { useIsFocused } from '@react-navigation/native'
 
 const MidLevel: React.FC = () => {
-  // const isFocused = useIsFocused()
-  const { updateProfile, updateAvatar, updateAddress, updatePhoneNo, updateName, user } =
+  const { updateProfile, updateAvatar, updateAddress, updatePhoneNo, updateName, user, avatar } =
     userStore()
 
   const fetchDataFromFirestore = useCallback(async () => {
@@ -34,9 +35,12 @@ const MidLevel: React.FC = () => {
   useEffect(() => {
     fetchDataFromFirestore()
   }, [fetchDataFromFirestore])
+  console.log(avatar)
   return (
-    <Animated.View>
-      <Medium />
+    <Animated.View style={{ flex: 1 }}>
+      <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+        {!avatar.gender ? <Avatar path='MidLevel' /> : <Medium />}
+      </LinearGradient>
     </Animated.View>
   )
 }
