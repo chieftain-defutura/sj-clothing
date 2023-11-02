@@ -4,7 +4,6 @@ import { create } from 'zustand'
 export interface IUserData {
   name: string
   email: string
-  address: string
   profile: string
   phoneNo: number
   isNewUser: boolean
@@ -13,6 +12,14 @@ export interface IUserData {
     skinTone: string
   }
   language: string
+  address: [
+    {
+      fullAddress: string
+      floor: string
+      landMark: string
+      saveAsAddress: string
+    },
+  ]
 }
 
 type State = {
@@ -22,7 +29,6 @@ type State = {
   displayName: string | null
   name: string | null
   email: string | null
-  address: string | null
   profile: string | null
   phoneNo: number | null
   avatar: {
@@ -30,6 +36,14 @@ type State = {
     skinTone: string | null
   }
   language: string | null
+  address: [
+    {
+      fullAddress: string | null
+      floor: string | null
+      landMark: string | null
+      saveAsAddress: string | null
+    },
+  ]
 }
 
 type Action = {
@@ -40,8 +54,17 @@ type Action = {
   // Add actions to update name, email, address, profile, phoneNo, and avatar
   updateProfile: (profile: string | null) => void
   updateEmail: (email: string | null) => void
-  updateAddress: (address: string | null) => void
   updatePhoneNo: (phoneNo: number | null) => void
+  updateAddress: (
+    address: [
+      {
+        fullAddress: string
+        floor: string
+        landMark: string
+        saveAsAddress: string
+      },
+    ],
+  ) => void
   updateAvatar: (avatar: { gender: string | null; skinTone: string | null }) => void
   updateLanguage: (language: string | null) => void
 }
@@ -52,7 +75,6 @@ export const userStore = create<State & Action>((set) => ({
   displayName: null,
   name: null,
   email: null,
-  address: null,
   profile: null,
   phoneNo: null,
   avatar: {
@@ -60,14 +82,22 @@ export const userStore = create<State & Action>((set) => ({
     skinTone: null,
   },
   language: null,
+  address: [
+    {
+      fullAddress: null,
+      floor: null,
+      landMark: null,
+      saveAsAddress: null,
+    },
+  ],
   updateFetching: (fetching) => set(() => ({ isFetching: fetching })),
   updateUser: (user) => set(() => ({ user })),
   updateUserData: (userData) => set(() => ({ userData })),
   updateName: (name) => set(() => ({ name })),
   updateProfile: (profile) => set(() => ({ profile })),
   updateEmail: (email) => set(() => ({ email })),
-  updateAddress: (address) => set(() => ({ address })),
   updatePhoneNo: (phoneNo) => set(() => ({ phoneNo })),
+  updateAddress: (address) => set(() => ({ address })),
   updateAvatar: (avatar) => set(() => ({ avatar })),
   updateLanguage: (language) => set(() => ({ language })),
 }))

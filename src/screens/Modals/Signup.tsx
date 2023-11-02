@@ -157,7 +157,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
             <SignUpContainer>
               <SignUpHead>
-                <SignUpHeading>Sign up</SignUpHeading>
+                <SignUpHeading>Create Account</SignUpHeading>
                 <Pressable onPress={onClose}>
                   <CloseIcon width={24} height={24} />
                 </Pressable>
@@ -194,7 +194,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                 {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
               </View>
               <View>
-                <LabelText>Password</LabelText>
+                <LabelText>Create Password</LabelText>
                 <InputBorder>
                   <InputStyle
                     secureTextEntry={!showPassword}
@@ -220,7 +220,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
 
               <CustomButton
                 variant='primary'
-                text={isLoading ? 'Signing up...' : 'Sign up'}
+                text={isLoading ? 'Create Account...' : 'Create Account'}
                 onPress={() => {
                   handleSubmit()
                 }}

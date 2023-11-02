@@ -168,14 +168,14 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
               ) : (
                 <ProfileName>{name}</ProfileName>
               )}
-              <View style={{ padding: 16 }}>
+              {/* <View style={{ padding: 16 }}>
                 <CustomButton
                   text='Subscribe now'
                   fontFamily='Arvo-Regular'
                   fontSize={16}
                   onPress={openSubscriptionModal}
                 />
-              </View>
+              </View> */}
 
               <SubscriptionModal
                 isVisible={isSubscriptionModal}

@@ -138,10 +138,10 @@ const Medium = () => {
     const Filtereddata = data?.find((f) => f.styles === isSelectedStyle)
     setFilteredData(Filtereddata)
     if (
-      Filtereddata?.gender.toLowerCase() !== avatar.gender?.toLowerCase() &&
+      Filtereddata?.gender.toLowerCase() !== avatar?.gender?.toLowerCase() &&
       isSelectedStyle !== ''
     ) {
-      Alert.alert(`Alert ${avatar.gender}`, 'Not Available', [
+      Alert.alert(`Alert ${avatar?.gender}`, 'Not Available', [
         {
           text: 'Cancel',
           onPress: () => {
@@ -199,7 +199,7 @@ const Medium = () => {
         offerPrice: FilteredData.offerPrice,
         productId: FilteredData.id,
         userId: user?.uid,
-        gender: avatar.gender,
+        gender: avatar?.gender,
         productName: FilteredData.productName,
       })
       navigation.navigate('Checkout')

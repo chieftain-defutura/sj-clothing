@@ -13,8 +13,6 @@ import AddAddress from '../../../components/AddressBook/AddAddress'
 import ChooseLocation from '../../../components/AddressBook/ChooseLocation'
 import EditAddress from '../../../components/AddressBook/EditAddress'
 import axios from 'axios'
-import { FlatList, TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import { setDefaultNamespace } from 'i18next'
 
 interface IAddressBook {
   navigation: any
@@ -24,7 +22,6 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
   const height = useSharedValue('0%')
   const displayAddressSelection = useSharedValue('none')
   const [showDisplay, setDisplay] = useState(1)
-  const [selectSug, setSug] = useState()
   const [location, setLocation] = useState<any>()
   const mapRef = React.useRef<MapView>(null)
 
@@ -164,6 +161,9 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
             }}
             suggestion={(data: any) => {
               handleMarking(data)
+            }}
+            handleClose={() => {
+              handleClose()
             }}
           />
         )}

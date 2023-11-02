@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import Search from '../../assets/icons/SearchIcon'
 import Plus from '../../assets/icons/PlusIcon'
@@ -18,18 +18,61 @@ import CustomButton from '../Button'
 import { COLORS } from '../../styles/theme'
 import { RadioButton } from 'react-native-paper'
 import { AddressBookData } from '../../utils/data/AddressBookData'
+import HomeIcon from '../../assets/icons/HomeIcon'
 import axios from 'axios'
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore/lite'
+import { db } from '../../../firebase'
+import { useStore } from 'zustand'
+import { userStore } from '../../store/userStore'
+
+// interface AddressData {
+//   floor: string
+//   fullAddress: string
+//   landmark: string
+//   saveAddressAs: string
+// }
 
 interface IChooseLocation {
   onAddPress: (event: GestureResponderEvent) => void | undefined | null
   onEditPress?: (event: GestureResponderEvent) => void | undefined | null
   suggestion?: any
+  handleClose: () => void
 }
 
-const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, suggestion }) => {
+const ChooseLocation: React.FC<IChooseLocation> = ({
+  onAddPress,
+  onEditPress,
+  suggestion,
+  handleClose,
+}) => {
   const [onText, setOnSearchChange] = React.useState<string>()
   const [checked, setChecked] = React.useState('first')
   const [suggestions, setSuggestions] = React.useState([])
+  const [selectedAddress, setSelectedAddress] = useState<string>('')
+  // const [data, setData] = useState<AddressData[]>([])
+  const { user } = userStore()
+  // console.log('daataaaa', data)
+
+  // const getData = useCallback(async () => {
+  //   if (!user) return
+  //   const q = doc(db, 'users', user.uid)
+  //   const querySnapshot = await getDoc(q)
+
+  //   const fetchData = querySnapshot.data()
+  //   setData(fetchData?.address)
+  //   console.log('fetchDataa', fetchData?.address)
+  // }, [])
+
+  // useEffect(() => {
+  //   getData()
+  // }, [getData])
+
+  console.log('bxjsbxjjxjebxe', selectedAddress)
+
+  // console.log(
+  //   'swjdwjede',
+  //   suggestions.map((f) => f.display_name),
+  // )
 
   const handleSearchText = async (text: string) => {
     if (text === '') setSuggestions([])
@@ -45,18 +88,19 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
   const renderItem = (txt: string) => (
     <TouchableOpacity
       onPress={() => {
-        suggestion(txt)
+        suggestion(txt), setSelectedAddress(txt), handleClose()
       }}
     >
       <Text>{txt}</Text>
     </TouchableOpacity>
   )
+  // if (!data) return
 
   return (
     <View>
       <View style={styles.searchInputBox}>
         <Search width={16} height={16} />
-        <TextInput
+        <InputBox
           placeholder='Search for area, street name'
           onChangeText={(text) => handleSearchText(text)}
           value={onText}
@@ -64,7 +108,7 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
           placeholderTextColor={COLORS.SecondaryTwo}
         />
       </View>
-      <View style={{ position: 'relative', zIndex: 100 }}>
+      <View style={{ position: 'relative', zIndex: 1000 }}>
         <FlatList
           data={suggestions}
           renderItem={({ item }) => renderItem(item.display_name)}
@@ -91,6 +135,12 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
                 </Pressable>
               </View>
             ))}
+            {/* <View>
+              <Text>Floor: {data[0].floor}</Text>
+              <Text>Full Address: {data[0].fullAddress}</Text>
+              <Text>Landmark: {data[0].landmark}</Text>
+              <Text>Save Address As: {data[0].saveAddressAs}</Text>
+            </View> */}
           </ScrollView>
         </RadioButton.Group>
         <FlexContent>
@@ -120,6 +170,14 @@ const FlexContent = styled.View`
   justify-content: center;
   gap: 8px;
   margin-bottom: 16px;
+`
+const InputBox = styled.TextInput`
+  width: 90%;
+  border-radius: 20px;
+  background-color: white;
+  color: black;
+  font-size: 14px;
+  margin-vertical: 8px;
 `
 
 const AddAddressBtn = styled.View`
