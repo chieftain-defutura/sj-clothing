@@ -11,5 +11,19 @@
   },
   "language": {
     "Choose Your Language": "言語を選んでください"
+  },
+  "account": {
+    "Avatar": "アバター",
+    "My Cart": "私のカート",
+    "My Orders": "私の注文",
+    "Addressbook": "住所録",
+    "Accessories": "アクセサリー",
+    "Language": "言語",
+    "Currency": "通貨",
+    "Help & FAQ": "ヘルプとよくある質問",
+    "About us": "私たちについて",
+    "Customer care": "カスタマーケア",
+    "Log out": "ログアウト",
+    "Subscribe now": "今すぐ購読する"
   }
 }

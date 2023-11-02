@@ -19,18 +19,18 @@ export const AccountData = [
     rightIcon: ChevronLeft,
     navigation: 'Avatar',
   },
-  {
-    leftIcon: CopyIcon,
-    name: 'My posts',
-    rightText: '44 posts',
-    navigation: 'MyPosts',
-  },
-  {
-    leftIcon: SackDollar,
-    name: 'Royalties',
-    rightText: '1500 INR',
-    navigation: 'Royalties',
-  },
+  // {
+  //   leftIcon: CopyIcon,
+  //   name: 'My posts',
+  //   rightText: '44 posts',
+  //   navigation: 'MyPosts',
+  // },
+  // {
+  //   leftIcon: SackDollar,
+  //   name: 'Royalties',
+  //   rightText: '1500 INR',
+  //   navigation: 'Royalties',
+  // },
   {
     leftIcon: Cart,
     name: 'My cart',

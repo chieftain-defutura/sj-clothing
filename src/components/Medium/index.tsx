@@ -109,7 +109,7 @@ const Medium = () => {
         isMounted.current = true
         const tempUid = uuid.v4().toString()
         const docRef = doc(db, 'ModelsMidlevel', tempUid)
-        await setDoc(docRef, { uid: tempUid })
+        await setDoc(docRef, { uid: tempUid, skin: avatar.skinTone })
         console.log('added')
 
         setUid(tempUid)

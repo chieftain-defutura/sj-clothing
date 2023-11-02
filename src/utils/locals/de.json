@@ -11,5 +11,19 @@
   },
   "language": {
     "Choose Your Language": "Wähle deine Sprache"
+  },
+  "account": {
+    "Avatar": "Benutzerbild",
+    "My Cart": "Mein Warenkorb",
+    "My Orders": "Meine Bestellungen",
+    "Addressbook": "Adressbuch",
+    "Accessories": "Zubehör",
+    "Language": "Sprache",
+    "Currency": "Währung",
+    "Help & FAQ": "Hilfe und FAQ",
+    "About us": "Über uns",
+    "Customer care": "Kundendienst",
+    "Log out": "Ausloggen",
+    "Subscribe now": "Abonniere jetzt"
   }
 }
