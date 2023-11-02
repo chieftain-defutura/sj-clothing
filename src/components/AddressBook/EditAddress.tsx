@@ -11,7 +11,6 @@ import {
 } from 'react-native'
 import React, { useEffect } from 'react'
 import styled from 'styled-components/native'
-import Search from '../../assets/icons/SearchIcon'
 import TickIcon from '../../assets/icons/TickIcon'
 import CustomButton from '../Button'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
