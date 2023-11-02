@@ -11,10 +11,10 @@ interface IGender {
 }
 
 const { width } = Dimensions.get('window')
+const GenderData = ['male', 'female']
 
 const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
   const { t } = useTranslation('avatar')
-  const GenderData = [t('male'), t('female')]
   return (
     <View style={styles.genderContainer}>
       <View style={styles.bottomWrapper}>
@@ -37,7 +37,7 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
                   { color: isGender === gender ? COLORS.textSecondaryClr : COLORS.textRGBAClr },
                 ]}
               >
-                {gender}
+                {t(gender)}
               </Text>
             </TouchableOpacity>
           ))}

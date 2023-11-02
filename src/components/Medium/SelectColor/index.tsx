@@ -5,23 +5,18 @@ import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native'
 
 import { IMidlevel } from '../../../constant/types'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
+import { useTranslation } from 'react-i18next'
 
 interface ISelectColor {
   isDropDown: boolean
   isColor: string
   data: IMidlevel
-  handleIncreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setColor: React.Dispatch<React.SetStateAction<string>>
 }
 
-const SelectColor: React.FC<ISelectColor> = ({
-  isDropDown,
-  data,
-  setDropDown,
-  setColor,
-  handleIncreaseSteps,
-}) => {
+const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, setColor }) => {
+  const { t } = useTranslation('midlevel')
   return (
     <LinearGradient
       colors={dropDownGradient}
@@ -59,7 +54,7 @@ const SelectColor: React.FC<ISelectColor> = ({
                 color: COLORS.textClr,
               }}
             >
-              Colors
+              {t('Colors')}
             </Text>
             <FlatList
               data={data.colors}

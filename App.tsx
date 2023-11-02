@@ -12,7 +12,7 @@ import i18n from './i18n'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const App: React.FC = () => {
-  const { updateUser, updateLanguage } = userStore()
+  const { updateUser, updateLanguage, language } = userStore()
   useEffect(() => {
     return onAuthStateChanged(auth, (data) => {
       if (data) {
@@ -25,16 +25,21 @@ const App: React.FC = () => {
 
   const getLanguage = useCallback(async () => {
     const getLanguage = await AsyncStorage.getItem('language')
-    if (!getLanguage) {
-      updateLanguage('en')
-    }
+
     if (getLanguage) {
       updateLanguage(getLanguage)
+      i18n.changeLanguage(getLanguage as string)
     }
-  }, [])
+    if (!getLanguage) {
+      updateLanguage('en')
+      i18n.changeLanguage(getLanguage as string)
+    }
+  }, [language])
   useEffect(() => {
     getLanguage()
   }, [getLanguage])
+
+  console.log(language)
 
   const [fontsLoaded] = useFonts({
     'Arvo-Regular': require('./src/assets/fonts/Arvo-Regular.ttf'), //font-weight 400

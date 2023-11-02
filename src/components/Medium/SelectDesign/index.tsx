@@ -4,6 +4,7 @@ import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
 import { IDesigns } from '../../../constant/types'
+import { useTranslation } from 'react-i18next'
 
 interface ISelectDesign {
   isDone: boolean
@@ -38,6 +39,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
   setImageOrText,
   setDone,
 }) => {
+  const { t } = useTranslation('midlevel')
   const uniqueArr = [...new Map(designs?.map((v) => [v.hashTag, v])).values()]
   const FilteredData =
     isImageOrText.designs.hashtag === ''
@@ -70,7 +72,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
       >
         <View>
           <Text style={{ fontSize: 16, color: COLORS.textClr, fontFamily: 'Arvo-Regular' }}>
-            Select Design
+            {t('Select Design')}
           </Text>
         </View>
         <Pressable onPress={() => setOpenDesign(false)}>

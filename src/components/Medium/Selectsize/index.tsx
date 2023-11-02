@@ -11,6 +11,7 @@ import Animated, {
 import { IMidlevel } from '../../../constant/types'
 import { userStore } from '../../../store/userStore'
 import { LinearGradient } from 'expo-linear-gradient'
+import { useTranslation } from 'react-i18next'
 
 const { width } = Dimensions.get('window')
 
@@ -48,7 +49,7 @@ const SelectSize: React.FC<ISelectSize> = ({
   handleIncreaseSteps,
 }) => {
   const { avatar } = userStore()
-
+  const { t } = useTranslation('midlevel')
   const [sizeData, setSizeData] = useState<
     | {
         measurement: string
@@ -100,7 +101,7 @@ const SelectSize: React.FC<ISelectSize> = ({
                   textAlign: 'center',
                 }}
               >
-                Select Size
+                {t('Sizes')}
               </Text>
               {isSize.country && (
                 <FlatList

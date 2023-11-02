@@ -5,6 +5,7 @@ import styled from 'styled-components/native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../../styles/theme'
 import LeftArrow from '../../../../assets/icons/LeftArrow'
+import { useTranslation } from 'react-i18next'
 
 interface IAboutUs {
   navigation: any
@@ -13,6 +14,7 @@ interface IAboutUs {
 const { width } = Dimensions.get('window')
 
 const AboutUs: React.FC<IAboutUs> = ({ navigation }) => {
+  const { t } = useTranslation('account')
   return (
     <LinearGradient colors={gradientOpacityColors}>
       <Animated.View
@@ -27,7 +29,7 @@ const AboutUs: React.FC<IAboutUs> = ({ navigation }) => {
               }}
             >
               <LeftArrow width={24} height={24} />
-              <CartText>About us</CartText>
+              <CartText>{t('About us')}</CartText>
             </GoBackArrowContent>
 
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

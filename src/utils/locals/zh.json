@@ -14,8 +14,8 @@
   },
   "account": {
     "Avatar": "阿凡达",
-    "My Cart": "我的车",
-    "My Orders": "我的订单",
+    "My cart": "我的车",
+    "My orders": "我的订单",
     "Addressbook": "地址簿",
     "Accessories": "配件",
     "Language": "语言",
@@ -24,6 +24,25 @@
     "About us": "关于我们",
     "Customer care": "客户关怀",
     "Log out": "登出",
-    "Subscribe now": "现在订阅"
+    "Map": "地图",
+    "Subscribe now": "现在订阅",
+    "Home": "家"
+  },
+  "midlevel": {
+    "Select Style": "选择风格",
+    "Select Country": "选择国家",
+    "Select Size": "选择大小",
+    "Select Color": "选择颜色",
+    "Add more": "添加更多",
+    "Buy now": "立即购买",
+    "Add Image": "添加图片",
+    "Add Text": "添加文字",
+    "Done": "完毕",
+    "Select Design": "选择设计",
+    "Select Style to move further": "选择样式以进一步移动",
+    "Select area to add image": "选择要添加图像的区域",
+    "Colors": "颜色",
+    "Styles": "风格",
+    "Sizes": "尺寸"
   }
 }

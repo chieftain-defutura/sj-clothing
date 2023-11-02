@@ -1,21 +1,21 @@
 {
   "avatar": {
-    "title": "create your avatar",
-    "select your gender": "select your gender",
-    "male": "male",
-    "female": "female",
-    "next": "next",
-    "select your skintone": "select your skintone",
-    "previous": "previous",
-    "done": "done"
+    "title": "Create Your Avatar",
+    "select your gender": "Select Your Gender",
+    "male": "Male",
+    "female": "Female",
+    "next": "Next",
+    "select your skintone": "Select Your Skintone",
+    "previous": "Previous",
+    "done": "Done"
   },
   "language": {
     "Choose Your Language": "Choose Your Language"
   },
   "account": {
     "Avatar": "Avatar",
-    "My Cart": "My Cart",
-    "My Orders": "My Orders",
+    "My cart": "My Cart",
+    "My orders": "My Orders",
     "Addressbook": "Addressbook",
     "Accessories": "Accessories",
     "Language": "Language",
@@ -24,6 +24,25 @@
     "About us": "About us",
     "Customer care": "Customer care",
     "Log out": "Log out",
-    "Subscribe now": "Subscribe now"
+    "Subscribe now": "Subscribe now",
+    "Map": "Map",
+    "Home": "Home"
+  },
+  "midlevel": {
+    "Select Style": "Select Style",
+    "Select Country": "Select Country",
+    "Select Size": "Select Size",
+    "Select Color": "Select Color",
+    "Add more": "Add more",
+    "Buy now": "Buy now",
+    "Add Image": "Add Image",
+    "Add Text": "Add Text",
+    "Done": "Done",
+    "Select Design": "Select Design",
+    "Select Style to move further": "Select Style to move further",
+    "Colors": "Colors",
+    "Styles": "Styles",
+    "Sizes": "Sizes",
+    "Select area to add image": "Select area to add image"
   }
 }

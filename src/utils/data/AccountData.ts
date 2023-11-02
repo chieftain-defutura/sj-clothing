@@ -15,7 +15,7 @@ import CurrencyIcon from '../../assets/icons/CurrencyIcon'
 export const AccountData = [
   {
     leftIcon: UserIcon,
-    name: 'Avatar',
+    name: `Avatar`,
     rightIcon: ChevronLeft,
     navigation: 'Avatar',
   },

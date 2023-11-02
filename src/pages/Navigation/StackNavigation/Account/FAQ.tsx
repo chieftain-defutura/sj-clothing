@@ -8,12 +8,14 @@ import LeftArrow from '../../../../assets/icons/LeftArrow'
 import FaqPlusIcon from '../../../../assets/icons/AccountPageIcon/PlusIcon'
 import MinusIcon from '../../../../assets/icons/AccountPageIcon/MinusIcon'
 import { FAQData } from '../../../../utils/data/FAQData'
+import { useTranslation } from 'react-i18next'
 
 interface IFAQ {
   navigation: any
 }
 
 const FAQ: React.FC<IFAQ> = ({ navigation }) => {
+  const { t } = useTranslation('account')
   const [expandedFAQIndex, setExpandedFAQIndex] = useState<number | null>(null)
 
   const toggleFAQ = (index: number) => {
@@ -38,7 +40,7 @@ const FAQ: React.FC<IFAQ> = ({ navigation }) => {
               }}
             >
               <LeftArrow width={24} height={24} />
-              <CartText>Help & FAQ</CartText>
+              <CartText>{t('Help & FAQ')}</CartText>
             </GoBackArrowContent>
             {FAQData.map((f, index) => (
               <View key={index} style={{ marginHorizontal: 16 }}>

@@ -14,8 +14,8 @@
   },
   "account": {
     "Avatar": "アバター",
-    "My Cart": "私のカート",
-    "My Orders": "私の注文",
+    "My cart": "私のカート",
+    "My orders": "私の注文",
     "Addressbook": "住所録",
     "Accessories": "アクセサリー",
     "Language": "言語",
@@ -24,6 +24,25 @@
     "About us": "私たちについて",
     "Customer care": "カスタマーケア",
     "Log out": "ログアウト",
-    "Subscribe now": "今すぐ購読する"
+    "Subscribe now": "今すぐ購読する",
+    "Map": "地図",
+    "Home": "家"
+  },
+  "midlevel": {
+    "Select Style": "スタイルの選択",
+    "Select Country": "国を選択",
+    "Select Size": "サイズを選択してください",
+    "Select Color": "色の選択",
+    "Add more": "さらに追加",
+    "Buy now": "今すぐ購入",
+    "Add Image": "画像を追加",
+    "Add Text": "テキストを追加",
+    "Done": "終わり",
+    "Select Design": "デザインを選択",
+    "Select Style to move further": "さらに進むにはスタイルを選択してください",
+    "Colors": "色",
+    "Styles": "スタイル",
+    "Sizes": "サイズ",
+    "Select area to add image": "画像を追加する領域を選択してください"
   }
 }

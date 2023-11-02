@@ -6,6 +6,7 @@ import { FlatList } from 'react-native-gesture-handler'
 import { IMidlevel } from '../../../constant/types'
 import { userStore } from '../../../store/userStore'
 import { LinearGradient } from 'expo-linear-gradient'
+import { useTranslation } from 'react-i18next'
 
 interface ISelectedCountry {
   isSize: {
@@ -37,6 +38,7 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
   handleIncreaseSteps,
   setDropDown,
 }) => {
+  const { t } = useTranslation('midlevel')
   const { avatar } = userStore()
   const [country, setCountry] = useState<
     {
@@ -99,7 +101,7 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
               color: COLORS.iconsHighlightClr,
             }}
           >
-            Select Country
+            {t('Select Country')}
           </Text>
         </View>
         <View

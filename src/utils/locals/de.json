@@ -14,8 +14,8 @@
   },
   "account": {
     "Avatar": "Benutzerbild",
-    "My Cart": "Mein Warenkorb",
-    "My Orders": "Meine Bestellungen",
+    "My cart": "Mein Warenkorb",
+    "My orders": "Meine Bestellungen",
     "Addressbook": "Adressbuch",
     "Accessories": "Zubehör",
     "Language": "Sprache",
@@ -24,6 +24,24 @@
     "About us": "Über uns",
     "Customer care": "Kundendienst",
     "Log out": "Ausloggen",
-    "Subscribe now": "Abonniere jetzt"
+    "Subscribe now": "Abonniere jetzt",
+    "Home": "Heim"
+  },
+  "midlevel": {
+    "Select Style": "Wählen Sie Stil aus",
+    "Select Country": "Land auswählen",
+    "Select Size": "Wähle die Größe aus",
+    "Select Color": "Wähle Farbe",
+    "Add more": "Fügen Sie weitere hinzu",
+    "Buy now": "Kaufe jetzt",
+    "Add Image": "Bild hinzufügen",
+    "Add Text": "Text hinzufügen",
+    "Done": "Erledigt",
+    "Select Design": "Wählen Sie Design",
+    "Select Style to move further": "Wählen Sie „Stil“, um weiterzugehen",
+    "Colors": "Farben",
+    "Styles": "Stile",
+    "Sizes": "Größen",
+    "Select area to add image": "Wählen Sie den Bereich aus, um ein Bild hinzuzufügen"
   }
 }

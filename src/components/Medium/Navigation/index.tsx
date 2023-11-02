@@ -11,6 +11,7 @@ import ArrowCircleLeft from '../../../assets/icons/ArrowCircleLeft'
 import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import { COLORS } from '../../../styles/theme'
+import { useTranslation } from 'react-i18next'
 
 interface INavigation {
   steps: number
@@ -46,6 +47,7 @@ const Navigation: React.FC<INavigation> = ({
   setDropDown,
   setImageOrText,
 }) => {
+  const { t } = useTranslation('midlevel')
   const slideX = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: slideValue.value * 400 }], // Slide 400 units (assuming a screen width of 400)
@@ -76,7 +78,7 @@ const Navigation: React.FC<INavigation> = ({
               setOpenDesign(false), handleDecreaseSteps()
             }}
           >
-            <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>Done</Text>
+            <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>{t('Done')}</Text>
           </Pressable>
         </View>
       )}
@@ -107,11 +109,11 @@ const Navigation: React.FC<INavigation> = ({
                 style={styles.Dropdown}
               >
                 <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                  {steps === 1 && 'Select Style'}
-                  {steps === 2 && 'Select Country'}
-                  {steps === 3 && 'Select Size'}
-                  {steps === 4 && 'Select Color'}
-                  {steps === 5 && 'Add more'}
+                  {steps === 1 && `${t('Select Style')}`}
+                  {steps === 2 && `${t('Select Country')}`}
+                  {steps === 3 && `${t('Select Size')}`}
+                  {steps === 4 && `${t('Select Color')}`}
+                  {steps === 5 && `${t('Add more')}`}
                 </Text>
 
                 {steps !== 5 && <DropDownArrowIcon />}
@@ -124,7 +126,7 @@ const Navigation: React.FC<INavigation> = ({
                     paddingTop: 3,
                   }}
                 >
-                  {warning}
+                  {t(warning)}
                 </Text>
               )}
             </View>
@@ -143,7 +145,7 @@ const Navigation: React.FC<INavigation> = ({
                 style={styles.Dropdown}
               >
                 <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                  Add Image
+                  {t('Add Image')}
                 </Text>
               </Pressable>
               <Pressable
@@ -157,7 +159,9 @@ const Navigation: React.FC<INavigation> = ({
                 }}
                 style={styles.Dropdown}
               >
-                <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Add Text</Text>
+                <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                  {t('Add Text')}
+                </Text>
               </Pressable>
             </View>
           )}

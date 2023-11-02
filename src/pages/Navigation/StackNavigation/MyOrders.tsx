@@ -9,6 +9,7 @@ import { MyOrdersData } from '../../../utils/data/myOrdersData'
 import { LinearGradient } from 'expo-linear-gradient'
 import StarActive from '../../../assets/icons/PostPageIcon/StarActive'
 import StarInActive from '../../../assets/icons/PostPageIcon/StarInActive'
+import { useTranslation } from 'react-i18next'
 
 interface IMyOrders {
   navigation: any
@@ -22,6 +23,7 @@ const StartIcons = [
 ]
 
 const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
+  const { t } = useTranslation('account')
   const [stars, setStars] = useState(4)
 
   const handleStarClick = (index: number) => {
@@ -42,7 +44,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
               }}
             >
               <LeftArrow width={24} height={24} />
-              <CartText>My orders</CartText>
+              <CartText>{t('My orders')}</CartText>
             </GoBackArrowContent>
             <CartPageContent>
               {MyOrdersData.map((f, index) => {

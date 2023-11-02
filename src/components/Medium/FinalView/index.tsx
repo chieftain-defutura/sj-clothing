@@ -11,6 +11,7 @@ import DownArrow from '../../../assets/icons/DownArrow'
 import { IMidlevel } from '../../../constant/types'
 import { userStore } from '../../../store/userStore'
 import AuthNavigate from '../../../screens/AuthNavigate'
+import { useTranslation } from 'react-i18next'
 
 interface IFinalView {
   style: string
@@ -59,6 +60,7 @@ const FinalView: React.FC<IFinalView> = ({
   data,
   isImageOrText,
 }) => {
+  const { t } = useTranslation('midlevel')
   const onClose = () => {
     setFocus(false)
   }
@@ -71,7 +73,7 @@ const FinalView: React.FC<IFinalView> = ({
         <View>
           <CustomButton
             variant='primary'
-            text='Buy now'
+            text={`${t('Buy now')}`}
             fontFamily='Arvo-Regular'
             fontSize={16}
             onPress={handleSubmit}

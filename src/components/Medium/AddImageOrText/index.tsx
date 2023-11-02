@@ -11,6 +11,7 @@ import CloseIcon from '../../../assets/icons/Close'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
 import { IDesigns, IMidlevel } from '../../../constant/types'
 import { LinearGradient } from 'expo-linear-gradient'
+import { useTranslation } from 'react-i18next'
 
 const { width } = Dimensions.get('window')
 
@@ -46,6 +47,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
   setOpenDesign,
   setImageOrText,
 }) => {
+  const { t } = useTranslation('midlevel')
   return (
     <LinearGradient
       colors={dropDownGradient}
@@ -73,7 +75,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                 fontFamily: 'Gilroy-Medium',
               }}
             >
-              Select area to add image
+              {t('Select area to add image')}
             </Text>
             <View
               style={{

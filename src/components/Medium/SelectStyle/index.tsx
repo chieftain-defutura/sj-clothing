@@ -6,6 +6,7 @@ import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 
 import { IMidlevel } from '../../../constant/types'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
+import { useTranslation } from 'react-i18next'
 
 interface ISelectStyle {
   isSelectedStyle: string
@@ -20,6 +21,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
   isSelectedStyle,
   setSelectedStyle,
 }) => {
+  const { t } = useTranslation('midlevel')
   const handleSelect = (title: string) => {
     setSelectedStyle(title)
   }
@@ -59,7 +61,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
               color: COLORS.iconsHighlightClr,
             }}
           >
-            Styles
+            {t('Styles')}
           </Text>
         </View>
         <View

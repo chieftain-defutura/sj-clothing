@@ -15,12 +15,14 @@ import EditAddress from '../../../components/AddressBook/EditAddress'
 import axios from 'axios'
 import { FlatList, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { setDefaultNamespace } from 'i18next'
+import { useTranslation } from 'react-i18next'
 
 interface IAddressBook {
   navigation: any
 }
 
 const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
+  const { t } = useTranslation('account')
   const height = useSharedValue('0%')
   const displayAddressSelection = useSharedValue('none')
   const [showDisplay, setDisplay] = useState(1)
@@ -99,7 +101,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
         }}
       >
         <LeftArrow width={24} height={24} />
-        <CartText>Addressbook</CartText>
+        <CartText>{t('Addressbook')}</CartText>
       </GoBackArrowContent>
       <MapView
         ref={mapRef}

@@ -266,7 +266,6 @@ const Medium = () => {
             isDropDown={isDropDown}
             setDropDown={setDropDown}
             setColor={setColor}
-            handleIncreaseSteps={handleIncreaseSteps}
           />
         )}
         {isSteps === 6 && isDropDown && FilteredData && (

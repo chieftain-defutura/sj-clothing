@@ -14,8 +14,8 @@
   },
   "account": {
     "Avatar": "Avatar",
-    "My Cart": "La mia carta",
-    "My Orders": "i miei ordini",
+    "My cart": "La mia carta",
+    "My orders": "i miei ordini",
     "Addressbook": "Rubrica",
     "Accessories": "Accessori",
     "Language": "Lingua",
@@ -24,6 +24,25 @@
     "About us": "Chi siamo",
     "Customer care": "Servizio Clienti",
     "Log out": "Disconnettersi",
-    "Subscribe now": "Iscriviti ora"
+    "Subscribe now": "Iscriviti ora",
+    "Map": "Carta geografica",
+    "Home": "Casa"
+  },
+  "midlevel": {
+    "Select Style": "Seleziona Progettazione",
+    "Select Country": "Seleziona il paese",
+    "Select Size": "Seleziona la dimensione",
+    "Select Color": "Seleziona il colore",
+    "Add more": "Aggiungere altro",
+    "Buy now": "Acquista ora",
+    "Add Image": "Aggiungi immagine",
+    "Add Text": "Aggiungi testo",
+    "Done": "Fatto",
+    "Select Design": "Seleziona Progettazione",
+    "Select Style to move further": "Seleziona Stile per andare oltre",
+    "Colors": "Colori",
+    "Styles": "Stili",
+    "Sizes": "Dimensioni",
+    "Select area to add image": "Seleziona l'area in cui aggiungere l'immagine"
   }
 }

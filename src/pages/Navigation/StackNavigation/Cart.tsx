@@ -9,12 +9,14 @@ import { CartData } from '../../../utils/data/cartData'
 import CartCard from '../../../components/CartCard'
 import { LinearGradient } from 'expo-linear-gradient'
 import LocationIcon from '../../../assets/icons/Location'
+import { useTranslation } from 'react-i18next'
 
 interface ICartPage {
   navigation: any
 }
 
 const CartPage: React.FC<ICartPage> = ({ navigation }) => {
+  const { t } = useTranslation('account')
   const [closedItems, setClosedItems] = useState<number[]>([])
 
   const handleClose = (index: number) => {
@@ -36,11 +38,11 @@ const CartPage: React.FC<ICartPage> = ({ navigation }) => {
                 }}
               >
                 <LeftArrow width={24} height={24} />
-                <CartText>Cart</CartText>
+                <CartText>{t('My cart')}</CartText>
               </GoBackArrowContent>
               <View style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
                 <LocationIcon width={16} height={16} />
-                <LocationText>Home</LocationText>
+                <LocationText>{t('Home')}</LocationText>
               </View>
             </FlexContent>
 

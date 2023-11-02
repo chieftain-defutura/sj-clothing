@@ -20,6 +20,7 @@ import { RouteProp } from '@react-navigation/native'
 import { RootStackParamList } from '../../../ScreenTypes'
 import { doc, getDoc } from 'firebase/firestore/lite'
 import AuthNavigate from '../../../../screens/AuthNavigate'
+import { useTranslation } from 'react-i18next'
 
 interface IAccount {
   navigation: any
@@ -29,6 +30,7 @@ interface IAccount {
 const { width, height } = Dimensions.get('window')
 
 const Account: React.FC<IAccount> = ({ navigation, route }) => {
+  const { t } = useTranslation('account')
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [focus, setFocus] = useState(false)
   const user = userStore((state) => state.user)
@@ -170,7 +172,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
               )}
               <View style={{ padding: 16 }}>
                 <CustomButton
-                  text='Subscribe now'
+                  text={t('Subscribe now')}
                   fontFamily='Arvo-Regular'
                   fontSize={16}
                   onPress={openSubscriptionModal}
@@ -204,7 +206,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                     <ProfileUserContent>
                       <FlexIcon>
                         <f.leftIcon width={20} height={20} />
-                        <UserText>{f.name}</UserText>
+                        <UserText>{t(f.name)}</UserText>
                       </FlexIcon>
                       {f.rightIcon && <f.rightIcon width={20} height={20} />}
                       {f.rightText && <RightText>{f.rightText}</RightText>}
@@ -216,7 +218,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                 <ProfileUserContent>
                   <FlexIcon>
                     <CustomerCare width={20} height={20} />
-                    <UserText>Customer care</UserText>
+                    <UserText>{t('Customer care')}</UserText>
                   </FlexIcon>
                 </ProfileUserContent>
               </Pressable>
@@ -225,7 +227,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                 <ProfileUserContent>
                   <FlexIcon>
                     <LogoutIcon width={24} height={24} />
-                    <LogoutText>Log out</LogoutText>
+                    <LogoutText>{t('Log out')}</LogoutText>
                   </FlexIcon>
                 </ProfileUserContent>
               </LogoutPressable>
