@@ -1,10 +1,12 @@
 import {
+  FlatList,
   GestureResponderEvent,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native'
 import React from 'react'
@@ -16,19 +18,40 @@ import CustomButton from '../Button'
 import { COLORS } from '../../styles/theme'
 import { RadioButton } from 'react-native-paper'
 import { AddressBookData } from '../../utils/data/AddressBookData'
+import axios from 'axios'
 
 interface IChooseLocation {
   onAddPress: (event: GestureResponderEvent) => void | undefined | null
   onEditPress?: (event: GestureResponderEvent) => void | undefined | null
+  suggestion?: any
 }
 
-const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) => {
+const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, suggestion }) => {
   const [onText, setOnSearchChange] = React.useState<string>()
   const [checked, setChecked] = React.useState('first')
+  const [suggestions, setSuggestions] = React.useState([])
 
-  const handleSearchText = (text: string) => {
+  const handleSearchText = async (text: string) => {
+    if (text === '') setSuggestions([])
     setOnSearchChange(text)
+
+    // Make a request to the Nominatim geocoding service to get location suggestions
+    const response = await axios.get(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${text}`,
+    )
+
+    setSuggestions(response.data)
   }
+  const renderItem = (txt: string) => (
+    <TouchableOpacity
+      onPress={() => {
+        suggestion(txt)
+      }}
+    >
+      <Text>{txt}</Text>
+    </TouchableOpacity>
+  )
+
   return (
     <View>
       <View style={styles.searchInputBox}>
@@ -39,6 +62,13 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) 
           value={onText}
           style={styles.inputBox}
           placeholderTextColor={COLORS.SecondaryTwo}
+        />
+      </View>
+      <View style={{ position: 'relative', zIndex: 100 }}>
+        <FlatList
+          data={suggestions}
+          renderItem={({ item }) => renderItem(item.display_name)}
+          keyExtractor={(item) => item.place_id.toString()}
         />
       </View>
       <View>

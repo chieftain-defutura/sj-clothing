@@ -1,6 +1,6 @@
 import { StyleSheet, View, KeyboardAvoidingView } from 'react-native'
 import React, { useState } from 'react'
-import MapView from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps'
 import CustomButton from '../../../components/Button'
 import styled from 'styled-components/native'
 import { Pressable } from 'react-native'
@@ -12,6 +12,9 @@ import CloseIcon from '../../../assets/icons/Close'
 import AddAddress from '../../../components/AddressBook/AddAddress'
 import ChooseLocation from '../../../components/AddressBook/ChooseLocation'
 import EditAddress from '../../../components/AddressBook/EditAddress'
+import axios from 'axios'
+import { FlatList, TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { setDefaultNamespace } from 'i18next'
 
 interface IAddressBook {
   navigation: any
@@ -21,6 +24,31 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
   const height = useSharedValue('0%')
   const displayAddressSelection = useSharedValue('none')
   const [showDisplay, setDisplay] = useState(1)
+  const [selectSug, setSug] = useState()
+  const [location, setLocation] = useState<any>()
+  const mapRef = React.useRef<MapView>(null)
+
+  const getLocationFromAddress = async (address: string) => {
+    try {
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${address}`,
+      )
+
+      if (response.data.length > 0) {
+        const location = response.data[0]
+        return {
+          latitude: parseFloat(location.lat),
+          longitude: parseFloat(location.lon),
+        }
+        // return location
+      } else {
+        throw new Error('Location not found')
+      }
+    } catch (error) {
+      console.error('Error fetching location:', error)
+      throw error
+    }
+  }
 
   const handlePress = () => {
     height.value = withTiming('52%')
@@ -41,6 +69,27 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
     height.value = withTiming('0%', { duration: 300 })
     setTimeout(() => (displayAddressSelection.value = 'none'), 300)
   }
+  const moveMapToMarker = (marker: any) => {
+    if (mapRef.current) {
+      mapRef.current.animateToRegion({
+        latitude: marker.latitude,
+        longitude: marker.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      })
+    }
+  }
+  const handleMarking = (data: any) => {
+    getLocationFromAddress(data)
+      .then((location) => {
+        console.log('Location:', location)
+        setLocation(location)
+        moveMapToMarker(location)
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+      })
+  }
 
   return (
     <KeyboardAvoidingView style={[styles.container]} contentContainerStyle={{ height: 900 }}>
@@ -53,6 +102,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
         <CartText>Addressbook</CartText>
       </GoBackArrowContent>
       <MapView
+        ref={mapRef}
         style={{ flex: 1 }}
         initialRegion={{
           latitude: 12.9288755,
@@ -60,7 +110,18 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-      ></MapView>
+      >
+        {location && (
+          <Marker
+            coordinate={{
+              latitude: location.latitude,
+              longitude: location.longitude,
+            }}
+            title='Your Location'
+            description='This is the marked location'
+          />
+        )}
+      </MapView>
 
       <CurrentLocationWrapper>
         <FlexRow
@@ -100,6 +161,9 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
             onEditPress={() => {
               setDisplay(3)
               changeHeight('75%')
+            }}
+            suggestion={(data: any) => {
+              handleMarking(data)
             }}
           />
         )}
