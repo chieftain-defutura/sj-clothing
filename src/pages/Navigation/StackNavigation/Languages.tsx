@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next'
 import { userStore } from '../../../store/userStore'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-// const LanguagesData = ['Japanese', 'Chinese', 'Italian', 'Spanish', 'French', 'German', 'English']
 const LanguagesData = [
   { language: 'Japanese', lang: 'ja' },
   { language: 'Chinese', lang: 'zh' },

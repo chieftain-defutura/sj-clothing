@@ -11,5 +11,19 @@
   },
   "language": {
     "Choose Your Language": "选择你的语言"
+  },
+  "account": {
+    "Avatar": "阿凡达",
+    "My Cart": "我的车",
+    "My Orders": "我的订单",
+    "Addressbook": "地址簿",
+    "Accessories": "配件",
+    "Language": "语言",
+    "Currency": "货币",
+    "Help & FAQ": "帮助和常见问题解答",
+    "About us": "关于我们",
+    "Customer care": "客户关怀",
+    "Log out": "登出",
+    "Subscribe now": "现在订阅"
   }
 }

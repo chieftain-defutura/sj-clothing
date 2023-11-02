@@ -68,7 +68,7 @@ const FinalView: React.FC<IFinalView> = ({
   return (
     <AuthNavigate focus={focus} onClose={onClose}>
       <ScrollView style={styles.finalViewContainer}>
-        <View style={{ height: height / 1.2 }}>
+        <View>
           <CustomButton
             variant='primary'
             text='Buy now'
@@ -262,6 +262,7 @@ const styles = StyleSheet.create({
   finalViewContainer: {
     // flex: 1,
     padding: 16,
+    // height: height,
   },
   submitBtn: {
     marginVertical: 1,

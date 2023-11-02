@@ -77,7 +77,7 @@ const TabNavigationRoutes: React.FC = () => {
             ),
           headerShown: false,
         }}
-        component={Medium}
+        component={MidLevel}
       />
       <Tab.Screen
         name='Premium'

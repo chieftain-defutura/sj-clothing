@@ -109,7 +109,7 @@ const Medium = () => {
         isMounted.current = true
         const tempUid = uuid.v4().toString()
         const docRef = doc(db, 'ModelsMidlevel', tempUid)
-        await setDoc(docRef, { uid: tempUid })
+        await setDoc(docRef, { uid: tempUid, skin: avatar.skinTone })
         console.log('added')
 
         setUid(tempUid)
@@ -208,109 +208,105 @@ const Medium = () => {
   }
 
   return (
-    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
-      {!avatar.gender ? (
-        <Avatar path='MidLevel' />
-      ) : (
-        <View
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            position: 'relative',
-            justifyContent: 'space-between',
-            zIndex: 10,
-          }}
-        >
-          <Navigation
-            warning={warning}
-            setImageOrText={setImageOrText}
-            steps={isSteps}
-            dropDown={isDropDown}
-            slideValue={slideValue}
+    // <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+    <View
+      style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        justifyContent: 'space-between',
+        zIndex: 10,
+      }}
+    >
+      <Navigation
+        warning={warning}
+        setImageOrText={setImageOrText}
+        steps={isSteps}
+        dropDown={isDropDown}
+        slideValue={slideValue}
+        setDropDown={setDropDown}
+        isOpenDesign={isOpenDesign}
+        setOpenDesign={setOpenDesign}
+        handleDecreaseSteps={handleDecreaseSteps}
+        handleIncreaseSteps={handleIncreaseSteps}
+      />
+      <View style={{ zIndex: 5, width: width, position: 'absolute', top: 0 }}>
+        {isSteps === 1 && data && isDropDown && (
+          <SelectStyle
+            data={data}
+            handleIncreaseSteps={handleIncreaseSteps}
+            isSelectedStyle={isSelectedStyle}
+            setSelectedStyle={setSelectedStyle}
+          />
+        )}
+        {isSteps === 2 && isDropDown && FilteredData && (
+          <SelectCountry
+            data={FilteredData}
+            isSize={isSize}
+            setSize={setSize}
+            handleIncreaseSteps={handleIncreaseSteps}
             setDropDown={setDropDown}
-            isOpenDesign={isOpenDesign}
-            setOpenDesign={setOpenDesign}
-            handleDecreaseSteps={handleDecreaseSteps}
+          />
+        )}
+        {isSteps === 3 && isDropDown && FilteredData && (
+          <SelectSize
+            data={FilteredData}
+            isDropDown={isDropDown}
+            isSize={isSize}
+            setSize={setSize}
+            handleIncreaseSteps={handleIncreaseSteps}
+            setDropDown={setDropDown}
+          />
+        )}
+        {isSteps === 4 && isDropDown && FilteredData && (
+          <SelectColor
+            data={FilteredData}
+            isColor={isColor}
+            isDropDown={isDropDown}
+            setDropDown={setDropDown}
+            setColor={setColor}
             handleIncreaseSteps={handleIncreaseSteps}
           />
-          <View style={{ zIndex: 5, width: width, position: 'absolute', top: 0 }}>
-            {isSteps === 1 && data && isDropDown && (
-              <SelectStyle
-                data={data}
-                handleIncreaseSteps={handleIncreaseSteps}
-                isSelectedStyle={isSelectedStyle}
-                setSelectedStyle={setSelectedStyle}
-              />
-            )}
-            {isSteps === 2 && isDropDown && FilteredData && (
-              <SelectCountry
-                data={FilteredData}
-                isSize={isSize}
-                setSize={setSize}
-                handleIncreaseSteps={handleIncreaseSteps}
-                setDropDown={setDropDown}
-              />
-            )}
-            {isSteps === 3 && isDropDown && FilteredData && (
-              <SelectSize
-                data={FilteredData}
-                isDropDown={isDropDown}
-                isSize={isSize}
-                setSize={setSize}
-                handleIncreaseSteps={handleIncreaseSteps}
-                setDropDown={setDropDown}
-              />
-            )}
-            {isSteps === 4 && isDropDown && FilteredData && (
-              <SelectColor
-                data={FilteredData}
-                isColor={isColor}
-                isDropDown={isDropDown}
-                setDropDown={setDropDown}
-                setColor={setColor}
-                handleIncreaseSteps={handleIncreaseSteps}
-              />
-            )}
-            {isSteps === 6 && isDropDown && FilteredData && (
-              <AddImageOrText
-                data={FilteredData}
-                isDropDown={isDropDown}
-                setDropDown={setDropDown}
-                isImageOrText={isImageOrText}
-                setImageOrText={setImageOrText}
-                setOpenDesign={setOpenDesign}
-              />
-            )}
-          </View>
+        )}
+        {isSteps === 6 && isDropDown && FilteredData && (
+          <AddImageOrText
+            data={FilteredData}
+            isDropDown={isDropDown}
+            setDropDown={setDropDown}
+            isImageOrText={isImageOrText}
+            setImageOrText={setImageOrText}
+            setOpenDesign={setOpenDesign}
+          />
+        )}
+      </View>
 
-          <TShirt uid={uid} steps={isSteps} />
-          {isSteps === 5 && FilteredData && (
-            <FinalView
-              color={isColor}
-              data={FilteredData}
-              focus={focus}
-              handleSubmit={handleSubmit}
-              isSize={isSize}
-              setFocus={setFocus}
-              setSize={setSize}
-              style={isSelectedStyle}
-              isImageOrText={isImageOrText}
-            />
-          )}
-          {isSteps === 6 && Design && isOpenDesign && (
-            <SelectDesign
-              isImageOrText={isImageOrText}
-              designs={Design}
-              setOpenDesign={setOpenDesign}
-              isDone={isDone}
-              setDone={setDone}
-              setImageOrText={setImageOrText}
-            />
-          )}
-        </View>
+      <TShirt uid={uid} steps={isSteps} />
+      {isSteps === 5 && FilteredData && (
+        <FinalView
+          color={isColor}
+          data={FilteredData}
+          focus={focus}
+          handleSubmit={handleSubmit}
+          isSize={isSize}
+          setFocus={setFocus}
+          setSize={setSize}
+          style={isSelectedStyle}
+          isImageOrText={isImageOrText}
+        />
       )}
-    </LinearGradient>
+      {isSteps === 6 && Design && isOpenDesign && (
+        <SelectDesign
+          isImageOrText={isImageOrText}
+          designs={Design}
+          setOpenDesign={setOpenDesign}
+          isDone={isDone}
+          setDone={setDone}
+          setImageOrText={setImageOrText}
+        />
+      )}
+    </View>
+    // </LinearGradient>
   )
 }
 
