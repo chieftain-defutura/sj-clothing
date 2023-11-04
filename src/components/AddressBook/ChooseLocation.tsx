@@ -25,54 +25,42 @@ import { db } from '../../../firebase'
 import { useStore } from 'zustand'
 import { userStore } from '../../store/userStore'
 
-// interface AddressData {
-//   floor: string
-//   fullAddress: string
-//   landmark: string
-//   saveAddressAs: string
-// }
+interface AddressData {
+  floor: string
+  fullAddress: string
+  landmark: string
+  saveAddressAs: string
+}
 
 interface IChooseLocation {
   onAddPress: (event: GestureResponderEvent) => void | undefined | null
   onEditPress?: (event: GestureResponderEvent) => void | undefined | null
   suggestion?: any
-  handleClose: () => void
 }
 
-const ChooseLocation: React.FC<IChooseLocation> = ({
-  onAddPress,
-  onEditPress,
-  suggestion,
-  handleClose,
-}) => {
+const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, suggestion }) => {
   const [onText, setOnSearchChange] = React.useState<string>()
   const [checked, setChecked] = React.useState('first')
-  const [suggestions, setSuggestions] = React.useState([])
-  const [selectedAddress, setSelectedAddress] = useState<string>('')
-  // const [data, setData] = useState<AddressData[]>([])
+  const [suggestions, setSuggestions] = React.useState<string[] | null>([])
+  const [showSuggestion, setSugPop] = useState(false)
+  const [data, setData] = useState<AddressData[] | null>([])
   const { user } = userStore()
-  // console.log('daataaaa', data)
+  console.log('daataaaa', data)
 
-  // const getData = useCallback(async () => {
-  //   if (!user) return
-  //   const q = doc(db, 'users', user.uid)
-  //   const querySnapshot = await getDoc(q)
+  const getData = async () => {
+    if (!user) return
+    const q = doc(db, 'users', user.uid)
+    const querySnapshot = await getDoc(q)
 
-  //   const fetchData = querySnapshot.data()
-  //   setData(fetchData?.address)
-  //   console.log('fetchDataa', fetchData?.address)
-  // }, [])
+    const fetchData = querySnapshot.data()
+    if (fetchData?.address) setData(fetchData?.address)
+    else setData(null)
+    console.log('fetchDataa', fetchData?.address)
+  }
 
-  // useEffect(() => {
-  //   getData()
-  // }, [getData])
-
-  console.log('bxjsbxjjxjebxe', selectedAddress)
-
-  // console.log(
-  //   'swjdwjede',
-  //   suggestions.map((f) => f.display_name),
-  // )
+  useEffect(() => {
+    getData()
+  }, [])
 
   const handleSearchText = async (text: string) => {
     if (text === '') setSuggestions([])
@@ -88,8 +76,11 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
   const renderItem = (txt: string) => (
     <TouchableOpacity
       onPress={() => {
-        suggestion(txt), setSelectedAddress(txt), handleClose()
+        suggestion(txt)
+        setOnSearchChange(txt)
+        setSuggestions(null)
       }}
+      style={{ borderColor: 'black', borderWidth: 1 }}
     >
       <Text>{txt}</Text>
     </TouchableOpacity>
@@ -108,17 +99,21 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
           placeholderTextColor={COLORS.SecondaryTwo}
         />
       </View>
-      <View style={{ position: 'relative', zIndex: 1000 }}>
+
+      <View style={{ position: 'relative', zIndex: 10 }}>
         <FlatList
           data={suggestions}
           renderItem={({ item }) => renderItem(item.display_name)}
           keyExtractor={(item) => item.place_id.toString()}
+          scrollEnabled={true}
+          horizontal={false}
         />
       </View>
       <View>
         <RadioButton.Group onValueChange={(newValue) => setChecked(newValue)} value={checked}>
-          <ScrollView showsVerticalScrollIndicator={false} style={{ height: '67%' }}>
-            {AddressBookData.map((f, index) => (
+          {data ? (
+            <ScrollView showsVerticalScrollIndicator={false} style={{ height: '67%' }}>
+              {/* {AddressBookData.map((f, index) => (
               <View key={index} style={styles.radioBtn}>
                 <View>
                   <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
@@ -134,14 +129,32 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
                   <Text style={styles.editText}>Edit</Text>
                 </Pressable>
               </View>
-            ))}
-            {/* <View>
-              <Text>Floor: {data[0].floor}</Text>
-              <Text>Full Address: {data[0].fullAddress}</Text>
-              <Text>Landmark: {data[0].landmark}</Text>
-              <Text>Save Address As: {data[0].saveAddressAs}</Text>
-            </View> */}
-          </ScrollView>
+            ))} */}
+              {data.map((f, index) => (
+                <View key={index} style={styles.radioBtn}>
+                  <View>
+                    <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
+                  </View>
+                  <View style={{ display: 'flex', flexDirection: 'column' }}>
+                    <View style={styles.RadioTitle}>
+                      <HomeIcon width={16} height={16} color={'black'} />
+                      <HeaderStyle>{f.saveAddressAs}</HeaderStyle>
+                    </View>
+                    <DescriptionText>
+                      {f.fullAddress}, {f.landmark}, {f.floor}
+                    </DescriptionText>
+                  </View>
+                  <Pressable style={styles.editStyle} onPress={onEditPress}>
+                    <Text style={styles.editText}>Edit</Text>
+                  </Pressable>
+                </View>
+              ))}
+            </ScrollView>
+          ) : (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>No address</Text>
+            </View>
+          )}
         </RadioButton.Group>
         <FlexContent>
           <Pressable onPress={onAddPress}>
@@ -261,5 +274,15 @@ const styles = StyleSheet.create({
   editText: {
     color: '#DB00FF',
     fontSize: 14,
+  },
+  errorText: {
+    color: COLORS.textSecondaryClr,
+  },
+  errorContainer: {
+    height: '65%',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: 'black',
   },
 })

@@ -120,7 +120,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
     <LinearGradient colors={gradientOpacityColors}>
       <AuthNavigate focus={focus} onClose={onClose}>
         <ScrollView>
-          {/* <AuthNavigate focus={isFocused}> */}
           <AccountWrapper>
             <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
               <UserWrapper style={{ width: width, height: height / 2.5 }}>
@@ -221,17 +220,27 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                 </ProfileUserContent>
               </Pressable>
 
-              <LogoutPressable onPress={handleLogout}>
-                <ProfileUserContent>
-                  <FlexIcon>
-                    <LogoutIcon width={24} height={24} />
-                    <LogoutText>Log out</LogoutText>
-                  </FlexIcon>
-                </ProfileUserContent>
-              </LogoutPressable>
+              {user ? (
+                <LogoutPressable onPress={handleLogout}>
+                  <ProfileUserContent>
+                    <FlexIcon>
+                      <LogoutIcon width={24} height={24} />
+                      <LogoutText>Log out</LogoutText>
+                    </FlexIcon>
+                  </ProfileUserContent>
+                </LogoutPressable>
+              ) : (
+                <LogoutPressable onPress={() => setFocus(true)}>
+                  <ProfileUserContent>
+                    <FlexIcon>
+                      {/* <LogoutIcon width={24} height={24} /> */}
+                      <LogoutText style={{ color: '#462D85' }}>Log In</LogoutText>
+                    </FlexIcon>
+                  </ProfileUserContent>
+                </LogoutPressable>
+              )}
             </Animated.View>
           </AccountWrapper>
-          {/* </AuthNavigate> */}
         </ScrollView>
       </AuthNavigate>
     </LinearGradient>

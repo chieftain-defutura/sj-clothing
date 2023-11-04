@@ -1,5 +1,5 @@
 import { StyleSheet, View, KeyboardAvoidingView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MapView, { Marker } from 'react-native-maps'
 import CustomButton from '../../../components/Button'
 import styled from 'styled-components/native'
@@ -13,6 +13,7 @@ import AddAddress from '../../../components/AddressBook/AddAddress'
 import ChooseLocation from '../../../components/AddressBook/ChooseLocation'
 import EditAddress from '../../../components/AddressBook/EditAddress'
 import axios from 'axios'
+import * as Location from 'expo-location'
 
 interface IAddressBook {
   navigation: any
@@ -88,6 +89,24 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
       })
   }
 
+  // const getLocation = async () => {
+  //   try {
+  //     const { coords } = await Location.getCurrentPositionAsync({})
+  //     const { latitude, longitude } = coords
+  //     console.log('Latitude:', latitude)
+  //     console.log('Longitude:', longitude)
+  //   } catch (error) {
+  //     console.error('Error getting location:', error)
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   const test = async () => {
+  //     await getLocation()
+  //   }
+  //   test()
+  // })
+
   return (
     <KeyboardAvoidingView style={[styles.container]} contentContainerStyle={{ height: 900 }}>
       <GoBackArrowContent
@@ -162,9 +181,6 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
             suggestion={(data: any) => {
               handleMarking(data)
             }}
-            handleClose={() => {
-              handleClose()
-            }}
           />
         )}
         {showDisplay == 2 && (
@@ -178,7 +194,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
         {showDisplay == 3 && (
           <EditAddress
             onEditPress={() => {
-              setDisplay(3)
+              setDisplay(1)
               changeHeight('52%')
             }}
           />

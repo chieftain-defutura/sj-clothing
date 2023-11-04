@@ -1,5 +1,6 @@
 import React, { Fragment, useCallback, useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
+import { StripeProvider } from '@stripe/stripe-react-native'
 import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
 import { useFonts } from 'expo-font'
 import { userStore } from './src/store/userStore'
@@ -10,6 +11,9 @@ import { StatusBar } from 'expo-status-bar'
 import { I18nextProvider, useTranslation } from 'react-i18next'
 import i18n from './i18n'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+
+const PUBLISHABLE_KEY =
+  'pk_test_51O6p0wSGEesR2xZcTMeDvXgwTJgLfsOMehC1tZcDo7bphTUPo65HjeJJUcKIRYTqA115nRZi3CbzYH2GsuY69Htf00ewXq6Z7m'
 
 const App: React.FC = () => {
   const { updateUser, updateLanguage } = userStore()
@@ -51,20 +55,22 @@ const App: React.FC = () => {
   }
   return (
     <Fragment>
-      <I18nextProvider i18n={i18n}>
-        <SafeAreaView style={{ flex: 0, backgroundColor: 'rgba(191, 148, 228, 0.8)' }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(145, 177, 225, 0.85)' }}>
-          <NavigationContainer>
-            <StatusBar
-              animated={true}
-              backgroundColor='rgba(191, 148, 228, 0.1)'
-              // barStyle={'dark-content'}
-              style='dark'
-            />
-            <StackNavigationRoutes />
-          </NavigationContainer>
-        </SafeAreaView>
-      </I18nextProvider>
+      <StripeProvider publishableKey={PUBLISHABLE_KEY}>
+        <I18nextProvider i18n={i18n}>
+          <SafeAreaView style={{ flex: 0, backgroundColor: 'rgba(191, 148, 228, 0.8)' }} />
+          <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(145, 177, 225, 0.85)' }}>
+            <NavigationContainer>
+              <StatusBar
+                animated={true}
+                backgroundColor='rgba(191, 148, 228, 0.1)'
+                // barStyle={'dark-content'}
+                style='dark'
+              />
+              <StackNavigationRoutes />
+            </NavigationContainer>
+          </SafeAreaView>
+        </I18nextProvider>
+      </StripeProvider>
     </Fragment>
   )
 }

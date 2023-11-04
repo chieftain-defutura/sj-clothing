@@ -13,7 +13,7 @@ import { StyleSheet, Text, View, ScrollView, Keyboard, TextInput } from 'react-n
 import React, { useEffect, useRef, useState } from 'react'
 import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import Animated from 'react-native-reanimated'
-import { doc, updateDoc } from 'firebase/firestore/lite'
+import firestore, { doc, updateDoc, addDoc, collection, setDoc } from 'firebase/firestore/lite'
 import { userStore } from '../../store/userStore'
 import { db } from '../../../firebase'
 
@@ -48,9 +48,11 @@ const Home: React.FC<IAddAddress> = ({ onSavePress }) => {
     ]
 
     if (!user) return
-    await updateDoc(doc(db, 'users', user.uid), {
-      address: addressArray,
-    })
+    // await updateDoc(doc(db, 'users', user.uid), {
+    //   address: addressArray,
+    // })
+    const userDocRef = doc(db, 'users', user.uid)
+    await setDoc(userDocRef, { address: addressArray })
   }
 
   useEffect(() => {
