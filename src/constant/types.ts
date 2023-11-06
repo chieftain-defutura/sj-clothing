@@ -18,6 +18,8 @@ export interface PremiumCardProps {
 }
 
 interface CartItem {
+  normalPrice: string
+  productImage: string | undefined
   image: any
   product: string
   productName: string
@@ -30,9 +32,28 @@ interface CartItem {
 }
 
 export interface CartComponentProps {
-  cartData: CartItem[]
+  cartData: ICheckout
   closedItems: number[]
   handleClose: (index: number) => void
+}
+
+export interface ICheckout {
+  navigation: any
+  // route: RouteProp<RootStackParamList, 'Checkout'>
+  size: {
+    country: string
+    sizeVarient: {
+      size: string
+      measurement: string
+      quantity: number
+    }
+  }
+  description: string
+  normalPrice: string
+  offerPrice: string
+  gender: string
+  productName: string
+  productImage: any
 }
 
 export interface IPremiumData {

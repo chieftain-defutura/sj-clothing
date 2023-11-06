@@ -5,11 +5,10 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import TickIcon from '../../assets/icons/TickIcon'
 import CustomButton from '../Button'
@@ -21,10 +20,21 @@ import HomeIcon from '../../assets/icons/HomeIcon'
 import { doc, getDoc, updateDoc } from 'firebase/firestore/lite'
 import { db } from '../../../firebase'
 import { userStore } from '../../store/userStore'
+import * as Location from 'expo-location'
 
 interface IEditAddress {
   onEditPress: () => void
+  selectedAddress: AddressData
 }
+
+interface AddressData {
+  floor: string
+  fullAddress: string
+  landmark: string
+  saveAddressAs: string
+  isSelected: boolean
+}
+
 const validationSchema = yup.object({
   editAddress: yup.string().required('please enter full address'),
   floor: yup.string().required('Please enter your floor'),
@@ -32,29 +42,76 @@ const validationSchema = yup.object({
   displayName: yup.string().required('Enter a display name'),
 })
 
-const EditAddress: React.FC<IEditAddress> = ({ onEditPress }) => {
-  const [onText, setOnSearchChange] = React.useState<string>()
+const EditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddress }) => {
   const [keyboardStatus, setKeyboardStatus] = React.useState('')
-  const [checked, setChecked] = React.useState('first')
   const { user } = userStore()
-  const [data, setData] = useState()
+  const [addr, setAddr] = useState()
 
   const onSubmit = async () => {
-    console.log('submitted')
+    if (!user) return
     const addressArray = [
       {
         fullAddress: formik.values.editAddress,
         floor: formik.values.floor,
         landmark: formik.values.landmark,
         saveAddressAs: formik.values.displayName,
+        isSelected: false,
       },
     ]
-    await updateDoc(doc(db, 'users', user.uid), {
-      address: addressArray,
+    const userDocRef = doc(db, 'users', user.uid)
+    const userDoc = await getDoc(userDocRef)
+    const userData = userDoc.data()
+    if (!userData) return
+    console.log('old', selectedAddress)
+    console.log('new', userData.address)
+    const arr = userData.address.filter((element: AddressData) => {
+      return element.fullAddress !== selectedAddress.fullAddress
     })
+    console.log(arr)
+    userData.address = [...arr, ...addressArray]
+    await updateDoc(userDocRef, userData)
+  }
+  const getLocationOn = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync()
+    if (status !== 'granted') {
+      console.log('Please grant location permissions')
+      return
+    }
+
+    let currentLocation = await Location.getCurrentPositionAsync({})
+    const loc = {
+      latitude: currentLocation.coords.latitude,
+      longitude: currentLocation.coords.longitude,
+    }
+    return loc
+  }
+
+  async function reverseGeocode(latitude: number, longitude: number, success: (data: any) => void) {
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+
+    return fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.display_name) {
+          console.log(data.display_name)
+          success(data.display_name)
+          return data.display_name
+        } else {
+          setAddr('')
+          return 'Address not found'
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+        return 'Failed to retrieve address'
+      })
   }
 
   useEffect(() => {
+    getLocationOn().then((loc) => {
+      if (loc?.longitude && loc.latitude)
+        reverseGeocode(loc.latitude, loc.longitude, (data) => setAddr(data))
+    })
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardStatus('Keyboard Shown')
     })
@@ -70,37 +127,26 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress }) => {
 
   const formik = useFormik({
     initialValues: {
-      editAddress: '',
-      floor: '',
-      landmark: '',
-      displayName: '',
+      editAddress: selectedAddress.fullAddress,
+      floor: selectedAddress.floor,
+      landmark: selectedAddress.landmark,
+      displayName: selectedAddress.saveAddressAs,
     },
     validationSchema: validationSchema,
     onSubmit: onSubmit,
   })
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     if (!user) return
     const q = doc(db, 'users', user.uid)
     const querySnapshot = await getDoc(q)
 
     const fetchData = querySnapshot.data()
-    if (fetchData) {
-      const addressData = fetchData.address[0]
-      formik.setValues({
-        editAddress: addressData.fullAddress,
-        floor: addressData.floor,
-        landmark: addressData.landmark,
-        displayName: addressData.saveAddressAs,
-      })
-    }
-    setData(fetchData?.address)
-    console.log('fetchDataa', fetchData?.address)
-  }
+  }, [user])
 
   useEffect(() => {
     getData()
-  }, [])
+  }, [getData])
 
   return (
     <KeyboardAvoidingView style={styles.flexBox} enabled={true} behavior={'padding'}>
@@ -125,15 +171,18 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress }) => {
                   }}
                 >
                   <View style={styles.RadioTitle}>
-                    <HeaderStyle>Home</HeaderStyle>
+                    <HeaderStyle>{selectedAddress.saveAddressAs}</HeaderStyle>
                   </View>
-                  <DescriptionText>
-                    Madras Christian College, East Tambaram, Chennai - 600 059.
-                  </DescriptionText>
+                  {addr && <DescriptionText>{addr}</DescriptionText>}
                 </View>
               </View>
 
-              <Pressable style={styles.editStyle}>
+              <Pressable
+                style={styles.editStyle}
+                onPress={() => {
+                  formik.setValues({ ...formik.values, editAddress: addr })
+                }}
+              >
                 <ChangeText>Change</ChangeText>
               </Pressable>
             </View>

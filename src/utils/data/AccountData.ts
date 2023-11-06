@@ -25,12 +25,12 @@ export const AccountData = [
   //   rightText: '44 posts',
   //   navigation: 'MyPosts',
   // },
-  // {
-  //   leftIcon: SackDollar,
-  //   name: 'Royalties',
-  //   rightText: '1500 INR',
-  //   navigation: 'Royalties',
-  // },
+  {
+    leftIcon: SackDollar,
+    name: 'Checkout',
+    rightText: '1500 INR',
+    navigation: 'CheckoutPayment',
+  },
   {
     leftIcon: Cart,
     name: 'My cart',

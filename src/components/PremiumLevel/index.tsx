@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
-import { collection, getDocs } from 'firebase/firestore/lite'
+import { addDoc, collection, getDocs } from 'firebase/firestore/lite'
 import styled from 'styled-components/native'
 import { db } from '../../../firebase'
 import PremiumCard from './PremiumCard'
@@ -8,6 +8,8 @@ import PremiumDetailsCard from './PremiumDetailsCard'
 import PremiumThreeSixtyDegree from './PremiumThreeSixtyDegree'
 import { useNavigation } from '@react-navigation/native'
 import { IPremiumData } from '../../constant/types'
+import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
+import { userStore } from '../../store/userStore'
 
 const { width, height } = Dimensions.get('window')
 
@@ -18,9 +20,11 @@ interface IPremiumLevel {
 
 const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) => {
   const navigation = useNavigation()
+  const { user, updateOderId } = userStore()
   const [data, setData] = useState<IPremiumData[]>()
   const [openCard, setOpenCard] = useState(false)
   const [productId, setProductId] = useState('')
+  const [focus, setFocus] = useState(false)
 
   const [isSize, setSize] = useState({
     country: '',
@@ -45,6 +49,58 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   }
   const FilteredData = data?.filter((f) => f.id === productId)
 
+  const handleSubmit = async () => {
+    if (!FilteredData) return
+    if (!user) {
+      setFocus(true)
+    } else {
+      // navigation.navigate('Checkout', { product: data })
+      setFocus(true)
+      const docRef = await addDoc(collection(db, 'Orders'), {
+        sizes: isSize,
+        productImage: FilteredData[0].productImage,
+        description: FilteredData[0].description,
+        price: FilteredData[0].normalPrice,
+        offerPrice: FilteredData[0].offerPrice,
+        status: 'pending',
+        userId: user?.uid,
+        gender: FilteredData[0].gender,
+        type: 'Premium-Level',
+        productName: FilteredData[0].productName,
+        orderStatus: {
+          orderplaced: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          manufacturing: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          readyToShip: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          shipping: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          delivery: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+        },
+      })
+      updateOderId(docRef.id)
+      setOpenDetails(false)
+      navigation.navigate('Checkout')
+    }
+  }
+
   if (!data) return <Text>No Data</Text>
   return (
     <View style={{ flex: 1 }}>
@@ -53,10 +109,11 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
           {FilteredData?.map((item, index) => (
             <PremiumThreeSixtyDegree
               key={index}
-              navigation={navigation}
               setOpenDetails={setOpenDetails}
               data={item}
-              size={isSize}
+              focus={focus}
+              handleSubmit={handleSubmit}
+              setFocus={setFocus}
             />
           ))}
         </View>
@@ -72,6 +129,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
                   setSize={setSize}
                   handleBack={handleBack}
                   isSize={isSize}
+                  handleSubmit={handleSubmit}
                 />
               ))}
             </View>

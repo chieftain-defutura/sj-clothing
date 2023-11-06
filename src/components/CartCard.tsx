@@ -1,56 +1,58 @@
 import React from 'react'
-import { View, ScrollView, Pressable } from 'react-native'
+import { View } from 'react-native'
 import { CartComponentProps } from '../constant/types'
 import styled from 'styled-components/native'
 import { COLORS } from '../styles/theme'
 import CircleClose from '../assets/icons/CircleClose'
 
 const CartCard: React.FC<CartComponentProps> = ({ cartData, closedItems, handleClose }) => {
+  // useEffect(() => {
+  //   Object.values(cartData).forEach((x) => {
+  //     console.log('Image Link', x.productImage)
+  //   })
+  // })
+
   return (
     <CartPageContent>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {cartData.map((item, index) => {
-          const isItemClosed = closedItems.includes(index)
-          return (
-            <View key={index}>
-              {!isItemClosed && (
-                <CartPageContainer>
-                  <View>
-                    <TShirtImage source={item.image} />
-                  </View>
-                  <View>
-                    <ProductWrapper>
-                      <View style={{ marginBottom: 16 }}>
-                        <ProductText>{item.product}</ProductText>
-                        <ProductShirtText>{item.productName}</ProductShirtText>
-                      </View>
-                      <Pressable onPress={() => handleClose(index)}>
+      <View>
+        <CartPageContainer>
+          <View>
+            <TShirtImage source={{ uri: cartData.productImage }} />
+          </View>
+          <View>
+            <ProductWrapper>
+              <View style={{ marginBottom: 16 }}>
+                <ProductText>Product</ProductText>
+                <ProductShirtText>{cartData.productName}</ProductShirtText>
+              </View>
+              {/* <Pressable onPress={() => handleClose(index)}>
                         <CircleClose width={20} height={20} />
-                      </Pressable>
-                    </ProductWrapper>
-                    <ProductSizes>
-                      <ProductStyle>
-                        <ProductText>{item.size}</ProductText>
-                        <ProductShirtText>{item.sizeCm}</ProductShirtText>
-                      </ProductStyle>
-                      <ProductStyle>
+                      </Pressable> */}
+            </ProductWrapper>
+            {/* <ProductSizes> */}
+            {/* <ProductStyle> */}
+            {/* <ProductText>Size</ProductText> */}
+            {/* <ProductShirtText>
+                  {size} - {measurement}
+                </ProductShirtText> */}
+            {/* </ProductStyle> */}
+            {/* <ProductStyle>
                         <ProductText>{item.style}</ProductText>
                         <ProductShirtText>{item.styleName}</ProductShirtText>
-                      </ProductStyle>
-                    </ProductSizes>
-                    <ProductSizes>
-                      <ProductStyle style={{ marginTop: 16 }}>
-                        <ProductText>{item.price}</ProductText>
-                        <ProductShirtText>{item.priceInr}</ProductShirtText>
-                      </ProductStyle>
-                    </ProductSizes>
-                  </View>
-                </CartPageContainer>
-              )}
-            </View>
-          )
-        })}
-      </ScrollView>
+                      </ProductStyle> */}
+            {/* </ProductSizes> */}
+
+            <ProductStyle style={{ marginTop: 6 }}>
+              <ProductText>Price</ProductText>
+              <ProductShirtText>
+                {cartData.normalPrice}
+                {cartData.offerPrice} INR
+              </ProductShirtText>
+            </ProductStyle>
+            {/* </ProductSizes> */}
+          </View>
+        </CartPageContainer>
+      </View>
     </CartPageContent>
   )
 }
@@ -60,6 +62,7 @@ const CartPageContent = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+  margin-left: -120px;
 `
 
 const ProductStyle = styled.View``
@@ -75,8 +78,8 @@ const CartPageContainer = styled.View`
 `
 
 const TShirtImage = styled.Image`
-  width: 80px;
-  height: 80px;
+  width: 140px;
+  height: 120px;
   flex-shrink: 0;
   object-fit: contain;
 `

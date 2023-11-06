@@ -5,11 +5,10 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import Search from '../../assets/icons/SearchIcon'
 import Plus from '../../assets/icons/PlusIcon'
@@ -17,35 +16,75 @@ import TickIcon from '../../assets/icons/TickIcon'
 import CustomButton from '../Button'
 import { COLORS } from '../../styles/theme'
 import { RadioButton } from 'react-native-paper'
-import { AddressBookData } from '../../utils/data/AddressBookData'
 import HomeIcon from '../../assets/icons/HomeIcon'
 import axios from 'axios'
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore/lite'
+import { doc, getDoc, updateDoc } from 'firebase/firestore/lite'
 import { db } from '../../../firebase'
-import { useStore } from 'zustand'
 import { userStore } from '../../store/userStore'
+import { useIsFocused } from '@react-navigation/native'
+import * as Location from 'expo-location'
 
 interface AddressData {
   floor: string
   fullAddress: string
   landmark: string
   saveAddressAs: string
+  isSelected: boolean
 }
 
 interface IChooseLocation {
-  onAddPress: (event: GestureResponderEvent) => void | undefined | null
-  onEditPress?: (event: GestureResponderEvent) => void | undefined | null
+  onAddPress: (
+    event: GestureResponderEvent,
+    location: string | undefined,
+  ) => void | undefined | null
+  onEditPress?: (event: GestureResponderEvent, address: AddressData) => void | undefined | null
   suggestion?: any
+  addedAddress: AddressData[]
 }
 
-const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, suggestion }) => {
+const ChooseLocation: React.FC<IChooseLocation> = ({
+  onAddPress,
+  onEditPress,
+  suggestion,
+  addedAddress,
+}) => {
   const [onText, setOnSearchChange] = React.useState<string>()
-  const [checked, setChecked] = React.useState('first')
+  const [checked, setChecked] = React.useState<string | null>(null)
   const [suggestions, setSuggestions] = React.useState<string[] | null>([])
-  const [showSuggestion, setSugPop] = useState(false)
   const [data, setData] = useState<AddressData[] | null>([])
+  const [location, setLocation] = useState<Location.LocationObject>()
   const { user } = userStore()
-  console.log('daataaaa', data)
+  const focus = useIsFocused()
+  console.log('daataaaa', typeof data)
+
+  const updateData = async (index: string) => {
+    if (data) {
+      console.log(data)
+      // Iterate through the data array
+      data.forEach((item, i) => {
+        if (i === parseInt(index)) {
+          // Set the 'isSelected' property to true for the selected item
+          item.isSelected = true
+        } else {
+          // Set the 'isSelected' property to false for all other items
+          item.isSelected = false
+        }
+      })
+
+      // Make a copy of the updated array and set it using setData
+      const updatedData = [...data]
+      console.log(data)
+      setData(updatedData)
+      //@ts-ignore
+      const userDocRef = doc(db, 'users', user.uid)
+      const userDoc = await getDoc(userDocRef)
+      const userData = userDoc.data()
+      if (!userData) return
+      userData.address = [...data]
+      await updateDoc(userDocRef, userData)
+      // Now, updatedData contains the modified array with 'isSelected' values updated
+    }
+  }
 
   const getData = async () => {
     if (!user) return
@@ -53,26 +92,50 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
     const querySnapshot = await getDoc(q)
 
     const fetchData = querySnapshot.data()
-    if (fetchData?.address) setData(fetchData?.address)
-    else setData(null)
-    console.log('fetchDataa', fetchData?.address)
+    if (addedAddress && fetchData?.adddress) {
+      const array = [...addedAddress, ...fetchData?.adddress]
+      console.log('asdasd', array)
+      setData(array)
+    } else if (fetchData?.address) {
+      const addressData: AddressData[] = Object.values(fetchData?.address)
+      setData(addressData)
+      addressData.forEach((d, index) => {
+        if (d.isSelected === true) {
+          setChecked(index.toString())
+        }
+      })
+    }
+    console.log('fetchData', data)
   }
 
   useEffect(() => {
     getData()
-  }, [])
+  }, [focus])
 
   const handleSearchText = async (text: string) => {
     if (text === '') setSuggestions([])
     setOnSearchChange(text)
 
-    // Make a request to the Nominatim geocoding service to get location suggestions
     const response = await axios.get(
       `https://nominatim.openstreetmap.org/search?format=json&q=${text}`,
     )
 
     setSuggestions(response.data)
   }
+
+  const getLocationPermissions = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync()
+    if (status !== 'granted') {
+      console.log('Please grant location permissions')
+      return
+    }
+
+    let currentLocation = await Location.getCurrentPositionAsync({})
+    setLocation(currentLocation)
+    console.log('Location:')
+    console.log(currentLocation)
+  }
+
   const renderItem = (txt: string) => (
     <TouchableOpacity
       onPress={() => {
@@ -80,12 +143,16 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
         setOnSearchChange(txt)
         setSuggestions(null)
       }}
-      style={{ borderColor: 'black', borderWidth: 1 }}
+      style={{
+        borderBottomColor: '#E5CEF5',
+        borderBottomWidth: 1,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+      }}
     >
-      <Text>{txt}</Text>
+      <HeaderStyle>{txt}</HeaderStyle>
     </TouchableOpacity>
   )
-  // if (!data) return
 
   return (
     <View>
@@ -110,8 +177,18 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
         />
       </View>
       <View>
-        <RadioButton.Group onValueChange={(newValue) => setChecked(newValue)} value={checked}>
-          {data ? (
+        <RadioButton.Group
+          onValueChange={(newValue) => {
+            updateData(newValue)
+            setChecked(newValue)
+          }}
+          value={checked}
+        >
+          {data?.length === 0 ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>No address</Text>
+            </View>
+          ) : data ? (
             <ScrollView showsVerticalScrollIndicator={false} style={{ height: '67%' }}>
               {/* {AddressBookData.map((f, index) => (
               <View key={index} style={styles.radioBtn}>
@@ -144,7 +221,7 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
                       {f.fullAddress}, {f.landmark}, {f.floor}
                     </DescriptionText>
                   </View>
-                  <Pressable style={styles.editStyle} onPress={onEditPress}>
+                  <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
                     <Text style={styles.editText}>Edit</Text>
                   </Pressable>
                 </View>
@@ -152,12 +229,12 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
             </ScrollView>
           ) : (
             <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>No address</Text>
+              <Text style={styles.errorText}>Loading</Text>
             </View>
           )}
         </RadioButton.Group>
         <FlexContent>
-          <Pressable onPress={onAddPress}>
+          <Pressable onPress={(e) => onAddPress(e, onText)}>
             <AddAddressBtn>
               <Plus width={16} height={16} />
               <BtnText>Add new Address</BtnText>
@@ -244,7 +321,7 @@ const styles = StyleSheet.create({
   inputBox: {
     borderRadius: 20,
     backgroundColor: 'white',
-    color: 'black',
+    color: '#462D85',
     fontSize: 14,
     marginVertical: 8,
   },

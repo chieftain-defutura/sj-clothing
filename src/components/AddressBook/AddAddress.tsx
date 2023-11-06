@@ -1,5 +1,6 @@
 import { Pressable } from 'react-native'
 import styled from 'styled-components/native'
+import axios from 'axios'
 import Search from '../../assets/icons/SearchIcon'
 import TickIcon from '../../assets/icons/TickIcon'
 import CustomButton from '../Button'
@@ -13,12 +14,22 @@ import { StyleSheet, Text, View, ScrollView, Keyboard, TextInput } from 'react-n
 import React, { useEffect, useRef, useState } from 'react'
 import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import Animated from 'react-native-reanimated'
-import firestore, { doc, updateDoc, addDoc, collection, setDoc } from 'firebase/firestore/lite'
+import firestore, {
+  doc,
+  updateDoc,
+  addDoc,
+  collection,
+  setDoc,
+  getDoc,
+} from 'firebase/firestore/lite'
 import { userStore } from '../../store/userStore'
 import { db } from '../../../firebase'
+import * as Location from 'expo-location'
 
 interface IAddAddress {
   onSavePress: () => void
+  location: string
+  saveAddress: (data: any) => void
 }
 
 const validationSchema = yup.object({
@@ -28,13 +39,54 @@ const validationSchema = yup.object({
   saveAddressAs: yup.string().required('Please enter save address'),
 })
 
-const Home: React.FC<IAddAddress> = ({ onSavePress }) => {
+const Home: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress }) => {
   const height = useSharedValue(0)
   const scrollRed = useRef<ScrollView>(null)
   const [onText, setOnSearchChange] = React.useState<string>()
   const [keyboardStatus, setKeyboardStatus] = React.useState('')
+  const [Addr, setAddr] = useState<string | null>(null)
   const [padding, setPadding] = useState(0)
   const { user } = userStore()
+
+  const getPermissions = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync()
+    if (status !== 'granted') {
+      console.log('Please grant location permissions')
+      return
+    }
+
+    let currentLocation = await Location.getCurrentPositionAsync({})
+    const loc = {
+      latitude: currentLocation.coords.latitude,
+      longitude: currentLocation.coords.longitude,
+    }
+    reverseGeocode(loc.latitude, loc.longitude, (data) =>
+      formik.setValues({ ...formik.values, ...data }),
+    )
+  }
+
+  async function reverseGeocode(latitude: number, longitude: number, success: (data: any) => void) {
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+
+    return fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.display_name) {
+          console.log(data.display_name)
+          setAddr(data.display_name)
+          formik.setValues({ ...formik.values, fullAddress: data.display_name })
+          success(data.display_name)
+          return data.display_name
+        } else {
+          setAddr('')
+          return 'Address not found'
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+        return 'Failed to retrieve address'
+      })
+  }
 
   const onSubmit = async () => {
     console.log('Formik Data:', formik.values)
@@ -44,18 +96,44 @@ const Home: React.FC<IAddAddress> = ({ onSavePress }) => {
         floor: formik.values.floor,
         landmark: formik.values.landmark,
         saveAddressAs: formik.values.saveAddressAs,
+        isSelected: false,
       },
     ]
 
+    saveAddress(addressArray)
+
     if (!user) return
-    // await updateDoc(doc(db, 'users', user.uid), {
-    //   address: addressArray,
-    // })
     const userDocRef = doc(db, 'users', user.uid)
-    await setDoc(userDocRef, { address: addressArray })
+    const userDoc = await getDoc(userDocRef)
+    const userData = userDoc.data()
+    if (!userData) return
+    if (userData.address.length === 0) {
+      addressArray[0].isSelected = true
+    }
+    userData.address = [...userData.address, ...addressArray]
+    await updateDoc(userDocRef, userData)
+  }
+
+  const getLocationOn = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync()
+    if (status !== 'granted') {
+      console.log('Please grant location permissions')
+      return
+    }
+
+    let currentLocation = await Location.getCurrentPositionAsync({})
+    const loc = {
+      latitude: currentLocation.coords.latitude,
+      longitude: currentLocation.coords.longitude,
+    }
+    return loc
   }
 
   useEffect(() => {
+    getLocationOn().then((loc) => {
+      if (loc?.longitude && loc.latitude)
+        reverseGeocode(loc.latitude, loc.longitude, (data) => setAddr(data))
+    })
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardStatus('Keyboard Shown')
     })
@@ -71,7 +149,7 @@ const Home: React.FC<IAddAddress> = ({ onSavePress }) => {
 
   const formik = useFormik({
     initialValues: {
-      fullAddress: '',
+      fullAddress: location ? location : '',
       floor: '',
       landmark: '',
       saveAddressAs: '',
@@ -125,12 +203,15 @@ const Home: React.FC<IAddAddress> = ({ onSavePress }) => {
           <View>
             <View>
               <View style={styles.currentLocation}>
-                <View
+                <Pressable
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'center',
                     gap: 16,
+                  }}
+                  onPress={() => {
+                    getPermissions()
                   }}
                 >
                   <CurrentLocationIcon width={16} height={16} />
@@ -144,11 +225,9 @@ const Home: React.FC<IAddAddress> = ({ onSavePress }) => {
                     <View style={styles.RadioTitle}>
                       <HeaderStyle>Use current location</HeaderStyle>
                     </View>
-                    <DescriptionText>
-                      Madras Christian College, East Tambaram, Chennai - 600 059.
-                    </DescriptionText>
+                    {Addr && <DescriptionText>{Addr}</DescriptionText>}
                   </View>
-                </View>
+                </Pressable>
 
                 <Pressable style={styles.editStyle}>
                   <ChevronLeft width={16} height={16} />
@@ -284,7 +363,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    marginBottom: 8,
+    marginBottom: 3,
   },
   editStyle: {
     justifyContent: 'center',
