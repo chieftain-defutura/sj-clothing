@@ -10,14 +10,8 @@ import {
   Pressable,
   TouchableOpacity,
   Share,
-  Alert,
 } from 'react-native'
-import {
-  PlatformPay,
-  confirmPlatformPayPayment,
-  usePlatformPay,
-  useStripe,
-} from '@stripe/stripe-react-native'
+import { PlatformPay, confirmPlatformPayPayment } from '@stripe/stripe-react-native'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import LeftArrow from '../../assets/icons/LeftArrow'
 import ShareArrow from '../../assets/icons/ShareArrow'
@@ -64,6 +58,7 @@ interface IPremiumDetailsCard {
   >
   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>
   handleBack: () => void
+  handleSubmit: () => Promise<void>
 }
 
 const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
@@ -72,8 +67,9 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   setSize,
   isSize,
   setOpenDetails,
+  handleSubmit,
 }) => {
-  const navigation = useNavigation()
+  const { currency, rate } = userStore()
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
@@ -81,19 +77,17 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
   const [focus, setFocus] = useState(false)
   const user = userStore((state) => state.user)
-  const [en, setEn] = useState(false)
-  const stripe = useStripe()
 
-  const { isPlatformPaySupported } = usePlatformPay()
+  // const { isPlatformPaySupported } = usePlatformPay()
 
-  React.useEffect(() => {
-    ;(async function () {
-      if (!(await isPlatformPaySupported({ googlePay: { testEnv: true } }))) {
-        Alert.alert('Google Pay is not supported.')
-        return
-      }
-    })()
-  }, [])
+  // React.useEffect(() => {
+  //   ;(async function () {
+  //     if (!(await isPlatformPaySupported({ googlePay: { testEnv: true } }))) {
+  //       Alert.alert('Google Pay is not supported.')
+  //       return
+  //     }
+  //   })()
+  // }, [])
 
   const fetchPaymentIntentClientSecret = async () => {
     const reqData = {
@@ -102,81 +96,34 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
       currency: 'INR',
       amount: 200,
     }
-    const response = await fetch(
-      'https://5a47-49-37-223-110.ngrok-free.app/create-payment-intent',
-      {
-        method: 'POST',
-        body: JSON.stringify(reqData),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    const response = await fetch('https://sj-clothing-backend.cyclic.app/create-payment-intent', {
+      method: 'POST',
+      body: JSON.stringify(reqData),
+      headers: {
+        'Content-Type': 'application/json',
       },
-    )
+    })
     const data = await response.json()
     return data
   }
 
-  const pay = async () => {
-    const clientSecret = await fetchPaymentIntentClientSecret()
+  // const pay = async () => {
+  //   const clientSecret = await fetchPaymentIntentClientSecret()
 
-    const { error } = await confirmPlatformPayPayment(clientSecret, {
-      googlePay: {
-        testEnv: true,
-        merchantName: 'My merchant name',
-        merchantCountryCode: 'US',
-        currencyCode: 'USD',
-        billingAddressConfig: {
-          format: PlatformPay.BillingAddressFormat.Full,
-          isPhoneNumberRequired: true,
-          isRequired: true,
-        },
-      },
-    })
-  }
-
-  const subscribe = async () => {
-    setEn(true)
-    try {
-      // sending request
-      const reqData = {
-        name: 'johns',
-        email: 'a@a.com',
-        currency: 'INR',
-        amount: 200,
-      }
-      const response = await fetch(
-        'https://5a47-49-37-223-110.ngrok-free.app/create-payment-intent',
-        {
-          method: 'POST',
-          body: JSON.stringify(reqData),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      )
-      const data = await response.json()
-      if (!response.ok) return Alert.alert(data.message)
-      const clientSecret = data.clientSecret
-      const initSheet = await stripe.initPaymentSheet({
-        paymentIntentClientSecret: clientSecret,
-        merchantDisplayName: 'SJ Clothing',
-      })
-      if (initSheet.error) {
-        setEn(false)
-        return Alert.alert(initSheet.error.message)
-      }
-      const presentSheet = await stripe.presentPaymentSheet({})
-      if (presentSheet.error) {
-        setEn(false)
-        return Alert.alert(presentSheet.error.message)
-      }
-      Alert.alert('Payment complete, thank you!')
-    } catch (err) {
-      console.error(err)
-      Alert.alert('Something went wrong, try again later!')
-    }
-    setEn(false)
-  }
+  //   const { error } = await confirmPlatformPayPayment(clientSecret, {
+  //     googlePay: {
+  //       testEnv: true,
+  //       merchantName: 'Sj clothing',
+  //       merchantCountryCode: 'US',
+  //       currencyCode: 'USD',
+  //       billingAddressConfig: {
+  //         format: PlatformPay.BillingAddressFormat.Full,
+  //         isPhoneNumberRequired: true,
+  //         isRequired: true,
+  //       },
+  //     },
+  //   })
+  // }
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prevState) => !prevState)
@@ -214,15 +161,14 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
     }
   }
 
-  const handleLogin = () => {
-    if (!user) {
-      setFocus(true)
-    } else {
-      subscribe()
-      navigation.navigate('Checkout')
-      setFocus(true)
-    }
-  }
+  // const handleLogin = () => {
+  //   if (!user) {
+  //     setFocus(true)
+  //   } else {
+  //     navigation.navigate('Checkout')
+  //     setFocus(true)
+  //   }
+  // }
 
   const onClose = () => {
     setFocus(false)
@@ -323,7 +269,9 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                       {!data.offerPrice ? (
                         <View>
                           <ProductText>price</ProductText>
-                          <ProductName>{data.normalPrice}INR</ProductName>
+                          <ProductName>
+                            {(Number(data.normalPrice) * (rate as number)).toFixed(2)}INR
+                          </ProductName>
                         </View>
                       ) : (
                         <View>
@@ -331,8 +279,30 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                             <ProductText>price</ProductText>
                           </View>
                           <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
-                            <OldPriceText>{data.normalPrice}INR</OldPriceText>
-                            <ProductName>{data.offerPrice}INR</ProductName>
+                            <View
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <OldPriceText>
+                                {(Number(data.normalPrice) * (rate as number)).toFixed(2)}
+                              </OldPriceText>
+                              <OldPriceText> {currency.symbol}</OldPriceText>
+                            </View>
+                            <View
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <ProductName>
+                                {(Number(data.offerPrice) * (rate as number)).toFixed(2)}
+                              </ProductName>
+                              <ProductName>{currency.symbol}</ProductName>
+                            </View>
                           </View>
                         </View>
                       )}
@@ -470,7 +440,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                   fontFamily='Arvo-Regular'
                   fontSize={13}
                   style={{ width: 170 }}
-                  onPress={() => handleLogin()}
+                  onPress={handleSubmit}
                   // onPress={() => navigation.navigate('Checkout')}
                 />
               </Btns>

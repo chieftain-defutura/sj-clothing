@@ -30,7 +30,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({
       handleIncreaseSteps()
     }
   }, [isSelectedStyle])
-  console.log(isSelectedStyle)
   return (
     <LinearGradient
       colors={dropDownGradient}

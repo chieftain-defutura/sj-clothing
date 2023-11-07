@@ -300,7 +300,6 @@ const Post: React.FC<postProps> = ({ route }) => {
   useEffect(() => {
     fetchDataFromFirestore()
     if (route.params) {
-      console.log('show tool tip', route.params.showToolTip)
       setTooltip(route.params.showToolTip)
     }
   }, [fetchDataFromFirestore])

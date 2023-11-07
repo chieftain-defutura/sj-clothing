@@ -12,6 +12,7 @@ import { I18nextProvider, useTranslation } from 'react-i18next'
 import i18n from './i18n'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Svg, { Path } from 'react-native-svg'
+import axios from 'axios'
 
 const PUBLISHABLE_KEY =
   'pk_test_51O6p0wSGEesR2xZcTMeDvXgwTJgLfsOMehC1tZcDo7bphTUPo65HjeJJUcKIRYTqA115nRZi3CbzYH2GsuY69Htf00ewXq6Z7m'
@@ -28,13 +29,12 @@ const currencyData = {
   abrive: 'EUR',
 }
 const App: React.FC = () => {
-  const { updateUser, updateLanguage, language, updateCurrency, currency } = userStore()
+  const { updateUser, updateLanguage, language, updateCurrency, currency, updateRate, rate } =
+    userStore()
   useEffect(() => {
     return onAuthStateChanged(auth, (data) => {
       if (data) {
         updateUser(data)
-      } else {
-        // no user
       }
     })
   }, [])
@@ -50,7 +50,7 @@ const App: React.FC = () => {
       updateLanguage('en')
       i18n.changeLanguage(getLanguage as string)
     }
-  }, [language])
+  }, [])
   useEffect(() => {
     getLanguage()
   }, [getLanguage])
@@ -65,15 +65,31 @@ const App: React.FC = () => {
     if (!getCurrency) {
       updateCurrency({
         currency: currencyData.currency,
-        abrive: currency.abrive as string,
-        symbol: currency.symbol,
+        abrive: currencyData.abrive as string,
+        symbol: currencyData.symbol as any,
       })
     }
-  }, [currency])
+  }, [])
 
   useEffect(() => {
     getCurrency()
   }, [getCurrency])
+
+  const getRate = useCallback(async () => {
+    try {
+      const apiKey = 'ed22061f115b6f153d0c75ee'
+      const response = await axios.get(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/INR`)
+      const data = response.data
+      const rates = data.conversion_rates
+      updateRate(rates[currency.currency as string])
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
+
+  useEffect(() => {
+    getRate()
+  }, [getRate])
 
   const [fontsLoaded] = useFonts({
     'Arvo-Regular': require('./src/assets/fonts/Arvo-Regular.ttf'), //font-weight 400

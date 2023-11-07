@@ -28,7 +28,10 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
   const displayAddressSelection = useSharedValue('none')
   const [showDisplay, setDisplay] = useState(1)
   const [location, setLocation] = useState<any>()
+  const [locText, setLocText] = useState<any>()
   const mapRef = React.useRef<MapView>(null)
+  const [addedAddress, setAddedAddress] = useState<any>()
+  const [editAddress, setEditAddress] = useState<any>()
 
   const getLocationFromAddress = async (address: string) => {
     try {
@@ -51,6 +54,46 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
       throw error
     }
   }
+
+  function reverseGeocode(latitude: number, longitude: number) {
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+
+    return fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.display_name) {
+          return data.display_name
+        } else {
+          return 'Address not found'
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+        return 'Failed to retrieve address'
+      })
+  }
+
+  const getPermissions = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync()
+    if (status !== 'granted') {
+      console.log('Please grant location permissions')
+      return
+    }
+
+    let currentLocation = await Location.getCurrentPositionAsync({})
+    const loc = {
+      latitude: currentLocation.coords.latitude,
+      longitude: currentLocation.coords.longitude,
+    }
+    reverseGeocode(loc.latitude, loc.longitude)
+    setLocation(loc)
+    moveMapToMarker(loc)
+    // setLocation(currentLocation)
+  }
+
+  // useEffect(() => {
+  //   getPermissions()
+  // }, [])
 
   const handlePress = () => {
     height.value = withTiming('52%')
@@ -93,24 +136,6 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
       })
   }
 
-  // const getLocation = async () => {
-  //   try {
-  //     const { coords } = await Location.getCurrentPositionAsync({})
-  //     const { latitude, longitude } = coords
-  //     console.log('Latitude:', latitude)
-  //     console.log('Longitude:', longitude)
-  //   } catch (error) {
-  //     console.error('Error getting location:', error)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   const test = async () => {
-  //     await getLocation()
-  //   }
-  //   test()
-  // })
-
   return (
     <KeyboardAvoidingView style={[styles.container]} contentContainerStyle={{ height: 900 }}>
       <GoBackArrowContent
@@ -143,7 +168,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
         )}
       </MapView>
 
-      <CurrentLocationWrapper>
+      <CurrentLocationWrapper onPress={() => getPermissions()}>
         <FlexRow
           style={{
             display: 'flex',
@@ -174,17 +199,20 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
         </View>
         {showDisplay == 1 && (
           <ChooseLocation
-            onAddPress={() => {
+            onAddPress={(e, address) => {
               setDisplay(2)
               changeHeight('77%')
+              setLocText(address)
             }}
-            onEditPress={() => {
+            onEditPress={(e, address) => {
               setDisplay(3)
               changeHeight('75%')
+              setEditAddress(address)
             }}
             suggestion={(data: any) => {
               handleMarking(data)
             }}
+            addedAddress={addedAddress}
           />
         )}
         {showDisplay == 2 && (
@@ -192,6 +220,11 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
             onSavePress={() => {
               setDisplay(1)
               changeHeight('52%')
+            }}
+            location={locText}
+            saveAddress={(addr) => {
+              console.log(addr)
+              setAddedAddress(addr)
             }}
           />
         )}
@@ -201,6 +234,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
               setDisplay(1)
               changeHeight('52%')
             }}
+            selectedAddress={editAddress}
           />
         )}
       </Animated.View>
@@ -239,7 +273,7 @@ const UseCurrentLocationText = styled.Text`
   color: ${COLORS.textSecondaryClr};
 `
 
-const CurrentLocationWrapper = styled.View`
+const CurrentLocationWrapper = styled.Pressable`
   position: absolute;
   bottom: 120px;
   left: 100px;

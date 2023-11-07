@@ -30,10 +30,8 @@ const Languages = () => {
   }
   const changeLanguage = async (lng: string) => {
     await AsyncStorage.setItem('language', lng)
-    if (!language) {
-      i18n.changeLanguage('en')
-    }
-    i18n.changeLanguage(language as string)
+    i18n.changeLanguage(lng as string)
+    updateLanguage(lng as string)
   }
 
   return (

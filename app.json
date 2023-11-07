@@ -10,7 +10,9 @@
       "image": "./assets/iPhone.png",
       "resizeMode": "cover"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -19,12 +21,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.braj1410.Sprinkle"
+      "package": "com.braj1410.Sprinkle",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-
     "plugins": [
       "expo-localization",
       [
@@ -33,6 +39,11 @@
           "locationAlwaysAndWhenInUsePermission": "Allow Sprinkle Nadar to use your location."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "3f866d31-5243-45d6-b35e-7dcc398752d5"
+      }
+    }
   }
 }

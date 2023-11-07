@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, Pressable, StyleSheet } from 'react-native'
+import { View, Pressable, StyleSheet, Text, Alert } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS, gradientOpacityColors } from '../../../styles/theme'
+import { useStripe } from '@stripe/stripe-react-native'
 import CustomButton from '../../../components/Button'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import GiftIcon from '../../../assets/icons/GiftIcon'
@@ -15,25 +16,174 @@ import ShippingIcon from '../../../assets/icons/Shipping'
 import OrderPlaced from '../../../screens/OrderPlaced'
 import { CheckoutData } from '../../../utils/data/checkoutData'
 import CartCard from '../../../components/CartCard'
+import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore/lite'
+import { db } from '../../../../firebase'
+import { userStore } from '../../../store/userStore'
+import { RouteProp } from '@react-navigation/native'
+import { use } from 'i18next'
+import { ICheckout } from '../../../constant/types'
 
-interface ICheckout {
-  navigation: any
+type RootStackParamList = {
+  Checkout: { product: string }
+}
+
+interface AddressData {
+  floor: string
+  fullAddress: string
+  landmark: string
+  saveAddressAs: string
+  isSelected: boolean
 }
 
 const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   const [closedItems, setClosedItems] = useState<number[]>([])
   const [isOrderPlacedVisible, setOrderPlacedVisible] = React.useState(false)
+  const [addr, setAddr] = useState<AddressData | null>(null)
+  const [cartItems, setCartItems] = useState()
+  const [orderData, setOrderData] = useState<ICheckout | null>(null)
+  const { user, orderId } = userStore()
+  const stripe = useStripe()
 
   const openOrderPlaced = () => {
     setOrderPlacedVisible(true)
   }
+
+  useEffect(() => {
+    if (!user) return
+    const temp = async () => {
+      if (!user) return
+      const userDocRef = doc(db, 'users', user.uid)
+      const userDoc = await getDoc(userDocRef)
+      const userData = userDoc.data()
+      if (!userData) return
+      setCartItems(userData.CartProduct)
+      await updateDoc(userDocRef, userData)
+    }
+
+    const handleError = async () => {
+      const userDocRef = doc(db, 'users', user.uid)
+      const userDoc = await getDoc(userDocRef)
+      const userData = userDoc.data()
+      if (!userData) return
+      setCartItems(userData.CartProduct)
+      await updateDoc(userDocRef, userData)
+    }
+    temp()
+      .then(() => {
+        console.log('success')
+      })
+      .catch(() => {
+        handleError()
+        console.log('handled error')
+      })
+  }, [])
+
+  const fetchOrderData = useCallback(async () => {
+    try {
+      const OrderDocRef = doc(db, 'Orders', orderId as string)
+      const OrderDoc = await getDoc(OrderDocRef)
+      const data = OrderDoc.data()
+
+      if (data) {
+        setOrderData(data as ICheckout)
+      } else {
+        console.warn('Order data is undefined.')
+      }
+    } catch (error) {
+      console.error('Error fetching order data: ', error)
+    }
+  }, [orderId, orderData])
+
+  useEffect(() => {
+    fetchOrderData()
+  }, [fetchOrderData])
+
+  const processPay = async () => {
+    try {
+      const amount = orderData?.offerPrice ? orderData?.offerPrice : orderData?.price
+
+      const address = addr
+      const response = await fetch('https://sj-clothing-backend.cyclic.app/create-payment-intent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productIds: orderData?.id,
+          name: user?.displayName,
+          email: user?.email,
+          currency: 'INR',
+          address: address,
+          paymentStatus: 'pending',
+          userid: user?.uid,
+          amount: orderData?.offerPrice ? orderData?.offerPrice : orderData?.price,
+        }),
+      })
+
+      const data = await response.json()
+      if (!response.ok) {
+        return Alert.alert(data.message)
+      }
+      const initSheet = await stripe.initPaymentSheet({
+        paymentIntentClientSecret: data.clientSecret,
+        merchantDisplayName: 'Dewall',
+      })
+      if (initSheet.error) {
+        console.error(initSheet.error)
+        return Alert.alert(initSheet.error.message)
+      }
+      const presentSheet = await stripe.presentPaymentSheet({
+        clientSecret: data.clientSecret,
+      })
+      if (presentSheet.error) {
+        console.error(presentSheet.error)
+        return Alert.alert(presentSheet.error.message)
+      }
+      Alert.alert('Payment successfully! Thank you for the donation.')
+    } catch (err) {
+      console.error(err)
+      Alert.alert('Payment failed!')
+    }
+  }
+
+  const getData = useCallback(async () => {
+    if (!user) return
+    const q = doc(db, 'users', user.uid)
+    const querySnapshot = await getDoc(q)
+
+    const fetchData = querySnapshot.data()
+    if (fetchData?.address) {
+      const addressData: AddressData[] = Object.values(fetchData?.address)
+      addressData.forEach((d, index) => {
+        if (d.isSelected === true) {
+          setAddr(d)
+        }
+      })
+    }
+  }, [user])
+
+  useEffect(() => {
+    getData()
+  }, [getData])
 
   const closeOrderPlaced = () => {
     setOrderPlacedVisible(false)
   }
 
   const handleClose = (index: number) => {
+    const temp = async (index: any) => {
+      if (!user) return
+      const userDocRef = doc(db, 'users', user.uid)
+      const userDoc = await getDoc(userDocRef)
+      const userData = userDoc.data()
+      if (!userData) return
+      const newProds = userData.CartProduct.filter((element: any) => {
+        userData.CartProduct.indexOf(element) !== index
+      })
+      await updateDoc(userDocRef, { newProds })
+    }
     setClosedItems([...closedItems, index])
+    temp(index)
   }
 
   return (
@@ -52,17 +202,29 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
               <LeftArrow width={24} height={24} />
               <CartText>Check Out</CartText>
             </GoBackArrowContent>
-            <CartCard cartData={CheckoutData} closedItems={closedItems} handleClose={handleClose} />
+            {orderData ? (
+              <CartCard cartData={orderData} closedItems={closedItems} handleClose={handleClose} />
+            ) : (
+              <Text>No item</Text>
+            )}
             <CartPageContent>
               <HomeFlexContent>
-                <Pressable onPress={() => navigation.navigate('AddressBook')}>
-                  <View>
-                    <HomeText>Home</HomeText>
-                    <HomeDescription>
-                      Mr John Smith. 132, My Street, Kingston, New York 12401.
-                    </HomeDescription>
+                {addr ? (
+                  <Pressable onPress={() => navigation.navigate('AddressBook')}>
+                    <View>
+                      <HomeText>{addr.saveAddressAs}</HomeText>
+                      <HomeDescription>
+                        {addr.fullAddress}, {addr.landmark}, {addr.floor}
+                      </HomeDescription>
+                    </View>
+                  </Pressable>
+                ) : (
+                  <View style={{ paddingVertical: 12 }}>
+                    <Pressable onPress={() => navigation.navigate('AddressBook')}>
+                      <HomeText>Please add a address first</HomeText>
+                    </Pressable>
                   </View>
-                </Pressable>
+                )}
                 <Pressable>
                   <ChevronLeft width={16} height={16} />
                 </Pressable>
@@ -86,10 +248,11 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                 </Pressable>
               </GiftWrapper>
               <PhonepeWrapper>
-                <GiftContent>
+                <GiftContent onPress={processPay}>
                   <Phonepe width={32} height={32} />
-                  <GiftText>Pay with Phonepe</GiftText>
+                  <GiftText>Payment</GiftText>
                 </GiftContent>
+
                 <Pressable>
                   <ChevronLeft width={16} height={16} />
                 </Pressable>
@@ -281,7 +444,7 @@ const GiftWrapper = styled.View`
   padding-vertical: 16px;
 `
 
-const GiftContent = styled.View`
+const GiftContent = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;

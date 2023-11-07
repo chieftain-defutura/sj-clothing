@@ -20,6 +20,8 @@ export interface IUserData {
       saveAsAddress: string
     },
   ]
+  rate: number
+  orderId: string
 }
 
 type State = {
@@ -49,6 +51,8 @@ type State = {
     currency: string | null
     abrive: string | null
   }
+  rate: number | null
+  orderId: string | null
 }
 
 type Action = {
@@ -73,6 +77,8 @@ type Action = {
   updateAvatar: (avatar: { gender: string | null; skinTone: string | null }) => void
   updateLanguage: (language: string | null) => void
   updateCurrency: (currency: { symbol: null; currency: string; abrive: string }) => void
+  updateOderId: (orderId: string | null) => void
+  updateRate: (rate: number | null) => void
 }
 
 export const userStore = create<State & Action>((set) => ({
@@ -101,6 +107,8 @@ export const userStore = create<State & Action>((set) => ({
     currency: null,
     abrive: null,
   },
+  rate: null,
+  orderId: null,
   updateFetching: (fetching) => set(() => ({ isFetching: fetching })),
   updateUser: (user) => set(() => ({ user })),
   updateUserData: (userData) => set(() => ({ userData })),
@@ -112,4 +120,6 @@ export const userStore = create<State & Action>((set) => ({
   updateAvatar: (avatar) => set(() => ({ avatar })),
   updateLanguage: (language) => set(() => ({ language })),
   updateCurrency: (currency) => set(() => ({ currency })),
+  updateOderId: (orderId) => set(() => ({ orderId })),
+  updateRate: (rate) => set(() => ({ rate })),
 }))

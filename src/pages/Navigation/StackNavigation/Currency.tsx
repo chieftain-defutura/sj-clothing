@@ -139,36 +139,45 @@ const CurrencyData = [
 ]
 
 const Currency = () => {
-  const { currency, updateCurrency } = userStore()
+  const { currency, updateCurrency, updateRate, rate } = userStore()
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
-
-  // const [currency, setCurrency] = useState({
-  //   symbol: null,
-  //   currency: 'EUR',
-  //   abrive: 'EUR',
-  // })
-
-  // const handleConvert = async () => {
-  //   // try {
-  //   //   const apiKey = '0c028154d328482ea0f31fbaf9d77046' // Replace with your API key
-  //   //   const response = await axios.get(
-  //   //     `https://openexchangerates.org/api/latest.json?app_id=${apiKey}`,
-  //   //   )
-  //   //   const rate = response.data.rates[currency.currency]
-  //   //   const converted = Number(amount) * rate
-  //   //   setConvertedAmount(converted)
-  //   // } catch (error) {
-  //   //   console.error('Error converting currency:', error)
-  //   // }
-  // }
-
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
   }
-  const handleCurrency = (currency: { symbol: null; currency: string; abrive: string }) => {
-    updateCurrency(currency), toggleDropdownSizes()
-    const dataString = JSON.stringify(currency)
+
+  const getCurrency = useCallback(async () => {
+    try {
+      const apiKey = '043a252d998cdff70914e08a'
+
+      const response = await axios.get(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/INR`)
+      const data = response.data
+      const rates = data.conversion_rates
+      updateRate(rates[currency.currency as string])
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
+
+  useEffect(() => {
+    getCurrency()
+  }, [getCurrency])
+
+  const handleCurrency = async (currency: { symbol: null; currency: string; abrive: string }) => {
+    updateCurrency({
+      abrive: currency.abrive,
+      currency: currency.currency,
+      symbol: currency.symbol,
+    })
+
+    const storeCurrency = {
+      abrive: currency.abrive,
+      currency: currency.currency,
+      symbol: currency.symbol,
+    }
+
+    const dataString = JSON.stringify(storeCurrency)
     AsyncStorage.setItem('currency', dataString)
+    toggleDropdownSizes()
   }
   return (
     <LinearGradient

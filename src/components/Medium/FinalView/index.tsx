@@ -61,6 +61,7 @@ const FinalView: React.FC<IFinalView> = ({
   isImageOrText,
 }) => {
   const { t } = useTranslation('midlevel')
+  const { currency, rate } = userStore()
   const onClose = () => {
     setFocus(false)
   }
@@ -175,7 +176,7 @@ const FinalView: React.FC<IFinalView> = ({
                 paddingTop: 16,
               }}
             >
-              <Text
+              {/* <Text
                 style={{
                   color: COLORS.textClr,
                   fontFamily: 'Montserrat-Regular',
@@ -186,7 +187,67 @@ const FinalView: React.FC<IFinalView> = ({
               </Text>
               <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
                 {data.normalPrice ? data.normalPrice : 0}
-              </Text>
+              </Text> */}
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  gap: 6,
+                  alignItems: 'center',
+                }}
+              >
+                {!data.offerPrice ? (
+                  <View>
+                    <ProductText>price</ProductText>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <ProductName>
+                        {(
+                          Number(data.normalPrice ? data.normalPrice : 0) * (rate as number)
+                        ).toFixed(2)}
+                      </ProductName>
+                      <ProductName>{currency.symbol}</ProductName>
+                    </View>
+                  </View>
+                ) : (
+                  <View>
+                    <View>
+                      <ProductText>price</ProductText>
+                    </View>
+                    <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
+                      <View
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <OldPriceText>
+                          {(Number(data.normalPrice) * (rate as number)).toFixed(2)}
+                        </OldPriceText>
+                        <OldPriceText> {currency.symbol}</OldPriceText>
+                      </View>
+                      <View
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <ProductName>
+                          {(Number(data.offerPrice) * (rate as number)).toFixed(2)}
+                        </ProductName>
+                        <ProductName>{currency.symbol}</ProductName>
+                      </View>
+                    </View>
+                  </View>
+                )}
+              </View>
             </View>
             <View
               style={{
@@ -302,6 +363,24 @@ const DetailsHeading = styled.Text`
   font-family: ${FONT_FAMILY.ArvoRegular};
   color: ${COLORS.iconsHighlightClr};
   margin-bottom: 8px;
+`
+const ProductName = styled.Text`
+  font-size: 14px;
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  color: ${COLORS.iconsHighlightClr};
+  margin-top: 4px;
+`
+const OldPriceText = styled.Text`
+  font-size: 13px;
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  color: ${COLORS.SecondaryTwo};
+  text-decoration-line: line-through;
+  margin-top: 4px;
+`
+const ProductText = styled.Text`
+  font-size: 12px;
+  font-family: ${FONT_FAMILY.MontserratRegular};
+  color: ${COLORS.SecondaryTwo};
 `
 
 const InputBorder = styled.View`

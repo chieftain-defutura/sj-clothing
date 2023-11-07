@@ -65,8 +65,6 @@ const Medium = () => {
   })
 
   const handleDecreaseSteps = () => {
-    console.log('isSelectedStyle', isSelectedStyle)
-    console.log(isSteps)
     if (isSteps !== 1) {
       setSteps(isSteps - 1)
       setDropDown(false)
@@ -105,12 +103,10 @@ const Medium = () => {
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
       try {
-        console.log('rendered')
         isMounted.current = true
         const tempUid = uuid.v4().toString()
         const docRef = doc(db, 'ModelsMidlevel', tempUid)
         await setDoc(docRef, { uid: tempUid, skin: avatar.skinTone })
-        console.log('added')
 
         setUid(tempUid)
       } catch (error) {

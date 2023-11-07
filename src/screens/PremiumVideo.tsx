@@ -15,7 +15,6 @@ interface PremiumVideoModalProps {
 }
 
 const PremiumVideo: React.FC<PremiumVideoModalProps> = ({ isVisible, onClose, video }) => {
-  console.log(video)
   return (
     <Modal visible={isVisible} animationType='slide' onRequestClose={onClose} transparent={true}>
       <PremiumVideoWrapper onPress={onClose}>

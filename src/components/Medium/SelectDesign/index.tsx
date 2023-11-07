@@ -45,7 +45,6 @@ const SelectDesign: React.FC<ISelectDesign> = ({
     isImageOrText.designs.hashtag === ''
       ? designs
       : designs?.filter((design) => design.hashTag === isImageOrText.designs.hashtag)
-  console.log(designs)
   return (
     <Animated.View
       entering={SlideInDown.duration(800)}

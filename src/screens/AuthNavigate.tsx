@@ -64,7 +64,6 @@ const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus, onClose })
 
   useEffect(() => {
     getUserMail()
-    if (focus) console.log('asdsd')
     if (focus === true && !userMail) {
       setLoginModalVisible(true)
     }

@@ -12,81 +12,28 @@ import { userStore } from '../../store/userStore'
 import AuthNavigate from '../../screens/AuthNavigate'
 
 interface IPremiumThreeSixtyDegree {
-  navigation: any
-  size: {
-    country: string
-    sizeVarient: {
-      size: string
-      measurement: string
-    }
-  }
+  focus: boolean
   data: IPremiumData
   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>
+  handleSubmit: () => Promise<void>
+  setFocus: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const { width, height } = Dimensions.get('window')
 
 const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
-  navigation,
   setOpenDetails,
   data,
-  size,
+  handleSubmit,
+  setFocus,
+  focus,
 }) => {
   const [isPressed, setIsPressed] = useState(false)
-  const [focus, setFocus] = useState(false)
-  const user = userStore((state) => state.user)
 
   const onClose = () => {
     setFocus(false)
   }
 
-  const handleSubmit = async () => {
-    if (!user) {
-      setFocus(true)
-    } else {
-      navigation.navigate('Checkout')
-      setFocus(true)
-      const docRef = await addDoc(collection(db, 'Orders'), {
-        sizes: size,
-        description: data.description,
-        price: data.normalPrice,
-        offerPrice: data.offerPrice,
-        status: 'pending',
-        userId: user?.uid,
-        gender: data.gender,
-        type: 'Premium-Level',
-        productName: data.productName,
-        orderStatus: {
-          orderplaced: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          manufacturing: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          readyToShip: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          shipping: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          delivery: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-        },
-      })
-      console.log(docRef.id)
-    }
-  }
   return (
     <Animated.View
       entering={SlideInRight.duration(500).delay(200)}

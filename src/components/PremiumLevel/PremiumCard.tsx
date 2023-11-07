@@ -5,6 +5,8 @@ import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import { SharedElement } from 'react-navigation-shared-element'
 import Animated, { FadeInLeft, FadeOutLeft } from 'react-native-reanimated'
+import { userStore } from '../../store/userStore'
+import Svg, { Path, Defs, G, Rect, ClipPath } from 'react-native-svg'
 
 const { width, height } = Dimensions.get('window')
 
@@ -25,6 +27,7 @@ interface IPremiumCard {
 }
 
 const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, setSize }) => {
+  const { currency, rate } = userStore()
   return (
     <View
       style={{
@@ -64,8 +67,8 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
           <View style={{ alignItems: 'center', marginTop: 14 }}>
             <ProductText>{data.productName}</ProductText>
             <FlexContent>
-              <PriceText>{data.normalPrice}</PriceText>
-              <PriceText>INR</PriceText>
+              <PriceText>{(Number(data.normalPrice) * (rate as number)).toFixed(2)}</PriceText>
+              <PriceText>{currency.symbol}</PriceText>
             </FlexContent>
           </View>
         </View>
@@ -79,7 +82,7 @@ const FlexContent = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 4px;
+  gap: 1px;
   margin-top: 2px;
 `
 
