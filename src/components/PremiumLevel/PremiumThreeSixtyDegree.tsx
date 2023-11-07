@@ -84,6 +84,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
           },
         },
       })
+      console.log(docRef.id)
     }
   }
   return (

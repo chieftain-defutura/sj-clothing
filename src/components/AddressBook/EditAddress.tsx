@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import TickIcon from '../../assets/icons/TickIcon'
 import CustomButton from '../Button'
@@ -18,6 +18,9 @@ import Input from '../Input'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import HomeIcon from '../../assets/icons/HomeIcon'
+import { doc, getDoc, updateDoc } from 'firebase/firestore/lite'
+import { db } from '../../../firebase'
+import { userStore } from '../../store/userStore'
 
 interface IEditAddress {
   onEditPress: () => void
@@ -33,8 +36,22 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress }) => {
   const [onText, setOnSearchChange] = React.useState<string>()
   const [keyboardStatus, setKeyboardStatus] = React.useState('')
   const [checked, setChecked] = React.useState('first')
-  const onSubmit = () => {
+  const { user } = userStore()
+  const [data, setData] = useState()
+
+  const onSubmit = async () => {
     console.log('submitted')
+    const addressArray = [
+      {
+        fullAddress: formik.values.editAddress,
+        floor: formik.values.floor,
+        landmark: formik.values.landmark,
+        saveAddressAs: formik.values.displayName,
+      },
+    ]
+    await updateDoc(doc(db, 'users', user.uid), {
+      address: addressArray,
+    })
   }
 
   useEffect(() => {
@@ -62,9 +79,29 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress }) => {
     onSubmit: onSubmit,
   })
 
-  const handleSearchText = (text: string) => {
-    setOnSearchChange(text)
+  const getData = async () => {
+    if (!user) return
+    const q = doc(db, 'users', user.uid)
+    const querySnapshot = await getDoc(q)
+
+    const fetchData = querySnapshot.data()
+    if (fetchData) {
+      const addressData = fetchData.address[0]
+      formik.setValues({
+        editAddress: addressData.fullAddress,
+        floor: addressData.floor,
+        landmark: addressData.landmark,
+        displayName: addressData.saveAddressAs,
+      })
+    }
+    setData(fetchData?.address)
+    console.log('fetchDataa', fetchData?.address)
   }
+
+  useEffect(() => {
+    getData()
+  }, [])
+
   return (
     <KeyboardAvoidingView style={styles.flexBox} enabled={true} behavior={'padding'}>
       <TouchableWithoutFeedback style={styles.flexBox} onPress={() => Keyboard.dismiss()}>
@@ -148,6 +185,7 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress }) => {
                 text='Save address'
                 leftIcon={<TickIcon width={16} height={16} />}
                 onPress={() => {
+                  formik.handleSubmit()
                   onEditPress()
                 }}
               />

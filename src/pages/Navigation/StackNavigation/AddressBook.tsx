@@ -1,5 +1,5 @@
 import { StyleSheet, View, KeyboardAvoidingView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MapView, { Marker } from 'react-native-maps'
 import CustomButton from '../../../components/Button'
 import styled from 'styled-components/native'
@@ -16,6 +16,7 @@ import axios from 'axios'
 import { FlatList, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { setDefaultNamespace } from 'i18next'
 import { useTranslation } from 'react-i18next'
+import * as Location from 'expo-location'
 
 interface IAddressBook {
   navigation: any
@@ -26,7 +27,6 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
   const height = useSharedValue('0%')
   const displayAddressSelection = useSharedValue('none')
   const [showDisplay, setDisplay] = useState(1)
-  const [selectSug, setSug] = useState()
   const [location, setLocation] = useState<any>()
   const mapRef = React.useRef<MapView>(null)
 
@@ -92,6 +92,24 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
         console.error('Error:', error)
       })
   }
+
+  // const getLocation = async () => {
+  //   try {
+  //     const { coords } = await Location.getCurrentPositionAsync({})
+  //     const { latitude, longitude } = coords
+  //     console.log('Latitude:', latitude)
+  //     console.log('Longitude:', longitude)
+  //   } catch (error) {
+  //     console.error('Error getting location:', error)
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   const test = async () => {
+  //     await getLocation()
+  //   }
+  //   test()
+  // })
 
   return (
     <KeyboardAvoidingView style={[styles.container]} contentContainerStyle={{ height: 900 }}>
@@ -180,7 +198,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
         {showDisplay == 3 && (
           <EditAddress
             onEditPress={() => {
-              setDisplay(3)
+              setDisplay(1)
               changeHeight('52%')
             }}
           />

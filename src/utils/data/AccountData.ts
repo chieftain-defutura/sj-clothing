@@ -74,9 +74,4 @@ export const AccountData = [
     name: 'About us',
     navigation: 'Aboutus',
   },
-  {
-    leftIcon: UsersMore,
-    name: 'Map',
-    navigation: 'Location',
-  },
 ]

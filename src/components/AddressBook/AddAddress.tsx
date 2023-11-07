@@ -1,5 +1,4 @@
-import { KeyboardAvoidingView, Pressable } from 'react-native'
-// import React, { useEffect } from 'react'
+import { Pressable } from 'react-native'
 import styled from 'styled-components/native'
 import Search from '../../assets/icons/SearchIcon'
 import TickIcon from '../../assets/icons/TickIcon'
@@ -10,219 +9,50 @@ import ChevronLeft from '../../assets/icons/ChevronLeft'
 import Input from '../Input'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import { StyleSheet, Text, View, ScrollView, Keyboard, TextInput } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
+import firestore, { doc, updateDoc, addDoc, collection, setDoc } from 'firebase/firestore/lite'
+import { userStore } from '../../store/userStore'
+import { db } from '../../../firebase'
 
 interface IAddAddress {
   onSavePress: () => void
 }
+
 const validationSchema = yup.object({
-  fullAddress: yup.string().required('please enter full address'),
+  fullAddress: yup.string().required('Please enter full address'),
   floor: yup.string().required('Please enter your floor'),
   landmark: yup.string().required('Please enter landmark'),
-  displayName: yup.string().required('Enter a display name'),
+  saveAddressAs: yup.string().required('Please enter save address'),
 })
-
-// const AddAddress: React.FC<IAddAddress> = ({ onSavePress }) => {
-//   const [onText, setOnSearchChange] = React.useState<string>()
-//   const [keyboardStatus, setKeyboardStatus] = React.useState('')
-//   const [checked, setChecked] = React.useState('first')
-//   const onSubmit = () => {
-//     console.log('submitted')
-//   }
-
-//   useEffect(() => {
-//     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-//       setKeyboardStatus('Keyboard Shown')
-//     })
-//     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-//       setKeyboardStatus('Keyboard Hidden')
-//     })
-
-//     return () => {
-//       showSubscription.remove()
-//       hideSubscription.remove()
-//     }
-//   }, [])
-
-//   const formik = useFormik({
-//     initialValues: {
-//       fullAddress: '',
-//       floor: '',
-//       landmark: '',
-//       displayName: '',
-//     },
-//     validationSchema: validationSchema,
-//     onSubmit: onSubmit,
-//   })
-
-//   const handleSearchText = (text: string) => {
-//     setOnSearchChange(text)
-//   }
-//   return (
-//     <KeyboardAvoidingView style={styles.flexBox} enabled={true} behavior={'padding'}>
-//       <TouchableWithoutFeedback style={styles.flexBox} onPress={() => Keyboard.dismiss()}>
-//         <View>
-//           <View style={styles.searchInputBox}>
-//             <Search width={16} height={16} />
-//             <TextInput
-//               placeholder='Search for area, street name'
-//               onChangeText={(text) => handleSearchText(text)}
-//               value={onText}
-//               style={styles.inputBox}
-//               placeholderTextColor={COLORS.SecondaryTwo}
-//             />
-//           </View>
-//           <View>
-//             <View style={styles.currentLocation}>
-//               <View
-//                 style={{
-//                   display: 'flex',
-//                   flexDirection: 'row',
-//                   alignItems: 'center',
-//                   gap: 16,
-//                 }}
-//               >
-//                 <CurrentLocationIcon width={16} height={16} />
-//                 <View
-//                   style={{
-//                     display: 'flex',
-//                     flexDirection: 'column',
-//                     justifyContent: 'space-between',
-//                   }}
-//                 >
-//                   <View style={styles.RadioTitle}>
-//                     <HeaderStyle>Use current location</HeaderStyle>
-//                   </View>
-//                   <DescriptionText>
-//                     Madras Christian College, East Tambaram, Chennai - 600 059.
-//                   </DescriptionText>
-//                 </View>
-//               </View>
-
-//               <Pressable style={styles.editStyle}>
-//                 <ChevronLeft width={16} height={16} />
-//               </Pressable>
-//             </View>
-//             <View style={styles.inputContainer}>
-//               <Text style={styles.header}>Add Address</Text>
-//               <View>
-//                 <Input
-//                   placeholder='Full address'
-//                   value={formik.values.fullAddress}
-//                   onChangeText={formik.handleChange('fullAddress')}
-//                   onBlur={formik.handleBlur('fullAddress')}
-//                   onSubmitEditing={Keyboard.dismiss}
-//                 />
-//                 {formik.errors.fullAddress && <ErrorText>{formik.errors.fullAddress}</ErrorText>}
-//               </View>
-//               <View>
-//                 <Input
-//                   placeholder='Floor'
-//                   value={formik.values.floor}
-//                   onChangeText={formik.handleChange('floor')}
-//                   onBlur={formik.handleBlur('floor')}
-//                   onSubmitEditing={Keyboard.dismiss}
-//                 />
-//                 {formik.errors.floor && <ErrorText>{formik.errors.floor}</ErrorText>}
-//               </View>
-//               <View>
-//                 <Input
-//                   placeholder='Landmark'
-//                   value={formik.values.landmark}
-//                   onChangeText={formik.handleChange('landmark')}
-//                   onBlur={formik.handleBlur('landmark')}
-//                   onSubmitEditing={Keyboard.dismiss}
-//                 />
-//                 {formik.errors.landmark && <ErrorText>{formik.errors.landmark}</ErrorText>}
-//               </View>
-//               <View>
-//                 <Input
-//                   placeholder='Save as (Home)'
-//                   value={formik.values.displayName}
-//                   onChangeText={formik.handleChange('displayName')}
-//                   onBlur={formik.handleBlur('displayName')}
-//                   onSubmitEditing={Keyboard.dismiss}
-//                 />
-//                 {formik.errors.displayName && <ErrorText>{formik.errors.displayName}</ErrorText>}
-//               </View>
-
-//               <CustomButton
-//                 variant='primary'
-//                 text='Save Address'
-//                 leftIcon={<TickIcon width={16} height={16} />}
-//                 onPress={onSavePress}
-//               />
-//             </View>
-//           </View>
-//         </View>
-//       </TouchableWithoutFeedback>
-//     </KeyboardAvoidingView>
-//   )
-// }
-
-const HeaderStyle = styled.Text`
-  font-size: 14px;
-  font-family: Gilroy-Medium;
-  color: ${COLORS.iconsHighlightClr};
-`
-
-const DescriptionText = styled.Text`
-  color: ${COLORS.SecondaryTwo};
-  font-size: 12px;
-  font-family: Gilroy-Regular;
-  line-height: 18px;
-  width: 225px;
-`
-
-const ErrorText = styled.Text`
-  font-size: 12px;
-  color: ${COLORS.errorClr};
-`
-
-// export default AddAddress
-
-import {
-  LayoutChangeEvent,
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Button,
-  Keyboard,
-  TextInput,
-  TouchableWithoutFeedback,
-} from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import Animate, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  runOnJS,
-} from 'react-native-reanimated'
-import Animated from 'react-native-reanimated'
 
 const Home: React.FC<IAddAddress> = ({ onSavePress }) => {
   const height = useSharedValue(0)
-
-  const textRef1 = useRef<Text>(null)
-  const textRef2 = useRef<Text>(null)
-  const textRef3 = useRef<Text>(null)
-  const textRef4 = useRef<Text>(null)
-  const textRef5 = useRef<Text>(null)
-  const textRef6 = useRef<Text>(null)
-  const textRef7 = useRef<Text>(null)
-  const textRef8 = useRef<Text>(null)
-  const textRef9 = useRef<Text>(null)
-  const textRef10 = useRef<Text>(null)
-  const textRef11 = useRef<Text>(null)
-  const textRef12 = useRef<Text>(null)
-  const textRef13 = useRef<Text>(null)
   const scrollRed = useRef<ScrollView>(null)
   const [onText, setOnSearchChange] = React.useState<string>()
   const [keyboardStatus, setKeyboardStatus] = React.useState('')
-  const [checked, setChecked] = React.useState('first')
   const [padding, setPadding] = useState(0)
-  const onSubmit = () => {
-    console.log('submitted')
+  const { user } = userStore()
+
+  const onSubmit = async () => {
+    console.log('Formik Data:', formik.values)
+    const addressArray = [
+      {
+        fullAddress: formik.values.fullAddress,
+        floor: formik.values.floor,
+        landmark: formik.values.landmark,
+        saveAddressAs: formik.values.saveAddressAs,
+      },
+    ]
+
+    if (!user) return
+    // await updateDoc(doc(db, 'users', user.uid), {
+    //   address: addressArray,
+    // })
+    const userDocRef = doc(db, 'users', user.uid)
+    await setDoc(userDocRef, { address: addressArray })
   }
 
   useEffect(() => {
@@ -244,7 +74,7 @@ const Home: React.FC<IAddAddress> = ({ onSavePress }) => {
       fullAddress: '',
       floor: '',
       landmark: '',
-      displayName: '',
+      saveAddressAs: '',
     },
     validationSchema: validationSchema,
     onSubmit: onSubmit,
@@ -255,7 +85,6 @@ const Home: React.FC<IAddAddress> = ({ onSavePress }) => {
   }
 
   useEffect(() => {
-    // Add event listeners for keyboard events
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', _keyboardDidShow)
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', _keyboardDidHide)
 
@@ -275,20 +104,11 @@ const Home: React.FC<IAddAddress> = ({ onSavePress }) => {
     setPadding(0)
   }
 
-  const updateValues = (newHeight: number, newWidth: number) => {
-    height.value = withTiming(newHeight)
-    console.log(height)
-  }
-
   const animatedStyles = useAnimatedStyle(() => {
     return {
       height: height.value,
     }
   })
-
-  const handlePress = () => {
-    scrollRed.current?.scrollTo({ x: 0, y: 200, animated: true })
-  }
 
   useEffect(() => {
     height.value = withTiming(500)
@@ -303,16 +123,6 @@ const Home: React.FC<IAddAddress> = ({ onSavePress }) => {
           showsVerticalScrollIndicator={false}
         >
           <View>
-            <View style={styles.searchInputBox}>
-              <Search width={16} height={16} />
-              <TextInput
-                placeholder='Search for area, street name'
-                onChangeText={(text) => handleSearchText(text)}
-                value={onText}
-                style={styles.inputBox}
-                placeholderTextColor={COLORS.SecondaryTwo}
-              />
-            </View>
             <View>
               <View style={styles.currentLocation}>
                 <View
@@ -379,19 +189,24 @@ const Home: React.FC<IAddAddress> = ({ onSavePress }) => {
                 <View>
                   <Input
                     placeholder='Save as (Home)'
-                    value={formik.values.displayName}
-                    onChangeText={formik.handleChange('displayName')}
-                    onBlur={formik.handleBlur('displayName')}
+                    value={formik.values.saveAddressAs}
+                    onChangeText={formik.handleChange('saveAddressAs')}
+                    onBlur={formik.handleBlur('saveAddressAs')}
                     onSubmitEditing={Keyboard.dismiss}
                   />
-                  {formik.errors.displayName && <ErrorText>{formik.errors.displayName}</ErrorText>}
+                  {formik.errors.saveAddressAs && (
+                    <ErrorText>{formik.errors.saveAddressAs}</ErrorText>
+                  )}
                 </View>
 
                 <CustomButton
                   variant='primary'
                   text='Save Address'
                   leftIcon={<TickIcon width={16} height={16} />}
-                  onPress={onSavePress}
+                  onPress={() => {
+                    formik.handleSubmit()
+                    onSavePress()
+                  }}
                 />
               </View>
             </View>
@@ -401,6 +216,25 @@ const Home: React.FC<IAddAddress> = ({ onSavePress }) => {
     </View>
   )
 }
+
+const HeaderStyle = styled.Text`
+  font-size: 14px;
+  font-family: Gilroy-Medium;
+  color: ${COLORS.iconsHighlightClr};
+`
+
+const DescriptionText = styled.Text`
+  color: ${COLORS.SecondaryTwo};
+  font-size: 12px;
+  font-family: Gilroy-Regular;
+  line-height: 18px;
+  width: 225px;
+`
+
+const ErrorText = styled.Text`
+  font-size: 12px;
+  color: ${COLORS.errorClr};
+`
 
 export default Home
 
@@ -425,19 +259,6 @@ const styles = StyleSheet.create({
   textInput: {
     borderColor: 'black',
     borderWidth: 1,
-  },
-  searchInputBox: {
-    borderColor: '#efcef5',
-    borderWidth: 1,
-    borderRadius: 36,
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 2,
-    marginVertical: 8,
-    gap: 8,
   },
   inputBox: {
     borderRadius: 20,

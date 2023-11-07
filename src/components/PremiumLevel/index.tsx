@@ -8,6 +8,8 @@ import PremiumDetailsCard from './PremiumDetailsCard'
 import PremiumThreeSixtyDegree from './PremiumThreeSixtyDegree'
 import { useNavigation } from '@react-navigation/native'
 import { IPremiumData } from '../../constant/types'
+import axios from 'axios'
+import { userStore } from '../../store/userStore'
 
 const { width, height } = Dimensions.get('window')
 
@@ -18,6 +20,7 @@ interface IPremiumLevel {
 
 const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) => {
   const navigation = useNavigation()
+  const { currency } = userStore()
   const [data, setData] = useState<IPremiumData[]>()
   const [openCard, setOpenCard] = useState(false)
   const [productId, setProductId] = useState('')
@@ -43,6 +46,39 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   const handleBack = () => {
     setOpenCard(false), setOpenDetails(false), setProductId('')
   }
+
+  const [exchangeRates, setExchangeRates] = useState(null)
+  // const [targetCurrency, setTargetCurrency] = useState('USD')
+
+  const fetchExchangeRates = async () => {
+    try {
+      const apiKey = 'ed22061f115b6f153d0c75ee'
+      const response = await axios.get(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/INR`)
+      const data = response.data
+      console.log(data)
+      // Access the exchange rates from the 'conversion_rates' property
+      const rates = data.conversion_rates
+
+      setExchangeRates(rates)
+    } catch (error) {
+      console.error('Error fetching exchange rates:', error)
+    }
+  }
+
+  const convertAmount = () => {
+    if (exchangeRates && exchangeRates[currency.currency as string]) {
+      const rate = exchangeRates[currency.currency as string]
+      console.log('currency', currency.currency)
+      console.log('rate', rate)
+      const converted = (Number(amount) * rate).toFixed(2)
+      return setConvertedAmount(Number(converted))
+    }
+    return 'Invalid target currency'
+  }
+
+  useEffect(() => {
+    fetchExchangeRates()
+  }, [])
   const FilteredData = data?.filter((f) => f.id === productId)
 
   if (!data) return <Text>No Data</Text>

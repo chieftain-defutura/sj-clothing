@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import Search from '../../assets/icons/SearchIcon'
 import Plus from '../../assets/icons/PlusIcon'
@@ -18,7 +18,19 @@ import CustomButton from '../Button'
 import { COLORS } from '../../styles/theme'
 import { RadioButton } from 'react-native-paper'
 import { AddressBookData } from '../../utils/data/AddressBookData'
+import HomeIcon from '../../assets/icons/HomeIcon'
 import axios from 'axios'
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore/lite'
+import { db } from '../../../firebase'
+import { useStore } from 'zustand'
+import { userStore } from '../../store/userStore'
+
+interface AddressData {
+  floor: string
+  fullAddress: string
+  landmark: string
+  saveAddressAs: string
+}
 
 interface IChooseLocation {
   onAddPress: (event: GestureResponderEvent) => void | undefined | null
@@ -29,7 +41,26 @@ interface IChooseLocation {
 const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, suggestion }) => {
   const [onText, setOnSearchChange] = React.useState<string>()
   const [checked, setChecked] = React.useState('first')
-  const [suggestions, setSuggestions] = React.useState([])
+  const [suggestions, setSuggestions] = React.useState<string[] | null>([])
+  const [showSuggestion, setSugPop] = useState(false)
+  const [data, setData] = useState<AddressData[] | null>([])
+  const { user } = userStore()
+  console.log('daataaaa', data)
+
+  const getData = async () => {
+    if (!user) return
+    const q = doc(db, 'users', user.uid)
+    const querySnapshot = await getDoc(q)
+
+    const fetchData = querySnapshot.data()
+    if (fetchData?.address) setData(fetchData?.address)
+    else setData(null)
+    console.log('fetchDataa', fetchData?.address)
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
 
   const handleSearchText = async (text: string) => {
     if (text === '') setSuggestions([])
@@ -46,17 +77,21 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
     <TouchableOpacity
       onPress={() => {
         suggestion(txt)
+        setOnSearchChange(txt)
+        setSuggestions(null)
       }}
+      style={{ borderColor: 'black', borderWidth: 1 }}
     >
       <Text>{txt}</Text>
     </TouchableOpacity>
   )
+  // if (!data) return
 
   return (
     <View>
       <View style={styles.searchInputBox}>
         <Search width={16} height={16} />
-        <TextInput
+        <InputBox
           placeholder='Search for area, street name'
           onChangeText={(text) => handleSearchText(text)}
           value={onText}
@@ -64,17 +99,21 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
           placeholderTextColor={COLORS.SecondaryTwo}
         />
       </View>
-      <View style={{ position: 'relative', zIndex: 100 }}>
+
+      <View style={{ position: 'relative', zIndex: 10 }}>
         <FlatList
           data={suggestions}
           renderItem={({ item }) => renderItem(item.display_name)}
           keyExtractor={(item) => item.place_id.toString()}
+          scrollEnabled={true}
+          horizontal={false}
         />
       </View>
       <View>
         <RadioButton.Group onValueChange={(newValue) => setChecked(newValue)} value={checked}>
-          <ScrollView showsVerticalScrollIndicator={false} style={{ height: '67%' }}>
-            {AddressBookData.map((f, index) => (
+          {data ? (
+            <ScrollView showsVerticalScrollIndicator={false} style={{ height: '67%' }}>
+              {/* {AddressBookData.map((f, index) => (
               <View key={index} style={styles.radioBtn}>
                 <View>
                   <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
@@ -90,8 +129,32 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
                   <Text style={styles.editText}>Edit</Text>
                 </Pressable>
               </View>
-            ))}
-          </ScrollView>
+            ))} */}
+              {data.map((f, index) => (
+                <View key={index} style={styles.radioBtn}>
+                  <View>
+                    <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
+                  </View>
+                  <View style={{ display: 'flex', flexDirection: 'column' }}>
+                    <View style={styles.RadioTitle}>
+                      <HomeIcon width={16} height={16} color={'black'} />
+                      <HeaderStyle>{f.saveAddressAs}</HeaderStyle>
+                    </View>
+                    <DescriptionText>
+                      {f.fullAddress}, {f.landmark}, {f.floor}
+                    </DescriptionText>
+                  </View>
+                  <Pressable style={styles.editStyle} onPress={onEditPress}>
+                    <Text style={styles.editText}>Edit</Text>
+                  </Pressable>
+                </View>
+              ))}
+            </ScrollView>
+          ) : (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>No address</Text>
+            </View>
+          )}
         </RadioButton.Group>
         <FlexContent>
           <Pressable onPress={onAddPress}>
@@ -120,6 +183,14 @@ const FlexContent = styled.View`
   justify-content: center;
   gap: 8px;
   margin-bottom: 16px;
+`
+const InputBox = styled.TextInput`
+  width: 90%;
+  border-radius: 20px;
+  background-color: white;
+  color: black;
+  font-size: 14px;
+  margin-vertical: 8px;
 `
 
 const AddAddressBtn = styled.View`
@@ -203,5 +274,15 @@ const styles = StyleSheet.create({
   editText: {
     color: '#DB00FF',
     fontSize: 14,
+  },
+  errorText: {
+    color: COLORS.textSecondaryClr,
+  },
+  errorContainer: {
+    height: '65%',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: 'black',
   },
 })

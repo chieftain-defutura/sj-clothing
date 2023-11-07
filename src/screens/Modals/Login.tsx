@@ -149,7 +149,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
               <AccountView>
                 <AccountViewText>Don’t have an account?</AccountViewText>
                 <Pressable onPress={() => onSignClick?.()}>
-                  <SignUpLink>Sign up</SignUpLink>
+                  <SignUpLink>Create Account</SignUpLink>
                 </Pressable>
               </AccountView>
             </LoginContainer>

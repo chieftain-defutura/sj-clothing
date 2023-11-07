@@ -1,5 +1,13 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  StyleSheet,
+  Pressable,
+} from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import styled from 'styled-components/native'
@@ -7,6 +15,9 @@ import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
 import Svg, { Path, Defs, G, Rect, ClipPath } from 'react-native-svg'
 import CurrencyGrayIcon from '../../../assets/icons/AccountPageIcon/CurrencyGrayIcon'
 import * as Localization from 'expo-localization'
+import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { userStore } from '../../../store/userStore'
 const CurrencyData = [
   {
     symbol: (
@@ -18,6 +29,7 @@ const CurrencyData = [
       </Svg>
     ),
     currency: 'EUR',
+    abrive: 'EUR',
   },
   {
     symbol: (
@@ -32,7 +44,8 @@ const CurrencyData = [
         />
       </Svg>
     ),
-    currency: 'Dollor(US)',
+    currency: 'USD',
+    abrive: 'Dollor(US)',
   },
   {
     symbol: (
@@ -50,7 +63,8 @@ const CurrencyData = [
         </Defs>
       </Svg>
     ),
-    currency: 'WON',
+    currency: 'CNY',
+    abrive: 'YUAN',
   },
   {
     symbol: (
@@ -62,7 +76,8 @@ const CurrencyData = [
         />
       </Svg>
     ),
-    currency: 'POUND',
+    currency: 'GBP',
+    abrive: 'POUND',
   },
   {
     symbol: (
@@ -75,7 +90,8 @@ const CurrencyData = [
         />
       </Svg>
     ),
-    currency: 'SWIZ',
+    currency: 'CHF',
+    abrive: 'SWIZ',
   },
   {
     symbol: (
@@ -105,7 +121,8 @@ const CurrencyData = [
         </Defs>
       </Svg>
     ),
-    currency: 'RIYAL',
+    currency: 'SAR',
+    abrive: 'RIYAL',
   },
   {
     symbol: (
@@ -116,67 +133,43 @@ const CurrencyData = [
         />
       </Svg>
     ),
-    currency: 'YEN',
+    currency: 'JPY',
+    abrive: 'YEN',
   },
 ]
 
 const Currency = () => {
+  const { currency, updateCurrency } = userStore()
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
-  const [currency, setCurrency] = useState({
-    symbol: null,
-    currency: 'EUR',
-  })
 
-  const locale = Localization.locale
-  const currencies = Localization.currency
-  const currencyFormatter = new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency: currencies as string,
-  })
+  // const [currency, setCurrency] = useState({
+  //   symbol: null,
+  //   currency: 'EUR',
+  //   abrive: 'EUR',
+  // })
 
-  const formattedCurrency = currencyFormatter.format(1234.56)
-  console.log(formattedCurrency)
+  // const handleConvert = async () => {
+  //   // try {
+  //   //   const apiKey = '0c028154d328482ea0f31fbaf9d77046' // Replace with your API key
+  //   //   const response = await axios.get(
+  //   //     `https://openexchangerates.org/api/latest.json?app_id=${apiKey}`,
+  //   //   )
+  //   //   const rate = response.data.rates[currency.currency]
+  //   //   const converted = Number(amount) * rate
+  //   //   setConvertedAmount(converted)
+  //   // } catch (error) {
+  //   //   console.error('Error converting currency:', error)
+  //   // }
+  // }
+
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
   }
-
-  // const changeCurrency = useCallback(async()=>{
-
-  //   const options = {
-  //     method: 'GET',
-  //     url: 'https://currency-exchange.p.rapidapi.com/listquotes',
-  //     headers: {
-  //       'X-RapidAPI-Key': 'SIGN-UP-FOR-KEY',
-  //       'X-RapidAPI-Host': 'currency-exchange.p.rapidapi.com'
-  //     }
-  //   };
-
-  //   try {
-  //     const response = await axios.request(options);
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // },[])
-  // useEffect(()=>{
-  //   changeCurrency()
-  // },[changeCurrency])
-
-  useEffect(() => {
-    const options = {
-      method: 'GET',
-      headers: {
-        'X-RapidAPI-Key': 'SIGN-UP-FOR-KEY',
-        'X-RapidAPI-Host': 'currency-exchange.p.rapidapi.com',
-      },
-    }
-
-    fetch('https://currency-exchange.p.rapidapi.com/listquotes', options)
-      .then((response) => console.log(response))
-      // .then(data => setQuote(data[0].quote))
-      .catch((error) => console.error(error))
-  }, [])
-
+  const handleCurrency = (currency: { symbol: null; currency: string; abrive: string }) => {
+    updateCurrency(currency), toggleDropdownSizes()
+    const dataString = JSON.stringify(currency)
+    AsyncStorage.setItem('currency', dataString)
+  }
   return (
     <LinearGradient
       colors={gradientOpacityColors}
@@ -201,8 +194,7 @@ const Currency = () => {
               gap: 8,
             }}
           >
-            {/* {currency.symbol} */}
-            <SelectText>{currency.currency}</SelectText>
+            <SelectText>{currency.abrive}</SelectText>
           </View>
           <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
             <Path
@@ -220,7 +212,7 @@ const Currency = () => {
                 (f: any, i: number) => (
                   <Pressable
                     key={i}
-                    onPress={() => [setCurrency(f), toggleDropdownSizes()]}
+                    onPress={() => handleCurrency(f)}
                     style={{
                       display: 'flex',
                       flexDirection: 'row',
@@ -229,7 +221,7 @@ const Currency = () => {
                     }}
                   >
                     {f.symbol}
-                    <SelectListText>{f.currency}</SelectListText>
+                    <SelectListText>{f.abrive}</SelectListText>
                   </Pressable>
                 ),
               )}
@@ -237,6 +229,21 @@ const Currency = () => {
           </Animated.View>
         )}
       </View>
+
+      {/* <View>
+        <TextInput
+          placeholder='Enter amount'
+          value={amount}
+          onChangeText={(text) => setAmount(text)}
+          keyboardType='numeric'
+        />
+        <Text>From Currency:</Text>
+        <TextInput value={fromCurrency} onChangeText={(text) => setFromCurrency(text)} />
+        <Text>To Currency:</Text>
+        <TextInput value={toCurrency} onChangeText={(text) => setToCurrency(text)} />
+        <Button title='Convert' onPress={() => convertAmount()} />
+        {convertedAmount && <Text>Converted Amount: {convertedAmount}</Text>}
+      </View> */}
     </LinearGradient>
   )
 }
