@@ -32,6 +32,11 @@ interface AddressData {
   isSelected: boolean
 }
 
+interface Suggestion {
+  display_name: string
+  place_id: number
+}
+
 interface IChooseLocation {
   onAddPress: (
     event: GestureResponderEvent,
@@ -50,56 +55,115 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
 }) => {
   const [onText, setOnSearchChange] = React.useState<string>()
   const [checked, setChecked] = React.useState<string | null>(null)
-  const [suggestions, setSuggestions] = React.useState<string[] | null>([])
+  const [suggestions, setSuggestions] = React.useState<Suggestion[] | null>([])
   const [data, setData] = useState<AddressData[] | null>([])
   const [location, setLocation] = useState<Location.LocationObject>()
   const { user } = userStore()
   const focus = useIsFocused()
 
-  const updateData = async (index: string) => {
-    if (data) {
-      // Iterate through the data array
-      data.forEach((item, i) => {
-        if (i === parseInt(index)) {
-          // Set the 'isSelected' property to true for the selected item
-          item.isSelected = true
-        } else {
-          // Set the 'isSelected' property to false for all other items
-          item.isSelected = false
-        }
-      })
+  console.log('suggestions', suggestions)
 
-      // Make a copy of the updated array and set it using setData
-      const updatedData = [...data]
-      setData(updatedData)
-      //@ts-ignore
-      const userDocRef = doc(db, 'users', user.uid)
-      const userDoc = await getDoc(userDocRef)
-      const userData = userDoc.data()
-      if (!userData) return
-      userData.address = [...data]
-      await updateDoc(userDocRef, userData)
-      // Now, updatedData contains the modified array with 'isSelected' values updated
+  // const updateData = async (index: string) => {
+  //   if (data) {
+  //     data.forEach((item, i) => {
+  //       if (i === parseInt(index)) {
+  //         item.isSelected = true
+  //       } else {
+  //         item.isSelected = false
+  //       }
+  //     })
+  //     const updatedData = [...data]
+  //     setData(updatedData)
+  //     //@ts-ignore
+  //     const userDocRef = doc(db, 'users', user.uid)
+  //     const userDoc = await getDoc(userDocRef)
+  //     const userData = userDoc.data()
+  //     if (!userData) return
+  //     userData.address = [...data]
+  //     await updateDoc(userDocRef, userData)
+  //   }
+  // }
+
+  const updateData = async (index: string) => {
+    try {
+      if (data) {
+        data.forEach((item, i) => {
+          if (i === parseInt(index)) {
+            item.isSelected = true
+          } else {
+            item.isSelected = false
+          }
+        })
+
+        const updatedData = [...data]
+        setData(updatedData)
+
+        //@ts-ignore
+        const userDocRef = doc(db, 'users', user.uid)
+        const userDoc = await getDoc(userDocRef)
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data()
+          if (!userData) return
+
+          userData.address = [...data]
+          await updateDoc(userDocRef, userData)
+        } else {
+          console.log('User document not found')
+        }
+      }
+    } catch (error) {
+      console.error('Error updating data:', error)
     }
   }
 
-  const getData = async () => {
-    if (!user) return
-    const q = doc(db, 'users', user.uid)
-    const querySnapshot = await getDoc(q)
+  // const getData = async () => {
+  //   if (!user) return
+  //   const q = doc(db, 'users', user.uid)
+  //   const querySnapshot = await getDoc(q)
 
-    const fetchData = querySnapshot.data()
-    if (addedAddress && fetchData?.adddress) {
-      const array = [...addedAddress, ...fetchData?.adddress]
-      setData(array)
-    } else if (fetchData?.address) {
-      const addressData: AddressData[] = Object.values(fetchData?.address)
-      setData(addressData)
-      addressData.forEach((d, index) => {
-        if (d.isSelected === true) {
-          setChecked(index.toString())
+  //   const fetchData = querySnapshot.data()
+  //   if (addedAddress && fetchData?.adddress) {
+  //     const array = [...addedAddress, ...fetchData?.adddress]
+  //     setData(array)
+  //   } else if (fetchData?.address) {
+  //     const addressData: AddressData[] = Object.values(fetchData?.address)
+  //     setData(addressData)
+  //     addressData.forEach((d, index) => {
+  //       if (d.isSelected === true) {
+  //         setChecked(index.toString())
+  //       }
+  //     })
+  //   }
+  // }
+
+  const getData = async () => {
+    try {
+      if (!user) return
+
+      const q = doc(db, 'users', user.uid)
+      const querySnapshot = await getDoc(q)
+
+      if (querySnapshot.exists()) {
+        const fetchData = querySnapshot.data()
+
+        if (addedAddress && fetchData?.address) {
+          const array = [...addedAddress, ...fetchData.address]
+          setData(array)
+        } else if (fetchData?.address) {
+          const addressData: AddressData[] = Object.values(fetchData.address)
+          setData(addressData)
+          addressData.forEach((d, index) => {
+            if (d.isSelected === true) {
+              setChecked(index.toString())
+            }
+          })
         }
-      })
+      } else {
+        console.log('Document not found')
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error)
     }
   }
 
@@ -107,27 +171,46 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
     getData()
   }, [focus])
 
+  // const handleSearchText = async (text: string) => {
+  //   if (text === '') setSuggestions([])
+  //   setOnSearchChange(text)
+
+  //   const response = await axios.get(
+  //     `https://nominatim.openstreetmap.org/search?format=json&q=${text}`,
+  //   )
+
+  //   setSuggestions(response.data)
+  // }
+
   const handleSearchText = async (text: string) => {
-    if (text === '') setSuggestions([])
-    setOnSearchChange(text)
+    try {
+      if (text === '') {
+        setSuggestions([])
+        setOnSearchChange(text)
+      } else {
+        setOnSearchChange(text)
 
-    const response = await axios.get(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${text}`,
-    )
+        const response = await axios.get(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${text}`,
+        )
 
-    setSuggestions(response.data)
-  }
-
-  const getLocationPermissions = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync()
-    if (status !== 'granted') {
-      console.log('Please grant location permissions')
-      return
+        setSuggestions(response.data)
+      }
+    } catch (error) {
+      console.error('Error handling search text:', error)
     }
-
-    let currentLocation = await Location.getCurrentPositionAsync({})
-    setLocation(currentLocation)
   }
+
+  // const getLocationPermissions = async () => {
+  //   let { status } = await Location.requestForegroundPermissionsAsync()
+  //   if (status !== 'granted') {
+  //     console.log('Please grant location permissions')
+  //     return
+  //   }
+
+  //   let currentLocation = await Location.getCurrentPositionAsync({})
+  //   setLocation(currentLocation)
+  // }
 
   const renderItem = (txt: string) => (
     <TouchableOpacity
