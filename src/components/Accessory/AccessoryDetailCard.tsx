@@ -44,6 +44,7 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
   setOpenDetails,
 }) => {
   const navigation = useNavigation()
+  const { currency, rate } = userStore()
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
   const [openModal, setOpenModal] = useState(false)
@@ -162,16 +163,40 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                       {!data.offerPrice ? (
                         <View>
                           <ProductText>price</ProductText>
-                          <ProductName>{data.normalPrice}INR</ProductName>
+                          <ProductName>
+                            {(Number(data.normalPrice) * (rate as number)).toFixed(2)}INR
+                          </ProductName>
                         </View>
                       ) : (
                         <View>
                           <View>
                             <ProductText>price</ProductText>
                           </View>
-                          <View style={{ display: 'flex', flexDirection: 'row', gap: 6 }}>
-                            <OldPriceText>{data.normalPrice}INR</OldPriceText>
-                            <ProductName>{data.offerPrice}INR</ProductName>
+                          <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
+                            <View
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <OldPriceText>
+                                {(Number(data.normalPrice) * (rate as number)).toFixed(2)}
+                              </OldPriceText>
+                              <OldPriceText> {currency.symbol}</OldPriceText>
+                            </View>
+                            <View
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <ProductName>
+                                {(Number(data.offerPrice) * (rate as number)).toFixed(2)}
+                              </ProductName>
+                              <ProductName>{currency.symbol}</ProductName>
+                            </View>
                           </View>
                         </View>
                       )}

@@ -5,6 +5,7 @@ import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import { SharedElement } from 'react-navigation-shared-element'
 import Animated, { FadeInLeft, FadeOutLeft } from 'react-native-reanimated'
+import { userStore } from '../../store/userStore'
 
 const { width, height } = Dimensions.get('window')
 
@@ -15,6 +16,7 @@ interface IAccessoryCard {
 }
 
 const AccessIAccessoryCard: React.FC<IAccessoryCard> = ({ data, setOpenCard, setProductId }) => {
+  const { currency, rate } = userStore()
   return (
     <View
       style={{
@@ -49,8 +51,8 @@ const AccessIAccessoryCard: React.FC<IAccessoryCard> = ({ data, setOpenCard, set
           <View style={{ alignItems: 'center', marginTop: 14 }}>
             <ProductText>{data.productName}</ProductText>
             <FlexContent>
-              <PriceText>{data.normalPrice}</PriceText>
-              <PriceText>INR</PriceText>
+              <PriceText>{(Number(data.normalPrice) * (rate as number)).toFixed(2)}</PriceText>
+              <PriceText>{currency.symbol}</PriceText>
             </FlexContent>
           </View>
         </View>
