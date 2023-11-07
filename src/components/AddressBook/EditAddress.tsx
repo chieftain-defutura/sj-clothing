@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
+import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import TickIcon from '../../assets/icons/TickIcon'
@@ -44,64 +45,75 @@ const validationSchema = yup.object({
 
 const EditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddress }) => {
   const [keyboardStatus, setKeyboardStatus] = React.useState('')
+  const [addr, setAddr] = useState<string>('')
   const { user } = userStore()
-  const [addr, setAddr] = useState()
 
   const onSubmit = async () => {
-    if (!user) return
-    const addressArray = [
-      {
-        fullAddress: formik.values.editAddress,
-        floor: formik.values.floor,
-        landmark: formik.values.landmark,
-        saveAddressAs: formik.values.displayName,
-        isSelected: false,
-      },
-    ]
-    const userDocRef = doc(db, 'users', user.uid)
-    const userDoc = await getDoc(userDocRef)
-    const userData = userDoc.data()
-    if (!userData) return
+    try {
+      if (!user) return
+      const addressArray = [
+        {
+          fullAddress: formik.values.editAddress,
+          floor: formik.values.floor,
+          landmark: formik.values.landmark,
+          saveAddressAs: formik.values.displayName,
+          isSelected: false,
+        },
+      ]
+      const userDocRef = doc(db, 'users', user.uid)
+      const userDoc = await getDoc(userDocRef)
+      const userData = userDoc.data()
+      if (!userData) return
 
-    const arr = userData.address.filter((element: AddressData) => {
-      return element.fullAddress !== selectedAddress.fullAddress
-    })
-    userData.address = [...arr, ...addressArray]
-    await updateDoc(userDocRef, userData)
+      const arr = userData.address.filter((element: AddressData) => {
+        return element.fullAddress !== selectedAddress.fullAddress
+      })
+      userData.address = [...addressArray]
+      await updateDoc(userDocRef, userData)
+    } catch (error) {
+      console.error('An error occurred:', error)
+      throw error
+    }
   }
-  const getLocationOn = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync()
-    if (status !== 'granted') {
-      console.log('Please grant location permissions')
-      return
-    }
 
-    let currentLocation = await Location.getCurrentPositionAsync({})
-    const loc = {
-      latitude: currentLocation.coords.latitude,
-      longitude: currentLocation.coords.longitude,
+  const getLocationOn = async () => {
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync()
+      if (status !== 'granted') {
+        console.log('Please grant location permissions')
+        return null
+      }
+
+      let currentLocation = await Location.getCurrentPositionAsync({})
+      const loc = {
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
+      }
+      return loc
+    } catch (error) {
+      console.error('An error occurred:', error)
+      throw error
     }
-    return loc
   }
 
   async function reverseGeocode(latitude: number, longitude: number, success: (data: any) => void) {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
 
-    return fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.display_name) {
-          success(data.display_name)
-          return data.display_name
-        } else {
-          setAddr('')
-          return 'Address not found'
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error)
-        return 'Failed to retrieve address'
-      })
+    try {
+      const response = await axios.get(url)
+      const data = response.data
+
+      if (data.display_name) {
+        success(data.display_name)
+        return data.display_name
+      } else {
+        setAddr('')
+        return 'Address not found'
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      return 'Failed to retrieve address'
+    }
   }
 
   useEffect(() => {
@@ -134,11 +146,20 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddress }) =
   })
 
   const getData = useCallback(async () => {
-    if (!user) return
-    const q = doc(db, 'users', user.uid)
-    const querySnapshot = await getDoc(q)
+    try {
+      if (!user) return
 
-    const fetchData = querySnapshot.data()
+      const q = doc(db, 'users', user.uid)
+      const querySnapshot = await getDoc(q)
+
+      if (querySnapshot.exists()) {
+        const fetchData = querySnapshot.data()
+      } else {
+        console.log('Document not found')
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
   }, [user])
 
   useEffect(() => {

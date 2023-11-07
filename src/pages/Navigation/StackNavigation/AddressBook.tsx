@@ -1,5 +1,5 @@
 import { StyleSheet, View, KeyboardAvoidingView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import MapView, { Marker } from 'react-native-maps'
 import CustomButton from '../../../components/Button'
 import styled from 'styled-components/native'
@@ -13,8 +13,6 @@ import AddAddress from '../../../components/AddressBook/AddAddress'
 import ChooseLocation from '../../../components/AddressBook/ChooseLocation'
 import EditAddress from '../../../components/AddressBook/EditAddress'
 import axios from 'axios'
-import { FlatList, TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import { setDefaultNamespace } from 'i18next'
 import { useTranslation } from 'react-i18next'
 import * as Location from 'expo-location'
 
@@ -55,40 +53,45 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
     }
   }
 
-  function reverseGeocode(latitude: number, longitude: number) {
+  async function reverseGeocode(latitude: number, longitude: number) {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
 
-    return fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.display_name) {
-          return data.display_name
-        } else {
-          return 'Address not found'
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error)
-        return 'Failed to retrieve address'
-      })
+    try {
+      const response = await axios.get(url)
+      const data = response.data
+
+      if (data.display_name) {
+        return data.display_name
+      } else {
+        return 'Address not found'
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      return 'Failed to retrieve address'
+    }
   }
 
   const getPermissions = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync()
-    if (status !== 'granted') {
-      console.log('Please grant location permissions')
-      return
-    }
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync()
 
-    let currentLocation = await Location.getCurrentPositionAsync({})
-    const loc = {
-      latitude: currentLocation.coords.latitude,
-      longitude: currentLocation.coords.longitude,
+      if (status !== 'granted') {
+        console.log('Please grant location permissions')
+        return
+      }
+
+      let currentLocation = await Location.getCurrentPositionAsync({})
+      const loc = {
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
+      }
+
+      reverseGeocode(loc.latitude, loc.longitude)
+      setLocation(loc)
+      moveMapToMarker(loc)
+    } catch (error) {
+      console.error('Error:', error)
     }
-    reverseGeocode(loc.latitude, loc.longitude)
-    setLocation(loc)
-    moveMapToMarker(loc)
-    // setLocation(currentLocation)
   }
 
   // useEffect(() => {

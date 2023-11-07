@@ -39,7 +39,7 @@ const validationSchema = yup.object({
   saveAddressAs: yup.string().required('Please enter save address'),
 })
 
-const Home: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress }) => {
+const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress }) => {
   const height = useSharedValue(0)
   const scrollRed = useRef<ScrollView>(null)
   const [onText, setOnSearchChange] = React.useState<string>()
@@ -49,84 +49,100 @@ const Home: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress }) => 
   const { user } = userStore()
 
   const getPermissions = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync()
-    if (status !== 'granted') {
-      console.log('Please grant location permissions')
-      return
-    }
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync()
 
-    let currentLocation = await Location.getCurrentPositionAsync({})
-    const loc = {
-      latitude: currentLocation.coords.latitude,
-      longitude: currentLocation.coords.longitude,
+      if (status !== 'granted') {
+        console.log('Please grant location permissions')
+        return
+      }
+
+      let currentLocation = await Location.getCurrentPositionAsync({})
+      const loc = {
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
+      }
+
+      // Call the reverseGeocode function with a callback
+      reverseGeocode(loc.latitude, loc.longitude, (data) => {
+        formik.setValues({ ...formik.values, ...data })
+      })
+    } catch (error) {
+      console.error('Error:', error)
     }
-    reverseGeocode(loc.latitude, loc.longitude, (data) =>
-      formik.setValues({ ...formik.values, ...data }),
-    )
   }
 
   async function reverseGeocode(latitude: number, longitude: number, success: (data: any) => void) {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
 
-    return fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.display_name) {
-          console.log(data.display_name)
-          setAddr(data.display_name)
-          formik.setValues({ ...formik.values, fullAddress: data.display_name })
-          success(data.display_name)
-          return data.display_name
-        } else {
-          setAddr('')
-          return 'Address not found'
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error)
-        return 'Failed to retrieve address'
-      })
+    try {
+      const response = await axios.get(url)
+      const data = response.data
+
+      if (data.display_name) {
+        console.log(data.display_name)
+        setAddr(data.display_name)
+        formik.setValues({ ...formik.values, fullAddress: data.display_name })
+        success(data.display_name)
+        return data.display_name
+      } else {
+        setAddr('')
+        return 'Address not found'
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      return 'Failed to retrieve address'
+    }
   }
 
   const onSubmit = async () => {
-    console.log('Formik Data:', formik.values)
-    const addressArray = [
-      {
-        fullAddress: formik.values.fullAddress,
-        floor: formik.values.floor,
-        landmark: formik.values.landmark,
-        saveAddressAs: formik.values.saveAddressAs,
-        isSelected: false,
-      },
-    ]
+    try {
+      console.log('Formik Data:', formik.values)
+      const addressArray = [
+        {
+          fullAddress: formik.values.fullAddress,
+          floor: formik.values.floor,
+          landmark: formik.values.landmark,
+          saveAddressAs: formik.values.saveAddressAs,
+          isSelected: false,
+        },
+      ]
 
-    saveAddress(addressArray)
+      saveAddress(addressArray)
 
-    if (!user) return
-    const userDocRef = doc(db, 'users', user.uid)
-    const userDoc = await getDoc(userDocRef)
-    const userData = userDoc.data()
-    if (!userData) return
-    if (userData.address.length === 0) {
-      addressArray[0].isSelected = true
+      if (!user) return
+      const userDocRef = doc(db, 'users', user.uid)
+      const userDoc = await getDoc(userDocRef)
+      const userData = userDoc.data()
+      console.log('userdaaaaa', userData)
+
+      if (!userData) return
+
+      userData.address.push(...addressArray)
+      await updateDoc(userDocRef, userData)
+    } catch (error) {
+      console.error('Error:', error)
     }
-    userData.address = [...userData.address, ...addressArray]
-    await updateDoc(userDocRef, userData)
   }
 
   const getLocationOn = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync()
-    if (status !== 'granted') {
-      console.log('Please grant location permissions')
-      return
-    }
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync()
+      if (status !== 'granted') {
+        console.log('Please grant location permissions')
+        return
+      }
 
-    let currentLocation = await Location.getCurrentPositionAsync({})
-    const loc = {
-      latitude: currentLocation.coords.latitude,
-      longitude: currentLocation.coords.longitude,
+      let currentLocation = await Location.getCurrentPositionAsync({})
+      const loc = {
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
+      }
+      return loc
+    } catch (error) {
+      console.error('An error occurred while getting the location:', error)
+      return null
     }
-    return loc
   }
 
   useEffect(() => {
@@ -315,7 +331,7 @@ const ErrorText = styled.Text`
   color: ${COLORS.errorClr};
 `
 
-export default Home
+export default AddAddress
 
 const styles = StyleSheet.create({
   container: {
