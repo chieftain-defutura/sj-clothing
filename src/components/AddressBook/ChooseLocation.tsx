@@ -61,8 +61,6 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
   const { user } = userStore()
   const focus = useIsFocused()
 
-  console.log('suggestions', suggestions)
-
   // const updateData = async (index: string) => {
   //   if (data) {
   //     data.forEach((item, i) => {
@@ -266,23 +264,6 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
             </View>
           ) : data ? (
             <ScrollView showsVerticalScrollIndicator={false} style={{ height: '67%' }}>
-              {/* {AddressBookData.map((f, index) => (
-              <View key={index} style={styles.radioBtn}>
-                <View>
-                  <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
-                </View>
-                <View style={{ display: 'flex', flexDirection: 'column' }}>
-                  <View style={styles.RadioTitle}>
-                    <f.icon width={16} height={16} color={'black'} />
-                    <HeaderStyle>{f.header}</HeaderStyle>
-                  </View>
-                  <DescriptionText>{f.location}</DescriptionText>
-                </View>
-                <Pressable style={styles.editStyle} onPress={onEditPress}>
-                  <Text style={styles.editText}>Edit</Text>
-                </Pressable>
-              </View>
-            ))} */}
               {data.map((f, index) => (
                 <View key={index} style={styles.radioBtn}>
                   <View>

@@ -37,7 +37,7 @@ const Input: React.FC<InputProps> = ({
 }
 
 const InputContainer = styled.View`
-  border-color: ${COLORS.strokeClr};
+  border-color: ${COLORS.dropDownClr};
   border-width: 1px;
   display: flex;
   flex-direction: row;

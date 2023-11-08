@@ -147,7 +147,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
         }}
       >
         <LeftArrow width={24} height={24} />
-        <CartText>{t('Addressbook')}</CartText>
+        <CartText>{'Addressbook'}</CartText>
       </GoBackArrowContent>
       <MapView
         ref={mapRef}

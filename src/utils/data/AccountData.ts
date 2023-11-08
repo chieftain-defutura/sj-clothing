@@ -43,11 +43,17 @@ export const AccountData = [
     rightText: '2 items',
     navigation: 'MyOrders',
   },
+  // {
+  //   leftIcon: HomeLocation,
+  //   name: 'Addressbook',
+  //   rightText: 'Home',
+  //   navigation: 'AddressBook',
+  // },
   {
     leftIcon: HomeLocation,
-    name: 'Addressbook',
+    name: 'Address Book',
     rightText: 'Home',
-    navigation: 'AddressBook',
+    navigation: 'LocationAddAddress',
   },
   {
     leftIcon: CustomerCare,
