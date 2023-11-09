@@ -6,7 +6,20 @@ import es from './src/utils/locals/es.json'
 import fr from './src/utils/locals/fr.json'
 import it from './src/utils/locals/it.json'
 import ja from './src/utils/locals/ja.json'
+import ar from './src/utils/locals/ar.json'
+import da from './src/utils/locals/da.json'
+import du from './src/utils/locals/du.json'
+import ge from './src/utils/locals/ge.json'
+import In from './src/utils/locals/in.json'
+import ko from './src/utils/locals/zh.json'
+import po from './src/utils/locals/po.json'
+import por from './src/utils/locals/por.json'
+import ru from './src/utils/locals/ru.json'
+import ta from './src/utils/locals/ta.json'
+import tu from './src/utils/locals/tu.json'
+import uk from './src/utils/locals/uk.json'
 import zh from './src/utils/locals/zh.json'
+import ch from './src/utils/locals/ch.json'
 
 import * as Localization from 'expo-localization'
 
@@ -33,6 +46,19 @@ i18n.use(initReactI18next).init({
     it: it,
     ja: ja,
     zh: zh,
+    ar: ar,
+    da: da,
+    du: du,
+    ge: ge,
+    in: In,
+    ko: ko,
+    po: po,
+    por: por,
+    ru: ru,
+    ta: ta,
+    tu: tu,
+    uk: uk,
+    ch: ch,
   },
 })
 

@@ -15,7 +15,7 @@ import NotificationPage from './NotificationPage'
 import TabNavigationRoutes from '../TabNavigation'
 import OrderPlaced from '../../../screens/OrderPlaced'
 import PostCreation from '../../../components/PostCreater'
-import { HeaderLeft, HeaderRight } from '../../../components/Header'
+import { HeaderLeft } from '../../../components/Header'
 import PremiumBuyNow from './Premium/PremiumBuyNow'
 import Premium from '../TabNavigation/Premium'
 import MyPosts from './Account/MyPosts'
@@ -32,6 +32,7 @@ import Languages from './Languages'
 import Currency from './Currency'
 import AvatarNavigation from './Avatar'
 import TermsAndConditions from './TermsAndConditions'
+import NewAddressBook from './NewAddressBook'
 
 const Stack = createStackNavigator()
 
@@ -142,6 +143,11 @@ const StackNavigationRoutes: React.FC = () => {
         name='TermsAndConditions'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={TermsAndConditions}
+      />
+      <Stack.Screen
+        name='LocationAddAddress'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={NewAddressBook}
       />
 
       <Stack.Screen name='MyOrders' component={MyOrders} />

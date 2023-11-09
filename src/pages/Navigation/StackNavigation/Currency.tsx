@@ -10,6 +10,7 @@ import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
 import { userStore } from '../../../store/userStore'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import CurrencyGrayIcon from '../../../assets/icons/AccountPageIcon/CurrencyGrayIcon'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const CurrencyData = [
   {
@@ -144,25 +145,27 @@ const Currency = () => {
         {isDropdownSizesOpen && (
           <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
             <SelectDropDownList>
-              {CurrencyData.filter((f) => f.currency !== currency.currency).map(
-                (f: any, i: number) => (
-                  <Pressable
-                    key={i}
-                    onPress={() => handleCurrency(f)}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
-                      gap: 10,
-                      paddingHorizontal: 12,
-                    }}
-                  >
-                    <SelectListText>{f.symbol}</SelectListText>
-                    <SelectListText>{f.abrive}</SelectListText>
-                  </Pressable>
-                ),
-              )}
+              <ScrollView style={{ height: 240 }}>
+                {CurrencyData.filter((f) => f.currency !== currency.currency).map(
+                  (f: any, i: number) => (
+                    <Pressable
+                      key={i}
+                      onPress={() => handleCurrency(f)}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        gap: 10,
+                        paddingHorizontal: 12,
+                      }}
+                    >
+                      <SelectListText>{f.symbol}</SelectListText>
+                      <SelectListText>{f.abrive}</SelectListText>
+                    </Pressable>
+                  ),
+                )}
+              </ScrollView>
             </SelectDropDownList>
           </Animated.View>
         )}

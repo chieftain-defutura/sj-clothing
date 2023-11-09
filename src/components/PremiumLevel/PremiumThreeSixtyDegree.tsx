@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Pressable, StyleSheet, Dimensions, Image, View } from 'react-native'
+import { WebView } from 'react-native-webview'
 import styled from 'styled-components/native'
+import uuid from 'react-native-uuid'
+
 import LeftArrow from '../../assets/icons/LeftArrow'
 // import ThreeSixtyDegree from '../../assets/icons/360-degree'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import CustomButton from '../Button'
-import { addDoc, collection } from 'firebase/firestore/lite'
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore/lite'
 import { db } from '../../../firebase'
 import { IPremiumData } from '../../constant/types'
 import { userStore } from '../../store/userStore'
@@ -29,6 +32,28 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   focus,
 }) => {
   const [isPressed, setIsPressed] = useState(false)
+  const isMounted = useRef(false)
+  const { avatar, user } = userStore()
+  const [uid, setUid] = useState<string>('')
+
+  const handleSetUid = useCallback(async () => {
+    if (!isMounted.current) {
+      try {
+        isMounted.current = true
+        const tempUid = uuid.v4().toString()
+        const docRef = doc(db, 'ModelsPremium', tempUid)
+        await setDoc(docRef, { uid: tempUid, skin: avatar.skinTone })
+
+        setUid(tempUid)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    handleSetUid()
+  }, [handleSetUid])
 
   const onClose = () => {
     setFocus(false)
@@ -60,7 +85,27 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               )}
             </Pressable>
           </FlexContent>
-          <ThreeSixtyDegreeImageWrapper>
+          <View
+            style={{
+              width: width / 1.1,
+              height: height / 1.6,
+              backgroundColor: 'transparent',
+              marginTop: 18,
+            }}
+          >
+            {uid && (
+              <WebView
+                style={{
+                  backgroundColor: 'transparent',
+                }}
+                source={{
+                  // uri: `http://localhost:5173/create-avatar/?uid=${uid}`,
+                  uri: `https://sj-threejs-development.netlify.app/premium/?uid=${uid}`,
+                }}
+              />
+            )}
+          </View>
+          {/* <ThreeSixtyDegreeImageWrapper>
             <ThreeSixtyDegreeImage>
               <Image
                 source={{ uri: data.productImage }}
@@ -72,17 +117,14 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
                 }}
               />
             </ThreeSixtyDegreeImage>
-            {/* <SelectStyle360Degree>
-              <ThreeSixtyDegree width={40} height={40} />
-            </SelectStyle360Degree> */}
-            <CustomButton
-              text='Buy Now'
-              fontFamily='Arvo-Regular'
-              fontSize={16}
-              style={{ width: '100%', position: 'absolute', left: 0, right: 0, bottom: -120 }}
-              onPress={handleSubmit}
-            />
-          </ThreeSixtyDegreeImageWrapper>
+           </ThreeSixtyDegreeImageWrapper> */}
+          <CustomButton
+            text='Buy Now'
+            fontFamily='Arvo-Regular'
+            fontSize={16}
+            style={{ width: '100%', marginTop: 42 }}
+            onPress={handleSubmit}
+          />
         </View>
       </AuthNavigate>
     </Animated.View>

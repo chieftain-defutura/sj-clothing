@@ -1,0 +1,50 @@
+{
+  "avatar": {
+    "title": "Δημιουργήστε το Avatar σας",
+    "select your gender": "Επιλέξτε το φύλο σας ",
+    "male": "Αρσενικός",
+    "female": "Θηλυκός",
+    "next": "Επόμενο",
+    "select your skintone": "Επιλέξτε τον τόνο του δέρματος σας",
+    "previous": "Προηγούμενος",
+    "done": "Εγινε"
+  },
+  "language": {
+    "Choose Your Language": "Επιλέξτε τη γλώσσα σας"
+  },
+  "account": {
+    "Avatar": "Avatar",
+    "My cart": "Καλάθι μου",
+    "My orders": "Οι παραγγελίες μου",
+    "Addressbook": "Βιβλίο διευθύνσεων",
+    "Accessories": "αξεσουάρ",
+    "Language": "Γλώσσα",
+    "Currency": "Νόμισμα",
+    "Help & FAQ": "Βοήθεια & FAQ",
+    "About us": "Σχετικά με εμάς",
+    "Customer care": "Εξυπηρέτηση πελατών",
+    "Log out": "Αποσύνδεση",
+    "Subscribe now": "Εγγραφείτε τώρα",
+    "Map": "Χάρτης",
+    "Home": "Σπίτι "
+  },
+  "midlevel": 
+  {
+    "Select Style": "Επιλέξτε Στυλ",
+    "Select Country": "Επιλέξτε Χώρα",
+    "Select Size": "Διάλεξε μέγεθος ",
+    "Select Color": "Επιλέξτε Χρώμα",
+    "Add more": "Πρόσθεσε περισσότερα",
+    "Buy now": "Αγορασε τωρα",
+    "Add Image": "Προσθέστε εικόνα"
+    ,
+    "Add Text": "Προσθέστε κείμενο",
+    "Done": "Εγινε",
+    "Select Design": "Επιλέξτε Σχεδίαση",
+    "Select Style to move further": "Επιλέξτε Στυλ για να προχωρήσετε περαιτέρω",
+    "Colors": "Χρώμα",
+    "Styles": "Στυλ",
+    "Sizes": "Μεγέθη",
+    "Select area to add image": "Επιλέξτε περιοχή για προσθήκη εικόνας"
+  }
+}

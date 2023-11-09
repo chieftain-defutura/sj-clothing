@@ -1,0 +1,48 @@
+{
+  "avatar": {
+    "title": "Crie seu avatar",
+    "select your gender": "Selecione o seu sexo",
+    "male": "Macho",
+    "female": "Fêmea",
+    "next": "Próximo",
+    "select your skintone": "Selecione seu tom de pele",
+    "previous": "Anterior",
+    "done": "Feito"
+  },
+  "language": {
+    "Choose Your Language": "Escolha seu idioma"
+  },
+  "account": {
+    "Avatar": "avatar",
+    "My cart": "Meu carrinho",
+    "My orders": "minhas ordens",
+    "Addressbook": "Livro de endereços",
+    "Accessories": "Acessórios",
+    "Language": "Linguagem",
+    "Currency": "Moeda",
+    "Help & FAQ": "Ajuda e perguntas frequentes ",
+    "About us": "Sobre nós",
+    "Customer care": "Servico de atendimento ao Consumidor",
+    "Log out": "Sair",
+    "Subscribe now": "Inscreva-se agora",
+    "Map": "Mapa",
+    "Home": "Lar"
+  },
+  "midlevel": {
+    "Select Style": "Selecione o estilo",
+    "Select Country": "Selecione o pais",
+    "Select Size": "Selecione o tamanho",
+    "Select Color": "Selecione a cor    ",
+    "Add more": "Adicione mais ",
+    "Buy now": "Comprar agora",
+    "Add Image": "Adicionar imagem",
+    "Add Text": "Adicione texto",
+    "Done": "Feito",
+    "Select Design": "Selecione Projeto",
+    "Select Style to move further": "Selecione Estilo para avançar",
+    "Colors": "Cor",
+    "Styles": "Estilos",
+    "Sizes": "Tamanhos",
+    "Select area to add image": "Selecione a área para adicionar imagem"
+  }
+}

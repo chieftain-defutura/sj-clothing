@@ -22,16 +22,25 @@ import { userStore } from '../../../store/userStore'
 import { RouteProp } from '@react-navigation/native'
 import { use } from 'i18next'
 import { ICheckout } from '../../../constant/types'
+import { GooglePay } from 'react-native-google-pay'
+import { PlatformPayButton, usePlatformPay } from '@stripe/stripe-react-native'
 
 type RootStackParamList = {
   Checkout: { product: string }
 }
 
+const API_URL = 'https://60e6-2401-4900-1cd4-6c58-d8ff-a13b-b7d6-e7af.ngrok-free.app'
+
 interface AddressData {
-  floor: string
-  fullAddress: string
-  landmark: string
-  saveAddressAs: string
+  name: string
+  mobile: string
+  email: string
+  addressLineOne: string
+  addressLineTwo: string
+  city: string
+  region: string
+  pinCode: string
+  saveAsAddress: string
   isSelected: boolean
 }
 
@@ -49,6 +58,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   }
 
   useEffect(() => {
+    // GooglePay.setEnvironment(GooglePay.ENVIRONMENT_TEST)
     if (!user) return
     const temp = async () => {
       if (!user) return
@@ -103,7 +113,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
       const amount = orderData?.offerPrice ? orderData?.offerPrice : orderData?.price
 
       const address = addr
-      const response = await fetch('https://sj-clothing-backend.cyclic.app/create-payment-intent', {
+      const response = await fetch(`${API_URL}/create-payment-intent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -116,11 +126,14 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
           address: address,
           paymentStatus: 'pending',
           userid: user?.uid,
-          amount: orderData?.offerPrice ? orderData?.offerPrice : orderData?.price,
+          amount: amount,
         }),
       })
 
       const data = await response.json()
+      console.log('data', data.message)
+      console.log(response.ok)
+
       if (!response.ok) {
         return Alert.alert(data.message)
       }
@@ -157,6 +170,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
       addressData.forEach((d, index) => {
         if (d.isSelected === true) {
           setAddr(d)
+          console.log('selected', d)
         }
       })
     }
@@ -169,6 +183,17 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   const closeOrderPlaced = () => {
     setOrderPlacedVisible(false)
   }
+
+  const { isPlatformPaySupported } = usePlatformPay()
+
+  React.useEffect(() => {
+    ;(async function () {
+      if (!(await isPlatformPaySupported({ googlePay: { testEnv: true } }))) {
+        Alert.alert('Google Pay is not supported.')
+        return
+      }
+    })()
+  }, [])
 
   const handleClose = (index: number) => {
     const temp = async (index: any) => {
@@ -184,6 +209,22 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
     }
     setClosedItems([...closedItems, index])
     temp(index)
+
+    const fetchPaymentIntentClientSecret = async () => {
+      // Fetch payment intent created on the server, see above
+      const response = await fetch(`${API_URL}/create-payment-intent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          currency: 'usd',
+        }),
+      })
+      const { clientSecret } = await response.json()
+
+      return clientSecret
+    }
   }
 
   return (
@@ -212,9 +253,11 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                 {addr ? (
                   <Pressable onPress={() => navigation.navigate('AddressBook')}>
                     <View>
-                      <HomeText>{addr.saveAddressAs}</HomeText>
+                      <HomeText>{addr.saveAsAddress}</HomeText>
                       <HomeDescription>
-                        {addr.fullAddress}, {addr.landmark}, {addr.floor}
+                        {addr.addressLineOne}, {addr.addressLineTwo}, {addr.city}, {addr.region},{' '}
+                        {addr.isSelected}
+                        {addr.email}, {addr.pinCode}, {addr.mobile}
                       </HomeDescription>
                     </View>
                   </Pressable>

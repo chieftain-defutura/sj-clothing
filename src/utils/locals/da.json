@@ -1,0 +1,49 @@
+{
+  "avatar": {
+    "title": "Opret din avatar",
+    "select your gender": "Vælg dit køn",
+    "male": "Han",
+    "female": "Kvinde",
+    "next": "Næste",
+    "select your skintone": "Vælg din hudtone",
+    "previous": "Tidligere",
+    "done": "Færdig"
+  },
+  "language": {
+    "Choose Your Language": "Vælg dit sprog"
+  },
+  "account": {
+    "Avatar": "Avatar",
+    "My cart": "Min kurv",
+    "My orders": "Mine Ordrer",
+    "Addressbook": "Adressebog",
+    "Accessories": "tilbehør",
+    "Language": "Sprog",
+    "Currency": "betalingsmiddel",
+    "Help & FAQ": "Hjælp & FAQ",
+    "About us": "Om os",
+    "Customer care": "Kundeservice",
+    "Log out": "Log ud",
+    "Subscribe now": "Tilmeld nu",
+    "Map": "Kort",
+    "Home": "Hjem "
+  },
+  "midlevel": 
+  {
+    "Select Style": "Vælg Stil",
+    "Select Country": "Vælg land",
+    "Select Size": "Vælg størrelse",
+    "Select Color": "Vælg Farve",
+    "Add more": "Tilføj mere",
+    "Buy now": "Køb nu",
+    "Add Image": "Tilføj billede",
+    "Add Text": "Tilføj tekst",
+    "Done": "Færdig",
+    "Select Design": "Vælg Design",
+    "Select Style to move further": "Vælg Stil for at gå videre",
+    "Colors": "Farve",
+    "Styles": "Stilarter",
+    "Sizes": "Størrelser",
+    "Select area to add image": "Vælg område for at tilføje billede"
+  }
+}

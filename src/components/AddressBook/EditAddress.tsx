@@ -65,10 +65,10 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddress }) =
       const userData = userDoc.data()
       if (!userData) return
 
-      const arr = userData.address.filter((element: AddressData) => {
-        return element.fullAddress !== selectedAddress.fullAddress
-      })
-      userData.address = [...addressArray]
+      // const arr = userData.address.filter((element: AddressData) => {
+      //   return element.fullAddress !== selectedAddress.fullAddress
+      // })
+      userData.address = [...addressArray, userData.address]
       await updateDoc(userDocRef, userData)
     } catch (error) {
       console.error('An error occurred:', error)

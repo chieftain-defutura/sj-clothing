@@ -1,0 +1,49 @@
+{
+  "avatar": {
+    "title": "Avatarınızı Oluşturun",
+    "select your gender": "Cinsiyetinizi seçiniz",
+    "male": "Erkek",
+    "female": "Dişi",
+    "next": "Sonraki",
+    "select your skintone": "Cilt Tonunuzu Seçin ",
+    "previous": "Öncesi",
+    "done": "Tamamlamak"
+  },
+  "language": {
+    "Choose Your Language": "Dilinizi seçin"
+  },
+  "account": {
+    "Avatar": "avatar",
+    "My cart": "Sepetim",
+    "My orders": "Siparişlerim",
+    "Addressbook": "Adres defteri",
+    "Accessories": "Aksesuarlar",
+    "Language": "Dil",
+    "Currency": "Para birimi",
+    "Help & FAQ": "Yardım ve SSS",
+    "About us": "Hakkımızda",
+    "Customer care": "Müşteri Hizmetleri",
+    "Log out": "Çıkış Yap",
+    "Subscribe now": "HarŞimdi abone olunita",
+    "Map": "Harita",
+    "Home": "Ev"
+  },
+  "midlevel": 
+  {
+    "Select Style": "Stil Seç",
+    "Select Country": "Ülke Seçiniz",
+    "Select Size": "Beden seçin",
+    "Select Color": "Renk seç    ",
+    "Add more": "Daha ekle",
+    "Buy now": "Şimdi al",
+    "Add Image": "Resim eklemek",
+    "Add Text": "Yazı ekle",
+    "Done": "Tamamlamak",
+    "Select Design": "Tasarım Seçin",
+    "Select Style to move further": "Daha ileri gitmek için Stil'i seçin",
+    "Colors": "Renk",
+    "Styles": "Stiller",
+    "Sizes": "Boyutlar",
+    "Select area to add image": "Resim eklenecek alanı seçin"
+  }
+}

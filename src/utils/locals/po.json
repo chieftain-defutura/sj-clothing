@@ -1,0 +1,48 @@
+{
+"avatar": {
+    "title": "Stwórz swojego awatara",
+    "select your gender": "Wybierz płeć",
+    "male": "Mężczyzna",
+    "female": "Kobieta",
+    "next": "Następny",
+    "select your skintone": "Wybierz swój odcień skóry",
+    "previous": "Poprzedni",
+    "done": "Zrobione"
+  },
+  "language": {
+    "Choose Your Language": "Wybierz swój język"
+  },
+  "account": {
+    "Avatar": "Awatara",
+    "My cart": "Mój wózek",
+    "My orders": "Moje zamówienia",
+    "Addressbook": "Książka adresowa",
+    "Accessories": "Akcesoria",
+    "Language": "Język",
+    "Currency": "Waluta",
+    "Help & FAQ": "Pomoc i często zadawane pytania",
+    "About us": "O nas",
+    "Customer care": "Obsługa klienta",
+    "Log out": "Wyloguj",
+    "Subscribe now": "Zapisz się teraz",
+    "Map": "Mapa",
+    "Home": "Dom"
+  },
+  "midlevel": {
+    "Select Style": "Wybierz Styl",
+    "Select Country": "Wybierz kraj",
+    "Select Size": "Wybierz rozmiar",
+    "Select Color": "Wybierz kolor",
+    "Add more": "Dodaj więcej",
+    "Buy now": "Kup Teraz",
+    "Add Image": "Dodaj obraz",
+    "Add Text": "Dodaj tekst",
+    "Done": "Zrobione",
+    "Select Design": "Wybierz opcję Projekt",
+    "Select Style to move further": "Wybierz Styl, aby przejść dalej",
+    "Colors": "Kolor",
+    "Styles": "Style",
+    "Sizes": "Rozmiary",
+    "Select area to add image": "Wybierz obszar, aby dodać obraz"
+  }
+}

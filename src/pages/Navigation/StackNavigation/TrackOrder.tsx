@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Dimensions, Text } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import LeftArrow from '../../../assets/icons/LeftArrow'
@@ -10,6 +10,9 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { doc, getDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { IOrder } from '../../../constant/types'
+
+const { height, width } = Dimensions.get('window')
+
 interface ITrackOrder {
   navigation: any
   orderId: string
@@ -86,95 +89,226 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
     // if(!fetchData) return
     setOrderData(fetchData as IOrder)
   }, [])
-  console.log(orderData?.orderStatus)
+  console.log(orderData)
   console.log(orderData?.type)
   useEffect(() => {
     getOrderDataById()
   }, [getOrderDataById])
+
   return (
-    <Animated.View
-      entering={SlideInRight.duration(500).delay(200)}
-      exiting={SlideOutRight.duration(500).delay(200)}
-    >
-      <ScrollViewContent>
-        <View>
-          <GoBackArrowContent
-            onPress={() => {
-              setOpenTrackOrder(false)
-            }}
-          >
-            <LeftArrow width={24} height={24} />
-            <CartText>Track order</CartText>
-          </GoBackArrowContent>
-          <TShirtImageWrapper>
-            <TShirtImage source={require('../../../assets/images/t-shirt.png')} />
-            {/* <ThreeSixtyDegreeImage>
+    <LinearGradient colors={gradientOpacityColors}>
+      {!orderData ? (
+        <Text>No data</Text>
+      ) : (
+        <Animated.View
+          entering={SlideInRight.duration(500).delay(200)}
+          exiting={SlideOutRight.duration(500).delay(200)}
+        >
+          <ScrollViewContent>
+            <View>
+              <GoBackArrowContent
+                onPress={() => {
+                  setOpenTrackOrder(false)
+                }}
+              >
+                <LeftArrow width={24} height={24} />
+                <CartText>Track order</CartText>
+              </GoBackArrowContent>
+              <TShirtImageWrapper>
+                <TShirtImage source={require('../../../assets/images/t-shirt.png')} />
+                {/* <ThreeSixtyDegreeImage>
               <ThreeSixtyDegree width={40} height={40} />
             </ThreeSixtyDegreeImage> */}
-          </TShirtImageWrapper>
-          <LinearGradient colors={gradientOpacityColors}>
-            <TrackOrderContent>
-              <Container>
-                <Row>
-                  {ProductData.slice(0, 3).map((f, index) => (
-                    <Column key={index}>
-                      <ProductText>{f.product}</ProductText>
-                      <ProductName>{f.productName}</ProductName>
-                    </Column>
-                  ))}
-                </Row>
+              </TShirtImageWrapper>
+              <TrackOrderContent>
+                <Container>
+                  <Row>
+                    {ProductData.slice(0, 3).map((f, index) => (
+                      <Column key={index}>
+                        <ProductText>{f.product}</ProductText>
+                        <ProductName>{f.productName}</ProductName>
+                      </Column>
+                    ))}
+                  </Row>
 
-                <Row>
-                  {ProductData.slice(3, 6).map((f, index) => (
-                    <Column key={index}>
-                      <ProductText>{f.product}</ProductText>
-                      <ProductName>{f.productName}</ProductName>
-                    </Column>
-                  ))}
-                </Row>
-              </Container>
-            </TrackOrderContent>
+                  <Row>
+                    {ProductData.slice(3, 6).map((f, index) => (
+                      <Column key={index}>
+                        <ProductText>{f.product}</ProductText>
+                        <ProductName>{f.productName}</ProductName>
+                      </Column>
+                    ))}
+                  </Row>
+                </Container>
+              </TrackOrderContent>
 
-            <TrackOrderContent>
-              <OrderGroupContent>
-                <View style={styles.radioBtn}>
-                  <View style={{ marginTop: -4 }}>
-                    {/* <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} /> */}
-                    {/* <RadioButton.Android
-                      value='option1'
-                      status={!orderData?.orderStatus.orderplaced.status ? 'checked' : 'unchecked'}
-                      // onPress={() => setOnCheckOrderPlaced()}
-                      color={COLORS.textSecondaryClr}
-                    /> */}
+              <TrackOrderContent>
+                <OrderGroupContent>
+                  <View style={styles.radioBtn}>
+                    <View style={{ marginTop: -4 }}>
+                      {/* <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} /> */}
+                      <RadioButton.Android
+                        value='option1'
+                        status={
+                          orderData?.orderStatus?.orderplaced?.status ? 'checked' : 'unchecked'
+                        }
+                        // onPress={() => setOnCheckOrderPlaced()}
+                        color={COLORS.textSecondaryClr}
+                      />
+                    </View>
+                    <FlexOrder>
+                      <OrderPlacedFlexContent>
+                        <View>
+                          <OrderPlacedText>Order Placed</OrderPlacedText>
+                        </View>
+                        <View>
+                          <OrderPlacedDate>
+                            {orderData?.orderStatus?.orderplaced?.createdAt}
+                          </OrderPlacedDate>
+                        </View>
+                      </OrderPlacedFlexContent>
+
+                      <OrderDescription>
+                        {orderData?.orderStatus?.orderplaced?.description}
+                      </OrderDescription>
+                    </FlexOrder>
                   </View>
-                  <FlexOrder>
-                    <OrderPlacedFlexContent>
-                      <View>
-                        <OrderPlacedText>Order Placed</OrderPlacedText>
-                      </View>
-                      <View>
-                        <OrderPlacedDate>
-                          {orderData?.orderStatus.orderplaced?.createdAt}
-                        </OrderPlacedDate>
-                      </View>
-                    </OrderPlacedFlexContent>
+                </OrderGroupContent>
+                <OrderGroupContent>
+                  <View style={styles.radioBtn}>
+                    <View style={{ marginTop: -4 }}>
+                      {/* <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} /> */}
+                      <RadioButton.Android
+                        value='option1'
+                        status={
+                          orderData?.orderStatus?.orderplaced?.status ? 'checked' : 'unchecked'
+                        }
+                        // onPress={() => setOnCheckOrderPlaced()}
+                        color={COLORS.textSecondaryClr}
+                      />
+                    </View>
+                    <FlexOrder>
+                      <OrderPlacedFlexContent>
+                        <View>
+                          <OrderPlacedText>Manufacturing</OrderPlacedText>
+                        </View>
+                        <View>
+                          <OrderPlacedDate>
+                            {orderData?.orderStatus?.orderplaced?.createdAt}
+                          </OrderPlacedDate>
+                        </View>
+                      </OrderPlacedFlexContent>
 
-                    <OrderDescription>
-                      {orderData?.orderStatus.orderplaced?.description}
-                    </OrderDescription>
-                  </FlexOrder>
-                </View>
-              </OrderGroupContent>
-            </TrackOrderContent>
-          </LinearGradient>
-        </View>
-      </ScrollViewContent>
-    </Animated.View>
+                      <OrderDescription>
+                        {orderData?.orderStatus?.orderplaced?.description}
+                      </OrderDescription>
+                    </FlexOrder>
+                  </View>
+                </OrderGroupContent>
+                <OrderGroupContent>
+                  <View style={styles.radioBtn}>
+                    <View style={{ marginTop: -4 }}>
+                      {/* <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} /> */}
+                      <RadioButton.Android
+                        value='option1'
+                        status={
+                          orderData?.orderStatus?.orderplaced?.status ? 'checked' : 'unchecked'
+                        }
+                        // onPress={() => setOnCheckOrderPlaced()}
+                        color={COLORS.textSecondaryClr}
+                      />
+                    </View>
+                    <FlexOrder>
+                      <OrderPlacedFlexContent>
+                        <View>
+                          <OrderPlacedText>Ready to ship</OrderPlacedText>
+                        </View>
+                        <View>
+                          <OrderPlacedDate>
+                            {orderData?.orderStatus?.orderplaced?.createdAt}
+                          </OrderPlacedDate>
+                        </View>
+                      </OrderPlacedFlexContent>
+
+                      <OrderDescription>
+                        {orderData?.orderStatus?.orderplaced?.description}
+                      </OrderDescription>
+                    </FlexOrder>
+                  </View>
+                </OrderGroupContent>
+                <OrderGroupContent>
+                  <View style={styles.radioBtn}>
+                    <View style={{ marginTop: -4 }}>
+                      {/* <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} /> */}
+                      <RadioButton.Android
+                        value='option1'
+                        status={
+                          orderData?.orderStatus?.orderplaced?.status ? 'checked' : 'unchecked'
+                        }
+                        // onPress={() => setOnCheckOrderPlaced()}
+                        color={COLORS.textSecondaryClr}
+                      />
+                    </View>
+                    <FlexOrder>
+                      <OrderPlacedFlexContent>
+                        <View>
+                          <OrderPlacedText>Shipping</OrderPlacedText>
+                        </View>
+                        <View>
+                          <OrderPlacedDate>
+                            {orderData?.orderStatus?.orderplaced?.createdAt}
+                          </OrderPlacedDate>
+                        </View>
+                      </OrderPlacedFlexContent>
+
+                      <OrderDescription>
+                        {orderData?.orderStatus?.orderplaced?.description}
+                      </OrderDescription>
+                    </FlexOrder>
+                  </View>
+                </OrderGroupContent>
+                <OrderGroupContent>
+                  <View style={styles.radioBtn}>
+                    <View style={{ marginTop: -4 }}>
+                      {/* <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} /> */}
+                      <RadioButton.Android
+                        value='option1'
+                        status={
+                          orderData?.orderStatus?.orderplaced?.status ? 'checked' : 'unchecked'
+                        }
+                        // onPress={() => setOnCheckOrderPlaced()}
+                        color={COLORS.textSecondaryClr}
+                      />
+                    </View>
+                    <FlexOrder>
+                      <OrderPlacedFlexContent>
+                        <View>
+                          <OrderPlacedText>Delivery</OrderPlacedText>
+                        </View>
+                        <View>
+                          <OrderPlacedDate>
+                            {orderData?.orderStatus?.orderplaced?.createdAt}
+                          </OrderPlacedDate>
+                        </View>
+                      </OrderPlacedFlexContent>
+
+                      <OrderDescription>
+                        {orderData?.orderStatus?.orderplaced?.description}
+                      </OrderDescription>
+                    </FlexOrder>
+                  </View>
+                </OrderGroupContent>
+              </TrackOrderContent>
+            </View>
+          </ScrollViewContent>
+        </Animated.View>
+      )}
+    </LinearGradient>
   )
 }
 
 const ScrollViewContent = styled.ScrollView`
-  background: ${COLORS.iconsNormalClr};
+  height: ${height};
 `
 
 const FlexOrder = styled.View`

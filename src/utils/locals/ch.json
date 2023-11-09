@@ -1,0 +1,49 @@
+{
+  "avatar": {
+    "title": "創建你的頭像",
+    "select your gender": "選擇你的性別",
+    "male": "男性",
+    "female": "女性",
+    "next": "下一個",
+    "select your skintone": "選擇您的膚色",
+    "previous": "以前的",
+    "done": "完畢"
+  },
+  "language": {
+    "Choose Your Language": "選擇你的語言"
+  },
+  "account": {
+    "Avatar": "阿凡達",
+    "My cart": "我的車",
+    "My orders": "我的訂單",
+    "Addressbook": "地址簿",
+    "Accessories": "配件",
+    "Language": "語言",
+    "Currency": "貨幣",
+    "Help & FAQ": "幫助和常見問題解答",
+    "About us": "關於我們",
+    "Customer care": "客戶關懷",
+    "Log out": "登出",
+    "Subscribe now": "現在訂閱",
+    "Map": "地圖",
+    "Home": "家 "
+  },
+  "midlevel": {
+    "Select Style": "選擇風格",
+    "Select Country": "選擇國家",
+    "Select Size": "選擇大小",
+    "Select Color": "選擇顏色",
+    "Add More": "添加更多",
+    "Buy now": "立即購買",
+    "Add Image": "新增圖片",
+    "Add Text": "新增文字",
+    "Done": "完畢",
+
+    "Select Design": "選擇設計 ",
+    "Select Style to move further": "選擇樣式以進一步移動",
+    "Colors": "顏色",
+    "Styles": "风格",
+    "Sizes": "尺寸",
+    "Select area to add image": "選擇要新增影像的區域"
+  }
+}

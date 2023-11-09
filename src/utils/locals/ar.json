@@ -1,0 +1,48 @@
+{
+  "avatar": {
+    "title": "إنشاء الصورة الرمزية الخاصة بك",
+    "select your gender": "اختر جنسك",
+    "male": "ذكر",
+    "female": "أنثى",
+    "next": "التالي",
+    "select your skintone": "حدد لون البشرة الخاص بك",
+    "previous": "سابق",
+    "done": "منتهي"
+  },
+  "language": {
+    "Choose Your Language": "اختر لغتك"
+  },
+  "account": {
+    "Avatar": "الصورة الرمزية",
+    "My cart": "سلة التسوق الخاصة بي",
+    "My orders": "طلباتي",
+    "Addressbook": "دليل العناوين",
+    "Accessories": "مُكَمِّلات",
+    "Language": "لغة",
+    "Currency": "عملة",
+    "Help & FAQ": "مساعدة التعليمات",
+    "About us": "معلومات عنا",
+    "Customer care": "رعاية العميل",
+    "Log out": "تسجيل خروج",
+    "Subscribe now": "إشترك الآن",
+    "Map": "خريطة",
+    "Home": "بيت"
+  },
+  "midlevel": {
+    "Select Style": "حدد النمط",
+    "Select Country": "حدد الدولة",
+    "Select Size": "أختر الحجم",
+    "Select Color": "إختر لون",
+    "Add more": "أضف المزيد",
+    "Buy now": "اشتري الآن",
+    "Add Image": "إضافة صورة",
+    "Add Text": "إضافة نص",
+    "Done": "منتهي",
+    "Select Design": "حدد التصميم",
+    "Select Style to move further": "حدد النمط للمضي قدمًا",
+    "Colors": "لون",
+    "Styles": "الأنماط",
+    "Sizes": "الأحجام",
+    "Select area to add image": "حدد المنطقة لإضافة الصورة"
+  }
+}

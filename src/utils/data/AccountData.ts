@@ -25,12 +25,12 @@ export const AccountData = [
   //   rightText: '44 posts',
   //   navigation: 'MyPosts',
   // },
-  {
-    leftIcon: SackDollar,
-    name: 'Checkout',
-    rightText: '1500 INR',
-    navigation: 'CheckoutPayment',
-  },
+  // {
+  //   leftIcon: SackDollar,
+  //   name: 'Checkout',
+  //   rightText: '1500 INR',
+  //   navigation: 'CheckoutPayment',
+  // },
   // {
   //   leftIcon: Cart,
   //   name: 'My cart',
@@ -43,11 +43,17 @@ export const AccountData = [
     rightText: '2 items',
     navigation: 'MyOrders',
   },
+  // {
+  //   leftIcon: HomeLocation,
+  //   name: 'Addressbook',
+  //   rightText: 'Home',
+  //   navigation: 'AddressBook',
+  // },
   {
     leftIcon: HomeLocation,
-    name: 'Addressbook',
+    name: 'Address Book',
     rightText: 'Home',
-    navigation: 'AddressBook',
+    navigation: 'LocationAddAddress',
   },
   {
     leftIcon: CustomerCare,

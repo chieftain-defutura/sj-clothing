@@ -1,7 +1,6 @@
 import { Pressable } from 'react-native'
 import styled from 'styled-components/native'
 import axios from 'axios'
-import Search from '../../assets/icons/SearchIcon'
 import TickIcon from '../../assets/icons/TickIcon'
 import CustomButton from '../Button'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
@@ -10,18 +9,11 @@ import ChevronLeft from '../../assets/icons/ChevronLeft'
 import Input from '../Input'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { StyleSheet, Text, View, ScrollView, Keyboard, TextInput } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Keyboard } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import Animated from 'react-native-reanimated'
-import firestore, {
-  doc,
-  updateDoc,
-  addDoc,
-  collection,
-  setDoc,
-  getDoc,
-} from 'firebase/firestore/lite'
+import { doc, updateDoc, addDoc, collection, setDoc, getDoc } from 'firebase/firestore/lite'
 import { userStore } from '../../store/userStore'
 import { db } from '../../../firebase'
 import * as Location from 'expo-location'

@@ -18,9 +18,10 @@ import { LinearGradient } from 'expo-linear-gradient'
 import NotUserIcon from '../../../../assets/icons/AccountPageIcon/NotUserIcon'
 import { RouteProp } from '@react-navigation/native'
 import { RootStackParamList } from '../../../ScreenTypes'
-import { doc, getDoc } from 'firebase/firestore/lite'
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore/lite'
 import AuthNavigate from '../../../../screens/AuthNavigate'
 import { useTranslation } from 'react-i18next'
+import { IOrder } from '../../../../constant/types'
 
 interface IAccount {
   navigation: any
@@ -33,6 +34,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const { t } = useTranslation('account')
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [focus, setFocus] = useState(false)
+  const [orderData, setOrderData] = useState<IOrder[]>([])
   const user = userStore((state) => state.user)
 
   // const isFocused = useIsFocused()
@@ -117,6 +119,24 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
       console.log(error)
     }
   }
+
+  const getData = useCallback(async () => {
+    if (!user) return
+    const ProductRef = await getDocs(collection(db, 'Orders'))
+    const fetchProduct = ProductRef.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as any),
+    }))
+    const data = fetchProduct.filter((f) => f.userId === user.uid)
+    console.log(fetchProduct)
+    setOrderData(data)
+  }, [])
+
+  useEffect(() => {
+    getData()
+  }, [getData])
+
+  // console.log(orderData)
 
   return (
     <LinearGradient colors={gradientOpacityColors}>
@@ -208,7 +228,11 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                         <UserText>{t(f.name)}</UserText>
                       </FlexIcon>
                       {f.rightIcon && <f.rightIcon width={20} height={20} />}
-                      {f.rightText && <RightText>{f.rightText}</RightText>}
+                      {f.rightText && (
+                        <RightText>
+                          {f.name === 'My orders' ? `${orderData.length} items` : f.rightText}
+                        </RightText>
+                      )}
                     </ProfileUserContent>
                   </Pressable>
                 )

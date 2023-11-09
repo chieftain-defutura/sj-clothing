@@ -31,13 +31,9 @@ const StartIcons = [
 const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
   const { user } = userStore()
   const { t } = useTranslation('account')
-  const [stars, setStars] = useState(4)
-  const [orderData, setOrderData] = useState<IOrder[]>([])
   const [openTrackOrder, setOpenTrackOrder] = useState(false)
   const [orderId, setOrderId] = useState('')
-  const handleStarClick = (index: number) => {
-    setStars(index + 1)
-  }
+  const [orderData, setOrderData] = useState<IOrder[]>([])
 
   const getData = useCallback(async () => {
     if (!user) return
@@ -73,47 +69,13 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
               <CartPageContent>
                 {orderData.map((f, index) => {
                   return (
-                    <View key={index}>
-                      <CartPageContainer>
-                        <CartPageData
-                          onPress={() => {
-                            setOpenTrackOrder(true), setOrderId(f.id)
-                          }}
-                        >
-                          <View>
-                            <TShirtImage source={{ uri: f.productImage }} />
-                          </View>
-                          <View>
-                            <ProductWrapper>
-                              <View>
-                                <ProductShirtText>{f.productName}</ProductShirtText>
-                                <ProductText>{f.productName}</ProductText>
-                                <StarContainer>
-                                  {StartIcons.map((star, index) => (
-                                    <TouchableOpacity
-                                      key={index}
-                                      onPress={() => handleStarClick(index)}
-                                    >
-                                      {index < stars ? (
-                                        <star.startActive width={24} height={24} />
-                                      ) : (
-                                        <star.startInActive width={24} height={24} />
-                                      )}
-                                    </TouchableOpacity>
-                                  ))}
-                                </StarContainer>
-                                <StatusText>Write a review</StatusText>
-                                {/* <ProductShirtText>{f.statusName}</ProductShirtText> */}
-                                {/* <ProductShirtText>{f.date}</ProductShirtText> */}
-                              </View>
-                              <Pressable>
-                                <ChevronLeft width={16} height={16} />
-                              </Pressable>
-                            </ProductWrapper>
-                          </View>
-                        </CartPageData>
-                      </CartPageContainer>
-                    </View>
+                    <OrderCard
+                      id={f.id}
+                      productImage={f.productImage}
+                      productName={f.productName}
+                      setOpenTrackOrder={setOpenTrackOrder}
+                      setOrderId={setOrderId}
+                    />
                   )
                 })}
               </CartPageContent>
@@ -128,6 +90,68 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
         />
       )}
     </LinearGradient>
+  )
+}
+
+interface IOrderCard {
+  id: string
+  productImage: string
+  productName: string
+  setOrderId: React.Dispatch<React.SetStateAction<string>>
+  setOpenTrackOrder: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const OrderCard: React.FC<IOrderCard> = ({
+  id,
+  productImage,
+  productName,
+  setOrderId,
+  setOpenTrackOrder,
+}) => {
+  const [stars, setStars] = useState(4)
+  const handleStarClick = (index: number) => {
+    setStars(index + 1)
+  }
+
+  return (
+    <View>
+      <CartPageContainer>
+        <CartPageData
+          onPress={() => {
+            setOpenTrackOrder(true), setOrderId(id)
+          }}
+        >
+          <View>
+            <TShirtImage source={{ uri: productImage }} />
+          </View>
+          <View>
+            <ProductWrapper>
+              <View>
+                <ProductShirtText>{productName}</ProductShirtText>
+                <ProductText>{productName}</ProductText>
+                <StarContainer>
+                  {StartIcons.map((star, index) => (
+                    <TouchableOpacity key={index} onPress={() => handleStarClick(index)}>
+                      {index < stars ? (
+                        <star.startActive width={24} height={24} />
+                      ) : (
+                        <star.startInActive width={24} height={24} />
+                      )}
+                    </TouchableOpacity>
+                  ))}
+                </StarContainer>
+                <StatusText>Write a review</StatusText>
+                {/* <ProductShirtText>{f.statusName}</ProductShirtText> */}
+                {/* <ProductShirtText>{f.date}</ProductShirtText> */}
+              </View>
+              <Pressable>
+                <ChevronLeft width={16} height={16} />
+              </Pressable>
+            </ProductWrapper>
+          </View>
+        </CartPageData>
+      </CartPageContainer>
+    </View>
   )
 }
 

@@ -146,7 +146,9 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
     try {
-      const result = await Share.share({ message: 'Bug:' + `\n` + url })
+      const result = await Share.share({
+        message: ` Product-name: ${data.productName}, \n Product-Image: ${data.productImage}, \n Product-description: ${data.description}`,
+      })
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
           console.log('shared with active type', result.activityType)

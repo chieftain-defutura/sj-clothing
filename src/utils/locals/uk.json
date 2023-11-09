@@ -1,0 +1,50 @@
+{
+  "avatar": {
+    "title": "Створіть свій аватар",
+    "select your gender": "Виберіть свою стать",
+    "male": "Чоловік",
+    "female": "Жінка",
+    "next": "Далі",
+    "select your skintone": "Виберіть свій колір шкіри",
+    "previous": "Попередній",
+    "done": "Готово"
+  },
+  "language": {
+    "Choose Your Language": "Виберіть свою мову"
+  },
+  "account": {
+    "Avatar": "Аватар",
+    "My cart": "Мій кошик",
+    "My orders": "Мої замовлення",
+    "Addressbook": "Адресна книга",
+    "Accessories": "Аксесуари",
+    "Language": "Мова",
+    "Currency": "Валюта",
+    "Help & FAQ": "Довідка та поширені запитання",
+    "About us": "Про нас",
+    "Customer care": "Обслуговування клієнтів",
+    "Log out": "Вийти",
+    "Subscribe now": "Підпишись зараз"    ,
+    "Map": "Карта",
+    "Home": "додому "
+  },
+  "midlevel": 
+  {
+    "Select Style": "Виберіть Стиль",
+    "Select Country": "Виберіть країну",
+    "Select Size": "Виберіть Розмір",
+    "Select Color": "Виберіть Колір",
+    "Add More": "Додати більше",
+    "Buy now": "Купити зараз",
+    "Add Image": "Додати зображення",
+    "Add Text": "Додати текст",
+    "Done": "Готово",
+
+    "Select Design": "Виберіть «Дизайн».",
+    "Select Style to move further": "Виберіть Стиль, щоб рухатися далі",
+    "Colors": "Колір",
+    "Styles": "Стилі",
+    "Sizes": "Розміри",
+    "Select area to add image": "Виберіть область для додавання зображення"
+  }
+}

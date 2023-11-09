@@ -1,0 +1,49 @@
+{
+  "avatar": {
+    "title": "Buat Avatar Anda",
+    "select your gender": "Pilih jenis kelamin Anda",
+    "male": "Pria",
+    "female": "Perempuan",
+    "next": "Berikutnya",
+    "select your skintone": "Pilih Warna Kulit Anda ",
+    "previous": "Sebelumnya",
+    "done": "Selesai"
+  },
+  "language": {
+    "Choose Your Language": "Pilih bahasamu"
+  },
+  "account": {
+    "Avatar": "Avatar",
+    "My cart": "Keranjang Saya",
+    "My orders": "pesananku",
+    "Addressbook": "Buku alamat",
+    "Accessories": "Aksesoris",
+    "Language": "Bahasa",
+    "Currency": "Mata uang",
+    "Help & FAQ": "Bantuan & FAQ ",
+    "About us": "Tentang kami",
+    "Customer care": "Layanan pelanggan",
+    "Log out": "Keluar",
+    "Subscribe now": "Berlangganan sekarang",
+    "Map": "Peta",
+    "Home": "Rumah"
+  },
+  "midlevel": 
+  {
+    "Select Style": "Pilih Gaya",
+    "Select Country": "Pilih negara",
+    "Select Size": "Pilih ukuran",
+    "Select Color": "Pilih Warna ",
+    "Add more": "Tambahkan lebih banyak",
+    "Buy now": "Beli sekarang",
+    "Add Image": "Menambahkan gambar",
+    "Add Text": "Tambahkan teks",
+    "Done": "Selesai",
+    "Select Design": "Pilih Desain",
+    "Select Style to move further": "Pilih Gaya untuk melangkah lebih jauh",
+    "Colors": "Warna",
+    "Styles": "Gaya",
+    "Sizes": "Ukuran",
+    "Select area to add image": "Pilih area untuk menambahkan gambar"
+  }
+}

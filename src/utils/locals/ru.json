@@ -1,0 +1,48 @@
+{
+  "avatar": {
+    "title": "Создайте свой аватар",
+    "select your gender": "Выбери свой пол",
+    "male": "Мужской",
+    "female": "Женский",
+    "next": "Следующий",
+    "select your skintone": "Выберите свой скинтон",
+    "previous": "Предыдущий",
+    "done": "Сделанный"
+  },
+  "language": {
+    "Choose Your Language": "Выберите ваш язык"
+  },
+  "account": {
+    "Avatar": "Аватар",
+    "My cart": "Моя тележка",
+    "My orders": "мои заказы",
+    "Addressbook": "Адресная книга",
+    "Accessories": "Аксессуары",
+    "Language": "Язык",
+    "Currency": "Валюта",
+    "Help & FAQ": "Помощь и часто задаваемые вопросы",
+    "About us": "О нас",
+    "Customer care": "Обслуживание клиентов",
+    "Log out": "Выйти",
+    "Subscribe now": "Подпишись сейчас",
+    "Map": "карта",
+    "Home": "Дом"
+  },
+  "midlevel": {
+    "Select Style": "Выберите стиль",
+    "Select Country": "Выберите страну",
+    "Select Size": "Выберите размер",
+    "Select Color": "Выберите цвет",
+    "Add more": "Добавить больше    ",
+    "Buy now": "Купить сейчас",
+    "Add Image": "Добавить изображение",
+    "Add Text": "Добавить текст",
+    "Done": "Сделанный",
+    "Select Design": "Выберите дизайн",
+    "Select Style to move further": "Выберите стиль, чтобы двигаться дальше",
+    "Colors": "Цвет",
+    "Styles": "Стили",
+    "Sizes": "Размеры",
+    "Select area to add image": "Выберите область для добавления изображения"
+  }
+}

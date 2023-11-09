@@ -10,9 +10,7 @@
       "image": "./assets/iPhone.png",
       "resizeMode": "cover"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -37,6 +35,13 @@
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Allow Sprinkle Nadar to use your location."
+        }
+      ],
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "string",
+          "enableGooglePay": true
         }
       ]
     ],

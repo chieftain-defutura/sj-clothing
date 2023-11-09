@@ -1,0 +1,49 @@
+{
+  "avatar": {
+    "title": "아바타 만들기",
+    "select your gender": "성별을 선택하세요",
+    "male": "남성",
+    "female": "여성",
+    "next": "다음",
+    "select your skintone": "피부톤을 선택하세요",
+    "previous": "이전의",
+    "done": "완료"
+  },
+  "language": {
+    "Choose Your Language": "당신의 언어를 고르시 오"
+  },
+  "account": {
+    "Avatar": "화신",
+    "My cart": "내 카트",
+    "My orders": "내 주문",
+    "Addressbook": "주소록",
+    "Accessories": "부속품",
+    "Language": "언어",
+    "Currency": "통화",
+    "Help & FAQ": "도움말 및 FAQ    ",
+    "About us": "회사 소개",
+    "Customer care": "고객 지원",
+    "Log out": "로그 아웃",
+    "Subscribe now": "지금 구독하세요",
+    "Map": "지도",
+    "Home": "집 "
+  },
+  "midlevel": 
+  {
+    "Select Style": "스타일 선택",
+    "Select Country": "국가 선택",
+    "Select Size": "사이즈를 선택하다    ",
+    "Select Color": "색상 선택",
+    "Add more": "더 추가",
+    "Buy now": "지금 구매",
+    "Add Image": "이미지 추가",
+    "Add Text": "텍스트 추가",
+    "Done": "완료",
+    "Select Design": "디자인 선택",
+    "Select Style to move further": "더 나아가려면 스타일을 선택하세요.",
+    "Colors": "색상",
+    "Styles": "스타일",
+    "Sizes": "크기",
+    "Select area to add image": "이미지를 추가할 영역을 선택하세요"
+  }
+}

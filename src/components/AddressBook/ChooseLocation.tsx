@@ -265,23 +265,6 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
             </View>
           ) : data ? (
             <ScrollView showsVerticalScrollIndicator={false} style={{ height: '67%' }}>
-              {/* {AddressBookData.map((f, index) => (
-              <View key={index} style={styles.radioBtn}>
-                <View>
-                  <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
-                </View>
-                <View style={{ display: 'flex', flexDirection: 'column' }}>
-                  <View style={styles.RadioTitle}>
-                    <f.icon width={16} height={16} color={'black'} />
-                    <HeaderStyle>{f.header}</HeaderStyle>
-                  </View>
-                  <DescriptionText>{f.location}</DescriptionText>
-                </View>
-                <Pressable style={styles.editStyle} onPress={onEditPress}>
-                  <Text style={styles.editText}>Edit</Text>
-                </Pressable>
-              </View>
-            ))} */}
               {data.map((f, index) => (
                 <View key={index} style={styles.radioBtn}>
                   <View>
@@ -404,12 +387,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#efcef5',
     borderRadius: 10,
-    paddingVertical: 12,
+    paddingVertical: 16,
     paddingHorizontal: 12,
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    gap: 8,
+    gap: 12,
     marginVertical: 8,
   },
   RadioTitle: {

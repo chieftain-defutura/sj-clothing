@@ -9,15 +9,29 @@ import Svg, { Path } from 'react-native-svg'
 import { useTranslation } from 'react-i18next'
 import { userStore } from '../../../store/userStore'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const LanguagesData = [
-  { language: 'Japanese', lang: 'ja' },
-  { language: 'Chinese', lang: 'zh' },
-  { language: 'Italian', lang: 'it' },
-  { language: 'Spanish', lang: 'es' },
+  { language: 'Chinese Mandarian', lang: 'ch' },
+  { language: 'Chinese yue', lang: 'zh' },
+  { language: 'Danish', lang: 'da' },
+  { language: 'Dutch', lang: 'du' },
+  { language: 'English', lang: 'en' },
   { language: 'French', lang: 'fr' },
   { language: 'German', lang: 'de' },
-  { language: 'English', lang: 'en' },
+  { language: 'Greek', lang: 'ge' },
+  { language: 'Indonesia', lang: 'In' },
+  { language: 'Italian', lang: 'it' },
+  { language: 'Japanese', lang: 'ja' },
+  { language: 'Korean', lang: 'ko' },
+  { language: 'Polish', lang: 'po' },
+  { language: 'Portuguese', lang: 'por' },
+  { language: 'Russian', lang: 'ru' },
+  { language: 'Spanish', lang: 'es' },
+  { language: 'Standard Arabic', lang: 'ar' },
+  { language: 'Tamil', lang: 'ta' },
+  { language: 'Turkish', lang: 'tu' },
+  { language: 'Ukrainian', lang: 'uk' },
 ]
 
 const Languages = () => {
@@ -62,7 +76,7 @@ const Languages = () => {
         {isDropdownSizesOpen && (
           <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
             <SelectDropDownList>
-              <View>
+              <ScrollView style={{ height: 240 }}>
                 {LanguagesData.filter((f) => f.lang !== language).map((f: any, i: number) => (
                   <Pressable
                     key={i}
@@ -75,7 +89,7 @@ const Languages = () => {
                     <SelectListText>{f.language}</SelectListText>
                   </Pressable>
                 ))}
-              </View>
+              </ScrollView>
             </SelectDropDownList>
           </Animated.View>
         )}

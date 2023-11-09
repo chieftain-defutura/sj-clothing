@@ -1,0 +1,49 @@
+{
+  "avatar": {
+    "title": "Creëer uw avatar",
+    "select your gender": "Kies je geslacht",
+    "male": "Mannelijk",
+    "female": "Vrouwelijk",
+    "next": "Volgende",
+    "select your skintone": "Selecteer uw huidskleur",
+    "previous": "Vorig",
+    "done": "Klaar"
+  },
+  "language": {
+    "Choose Your Language": "Kies je taal"
+  },
+  "account": {
+    "Avatar": "Avatar",
+    "My cart": "Mijn wagen",
+    "My orders": "mijn bestellingen",
+    "Addressbook": "Adresboek",
+    "Accessories": "Accessoires",
+    "Language": "Taal",
+    "Currency": "Munteenheid",
+    "Help & FAQ": "Hulp en veelgestelde vragen",
+    "About us": "Over ons",
+    "Customer care": "Klantenservice",
+    "Log out": "Uitloggen",
+    "Subscribe now": "Abonneer nu",
+    "Map": "Kaart",
+    "Home": "Thuis "
+  },
+  "midlevel": 
+  {
+    "Select Style": "Selecteer Stijl",
+    "Select Country": "Selecteer land",
+    "Select Size": "Selecteer grootte",
+    "Select Color": "Selecteer kleur",
+    "Add more": "Voeg meer toe",
+    "Buy now": "Koop nu",
+    "Add Image": "Voeg afbeelding toe",
+    "Add Text": "Voeg tekst toe",
+    "Done": "Klaar",
+    "Select Design": "Selecteer Ontwerp",
+    "Select Style to move further": "Selecteer Stijl om verder te gaan",
+    "Colors": "Kleur",
+    "Styles": "Stijlen",
+    "Sizes": "Maten",
+    "Select area to add image": "Selecteer het gebied om een ​​afbeelding toe te voegen"
+  }
+}

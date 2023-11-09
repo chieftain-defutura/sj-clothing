@@ -44,11 +44,7 @@ const App: React.FC = () => {
     if (getLanguage) {
       updateLanguage(getLanguage)
       i18n.changeLanguage(getLanguage as string)
-    }
-
-    if (!getLanguage) {
-      updateLanguage('en')
-      i18n.changeLanguage(getLanguage as string)
+      // await AsyncStorage.removeItem('language')
     }
   }, [])
   useEffect(() => {
@@ -60,15 +56,16 @@ const App: React.FC = () => {
 
     if (getCurrency) {
       updateCurrency(JSON.parse(getCurrency))
+      // await AsyncStorage.removeItem('currency')
     }
 
-    if (!getCurrency) {
-      updateCurrency({
-        currency: currencyData.currency,
-        abrive: currencyData.abrive as string,
-        symbol: currencyData.symbol as any,
-      })
-    }
+    // if (!getCurrency) {
+    //   updateCurrency({
+    //     currency: currencyData.currency,
+    //     abrive: currencyData.abrive as string,
+    //     symbol: currencyData.symbol as any,
+    //   })
+    // }
   }, [])
 
   useEffect(() => {
@@ -80,16 +77,17 @@ const App: React.FC = () => {
       const getRate = await AsyncStorage.getItem('rate')
       if (getRate) {
         updateRate(Number(getRate))
+        // await AsyncStorage.removeItem('rate')
       }
-      if (!getRate) {
-        const apiKey = '1f5274c351a83d698e52d92b'
-        const response = await axios.get(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/INR`)
-        const data = response.data
-        const rates = data.conversion_rates
-        updateRate(rates[currency.currency as string])
-      }
+      // if (!getRate) {
+      //   const apiKey = '1f5274c351a83d698e52d92b'
+      //   const response = await axios.get(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/INR`)
+      //   const data = response.data
+      //   const rates = data.conversion_rates
+      //   updateRate(rates[currency.currency as string])
+      // }
     } catch (error) {
-      e.log(error)
+      console.log(error)
     }
   }, [])
 
