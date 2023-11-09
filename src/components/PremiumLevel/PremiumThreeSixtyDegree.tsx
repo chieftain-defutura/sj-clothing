@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Pressable, StyleSheet, Dimensions, Image, View } from 'react-native'
 import { WebView } from 'react-native-webview'
 import styled from 'styled-components/native'
+import uuid from 'react-native-uuid'
+
 import LeftArrow from '../../assets/icons/LeftArrow'
 // import ThreeSixtyDegree from '../../assets/icons/360-degree'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import CustomButton from '../Button'
-import { addDoc, collection } from 'firebase/firestore/lite'
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore/lite'
 import { db } from '../../../firebase'
 import { IPremiumData } from '../../constant/types'
 import { userStore } from '../../store/userStore'
@@ -30,6 +32,28 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   focus,
 }) => {
   const [isPressed, setIsPressed] = useState(false)
+  const isMounted = useRef(false)
+  const { avatar, user } = userStore()
+  const [uid, setUid] = useState<string>('')
+
+  const handleSetUid = useCallback(async () => {
+    if (!isMounted.current) {
+      try {
+        isMounted.current = true
+        const tempUid = uuid.v4().toString()
+        const docRef = doc(db, 'ModelsPremium', tempUid)
+        await setDoc(docRef, { uid: tempUid, skin: avatar.skinTone })
+
+        setUid(tempUid)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    handleSetUid()
+  }, [handleSetUid])
 
   const onClose = () => {
     setFocus(false)
@@ -69,17 +93,17 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               marginTop: 18,
             }}
           >
-            {
+            {uid && (
               <WebView
                 style={{
                   backgroundColor: 'transparent',
                 }}
                 source={{
                   // uri: `http://localhost:5173/create-avatar/?uid=${uid}`,
-                  uri: 'https://www.w3schools.com/',
+                  uri: `https://sj-threejs-development.netlify.app/premium/?uid=${uid}`,
                 }}
               />
-            }
+            )}
           </View>
           {/* <ThreeSixtyDegreeImageWrapper>
             <ThreeSixtyDegreeImage>
