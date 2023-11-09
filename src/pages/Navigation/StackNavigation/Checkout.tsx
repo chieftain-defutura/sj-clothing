@@ -22,10 +22,14 @@ import { userStore } from '../../../store/userStore'
 import { RouteProp } from '@react-navigation/native'
 import { use } from 'i18next'
 import { ICheckout } from '../../../constant/types'
+import { GooglePay } from 'react-native-google-pay'
+import { PlatformPayButton, usePlatformPay } from '@stripe/stripe-react-native'
 
 type RootStackParamList = {
   Checkout: { product: string }
 }
+
+const API_URL = 'https://60e6-2401-4900-1cd4-6c58-d8ff-a13b-b7d6-e7af.ngrok-free.app'
 
 interface AddressData {
   name: string
@@ -54,6 +58,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   }
 
   useEffect(() => {
+    // GooglePay.setEnvironment(GooglePay.ENVIRONMENT_TEST)
     if (!user) return
     const temp = async () => {
       if (!user) return
@@ -108,25 +113,22 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
       const amount = orderData?.offerPrice ? orderData?.offerPrice : orderData?.price
 
       const address = addr
-      const response = await fetch(
-        'https://315c-2401-4900-1cd4-6c58-d8ff-a13b-b7d6-e7af.ngrok-free.app/create-payment-intent',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            productIds: orderData?.id,
-            name: user?.displayName,
-            email: user?.email,
-            currency: 'INR',
-            address: address,
-            paymentStatus: 'pending',
-            userid: user?.uid,
-            amount: amount,
-          }),
+      const response = await fetch(`${API_URL}/create-payment-intent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      )
+        body: JSON.stringify({
+          productIds: orderData?.id,
+          name: user?.displayName,
+          email: user?.email,
+          currency: 'INR',
+          address: address,
+          paymentStatus: 'pending',
+          userid: user?.uid,
+          amount: amount,
+        }),
+      })
 
       const data = await response.json()
       console.log('data', data.message)
@@ -182,6 +184,17 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
     setOrderPlacedVisible(false)
   }
 
+  const { isPlatformPaySupported } = usePlatformPay()
+
+  React.useEffect(() => {
+    ;(async function () {
+      if (!(await isPlatformPaySupported({ googlePay: { testEnv: true } }))) {
+        Alert.alert('Google Pay is not supported.')
+        return
+      }
+    })()
+  }, [])
+
   const handleClose = (index: number) => {
     const temp = async (index: any) => {
       if (!user) return
@@ -196,6 +209,22 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
     }
     setClosedItems([...closedItems, index])
     temp(index)
+
+    const fetchPaymentIntentClientSecret = async () => {
+      // Fetch payment intent created on the server, see above
+      const response = await fetch(`${API_URL}/create-payment-intent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          currency: 'usd',
+        }),
+      })
+      const { clientSecret } = await response.json()
+
+      return clientSecret
+    }
   }
 
   return (
