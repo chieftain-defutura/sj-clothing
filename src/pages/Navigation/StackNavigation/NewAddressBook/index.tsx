@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { COLORS, gradientOpacityColors } from '../../../../styles/theme'
@@ -11,7 +11,6 @@ import ChooseAddress from './ChooseAddress'
 import LocationEditAddress from './LocationEditAddress'
 
 const NewAddressBook: React.FC = () => {
-  const [locText, setLocText] = useState<any>()
   const [addedAddress, setAddedAddress] = useState<any>()
   const [showDisplay, setDisplay] = useState(1)
   const navigation = useNavigation()
@@ -34,18 +33,11 @@ const NewAddressBook: React.FC = () => {
             </GoBackArrowContent>
 
             {showDisplay == 1 && (
-              <ChooseAddress
-                addedAddress={addedAddress}
-                onAddPress={(e, address) => {
-                  setLocText(address)
-                  setDisplay(2)
-                }}
-              />
+              <ChooseAddress addedAddress={addedAddress} onAddPress={() => setDisplay(2)} />
             )}
             {showDisplay == 2 && (
               <LocationAddAddress
                 saveAddress={(addr) => {
-                  console.log(addr)
                   setAddedAddress(addr)
                 }}
                 onSavePress={() => setDisplay(1)}

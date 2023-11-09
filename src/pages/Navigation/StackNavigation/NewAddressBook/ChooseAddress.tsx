@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, GestureResponderEvent } from 'react-native'
+import { View, Text, StyleSheet, Pressable, GestureResponderEvent } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/native'
 import { RadioButton } from 'react-native-paper'
@@ -21,18 +21,20 @@ interface AddressData {
   city: string
   region: string
   pinCode: string
+  saveAsAddress: string
   isSelected: boolean
 }
 
 interface IChooseLocation {
   addedAddress: AddressData[]
+  onEditPress?: (event: GestureResponderEvent, address: AddressData) => void | undefined | null
   onAddPress: (
     event: GestureResponderEvent,
     location: string | undefined,
   ) => void | undefined | null
 }
 
-const ChooseAddress: React.FC<IChooseLocation> = ({ addedAddress, onAddPress }) => {
+const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) => {
   const [onText, setOnSearchChange] = React.useState<string>()
   const [data, setData] = useState<AddressData[] | null>([])
   const [checked, setChecked] = React.useState<string | null>(null)
@@ -92,7 +94,7 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ addedAddress, onAddPress }) 
 
   useEffect(() => {
     getData()
-  }, [focus])
+  }, [])
 
   return (
     <View>
@@ -119,15 +121,16 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ addedAddress, onAddPress }) 
                   <View style={{ display: 'flex', flexDirection: 'column' }}>
                     <View style={styles.RadioTitle}>
                       <HomeIcon width={16} height={16} color={'black'} />
-                      <HeaderStyle>{f.name}</HeaderStyle>
+                      <HeaderStyle>{f.saveAsAddress}</HeaderStyle>
                     </View>
                     <DescriptionText>
-                      {f.addressLineOne}, {f.addressLineTwo}, {f.city}, {f.pinCode}, {f.region}
+                      {f.addressLineOne}, {f.addressLineTwo}, {f.city}, {f.region}, {f.pinCode},{' '}
+                      {f.email}, {f.mobile}
                     </DescriptionText>
                   </View>
-                  <Pressable style={styles.editStyle}>
+                  {/* <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
                     <Text style={styles.editText}>Edit</Text>
-                  </Pressable>
+                  </Pressable> */}
                 </View>
               ))}
             </View>
@@ -208,7 +211,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.1)',
     borderRadius: 10,
-    paddingVertical: 12,
+    paddingVertical: 14,
     paddingHorizontal: 12,
     display: 'flex',
     flexDirection: 'row',
@@ -240,6 +243,7 @@ const styles = StyleSheet.create({
   editStyle: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 8,
   },
 })
 

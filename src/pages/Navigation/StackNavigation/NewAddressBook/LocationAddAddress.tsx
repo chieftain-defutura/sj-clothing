@@ -37,6 +37,7 @@ const validationSchema = yup.object({
   addressLineTwo: yup.string().required('*Please enter your address line 2'),
   city: yup.string().required('*Please enter your city'),
   pinCode: yup.string().required('*Please enter your pinCode'),
+  saveAsAddress: yup.string().required('*Please enter your save as address'),
 })
 
 const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSavePress }) => {
@@ -68,6 +69,7 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
           city: formik.values.city,
           region: selectedCountry,
           pinCode: formik.values.pinCode,
+          saveAsAddress: formik.values.saveAsAddress,
         },
       ]
 
@@ -98,6 +100,7 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
       addressLineTwo: '',
       city: '',
       pinCode: '',
+      saveAsAddress: '',
     },
     validationSchema: validationSchema,
     onSubmit: onSubmit,
@@ -196,31 +199,6 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
             />
             {formik.errors.city && <ErrorText>{formik.errors.city}</ErrorText>}
           </View>
-          {/* <DropDownContainer>
-                <View style={{ width: '100%' }}>
-                  <SelectContent onPress={toggleDropdown}>
-                    <SelectText>{selectedCountry || 'Select a country'}</SelectText>
-                    <Animatable.View
-                      animation={isDropdownOpen ? 'rotate' : ''}
-                      duration={500}
-                      easing='ease-out'
-                    >
-                      <DownArrow width={16} height={16} />
-                    </Animatable.View>
-                  </SelectContent>
-                  {isDropdownOpen && (
-                    <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
-                      <SelectDropDownList>
-                        {regionData.map((f, index) => (
-                          <Pressable key={index} onPress={() => handleSelectCountry(f)}>
-                            <SelectListText>{f}</SelectListText>
-                          </Pressable>
-                        ))}
-                      </SelectDropDownList>
-                    </Animated.View>
-                  )}
-                </View>
-              </DropDownContainer> */}
 
           <DropDownContainer>
             <View style={{ width: '100%' }}>
@@ -257,6 +235,15 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
             />
             {formik.errors.pinCode && <ErrorText>{formik.errors.pinCode}</ErrorText>}
           </View>
+          <View>
+            <Input
+              placeholder='Save As Address'
+              value={formik.values.saveAsAddress}
+              onChangeText={formik.handleChange('saveAsAddress')}
+              onBlur={formik.handleBlur('saveAsAddress')}
+            />
+            {formik.errors.saveAsAddress && <ErrorText>{formik.errors.saveAsAddress}</ErrorText>}
+          </View>
         </InputContainer>
       </View>
       <CustomButton
@@ -279,10 +266,6 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
     </Animated.View>
   )
 }
-
-const ScrollViewContent = styled.ScrollView`
-  height: 100%;
-`
 
 const InputContainer = styled.View`
   gap: 16px;

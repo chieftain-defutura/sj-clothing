@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Pressable, StyleSheet, Dimensions, Image, View } from 'react-native'
+import { WebView } from 'react-native-webview'
 import styled from 'styled-components/native'
 import LeftArrow from '../../assets/icons/LeftArrow'
 // import ThreeSixtyDegree from '../../assets/icons/360-degree'
@@ -60,7 +61,27 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               )}
             </Pressable>
           </FlexContent>
-          <ThreeSixtyDegreeImageWrapper>
+          <View
+            style={{
+              width: width / 1.1,
+              height: height / 1.6,
+              backgroundColor: 'transparent',
+              marginTop: 18,
+            }}
+          >
+            {
+              <WebView
+                style={{
+                  backgroundColor: 'transparent',
+                }}
+                source={{
+                  // uri: `http://localhost:5173/create-avatar/?uid=${uid}`,
+                  uri: 'https://www.w3schools.com/',
+                }}
+              />
+            }
+          </View>
+          {/* <ThreeSixtyDegreeImageWrapper>
             <ThreeSixtyDegreeImage>
               <Image
                 source={{ uri: data.productImage }}
@@ -72,17 +93,14 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
                 }}
               />
             </ThreeSixtyDegreeImage>
-            {/* <SelectStyle360Degree>
-              <ThreeSixtyDegree width={40} height={40} />
-            </SelectStyle360Degree> */}
-            <CustomButton
-              text='Buy Now'
-              fontFamily='Arvo-Regular'
-              fontSize={16}
-              style={{ width: '100%', position: 'absolute', left: 0, right: 0, bottom: -120 }}
-              onPress={handleSubmit}
-            />
-          </ThreeSixtyDegreeImageWrapper>
+           </ThreeSixtyDegreeImageWrapper> */}
+          <CustomButton
+            text='Buy Now'
+            fontFamily='Arvo-Regular'
+            fontSize={16}
+            style={{ width: '100%', marginTop: 42 }}
+            onPress={handleSubmit}
+          />
         </View>
       </AuthNavigate>
     </Animated.View>
