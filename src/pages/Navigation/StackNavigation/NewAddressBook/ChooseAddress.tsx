@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable, GestureResponderEvent } from 'react-native'
+import { View, Text, StyleSheet, Pressable, GestureResponderEvent, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/native'
 import { RadioButton } from 'react-native-paper'
@@ -84,6 +84,11 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) =
       if (querySnapshot.exists()) {
         const fetchData = querySnapshot.data()
         setData(fetchData.address)
+        fetchData.address.forEach((d: any, index: any) => {
+          if (d.isSelected === true) {
+            setChecked(index.toString())
+          }
+        })
       } else {
         console.log('Document not found')
       }
@@ -113,6 +118,23 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) =
             </View>
           ) : data ? (
             <View>
+              {/* {AddressBookData.map((f, index) => (
+              <View key={index} style={styles.radioBtn}>
+                <View>
+                  <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
+                </View>
+                <View style={{ display: 'flex', flexDirection: 'column' }}>
+                  <View style={styles.RadioTitle}>
+                    <f.icon width={16} height={16} color={'black'} />
+                    <HeaderStyle>{f.header}</HeaderStyle>
+                  </View>
+                  <DescriptionText>{f.location}</DescriptionText>
+                </View>
+                <Pressable style={styles.editStyle} onPress={onEditPress}>
+                  <Text style={styles.editText}>Edit</Text>
+                </Pressable>
+              </View>
+            ))} */}
               {data.map((f, index) => (
                 <View key={index} style={styles.radioBtn}>
                   <View>
@@ -124,13 +146,13 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) =
                       <HeaderStyle>{f.saveAsAddress}</HeaderStyle>
                     </View>
                     <DescriptionText>
-                      {f.addressLineOne}, {f.addressLineTwo}, {f.city}, {f.region}, {f.pinCode},{' '}
-                      {f.email}, {f.mobile}
+                      {f.addressLineOne}, {f.addressLineTwo}, {f.city}, {f.region}, {f.isSelected},{' '}
+                      {f.email}, {f.pinCode}, {f.mobile}
                     </DescriptionText>
                   </View>
-                  {/* <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
+                  <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
                     <Text style={styles.editText}>Edit</Text>
-                  </Pressable> */}
+                  </Pressable>
                 </View>
               ))}
             </View>

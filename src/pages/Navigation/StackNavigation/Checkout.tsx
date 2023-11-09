@@ -28,10 +28,15 @@ type RootStackParamList = {
 }
 
 interface AddressData {
-  floor: string
-  fullAddress: string
-  landmark: string
-  saveAddressAs: string
+  name: string
+  mobile: string
+  email: string
+  addressLineOne: string
+  addressLineTwo: string
+  city: string
+  region: string
+  pinCode: string
+  saveAsAddress: string
   isSelected: boolean
 }
 
@@ -103,24 +108,30 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
       const amount = orderData?.offerPrice ? orderData?.offerPrice : orderData?.price
 
       const address = addr
-      const response = await fetch('https://sj-clothing-backend.cyclic.app/create-payment-intent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        'https://315c-2401-4900-1cd4-6c58-d8ff-a13b-b7d6-e7af.ngrok-free.app/create-payment-intent',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            productIds: orderData?.id,
+            name: user?.displayName,
+            email: user?.email,
+            currency: 'INR',
+            address: address,
+            paymentStatus: 'pending',
+            userid: user?.uid,
+            amount: amount,
+          }),
         },
-        body: JSON.stringify({
-          productIds: orderData?.id,
-          name: user?.displayName,
-          email: user?.email,
-          currency: 'INR',
-          address: address,
-          paymentStatus: 'pending',
-          userid: user?.uid,
-          amount: orderData?.offerPrice ? orderData?.offerPrice : orderData?.price,
-        }),
-      })
+      )
 
       const data = await response.json()
+      console.log('data', data.message)
+      console.log(response.ok)
+
       if (!response.ok) {
         return Alert.alert(data.message)
       }
@@ -157,6 +168,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
       addressData.forEach((d, index) => {
         if (d.isSelected === true) {
           setAddr(d)
+          console.log('selected', d)
         }
       })
     }
@@ -212,9 +224,11 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                 {addr ? (
                   <Pressable onPress={() => navigation.navigate('AddressBook')}>
                     <View>
-                      <HomeText>{addr.saveAddressAs}</HomeText>
+                      <HomeText>{addr.saveAsAddress}</HomeText>
                       <HomeDescription>
-                        {addr.fullAddress}, {addr.landmark}, {addr.floor}
+                        {addr.addressLineOne}, {addr.addressLineTwo}, {addr.city}, {addr.region},{' '}
+                        {addr.isSelected}
+                        {addr.email}, {addr.pinCode}, {addr.mobile}
                       </HomeDescription>
                     </View>
                   </Pressable>

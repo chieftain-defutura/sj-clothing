@@ -58,6 +58,14 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
 
   const onSubmit = async () => {
     try {
+      if (!user) return
+      const userDocRef = doc(db, 'users', user.uid)
+      const userDoc = await getDoc(userDocRef)
+      const userData = userDoc.data()
+      console.log('userdaaaaa', userData)
+
+      if (!userData) return
+
       console.log('Formik Data:', formik.values)
       const addressArray = [
         {
@@ -70,18 +78,11 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
           region: selectedCountry,
           pinCode: formik.values.pinCode,
           saveAsAddress: formik.values.saveAsAddress,
+          isSelected: userData.address.length == 0 ? true : false,
         },
       ]
 
       saveAddress(addressArray)
-
-      if (!user) return
-      const userDocRef = doc(db, 'users', user.uid)
-      const userDoc = await getDoc(userDocRef)
-      const userData = userDoc.data()
-      console.log('userdaaaaa', userData)
-
-      if (!userData) return
 
       userData.address.push(...addressArray)
       await updateDoc(userDocRef, userData)

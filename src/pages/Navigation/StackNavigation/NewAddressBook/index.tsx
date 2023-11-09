@@ -13,6 +13,7 @@ import LocationEditAddress from './LocationEditAddress'
 const NewAddressBook: React.FC = () => {
   const [addedAddress, setAddedAddress] = useState<any>()
   const [showDisplay, setDisplay] = useState(1)
+  const [editAddress, setEditAddress] = useState<any>()
   const navigation = useNavigation()
 
   return (
@@ -33,7 +34,14 @@ const NewAddressBook: React.FC = () => {
             </GoBackArrowContent>
 
             {showDisplay == 1 && (
-              <ChooseAddress addedAddress={addedAddress} onAddPress={() => setDisplay(2)} />
+              <ChooseAddress
+                addedAddress={addedAddress}
+                onEditPress={(e, address) => {
+                  setDisplay(3)
+                  setEditAddress(address)
+                }}
+                onAddPress={() => setDisplay(2)}
+              />
             )}
             {showDisplay == 2 && (
               <LocationAddAddress
@@ -43,7 +51,14 @@ const NewAddressBook: React.FC = () => {
                 onSavePress={() => setDisplay(1)}
               />
             )}
-            {showDisplay == 3 && <LocationEditAddress />}
+            {showDisplay == 3 && (
+              <LocationEditAddress
+                onEditPress={() => {
+                  setDisplay(1)
+                }}
+                selectedAddress={editAddress}
+              />
+            )}
           </View>
         </ScrollViewContent>
       </Animated.View>
