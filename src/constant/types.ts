@@ -126,4 +126,56 @@ export interface IDesigns {
   activePost: boolean
   hashTag: string
   type: string
+  imagePrices: {
+    FrontAndBack: string
+    LeftAndRight: string
+  }
+}
+
+export interface IOrder {
+  description: string
+  gender: string
+  id: string
+  orderStatus: {
+    delivery: {
+      createdAt: string
+      description: string
+      status: boolean
+    }
+    manufacturing: {
+      createdAt: string
+      description: string
+      status: boolean
+    }
+    orderplaced: {
+      createdAt: string
+      description: string
+      status: boolean
+    }
+    readyToShip: {
+      createdAt: string
+      description: string
+      status: boolean
+    }
+    shipping: {
+      createdAt: string
+      description: string
+      status: boolean
+    }
+  }
+  price: string
+  offerPrice: string
+  productImage: any
+  productName: string
+  sizes: {
+    country: string
+    sizeVarient: {
+      measurement: string
+      quantity: number
+      size: string
+    }
+  }
+  status: string
+  type: string
+  userId: string
 }

@@ -21,7 +21,6 @@ interface IPremiumLevel {
 
 const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) => {
   const navigation = useNavigation()
-  const { currency } = userStore()
   const { user, updateOderId } = userStore()
   const [data, setData] = useState<IPremiumData[]>()
   const [openCard, setOpenCard] = useState(false)
@@ -103,7 +102,6 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
       navigation.navigate('Checkout')
     }
   }
-
   if (!data) return <Text>No Data</Text>
   return (
     <View style={{ flex: 1 }}>

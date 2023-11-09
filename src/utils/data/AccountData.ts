@@ -31,12 +31,12 @@ export const AccountData = [
     rightText: '1500 INR',
     navigation: 'CheckoutPayment',
   },
-  {
-    leftIcon: Cart,
-    name: 'My cart',
-    rightText: '2 items',
-    navigation: 'Cart',
-  },
+  // {
+  //   leftIcon: Cart,
+  //   name: 'My cart',
+  //   rightText: '2 items',
+  //   navigation: 'Cart',
+  // },
   {
     leftIcon: ShoppingBag,
     name: 'My orders',
@@ -73,5 +73,10 @@ export const AccountData = [
     leftIcon: UsersMore,
     name: 'About us',
     navigation: 'Aboutus',
+  },
+  {
+    leftIcon: UsersMore,
+    name: 'Terms And Condition',
+    navigation: 'TermsAndConditions',
   },
 ]

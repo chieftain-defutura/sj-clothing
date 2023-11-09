@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import Search from '../../assets/icons/SearchIcon'
 import Plus from '../../assets/icons/PlusIcon'
@@ -60,8 +60,6 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
   const [location, setLocation] = useState<Location.LocationObject>()
   const { user } = userStore()
   const focus = useIsFocused()
-
-  console.log('suggestions', suggestions)
 
   // const updateData = async (index: string) => {
   //   if (data) {
@@ -137,40 +135,41 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
   //   }
   // }
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     try {
       if (!user) return
 
       const q = doc(db, 'users', user.uid)
       const querySnapshot = await getDoc(q)
+      const fetchData = querySnapshot.data()
+      setData(fetchData?.address)
 
-      if (querySnapshot.exists()) {
-        const fetchData = querySnapshot.data()
+      // if (querySnapshot.exists()) {
+      //   const fetchData = querySnapshot.data()
 
-        if (addedAddress && fetchData?.address) {
-          const array = [...addedAddress, ...fetchData.address]
-          setData(array)
-        } else if (fetchData?.address) {
-          const addressData: AddressData[] = Object.values(fetchData.address)
-          setData(addressData)
-          addressData.forEach((d, index) => {
-            if (d.isSelected === true) {
-              setChecked(index.toString())
-            }
-          })
-        }
-      } else {
-        console.log('Document not found')
-      }
+      //   if (addedAddress && fetchData?.address) {
+      //     const array = [...addedAddress, ...fetchData.address]
+      //     setData(array)
+      //   } else if (fetchData?.address) {
+      //     const addressData: AddressData[] = Object.values(fetchData.address)
+      //     setData(addressData)
+      //     addressData.forEach((d, index) => {
+      //       if (d.isSelected === true) {
+      //         setChecked(index.toString())
+      //       }
+      //     })
+      //   }
+      // } else {
+      //   console.log('Document not found')
+      // }
     } catch (error) {
       console.error('Error fetching data:', error)
     }
-  }
+  }, [])
 
   useEffect(() => {
     getData()
-  }, [focus])
-
+  }, [getData])
   // const handleSearchText = async (text: string) => {
   //   if (text === '') setSuggestions([])
   //   setOnSearchChange(text)

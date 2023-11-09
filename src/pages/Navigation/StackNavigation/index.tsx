@@ -31,6 +31,7 @@ import PostDetails from './Post/PostDetails'
 import Languages from './Languages'
 import Currency from './Currency'
 import AvatarNavigation from './Avatar'
+import TermsAndConditions from './TermsAndConditions'
 
 const Stack = createStackNavigator()
 
@@ -136,6 +137,11 @@ const StackNavigationRoutes: React.FC = () => {
         name='PostDetails'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={PostDetails}
+      />
+      <Stack.Screen
+        name='TermsAndConditions'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={TermsAndConditions}
       />
 
       <Stack.Screen name='MyOrders' component={MyOrders} />

@@ -106,15 +106,18 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                   </IconHoverClr>
                 )}
               </Pressable>
-              <Pressable onPress={share}>
+              {/* <Pressable onPress={share}>
                 <ShareArrow width={24} height={24} />
-              </Pressable>
+              </Pressable> */}
             </FlexContent>
 
             <AccessoryDetailsWrapper>
               <AccessoryDetailsContent>
                 <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>
-                  <TouchableOpacity onPress={() => setOpenDetails(true)}>
+                  <TouchableOpacity
+                    onPress={() => setOpenDetails(true)}
+                    style={{ display: 'flex', alignItems: 'center' }}
+                  >
                     <Image
                       source={{ uri: data.productImage }}
                       style={{
@@ -134,10 +137,10 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                     style={{
                       display: 'flex',
                       flexDirection: 'row',
-                      justifyContent: 'space-between',
+                      justifyContent: 'flex-start',
                       alignItems: 'center',
                       gap: 30,
-
+                      paddingHorizontal: 30,
                       paddingBottom: 20,
                     }}
                   >
@@ -201,20 +204,7 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                         </View>
                       )}
                     </View>
-                    {data.productVideo && (
-                      <WatchVideoBorder onPress={() => setOpenModal(true)}>
-                        <PlayCircleIcon width={12} height={12} />
-                        <WatchVideoText>Watch video</WatchVideoText>
-                      </WatchVideoBorder>
-                    )}
                   </View>
-                  {openModal && (
-                    <PremiumVideo
-                      video={data.productVideo}
-                      onClose={() => setOpenModal(false)}
-                      isVisible={openModal}
-                    />
-                  )}
                 </Animated.View>
               </AccessoryDetailsContent>
 
@@ -316,8 +306,6 @@ const AccessoryDetailsWrapper = styled.View``
 const AccessoryDetailsContent = styled.View`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
   gap: 12px;
 `
 

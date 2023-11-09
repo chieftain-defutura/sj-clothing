@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { View, Pressable, TouchableOpacity } from 'react-native'
@@ -10,6 +10,11 @@ import { LinearGradient } from 'expo-linear-gradient'
 import StarActive from '../../../assets/icons/PostPageIcon/StarActive'
 import StarInActive from '../../../assets/icons/PostPageIcon/StarInActive'
 import { useTranslation } from 'react-i18next'
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore/lite'
+import { db } from '../../../../firebase'
+import { userStore } from '../../../store/userStore'
+import { IOrder } from '../../../constant/types'
+import TrackOrder from './TrackOrder'
 
 interface IMyOrders {
   navigation: any
@@ -20,78 +25,108 @@ const StartIcons = [
   { startActive: StarActive, startInActive: StarInActive },
   { startActive: StarActive, startInActive: StarInActive },
   { startActive: StarActive, startInActive: StarInActive },
+  { startActive: StarActive, startInActive: StarInActive },
 ]
 
 const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
+  const { user } = userStore()
   const { t } = useTranslation('account')
   const [stars, setStars] = useState(4)
-
+  const [orderData, setOrderData] = useState<IOrder[]>([])
+  const [openTrackOrder, setOpenTrackOrder] = useState(false)
+  const [orderId, setOrderId] = useState('')
   const handleStarClick = (index: number) => {
     setStars(index + 1)
   }
 
+  const getData = useCallback(async () => {
+    if (!user) return
+    const ProductRef = await getDocs(collection(db, 'Orders'))
+    const fetchProduct = ProductRef.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as any),
+    }))
+    const data = fetchProduct.filter((f) => f.userId === user.uid)
+    setOrderData(data)
+  }, [])
+
+  useEffect(() => {
+    getData()
+  }, [getData])
   return (
     <LinearGradient colors={gradientOpacityColors}>
-      <Animated.View
-        entering={SlideInRight.duration(500).delay(200)}
-        exiting={SlideOutRight.duration(500).delay(200)}
-      >
-        <ScrollViewContent>
-          <View>
-            <GoBackArrowContent
-              onPress={() => {
-                navigation.goBack()
-              }}
-            >
-              <LeftArrow width={24} height={24} />
-              <CartText>{t('My orders')}</CartText>
-            </GoBackArrowContent>
-            <CartPageContent>
-              {MyOrdersData.map((f, index) => {
-                return (
-                  <View key={index}>
-                    <CartPageContainer>
-                      <CartPageData onPress={() => navigation.navigate('TrackOrder')}>
-                        <View>
-                          <TShirtImage source={f.image} />
-                        </View>
-                        <View>
-                          <ProductWrapper>
-                            <View>
-                              <ProductShirtText>{f.productName}</ProductShirtText>
-                              <ProductText>{f.product}</ProductText>
-                              <StarContainer>
-                                {StartIcons.map((star, index) => (
-                                  <TouchableOpacity
-                                    key={index}
-                                    onPress={() => handleStarClick(index)}
-                                  >
-                                    {index < stars ? (
-                                      <star.startActive width={24} height={24} />
-                                    ) : (
-                                      <star.startInActive width={24} height={24} />
-                                    )}
-                                  </TouchableOpacity>
-                                ))}
-                              </StarContainer>
-                              <StatusText>Write a review</StatusText>
-                              {/* <ProductShirtText>{f.statusName}</ProductShirtText> */}
-                              {/* <ProductShirtText>{f.date}</ProductShirtText> */}
-                            </View>
-                            <Pressable>
-                              <ChevronLeft width={16} height={16} />
-                            </Pressable>
-                          </ProductWrapper>
-                        </View>
-                      </CartPageData>
-                    </CartPageContainer>
-                  </View>
-                )
-              })}
-            </CartPageContent>
-          </View>
-        </ScrollViewContent>
-      </Animated.View>
+      {!openTrackOrder ? (
+        <Animated.View
+          entering={SlideInRight.duration(500).delay(200)}
+          exiting={SlideOutRight.duration(500).delay(200)}
+        >
+          <ScrollViewContent>
+            <View>
+              <GoBackArrowContent
+                onPress={() => {
+                  navigation.goBack()
+                }}
+              >
+                <LeftArrow width={24} height={24} />
+                <CartText>{t('My orders')}</CartText>
+              </GoBackArrowContent>
+              <CartPageContent>
+                {orderData.map((f, index) => {
+                  return (
+                    <View key={index}>
+                      <CartPageContainer>
+                        <CartPageData
+                          onPress={() => {
+                            setOpenTrackOrder(true), setOrderId(f.id)
+                          }}
+                        >
+                          <View>
+                            <TShirtImage source={{ uri: f.productImage }} />
+                          </View>
+                          <View>
+                            <ProductWrapper>
+                              <View>
+                                <ProductShirtText>{f.productName}</ProductShirtText>
+                                <ProductText>{f.productName}</ProductText>
+                                <StarContainer>
+                                  {StartIcons.map((star, index) => (
+                                    <TouchableOpacity
+                                      key={index}
+                                      onPress={() => handleStarClick(index)}
+                                    >
+                                      {index < stars ? (
+                                        <star.startActive width={24} height={24} />
+                                      ) : (
+                                        <star.startInActive width={24} height={24} />
+                                      )}
+                                    </TouchableOpacity>
+                                  ))}
+                                </StarContainer>
+                                <StatusText>Write a review</StatusText>
+                                {/* <ProductShirtText>{f.statusName}</ProductShirtText> */}
+                                {/* <ProductShirtText>{f.date}</ProductShirtText> */}
+                              </View>
+                              <Pressable>
+                                <ChevronLeft width={16} height={16} />
+                              </Pressable>
+                            </ProductWrapper>
+                          </View>
+                        </CartPageData>
+                      </CartPageContainer>
+                    </View>
+                  )
+                })}
+              </CartPageContent>
+            </View>
+          </ScrollViewContent>
+        </Animated.View>
+      ) : (
+        <TrackOrder
+          navigation={navigation}
+          orderId={orderId}
+          setOpenTrackOrder={setOpenTrackOrder}
+        />
+      )}
     </LinearGradient>
   )
 }
@@ -142,10 +177,10 @@ const ProductWrapper = styled.View`
 `
 
 const TShirtImage = styled.Image`
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   flex-shrink: 0;
-  object-fit: contain;
+  object-fit: cover;
 `
 
 const StarContainer = styled.View`

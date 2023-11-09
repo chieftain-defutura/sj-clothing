@@ -1,13 +1,9 @@
-import { Button, Pressable, ScrollView, StyleSheet, Text, Dimensions, View } from 'react-native'
-import React, { useState } from 'react'
+import { ScrollView, StyleSheet, Text, Dimensions, View } from 'react-native'
+import React from 'react'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import CustomButton from '../../Button'
 import styled from 'styled-components/native'
-import PlusIcon from '../../../assets/icons/MidlevelIcon/PlusIcon'
-import MinusIcon from '../../../assets/icons/MidlevelIcon/MinusIcon'
 import { Svg, Circle } from 'react-native-svg'
-import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
-import DownArrow from '../../../assets/icons/DownArrow'
 import { IMidlevel } from '../../../constant/types'
 import { userStore } from '../../../store/userStore'
 import AuthNavigate from '../../../screens/AuthNavigate'
@@ -27,6 +23,7 @@ interface IFinalView {
   isImageOrText: {
     title: string
     position: string
+    rate: number
     designs: {
       hashtag: string
       image: string
@@ -60,6 +57,7 @@ const FinalView: React.FC<IFinalView> = ({
   data,
   isImageOrText,
 }) => {
+  const { avatar } = userStore()
   const { t } = useTranslation('midlevel')
   const { currency, rate } = userStore()
   const onClose = () => {
@@ -141,7 +139,7 @@ const FinalView: React.FC<IFinalView> = ({
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                width: 95,
+                width: 155,
                 paddingTop: 16,
               }}
             >
@@ -157,6 +155,8 @@ const FinalView: React.FC<IFinalView> = ({
 
               <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
                 {isImageOrText.designs.hashtag ? isImageOrText.designs.hashtag : '-'}
+                {isImageOrText.rate !== 0 && Number(isImageOrText.rate) * (rate as number)}
+                {currency.symbol}
               </Text>
             </View>
           </View>
@@ -176,18 +176,6 @@ const FinalView: React.FC<IFinalView> = ({
                 paddingTop: 16,
               }}
             >
-              {/* <Text
-                style={{
-                  color: COLORS.textClr,
-                  fontFamily: 'Montserrat-Regular',
-                  fontSize: 10,
-                }}
-              >
-                Price
-              </Text>
-              <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-                {data.normalPrice ? data.normalPrice : 0}
-              </Text> */}
               <View
                 style={{
                   display: 'flex',
@@ -253,7 +241,7 @@ const FinalView: React.FC<IFinalView> = ({
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                width: 95,
+                width: 97,
                 paddingTop: 16,
               }}
             >
@@ -264,17 +252,24 @@ const FinalView: React.FC<IFinalView> = ({
                   fontSize: 10,
                 }}
               >
-                Offer Price
+                Gender
               </Text>
-              <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
-                {data.offerPrice ? data.offerPrice : '-'}
+              <Text
+                style={{
+                  color: COLORS.textClr,
+                  fontFamily: 'Arvo-Regular',
+                  fontSize: 14,
+                  textTransform: 'capitalize',
+                }}
+              >
+                {avatar.gender}
               </Text>
             </View>
             <View
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                width: 95,
+                width: 155,
                 paddingTop: 16,
               }}
             >
@@ -332,17 +327,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Arvo-Regular',
   },
 })
-
-const SelectContent = styled.Pressable`
-  border-color: ${COLORS.dropDownClr};
-  border-width: 1px;
-  padding: 12px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-`
 
 const AddSubButton = styled.Pressable`
   border-radius: 5px;

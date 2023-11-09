@@ -2,7 +2,7 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 import styled from 'styled-components/native'
 import React, { useEffect, useState } from 'react'
-import { View, Modal, StyleSheet, Pressable } from 'react-native'
+import { View, Modal, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
 import { sendEmailVerification } from 'firebase/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
@@ -12,7 +12,7 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth'
 import { auth, db } from '../../../firebase'
-import { COLORS } from '../../styles/theme'
+import { COLORS, gradientColors } from '../../styles/theme'
 import { FirebaseError } from 'firebase/app'
 import CloseIcon from '../../assets/icons/Close'
 import EyeIcon from '../../assets/icons/EyeIcon'
@@ -20,6 +20,8 @@ import { userStore } from '../../store/userStore'
 import CustomButton from '../../components/Button'
 import EyeHideIcon from '../../assets/icons/EyeIconHide'
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore/lite'
+import Checkbox from 'expo-checkbox'
+import { useNavigation } from '@react-navigation/native'
 
 interface SignupModalProps {
   isVisible?: boolean
@@ -45,6 +47,7 @@ const ValidationSchema = Yup.object({
 })
 
 const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginClick }) => {
+  const navigation = useNavigation()
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [isVerificationEmailSent, setIsVerificationEmailSent] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -52,6 +55,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const updateUser = userStore((state) => state.updateUser)
   const user = userStore((state) => state.user)
   const updateFetching = userStore((state) => state.updateFetching)
+  const [isChecked, setChecked] = useState(false)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -217,13 +221,35 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
               </View>
 
               {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
-
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 4,
+                  paddingTop: 16,
+                }}
+              >
+                <Checkbox
+                  // style={styles.checkbox}
+                  value={isChecked}
+                  onValueChange={setChecked}
+                  color={isChecked ? COLORS.textSecondaryClr : undefined}
+                />
+                <AccountViewText>Accept all</AccountViewText>
+                <TouchableOpacity onPress={() => navigation.navigate('TermsAndConditions')}>
+                  <AccountViewText style={{ color: COLORS.textClr }}>
+                    Terms and conditions
+                  </AccountViewText>
+                </TouchableOpacity>
+              </View>
               <CustomButton
                 variant='primary'
                 text={isLoading ? 'Create Account...' : 'Create Account'}
                 onPress={() => {
                   handleSubmit()
                 }}
+                disabled={!isChecked}
                 fontFamily='Arvo-Regular'
                 fontSize={14}
                 buttonStyle={[styles.submitBtn]}

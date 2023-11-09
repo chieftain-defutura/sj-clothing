@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import { View, StyleSheet } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
@@ -7,9 +7,13 @@ import LeftArrow from '../../../assets/icons/LeftArrow'
 import { RadioButton } from 'react-native-paper'
 // import ThreeSixtyDegree from '../../../assets/icons/360-degree'
 import { LinearGradient } from 'expo-linear-gradient'
-
+import { doc, getDoc } from 'firebase/firestore/lite'
+import { db } from '../../../../firebase'
+import { IOrder } from '../../../constant/types'
 interface ITrackOrder {
   navigation: any
+  orderId: string
+  setOpenTrackOrder: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const data = [
@@ -72,8 +76,21 @@ const ProductData = [
   },
 ]
 
-const TrackOrder: React.FC<ITrackOrder> = ({ navigation }) => {
-  const [onCheckChange, setCheck] = useState('first')
+const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOrder }) => {
+  const [orderData, setOrderData] = useState<IOrder>()
+  const getOrderDataById = useCallback(async () => {
+    const q = doc(db, 'Orders', orderId)
+    const querySnapshot = await getDoc(q)
+
+    const fetchData = querySnapshot.data()
+    // if(!fetchData) return
+    setOrderData(fetchData as IOrder)
+  }, [])
+  console.log(orderData?.orderStatus)
+  console.log(orderData?.type)
+  useEffect(() => {
+    getOrderDataById()
+  }, [getOrderDataById])
   return (
     <Animated.View
       entering={SlideInRight.duration(500).delay(200)}
@@ -83,7 +100,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation }) => {
         <View>
           <GoBackArrowContent
             onPress={() => {
-              navigation.goBack()
+              setOpenTrackOrder(false)
             }}
           >
             <LeftArrow width={24} height={24} />
@@ -120,30 +137,33 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation }) => {
 
             <TrackOrderContent>
               <OrderGroupContent>
-                <RadioButton.Group
-                  value={onCheckChange}
-                  onValueChange={(newValue) => setCheck(newValue)}
-                >
-                  {data.map((f, index) => (
-                    <View key={index} style={styles.radioBtn}>
-                      <View style={{ marginTop: -4 }}>
-                        <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
+                <View style={styles.radioBtn}>
+                  <View style={{ marginTop: -4 }}>
+                    {/* <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} /> */}
+                    {/* <RadioButton.Android
+                      value='option1'
+                      status={!orderData?.orderStatus.orderplaced.status ? 'checked' : 'unchecked'}
+                      // onPress={() => setOnCheckOrderPlaced()}
+                      color={COLORS.textSecondaryClr}
+                    /> */}
+                  </View>
+                  <FlexOrder>
+                    <OrderPlacedFlexContent>
+                      <View>
+                        <OrderPlacedText>Order Placed</OrderPlacedText>
                       </View>
-                      <FlexOrder>
-                        <OrderPlacedFlexContent>
-                          <View>
-                            <OrderPlacedText>{f.orderName}</OrderPlacedText>
-                          </View>
-                          <View>
-                            <OrderPlacedDate>{f.orderDate}</OrderPlacedDate>
-                          </View>
-                        </OrderPlacedFlexContent>
+                      <View>
+                        <OrderPlacedDate>
+                          {orderData?.orderStatus.orderplaced?.createdAt}
+                        </OrderPlacedDate>
+                      </View>
+                    </OrderPlacedFlexContent>
 
-                        <OrderDescription>{f.orderDescription}</OrderDescription>
-                      </FlexOrder>
-                    </View>
-                  ))}
-                </RadioButton.Group>
+                    <OrderDescription>
+                      {orderData?.orderStatus.orderplaced?.description}
+                    </OrderDescription>
+                  </FlexOrder>
+                </View>
               </OrderGroupContent>
             </TrackOrderContent>
           </LinearGradient>

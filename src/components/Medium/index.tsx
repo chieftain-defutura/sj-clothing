@@ -58,6 +58,7 @@ const Medium = () => {
   const [isImageOrText, setImageOrText] = useState({
     title: '',
     position: 'Front',
+    rate: 0,
     designs: {
       hashtag: '',
       image: '',
@@ -203,6 +204,7 @@ const Medium = () => {
     }
   }
 
+  console.log(isImageOrText)
   return (
     // <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
     <View
@@ -219,6 +221,8 @@ const Medium = () => {
         warning={warning}
         setImageOrText={setImageOrText}
         steps={isSteps}
+        isDone={isDone}
+        setDone={setDone}
         dropDown={isDropDown}
         slideValue={slideValue}
         setDropDown={setDropDown}
@@ -290,7 +294,7 @@ const Medium = () => {
           isImageOrText={isImageOrText}
         />
       )}
-      {isSteps === 6 && Design && isOpenDesign && (
+      {isSteps === 6 && Design && isOpenDesign && !isDone && (
         <SelectDesign
           isImageOrText={isImageOrText}
           designs={Design}

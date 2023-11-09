@@ -80,7 +80,6 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress 
       const data = response.data
 
       if (data.display_name) {
-        console.log(data.display_name)
         setAddr(data.display_name)
         formik.setValues({ ...formik.values, fullAddress: data.display_name })
         success(data.display_name)
@@ -97,7 +96,6 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress 
 
   const onSubmit = async () => {
     try {
-      console.log('Formik Data:', formik.values)
       const addressArray = [
         {
           fullAddress: formik.values.fullAddress,
@@ -114,7 +112,6 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress 
       const userDocRef = doc(db, 'users', user.uid)
       const userDoc = await getDoc(userDocRef)
       const userData = userDoc.data()
-      console.log('userdaaaaa', userData)
 
       if (!userData) return
 

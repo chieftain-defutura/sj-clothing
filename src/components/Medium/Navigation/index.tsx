@@ -19,14 +19,17 @@ interface INavigation {
   isOpenDesign: boolean
   warning: string
   dropDown: boolean
+  isDone: boolean
   handleIncreaseSteps: () => void
   handleDecreaseSteps: () => void
+  setDone: React.Dispatch<React.SetStateAction<boolean>>
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDesign: React.Dispatch<React.SetStateAction<boolean>>
   setImageOrText: React.Dispatch<
     React.SetStateAction<{
       title: string
       position: string
+      rate: number
       designs: {
         hashtag: string
         image: string
@@ -41,11 +44,13 @@ const Navigation: React.FC<INavigation> = ({
   isOpenDesign,
   warning,
   dropDown,
+  isDone,
   setOpenDesign,
   handleIncreaseSteps,
   handleDecreaseSteps,
   setDropDown,
   setImageOrText,
+  setDone,
 }) => {
   const { t } = useTranslation('midlevel')
   const slideX = useAnimatedStyle(() => {
@@ -66,7 +71,7 @@ const Navigation: React.FC<INavigation> = ({
         >
           <Pressable
             onPress={() => {
-              setOpenDesign(false), handleDecreaseSteps()
+              isDone ? setDone(false) : (setOpenDesign(false), handleDecreaseSteps())
             }}
           >
             <Animated.View entering={BounceIn.duration(800)} exiting={BounceOut}>

@@ -77,13 +77,19 @@ const App: React.FC = () => {
 
   const getRate = useCallback(async () => {
     try {
-      const apiKey = 'ed22061f115b6f153d0c75ee'
-      const response = await axios.get(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/INR`)
-      const data = response.data
-      const rates = data.conversion_rates
-      updateRate(rates[currency.currency as string])
+      const getRate = await AsyncStorage.getItem('rate')
+      if (getRate) {
+        updateRate(Number(getRate))
+      }
+      if (!getRate) {
+        const apiKey = '1f5274c351a83d698e52d92b'
+        const response = await axios.get(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/INR`)
+        const data = response.data
+        const rates = data.conversion_rates
+        updateRate(rates[currency.currency as string])
+      }
     } catch (error) {
-      console.log(error)
+      e.log(error)
     }
   }, [])
 

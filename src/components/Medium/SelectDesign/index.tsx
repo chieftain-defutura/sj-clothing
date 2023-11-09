@@ -5,6 +5,7 @@ import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
 import { IDesigns } from '../../../constant/types'
 import { useTranslation } from 'react-i18next'
+import { userStore } from '../../../store/userStore'
 
 interface ISelectDesign {
   isDone: boolean
@@ -12,6 +13,7 @@ interface ISelectDesign {
   isImageOrText: {
     title: string
     position: string
+    rate: number
     designs: {
       hashtag: string
       image: string
@@ -23,6 +25,7 @@ interface ISelectDesign {
     React.SetStateAction<{
       title: string
       position: string
+      rate: number
       designs: {
         hashtag: string
         image: string
@@ -40,6 +43,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
   setDone,
 }) => {
   const { t } = useTranslation('midlevel')
+  const { rate, currency } = userStore()
   const uniqueArr = [...new Map(designs?.map((v) => [v.hashTag, v])).values()]
   const FilteredData =
     isImageOrText.designs.hashtag === ''
@@ -79,9 +83,19 @@ const SelectDesign: React.FC<ISelectDesign> = ({
         </Pressable>
       </View>
 
-      {/* <Text style={{ fontSize: 10, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>
-        MOST SEARCHES
-      </Text> */}
+      <View style={{ display: 'flex', flexDirection: 'row', gap: 3, alignItems: 'center' }}>
+        <Text style={{ fontSize: 14, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>
+          {isImageOrText.position} position costs
+        </Text>
+        <Text style={{ fontSize: 14, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>
+          {isImageOrText.position === 'Front' || 'Back'
+            ? (Number(FilteredData[0].imagePrices.FrontAndBack) * (rate as number)).toFixed(2)
+            : (Number(FilteredData[0].imagePrices.LeftAndRight) * (rate as number)).toFixed(2)}
+        </Text>
+        <Text style={{ fontSize: 14, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>
+          {currency.symbol}
+        </Text>
+      </View>
       <View style={{ paddingVertical: 16 }}>
         <FlatList
           data={uniqueArr}
@@ -148,7 +162,11 @@ const SelectDesign: React.FC<ISelectDesign> = ({
               onPress={() => {
                 setImageOrText((prevState) => ({
                   ...prevState,
-                  designs: { hashtag: isImageOrText.designs.hashtag, image: item.Images },
+                  rate:
+                    isImageOrText.position === 'Front' || 'Back'
+                      ? Number(item.imagePrices.FrontAndBack)
+                      : Number(item.imagePrices.LeftAndRight),
+                  designs: { hashtag: item.hashTag, image: item.Images },
                 })),
                   setDone(true)
               }}

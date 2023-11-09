@@ -1,25 +1,18 @@
-import React, { useState } from 'react'
-
-import { StyleSheet, Text, View, Image, Pressable, Dimensions } from 'react-native'
-import Animated, {
-  BounceInUp,
-  BounceOutUp,
-  FlipInXDown,
-  FlipOutXDown,
-} from 'react-native-reanimated'
-import CloseIcon from '../../../assets/icons/Close'
-import { COLORS, dropDownGradient } from '../../../styles/theme'
-import { IDesigns, IMidlevel } from '../../../constant/types'
-import { LinearGradient } from 'expo-linear-gradient'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { LinearGradient } from 'expo-linear-gradient'
+import { StyleSheet, Text, View, Pressable } from 'react-native'
+import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 
-const { width } = Dimensions.get('window')
+import { IMidlevel } from '../../../constant/types'
+import { COLORS, dropDownGradient } from '../../../styles/theme'
 
 interface IAddImageOrText {
   isDropDown: boolean
   isImageOrText: {
     title: string
     position: string
+    rate: number
     designs: {
       hashtag: string
       image: string
@@ -32,6 +25,7 @@ interface IAddImageOrText {
     React.SetStateAction<{
       title: string
       position: string
+      rate: number
       designs: {
         hashtag: string
         image: string

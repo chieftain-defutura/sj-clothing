@@ -6,7 +6,6 @@ import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import { SharedElement } from 'react-navigation-shared-element'
 import Animated, { FadeInLeft, FadeOutLeft } from 'react-native-reanimated'
 import { userStore } from '../../store/userStore'
-import Svg, { Path, Defs, G, Rect, ClipPath } from 'react-native-svg'
 
 const { width, height } = Dimensions.get('window')
 

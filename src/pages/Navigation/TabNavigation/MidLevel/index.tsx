@@ -35,7 +35,6 @@ const MidLevel: React.FC = () => {
   useEffect(() => {
     fetchDataFromFirestore()
   }, [fetchDataFromFirestore])
-  console.log('avatart', avatar)
   return (
     <Animated.View style={{ flex: 1 }}>
       <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>

@@ -1,20 +1,20 @@
 export const FAQData = [
   {
-    heading: 'Lorem ipsum dolor sit amet, consectetur?',
-    title: 'Lorem ipsum dolor sit amet, consectetur?',
+    heading: 'How can I order?',
+    title: 'How can I order?',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      'You can order easily using our online platform. When you find a product you need,  login and go through the ordering process.',
   },
   {
-    heading: 'Lorem ipsum dolor sit amet, consectetur?',
-    title: 'Lorem ipsum dolor sit amet, consectetur?',
+    heading: 'How do I check the status of my order?',
+    title: 'How do I check the status of my order?',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      'Go to profile page, there you will see My Order where you can see every order you have made through this app. Select any order, that will lead you to the tracking page where you can see the status of order  for that product. ',
   },
   {
-    heading: 'Lorem ipsum dolor sit amet, consectetur?',
-    title: 'Lorem ipsum dolor sit amet, consectetur?',
+    heading: 'Which currencies can I shop in?',
+    title: 'Which currencies can I shop in?',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      'The default shop’s currency is EUR but you can also make purchases in USD or CNY,GBP,CHF,SAR,JPY, (upon request).',
   },
 ]
