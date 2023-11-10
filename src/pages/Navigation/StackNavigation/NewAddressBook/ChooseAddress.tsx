@@ -1,5 +1,6 @@
-import { View, Text, StyleSheet, Pressable, GestureResponderEvent, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, Pressable, GestureResponderEvent } from 'react-native'
 import React, { useState, useEffect } from 'react'
+import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components/native'
 import { RadioButton } from 'react-native-paper'
 import { useIsFocused } from '@react-navigation/native'
@@ -38,6 +39,7 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) =
   const [onText, setOnSearchChange] = React.useState<string>()
   const [data, setData] = useState<AddressData[] | null>([])
   const [checked, setChecked] = React.useState<string | null>(null)
+  const navigation = useNavigation()
   const { user } = userStore()
   const focus = useIsFocused()
 
@@ -99,7 +101,7 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) =
 
   useEffect(() => {
     getData()
-  }, [])
+  }, [getData])
 
   return (
     <View>
@@ -175,6 +177,8 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) =
             variant='primary'
             text='Deliver here'
             leftIcon={<TickIcon width={16} height={16} />}
+            disabled={data?.length === 0 ? true : false}
+            onPress={() => navigation.navigate('Checkout')}
           />
         </View>
       </FlexContent>

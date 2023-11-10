@@ -36,12 +36,14 @@ interface IAccessoryDetailsCard {
   data: IAccessory
   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>
   handleBack: () => void
+  handleSubmit: () => Promise<void>
 }
 
 const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
   data,
   handleBack,
   setOpenDetails,
+  handleSubmit,
 }) => {
   const navigation = useNavigation()
   const { currency, rate } = userStore()
@@ -50,6 +52,15 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
   const [openModal, setOpenModal] = useState(false)
   const [focus, setFocus] = useState(false)
   const user = userStore((state) => state.user)
+
+  const onSubmit = () => {
+    if (!user) {
+      console.log('user not found')
+      setFocus(true)
+    } else {
+      handleSubmit()
+    }
+  }
 
   const handleLogin = () => {
     if (!user) {
@@ -246,7 +257,7 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                   fontFamily='Arvo-Regular'
                   fontSize={13}
                   style={{ width: 170 }}
-                  onPress={() => handleLogin()}
+                  onPress={onSubmit}
                 />
               </Btns>
             </Animated.View>

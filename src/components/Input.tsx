@@ -1,11 +1,13 @@
-import React from 'react'
-import { TextInputProps, View } from 'react-native'
+import React, { useState } from 'react'
+import { TextInputProps, View, Text, Pressable } from 'react-native'
 import styled from 'styled-components/native'
+import { CountryPicker } from 'react-native-country-codes-picker'
 import { COLORS, FONT_FAMILY } from '../styles/theme'
 
 interface InputProps extends TextInputProps {
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
+  leftContent?: React.ReactNode
   placeholder?: string
   value?: string
   onChangeText?: (text: string) => void
@@ -14,13 +16,48 @@ interface InputProps extends TextInputProps {
 const Input: React.FC<InputProps> = ({
   placeholder,
   leftIcon,
+  leftContent,
   rightIcon,
   value,
   onChangeText,
   ...rest
 }) => {
+  const [countryCode, setCountryCode] = useState('')
+  const [show, setShow] = useState(false)
   return (
     <InputContainer>
+      {leftContent && (
+        <Pressable
+          onPress={() => setShow(true)}
+          style={{
+            borderColor: 'rgba(0,0,0,0.1)',
+            borderWidth: 1,
+            borderRadius: 6,
+            paddingHorizontal: 14,
+            paddingVertical: 8,
+            marginRight: 8,
+          }}
+        >
+          <Text
+            style={{
+              color: '#8C73CB',
+              fontSize: 16,
+            }}
+          >
+            {countryCode}
+          </Text>
+          <CountryPicker
+            show={show}
+            lang='en'
+            pickerButtonOnPress={(item: any) => {
+              setCountryCode(item.dial_code)
+              setShow(false)
+              console.log('item', item)
+            }}
+          />
+        </Pressable>
+      )}
+
       {leftIcon && <View>{leftIcon}</View>}
       <StyledTextInput
         placeholder={placeholder}

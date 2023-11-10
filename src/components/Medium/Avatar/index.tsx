@@ -82,20 +82,34 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
 
   const handleSubmit = async () => {
     if (user) {
-      await updateDoc(doc(db, 'users', user.uid), {
-        avatar: {
-          gender: isGender,
-          skinTone: skinColor,
-        },
-      })
+      if (path === 'MidLevel') {
+        await updateDoc(doc(db, 'users', user.uid), {
+          avatar: {
+            gender: isGender,
+            skinTone: skinColor,
+          },
+        })
+        navigation.navigate('MidLevel')
+      } else {
+        await updateDoc(doc(db, 'users', user.uid), {
+          avatar: {
+            gender: isGender,
+            skinTone: skinColor,
+          },
+        })
+        navigation.goBack()
+      }
     }
     if (!user) {
-      updateAvatar({ gender: isGender, skinTone: skinColor })
-    }
-    if (path === 'MidLevel') {
-      navigation.navigate('MidLevel')
-    } else {
-      navigation.goBack()
+      if (path === 'MidLevel') {
+        updateAvatar({ gender: isGender, skinTone: skinColor })
+
+        navigation.navigate('MidLevel')
+      } else {
+        updateAvatar({ gender: isGender, skinTone: skinColor })
+
+        navigation.goBack()
+      }
     }
   }
 

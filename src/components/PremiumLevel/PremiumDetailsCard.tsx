@@ -73,21 +73,21 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
+  const [isSizeSelected, setIsSizeSelected] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
+  const [openModal, setOpenModal] = useState(false)
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
   const [focus, setFocus] = useState(false)
   const user = userStore((state) => state.user)
 
-  // const { isPlatformPaySupported } = usePlatformPay()
-
-  // React.useEffect(() => {
-  //   ;(async function () {
-  //     if (!(await isPlatformPaySupported({ googlePay: { testEnv: true } }))) {
-  //       Alert.alert('Google Pay is not supported.')
-  //       return
-  //     }
-  //   })()
-  // }, [])
+  const onSubmit = () => {
+    if (!user) {
+      console.log('user not found')
+      setFocus(true)
+    } else {
+      handleSubmit()
+    }
+  }
 
   const fetchPaymentIntentClientSecret = async () => {
     const reqData = {
@@ -140,10 +140,9 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
 
   const handleSelectSizes = (sizes: string) => {
     setIsDropdownSizesOpen(false)
+    setIsSizeSelected(true)
   }
-  const [openModal, setOpenModal] = useState(false)
 
-  const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
     try {
       const result = await Share.share({
@@ -442,8 +441,8 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                   fontFamily='Arvo-Regular'
                   fontSize={13}
                   style={{ width: 170 }}
-                  onPress={handleSubmit}
-                  // onPress={() => navigation.navigate('Checkout')}
+                  onPress={onSubmit}
+                  disabled={!isSizeSelected}
                 />
               </Btns>
             </Animated.View>

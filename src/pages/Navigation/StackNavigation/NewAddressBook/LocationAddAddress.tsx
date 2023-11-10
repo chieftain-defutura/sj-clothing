@@ -1,8 +1,7 @@
-import { Pressable, Text, TouchableOpacity, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import styled from 'styled-components/native'
 import React, { useState } from 'react'
 import * as Animatable from 'react-native-animatable'
-// import { CountryPicker } from 'react-native-country-codes-picker'
 import { COLORS, FONT_FAMILY } from '../../../../styles/theme'
 import Input from '../../../../components/Input'
 import { useFormik } from 'formik'
@@ -13,6 +12,7 @@ import DownArrow from '../../../../assets/icons/DownArrow'
 import { userStore } from '../../../../store/userStore'
 import { doc, getDoc, updateDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../../firebase'
+import TickIcon from '../../../../assets/icons/TickIcon'
 
 interface ILocationAddAddress {
   saveAddress: (data: any) => void
@@ -43,9 +43,8 @@ const validationSchema = yup.object({
 const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSavePress }) => {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const { user } = userStore()
-  //   const [show, setShow] = useState(false)
-  //   const [countryCode, setCountryCode] = useState('')
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prevState) => !prevState)
@@ -58,15 +57,17 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
 
   const onSubmit = async () => {
     try {
+      console.log('Formik Data:', formik.values)
+
+      setIsLoading(true)
+
       if (!user) return
       const userDocRef = doc(db, 'users', user.uid)
       const userDoc = await getDoc(userDocRef)
       const userData = userDoc.data()
       console.log('userdaaaaa', userData)
-
       if (!userData) return
 
-      console.log('Formik Data:', formik.values)
       const addressArray = [
         {
           name: formik.values.name,
@@ -89,6 +90,8 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
       onSavePress()
     } catch (error) {
       console.error('Save Address Error:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -115,36 +118,7 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
       <View style={{ paddingBottom: 80 }}>
         <InputContainer>
           <Header>Add Address</Header>
-          {/* <View>
-                <TouchableOpacity
-                  onPress={() => setShow(true)}
-                  style={{
-                    width: '100%',
-                    height: 60,
-                    borderColor: 'red',
-                    borderWidth: 1,
-                    padding: 10,
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 20,
-                    }}
-                  >
-                    {countryCode}
-                  </Text>
-                  <CountryPicker
-                    show={show}
-                    lang='en'
-                    pickerButtonOnPress={(item) => {
-                      setCountryCode(item.dial_code)
-                      setShow(false)
-                      console.log('item', item)
-                    }}
-                  />
-                </TouchableOpacity>
-              </View> */}
+
           <View>
             <Input
               placeholder='Name'
@@ -157,10 +131,12 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
 
           <View>
             <Input
+              leftContent={<Text></Text>}
               placeholder='Mobile'
               value={formik.values.mobile}
               onChangeText={formik.handleChange('mobile')}
               onBlur={formik.handleBlur('mobile')}
+              keyboardType='numeric'
             />
             {formik.errors.mobile && <ErrorText>{formik.errors.mobile}</ErrorText>}
           </View>
@@ -249,7 +225,9 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
       </View>
       <CustomButton
         variant='primary'
-        text='Save Address'
+        text={isLoading ? 'Saving...' : 'Save Address'}
+        leftIcon={<TickIcon width={16} height={16} />}
+        disabled={isLoading}
         fontFamily='Arvo-Regular'
         onPress={() => {
           formik.handleSubmit()

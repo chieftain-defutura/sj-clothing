@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
-import { collection, getDocs } from 'firebase/firestore/lite'
+import { addDoc, collection, getDocs } from 'firebase/firestore/lite'
 import styled from 'styled-components/native'
 import { db } from '../../../firebase'
 import AccessoryCard from './AccessoryCard'
@@ -11,6 +11,7 @@ import { IAccessory } from '../../constant/types'
 import { LinearGradient } from 'expo-linear-gradient'
 import { gradientOpacityColors } from '../../styles/theme'
 import { ScrollView } from 'react-native-gesture-handler'
+import { userStore } from '../../store/userStore'
 
 const { width } = Dimensions.get('window')
 
@@ -20,6 +21,13 @@ const Accessory = () => {
   const [openCard, setOpenCard] = useState(false)
   const [productId, setProductId] = useState('')
   const [openDetails, setOpenDetails] = useState(false)
+  const { user, updateOderId } = userStore()
+  const [focus, setFocus] = useState(false)
+
+  const [isSize, setSize] = useState({
+    country: '',
+    sizeVarient: { size: '', measurement: '', quantity: 1 },
+  })
 
   const getData = useCallback(async () => {
     const ProductRef = await getDocs(collection(db, 'Products'))
@@ -39,6 +47,57 @@ const Accessory = () => {
   }
   const FilteredData = data?.filter((f) => f.id === productId)
 
+  const handleSubmit = async () => {
+    if (!FilteredData) return
+    if (!user) {
+      setFocus(true)
+    } else {
+      // navigation.navigate('Checkout', { product: data })
+      setFocus(true)
+      const docRef = await addDoc(collection(db, 'Orders'), {
+        sizes: isSize,
+        productImage: FilteredData[0].productImage,
+        description: FilteredData[0].description,
+        price: FilteredData[0].normalPrice,
+        offerPrice: FilteredData[0].offerPrice,
+        paymentStatus: 'pending',
+        userId: user?.uid,
+        type: 'Premium-Level',
+        productName: FilteredData[0].productName,
+        orderStatus: {
+          orderplaced: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          manufacturing: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          readyToShip: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          shipping: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          delivery: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+        },
+      })
+      updateOderId(docRef.id)
+      setOpenDetails(false)
+      navigation.navigate('Checkout')
+    }
+  }
+
   if (!data) return <Text>No Data</Text>
   return (
     <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
@@ -52,6 +111,7 @@ const Accessory = () => {
                   navigation={navigation}
                   setOpenDetails={setOpenDetails}
                   data={item}
+                  handleSubmit={handleSubmit}
                 />
               ))}
             </View>
@@ -65,6 +125,7 @@ const Accessory = () => {
                       data={item}
                       setOpenDetails={setOpenDetails}
                       handleBack={handleBack}
+                      handleSubmit={handleSubmit}
                     />
                   ))}
                 </View>

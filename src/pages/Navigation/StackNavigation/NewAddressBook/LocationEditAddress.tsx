@@ -56,6 +56,7 @@ const validationSchema = yup.object({
 const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddress }) => {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const { user } = userStore()
 
   const toggleDropdown = () => {
@@ -70,6 +71,7 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
   const onSubmit = async () => {
     try {
       console.log('Formik Data:', formik.values)
+      setIsLoading(true)
       if (!user) return
       const addressArray = [
         {
@@ -96,6 +98,8 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
       await updateDoc(userDocRef, userData)
     } catch (error) {
       console.error('Edit Address Error:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -223,9 +227,10 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
       </View>
       <CustomButton
         variant='primary'
-        text='Edit address'
-        style={{ paddingHorizontal: 16 }}
+        text={isLoading ? 'Editing...' : 'Edit Address'}
+        style={{ paddingHorizontal: 16, marginTop: -60 }}
         leftIcon={<TickIcon width={16} height={16} />}
+        disabled={isLoading}
         onPress={() => {
           formik.handleSubmit()
           onEditPress()

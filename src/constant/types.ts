@@ -102,6 +102,7 @@ export interface IMidlevel {
   gender: string
   normalPrice: string
   offerPrice: string
+  paymentStatus: string
   productImage: string
   productName: string
   showDesign: boolean
@@ -175,7 +176,7 @@ export interface IOrder {
       size: string
     }
   }
-  status: string
+  paymentStatus: string
   type: string
   userId: string
 }

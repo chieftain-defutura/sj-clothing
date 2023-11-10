@@ -60,6 +60,8 @@ const FinalView: React.FC<IFinalView> = ({
   const { avatar } = userStore()
   const { t } = useTranslation('midlevel')
   const { currency, rate } = userStore()
+  const user = userStore((state) => state.user)
+
   const onClose = () => {
     setFocus(false)
   }

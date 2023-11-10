@@ -3,33 +3,31 @@ import styled from 'styled-components/native'
 import { View, Pressable, StyleSheet, Text, Alert } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS, gradientOpacityColors } from '../../../styles/theme'
-import { useStripe } from '@stripe/stripe-react-native'
+import { confirmPlatformPayPayment, useStripe } from '@stripe/stripe-react-native'
 import CustomButton from '../../../components/Button'
 import LeftArrow from '../../../assets/icons/LeftArrow'
-import GiftIcon from '../../../assets/icons/GiftIcon'
 import { LinearGradient } from 'expo-linear-gradient'
 import ChevronLeft from '../../../assets/icons/ChevronLeft'
 import Phonepe from '../../../assets/icons/Phonepe'
-import SackDollar from '../../../assets/icons/SackDollar'
 import TruckMovingIcon from '../../../assets/icons/TruckMoving'
-import ShippingIcon from '../../../assets/icons/Shipping'
 import OrderPlaced from '../../../screens/OrderPlaced'
-import { CheckoutData } from '../../../utils/data/checkoutData'
 import CartCard from '../../../components/CartCard'
-import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore/lite'
+import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
-import { RouteProp } from '@react-navigation/native'
-import { use } from 'i18next'
 import { ICheckout } from '../../../constant/types'
-import { GooglePay } from 'react-native-google-pay'
-import { PlatformPayButton, usePlatformPay } from '@stripe/stripe-react-native'
+import { usePlatformPay } from '@stripe/stripe-react-native'
 
 type RootStackParamList = {
   Checkout: { product: string }
 }
 
-const API_URL = 'https://60e6-2401-4900-1cd4-6c58-d8ff-a13b-b7d6-e7af.ngrok-free.app'
+interface IDeliveryfees {
+  Continents: string
+  DeliveryFees: number
+}
+
+const API_URL = 'https://sj-clothing-backend.cyclic.app'
 
 interface AddressData {
   name: string
@@ -50,43 +48,87 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   const [addr, setAddr] = useState<AddressData | null>(null)
   const [cartItems, setCartItems] = useState()
   const [orderData, setOrderData] = useState<ICheckout | null>(null)
-  const { user, orderId } = userStore()
+  const [isGooglePay, setGooglePay] = useState<boolean>()
+  const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
+  const { user, orderId, rate, currency } = userStore()
   const stripe = useStripe()
+
+  console.log('odrerData', orderData)
 
   const openOrderPlaced = () => {
     setOrderPlacedVisible(true)
   }
 
-  useEffect(() => {
-    // GooglePay.setEnvironment(GooglePay.ENVIRONMENT_TEST)
-    if (!user) return
-    const temp = async () => {
+  const fetchData = useCallback(async () => {
+    try {
       if (!user) return
-      const userDocRef = doc(db, 'users', user.uid)
-      const userDoc = await getDoc(userDocRef)
-      const userData = userDoc.data()
-      if (!userData) return
-      setCartItems(userData.CartProduct)
-      await updateDoc(userDocRef, userData)
-    }
 
-    const handleError = async () => {
       const userDocRef = doc(db, 'users', user.uid)
       const userDoc = await getDoc(userDocRef)
       const userData = userDoc.data()
-      if (!userData) return
-      setCartItems(userData.CartProduct)
-      await updateDoc(userDocRef, userData)
-    }
-    temp()
-      .then(() => {
+
+      if (userData) {
+        setCartItems(userData.CartProduct)
+        await updateDoc(userDocRef, userData)
         console.log('success')
-      })
-      .catch(() => {
-        handleError()
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error)
+      handleError()
+    }
+  }, [user])
+
+  const handleError = useCallback(async () => {
+    try {
+      if (!user) return
+
+      const userDocRef = doc(db, 'users', user.uid)
+      const userDoc = await getDoc(userDocRef)
+      const userData = userDoc.data()
+
+      if (userData) {
+        setCartItems(userData.CartProduct)
+        await updateDoc(userDocRef, userData)
         console.log('handled error')
-      })
-  }, [])
+      }
+    } catch (error) {
+      console.error('Error handling error:', error)
+    }
+  }, [user])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  // useEffect(() => {
+  //   if (!user) return
+  //   const temp = async () => {
+  //     if (!user) return
+  //     const userDocRef = doc(db, 'users', user.uid)
+  //     const userDoc = await getDoc(userDocRef)
+  //     const userData = userDoc.data()
+  //     if (!userData) return
+  //     setCartItems(userData.CartProduct)
+  //     await updateDoc(userDocRef, userData)
+  //   }
+
+  //   const handleError = async () => {
+  //     const userDocRef = doc(db, 'users', user.uid)
+  //     const userDoc = await getDoc(userDocRef)
+  //     const userData = userDoc.data()
+  //     if (!userData) return
+  //     setCartItems(userData.CartProduct)
+  //     await updateDoc(userDocRef, userData)
+  //   }
+  //   temp()
+  //     .then(() => {
+  //       console.log('success')
+  //     })
+  //     .catch(() => {
+  //       handleError()
+  //       console.log('handled error')
+  //     })
+  // }, [])
 
   const fetchOrderData = useCallback(async () => {
     try {
@@ -102,7 +144,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
     } catch (error) {
       console.error('Error fetching order data: ', error)
     }
-  }, [orderId, orderData])
+  }, [orderId])
 
   useEffect(() => {
     fetchOrderData()
@@ -110,9 +152,15 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
 
   const processPay = async () => {
     try {
-      const amount = orderData?.offerPrice ? orderData?.offerPrice : orderData?.price
+      const amount = orderData?.offerPrice
+        ? Number(orderData?.offerPrice) + Number(deliveryFees?.DeliveryFees)
+        : Number(orderData?.price) + Number(deliveryFees?.DeliveryFees)
 
       const address = addr
+      if (!address) {
+        Alert.alert('Please add address first')
+        return
+      }
       const response = await fetch(`${API_URL}/create-payment-intent`, {
         method: 'POST',
         headers: {
@@ -122,11 +170,11 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
           productIds: orderData?.id,
           name: user?.displayName,
           email: user?.email,
-          currency: 'INR',
+          currency: currency.currency,
           address: address,
           paymentStatus: 'pending',
           userid: user?.uid,
-          amount: amount,
+          amount: Number(amount) * (rate as number),
         }),
       })
 
@@ -137,10 +185,35 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
       if (!response.ok) {
         return Alert.alert(data.message)
       }
+
+      //1. order create
+      const { paymentId } = data
+      console.log('payment id', paymentId)
+      if (!user) return
+
+      //creating order
+      const userDocRef = doc(db, 'users', user.uid)
+      const userDoc = await getDoc(userDocRef)
+      const userData = userDoc.data()
+
+      console.log(userData?.my_orders)
+      if (userData && !userData?.my_orders) {
+        userData.my_orders = []
+      }
+      userData?.my_orders.push(orderData)
+      await updateDoc(userDocRef, userData)
+
       const initSheet = await stripe.initPaymentSheet({
         paymentIntentClientSecret: data.clientSecret,
         merchantDisplayName: 'Dewall',
       })
+      // const gPayInit = await stripe.initGooglePay({
+      //   paymentIntentClientSecret: data.clientSecret,
+      //   merchantDisplayName: 'Dewall',
+      // })
+
+      //google pay not initlitilized
+
       if (initSheet.error) {
         console.error(initSheet.error)
         return Alert.alert(initSheet.error.message)
@@ -148,6 +221,9 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
       const presentSheet = await stripe.presentPaymentSheet({
         clientSecret: data.clientSecret,
       })
+      // const presentSheet = await stripe.presentGooglePay({
+      //   clientSecret: data.clientSecret,
+      // })
       if (presentSheet.error) {
         console.error(presentSheet.error)
         return Alert.alert(presentSheet.error.message)
@@ -155,7 +231,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
       Alert.alert('Payment successfully! Thank you for the donation.')
     } catch (err) {
       console.error(err)
-      Alert.alert('Payment failed!')
+      Alert.alert('failed!', err.message)
     }
   }
 
@@ -189,11 +265,23 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   React.useEffect(() => {
     ;(async function () {
       if (!(await isPlatformPaySupported({ googlePay: { testEnv: true } }))) {
+        setGooglePay(true)
         Alert.alert('Google Pay is not supported.')
         return
+      } else {
+        setGooglePay(false)
       }
     })()
   }, [])
+
+  const [isApplePaySupported, setIsApplePaySupported] = useState(false)
+  console.log('orderData', orderData)
+
+  useEffect(() => {
+    ;(async function () {
+      setIsApplePaySupported(await isPlatformPaySupported())
+    })()
+  }, [isPlatformPaySupported])
 
   const handleClose = (index: number) => {
     const temp = async (index: any) => {
@@ -209,22 +297,54 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
     }
     setClosedItems([...closedItems, index])
     temp(index)
+  }
+  const fetchPaymentIntentClientSecret = async () => {
+    // Fetch payment intent created on the server, see above
+    const response = await fetch(`${API_URL}/create-payment-intent`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        currency: 'usd',
+      }),
+    })
+    const { clientSecret } = await response.json()
 
-    const fetchPaymentIntentClientSecret = async () => {
-      // Fetch payment intent created on the server, see above
-      const response = await fetch(`${API_URL}/create-payment-intent`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          currency: 'usd',
-        }),
-      })
-      const { clientSecret } = await response.json()
+    return clientSecret
+  }
 
-      return clientSecret
+  const getDeliveryFees = useCallback(async () => {
+    try {
+      const deliveryFeesCollection = await getDocs(collection(db, 'DeliveryFees'))
+      const deliveryFeesData = deliveryFeesCollection.docs.map((doc) => doc.data() as IDeliveryfees)
+      const deliveryFee = deliveryFeesData.find((f) => f.Continents === 'Europe')
+      setDeliveryFees(deliveryFee)
+    } catch (error) {
+      console.error('Error fetching delivery fees:', error)
     }
+  }, [])
+
+  useEffect(() => {
+    getDeliveryFees()
+  }, [getDeliveryFees])
+
+  const pay = async () => {
+    const clientSecret = await fetchPaymentIntentClientSecret()
+
+    const { error } = await confirmPlatformPayPayment(clientSecret, {
+      googlePay: {
+        testEnv: true,
+        merchantName: 'My merchant name',
+        merchantCountryCode: 'US',
+        currencyCode: 'USD',
+        billingAddressConfig: {
+          // format: PlatformPay.BillingAddressFormat.Full,
+          isPhoneNumberRequired: true,
+          isRequired: true,
+        },
+      },
+    })
   }
 
   return (
@@ -251,7 +371,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
             <CartPageContent>
               <HomeFlexContent>
                 {addr ? (
-                  <Pressable onPress={() => navigation.navigate('AddressBook')}>
+                  <Pressable onPress={() => navigation.navigate('LocationAddAddress')}>
                     <View>
                       <HomeText>{addr.saveAsAddress}</HomeText>
                       <HomeDescription>
@@ -263,7 +383,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                   </Pressable>
                 ) : (
                   <View style={{ paddingVertical: 12 }}>
-                    <Pressable onPress={() => navigation.navigate('AddressBook')}>
+                    <Pressable onPress={() => navigation.navigate('LocationAddAddress')}>
                       <HomeText>Please add a address first</HomeText>
                     </Pressable>
                   </View>
@@ -272,7 +392,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                   <ChevronLeft width={16} height={16} />
                 </Pressable>
               </HomeFlexContent>
-              <GiftWrapper>
+              {/* <GiftWrapper>
                 <Pressable onPress={() => navigation.navigate('GiftOptions')}>
                   <GiftContent>
                     <LinearGradient
@@ -281,6 +401,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                       colors={['#462D85', '#DB00FF']}
                       style={styles.gradientColor}
                     >
+                      <Button title='Pay with Google Pay' onPress={pay} />
                       <GiftIcon width={16} height={16} />
                     </LinearGradient>
                     <GiftText>Gift options available</GiftText>
@@ -289,7 +410,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                 <Pressable>
                   <ChevronLeft width={16} height={16} />
                 </Pressable>
-              </GiftWrapper>
+              </GiftWrapper> */}
               <PhonepeWrapper>
                 <GiftContent onPress={processPay}>
                   <Phonepe width={32} height={32} />
@@ -300,7 +421,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                   <ChevronLeft width={16} height={16} />
                 </Pressable>
               </PhonepeWrapper>
-              <PhonepeWrapper>
+              {/* <PhonepeWrapper>
                 <GiftContent>
                   <LinearGradient
                     start={{ x: 0, y: 0 }}
@@ -311,6 +432,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                     <SackDollar width={16} height={16} />
                   </LinearGradient>
                   <GiftText>Royalties</GiftText>
+
                   <InrBorderRadius>
                     <InrText>1200INR</InrText>
                   </InrBorderRadius>
@@ -318,7 +440,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                 <UseBorderRadius>
                   <UseText>Use</UseText>
                 </UseBorderRadius>
-              </PhonepeWrapper>
+              </PhonepeWrapper> */}
               <Content>
                 <DeliveryWrapper>
                   <DeliveryContent>
@@ -327,9 +449,13 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                     </Pressable>
                     <DeliveryText>Delivery fee</DeliveryText>
                   </DeliveryContent>
-                  <INRText>900 INR</INRText>
+                  <INRText>
+                    {Number(deliveryFees?.DeliveryFees) * (rate as number)}
+                    {currency.symbol}
+                  </INRText>
                 </DeliveryWrapper>
-                <DeliveryWrapper style={{ marginTop: 20 }}>
+
+                {/* <DeliveryWrapper style={{ marginTop: 20 }}>
                   <DeliveryContent>
                     <Pressable>
                       <ShippingIcon width={24} height={24} />
@@ -337,7 +463,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                     <DeliveryText>Shipping fee</DeliveryText>
                   </DeliveryContent>
                   <INRText>900 INR</INRText>
-                </DeliveryWrapper>
+                </DeliveryWrapper> */}
               </Content>
               <TotalContent>
                 <TotalText>Total</TotalText>
@@ -468,6 +594,8 @@ const HomeText = styled.Text`
 const PhonepeWrapper = styled.View`
   border-bottom-color: ${COLORS.strokeClr};
   border-bottom-width: 1px;
+  border-top-color: ${COLORS.strokeClr};
+  border-top-width: 1px;
   padding-vertical: 16px;
   display: flex;
   justify-content: space-between;
