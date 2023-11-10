@@ -107,7 +107,7 @@ const Medium = () => {
         isMounted.current = true
         const tempUid = uuid.v4().toString()
         const docRef = doc(db, 'ModelsMidlevel', tempUid)
-        await setDoc(docRef, { uid: tempUid, skin: avatar.skinTone })
+        await setDoc(docRef, { uid: tempUid, skin: avatar?.skinTone, gender: avatar?.gender })
 
         setUid(tempUid)
       } catch (error) {
@@ -115,7 +115,7 @@ const Medium = () => {
       }
     }
   }, [])
-  const handleUpdateGender = useCallback(async () => {
+  const handleUpdateColor = useCallback(async () => {
     if (!isColor || !uid) return
     try {
       const docRef = doc(db, 'ModelsMidlevel', uid)
@@ -125,11 +125,22 @@ const Medium = () => {
       console.log(error)
     }
   }, [isColor])
+  const handleUpdateSize = useCallback(async () => {
+    if (!isSize || !uid) return
+    try {
+      const docRef = doc(db, 'ModelsMidlevel', uid)
+      await updateDoc(docRef, { size: isSize.sizeVarient[0].size })
+      console.log('updated')
+    } catch (error) {
+      console.log(error)
+    }
+  }, [isSize])
 
   useEffect(() => {
     handleSetUid()
-    handleUpdateGender()
-  }, [handleSetUid, handleUpdateGender])
+    handleUpdateColor()
+    handleUpdateSize()
+  }, [handleSetUid, handleUpdateColor, handleUpdateSize])
 
   useEffect(() => {
     const Filtereddata = data?.find((f) => f.styles === isSelectedStyle)

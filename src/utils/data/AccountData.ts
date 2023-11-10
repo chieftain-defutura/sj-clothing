@@ -11,6 +11,7 @@ import HelpQuestion from '../../assets/icons/AccountPageIcon/HelpQuestion'
 import Cart from '../../assets/icons/AccountPageIcon/CartIcon'
 import LanguageIcon from '../../assets/icons/LanguageIcon'
 import CurrencyIcon from '../../assets/icons/CurrencyIcon'
+import TermsAndCondition from '../../assets/icons/AccountPageIcon/TermsAndConditions'
 
 export const AccountData = [
   {
@@ -81,7 +82,7 @@ export const AccountData = [
     navigation: 'Aboutus',
   },
   {
-    leftIcon: UsersMore,
+    leftIcon: TermsAndCondition,
     name: 'Terms And Condition',
     navigation: 'TermsAndConditions',
   },

@@ -42,7 +42,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
         isMounted.current = true
         const tempUid = uuid.v4().toString()
         const docRef = doc(db, 'ModelsPremium', tempUid)
-        await setDoc(docRef, { uid: tempUid, skin: avatar.skinTone })
+        await setDoc(docRef, { uid: tempUid, skin: avatar.skinTone, gender: avatar.gender })
 
         setUid(tempUid)
       } catch (error) {

@@ -43,5 +43,51 @@
     "Styles": "Stile",
     "Sizes": "Größen",
     "Select area to add image": "Wählen Sie den Bereich aus, um ein Bild hinzuzufügen"
+  },
+
+  "TermsAndConditions": {
+    "TERMS & CONDITIONS": " TERMS & AMP; BEDINGUNGEN",
+    "Welcome to": "Willkommen zu",
+    "PLEASE READ THESE TERMS OF USE CAREFULLY BEFORE USING THE CLOTHING APP.": "BITTE LESEN SIE DIESE NUTZUNGSBEDINGUNGEN SORGFÄLTIG DURCH, BEVOR SIE DIE KLEIDUNGS-APP NUTZEN.",
+    "Acceptance of Terms": "Akzeptanz der Bedingungen",
+    "Acceptance of Terms By downloading, installing, or using SJ clothing , you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you should not use the app.": "Akzeptanz der Bedingungen Durch das Herunterladen, Installieren oder Verwenden von SJ-Kleidung erklären Sie sich mit diesen Allgemeinen Geschäftsbedingungen einverstanden. Wenn Sie mit einem Teil dieser Bedingungen nicht einverstanden sind, sollten Sie die App nicht verwenden.",
+    "Account Registration": "Kontoregistrierung",
+    " a. You must provide accurate and complete information when registering for an account on the Clothing App.": "Sie müssen bei der Registrierung für ein Konto in der Bekleidungs-App genaue und vollständige Angaben machen.",
+    "b. You are responsible for maintaining the confidentiality of your account information, including your username and password.": "Sie sind für die Wahrung der Vertraulichkeit Ihrer Kontoinformationen, einschließlich Ihres Benutzernamens und Passworts, verantwortlich.",
+    "c. You are responsible for all activities that occur under your account.": "Sie sind für alle Aktivitäten verantwortlich, die unter Ihrem Konto stattfinden.",
+    "d. You must notify us immediately of any unauthorized use of your account.": "Sie müssen uns unverzüglich über jede unbefugte Nutzung Ihres Kontos informieren.",
+    "Payment": "Zahlung",
+    "a. When you place an order through the app, you agree to pay for the products or services ordered at the prices specified, including any applicable taxes and shipping fees.": "Wenn Sie über die App eine Bestellung aufgeben, erklären Sie sich damit einverstanden, die bestellten Produkte oder Dienstleistungen zu den angegebenen Preisen zu bezahlen, einschließlich aller anfallenden Steuern und Versandkosten.",
+    "b. Payment information is securely processed, and we do not store your payment details.": "Zahlungsinformationen werden sicher verarbeitet und wir speichern Ihre Zahlungsdaten nicht",
+
+    "Profile": "Profil",
+    "a. You can create and manage your profile on the Clothing App, including personal information, preferences, and order history.": "Sie können Ihr Profil in der Bekleidungs-App erstellen und verwalten, einschließlich persönlicher Informationen, Vorlieben und Bestellhistorie.",
+    "b. Any information you provide in your profile must be accurate and up-to-date.": " Alle Informationen, die Sie in Ihrem Profil angeben, müssen korrekt und aktuell sein.",
+
+    "Intellectual Property": "Geistiges Eigentum",
+    "a. All content and materials on the Clothing App, including but not limited to text, graphics, logos, and images, are the intellectual property of the company. You may not use, reproduce, or distribute these materials without our express written consent.": "Alle Inhalte und Materialien der Bekleidungs-App, einschließlich, aber nicht beschränkt auf Texte, Grafiken, Logos und Bilder, sind geistiges Eigentum des Unternehmens. Sie dürfen diese Materialien ohne unsere ausdrückliche schriftliche Zustimmung nicht verwenden, reproduzieren oder verteilen .",
+
+    "User Conduct": "Nutzerverhalten",
+    "a. You agree not to engage in any unlawful, offensive, or harmful activities on the Clothing App.": "Sie erklären sich damit einverstanden, sich in der Bekleidungs-App nicht an rechtswidrigen, beleidigenden oder schädlichen Aktivitäten zu beteiligen.",
+
+    "Privacy": "Privatsphäre",
+    "a. We collect and use your personal information in accordance with our Privacy Statement.": " Wir erfassen und verwenden Ihre personenbezogenen Daten gemäß unserer Datenschutzerklärung.",
+
+    "Termination": "Beendigung",
+    "a. We may terminate or suspend your account and access to the app, with or without notice, for any reason, including violation of these Terms and Conditions.": "Wir können Ihr Konto und Ihren Zugriff auf die App mit oder ohne Vorankündigung aus beliebigem Grund kündigen oder sperren, einschließlich der Verletzung dieser Allgemeinen Geschäftsbedingungen.",
+
+    " Changes to Terms and Conditions ": "Änderungen der Allgemeinen Geschäftsbedingungen",
+    "a. We reserve the right to modify these Terms and Conditions at any time. It is your responsibility to review these terms regularly.Your continued use of the app after any changes indicate your acceptance of the modified terms.": " Wir behalten uns das Recht vor, diese Allgemeinen Geschäftsbedingungen jederzeit zu ändern. Es liegt in Ihrer Verantwortung, diese Bedingungen regelmäßig zu überprüfen. Ihre fortgesetzte Nutzung der App nach etwaigen Änderungen bedeutet, dass Sie die geänderten Bedingungen akzeptieren.",
+
+    "Contact Information": "Kontaktinformationen",
+    "a. For questions or concerns regarding these Terms and Conditions, please contact us using the contact information provided on the Clothing App. By using the Clothing App, you acknowledge that you have read, understood, and agreed to these Terms and Conditions. If you do not agree to these terms, please do not use the app. Your continued use of the app indicates your acceptance of these terms and any updates or revisions.": "Bei Fragen oder Bedenken bezüglich dieser Allgemeinen Geschäftsbedingungen kontaktieren Sie uns bitte über die in der Bekleidungs-App angegebenen Kontaktinformationen. Durch die Nutzung der Bekleidungs-App bestätigen Sie, dass Sie diese Allgemeinen Geschäftsbedingungen gelesen und verstanden haben und ihnen zustimmen. Wenn Wenn Sie mit diesen Bedingungen nicht einverstanden sind, nutzen Sie die App bitte nicht. Durch die fortgesetzte Nutzung der App erklären Sie sich mit diesen Bedingungen und etwaigen Aktualisierungen oder Überarbeitungen einverstanden.",
+
+    "Information Collection": "Informationssammlung",
+    "We may collect the following sensitive information:": "Wir können die folgenden sensiblen Informationen sammeln",
+    "a. Images: We may collect and store images that you choose to upload or share within the app.": "a. Bilder: Wir können Bilder sammeln und speichern, die Sie in der App hochladen oder teilen.",
+    "b. Email Addresses: We may collect your email address to facilitate communication and account management.": "a. Bilder: Wir können Bilder sammeln und speichern, die Sie in der App hochladen oder teilen.",
+    "c. Phone Numbers: We may collect your phone number for account verification and communication purposes.": "Telefonnummern: Wir können Ihre Telefonnummer zur Kontoverifizierung und zu Kommunikationszwecken erfassen.",
+    "d. Addresses: We may collect your physical address to provide location-based services orn for shipping purposes.": "Adressen: Wir können Ihre physische Adresse erfassen, um standortbezogene Dienste bereitzustellen oder für Versandzwecke.",
+    "e. Location Data: We may collect and use your device's location data to enhance your experience within the Service, such as location-based features.": " Standortdaten: Wir können die Standortdaten Ihres Geräts erfassen und verwenden, um Ihr Erlebnis innerhalb des Dienstes zu verbessern, beispielsweise durch standortbasierte Funktionen."
   }
 }

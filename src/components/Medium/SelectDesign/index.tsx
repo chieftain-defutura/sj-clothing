@@ -49,6 +49,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
     isImageOrText.designs.hashtag === ''
       ? designs
       : designs?.filter((design) => design.hashTag === isImageOrText.designs.hashtag)
+  console.log(FilteredData[0]?.imagePrices)
   return (
     <Animated.View
       entering={SlideInDown.duration(800)}
@@ -89,8 +90,8 @@ const SelectDesign: React.FC<ISelectDesign> = ({
         </Text>
         <Text style={{ fontSize: 14, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>
           {isImageOrText.position === 'Front' || 'Back'
-            ? (Number(FilteredData[0].imagePrices.FrontAndBack) * (rate as number)).toFixed(2)
-            : (Number(FilteredData[0].imagePrices.LeftAndRight) * (rate as number)).toFixed(2)}
+            ? (Number(FilteredData[0]?.imagePrices.FrontAndBack) * (rate as number)).toFixed(2)
+            : (Number(FilteredData[0]?.imagePrices.LeftAndRight) * (rate as number)).toFixed(2)}
         </Text>
         <Text style={{ fontSize: 14, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>
           {currency.symbol}
@@ -164,8 +165,8 @@ const SelectDesign: React.FC<ISelectDesign> = ({
                   ...prevState,
                   rate:
                     isImageOrText.position === 'Front' || 'Back'
-                      ? Number(item.imagePrices.FrontAndBack)
-                      : Number(item.imagePrices.LeftAndRight),
+                      ? Number(item?.imagePrices.FrontAndBack)
+                      : Number(item?.imagePrices.LeftAndRight),
                   designs: { hashtag: item.hashTag, image: item.Images },
                 })),
                   setDone(true)

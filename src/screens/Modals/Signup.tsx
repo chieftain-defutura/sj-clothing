@@ -2,7 +2,7 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 import styled from 'styled-components/native'
 import React, { useEffect, useState } from 'react'
-import { View, Modal, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
+import { View, Modal, StyleSheet, Pressable, TouchableOpacity, Text } from 'react-native'
 import { sendEmailVerification } from 'firebase/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
@@ -22,6 +22,7 @@ import EyeHideIcon from '../../assets/icons/EyeIconHide'
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore/lite'
 import Checkbox from 'expo-checkbox'
 import { useNavigation } from '@react-navigation/native'
+import GreenTick from '../../assets/icons/GreenTick'
 
 interface SignupModalProps {
   isVisible?: boolean
@@ -56,6 +57,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const user = userStore((state) => state.user)
   const updateFetching = userStore((state) => state.updateFetching)
   const [isChecked, setChecked] = useState(false)
+  const [isCreated, setIsCreated] = useState(false)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -97,16 +99,28 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
     if (errorMessage) {
       const timer = setTimeout(() => {
         setErrorMessage(null)
-      }, 3000)
+      }, 1000)
 
       return () => clearTimeout(timer)
     }
   }, [errorMessage])
 
+  useEffect(() => {
+    if (isCreated) {
+      const timer = setTimeout(() => {
+        setIsCreated(false)
+        onClose?.()
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [isCreated])
+
   const handleSubmit = async (values: typeof initialValues) => {
     if (!user) {
       try {
         setIsLoading(true)
+        setIsCreated(true)
         const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password)
         await updateProfile(user, { displayName: values.name })
         await AsyncStorage.setItem('mail', values.email)
@@ -121,18 +135,6 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           phoneNo: null,
           avatar: null,
         })
-
-        // const nameStore = await addDoc(collection(db, 'user'), {
-        //   name: values.name,
-        //   mail: values.email,
-        //   address: null,
-        //   profile: null,
-        //   phoneNo: null,
-        //   avatar: null,
-        // })
-        // console.log('nameStore', nameStore)
-
-        onClose?.()
       } catch (error) {
         if (error instanceof FirebaseError) {
           if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
@@ -152,119 +154,130 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
-      <SignUpWrapper>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={ValidationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
-            <SignUpContainer>
-              <SignUpHead>
-                <SignUpHeading>Create Account</SignUpHeading>
-                <Pressable onPress={onClose}>
-                  <CloseIcon width={24} height={24} />
-                </Pressable>
-              </SignUpHead>
-              <View>
-                <LabelText>Full name</LabelText>
-                <InputBorder>
-                  <InputStyle
-                    placeholder='Enter your name'
-                    value={values.name}
-                    onChangeText={handleChange('name')}
-                    onBlur={handleBlur('name')}
-                    placeholderTextColor={COLORS.SecondaryTwo}
-                    autoCorrect={false}
-                  />
-                </InputBorder>
-                {touched.name && errors.name && <ErrorText>{errors.name}</ErrorText>}
-              </View>
-              <View>
-                <LabelText>E-mail</LabelText>
-                <InputBorder>
-                  <InputStyle
-                    placeholder='Enter your e-mail'
-                    value={values.email}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    placeholderTextColor={COLORS.SecondaryTwo}
-                    autoCorrect={false}
-                  />
-                  {/* <Pressable onPress={handleVerify}>
+      {!isCreated ? (
+        <SignUpWrapper>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={ValidationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
+              <SignUpContainer>
+                <SignUpHead>
+                  <SignUpHeading>Create Account</SignUpHeading>
+                  <Pressable onPress={onClose}>
+                    <CloseIcon width={24} height={24} />
+                  </Pressable>
+                </SignUpHead>
+                <View>
+                  <LabelText>Full name</LabelText>
+                  <InputBorder>
+                    <InputStyle
+                      placeholder='Enter your name'
+                      value={values.name}
+                      onChangeText={handleChange('name')}
+                      onBlur={handleBlur('name')}
+                      placeholderTextColor={COLORS.SecondaryTwo}
+                      autoCorrect={false}
+                    />
+                  </InputBorder>
+                  {touched.name && errors.name && <ErrorText>{errors.name}</ErrorText>}
+                </View>
+                <View>
+                  <LabelText>E-mail</LabelText>
+                  <InputBorder>
+                    <InputStyle
+                      placeholder='Enter your e-mail'
+                      value={values.email}
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      placeholderTextColor={COLORS.SecondaryTwo}
+                      autoCorrect={false}
+                    />
+                    {/* <Pressable onPress={handleVerify}>
                     <VerifyText>Verify</VerifyText>
                   </Pressable> */}
-                </InputBorder>
-                {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
-              </View>
-              <View>
-                <LabelText>Create Password</LabelText>
-                <InputBorder>
-                  <InputStyle
-                    secureTextEntry={!showPassword}
-                    placeholder='Enter password'
-                    value={values.password}
-                    onChangeText={handleChange('password')}
-                    onBlur={() => handleBlur('password')}
-                    placeholderTextColor={COLORS.SecondaryTwo}
-                    autoCorrect={false}
+                  </InputBorder>
+                  {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
+                </View>
+                <View>
+                  <LabelText>Create Password</LabelText>
+                  <InputBorder>
+                    <InputStyle
+                      secureTextEntry={!showPassword}
+                      placeholder='Enter password'
+                      value={values.password}
+                      onChangeText={handleChange('password')}
+                      onBlur={() => handleBlur('password')}
+                      placeholderTextColor={COLORS.SecondaryTwo}
+                      autoCorrect={false}
+                    />
+                    <Pressable onPress={togglePasswordVisibility}>
+                      {showPassword ? (
+                        <EyeIcon width={14} height={14} />
+                      ) : (
+                        <EyeHideIcon width={14} height={14} />
+                      )}
+                    </Pressable>
+                  </InputBorder>
+                  {touched.password && errors.password && <ErrorText>{errors.password}</ErrorText>}
+                </View>
+
+                {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 4,
+                    paddingTop: 16,
+                  }}
+                >
+                  <Checkbox
+                    // style={styles.checkbox}
+                    value={isChecked}
+                    onValueChange={setChecked}
+                    color={isChecked ? COLORS.textSecondaryClr : undefined}
                   />
-                  <Pressable onPress={togglePasswordVisibility}>
-                    {showPassword ? (
-                      <EyeIcon width={14} height={14} />
-                    ) : (
-                      <EyeHideIcon width={14} height={14} />
-                    )}
-                  </Pressable>
-                </InputBorder>
-                {touched.password && errors.password && <ErrorText>{errors.password}</ErrorText>}
-              </View>
-
-              {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 4,
-                  paddingTop: 16,
-                }}
-              >
-                <Checkbox
-                  // style={styles.checkbox}
-                  value={isChecked}
-                  onValueChange={setChecked}
-                  color={isChecked ? COLORS.textSecondaryClr : undefined}
+                  <AccountViewText>Accept all</AccountViewText>
+                  <TouchableOpacity onPress={() => navigation.navigate('TermsAndConditions')}>
+                    <AccountViewText style={{ color: COLORS.textClr }}>
+                      Terms and conditions
+                    </AccountViewText>
+                  </TouchableOpacity>
+                </View>
+                <CustomButton
+                  variant='primary'
+                  text={isLoading ? 'Create Account...' : 'Create Account'}
+                  onPress={() => {
+                    handleSubmit()
+                  }}
+                  disabled={!isChecked}
+                  fontFamily='Arvo-Regular'
+                  fontSize={14}
+                  buttonStyle={[styles.submitBtn]}
                 />
-                <AccountViewText>Accept all</AccountViewText>
-                <TouchableOpacity onPress={() => navigation.navigate('TermsAndConditions')}>
-                  <AccountViewText style={{ color: COLORS.textClr }}>
-                    Terms and conditions
-                  </AccountViewText>
-                </TouchableOpacity>
-              </View>
-              <CustomButton
-                variant='primary'
-                text={isLoading ? 'Create Account...' : 'Create Account'}
-                onPress={() => {
-                  handleSubmit()
-                }}
-                disabled={!isChecked}
-                fontFamily='Arvo-Regular'
-                fontSize={14}
-                buttonStyle={[styles.submitBtn]}
-              />
 
-              <AccountView>
-                <AccountViewText>Already have an account?</AccountViewText>
-                <Pressable onPress={onLoginClick}>
-                  <LoginLink>Log in</LoginLink>
-                </Pressable>
-              </AccountView>
-            </SignUpContainer>
-          )}
-        </Formik>
-      </SignUpWrapper>
+                <AccountView>
+                  <AccountViewText>Already have an account?</AccountViewText>
+                  <Pressable onPress={onLoginClick}>
+                    <LoginLink>Log in</LoginLink>
+                  </Pressable>
+                </AccountView>
+              </SignUpContainer>
+            )}
+          </Formik>
+        </SignUpWrapper>
+      ) : (
+        <SignUpWrapper>
+          <CreatedAccount>
+            <GreenTick width={100} height={100} />
+            <Text style={{ fontSize: 20, color: COLORS.textRGBAClr, fontFamily: 'Gilroy-Medium' }}>
+              Account Created
+            </Text>
+          </CreatedAccount>
+        </SignUpWrapper>
+      )}
     </Modal>
   )
 }
@@ -350,6 +363,17 @@ const LoginLink = styled.Text`
   color: ${COLORS.textSecondaryClr};
   font-size: 14px;
   font-family: Gilroy-Medium;
+`
+
+const CreatedAccount = styled.View`
+  background-color: ${COLORS.iconsNormalClr};
+  padding: 60px;
+  border-radius: 10px;
+  display: flex;
+  flext-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
 `
 
 export default SignupModal

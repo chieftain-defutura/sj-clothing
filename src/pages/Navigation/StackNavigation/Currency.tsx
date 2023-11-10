@@ -74,7 +74,7 @@ const Currency = () => {
 
   const getCurrency = useCallback(async () => {
     try {
-      const apiKey = '1f5274c351a83d698e52d92b'
+      const apiKey = '0a1c782fc9edf98309831bad'
       const response = await axios.get(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/INR`)
       const data = response.data
       const rates = data.conversion_rates

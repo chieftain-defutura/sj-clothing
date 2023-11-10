@@ -11,7 +11,7 @@ import { doc, getDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { IOrder } from '../../../constant/types'
 
-const { height, width } = Dimensions.get('window')
+// const { height, width } = Dimensions.get('window')
 
 interface ITrackOrder {
   navigation: any
@@ -307,9 +307,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
   )
 }
 
-const ScrollViewContent = styled.ScrollView`
-  height: ${height};
-`
+const ScrollViewContent = styled.ScrollView``
 
 const FlexOrder = styled.View`
   margin-bottom: 25px;

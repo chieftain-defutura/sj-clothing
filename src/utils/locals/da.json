@@ -28,8 +28,7 @@
     "Map": "Kort",
     "Home": "Hjem "
   },
-  "midlevel": 
-  {
+  "midlevel": {
     "Select Style": "Vælg Stil",
     "Select Country": "Vælg land",
     "Select Size": "Vælg størrelse",
@@ -45,5 +44,51 @@
     "Styles": "Stilarter",
     "Sizes": "Størrelser",
     "Select area to add image": "Vælg område for at tilføje billede"
+  },
+  "TermsAndConditions": {
+    "TERMS & CONDITIONS": "VILKÅR OG BETINGELSER    ",
+    "Welcome to": "Velkommen til    ",
+    "PLEASE READ THESE TERMS OF USE CAREFULLY BEFORE USING THE CLOTHING APP.": "LÆS VENLIGST DISSE BETINGELSER FOR BRUG OMHYGGELIGT, FØR DU BRUGER TØJ-APPEN.",
+    "Acceptance of Terms": "Accept af vilkår",
+    "Acceptance of Terms By downloading, installing, or using SJ clothing , you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you should not use the app.": "Accept af vilkår Ved at downloade, installere eller bruge SJ-tøj accepterer du at være bundet af disse vilkår og betingelser. Hvis du ikke er enig i nogen del af disse vilkår, bør du ikke bruge appen.",
+    "Account Registration": "Kontoregistrering",
+    " a. You must provide accurate and complete information when registering for an account on the Clothing App.": " Du skal give nøjagtige og fuldstændige oplysninger, når du tilmelder dig en konto på Tøj-appen.",
+    "b. You are responsible for maintaining the confidentiality of your account information, including your username and password.": "Du er ansvarlig for at opretholde fortroligheden af ​​dine kontooplysninger, herunder dit brugernavn og adgangskode.",
+    "c. You are responsible for all activities that occur under your account.": "Du er ansvarlig for alle aktiviteter, der forekommer under din konto.",
+    "d. You must notify us immediately of any unauthorized use of your account.": "Du skal straks underrette os om enhver uautoriseret brug af din konto.",
+
+    "Payment": "Betaling",
+    "a. When you place an order through the app, you agree to pay for the products or services ordered at the prices specified, including any applicable taxes and shipping fees.": "Når du afgiver en ordre via appen, accepterer du at betale for de bestilte produkter eller tjenester til de angivne priser, inklusive eventuelle gældende skatter og forsendelsesgebyrer",
+    "b. Payment information is securely processed, and we do not store your payment details.": "Betalingsoplysninger behandles sikkert, og vi gemmer ikke dine betalingsoplysninger.",
+
+    "Profile": "Profil",
+    "a. You can create and manage your profile on the Clothing App, including personal information, preferences, and order history.": "Du kan oprette og administrere din profil på Clothing App, inklusive personlige oplysninger, præferencer og ordrehistorik.",
+    "b. Any information you provide in your profile must be accurate and up-to-date.": "Alle oplysninger, du angiver i din profil, skal være nøjagtige og opdaterede.",
+
+    "Intellectual Property": "Intellektuel ejendom",
+    "a. All content and materials on the Clothing App, including but not limited to text, graphics, logos, and images, are the intellectual property of the company. You may not use, reproduce, or distribute these materials without our express written consent.": "Alt indhold og materialer på Tøj-appen, inklusive men ikke begrænset til tekst, grafik, logoer og billeder, er virksomhedens intellektuelle ejendom. Du må ikke bruge, reproducere eller distribuere disse materialer uden vores udtrykkelige skriftlige samtykke .",
+
+    "User Conduct": "Brugeradfærd",
+    "a. You agree not to engage in any unlawful, offensive, or harmful activities on the Clothing App.": "Du accepterer ikke at deltage i nogen ulovlige, stødende eller skadelige aktiviteter på Tøj-appen.",
+
+    "Privacy": "Privatliv",
+    "a. We collect and use your personal information in accordance with our Privacy Statement.": "Vi indsamler og bruger dine personlige oplysninger i overensstemmelse med vores fortrolighedserklæring.",
+
+    "Termination": "Afslutning",
+    "a. We may terminate or suspend your account and access to the app, with or without notice, for any reason, including violation of these Terms and Conditions.": "Vi kan opsige eller suspendere din konto og adgang til appen, med eller uden varsel, uanset årsag, herunder overtrædelse af disse vilkår og betingelser.",
+
+    " Changes to Terms and Conditions ": "Ændringer til vilkår og betingelser",
+    "a. We reserve the right to modify these Terms and Conditions at any time. It is your responsibility to review these terms regularly.Your continued use of the app after any changes indicate your acceptance of the modified terms.": "Vi forbeholder os retten til at ændre disse vilkår og betingelser til enhver tid. Det er dit ansvar at gennemgå disse vilkår regelmæssigt. Din fortsatte brug af appen efter eventuelle ændringer indikerer din accept af de ændrede vilkår.",
+
+    "Contact Information": "Kontakt information",
+    "a. For questions or concerns regarding these Terms and Conditions, please contact us using the contact information provided on the Clothing App. By using the Clothing App, you acknowledge that you have read, understood, and agreed to these Terms and Conditions. If you do not agree to these terms, please do not use the app. Your continued use of the app indicates your acceptance of these terms and any updates or revisions.": "For spørgsmål eller bekymringer vedrørende disse vilkår og betingelser, bedes du kontakte os ved at bruge kontaktoplysningerne på Tøj-appen. Ved at bruge Tøj-appen anerkender du, at du har læst, forstået og accepteret disse vilkår og betingelser. Hvis du ikke accepterer disse vilkår, brug venligst ikke appen. Din fortsatte brug af appen indikerer din accept af disse vilkår og eventuelle opdateringer eller revisioner.",
+
+    "Information Collection": "Informationsindsamling",
+    "We may collect the following sensitive information:": "Vi kan indsamle følgende følsomme oplysninger:",
+    "a. Images: We may collect and store images that you choose to upload or share within the app.": "Billeder: Vi kan indsamle og gemme billeder, som du vælger at uploade eller dele i appen.",
+    "b. Email Addresses: We may collect your email address to facilitate communication and account management.": "E-mailadresser: Vi indsamler muligvis din e-mailadresse for at lette kommunikation og kontoadministration.",
+    "c. Phone Numbers: We may collect your phone number for account verification and communication purposes.": "Telefonnumre: Vi indsamler muligvis dit telefonnummer til kontobekræftelse og kommunikationsformål.",
+    "d. Addresses: We may collect your physical address to provide location-based services orn for shipping purposes.": "Adresser: Vi indsamler muligvis din fysiske adresse for at levere lokationsbaserede tjenester eller til forsendelsesformål.",
+    "e. Location Data: We may collect and use your device's location data to enhance your experience within the Service, such as location-based features.": "Placeringsdata: Vi kan indsamle og bruge din enheds placeringsdata til at forbedre din oplevelse i Tjenesten, såsom placeringsbaserede funktioner."
   }
 }

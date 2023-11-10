@@ -70,6 +70,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
                 {orderData.map((f, index) => {
                   return (
                     <OrderCard
+                      key={index}
                       id={f.id}
                       productImage={f.productImage}
                       productName={f.productName}
