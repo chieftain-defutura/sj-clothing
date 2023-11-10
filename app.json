@@ -36,13 +36,6 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow Sprinkle Nadar to use your location."
         }
-      ],
-      [
-        "@stripe/stripe-react-native",
-        {
-          "merchantIdentifier": "string",
-          "enableGooglePay": true
-        }
       ]
     ],
     "extra": {

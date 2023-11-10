@@ -27,7 +27,7 @@ const Medium = () => {
   const isMounted = useRef(false)
   const navigation = useNavigation()
   const slideValue = useSharedValue(0)
-  const { avatar, user } = userStore()
+  const { avatar, user, updateOderId } = userStore()
   const [isSteps, setSteps] = useState(1)
   const [isDropDown, setDropDown] = useState(false)
   const [uid, setUid] = useState<string>('')
@@ -197,7 +197,7 @@ const Medium = () => {
     if (!user) {
       setFocus(true)
     } else {
-      const docRef = await addDoc(collection(db, 'Posts'), {
+      const docRef = await addDoc(collection(db, 'Orders'), {
         style: isSelectedStyle,
         sizes: isSize,
         color: isColor,
@@ -205,11 +205,42 @@ const Medium = () => {
         description: FilteredData.description,
         price: FilteredData.normalPrice,
         offerPrice: FilteredData.offerPrice,
+        paymentStatus: 'pending',
         productId: FilteredData.id,
         userId: user?.uid,
         gender: avatar?.gender,
+        type: 'MidLevel',
+        productImage: FilteredData.productImage,
         productName: FilteredData.productName,
+        orderStatus: {
+          orderplaced: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          manufacturing: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          readyToShip: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          shipping: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          delivery: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+        },
       })
+      updateOderId(docRef.id)
       navigation.navigate('Checkout')
       setFocus(true)
     }

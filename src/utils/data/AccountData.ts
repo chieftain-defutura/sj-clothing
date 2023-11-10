@@ -30,7 +30,7 @@ export const AccountData = [
   //   leftIcon: SackDollar,
   //   name: 'Checkout',
   //   rightText: '1500 INR',
-  //   navigation: 'CheckoutPayment',
+  //   navigation: 'Checkout',
   // },
   // {
   //   leftIcon: Cart,

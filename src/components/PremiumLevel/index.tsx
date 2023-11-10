@@ -64,7 +64,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
         description: FilteredData[0].description,
         price: FilteredData[0].normalPrice,
         offerPrice: FilteredData[0].offerPrice,
-        status: 'pending',
+        paymentStatus: 'pending',
         userId: user?.uid,
         gender: FilteredData[0].gender,
         type: 'Premium-Level',

@@ -2,10 +2,14 @@ import React from 'react'
 import { View } from 'react-native'
 import { CartComponentProps } from '../constant/types'
 import styled from 'styled-components/native'
-import { COLORS } from '../styles/theme'
+import { COLORS, FONT_FAMILY } from '../styles/theme'
 import CircleClose from '../assets/icons/CircleClose'
+import { userStore } from '../store/userStore'
 
 const CartCard: React.FC<CartComponentProps> = ({ cartData, closedItems, handleClose }) => {
+  const { currency, rate } = userStore()
+  // console.log('cartData', cartData)
+
   return (
     <CartPageContent>
       <View>
@@ -36,13 +40,37 @@ const CartCard: React.FC<CartComponentProps> = ({ cartData, closedItems, handleC
                       </ProductStyle> */}
             {/* </ProductSizes> */}
 
-            <ProductStyle style={{ marginTop: 6 }}>
-              <ProductText>Price</ProductText>
-              <ProductShirtText>
-                {cartData.normalPrice}
-                {cartData.offerPrice} INR
-              </ProductShirtText>
-            </ProductStyle>
+            <View>
+              <View>
+                <ProductText>price</ProductText>
+              </View>
+              <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <OldPriceText>
+                    {(Number(cartData.price) * (rate as number)).toFixed(2)}
+                  </OldPriceText>
+                  <OldPriceText> {currency.symbol}</OldPriceText>
+                </View>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <ProductName>
+                    {(Number(cartData.offerPrice) * (rate as number)).toFixed(2)}
+                  </ProductName>
+                  <ProductName>{currency.symbol}</ProductName>
+                </View>
+              </View>
+            </View>
             {/* </ProductSizes> */}
           </View>
         </CartPageContainer>
@@ -57,6 +85,21 @@ const CartPageContent = styled.View`
   justify-content: center;
   align-items: center;
   margin-left: -120px;
+`
+
+const ProductName = styled.Text`
+  font-size: 14px;
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  color: ${COLORS.iconsHighlightClr};
+  margin-top: 4px;
+`
+
+const OldPriceText = styled.Text`
+  font-size: 13px;
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  color: ${COLORS.SecondaryTwo};
+  text-decoration-line: line-through;
+  margin-top: 4px;
 `
 
 const ProductStyle = styled.View``

@@ -13,7 +13,7 @@ import AuthNavigate from '../../screens/AuthNavigate'
 
 interface IAccessoryThreeSixtyDegree {
   navigation: any
-
+  handleSubmit: () => Promise<void>
   data: IAccessory
   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -23,6 +23,7 @@ const { width, height } = Dimensions.get('window')
 const AccessoryThreeSixtyDegree: React.FC<IAccessoryThreeSixtyDegree> = ({
   navigation,
   setOpenDetails,
+  handleSubmit,
   data,
 }) => {
   const [isPressed, setIsPressed] = useState(false)
@@ -33,50 +34,50 @@ const AccessoryThreeSixtyDegree: React.FC<IAccessoryThreeSixtyDegree> = ({
     setFocus(false)
   }
 
-  const handleSubmit = async () => {
-    if (!user) {
-      setFocus(true)
-    } else {
-      navigation.navigate('Checkout')
-      setFocus(true)
-      const docRef = await addDoc(collection(db, 'Orders'), {
-        description: data.description,
-        price: data.normalPrice,
-        offerPrice: data.offerPrice,
-        status: 'pending',
-        userId: user?.uid,
-        type: 'Accessory-Level',
-        productName: data.productName,
-        orderStatus: {
-          orderplaced: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          manufacturing: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          readyToShip: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          shipping: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          delivery: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-        },
-      })
-    }
-  }
+  // const handleSubmit = async () => {
+  //   if (!user) {
+  //     setFocus(true)
+  //   } else {
+  //     navigation.navigate('Checkout')
+  //     setFocus(true)
+  //     const docRef = await addDoc(collection(db, 'Orders'), {
+  //       description: data.description,
+  //       price: data.normalPrice,
+  //       offerPrice: data.offerPrice,
+  //       status: 'pending',
+  //       userId: user?.uid,
+  //       type: 'Accessory-Level',
+  //       productName: data.productName,
+  //       orderStatus: {
+  //         orderplaced: {
+  //           createdAt: null,
+  //           description: '',
+  //           status: false,
+  //         },
+  //         manufacturing: {
+  //           createdAt: null,
+  //           description: '',
+  //           status: false,
+  //         },
+  //         readyToShip: {
+  //           createdAt: null,
+  //           description: '',
+  //           status: false,
+  //         },
+  //         shipping: {
+  //           createdAt: null,
+  //           description: '',
+  //           status: false,
+  //         },
+  //         delivery: {
+  //           createdAt: null,
+  //           description: '',
+  //           status: false,
+  //         },
+  //       },
+  //     })
+  //   }
+  // }
   return (
     <Animated.View
       entering={SlideInRight.duration(500).delay(200)}
