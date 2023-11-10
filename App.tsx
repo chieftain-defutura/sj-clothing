@@ -104,6 +104,8 @@ const App: React.FC = () => {
     'Montserrat-Medium': require('./src/assets/fonts/Montserrat-Medium.ttf'), //font-weight 500
     'Montserrat-SemiBold': require('./src/assets/fonts/Montserrat-SemiBold.ttf'), //font-weight 600
   })
+  console.log(rate)
+  console.log(language)
 
   if (!fontsLoaded) {
     return null
