@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 import { View, Pressable, StyleSheet, Text, Alert } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS, gradientOpacityColors } from '../../../styles/theme'
-import { confirmPlatformPayPayment, useStripe } from '@stripe/stripe-react-native'
+import { useStripe } from '@stripe/stripe-react-native'
 import CustomButton from '../../../components/Button'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -16,7 +16,6 @@ import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore/
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { ICheckout } from '../../../constant/types'
-import { usePlatformPay } from '@stripe/stripe-react-native'
 
 type RootStackParamList = {
   Checkout: { product: string }
@@ -48,12 +47,9 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   const [addr, setAddr] = useState<AddressData | null>(null)
   const [cartItems, setCartItems] = useState()
   const [orderData, setOrderData] = useState<ICheckout | null>(null)
-  const [isGooglePay, setGooglePay] = useState<boolean>()
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
   const { user, orderId, rate, currency } = userStore()
   const stripe = useStripe()
-
-  console.log('odrerData', orderData)
 
   const openOrderPlaced = () => {
     setOrderPlacedVisible(true)
@@ -207,12 +203,6 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
         paymentIntentClientSecret: data.clientSecret,
         merchantDisplayName: 'Dewall',
       })
-      // const gPayInit = await stripe.initGooglePay({
-      //   paymentIntentClientSecret: data.clientSecret,
-      //   merchantDisplayName: 'Dewall',
-      // })
-
-      //google pay not initlitilized
 
       if (initSheet.error) {
         console.error(initSheet.error)
@@ -260,29 +250,6 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
     setOrderPlacedVisible(false)
   }
 
-  const { isPlatformPaySupported } = usePlatformPay()
-
-  React.useEffect(() => {
-    ;(async function () {
-      if (!(await isPlatformPaySupported({ googlePay: { testEnv: true } }))) {
-        setGooglePay(true)
-        Alert.alert('Google Pay is not supported.')
-        return
-      } else {
-        setGooglePay(false)
-      }
-    })()
-  }, [])
-
-  const [isApplePaySupported, setIsApplePaySupported] = useState(false)
-  console.log('orderData', orderData)
-
-  useEffect(() => {
-    ;(async function () {
-      setIsApplePaySupported(await isPlatformPaySupported())
-    })()
-  }, [isPlatformPaySupported])
-
   const handleClose = (index: number) => {
     const temp = async (index: any) => {
       if (!user) return
@@ -297,21 +264,6 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
     }
     setClosedItems([...closedItems, index])
     temp(index)
-  }
-  const fetchPaymentIntentClientSecret = async () => {
-    // Fetch payment intent created on the server, see above
-    const response = await fetch(`${API_URL}/create-payment-intent`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        currency: 'usd',
-      }),
-    })
-    const { clientSecret } = await response.json()
-
-    return clientSecret
   }
 
   const getDeliveryFees = useCallback(async () => {
@@ -374,25 +326,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                   <ChevronLeft width={16} height={16} />
                 </Pressable>
               </HomeFlexContent>
-              {/* <GiftWrapper>
-                <Pressable onPress={() => navigation.navigate('GiftOptions')}>
-                  <GiftContent>
-                    <LinearGradient
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 0 }}
-                      colors={['#462D85', '#DB00FF']}
-                      style={styles.gradientColor}
-                    >
-                      <Button title='Pay with Google Pay' onPress={pay} />
-                      <GiftIcon width={16} height={16} />
-                    </LinearGradient>
-                    <GiftText>Gift options available</GiftText>
-                  </GiftContent>
-                </Pressable>
-                <Pressable>
-                  <ChevronLeft width={16} height={16} />
-                </Pressable>
-              </GiftWrapper> */}
+
               <PhonepeWrapper>
                 <GiftContent onPress={processPay}>
                   <Phonepe width={32} height={32} />
