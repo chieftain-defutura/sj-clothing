@@ -89,8 +89,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
     // if(!fetchData) return
     setOrderData(fetchData as IOrder)
   }, [])
-  console.log(orderData)
-  console.log(orderData?.type)
+
   useEffect(() => {
     getOrderDataById()
   }, [getOrderDataById])

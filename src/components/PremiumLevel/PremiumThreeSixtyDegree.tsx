@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Pressable, StyleSheet, Dimensions, Image, View } from 'react-native'
+import { Pressable, StyleSheet, Dimensions, Image, View, Text } from 'react-native'
 import { WebView } from 'react-native-webview'
 import styled from 'styled-components/native'
 import uuid from 'react-native-uuid'
@@ -13,10 +13,12 @@ import { db } from '../../../firebase'
 import { IPremiumData } from '../../constant/types'
 import { userStore } from '../../store/userStore'
 import AuthNavigate from '../../screens/AuthNavigate'
+import { COLORS } from '../../styles/theme'
 
 interface IPremiumThreeSixtyDegree {
   focus: boolean
   data: IPremiumData
+  errorMessage: string
   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>
   handleSubmit: () => Promise<void>
   setFocus: React.Dispatch<React.SetStateAction<boolean>>
@@ -30,6 +32,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   handleSubmit,
   setFocus,
   focus,
+  errorMessage,
 }) => {
   const [isPressed, setIsPressed] = useState(false)
   const isMounted = useRef(false)
@@ -118,6 +121,19 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               />
             </ThreeSixtyDegreeImage>
            </ThreeSixtyDegreeImageWrapper> */}
+          {errorMessage && (
+            <Text
+              style={{
+                textAlign: 'center',
+                marginBottom: -20,
+                marginTop: 10,
+                color: COLORS.textSecondaryClr,
+                fontFamily: 'Gilroy-Medium',
+              }}
+            >
+              {errorMessage}
+            </Text>
+          )}
           <CustomButton
             text='Buy Now'
             fontFamily='Arvo-Regular'

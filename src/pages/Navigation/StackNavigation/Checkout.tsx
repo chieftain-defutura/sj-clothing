@@ -53,8 +53,6 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   const { user, orderId, rate, currency } = userStore()
   const stripe = useStripe()
 
-  console.log('odrerData', orderData)
-
   const openOrderPlaced = () => {
     setOrderPlacedVisible(true)
   }
@@ -228,7 +226,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
         console.error(presentSheet.error)
         return Alert.alert(presentSheet.error.message)
       }
-      Alert.alert('Payment successfully! Thank you for the donation.')
+      Alert.alert('Payment successfully! Thank you.')
     } catch (err) {
       console.error(err)
       Alert.alert('failed!', err.message)
@@ -236,19 +234,28 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   }
 
   const getData = useCallback(async () => {
-    if (!user) return
-    const q = doc(db, 'users', user.uid)
-    const querySnapshot = await getDoc(q)
+    try {
+      if (!user) return
+      const q = doc(db, 'users', user.uid)
+      const querySnapshot = await getDoc(q)
 
-    const fetchData = querySnapshot.data()
-    if (fetchData?.address) {
-      const addressData: AddressData[] = Object.values(fetchData?.address)
-      addressData.forEach((d, index) => {
-        if (d.isSelected === true) {
-          setAddr(d)
-          console.log('selected', d)
-        }
-      })
+      const fetchData = querySnapshot.data()
+      const addressData = fetchData?.address.find(
+        (f: { isSelected: boolean }) => f.isSelected === true,
+      )
+      console.log('addressData', addressData)
+      setAddr(addressData)
+      // if (fetchData?.address) {
+      //   const addressData: AddressData[] = Object.values(fetchData?.address)
+      //   addressData.forEach((d, index) => {
+      //     if (d.isSelected === true) {
+      //       setAddr(d)
+      //       console.log('selected', d)
+      //     }
+      //   })
+      // }
+    } catch (error) {
+      console.log(error)
     }
   }, [user])
 
@@ -275,7 +282,6 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   }, [])
 
   const [isApplePaySupported, setIsApplePaySupported] = useState(false)
-  console.log('orderData', orderData)
 
   useEffect(() => {
     ;(async function () {
@@ -351,9 +357,9 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
               <Text>No item</Text>
             )}
             <CartPageContent>
-              <HomeFlexContent>
+              <HomeFlexContent onPress={() => navigation.navigate('LocationAddAddress')}>
                 {addr ? (
-                  <Pressable onPress={() => navigation.navigate('LocationAddAddress')}>
+                  <Pressable>
                     <View>
                       <HomeText>{addr.saveAsAddress}</HomeText>
                       <HomeDescription>
@@ -365,7 +371,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                   </Pressable>
                 ) : (
                   <View style={{ paddingVertical: 12 }}>
-                    <Pressable onPress={() => navigation.navigate('LocationAddAddress')}>
+                    <Pressable>
                       <HomeText>Please add a address first</HomeText>
                     </Pressable>
                   </View>
@@ -393,8 +399,8 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                   <ChevronLeft width={16} height={16} />
                 </Pressable>
               </GiftWrapper> */}
-              <PhonepeWrapper>
-                <GiftContent onPress={processPay}>
+              <PhonepeWrapper onPress={processPay}>
+                <GiftContent>
                   <Phonepe width={32} height={32} />
                   <GiftText>Payment</GiftText>
                 </GiftContent>
@@ -538,7 +544,7 @@ const DeliveryWrapper = styled.View`
   align-items: center;
 `
 
-const HomeFlexContent = styled.View`
+const HomeFlexContent = styled.Pressable`
   display: flex;
   justify-content: space-between;
   flex-direction: row;
@@ -578,7 +584,7 @@ const HomeText = styled.Text`
   margin-bottom: 8px;
 `
 
-const PhonepeWrapper = styled.View`
+const PhonepeWrapper = styled.Pressable`
   border-bottom-color: ${COLORS.strokeClr};
   border-bottom-width: 1px;
   border-top-color: ${COLORS.strokeClr};

@@ -120,28 +120,11 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) =
             </View>
           ) : data ? (
             <View>
-              {/* {AddressBookData.map((f, index) => (
-              <View key={index} style={styles.radioBtn}>
-                <View>
-                  <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
-                </View>
-                <View style={{ display: 'flex', flexDirection: 'column' }}>
-                  <View style={styles.RadioTitle}>
-                    <f.icon width={16} height={16} color={'black'} />
-                    <HeaderStyle>{f.header}</HeaderStyle>
-                  </View>
-                  <DescriptionText>{f.location}</DescriptionText>
-                </View>
-                <Pressable style={styles.editStyle} onPress={onEditPress}>
-                  <Text style={styles.editText}>Edit</Text>
-                </Pressable>
-              </View>
-            ))} */}
               {data.map((f, index) => (
                 <View key={index} style={styles.radioBtn}>
-                  <View>
+                  <Pressable>
                     <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
-                  </View>
+                  </Pressable>
                   <View style={{ display: 'flex', flexDirection: 'column' }}>
                     <View style={styles.RadioTitle}>
                       <HomeIcon width={16} height={16} color={'black'} />

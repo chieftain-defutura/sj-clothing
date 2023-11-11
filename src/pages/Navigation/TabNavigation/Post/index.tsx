@@ -269,16 +269,8 @@ interface postProps {
 const Post: React.FC<postProps> = ({ route }) => {
   const navigation = useNavigation()
   const [showTooltip, setTooltip] = useState<boolean>(false)
-  const {
-    updateUser,
-    updateProfile,
-    updateAvatar,
-    updateAddress,
-    updatePhoneNo,
-    updateName,
-    user,
-    avatar,
-  } = userStore()
+  const { updateProfile, updateAvatar, updateAddress, updatePhoneNo, updateName, user, avatar } =
+    userStore()
 
   const fetchDataFromFirestore = useCallback(async () => {
     try {
