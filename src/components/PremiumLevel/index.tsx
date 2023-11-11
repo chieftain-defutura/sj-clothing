@@ -26,6 +26,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   const [openCard, setOpenCard] = useState(false)
   const [productId, setProductId] = useState('')
   const [focus, setFocus] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const [isSize, setSize] = useState({
     country: '',
@@ -50,56 +51,65 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   }
 
   const FilteredData = data?.filter((f) => f.id === productId)
-
+  useEffect(() => {
+    setTimeout(() => {
+      setErrorMessage('') // Set the state to null after 5 seconds
+    }, 2000)
+  }, [errorMessage])
   const handleSubmit = async () => {
     if (!FilteredData) return
     if (!user) {
       setFocus(true)
     } else {
       // navigation.navigate('Checkout', { product: data })
-      setFocus(true)
-      const docRef = await addDoc(collection(db, 'Orders'), {
-        sizes: isSize,
-        productImage: FilteredData[0].productImage,
-        description: FilteredData[0].description,
-        price: FilteredData[0].normalPrice,
-        offerPrice: FilteredData[0].offerPrice,
-        paymentStatus: 'pending',
-        userId: user?.uid,
-        gender: FilteredData[0].gender,
-        type: 'Premium-Level',
-        productName: FilteredData[0].productName,
-        orderStatus: {
-          orderplaced: {
-            createdAt: null,
-            description: '',
-            status: false,
+      if (!isSize.sizeVarient.size) {
+        setErrorMessage('Select size to procced further')
+      } else {
+        setFocus(true)
+        setErrorMessage('')
+        const docRef = await addDoc(collection(db, 'Orders'), {
+          sizes: isSize,
+          productImage: FilteredData[0].productImage,
+          description: FilteredData[0].description,
+          price: FilteredData[0].normalPrice,
+          offerPrice: FilteredData[0].offerPrice,
+          paymentStatus: 'pending',
+          userId: user?.uid,
+          gender: FilteredData[0].gender,
+          type: 'Premium-Level',
+          productName: FilteredData[0].productName,
+          orderStatus: {
+            orderplaced: {
+              createdAt: null,
+              description: '',
+              status: false,
+            },
+            manufacturing: {
+              createdAt: null,
+              description: '',
+              status: false,
+            },
+            readyToShip: {
+              createdAt: null,
+              description: '',
+              status: false,
+            },
+            shipping: {
+              createdAt: null,
+              description: '',
+              status: false,
+            },
+            delivery: {
+              createdAt: null,
+              description: '',
+              status: false,
+            },
           },
-          manufacturing: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          readyToShip: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          shipping: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          delivery: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-        },
-      })
-      updateOderId(docRef.id)
-      setOpenDetails(false)
-      navigation.navigate('Checkout')
+        })
+        updateOderId(docRef.id)
+        setOpenDetails(false)
+        navigation.navigate('Checkout')
+      }
     }
   }
   if (!data) return <Text>No Data</Text>
@@ -110,6 +120,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
           {FilteredData?.map((item, index) => (
             <PremiumThreeSixtyDegree
               key={index}
+              errorMessage={errorMessage}
               setOpenDetails={setOpenDetails}
               data={item}
               focus={focus}

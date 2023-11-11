@@ -33,7 +33,9 @@ interface SignupModalProps {
 const initialValues = { name: '', email: '', password: '' }
 
 const ValidationSchema = Yup.object({
-  name: Yup.string().required('Please enter your name'),
+  name: Yup.string()
+    .required('Please enter your name')
+    .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field '),
   email: Yup.string()
     .transform((value, originalValue) => originalValue.toLowerCase().trim())
     .email('Enter a valid email')
@@ -110,7 +112,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       const timer = setTimeout(() => {
         setIsCreated(false)
         onClose?.()
-      }, 5000)
+      }, 3500)
 
       return () => clearTimeout(timer)
     }
@@ -124,7 +126,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
         const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password)
         await updateProfile(user, { displayName: values.name })
         await AsyncStorage.setItem('mail', values.email)
-        await AsyncStorage.setItem('name', values.name)
+        await AsyncStorage.setItem('password', values.password)
         const userDocRef = doc(db, 'users', user.uid)
 
         await setDoc(userDocRef, {

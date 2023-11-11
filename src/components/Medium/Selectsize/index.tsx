@@ -70,7 +70,8 @@ const SelectSize: React.FC<ISelectSize> = ({
 
   const handleSelect = (size: string, measurement: string) => {
     setSize({ ...isSize, sizeVarient: [{ size: size, measurement: measurement, quantity: '1' }] })
-    handleIncreaseSteps()
+    // handleIncreaseSteps()
+    setDropDown(false)
   }
 
   return (

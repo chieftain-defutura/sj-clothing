@@ -22,6 +22,9 @@ import { collection, doc, getDoc, getDocs } from 'firebase/firestore/lite'
 import AuthNavigate from '../../../../screens/AuthNavigate'
 import { useTranslation } from 'react-i18next'
 import { IOrder } from '../../../../constant/types'
+import LoginModal from '../../../../screens/Modals/Login'
+import SignupModal from '../../../../screens/Modals/Signup'
+import ForgotMail from '../../../../screens/Modals/ForgotMail'
 
 interface IAccount {
   navigation: any
@@ -33,10 +36,12 @@ const { width, height } = Dimensions.get('window')
 const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const { t } = useTranslation('account')
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
-  const [focus, setFocus] = useState(false)
   const [orderData, setOrderData] = useState<IOrder[]>([])
   const user = userStore((state) => state.user)
 
+  const [login, setLogin] = useState(false)
+  const [signUp, setSignUp] = useState(false)
+  const [forgotMail, setForgotmail] = useState(false)
   // const isFocused = useIsFocused()
   const [image, setImage] = useState<string | null>(null)
   const {
@@ -52,15 +57,10 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
 
   const handleLogin = () => {
     if (!user) {
-      setFocus(true)
+      setLogin(true)
     } else {
       navigation.navigate('EditProfile')
-      setFocus(true)
     }
-  }
-
-  const onClose = () => {
-    setFocus(false)
   }
 
   const fetchDataFromFirestore = useCallback(async () => {
@@ -136,60 +136,46 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
     getData()
   }, [getData])
 
-  // console.log(orderData)
-
   return (
     <LinearGradient colors={gradientOpacityColors}>
-      <AuthNavigate focus={focus} onClose={onClose}>
-        <ScrollView>
-          <AccountWrapper>
-            <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
-              <UserWrapper style={{ width: width, height: height / 2.5 }}>
-                <NotUserContent>
-                  {route.params?.profileImg ? (
-                    <Image
-                      source={{ uri: route.params.profileImg }}
-                      style={{
-                        width: width,
-                        height: height / 2.5,
-                        borderBottomLeftRadius: 50,
-                        borderBottomRightRadius: 50,
-                      }}
-                    />
-                  ) : profile ? (
-                    <Image
-                      source={{ uri: profile }}
-                      style={{
-                        width: width,
-                        height: height / 2.5,
-                        borderBottomLeftRadius: 50,
-                        borderBottomRightRadius: 50,
-                      }}
-                    />
-                  ) : (
-                    <NotUserIcon width={128} height={128} />
-                  )}
-                </NotUserContent>
-                <EditContent
-                  onPress={() => handleLogin()}
-                  // onPress={() => navigation.navigate('EditProfile')}
+      {/* <AuthNavigate focus={focus} onClose={onClose}> */}
+      <ScrollView>
+        <AccountWrapper>
+          <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
+            <UserWrapper style={{ width: width, height: height / 2.5 }}>
+              <NotUserContent>
+                {user ? (
+                  <Image
+                    source={{ uri: profile as string }}
+                    style={{
+                      width: width,
+                      height: height / 2.5,
+                      borderBottomLeftRadius: 50,
+                      borderBottomRightRadius: 50,
+                    }}
+                  />
+                ) : (
+                  <NotUserIcon width={128} height={128} />
+                )}
+              </NotUserContent>
+              <EditContent
+                onPress={() => handleLogin()}
+                // onPress={() => navigation.navigate('EditProfile')}
+              >
+                <LinearGradient
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  colors={['#462D85', '#DB00FF']}
+                  style={styles.plusIconGradientColor}
                 >
-                  <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    colors={['#462D85', '#DB00FF']}
-                    style={styles.plusIconGradientColor}
-                  >
-                    <EditIcon width={20} height={20} />
-                  </LinearGradient>
-                </EditContent>
-              </UserWrapper>
-              {route.params?.dName ? (
-                <ProfileName>{route.params.dName}</ProfileName>
-              ) : (
-                <ProfileName>{name}</ProfileName>
-              )}
-              {/* <View style={{ padding: 16 }}>
+                  <EditIcon width={20} height={20} />
+                </LinearGradient>
+              </EditContent>
+            </UserWrapper>
+
+            <ProfileName>{user?.displayName}</ProfileName>
+
+            {/* <View style={{ padding: 16 }}>
                 <CustomButton
                   text={t('Subscribe now')}
                   fontFamily='Arvo-Regular'
@@ -198,13 +184,13 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                 />
               </View> */}
 
-              <SubscriptionModal
-                isVisible={isSubscriptionModal}
-                onClose={closeSubscriptionModal}
-                navigation={navigation}
-              />
+            <SubscriptionModal
+              isVisible={isSubscriptionModal}
+              onClose={closeSubscriptionModal}
+              navigation={navigation}
+            />
 
-              {/* <FlexContent>
+            {/* <FlexContent>
               {Data.map((viewItem, viewIndex) => (
                 <View key={viewIndex}>
                   <PostText>{viewItem.postName}</PostText>
@@ -216,59 +202,87 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                 </View>
               ))}
             </FlexContent> */}
-            </Animated.View>
+          </Animated.View>
 
-            <Animated.View entering={FadeInDown.duration(800).delay(200)} exiting={FadeOutDown}>
-              {AccountData.map((f, index) => {
-                return (
-                  <Pressable key={index} onPress={() => navigation.navigate(f.navigation)}>
-                    <ProfileUserContent>
-                      <FlexIcon>
-                        <f.leftIcon width={20} height={20} />
-                        <UserText>{t(f.name)}</UserText>
-                      </FlexIcon>
-                      {f.rightIcon && <f.rightIcon width={20} height={20} />}
-                      {f.rightText && (
-                        <RightText>
-                          {f.name === 'My orders' ? `${orderData.length} items` : f.rightText}
-                        </RightText>
-                      )}
-                    </ProfileUserContent>
-                  </Pressable>
-                )
-              })}
-              <Pressable onPress={handleCustomerCarePress}>
+          <Animated.View entering={FadeInDown.duration(800).delay(200)} exiting={FadeOutDown}>
+            {AccountData.map((f, index) => {
+              return (
+                <Pressable key={index} onPress={() => navigation.navigate(f.navigation)}>
+                  <ProfileUserContent>
+                    <FlexIcon>
+                      <f.leftIcon width={20} height={20} />
+                      <UserText>{t(f.name)}</UserText>
+                    </FlexIcon>
+                    {f.rightIcon && <f.rightIcon width={20} height={20} />}
+                    {f.rightText && (
+                      <RightText>
+                        {f.name === 'My orders' ? `${orderData.length} items` : f.rightText}
+                      </RightText>
+                    )}
+                  </ProfileUserContent>
+                </Pressable>
+              )
+            })}
+            <Pressable onPress={handleCustomerCarePress}>
+              <ProfileUserContent>
+                <FlexIcon>
+                  <CustomerCare width={20} height={20} />
+                  <UserText>{t('Customer care')}</UserText>
+                </FlexIcon>
+              </ProfileUserContent>
+            </Pressable>
+
+            {user ? (
+              <LogoutPressable onPress={handleLogout}>
                 <ProfileUserContent>
                   <FlexIcon>
-                    <CustomerCare width={20} height={20} />
-                    <UserText>{t('Customer care')}</UserText>
+                    <LogoutIcon width={24} height={24} />
+                    <LogoutText>{t('Log out')}</LogoutText>
                   </FlexIcon>
                 </ProfileUserContent>
-              </Pressable>
+              </LogoutPressable>
+            ) : (
+              <LogoutPressable onPress={() => setLogin(true)}>
+                <ProfileUserContent>
+                  <FlexIcon>
+                    {/* <LogoutIcon width={24} height={24} /> */}
+                    <LogoutText style={{ color: '#462D85' }}>{t('Log In')}</LogoutText>
+                  </FlexIcon>
+                </ProfileUserContent>
+              </LogoutPressable>
+            )}
+          </Animated.View>
+        </AccountWrapper>
+      </ScrollView>
+      {login && (
+        <LoginModal
+          onForgotClick={() => {
+            setForgotmail(true), setLogin(false)
+          }}
+          onSignClick={() => {
+            setSignUp(true), setLogin(false)
+          }}
+          onClose={() => setLogin(false)}
+        />
+      )}
 
-              {user ? (
-                <LogoutPressable onPress={handleLogout}>
-                  <ProfileUserContent>
-                    <FlexIcon>
-                      <LogoutIcon width={24} height={24} />
-                      <LogoutText>{t('Log out')}</LogoutText>
-                    </FlexIcon>
-                  </ProfileUserContent>
-                </LogoutPressable>
-              ) : (
-                <LogoutPressable onPress={() => setFocus(true)}>
-                  <ProfileUserContent>
-                    <FlexIcon>
-                      {/* <LogoutIcon width={24} height={24} /> */}
-                      <LogoutText style={{ color: '#462D85' }}>{t('Log In')}</LogoutText>
-                    </FlexIcon>
-                  </ProfileUserContent>
-                </LogoutPressable>
-              )}
-            </Animated.View>
-          </AccountWrapper>
-        </ScrollView>
-      </AuthNavigate>
+      {signUp && (
+        <SignupModal
+          onLoginClick={() => {
+            setLogin(true), setSignUp(false)
+          }}
+          onClose={() => setSignUp(false)}
+        />
+      )}
+      {forgotMail && (
+        <ForgotMail
+          onLoginClick={() => {
+            setLogin(true), setForgotmail(false)
+          }}
+          onClose={() => setForgotmail(false)}
+        />
+      )}
+      {/* </AuthNavigate> */}
     </LinearGradient>
   )
 }

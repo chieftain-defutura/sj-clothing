@@ -29,7 +29,7 @@ const currencyData = {
   abrive: 'EUR',
 }
 const App: React.FC = () => {
-  const { updateUser, updateLanguage, language, updateCurrency, currency, updateRate, rate } =
+  const { updateUser, updateLanguage, user, updateCurrency, currency, updateRate, rate } =
     userStore()
   useEffect(() => {
     return onAuthStateChanged(auth, (data) => {
@@ -95,6 +95,8 @@ const App: React.FC = () => {
     getRate()
   }, [getRate])
 
+  console.log(user)
+
   const [fontsLoaded] = useFonts({
     'Arvo-Regular': require('./src/assets/fonts/Arvo-Regular.ttf'), //font-weight 400
     'Gilroy-Medium': require('./src/assets/fonts/Gilroy-Medium.ttf'), //font-weight 500
@@ -104,8 +106,6 @@ const App: React.FC = () => {
     'Montserrat-Medium': require('./src/assets/fonts/Montserrat-Medium.ttf'), //font-weight 500
     'Montserrat-SemiBold': require('./src/assets/fonts/Montserrat-SemiBold.ttf'), //font-weight 600
   })
-  console.log(rate)
-  console.log(language)
 
   if (!fontsLoaded) {
     return null

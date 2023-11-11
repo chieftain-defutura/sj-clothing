@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 import { Formik } from 'formik'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
 import { AuthErrorCodes, signInWithEmailAndPassword } from 'firebase/auth'
@@ -11,6 +11,7 @@ import CloseIcon from '../../assets/icons/Close'
 import EyeIcon from '../../assets/icons/EyeIcon'
 import CustomButton from '../../components/Button'
 import EyeHideIcon from '../../assets/icons/EyeIconHide'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface LoginModalProps {
   isVisible?: boolean
@@ -49,9 +50,28 @@ const LoginModal: React.FC<LoginModalProps> = ({
     setShowPassword(!showPassword)
   }
 
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage('')
+      }, 3000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [errorMessage])
   const handleSubmit = async (values: typeof initialValues) => {
     try {
       setIsLoading(true)
+      const getPassword = await AsyncStorage.getItem('password')
+      const getEmail = await AsyncStorage.getItem('mail')
+
+      if (values.email !== getEmail) {
+        setErrorMessage('User does not exist. Create an account')
+      }
+      if (values.password !== getPassword) {
+        setErrorMessage('Invalid Password')
+      }
+
       await signInWithEmailAndPassword(auth, values.email, values.password)
       console.log('User logged in successfully')
       onClose?.()

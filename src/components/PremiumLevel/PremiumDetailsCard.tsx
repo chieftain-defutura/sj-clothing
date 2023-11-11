@@ -175,9 +175,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
     setFocus(false)
   }
 
-  const Sizes = data?.sizes
-    .filter((f: any) => f.country === isSize.country)
-    .map((f: any) => f.sizeVarients)
+  const Sizes = data?.sizes.filter((f: any) => f.country).map((f: any) => f.sizeVarients)
 
   const Description = data.description.split(',')
   return (
@@ -338,20 +336,22 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                   {isDropdownOpen && (
                     <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
                       <SelectDropDownList>
-                        {data?.sizes.map((f: any, index: number) => (
-                          <Pressable
-                            key={index}
-                            onPress={() => {
-                              setSize((prevState) => ({
-                                ...prevState,
-                                country: f.country,
-                              }))
-                              handleSelectCountry(f.country)
-                            }}
-                          >
-                            <SelectListText>{f.country}</SelectListText>
-                          </Pressable>
-                        ))}
+                        {data?.sizes
+                          .filter((f) => f.gender === data.gender)
+                          .map((f: any, index: number) => (
+                            <Pressable
+                              key={index}
+                              onPress={() => {
+                                setSize((prevState) => ({
+                                  ...prevState,
+                                  country: f.country,
+                                }))
+                                handleSelectCountry(f.country)
+                              }}
+                            >
+                              <SelectListText>{f.country}</SelectListText>
+                            </Pressable>
+                          ))}
                       </SelectDropDownList>
                     </Animated.View>
                   )}

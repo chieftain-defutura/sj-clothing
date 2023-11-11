@@ -194,59 +194,54 @@ const Medium = () => {
   const handleSubmit = async () => {
     if (!FilteredData) return
 
-    if (!user) {
-      setFocus(true)
-    } else {
-      const docRef = await addDoc(collection(db, 'Orders'), {
-        style: isSelectedStyle,
-        sizes: isSize,
-        color: isColor,
-        textAndImage: isImageOrText,
-        description: FilteredData.description,
-        price: FilteredData.normalPrice,
-        offerPrice: FilteredData.offerPrice,
-        paymentStatus: 'pending',
-        productId: FilteredData.id,
-        userId: user?.uid,
-        gender: avatar?.gender,
-        type: 'MidLevel',
-        productImage: FilteredData.productImage,
-        productName: FilteredData.productName,
-        orderStatus: {
-          orderplaced: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          manufacturing: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          readyToShip: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          shipping: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          delivery: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
+    const docRef = await addDoc(collection(db, 'Orders'), {
+      style: isSelectedStyle,
+      sizes: isSize,
+      color: isColor,
+      textAndImage: isImageOrText,
+      description: FilteredData.description,
+      price: FilteredData.normalPrice,
+      offerPrice: FilteredData.offerPrice,
+      paymentStatus: 'pending',
+      productId: FilteredData.id,
+      userId: user?.uid,
+      gender: avatar?.gender,
+      type: 'MidLevel',
+      productImage: FilteredData.productImage,
+      productName: FilteredData.productName,
+      orderStatus: {
+        orderplaced: {
+          createdAt: null,
+          description: '',
+          status: false,
         },
-      })
-      updateOderId(docRef.id)
-      navigation.navigate('Checkout')
-      setFocus(true)
-    }
+        manufacturing: {
+          createdAt: null,
+          description: '',
+          status: false,
+        },
+        readyToShip: {
+          createdAt: null,
+          description: '',
+          status: false,
+        },
+        shipping: {
+          createdAt: null,
+          description: '',
+          status: false,
+        },
+        delivery: {
+          createdAt: null,
+          description: '',
+          status: false,
+        },
+      },
+    })
+    updateOderId(docRef.id)
+    navigation.navigate('Checkout')
+    setFocus(true)
   }
 
-  console.log(isImageOrText)
   return (
     // <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
     <View
