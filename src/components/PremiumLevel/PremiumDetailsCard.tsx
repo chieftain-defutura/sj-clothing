@@ -269,7 +269,10 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                         <View>
                           <ProductText>price</ProductText>
                           <ProductName>
-                            {(Number(data.normalPrice) * (rate as number)).toFixed(2)}INR
+                            {rate
+                              ? (Number(data.normalPrice) * (rate as number)).toFixed(2)
+                              : data.normalPrice}
+                            {currency ? currency.symbol : '₹'}
                           </ProductName>
                         </View>
                       ) : (
@@ -286,9 +289,11 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                               }}
                             >
                               <OldPriceText>
-                                {(Number(data.normalPrice) * (rate as number)).toFixed(2)}
+                                {rate
+                                  ? (Number(data.normalPrice) * (rate as number)).toFixed(2)
+                                  : data.normalPrice}
                               </OldPriceText>
-                              <OldPriceText> {currency.symbol}</OldPriceText>
+                              <OldPriceText>{currency ? currency.symbol : '₹'}</OldPriceText>
                             </View>
                             <View
                               style={{
@@ -298,9 +303,11 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                               }}
                             >
                               <ProductName>
-                                {(Number(data.offerPrice) * (rate as number)).toFixed(2)}
+                                {rate
+                                  ? (Number(data.offerPrice) * (rate as number)).toFixed(2)
+                                  : data.offerPrice}
                               </ProductName>
-                              <ProductName>{currency.symbol}</ProductName>
+                              <ProductName>{currency ? currency.symbol : '₹'}</ProductName>
                             </View>
                           </View>
                         </View>

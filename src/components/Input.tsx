@@ -90,7 +90,7 @@ const StyledTextInput = styled.TextInput`
   font-size: 14px;
   color: ${COLORS.iconsHighlightClr};
   font-family: ${FONT_FAMILY.GilroyMedium};
-  width: 90%;
+  width: 80%;
 `
 
 export default Input

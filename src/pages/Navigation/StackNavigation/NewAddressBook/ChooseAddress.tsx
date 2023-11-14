@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable, GestureResponderEvent } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components/native'
 import { RadioButton } from 'react-native-paper'
@@ -13,29 +13,36 @@ import Plus from '../../../../assets/icons/PlusIcon'
 import CustomButton from '../../../../components/Button'
 import TickIcon from '../../../../assets/icons/TickIcon'
 
+// interface AddressData {
+//   name: string
+//   mobile: string
+//   email: string
+//   addressLineOne: string
+//   addressLineTwo: string
+//   city: string
+//   region: string
+//   pinCode: string
+//   saveAsAddress: string
+//   isSelected: boolean
+// }
+
 interface AddressData {
-  name: string
-  mobile: string
-  email: string
-  addressLineOne: string
-  addressLineTwo: string
-  city: string
-  region: string
-  pinCode: string
-  saveAsAddress: string
+  floor: string
+  fullAddress: string
   isSelected: boolean
+  phoneNo: string
+  saveAddressAs: string
 }
-
 interface IChooseLocation {
-  addedAddress: AddressData[]
-  onEditPress?: (event: GestureResponderEvent, address: AddressData) => void | undefined | null
-  onAddPress: (
-    event: GestureResponderEvent,
-    location: string | undefined,
-  ) => void | undefined | null
+  // addedAddress: AddressData[]
+  // onEditPress?: (event: GestureResponderEvent, address: AddressData) => void | undefined | null
+  // onAddPress: (
+  //   event: GestureResponderEvent,
+  //   location: string | undefined,
+  // ) => void | undefined | null
 }
 
-const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) => {
+const ChooseAddress: React.FC<IChooseLocation> = () => {
   const [onText, setOnSearchChange] = React.useState<string>()
   const [data, setData] = useState<AddressData[] | null>([])
   const [checked, setChecked] = React.useState<string | null>(null)
@@ -76,7 +83,7 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) =
     }
   }
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     try {
       if (!user) return
 
@@ -85,6 +92,7 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) =
 
       if (querySnapshot.exists()) {
         const fetchData = querySnapshot.data()
+        console.log(fetchData)
         setData(fetchData.address)
         fetchData.address.forEach((d: any, index: any) => {
           if (d.isSelected === true) {
@@ -97,8 +105,7 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) =
     } catch (error) {
       console.error('Error fetching data:', error)
     }
-  }
-
+  }, [user])
   useEffect(() => {
     getData()
   }, [getData])
@@ -112,7 +119,7 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) =
             updateData(newValue)
             setChecked(newValue)
           }}
-          value={checked}
+          value={checked as string}
         >
           {data?.length === 0 ? (
             <View style={styles.errorContainer}>
@@ -128,16 +135,17 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) =
                   <View style={{ display: 'flex', flexDirection: 'column' }}>
                     <View style={styles.RadioTitle}>
                       <HomeIcon width={16} height={16} color={'black'} />
-                      <HeaderStyle>{f.saveAsAddress}</HeaderStyle>
+                      <HeaderStyle>{f.saveAddressAs}</HeaderStyle>
                     </View>
                     <DescriptionText>
-                      {f.addressLineOne}, {f.addressLineTwo}, {f.city}, {f.region}, {f.isSelected},{' '}
-                      {f.email}, {f.pinCode}, {f.mobile}
+                      {/* {f.addressLineOne}, {f.addressLineTwo}, {f.city}, {f.region}, {f.isSelected},{' '}
+                      {f.email}, {f.pinCode}, {f.mobile} */}
+                      {f.floor},{f.fullAddress}, {f.phoneNo}
                     </DescriptionText>
                   </View>
-                  <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
+                  {/* <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
                     <Text style={styles.editText}>Edit</Text>
-                  </Pressable>
+                  </Pressable> */}
                 </View>
               ))}
             </View>
@@ -148,7 +156,7 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) =
           )}
         </RadioButton.Group>
       </View>
-      <FlexContent>
+      {/* <FlexContent>
         <Pressable onPress={(e) => onAddPress(e, onText)}>
           <AddAddressBtn>
             <Plus width={16} height={16} />
@@ -164,7 +172,7 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onAddPress, onEditPress }) =
             onPress={() => navigation.navigate('Checkout')}
           />
         </View>
-      </FlexContent>
+      </FlexContent> */}
     </View>
   )
 }

@@ -22,16 +22,17 @@ interface IAddAddress {
   onSavePress: () => void
   location: string
   saveAddress: (data: any) => void
+  setDisplay: React.Dispatch<React.SetStateAction<number>>
 }
 
 const validationSchema = yup.object({
   fullAddress: yup.string().required('Please enter full address'),
   floor: yup.string().required('Please enter your floor'),
-  landmark: yup.string().required('Please enter landmark'),
+  phoneNo: yup.string().required('*Please enter your phoneNo no'),
   saveAddressAs: yup.string().required('Please enter save address'),
 })
 
-const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress }) => {
+const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress, setDisplay }) => {
   const height = useSharedValue(0)
   const scrollRed = useRef<ScrollView>(null)
   const [onText, setOnSearchChange] = React.useState<string>()
@@ -92,7 +93,7 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress 
         {
           fullAddress: formik.values.fullAddress,
           floor: formik.values.floor,
-          landmark: formik.values.landmark,
+          phoneNo: formik.values.phoneNo,
           saveAddressAs: formik.values.saveAddressAs,
           isSelected: false,
         },
@@ -109,6 +110,7 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress 
 
       userData.address.push(...addressArray)
       await updateDoc(userDocRef, userData)
+      setDisplay(0)
     } catch (error) {
       console.error('Error:', error)
     }
@@ -156,7 +158,7 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress 
     initialValues: {
       fullAddress: location ? location : '',
       floor: '',
-      landmark: '',
+      phoneNo: '',
       saveAddressAs: '',
     },
     validationSchema: validationSchema,
@@ -198,7 +200,7 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress 
   })
 
   return (
-    <View>
+    <ScrollView>
       <Animated.View style={[styles.curve, animatedStyles]}>
         <ScrollView
           ref={scrollRed}
@@ -207,7 +209,7 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress 
         >
           <View>
             <View>
-              <View style={styles.currentLocation}>
+              {/* <View style={styles.currentLocation}>
                 <Pressable
                   style={{
                     display: 'flex',
@@ -237,7 +239,7 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress 
                 <Pressable style={styles.editStyle}>
                   <ChevronLeft width={16} height={16} />
                 </Pressable>
-              </View>
+              </View> */}
               <View style={styles.inputContainer}>
                 <Text style={styles.header}>Add Address</Text>
                 <View>
@@ -262,14 +264,16 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress 
                 </View>
                 <View>
                   <Input
-                    placeholder='Landmark'
-                    value={formik.values.landmark}
-                    onChangeText={formik.handleChange('landmark')}
-                    onBlur={formik.handleBlur('landmark')}
-                    onSubmitEditing={Keyboard.dismiss}
+                    leftContent={<Text></Text>}
+                    placeholder='phoneNo'
+                    value={formik.values.phoneNo}
+                    onChangeText={formik.handleChange('phoneNo')}
+                    onBlur={formik.handleBlur('phoneNo')}
+                    keyboardType='numeric'
                   />
-                  {formik.errors.landmark && <ErrorText>{formik.errors.landmark}</ErrorText>}
+                  {formik.errors.phoneNo && <ErrorText>{formik.errors.phoneNo}</ErrorText>}
                 </View>
+
                 <View>
                   <Input
                     placeholder='Save as (Home)'
@@ -297,7 +301,7 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress 
           </View>
         </ScrollView>
       </Animated.View>
-    </View>
+    </ScrollView>
   )
 }
 

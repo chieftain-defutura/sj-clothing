@@ -11,6 +11,8 @@ import { userStore } from '../../../store/userStore'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import CurrencyGrayIcon from '../../../assets/icons/AccountPageIcon/CurrencyGrayIcon'
 import { ScrollView } from 'react-native-gesture-handler'
+import { doc, updateDoc } from 'firebase/firestore/lite'
+import { db } from '../../../../firebase'
 
 const CurrencyData = [
   {
@@ -66,7 +68,7 @@ const CurrencyData = [
 ]
 
 const Currency = () => {
-  const { currency, updateCurrency, updateRate, rate } = userStore()
+  const { currency, updateCurrency, updateRate, user } = userStore()
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
@@ -79,12 +81,15 @@ const Currency = () => {
       const data = response.data
       const rates = data.conversion_rates
       updateRate(rates[currency.currency as string])
-      AsyncStorage.setItem('rate', rates[currency.currency as string].toString())
+      if (user) {
+        await updateDoc(doc(db, 'users', user.uid), {
+          rate: rates[currency.currency as string],
+        })
+      }
     } catch (error) {
       console.log(error)
     }
-  }, [])
-
+  }, [currency])
   useEffect(() => {
     getCurrency()
   }, [getCurrency])
@@ -101,9 +106,13 @@ const Currency = () => {
       currency: currency.currency,
       symbol: currency.symbol,
     }
-
-    const dataString = JSON.stringify(storeCurrency)
-    AsyncStorage.setItem('currency', dataString)
+    if (user) {
+      await updateDoc(doc(db, 'users', user.uid), {
+        currency: storeCurrency,
+      })
+    }
+    // const dataString = JSON.stringify(storeCurrency)
+    // AsyncStorage.setItem('currency', dataString)
     toggleDropdownSizes()
   }
   return (
@@ -130,8 +139,8 @@ const Currency = () => {
               gap: 8,
             }}
           >
-            <SelectText style={{ fontSize: 20 }}>{currency.symbol}</SelectText>
-            <SelectText>{currency.abrive}</SelectText>
+            <SelectText style={{ fontSize: 20 }}>{currency ? currency.symbol : ''}</SelectText>
+            <SelectText>{currency ? currency.abrive : ''}</SelectText>
           </View>
           <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
             <Path
@@ -146,7 +155,7 @@ const Currency = () => {
           <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
             <SelectDropDownList>
               <ScrollView style={{ height: 240 }}>
-                {CurrencyData.filter((f) => f.currency !== currency.currency).map(
+                {CurrencyData.filter((f) => f.currency !== (currency ? currency.currency : '')).map(
                   (f: any, i: number) => (
                     <Pressable
                       key={i}

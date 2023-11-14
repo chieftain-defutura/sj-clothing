@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import styled from 'styled-components/native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { View, Modal, StyleSheet, Pressable, TouchableOpacity, Text } from 'react-native'
 import { sendEmailVerification } from 'firebase/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -23,6 +23,7 @@ import { addDoc, collection, doc, setDoc } from 'firebase/firestore/lite'
 import Checkbox from 'expo-checkbox'
 import { useNavigation } from '@react-navigation/native'
 import GreenTick from '../../assets/icons/GreenTick'
+import EmailVerification from './EmailVerification'
 
 interface SignupModalProps {
   isVisible?: boolean
@@ -52,7 +53,6 @@ const ValidationSchema = Yup.object({
 const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginClick }) => {
   const navigation = useNavigation()
   const [showPassword, setShowPassword] = useState<boolean>(false)
-  const [isVerificationEmailSent, setIsVerificationEmailSent] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const updateUser = userStore((state) => state.updateUser)
@@ -60,24 +60,8 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const updateFetching = userStore((state) => state.updateFetching)
   const [isChecked, setChecked] = useState(false)
   const [isCreated, setIsCreated] = useState(false)
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
-  }
-
-  const handleVerify = async () => {
-    if (!user) {
-      console.error('User is null. Cannot send email verification.')
-      return
-    }
-
-    try {
-      await sendEmailVerification(user)
-      setIsVerificationEmailSent(true)
-      console.log('Email verification sent successfully.')
-    } catch (error) {
-      console.error('Error sending email verification:', error)
-    }
   }
 
   useEffect(() => {
@@ -122,21 +106,11 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
     if (!user) {
       try {
         setIsLoading(true)
-        setIsCreated(true)
         const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password)
         await updateProfile(user, { displayName: values.name })
         await AsyncStorage.setItem('mail', values.email)
         await AsyncStorage.setItem('password', values.password)
-        const userDocRef = doc(db, 'users', user.uid)
-
-        await setDoc(userDocRef, {
-          name: values.name,
-          email: values.email,
-          address: [],
-          profile: null,
-          phoneNo: null,
-          avatar: null,
-        })
+        await sendEmailVerification(user)
       } catch (error) {
         if (error instanceof FirebaseError) {
           if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
@@ -154,9 +128,58 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
     }
   }
 
+  const handleClose = async () => {
+    user?.reload()
+
+    if (user && user?.emailVerified) {
+      setIsCreated(true)
+      const userDocRef = doc(db, 'users', user.uid)
+
+      await setDoc(userDocRef, {
+        name: user.displayName,
+        email: user.email,
+        address: [],
+        profile: null,
+        phoneNo: null,
+        avatar: null,
+        termsAndConditions: false,
+      })
+    }
+    if (user && !user.emailVerified) {
+      setErrorMessage('Mail is not verified')
+    }
+  }
+
+  // useEffect(() => {
+  //   user?.reload()
+  // }, [user])
+
+  // useEffect(() => {
+  //   // if (!user) return
+  //   // if (!user?.emailVerified) {
+  //   // }
+  //   if (user?.emailVerified) {
+  //     setIsCreated(true)
+  //     const userDocRef = doc(db, 'users', user.uid)
+
+  //     setDoc(userDocRef, {
+  //       name: user.displayName,
+  //       email: user.email,
+  //       address: [],
+  //       profile: null,
+  //       phoneNo: null,
+  //       avatar: null,
+  //       termsAndConditions: false,
+  //       currency: null,
+  //       language: null,
+  //       rate: null,
+  //     })
+  //   }
+  //   console.log('user?.emailVerified', user?.emailVerified)
+  // }, [user])
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
-      {!isCreated ? (
+      {!user && (
         <SignUpWrapper>
           <Formik
             initialValues={initialValues}
@@ -197,8 +220,8 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                       autoCorrect={false}
                     />
                     {/* <Pressable onPress={handleVerify}>
-                    <VerifyText>Verify</VerifyText>
-                  </Pressable> */}
+                      <VerifyText>Verify</VerifyText>
+                    </Pressable> */}
                   </InputBorder>
                   {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
                 </View>
@@ -270,7 +293,16 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
             )}
           </Formik>
         </SignUpWrapper>
-      ) : (
+      )}
+      {user && !user.emailVerified && (
+        <EmailVerification
+          isVisible={!user.emailVerified}
+          onClose={handleClose}
+          errorMessage={errorMessage}
+        />
+      )}
+
+      {user && user.emailVerified && isCreated && (
         <SignUpWrapper>
           <CreatedAccount>
             <GreenTick width={100} height={100} />

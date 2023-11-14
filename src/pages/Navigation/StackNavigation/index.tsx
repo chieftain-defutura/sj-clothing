@@ -147,7 +147,7 @@ const StackNavigationRoutes: React.FC = () => {
       <Stack.Screen
         name='LocationAddAddress'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-        component={NewAddressBook}
+        component={AddressBook}
       />
 
       <Stack.Screen name='MyOrders' component={MyOrders} />

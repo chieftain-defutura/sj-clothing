@@ -4,8 +4,8 @@ import { StripeProvider } from '@stripe/stripe-react-native'
 import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
 import { useFonts } from 'expo-font'
 import { userStore } from './src/store/userStore'
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from './firebase'
+import { onAuthStateChanged, updateProfile } from 'firebase/auth'
+import { auth, db } from './firebase'
 import { SafeAreaView } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { I18nextProvider, useTranslation } from 'react-i18next'
@@ -13,6 +13,7 @@ import i18n from './i18n'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Svg, { Path } from 'react-native-svg'
 import axios from 'axios'
+import { doc, getDoc } from 'firebase/firestore/lite'
 
 const PUBLISHABLE_KEY =
   'pk_test_51O6p0wSGEesR2xZcTMeDvXgwTJgLfsOMehC1tZcDo7bphTUPo65HjeJJUcKIRYTqA115nRZi3CbzYH2GsuY69Htf00ewXq6Z7m'
@@ -29,8 +30,18 @@ const currencyData = {
   abrive: 'EUR',
 }
 const App: React.FC = () => {
-  const { updateUser, updateLanguage, user, updateCurrency, currency, updateRate, rate } =
-    userStore()
+  const {
+    updateUser,
+    updateLanguage,
+    user,
+    updateCurrency,
+    updateRate,
+    updateProfile,
+    updatePhoneNo,
+    updateName,
+    updateAddress,
+    updateAvatar,
+  } = userStore()
   useEffect(() => {
     return onAuthStateChanged(auth, (data) => {
       if (data) {
@@ -39,64 +50,29 @@ const App: React.FC = () => {
     })
   }, [])
 
-  const getLanguage = useCallback(async () => {
-    const getLanguage = await AsyncStorage.getItem('language')
-    if (getLanguage) {
-      updateLanguage(getLanguage)
-      i18n.changeLanguage(getLanguage as string)
-      // await AsyncStorage.removeItem('language')
-    }
-  }, [])
-  useEffect(() => {
-    getLanguage()
-  }, [getLanguage])
-
-  const getCurrency = useCallback(async () => {
-    const getCurrency = await AsyncStorage.getItem('currency')
-
-    if (getCurrency) {
-      updateCurrency(JSON.parse(getCurrency))
-      // await AsyncStorage.removeItem('currency')
-    }
-
-    // if (!getCurrency) {
-    //   updateCurrency({
-    //     currency: currencyData.currency,
-    //     abrive: currencyData.abrive as string,
-    //     symbol: currencyData.symbol as any,
-    //   })
-    // }
-  }, [])
-
-  useEffect(() => {
-    getCurrency()
-  }, [getCurrency])
-
-  const getRate = useCallback(async () => {
+  const fetchDataFromFirestore = useCallback(async () => {
     try {
-      const getRate = await AsyncStorage.getItem('rate')
-      if (getRate) {
-        updateRate(Number(getRate))
-        // await AsyncStorage.removeItem('rate')
-      }
-      // if (!getRate) {
-      //   const apiKey = '1f5274c351a83d698e52d92b'
-      //   const response = await axios.get(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/INR`)
-      //   const data = response.data
-      //   const rates = data.conversion_rates
-      //   updateRate(rates[currency.currency as string])
-      // }
+      if (!user) return
+      const q = doc(db, 'users', user.uid)
+      const querySnapshot = await getDoc(q)
+
+      const fetchData = querySnapshot.data()
+
+      updateProfile(fetchData?.profile)
+      updateName(fetchData?.name)
+      updateAddress(fetchData?.address)
+      updateAvatar(fetchData?.avatar)
+      updatePhoneNo(fetchData?.phoneNo)
+      updateLanguage(fetchData?.language)
+      updateCurrency(fetchData?.currency)
+      updateRate(fetchData?.rate)
     } catch (error) {
-      console.log(error)
+      console.error('Error fetching data from Firestore:', error)
     }
-  }, [])
-
+  }, [user])
   useEffect(() => {
-    getRate()
-  }, [getRate])
-
-  console.log(user)
-
+    fetchDataFromFirestore()
+  }, [fetchDataFromFirestore])
   const [fontsLoaded] = useFonts({
     'Arvo-Regular': require('./src/assets/fonts/Arvo-Regular.ttf'), //font-weight 400
     'Gilroy-Medium': require('./src/assets/fonts/Gilroy-Medium.ttf'), //font-weight 500

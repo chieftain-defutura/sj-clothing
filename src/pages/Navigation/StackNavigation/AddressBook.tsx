@@ -1,11 +1,18 @@
-import { StyleSheet, View, KeyboardAvoidingView } from 'react-native'
-import React, { useState } from 'react'
+import {
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  FlatList,
+  TouchableOpacity,
+  Text,
+} from 'react-native'
+import React, { useEffect, useState } from 'react'
 import MapView, { Marker } from 'react-native-maps'
 import CustomButton from '../../../components/Button'
 import styled from 'styled-components/native'
 import { Pressable } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import { COLORS } from '../../../styles/theme'
+import { COLORS, gradientOpacityColors } from '../../../styles/theme'
 import CurrentLocationIcon from '../../../assets/icons/CurrentLocationIcon'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import CloseIcon from '../../../assets/icons/Close'
@@ -15,21 +22,32 @@ import EditAddress from '../../../components/AddressBook/EditAddress'
 import axios from 'axios'
 import { useTranslation } from 'react-i18next'
 import * as Location from 'expo-location'
+import { LinearGradient } from 'expo-linear-gradient'
+import Search from '../../../assets/icons/SearchIcon'
+import AddAddressBook from './NewAddressBook'
+import Plus from '../../../assets/icons/PlusIcon'
+import ChooseAddress from './NewAddressBook/ChooseAddress'
 
 interface IAddressBook {
   navigation: any
+}
+interface Suggestion {
+  display_name: string
+  place_id: number
 }
 
 const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
   const { t } = useTranslation('account')
   const height = useSharedValue('0%')
   const displayAddressSelection = useSharedValue('none')
-  const [showDisplay, setDisplay] = useState(1)
+  const [showDisplay, setDisplay] = useState(0)
   const [location, setLocation] = useState<any>()
   const [locText, setLocText] = useState<any>()
   const mapRef = React.useRef<MapView>(null)
   const [addedAddress, setAddedAddress] = useState<any>()
   const [editAddress, setEditAddress] = useState<any>()
+  const [onText, setOnSearchChange] = React.useState<string>()
+  const [suggestions, setSuggestions] = React.useState<Suggestion[] | null>([])
 
   const getLocationFromAddress = async (address: string) => {
     try {
@@ -59,7 +77,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
     try {
       const response = await axios.get(url)
       const data = response.data
-
+      console.log(data)
       if (data.display_name) {
         return data.display_name
       } else {
@@ -94,9 +112,9 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
     }
   }
 
-  // useEffect(() => {
-  //   getPermissions()
-  // }, [])
+  useEffect(() => {
+    getPermissions()
+  }, [])
 
   const handlePress = () => {
     height.value = withTiming('52%')
@@ -139,17 +157,139 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
       })
   }
 
+  const handleSearchText = async (text: string) => {
+    try {
+      if (text === '') {
+        setSuggestions([])
+        setOnSearchChange(text)
+      } else {
+        setOnSearchChange(text)
+
+        const response = await axios.get(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${text}`,
+        )
+
+        setSuggestions(response.data)
+      }
+    } catch (error) {
+      console.error('Error handling search text:', error)
+    }
+  }
+
   return (
-    <KeyboardAvoidingView style={[styles.container]} contentContainerStyle={{ height: 900 }}>
-      <GoBackArrowContent
-        onPress={() => {
-          navigation.goBack()
-        }}
-      >
-        <LeftArrow width={24} height={24} />
-        <CartText>{'Addressbook'}</CartText>
-      </GoBackArrowContent>
-      <MapView
+    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+      <KeyboardAvoidingView style={[styles.container]} contentContainerStyle={{ height: 900 }}>
+        {showDisplay === 0 && (
+          <>
+            <GoBackArrowContent
+              onPress={() => {
+                navigation.goBack()
+              }}
+            >
+              <LeftArrow width={24} height={24} />
+              <CartText>{'Addressbook'}</CartText>
+            </GoBackArrowContent>
+            <View style={{ padding: 20, display: 'flex', alignItems: 'flex-start', gap: 20 }}>
+              <View style={styles.searchInputBox}>
+                <Search width={16} height={16} />
+                <InputBox
+                  placeholder='Search for area, street name'
+                  onChangeText={(text) => handleSearchText(text)}
+                  value={onText}
+                  style={styles.inputBox}
+                  placeholderTextColor={COLORS.SecondaryTwo}
+                />
+              </View>
+              <View style={{ position: 'absolute', zIndex: 10, top: 120 }}>
+                <FlatList
+                  data={suggestions}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity
+                      onPress={() => {
+                        // suggestion(item.display_name)
+                        setOnSearchChange(item.display_name)
+                        setSuggestions(null)
+                      }}
+                      style={{
+                        borderBottomColor: '#E5CEF5',
+                        borderBottomWidth: 1,
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                      }}
+                    >
+                      <HeaderStyle>{item.display_name}</HeaderStyle>
+                    </TouchableOpacity>
+                  )}
+                  keyExtractor={(item) => item.place_id.toString()}
+                  scrollEnabled={true}
+                  horizontal={false}
+                />
+              </View>
+              <Pressable onPress={() => setDisplay(1)}>
+                <AddAddressBtn>
+                  <Plus width={16} height={16} />
+                  <BtnText>Add new Address</BtnText>
+                </AddAddressBtn>
+              </Pressable>
+              <ChooseAddress />
+            </View>
+          </>
+        )}
+        {showDisplay === 1 && (
+          <>
+            <View
+              style={{
+                position: 'absolute',
+                top: 10,
+                zIndex: 10,
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: 'column',
+                gap: 30,
+                paddingHorizontal: 20,
+              }}
+            >
+              <View style={[styles.searchInputBox, { backgroundColor: 'white' }]}>
+                <Search width={16} height={16} />
+                <InputBox
+                  placeholder='Search for area, street name'
+                  onChangeText={(text) => handleSearchText(text)}
+                  value={onText}
+                  style={styles.inputBox}
+                  placeholderTextColor={COLORS.SecondaryTwo}
+                />
+              </View>
+              <View style={{ backgroundColor: 'white', height: 250 }}>
+                <FlatList
+                  data={suggestions}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity
+                      onPress={() => {
+                        // suggestion(item.display_name)
+                        setOnSearchChange(item.display_name)
+                        setSuggestions(null)
+                      }}
+                      style={{
+                        borderBottomColor: '#E5CEF5',
+                        borderBottomWidth: 1,
+                        paddingHorizontal: 8,
+                        paddingVertical: 8,
+                      }}
+                    >
+                      <HeaderStyle>{item.display_name}</HeaderStyle>
+                    </TouchableOpacity>
+                  )}
+                  keyExtractor={(item) => item.place_id.toString()}
+                  scrollEnabled={true}
+                  horizontal={false}
+                />
+              </View>
+            </View>
+            <AddAddressBook navigation={navigation} setDisplay={setDisplay} />
+          </>
+        )}
+
+        {/* <MapView
         ref={mapRef}
         style={{ flex: 1 }}
         initialRegion={{
@@ -240,10 +380,30 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
             selectedAddress={editAddress}
           />
         )}
-      </Animated.View>
-    </KeyboardAvoidingView>
+      </Animated.View> */}
+      </KeyboardAvoidingView>
+    </LinearGradient>
   )
 }
+
+const AddAddressBtn = styled.View`
+  border-color: #db00ff;
+  border-width: 1px;
+  padding-horizontal: 14px;
+  padding-vertical: 12px;
+  border-radius: 32px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+  width: 165px;
+  top: 30px;
+`
+const BtnText = styled.Text`
+  font-size: 12px;
+  font-family: Arvo-Regular;
+  color: #db00ff;
+`
 
 const GoBackArrowContent = styled.Pressable`
   display: flex;
@@ -289,6 +449,19 @@ const FlexRow = styled.View`
   padding-vertical: 12px;
   background: ${COLORS.iconsNormalClr};
 `
+const InputBox = styled.TextInput`
+  width: 90%;
+  border-radius: 20px;
+  background-color: white;
+  color: black;
+  font-size: 14px;
+  margin-vertical: 8px;
+`
+const HeaderStyle = styled.Text`
+  font-size: 14px;
+  font-family: Gilroy-Medium;
+  color: ${COLORS.iconsHighlightClr};
+`
 
 export default AddressBook
 
@@ -320,5 +493,27 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
+  },
+  searchInputBox: {
+    borderColor: '#efcef5',
+    borderWidth: 1,
+    borderRadius: 36,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 2,
+    marginVertical: 8,
+    gap: 8,
+    position: 'relative',
+    top: 30,
+  },
+  inputBox: {
+    borderRadius: 20,
+    backgroundColor: 'transparent',
+    color: '#462D85',
+    fontSize: 14,
+    marginVertical: 8,
   },
 })

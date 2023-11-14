@@ -8,7 +8,6 @@ import { userStore } from '../store/userStore'
 
 const CartCard: React.FC<CartComponentProps> = ({ cartData, closedItems, handleClose }) => {
   const { currency, rate } = userStore()
-  // console.log('cartData', cartData)
 
   return (
     <CartPageContent>

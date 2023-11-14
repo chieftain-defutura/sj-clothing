@@ -10,6 +10,8 @@ import { useTranslation } from 'react-i18next'
 import { userStore } from '../../../store/userStore'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ScrollView } from 'react-native-gesture-handler'
+import { doc, updateDoc } from 'firebase/firestore/lite'
+import { db } from '../../../../firebase'
 
 const LanguagesData = [
   { language: 'Chinese Mandarian', lang: 'ch' },
@@ -36,7 +38,7 @@ const LanguagesData = [
 
 const Languages = () => {
   const { i18n } = useTranslation()
-  const { language, updateLanguage } = userStore()
+  const { language, updateLanguage, user } = userStore()
   const { t } = useTranslation('language')
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
   const toggleDropdownSizes = () => {
@@ -46,6 +48,11 @@ const Languages = () => {
     await AsyncStorage.setItem('language', lng)
     i18n.changeLanguage(lng as string)
     updateLanguage(lng as string)
+    if (user) {
+      await updateDoc(doc(db, 'users', user.uid), {
+        language: lng,
+      })
+    }
   }
 
   return (

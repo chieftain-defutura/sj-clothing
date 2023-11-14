@@ -66,8 +66,10 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
           <View style={{ alignItems: 'center', marginTop: 14 }}>
             <ProductText>{data.productName}</ProductText>
             <FlexContent>
-              <PriceText>{(Number(data.normalPrice) * (rate as number)).toFixed(2)}</PriceText>
-              <PriceText>{currency.symbol}</PriceText>
+              <PriceText>
+                {rate ? (Number(data.normalPrice) * (rate as number)).toFixed(2) : data.normalPrice}
+              </PriceText>
+              <PriceText>{currency ? currency.symbol : '₹'}</PriceText>
             </FlexContent>
           </View>
         </View>

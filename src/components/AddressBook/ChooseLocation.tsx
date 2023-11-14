@@ -53,8 +53,8 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
   suggestion,
   addedAddress,
 }) => {
-  const [onText, setOnSearchChange] = React.useState<string>()
   const [checked, setChecked] = React.useState<string | null>(null)
+  const [onText, setOnSearchChange] = React.useState<string>()
   const [suggestions, setSuggestions] = React.useState<Suggestion[] | null>([])
   const [data, setData] = useState<AddressData[] | null>([])
   const [location, setLocation] = useState<Location.LocationObject>()
