@@ -177,9 +177,20 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                       {!data.offerPrice ? (
                         <View>
                           <ProductText>price</ProductText>
-                          <ProductName>
-                            {(Number(data.normalPrice) * (rate as number)).toFixed(2)}INR
-                          </ProductName>
+                          <View
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <ProductName>
+                              {rate
+                                ? (Number(data.offerPrice) * (rate as number)).toFixed(2)
+                                : data.offerPrice}
+                            </ProductName>
+                            <ProductName>{currency.symbol}</ProductName>
+                          </View>
                         </View>
                       ) : (
                         <View>
@@ -195,9 +206,11 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                               }}
                             >
                               <OldPriceText>
-                                {(Number(data.normalPrice) * (rate as number)).toFixed(2)}
+                                {rate
+                                  ? (Number(data.normalPrice) * (rate as number)).toFixed(2)
+                                  : data.normalPrice}
                               </OldPriceText>
-                              <OldPriceText> {currency.symbol}</OldPriceText>
+                              <OldPriceText> {currency ? currency.symbol : '₹'}</OldPriceText>
                             </View>
                             <View
                               style={{
@@ -207,9 +220,11 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                               }}
                             >
                               <ProductName>
-                                {(Number(data.offerPrice) * (rate as number)).toFixed(2)}
+                                {rate
+                                  ? (Number(data.offerPrice) * (rate as number)).toFixed(2)
+                                  : data.offerPrice}
                               </ProductName>
-                              <ProductName>{currency.symbol}</ProductName>
+                              <ProductName>{currency ? currency.symbol : '₹'}</ProductName>
                             </View>
                           </View>
                         </View>

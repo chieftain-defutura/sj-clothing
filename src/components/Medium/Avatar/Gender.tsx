@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     color: COLORS.textClr,
     fontSize: 20,
     textAlign: 'center',
+    fontFamily: 'Arvo-Regular',
   },
   genderButtonWrapper: {
     display: 'flex',

@@ -12,6 +12,9 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { gradientOpacityColors } from '../../styles/theme'
 import { ScrollView } from 'react-native-gesture-handler'
 import { userStore } from '../../store/userStore'
+import LoginModal from '../../screens/Modals/Login'
+import SignupModal from '../../screens/Modals/Signup'
+import ForgotMail from '../../screens/Modals/ForgotMail'
 
 const { width } = Dimensions.get('window')
 
@@ -23,6 +26,10 @@ const Accessory = () => {
   const [openDetails, setOpenDetails] = useState(false)
   const { user, updateOderId } = userStore()
   const [focus, setFocus] = useState(false)
+
+  const [login, setLogin] = useState(false)
+  const [signUp, setSignUp] = useState(false)
+  const [forgotMail, setForgotmail] = useState(false)
 
   const [isSize, setSize] = useState({
     country: '',
@@ -51,8 +58,17 @@ const Accessory = () => {
     if (!FilteredData) return
     if (!user) {
       setFocus(true)
-    } else {
-      // navigation.navigate('Checkout', { product: data })
+    }
+    if (!user) {
+      setLogin(true)
+    }
+    if (user && !user.emailVerified) {
+      setSignUp(true)
+    }
+    if (user && user.emailVerified && !user.phoneNumber) {
+      setSignUp(true)
+    }
+    if (user && user.emailVerified && user.phoneNumber) {
       setFocus(true)
       const docRef = await addDoc(collection(db, 'Orders'), {
         sizes: isSize,
@@ -156,6 +172,34 @@ const Accessory = () => {
           )}
         </View>
       </ScrollView>
+      {login && (
+        <LoginModal
+          onForgotClick={() => {
+            setForgotmail(true), setLogin(false)
+          }}
+          onSignClick={() => {
+            setSignUp(true), setLogin(false)
+          }}
+          onClose={() => setLogin(false)}
+        />
+      )}
+
+      {signUp && (
+        <SignupModal
+          onLoginClick={() => {
+            setLogin(true), setSignUp(false)
+          }}
+          onClose={() => setSignUp(false)}
+        />
+      )}
+      {forgotMail && (
+        <ForgotMail
+          onLoginClick={() => {
+            setLogin(true), setForgotmail(false)
+          }}
+          onClose={() => setForgotmail(false)}
+        />
+      )}
     </LinearGradient>
   )
 }

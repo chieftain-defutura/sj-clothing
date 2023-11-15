@@ -20,6 +20,9 @@ import { useNavigation } from '@react-navigation/native'
 import AddImageOrText from './AddImageOrText'
 import SelectCountry from './SelectCountry'
 import SelectDesign from './SelectDesign'
+import LoginModal from '../../screens/Modals/Login'
+import SignupModal from '../../screens/Modals/Signup'
+import ForgotMail from '../../screens/Modals/ForgotMail'
 
 const { width } = Dimensions.get('window')
 
@@ -38,6 +41,11 @@ const Medium = () => {
   const [designs, setDesigns] = useState<IDesigns[]>()
   const [FilteredData, setFilteredData] = useState<IMidlevel>()
   const [Design, setDesign] = useState<IDesigns[]>()
+
+  //login
+  const [login, setLogin] = useState(false)
+  const [signUp, setSignUp] = useState(false)
+  const [forgotMail, setForgotmail] = useState(false)
 
   //style
   const [isSelectedStyle, setSelectedStyle] = useState('')
@@ -193,53 +201,66 @@ const Medium = () => {
 
   const handleSubmit = async () => {
     if (!FilteredData) return
-
-    const docRef = await addDoc(collection(db, 'Orders'), {
-      style: isSelectedStyle,
-      sizes: isSize,
-      color: isColor,
-      textAndImage: isImageOrText,
-      description: FilteredData.description,
-      price: FilteredData.normalPrice,
-      offerPrice: FilteredData.offerPrice,
-      paymentStatus: 'pending',
-      productId: FilteredData.id,
-      userId: user?.uid,
-      gender: avatar?.gender,
-      type: 'MidLevel',
-      productImage: FilteredData.productImage,
-      productName: FilteredData.productName,
-      orderStatus: {
-        orderplaced: {
-          createdAt: null,
-          description: '',
-          status: false,
+    if (!user) {
+      setFocus(true)
+    }
+    if (!user) {
+      setLogin(true)
+    }
+    if (user && !user.emailVerified) {
+      setSignUp(true)
+    }
+    if (user && user.emailVerified && !user.phoneNumber) {
+      setSignUp(true)
+    }
+    if (user && user.emailVerified && user.phoneNumber) {
+      const docRef = await addDoc(collection(db, 'Orders'), {
+        style: isSelectedStyle,
+        sizes: isSize,
+        color: isColor,
+        textAndImage: isImageOrText,
+        description: FilteredData.description,
+        price: FilteredData.normalPrice,
+        offerPrice: FilteredData.offerPrice,
+        paymentStatus: 'pending',
+        productId: FilteredData.id,
+        userId: user?.uid,
+        gender: avatar?.gender,
+        type: 'MidLevel',
+        productImage: FilteredData.productImage,
+        productName: FilteredData.productName,
+        orderStatus: {
+          orderplaced: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          manufacturing: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          readyToShip: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          shipping: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          delivery: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
         },
-        manufacturing: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        readyToShip: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        shipping: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-        delivery: {
-          createdAt: null,
-          description: '',
-          status: false,
-        },
-      },
-    })
-    updateOderId(docRef.id)
-    navigation.navigate('Checkout')
-    setFocus(true)
+      })
+      updateOderId(docRef.id)
+      navigation.navigate('Checkout')
+      setFocus(true)
+    }
   }
 
   return (
@@ -339,6 +360,34 @@ const Medium = () => {
           isDone={isDone}
           setDone={setDone}
           setImageOrText={setImageOrText}
+        />
+      )}
+      {login && (
+        <LoginModal
+          onForgotClick={() => {
+            setForgotmail(true), setLogin(false)
+          }}
+          onSignClick={() => {
+            setSignUp(true), setLogin(false)
+          }}
+          onClose={() => setLogin(false)}
+        />
+      )}
+
+      {signUp && (
+        <SignupModal
+          onLoginClick={() => {
+            setLogin(true), setSignUp(false)
+          }}
+          onClose={() => setSignUp(false)}
+        />
+      )}
+      {forgotMail && (
+        <ForgotMail
+          onLoginClick={() => {
+            setLogin(true), setForgotmail(false)
+          }}
+          onClose={() => setForgotmail(false)}
         />
       )}
     </View>

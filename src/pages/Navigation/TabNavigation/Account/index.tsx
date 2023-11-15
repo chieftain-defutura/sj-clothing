@@ -58,7 +58,14 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const handleLogin = () => {
     if (!user) {
       setLogin(true)
-    } else {
+    }
+    if (user && !user.emailVerified) {
+      setSignUp(true)
+    }
+    if (user && user.emailVerified && !user.phoneNumber) {
+      setSignUp(true)
+    }
+    if (user && user.emailVerified && user.phoneNumber) {
       navigation.navigate('EditProfile')
     }
   }
