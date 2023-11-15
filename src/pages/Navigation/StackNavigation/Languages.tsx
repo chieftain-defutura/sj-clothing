@@ -34,6 +34,7 @@ const LanguagesData = [
   { language: 'Tamil', lang: 'ta' },
   { language: 'Turkish', lang: 'tu' },
   { language: 'Ukrainian', lang: 'uk' },
+  { language: 'latin', lang: 'la' },
 ]
 
 const Languages = () => {
