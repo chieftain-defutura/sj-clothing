@@ -1,16 +1,12 @@
 import { ScrollView, StyleSheet, Text, Dimensions, View } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import CustomButton from '../../Button'
 import styled from 'styled-components/native'
 import { Svg, Circle } from 'react-native-svg'
 import { IMidlevel } from '../../../constant/types'
 import { userStore } from '../../../store/userStore'
-import AuthNavigate from '../../../screens/AuthNavigate'
 import { useTranslation } from 'react-i18next'
-import LoginModal from '../../../screens/Modals/Login'
-import SignupModal from '../../../screens/Modals/Signup'
-import ForgotMail from '../../../screens/Modals/ForgotMail'
 
 interface IFinalView {
   style: string
@@ -62,10 +58,7 @@ const FinalView: React.FC<IFinalView> = ({
 }) => {
   const { avatar } = userStore()
   const { t } = useTranslation('midlevel')
-  const { currency, rate, user } = userStore()
-  const [login, setLogin] = useState(false)
-  const [signUp, setSignUp] = useState(false)
-  const [forgotMail, setForgotmail] = useState(false)
+  const { currency, rate } = userStore()
 
   const onClose = () => {
     setFocus(false)
@@ -82,7 +75,7 @@ const FinalView: React.FC<IFinalView> = ({
             text={`${t('Buy now')}`}
             fontFamily='Arvo-Regular'
             fontSize={16}
-            onPress={() => (user ? handleSubmit() : setLogin(true))}
+            onPress={() => handleSubmit()}
             buttonStyle={[styles.submitBtn]}
           />
           <View
@@ -317,34 +310,6 @@ const FinalView: React.FC<IFinalView> = ({
           </View>
         </View>
       </ScrollView>
-      {login && (
-        <LoginModal
-          onForgotClick={() => {
-            setForgotmail(true), setLogin(false)
-          }}
-          onSignClick={() => {
-            setSignUp(true), setLogin(false)
-          }}
-          onClose={() => setLogin(false)}
-        />
-      )}
-
-      {signUp && (
-        <SignupModal
-          onLoginClick={() => {
-            setLogin(true), setSignUp(false)
-          }}
-          onClose={() => setSignUp(false)}
-        />
-      )}
-      {forgotMail && (
-        <ForgotMail
-          onLoginClick={() => {
-            setLogin(true), setForgotmail(false)
-          }}
-          onClose={() => setForgotmail(false)}
-        />
-      )}
     </>
   )
 }

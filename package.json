@@ -26,6 +26,7 @@
     "expo-av": "~13.4.1",
     "expo-checkbox": "~2.4.0",
     "expo-dev-client": "~2.4.12",
+    "expo-firebase-recaptcha": "^2.3.1",
     "expo-font": "^11.4.0",
     "expo-image-picker": "~14.3.2",
     "expo-linear-gradient": "^12.3.0",

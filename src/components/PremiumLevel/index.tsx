@@ -11,6 +11,9 @@ import { IPremiumData } from '../../constant/types'
 import axios from 'axios'
 import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 import { userStore } from '../../store/userStore'
+import LoginModal from '../../screens/Modals/Login'
+import SignupModal from '../../screens/Modals/Signup'
+import ForgotMail from '../../screens/Modals/ForgotMail'
 
 const { width, height } = Dimensions.get('window')
 
@@ -27,6 +30,10 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   const [productId, setProductId] = useState('')
   const [focus, setFocus] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+
+  const [login, setLogin] = useState(false)
+  const [signUp, setSignUp] = useState(false)
+  const [forgotMail, setForgotmail] = useState(false)
 
   const [isSize, setSize] = useState({
     country: '',
@@ -60,8 +67,17 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
     if (!FilteredData) return
     if (!user) {
       setFocus(true)
-    } else {
-      // navigation.navigate('Checkout', { product: data })
+    }
+    if (!user) {
+      setLogin(true)
+    }
+    if (user && !user.emailVerified) {
+      setSignUp(true)
+    }
+    if (user && user.emailVerified && !user.phoneNumber) {
+      setSignUp(true)
+    }
+    if (user && user.emailVerified && user.phoneNumber) {
       if (!isSize.sizeVarient.size) {
         setErrorMessage('Select size to procced further')
       } else {
@@ -186,6 +202,34 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
             )}
           /> */}
         </View>
+      )}
+      {login && (
+        <LoginModal
+          onForgotClick={() => {
+            setForgotmail(true), setLogin(false)
+          }}
+          onSignClick={() => {
+            setSignUp(true), setLogin(false)
+          }}
+          onClose={() => setLogin(false)}
+        />
+      )}
+
+      {signUp && (
+        <SignupModal
+          onLoginClick={() => {
+            setLogin(true), setSignUp(false)
+          }}
+          onClose={() => setSignUp(false)}
+        />
+      )}
+      {forgotMail && (
+        <ForgotMail
+          onLoginClick={() => {
+            setLogin(true), setForgotmail(false)
+          }}
+          onClose={() => setForgotmail(false)}
+        />
       )}
     </View>
   )

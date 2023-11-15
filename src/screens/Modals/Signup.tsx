@@ -1,29 +1,31 @@
-import * as Yup from 'yup'
-import { Formik } from 'formik'
-import styled from 'styled-components/native'
-import React, { useCallback, useEffect, useState } from 'react'
-import { View, Modal, StyleSheet, Pressable, TouchableOpacity, Text } from 'react-native'
-import { sendEmailVerification } from 'firebase/auth'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
   AuthErrorCodes,
   createUserWithEmailAndPassword,
   updateProfile,
   onAuthStateChanged,
 } from 'firebase/auth'
-import { auth, db } from '../../../firebase'
-import { COLORS, gradientColors } from '../../styles/theme'
+import * as Yup from 'yup'
+import { Formik } from 'formik'
+import Checkbox from 'expo-checkbox'
 import { FirebaseError } from 'firebase/app'
+import styled from 'styled-components/native'
+import React, { useEffect, useState } from 'react'
+import { doc, setDoc } from 'firebase/firestore/lite'
+import { sendEmailVerification } from 'firebase/auth'
+import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { View, Modal, StyleSheet, Pressable, TouchableOpacity, Text } from 'react-native'
+
+import { COLORS } from '../../styles/theme'
+import { auth, db } from '../../../firebase'
 import CloseIcon from '../../assets/icons/Close'
 import EyeIcon from '../../assets/icons/EyeIcon'
 import { userStore } from '../../store/userStore'
 import CustomButton from '../../components/Button'
-import EyeHideIcon from '../../assets/icons/EyeIconHide'
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore/lite'
-import Checkbox from 'expo-checkbox'
-import { useNavigation } from '@react-navigation/native'
-import GreenTick from '../../assets/icons/GreenTick'
+import PhoneVerification from './PhoneVerification'
 import EmailVerification from './EmailVerification'
+import GreenTick from '../../assets/icons/GreenTick'
+import EyeHideIcon from '../../assets/icons/EyeIconHide'
 
 interface SignupModalProps {
   isVisible?: boolean
@@ -38,9 +40,10 @@ const ValidationSchema = Yup.object({
     .required('Please enter your name')
     .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field '),
   email: Yup.string()
-    .transform((value, originalValue) => originalValue.toLowerCase().trim())
+    .transform((originalValue) => originalValue.toLowerCase().trim())
     .email('Enter a valid email')
     .required('Please enter your email address'),
+
   password: Yup.string()
     .min(8)
     .required('Please enter your password')
@@ -60,6 +63,10 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const updateFetching = userStore((state) => state.updateFetching)
   const [isChecked, setChecked] = useState(false)
   const [isCreated, setIsCreated] = useState(false)
+  // const [verificationId, setVerificationId] = useState<string | null>(null)
+  // const [confirmation, setConfirmation] = useState<ConfirmationResult | null>(null)
+  // const recaptchaVerifier = React.useRef<any>(null)
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
@@ -110,6 +117,20 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
         await updateProfile(user, { displayName: values.name })
         await AsyncStorage.setItem('mail', values.email)
         await AsyncStorage.setItem('password', values.password)
+        const userDocRef = doc(db, 'users', user.uid)
+
+        await setDoc(userDocRef, {
+          name: user.displayName,
+          email: user.email,
+          address: [],
+          profile: null,
+          phoneNo: null,
+          avatar: null,
+          termsAndConditions: false,
+          currency: null,
+          language: null,
+          rate: null,
+        })
         await sendEmailVerification(user)
       } catch (error) {
         if (error instanceof FirebaseError) {
@@ -122,61 +143,13 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       } finally {
         setIsLoading(false)
       }
-    } else {
-      // User is already signed in
-      // You can handle this case as needed
     }
   }
 
   const handleClose = async () => {
-    user?.reload()
-
-    if (user && user?.emailVerified) {
-      setIsCreated(true)
-      const userDocRef = doc(db, 'users', user.uid)
-
-      await setDoc(userDocRef, {
-        name: user.displayName,
-        email: user.email,
-        address: [],
-        profile: null,
-        phoneNo: null,
-        avatar: null,
-        termsAndConditions: false,
-      })
-    }
-    if (user && !user.emailVerified) {
-      setErrorMessage('Mail is not verified')
-    }
+    auth.currentUser?.reload()
   }
 
-  // useEffect(() => {
-  //   user?.reload()
-  // }, [user])
-
-  // useEffect(() => {
-  //   // if (!user) return
-  //   // if (!user?.emailVerified) {
-  //   // }
-  //   if (user?.emailVerified) {
-  //     setIsCreated(true)
-  //     const userDocRef = doc(db, 'users', user.uid)
-
-  //     setDoc(userDocRef, {
-  //       name: user.displayName,
-  //       email: user.email,
-  //       address: [],
-  //       profile: null,
-  //       phoneNo: null,
-  //       avatar: null,
-  //       termsAndConditions: false,
-  //       currency: null,
-  //       language: null,
-  //       rate: null,
-  //     })
-  //   }
-  //   console.log('user?.emailVerified', user?.emailVerified)
-  // }, [user])
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       {!user && (
@@ -247,7 +220,56 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                   </InputBorder>
                   {touched.password && errors.password && <ErrorText>{errors.password}</ErrorText>}
                 </View>
-
+                {/* <View>
+                  <LabelText>Phone Number</LabelText>
+                  <InputBorder>
+                    <InputStyle
+                      placeholder='Enter your phone number'
+                      value={values.phoneNumber}
+                      onChangeText={handleChange('phoneNumber')}
+                      onBlur={handleBlur('phoneNumber')}
+                      placeholderTextColor={COLORS.SecondaryTwo}
+                      autoCorrect={false}
+                    />
+                    <Pressable onPress={() => handleSendCode(values.phoneNumber)}>
+                      <VerifyText>Send</VerifyText>
+                    </Pressable>
+                  </InputBorder>
+                  {touched.phoneNumber && errors.phoneNumber && (
+                    <ErrorText>{errors.phoneNumber}</ErrorText>
+                  )}
+                </View>
+                <View>
+                  <LabelText>Verify Code</LabelText>
+                  <InputBorder>
+                    <InputStyle
+                      placeholder='Enter your verifyCode'
+                      value={values.verifyCode}
+                      onChangeText={handleChange('verifyCode')}
+                      onBlur={handleBlur('verifyCode')}
+                      placeholderTextColor={COLORS.SecondaryTwo}
+                      autoCorrect={false}
+                    />
+                    <Pressable onPress={() => handleVerifyCode(values.verifyCode)}>
+                      <VerifyText>Verify</VerifyText>
+                    </Pressable>
+                  </InputBorder>
+                  {touched.verifyCode && errors.verifyCode && (
+                    <ErrorText>{errors.verifyCode}</ErrorText>
+                  )}
+                </View>
+                <FirebaseRecaptchaVerifierModal
+                  ref={recaptchaVerifier}
+                  firebaseConfig={{
+                    apiKey: 'AIzaSyDaXYPmyl86Pttlc6z6jBjoir2ejsPAx2g',
+                    authDomain: 'sj-clothing-app-e38ad.firebaseapp.com',
+                    projectId: 'sj-clothing-app-e38ad',
+                    storageBucket: 'sj-clothing-app-e38ad.appspot.com',
+                    messagingSenderId: '529299213781',
+                    appId: '1:529299213781:web:038dc9c1795f0b5361c15c',
+                    measurementId: 'G-5643DV97N4',
+                  }}
+                /> */}
                 {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
                 <View
                   style={{
@@ -294,15 +316,15 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           </Formik>
         </SignUpWrapper>
       )}
-      {user && !user.emailVerified && (
-        <EmailVerification
-          isVisible={!user.emailVerified}
-          onClose={handleClose}
-          errorMessage={errorMessage}
-        />
+
+      {user && !user.emailVerified && !user.phoneNumber && !isCreated && (
+        <EmailVerification onClose={handleClose} errorMessage={errorMessage} />
+      )}
+      {user && user.emailVerified && !user.phoneNumber && !isCreated && (
+        <PhoneVerification setIsCreated={setIsCreated} />
       )}
 
-      {user && user.emailVerified && isCreated && (
+      {user && user.emailVerified && user.phoneNumber && isCreated && (
         <SignUpWrapper>
           <CreatedAccount>
             <GreenTick width={100} height={100} />
