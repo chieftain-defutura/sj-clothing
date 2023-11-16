@@ -26,6 +26,7 @@ const LanguagesData = [
   { language: 'Italian', lang: 'it' },
   { language: 'Japanese', lang: 'ja' },
   { language: 'Korean', lang: 'ko' },
+  { language: 'Latin', lang: 'la' },
   { language: 'Polish', lang: 'po' },
   { language: 'Portuguese', lang: 'por' },
   { language: 'Russian', lang: 'ru' },
