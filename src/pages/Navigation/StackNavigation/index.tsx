@@ -32,7 +32,8 @@ import Languages from './Languages'
 import Currency from './Currency'
 import AvatarNavigation from './Avatar'
 import TermsAndConditions from './TermsAndConditions'
-import NewAddressBook from './NewAddressBook'
+// import NewAddressBook from './NewAddressBook'
+// import Payment from './Payment'
 
 const Stack = createStackNavigator()
 
@@ -149,6 +150,11 @@ const StackNavigationRoutes: React.FC = () => {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={AddressBook}
       />
+      {/* <Stack.Screen
+        name='Payment'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={Payment}
+      /> */}
 
       <Stack.Screen name='MyOrders' component={MyOrders} />
       <Stack.Screen name='TrackOrder' component={TrackOrder} />

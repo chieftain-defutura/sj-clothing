@@ -318,10 +318,10 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       )}
 
       {user && !user.emailVerified && !user.phoneNumber && !isCreated && (
-        <EmailVerification onClose={handleClose} errorMessage={errorMessage} />
+        <EmailVerification onClose={handleClose} errorMessage={errorMessage} closeModal={onClose} />
       )}
       {user && user.emailVerified && !user.phoneNumber && !isCreated && (
-        <PhoneVerification setIsCreated={setIsCreated} />
+        <PhoneVerification setIsCreated={setIsCreated} closeModal={onClose} />
       )}
 
       {user && user.emailVerified && user.phoneNumber && isCreated && (

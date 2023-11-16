@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { sendEmailVerification } from 'firebase/auth'
 
 import { COLORS } from '../../styles/theme'
 import { userStore } from '../../store/userStore'
 import CustomButton from '../../components/Button'
+import CloseIcon from '../../assets/icons/Close'
 
 interface IEmailVerification {
   onClose?: () => void
-  errorMessage: string | null
+  errorMessage?: string | null
+  closeModal?: () => void
 }
-const EmailVerification: React.FC<IEmailVerification> = ({ onClose, errorMessage }) => {
+const EmailVerification: React.FC<IEmailVerification> = ({ onClose, errorMessage, closeModal }) => {
   const { user } = userStore()
   const [isSendVerifyMail, setSendVerifyMail] = useState(false)
 
@@ -34,6 +36,17 @@ const EmailVerification: React.FC<IEmailVerification> = ({ onClose, errorMessage
   return (
     <View style={styles.VerificationContainer}>
       <View style={styles.VerificationWrapper}>
+        <Pressable
+          onPress={closeModal}
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            paddingBottom: 10,
+          }}
+        >
+          <CloseIcon width={24} height={24} />
+        </Pressable>
         <Text style={styles.header}>Verify Your Mail</Text>
         <Text style={styles.description}>
           Hi {user?.displayName}, Please verify your email address by clicking the link send to{' '}

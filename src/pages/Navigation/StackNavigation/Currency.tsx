@@ -1,18 +1,17 @@
 import axios from 'axios'
+import Svg, { Path } from 'react-native-svg'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
+import { doc, updateDoc } from 'firebase/firestore/lite'
+import { ScrollView } from 'react-native-gesture-handler'
 import React, { useCallback, useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import Svg, { Path, Defs, G, Rect, ClipPath } from 'react-native-svg'
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
 
+import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import CurrencyGrayIcon from '../../../assets/icons/AccountPageIcon/CurrencyGrayIcon'
-import { ScrollView } from 'react-native-gesture-handler'
-import { doc, updateDoc } from 'firebase/firestore/lite'
-import { db } from '../../../../firebase'
 
 const CurrencyData = [
   {
@@ -111,8 +110,7 @@ const Currency = () => {
         currency: storeCurrency,
       })
     }
-    // const dataString = JSON.stringify(storeCurrency)
-    // AsyncStorage.setItem('currency', dataString)
+
     toggleDropdownSizes()
   }
   return (
@@ -128,7 +126,7 @@ const Currency = () => {
     >
       <Text style={styles.title}>Choose your Currency</Text>
       <CurrencyGrayIcon width={190} height={190} />
-      <View style={{ width: 238, paddingTop: 64 }}>
+      <View style={{ width: 238, paddingTop: 14 }}>
         <SelectContent onPress={toggleDropdownSizes}>
           <View
             style={{
@@ -179,21 +177,6 @@ const Currency = () => {
           </Animated.View>
         )}
       </View>
-
-      {/* <View>
-        <TextInput
-          placeholder='Enter amount'
-          value={amount}
-          onChangeText={(text) => setAmount(text)}
-          keyboardType='numeric'
-        />
-        <Text>From Currency:</Text>
-        <TextInput value={fromCurrency} onChangeText={(text) => setFromCurrency(text)} />
-        <Text>To Currency:</Text>
-        <TextInput value={toCurrency} onChangeText={(text) => setToCurrency(text)} />
-        <Button title='Convert' onPress={() => convertAmount()} />
-        {convertedAmount && <Text>Converted Amount: {convertedAmount}</Text>}
-      </View> */}
     </LinearGradient>
   )
 }

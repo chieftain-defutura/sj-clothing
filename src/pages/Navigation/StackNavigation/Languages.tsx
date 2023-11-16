@@ -68,7 +68,7 @@ const Languages = () => {
     >
       <Text style={styles.title}>{t('Choose Your Language')}</Text>
       <LanguageGrayIcon width={190} height={190} />
-      <View style={{ width: 208, paddingTop: 64 }}>
+      <View style={{ width: 208, paddingTop: 14 }}>
         <SelectContent onPress={toggleDropdownSizes}>
           <SelectText> {LanguagesData.find((f) => f.lang === language)?.language}</SelectText>
           <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>

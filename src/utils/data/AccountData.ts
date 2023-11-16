@@ -21,6 +21,11 @@ export const AccountData = [
     navigation: 'Avatar',
   },
   // {
+  //   name: `Payment`,
+  //   rightIcon: ChevronLeft,
+  //   navigation: 'Payment',
+  // },
+  // {
   //   leftIcon: CopyIcon,
   //   name: 'My posts',
   //   rightText: '44 posts',

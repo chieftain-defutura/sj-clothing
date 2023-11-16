@@ -11,9 +11,11 @@ import { auth } from '../../../firebase'
 import { COLORS } from '../../styles/theme'
 import CustomButton from '../../components/Button'
 import CountryCode from '../../components/CountryCode'
+import CloseIcon from '../../assets/icons/Close'
 
 interface IPhoneVerification {
   setIsCreated: React.Dispatch<React.SetStateAction<boolean>>
+  closeModal?: () => void
 }
 
 const initialValues = { phoneNumber: '', verifyCode: '' }
@@ -28,7 +30,7 @@ const ValidationSchema = Yup.object({
     .required('Please enter your phone number'),
 })
 
-const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated }) => {
+const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeModal }) => {
   const recaptchaVerifier = React.useRef<any>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [verificationId, setVerificationId] = useState<string | null>(null)
@@ -80,9 +82,9 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated }) => {
           <SignUpContainer>
             <SignUpHead>
               <SignUpHeading>Phone Verification</SignUpHeading>
-              {/* <Pressable onPress={onClose}>
-                  <CloseIcon width={24} height={24} />
-                </Pressable> */}
+              <Pressable onPress={closeModal}>
+                <CloseIcon width={24} height={24} />
+              </Pressable>
             </SignUpHead>
 
             <View>

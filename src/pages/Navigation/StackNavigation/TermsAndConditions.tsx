@@ -3,8 +3,10 @@ import { ScrollView, StyleSheet, View } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import styled from 'styled-components/native'
+import { useTranslation } from 'react-i18next'
 
 const TermsAndConditions = () => {
+  const { t } = useTranslation('TermsAndConditions')
   return (
     <LinearGradient
       colors={gradientOpacityColors}
@@ -18,7 +20,7 @@ const TermsAndConditions = () => {
     >
       <ScrollView showsHorizontalScrollIndicator={false}>
         <View>
-          <CenterText>TERMS & CONDITIONS</CenterText>
+          <CenterText>{t('TERMS & CONDITIONS')}</CenterText>
           <NormalText style={{ paddingBottom: 8 }}>Welcome to SJ clothing.</NormalText>
           <NormalText>
             PLEASE READ THESE TERMS OF USE CAREFULLY BEFORE USING THE CLOTHING APP.
