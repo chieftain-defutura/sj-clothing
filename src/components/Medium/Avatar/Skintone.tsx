@@ -19,7 +19,7 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, skinColor, setSkinColor, han
         <Text style={styles.bottomTitle}>1.{t('select your skintone')}.</Text>
 
         <View style={styles.skinCollection}>
-          {['#9B684B', '#AF7C5F', '#D7A487', '#FFCCAF'].map((m, index) => (
+          {['#805244', '#a07160', '#c69d92', '#dabdaf'].map((m, index) => (
             <TouchableOpacity
               key={m}
               style={[

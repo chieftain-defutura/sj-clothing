@@ -8,12 +8,13 @@ interface IGender {
   isGender: string
   setGender: React.Dispatch<React.SetStateAction<string>>
   setToggle: React.Dispatch<React.SetStateAction<boolean>>
+  data: { uid: string; animationFinished?: boolean } | null
 }
 
 const { width } = Dimensions.get('window')
 const GenderData = ['male', 'female']
 
-const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
+const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender, data }) => {
   const { t } = useTranslation('avatar')
   return (
     <View style={styles.genderContainer}>
@@ -49,6 +50,7 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender }) => {
           variant='primary'
           fontFamily='Arvo-Regular'
           fontSize={16}
+          disabled={!data?.animationFinished}
           onPress={() => setToggle(true)}
           style={{ width: width, paddingHorizontal: 24 }}
         />

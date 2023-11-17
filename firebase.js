@@ -3,6 +3,7 @@ import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 import { initializeAuth, getReactNativePersistence } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore/lite'
+import { getFirestore as firestoreDefault } from 'firebase/firestore'
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage'
 import { getStorage } from 'firebase/storage'
 
@@ -29,5 +30,6 @@ export const auth = initializeAuth(app, {
 })
 export const db = getFirestore(app)
 export const storage = getStorage(app)
+export const dbDefault = firestoreDefault(app)
 
 // export const auth = getAuth(app)

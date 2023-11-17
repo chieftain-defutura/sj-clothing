@@ -1,17 +1,34 @@
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { getDoc, doc, setDoc, updateDoc } from 'firebase/firestore/lite'
+import {
+  getDoc,
+  doc,
+  setDoc,
+  updateDoc,
+  query,
+  collection,
+  where,
+  DocumentData,
+  Query,
+} from 'firebase/firestore/lite'
+import {
+  query as defaultQuery,
+  collection as defualtCollection,
+  where as defaultWhere,
+} from 'firebase/firestore'
+import { onSnapshot } from 'firebase/firestore'
 import uuid from 'react-native-uuid'
+import { useTranslation } from 'react-i18next'
+import { useNavigation } from '@react-navigation/native'
+
 import Gender from './Gender'
 import Skintone from './Skintone'
 import { COLORS, gradientColors } from '../../../styles/theme'
 import Animated, { FadeInUp, FadeOut, FadeOutDown } from 'react-native-reanimated'
 import { WebView } from 'react-native-webview'
-import { db } from '../../../../firebase'
-import { useNavigation } from '@react-navigation/native'
+import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
-import { useTranslation } from 'react-i18next'
 
 const { height, width } = Dimensions.get('window')
 export const gradientOpacityColors = [
@@ -30,12 +47,32 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
   const { t } = useTranslation('avatar')
   const [toggle, setToggle] = useState(false)
   const [isGender, setGender] = useState('')
-  const [skinColor, setSkinColor] = useState('#FFCCAF')
+  const [skinColor, setSkinColor] = useState('3')
   const [uid, setUid] = useState<string | null>(null)
+  const [data, setData] = useState<{ uid: string; animationFinished?: boolean } | null>(null)
   const isMounted = useRef(false)
   const navigation = useNavigation()
   const { updateProfile, updateAvatar, updateAddress, updatePhoneNo, updateName, user } =
     userStore()
+
+  const handleGetData = useCallback(() => {
+    if (!uid) return
+    const q = defaultQuery(
+      defualtCollection(dbDefault, 'CreateAvatar'),
+      defaultWhere('uid', '==', uid),
+    )
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        console.log(doc.data())
+        setData(doc.data() as any)
+      })
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [uid])
+
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
       try {
@@ -78,7 +115,8 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
     handleSetUid()
     handleUpdateGender()
     handleUpdateSkintone()
-  }, [handleSetUid, handleUpdateGender, handleUpdateSkintone])
+    handleGetData()
+  }, [handleSetUid, handleUpdateGender, handleUpdateSkintone, handleGetData])
 
   const handleSubmit = async () => {
     if (user) {
@@ -196,7 +234,7 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
 
           {!toggle && (
             <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
-              <Gender setToggle={setToggle} isGender={isGender} setGender={setGender} />
+              <Gender setToggle={setToggle} isGender={isGender} setGender={setGender} data={data} />
             </Animated.View>
           )}
         </View>
