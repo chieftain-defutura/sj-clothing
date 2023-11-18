@@ -11,7 +11,8 @@ interface IGender {
   data: { uid: string; animationFinished?: boolean } | null
 }
 
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
+
 const GenderData = [
   { gender: 'male', image: require('../../../assets/logo/boyImage.png') },
   { gender: 'female', image: require('../../../assets/logo/girlImage.png') },
@@ -26,30 +27,40 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender, data }) => 
       <View style={styles.bottomWrapper}>
         <View style={styles.genderButtonWrapper}>
           {GenderData.map((gender, index) => (
-            <TouchableOpacity
+            <View
               key={index}
-              onPress={() => setGender(gender.gender)}
-              style={[
-                styles.genderButton,
-                {
-                  borderColor:
-                    isGender === gender.gender ? COLORS.textSecondaryClr : COLORS.textRGBAClr,
-                },
-              ]}
+              style={{
+                width: width / 1.2,
+                height: height / 3.4,
+                borderColor: isGender === gender.gender ? COLORS.textSecondaryClr : '#FFF',
+                borderWidth: 1,
+                borderRadius: 30,
+                marginVertical: 14,
+              }}
             >
-              <Image source={gender.image} />
-              <Text
-                style={[
-                  styles.buttonText,
-                  {
-                    color:
-                      isGender === gender.gender ? COLORS.textSecondaryClr : COLORS.textRGBAClr,
-                  },
-                ]}
+              <TouchableOpacity
+                onPress={() => setGender(gender.gender)}
+                style={styles.genderButton}
               >
-                {t(gender.gender)}
-              </Text>
-            </TouchableOpacity>
+                <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Image
+                    source={gender.image}
+                    style={{ width: width / 1.8, height: height / 3.8 }}
+                  />
+                  <Text
+                    style={[
+                      styles.buttonText,
+                      {
+                        color:
+                          isGender === gender.gender ? COLORS.textSecondaryClr : COLORS.textRGBAClr,
+                      },
+                    ]}
+                  >
+                    {t(gender.gender)}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           ))}
         </View>
       </View>
@@ -61,7 +72,7 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender, data }) => 
           fontSize={16}
           // disabled={!data?.animationFinished}
           onPress={() => setToggle(true)}
-          style={{ width: width, paddingHorizontal: 24 }}
+          style={{ width: width, paddingHorizontal: 24, marginTop: 18 }}
         />
       </View>
     </View>
@@ -88,19 +99,19 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
     paddingVertical: 16,
-    width: width,
     gap: 8,
   },
   genderButton: {
-    borderWidth: 1,
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 30,
-    width: 110,
   },
   buttonText: {
     textAlign: 'center',
     fontFamily: 'Arvo-Regular',
+    marginTop: 28,
+    fontSize: 16,
   },
 })
