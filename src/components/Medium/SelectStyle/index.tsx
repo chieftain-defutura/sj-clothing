@@ -25,11 +25,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
   const handleSelect = (title: string) => {
     setSelectedStyle(title)
   }
-  useEffect(() => {
-    if (isSelectedStyle) {
-      handleIncreaseSteps()
-    }
-  }, [isSelectedStyle])
+
   return (
     <LinearGradient
       colors={dropDownGradient}

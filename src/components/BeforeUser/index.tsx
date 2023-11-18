@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import { StyleSheet, View } from 'react-native'
+import React, { useState } from 'react'
 import CustomButton from '../Button'
 import Avatar from '../Medium/Avatar'
 import Languages from '../../pages/Navigation/StackNavigation/Languages'

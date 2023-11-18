@@ -49,7 +49,7 @@ const Avatar: React.FC<IAvatar> = ({ path, setSteps, steps }) => {
   const { t } = useTranslation('avatar')
   const { avatar } = userStore()
   const [toggle, setToggle] = useState(steps === 0 ? true : false)
-  const [isGender, setGender] = useState(avatar.gender as string)
+  const [isGender, setGender] = useState(avatar && (avatar.gender ? (avatar.gender as string) : ''))
   const [skinColor, setSkinColor] = useState('3')
   const [uid, setUid] = useState<string | null>(null)
   const [data, setData] = useState<{ uid: string; animationFinished?: boolean } | null>(null)
@@ -191,7 +191,6 @@ const Avatar: React.FC<IAvatar> = ({ path, setSteps, steps }) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: 16,
-          // gap: 10,
           backgroundColor: 'transparent',
         }}
       >
@@ -237,25 +236,17 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    // position: 'absolute',
-    // top: 0,
-    // zIndex: 1,
   },
   title: {
     textAlign: 'center',
     fontSize: 35,
     color: COLORS.textClr,
-    // paddingHorizontal: 16,
-    // paddingVertical: 16,
     fontFamily: 'Arvo-Regular',
   },
-  // image: {
-  //   paddingTop: 16,
-  // },
+
   button: {
     backgroundColor: '#61e3a5',
     padding: 10,
     borderRadius: 10,
-    // margin: 10,
   },
 })
