@@ -74,10 +74,10 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
     if (user && !user.emailVerified) {
       setSignUp(true)
     }
-    if (user && user.emailVerified && !user.phoneNumber) {
-      setSignUp(true)
-    }
-    if (user && user.emailVerified && user.phoneNumber) {
+    // if (user && user.emailVerified && !user.phoneNumber) {
+    //   setSignUp(true)
+    // }
+    if (user && user.emailVerified) {
       if (!isSize.sizeVarient.size) {
         setErrorMessage('Select size to procced further')
       } else {

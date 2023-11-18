@@ -62,10 +62,10 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
     if (user && !user.emailVerified) {
       setSignUp(true)
     }
-    if (user && user.emailVerified && !user.phoneNumber) {
-      setSignUp(true)
-    }
-    if (user && user.emailVerified && user.phoneNumber) {
+    // if (user && user.emailVerified && !user.phoneNumber) {
+    //   setSignUp(true)
+    // }
+    if (user && user.emailVerified) {
       navigation.navigate('EditProfile')
     }
   }
@@ -347,8 +347,6 @@ const ProfileUserContent = styled.View`
   justify-content: space-between;
   padding-vertical: 16px;
   padding-horizontal: 24px;
-  border-bottom-color: ${COLORS.strokeClr};
-  border-bottom-width: 1px;
 `
 
 const FlexIcon = styled.View`

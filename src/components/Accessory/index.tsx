@@ -65,10 +65,10 @@ const Accessory = () => {
     if (user && !user.emailVerified) {
       setSignUp(true)
     }
-    if (user && user.emailVerified && !user.phoneNumber) {
-      setSignUp(true)
-    }
-    if (user && user.emailVerified && user.phoneNumber) {
+    // if (user && user.emailVerified && !user.phoneNumber) {
+    //   setSignUp(true)
+    // }
+    if (user && user.emailVerified) {
       setFocus(true)
       const docRef = await addDoc(collection(db, 'Orders'), {
         sizes: isSize,

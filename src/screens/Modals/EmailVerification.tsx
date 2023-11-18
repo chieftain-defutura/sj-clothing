@@ -1,26 +1,36 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { sendEmailVerification } from 'firebase/auth'
-
+import { auth } from '../../../firebase'
 import { COLORS } from '../../styles/theme'
 import { userStore } from '../../store/userStore'
 import CustomButton from '../../components/Button'
 import CloseIcon from '../../assets/icons/Close'
 
 interface IEmailVerification {
-  onClose?: () => void
-  errorMessage?: string | null
   closeModal?: () => void
+  errorMessage?: string | null
+  setIsCreated: React.Dispatch<React.SetStateAction<boolean>>
 }
-const EmailVerification: React.FC<IEmailVerification> = ({ onClose, errorMessage, closeModal }) => {
+const EmailVerification: React.FC<IEmailVerification> = ({
+  closeModal,
+  setIsCreated,
+  errorMessage,
+}) => {
   const { user } = userStore()
   const [isSendVerifyMail, setSendVerifyMail] = useState(false)
+
+  const handleClose = async () => {
+    auth.currentUser?.reload()
+    if (user?.emailVerified) {
+      setIsCreated(true)
+    }
+  }
 
   useEffect(() => {
     if (isSendVerifyMail) {
       const timer = setTimeout(() => {
         setSendVerifyMail(false)
-        onClose?.()
       }, 10000)
 
       return () => clearTimeout(timer)
@@ -68,7 +78,7 @@ const EmailVerification: React.FC<IEmailVerification> = ({ onClose, errorMessage
           <CustomButton
             text='Verify'
             disabled={isSendVerifyMail}
-            onPress={onClose}
+            onPress={handleClose}
             style={{ width: 100 }}
           />
         </View>

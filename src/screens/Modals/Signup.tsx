@@ -146,10 +146,6 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
     }
   }
 
-  const handleClose = async () => {
-    auth.currentUser?.reload()
-  }
-
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       {!user && (
@@ -317,14 +313,18 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
         </SignUpWrapper>
       )}
 
-      {user && !user.emailVerified && !user.phoneNumber && !isCreated && (
-        <EmailVerification onClose={handleClose} errorMessage={errorMessage} closeModal={onClose} />
+      {user && !user.emailVerified && !isCreated && (
+        <EmailVerification
+          setIsCreated={setIsCreated}
+          errorMessage={errorMessage}
+          closeModal={onClose}
+        />
       )}
-      {user && user.emailVerified && !user.phoneNumber && !isCreated && (
+      {/* {user && user.emailVerified && !user.phoneNumber && !isCreated && (
         <PhoneVerification setIsCreated={setIsCreated} closeModal={onClose} />
-      )}
+      )} */}
 
-      {user && user.emailVerified && user.phoneNumber && isCreated && (
+      {user && user.emailVerified && isCreated && (
         <SignUpWrapper>
           <CreatedAccount>
             <GreenTick width={100} height={100} />

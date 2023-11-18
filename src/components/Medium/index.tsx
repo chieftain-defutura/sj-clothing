@@ -210,10 +210,10 @@ const Medium = () => {
     if (user && !user.emailVerified) {
       setSignUp(true)
     }
-    if (user && user.emailVerified && !user.phoneNumber) {
-      setSignUp(true)
-    }
-    if (user && user.emailVerified && user.phoneNumber) {
+    // if (user && user.emailVerified && !user.phoneNumber) {
+    //   setSignUp(true)
+    // }
+    if (user && user.emailVerified) {
       const docRef = await addDoc(collection(db, 'Orders'), {
         style: isSelectedStyle,
         sizes: isSize,
