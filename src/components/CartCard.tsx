@@ -81,9 +81,6 @@ const CartCard: React.FC<CartComponentProps> = ({ cartData, closedItems, handleC
 const CartPageContent = styled.View`
   padding-horizontal: 24px;
   flex: 1;
-  justify-content: center;
-  align-items: center;
-  margin-left: -120px;
 `
 
 const ProductName = styled.Text`
@@ -106,8 +103,8 @@ const ProductStyle = styled.View``
 const CartPageContainer = styled.View`
   display: flex;
   flex-direction: row;
-  gap: 16px;
   align-items: center;
+  gap: 20px;
   border-bottom-color: ${COLORS.strokeClr};
   border-bottom-width: 1px;
   padding-vertical: 16px;

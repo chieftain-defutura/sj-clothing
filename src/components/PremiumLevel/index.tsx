@@ -94,6 +94,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
           gender: FilteredData[0].gender,
           type: 'Premium-Level',
           productName: FilteredData[0].productName,
+          giftMessage: '',
           orderStatus: {
             orderplaced: {
               createdAt: null,

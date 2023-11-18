@@ -16,6 +16,7 @@ import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore/
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { ICheckout } from '../../../constant/types'
+import GiftIcon from '../../../assets/icons/GiftIcon'
 
 type RootStackParamList = {
   Checkout: { product: string }
@@ -337,6 +338,24 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
               </HomeFlexContent>
 
               <PhonepeWrapper>
+                <GiftContent onPress={() => navigation.navigate('GiftOptions')}>
+                  <LinearGradient
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    colors={['#462D85', '#DB00FF']}
+                    style={styles.gradientColor}
+                  >
+                    <GiftIcon width={16} height={16} />
+                  </LinearGradient>
+                  <GiftText>Gift options available</GiftText>
+                </GiftContent>
+
+                <Pressable>
+                  <ChevronLeft width={16} height={16} />
+                </Pressable>
+              </PhonepeWrapper>
+
+              <PhonepeWrapper>
                 <GiftContent onPress={processPay}>
                   <Phonepe width={32} height={32} />
                   <GiftText>Payment</GiftText>
@@ -346,6 +365,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                   <ChevronLeft width={16} height={16} />
                 </Pressable>
               </PhonepeWrapper>
+
               {/* <PhonepeWrapper>
                 <GiftContent>
                   <LinearGradient
