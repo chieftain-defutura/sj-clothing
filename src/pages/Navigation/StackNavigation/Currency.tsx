@@ -114,8 +114,8 @@ const Currency = () => {
     toggleDropdownSizes()
   }
   return (
-    <LinearGradient
-      colors={gradientOpacityColors}
+    <View
+      // colors={gradientOpacityColors}
       style={{
         flex: 1,
         display: 'flex',
@@ -177,7 +177,7 @@ const Currency = () => {
           </Animated.View>
         )}
       </View>
-    </LinearGradient>
+    </View>
   )
 }
 

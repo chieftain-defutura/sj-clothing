@@ -6,9 +6,9 @@ import Avatar from '../../../components/Medium/Avatar'
 
 const AvatarNavigation = () => {
   return (
-    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <Avatar />
-    </LinearGradient>
+    </View>
   )
 }
 

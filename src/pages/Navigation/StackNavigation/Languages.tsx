@@ -57,8 +57,8 @@ const Languages = () => {
   }
 
   return (
-    <LinearGradient
-      colors={gradientOpacityColors}
+    <View
+      // colors={gradientOpacityColors}
       style={{
         flex: 1,
         display: 'flex',
@@ -102,7 +102,7 @@ const Languages = () => {
           </Animated.View>
         )}
       </View>
-    </LinearGradient>
+    </View>
   )
 }
 

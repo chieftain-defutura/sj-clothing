@@ -1,20 +1,56 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native'
 
 import CustomButton from '../../Button'
 import { COLORS } from '../../../styles/theme'
 import { useTranslation } from 'react-i18next'
+import WebView from 'react-native-webview'
+import Animated, { FadeInUp, FadeOut } from 'react-native-reanimated'
+
+const { height, width } = Dimensions.get('window')
 
 interface ISkintone {
   skinColor: string
   setSkinColor: React.Dispatch<React.SetStateAction<string>>
   setToggle: React.Dispatch<React.SetStateAction<boolean>>
   handleSubmit: () => void
+  path: string
+  setSteps: React.Dispatch<React.SetStateAction<number>>
+  uid: string
 }
-const Skintone: React.FC<ISkintone> = ({ setToggle, skinColor, setSkinColor, handleSubmit }) => {
+const Skintone: React.FC<ISkintone> = ({
+  setToggle,
+  skinColor,
+  setSkinColor,
+  handleSubmit,
+  path,
+  uid,
+  setSteps,
+}) => {
   const { t } = useTranslation('avatar')
   return (
     <View style={styles.SkintoneContainer}>
+      <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
+        <View
+          style={{
+            width: width / 1,
+            height: height / 2,
+            backgroundColor: 'transparent',
+          }}
+        >
+          {
+            <WebView
+              style={{
+                backgroundColor: 'transparent',
+              }}
+              source={{
+                // uri: `http://localhost:5173/create-avatar/?uid=${uid}`,
+                uri: `https://sj-threejs-development.netlify.app/create-avatar/?uid=${uid}`,
+              }}
+            />
+          }
+        </View>
+      </Animated.View>
       <View style={styles.bottomWrapper}>
         <Text style={styles.bottomTitle}>1.{t('select your skintone')}.</Text>
 
@@ -46,8 +82,8 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, skinColor, setSkinColor, han
             onPress={() => setToggle(false)}
           />
           <CustomButton
-            onPress={handleSubmit}
-            text={`${t('done')}`}
+            onPress={() => (path === 'MidLevel' ? [handleSubmit(), setSteps(1)] : handleSubmit())}
+            text={path === 'MidLevel' ? `${t('Next')}` : `${t('done')}`}
             variant='primary'
             fontFamily='Arvo-Regular'
             fontSize={16}
@@ -62,7 +98,12 @@ const Skintone: React.FC<ISkintone> = ({ setToggle, skinColor, setSkinColor, han
 export default Skintone
 
 const styles = StyleSheet.create({
-  SkintoneContainer: {},
+  SkintoneContainer: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    gap: 40,
+  },
 
   bottomWrapper: {
     // padding: 24,

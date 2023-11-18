@@ -12,10 +12,12 @@ import Account from './Account'
 import { useSharedValue } from 'react-native-reanimated'
 import * as NavigationBar from 'expo-navigation-bar'
 import Medium from '../../../components/Medium'
+import { userStore } from '../../../store/userStore'
 
 const Tab = createBottomTabNavigator()
 
 const TabNavigationRoutes: React.FC = () => {
+  const { confirmDetails } = userStore()
   const opacityValue = useSharedValue(2)
   if (Platform.OS === 'android') {
     NavigationBar.setPositionAsync('relative')
@@ -31,6 +33,7 @@ const TabNavigationRoutes: React.FC = () => {
           borderTopWidth: 0,
           height: 62,
           elevation: 0,
+          display: confirmDetails ? 'flex' : 'none',
         },
         unmountOnBlur: true,
       }}

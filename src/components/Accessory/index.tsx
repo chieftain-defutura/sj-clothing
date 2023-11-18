@@ -116,7 +116,7 @@ const Accessory = () => {
 
   if (!data) return <Text>No Data</Text>
   return (
-    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <ScrollView scrollEnabled={openDetails ? false : true}>
         <View>
           {openDetails ? (
@@ -200,7 +200,7 @@ const Accessory = () => {
           onClose={() => setForgotmail(false)}
         />
       )}
-    </LinearGradient>
+    </View>
   )
 }
 
