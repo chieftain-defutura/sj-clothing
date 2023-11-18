@@ -42,11 +42,14 @@ export const gradientOpacityColors = [
 
 interface IAvatar {
   path?: string
+  steps?: number
+  setSteps?: React.Dispatch<React.SetStateAction<number>>
 }
-const Avatar: React.FC<IAvatar> = ({ path }) => {
+const Avatar: React.FC<IAvatar> = ({ path, setSteps, steps }) => {
   const { t } = useTranslation('avatar')
-  const [toggle, setToggle] = useState(false)
-  const [isGender, setGender] = useState('')
+  const { avatar } = userStore()
+  const [toggle, setToggle] = useState(steps === 0 ? true : false)
+  const [isGender, setGender] = useState(avatar.gender as string)
   const [skinColor, setSkinColor] = useState('3')
   const [uid, setUid] = useState<string | null>(null)
   const [data, setData] = useState<{ uid: string; animationFinished?: boolean } | null>(null)
@@ -199,27 +202,7 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
         >
           <Text style={styles.title}>{t('title')}.</Text>
         </Animated.View>
-        <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
-          <View
-            style={{
-              width: width / 1,
-              height: height / 2,
-              backgroundColor: 'transparent',
-            }}
-          >
-            {
-              <WebView
-                style={{
-                  backgroundColor: 'transparent',
-                }}
-                source={{
-                  // uri: `http://localhost:5173/create-avatar/?uid=${uid}`,
-                  uri: `https://sj-threejs-development.netlify.app/create-avatar/?uid=${uid}`,
-                }}
-              />
-            }
-          </View>
-        </Animated.View>
+
         <View>
           {toggle && (
             <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOutDown}>
@@ -228,6 +211,9 @@ const Avatar: React.FC<IAvatar> = ({ path }) => {
                 setSkinColor={setSkinColor}
                 setToggle={setToggle}
                 handleSubmit={handleSubmit}
+                path={path as string}
+                setSteps={setSteps as any}
+                uid={uid as string}
               />
             </Animated.View>
           )}

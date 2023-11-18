@@ -22,6 +22,7 @@ export interface IUserData {
   ]
   rate: number
   orderId: string
+  confirmDetails: boolean
 }
 
 type State = {
@@ -47,12 +48,13 @@ type State = {
     },
   ]
   currency: {
-    symbol: null
+    symbol: string | null
     currency: string | null
     abrive: string | null
   }
   rate: number | null
   orderId: string | null
+  confirmDetails: boolean
 }
 
 type Action = {
@@ -79,6 +81,7 @@ type Action = {
   updateCurrency: (currency: { symbol: null; currency: string; abrive: string }) => void
   updateOderId: (orderId: string | null) => void
   updateRate: (rate: number | null) => void
+  updateConfirmDetails: (confirmDetails: boolean) => void
 }
 
 export const userStore = create<State & Action>((set) => ({
@@ -93,7 +96,7 @@ export const userStore = create<State & Action>((set) => ({
     gender: null,
     skinTone: null,
   },
-  language: null,
+  language: 'en',
   address: [
     {
       fullAddress: null,
@@ -103,12 +106,13 @@ export const userStore = create<State & Action>((set) => ({
     },
   ],
   currency: {
-    symbol: null,
-    currency: null,
-    abrive: null,
+    symbol: '€',
+    currency: 'EUR',
+    abrive: 'EUR',
   },
   rate: null,
   orderId: null,
+  confirmDetails: false,
   updateFetching: (fetching) => set(() => ({ isFetching: fetching })),
   updateUser: (user) => set(() => ({ user })),
   updateUserData: (userData) => set(() => ({ userData })),
@@ -122,4 +126,5 @@ export const userStore = create<State & Action>((set) => ({
   updateCurrency: (currency) => set(() => ({ currency })),
   updateOderId: (orderId) => set(() => ({ orderId })),
   updateRate: (rate) => set(() => ({ rate })),
+  updateConfirmDetails: (confirmDetails) => set(() => ({ confirmDetails })),
 }))

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image } from 'react-native'
 import React from 'react'
 import { COLORS } from '../../../styles/theme'
 import CustomButton from '../../Button'
@@ -12,33 +12,42 @@ interface IGender {
 }
 
 const { width } = Dimensions.get('window')
-const GenderData = ['male', 'female']
+const GenderData = [
+  { gender: 'male', image: require('../../../assets/logo/boyImage.png') },
+  { gender: 'female', image: require('../../../assets/logo/girlImage.png') },
+]
 
 const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender, data }) => {
   const { t } = useTranslation('avatar')
   return (
     <View style={styles.genderContainer}>
+      <Text style={styles.bottomTitle}>1.{t('select your gender')}.</Text>
+
       <View style={styles.bottomWrapper}>
-        <Text style={styles.bottomTitle}>1.{t('select your gender')}.</Text>
         <View style={styles.genderButtonWrapper}>
           {GenderData.map((gender, index) => (
             <TouchableOpacity
               key={index}
-              onPress={() => setGender(gender)}
+              onPress={() => setGender(gender.gender)}
               style={[
                 styles.genderButton,
                 {
-                  borderColor: isGender === gender ? COLORS.textSecondaryClr : COLORS.textRGBAClr,
+                  borderColor:
+                    isGender === gender.gender ? COLORS.textSecondaryClr : COLORS.textRGBAClr,
                 },
               ]}
             >
+              <Image source={gender.image} />
               <Text
                 style={[
                   styles.buttonText,
-                  { color: isGender === gender ? COLORS.textSecondaryClr : COLORS.textRGBAClr },
+                  {
+                    color:
+                      isGender === gender.gender ? COLORS.textSecondaryClr : COLORS.textRGBAClr,
+                  },
                 ]}
               >
-                {t(gender)}
+                {t(gender.gender)}
               </Text>
             </TouchableOpacity>
           ))}
@@ -50,7 +59,7 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender, data }) => 
           variant='primary'
           fontFamily='Arvo-Regular'
           fontSize={16}
-          disabled={!data?.animationFinished}
+          // disabled={!data?.animationFinished}
           onPress={() => setToggle(true)}
           style={{ width: width, paddingHorizontal: 24 }}
         />
@@ -63,7 +72,7 @@ export default Gender
 
 const styles = StyleSheet.create({
   genderContainer: {
-    // flex: 1,
+    flex: 1,
   },
 
   bottomWrapper: {
@@ -77,10 +86,10 @@ const styles = StyleSheet.create({
   },
   genderButtonWrapper: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     paddingVertical: 16,
-    // marginTop: 12,
+    width: width,
     gap: 8,
   },
   genderButton: {
