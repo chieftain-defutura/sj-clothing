@@ -578,7 +578,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                       borderBottomRightRadius: 50,
                     }}
                   />
-                ) : user ? (
+                ) : user && profile ? (
                   <Image
                     source={{ uri: profile as string }}
                     style={{

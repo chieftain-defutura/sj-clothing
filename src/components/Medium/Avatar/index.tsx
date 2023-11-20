@@ -176,8 +176,9 @@ const Avatar: React.FC<IAvatar> = ({ path, setSteps, steps }) => {
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-start',
           alignItems: 'center',
+          gap: 5,
           padding: 16,
           backgroundColor: 'transparent',
         }}

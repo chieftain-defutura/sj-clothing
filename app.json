@@ -19,6 +19,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "config": {
+        "googleMaps": {
+          "apiKey": "XXXXXXXXX-XXXXXXXXX_XXXXXX_g"
+        }
+      },
       "package": "com.braj1410.Sprinkle",
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
@@ -38,6 +43,10 @@
         }
       ]
     ],
-    "extra": {}
+    "extra": {
+      "eas": {
+        "projectId": "3f866d31-5243-45d6-b35e-7dcc398752d5"
+      }
+    }
   }
 }

@@ -234,7 +234,7 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
       <View style={styles.searchInputBox}>
         <Search width={16} height={16} />
         <InputBox
-          placeholder='Search for area, street name'
+          placeholder='Search for area, street nam'
           onChangeText={(text) => handleSearchText(text)}
           value={onText}
           style={styles.inputBox}

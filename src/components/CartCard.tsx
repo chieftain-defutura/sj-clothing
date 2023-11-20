@@ -1,26 +1,27 @@
 import React from 'react'
 import { View } from 'react-native'
-import { CartComponentProps } from '../constant/types'
+import { CartComponentProps, ICheckout } from '../constant/types'
 import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../styles/theme'
 import CircleClose from '../assets/icons/CircleClose'
 import { userStore } from '../store/userStore'
 
-const CartCard: React.FC<CartComponentProps> = ({ cartData, closedItems, handleClose }) => {
+const CartCard: React.FC<ICheckout> = ({ price, offerPrice, productName, productImage }) => {
   const { currency, rate } = userStore()
-
+  console.log('price', price)
+  console.log('offerPrice', offerPrice)
   return (
     <CartPageContent>
       <View>
         <CartPageContainer>
           <View>
-            <TShirtImage source={{ uri: cartData.productImage }} />
+            <TShirtImage source={{ uri: productImage }} />
           </View>
           <View>
             <ProductWrapper>
               <View style={{ marginBottom: 16 }}>
                 <ProductText>Product</ProductText>
-                <ProductShirtText>{cartData.productName}</ProductShirtText>
+                <ProductShirtText>{productName}</ProductShirtText>
               </View>
               {/* <Pressable onPress={() => handleClose(index)}>
                         <CircleClose width={20} height={20} />
@@ -51,9 +52,7 @@ const CartCard: React.FC<CartComponentProps> = ({ cartData, closedItems, handleC
                     alignItems: 'center',
                   }}
                 >
-                  <OldPriceText>
-                    {(Number(cartData.price) * (rate as number)).toFixed(2)}
-                  </OldPriceText>
+                  <OldPriceText>{(Number(price) * (rate as number)).toFixed(2)}</OldPriceText>
                   <OldPriceText> {currency.symbol}</OldPriceText>
                 </View>
                 <View
@@ -63,9 +62,7 @@ const CartCard: React.FC<CartComponentProps> = ({ cartData, closedItems, handleC
                     alignItems: 'center',
                   }}
                 >
-                  <ProductName>
-                    {(Number(cartData.offerPrice) * (rate as number)).toFixed(2)}
-                  </ProductName>
+                  <ProductName>{(Number(offerPrice) * (rate as number)).toFixed(2)}</ProductName>
                   <ProductName>{currency.symbol}</ProductName>
                 </View>
               </View>

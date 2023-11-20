@@ -18,6 +18,7 @@ import { userStore } from '../../../store/userStore'
 import { ICheckout } from '../../../constant/types'
 import GiftIcon from '../../../assets/icons/GiftIcon'
 import GiftOptions from './GiftOptions'
+import { setDoc } from 'firebase/firestore'
 
 type RootStackParamList = {
   Checkout: { product: string }
@@ -31,24 +32,29 @@ interface IDeliveryfees {
 const API_URL = 'https://sj-clothing-backend.cyclic.app'
 
 interface AddressData {
-  name: string
-  mobile: string
-  email: string
-  addressLineOne: string
-  addressLineTwo: string
-  city: string
-  region: string
-  pinCode: string
-  saveAsAddress: string
+  floor: string
+  fullAddress: string
   isSelected: boolean
+  phoneNo: string
+  saveAddressAs: string
 }
 
-const Checkout: React.FC<ICheckout> = ({ navigation }) => {
+const Checkout: React.FC<ICheckout> = ({
+  navigation,
+  description,
+  gender,
+  offerPrice,
+  price,
+  productImage,
+  productName,
+  size,
+  id,
+}) => {
   const [closedItems, setClosedItems] = useState<number[]>([])
   const [isOrderPlacedVisible, setOrderPlacedVisible] = React.useState(false)
   const [addr, setAddr] = useState<AddressData | null>(null)
   const [cartItems, setCartItems] = useState()
-  const [orderData, setOrderData] = useState<ICheckout | null>(null)
+  // const [orderData, setOrderData] = useState<ICheckout | null>(null)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
   const { user, orderId, rate, currency } = userStore()
   const [openGift, setOpengift] = useState(false)
@@ -101,33 +107,11 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
     fetchData()
   }, [fetchData])
 
-  const fetchOrderData = useCallback(async () => {
-    try {
-      const OrderDocRef = doc(db, 'Orders', orderId as string)
-      const OrderDoc = await getDoc(OrderDocRef)
-      const data = OrderDoc.data()
-
-      if (data) {
-        setOrderData(data as ICheckout)
-      } else {
-        console.warn('Order data is undefined.')
-      }
-    } catch (error) {
-      console.error('Error fetching order data: ', error)
-    }
-  }, [orderId])
-
-  useEffect(() => {
-    fetchOrderData()
-  }, [fetchOrderData])
-
   const processPay = async () => {
     try {
-      const amount = orderData?.offerPrice
-        ? Number(orderData?.offerPrice) + Number(deliveryFees?.DeliveryFees || 0)
-        : Number(orderData?.price) + Number(deliveryFees?.DeliveryFees || 0)
-
-      console.log('orderData', orderData)
+      const amount = offerPrice
+        ? Number(offerPrice) + Number(deliveryFees?.DeliveryFees || 0)
+        : Number(price) + Number(deliveryFees?.DeliveryFees || 0)
 
       const address = addr
       if (!address) {
@@ -140,7 +124,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          productIds: orderData?.id,
+          productIds: id,
           name: user?.displayName,
           email: user?.email,
           currency: currency.currency,
@@ -164,20 +148,51 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
       //1. order create
       const { paymentId } = data
       console.log('payment id', paymentId)
-      if (!user) return
 
       //creating order
-      const userDocRef = doc(db, 'users', user.uid)
-      const userDoc = await getDoc(userDocRef)
-      const userData = userDoc.data()
+      const userDocRef = doc(db, 'Orders', paymentId)
 
-      console.log(userData?.my_orders)
-      if (userData && !userData?.my_orders) {
-        userData.my_orders = []
-      }
-      userData?.my_orders.push(orderData)
-      await updateDoc(userDocRef, userData)
-
+      await setDoc(userDocRef, {
+        sizes: size,
+        productImage: productImage,
+        description: description,
+        price: price,
+        offerPrice: offerPrice,
+        paymentStatus: 'pending',
+        userId: user?.uid,
+        gender: gender,
+        type: 'Premium-Level',
+        productName: productName,
+        giftMessage: '',
+        orderStatus: {
+          orderplaced: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          manufacturing: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          readyToShip: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          shipping: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          delivery: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+        },
+      })
+      // payment
       const initSheet = await stripe.initPaymentSheet({
         paymentIntentClientSecret: data.clientSecret,
         merchantDisplayName: 'Dewall',
@@ -216,15 +231,6 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
       )
       console.log('addressData', addressData)
       setAddr(addressData)
-      // if (fetchData?.address) {
-      //   const addressData: AddressData[] = Object.values(fetchData?.address)
-      //   addressData.forEach((d, index) => {
-      //     if (d.isSelected === true) {
-      //       setAddr(d)
-      //       console.log('selected', d)
-      //     }
-      //   })
-      // }
     } catch (error) {
       console.log(error)
     }
@@ -269,12 +275,16 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
     getDeliveryFees()
   }, [getDeliveryFees])
 
+  console.log('addr', addr)
+  console.log(price)
+  console.log(offerPrice)
   return (
-    <LinearGradient colors={gradientOpacityColors}>
+    <View style={{ flex: 1 }}>
       {!openGift && (
         <Animated.View
           entering={SlideInRight.duration(500).delay(200)}
           exiting={SlideOutRight.duration(500).delay(200)}
+          style={{ flex: 1 }}
         >
           <ScrollViewContent showsVerticalScrollIndicator={false}>
             <View style={{ paddingBottom: 80 }}>
@@ -286,25 +296,21 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                 <LeftArrow width={24} height={24} />
                 <CartText>Check Out</CartText>
               </GoBackArrowContent>
-              {orderData ? (
-                <CartCard
-                  cartData={orderData}
-                  closedItems={closedItems}
-                  handleClose={handleClose}
-                />
-              ) : (
-                <Text>No item</Text>
-              )}
+              <CartCard
+                offerPrice={offerPrice}
+                price={price}
+                productImage={productImage}
+                productName={productName}
+              />
+
               <CartPageContent>
                 <HomeFlexContent onPress={() => navigation.navigate('LocationAddAddress')}>
                   {addr ? (
                     <Pressable>
                       <View>
-                        <HomeText>{addr.saveAsAddress}</HomeText>
+                        <HomeText>{addr.saveAddressAs}</HomeText>
                         <HomeDescription>
-                          {addr.addressLineOne}, {addr.addressLineTwo}, {addr.city}, {addr.region},{' '}
-                          {addr.isSelected}
-                          {addr.email}, {addr.pinCode}, {addr.mobile}
+                          {addr.floor}, {addr.fullAddress}, {addr.phoneNo}
                         </HomeDescription>
                       </View>
                     </Pressable>
@@ -366,9 +372,9 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
                 <TotalContent>
                   <TotalText>Total</TotalText>
                   <TotalValue>
-                    {orderData?.offerPrice
-                      ? Number(orderData?.offerPrice) + Number(deliveryFees?.DeliveryFees)
-                      : Number(orderData?.price) + Number(deliveryFees?.DeliveryFees)}
+                    {offerPrice
+                      ? Number(offerPrice) + Number(deliveryFees?.DeliveryFees)
+                      : Number(price) + Number(deliveryFees?.DeliveryFees)}
                     {currency.symbol}
                   </TotalValue>
                 </TotalContent>
@@ -379,7 +385,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
             variant='primary'
             text='Place order'
             fontFamily='Arvo-Regular'
-            onPress={openOrderPlaced}
+            onPress={processPay}
             fontSize={16}
             style={{
               position: 'absolute',
@@ -387,10 +393,10 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
               left: 0,
               right: 0,
               width: '100%',
-              backgroundColor: 'rgba(145, 177, 225, 0.2)',
               padding: 16,
             }}
           />
+
           <OrderPlaced isVisible={isOrderPlacedVisible} onClose={closeOrderPlaced} />
         </Animated.View>
       )}
@@ -401,7 +407,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
           setOpengift={setOpengift}
         />
       )}
-    </LinearGradient>
+    </View>
   )
 }
 

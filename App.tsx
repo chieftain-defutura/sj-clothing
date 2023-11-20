@@ -10,7 +10,6 @@ import { Image, SafeAreaView, Dimensions } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { I18nextProvider } from 'react-i18next'
 import i18n from './i18n'
-import AppLoading from 'expo-app-loading'
 import { doc, getDoc } from 'firebase/firestore/lite'
 
 const PUBLISHABLE_KEY =
@@ -21,8 +20,6 @@ const App: React.FC = () => {
     updateUser,
     updateLanguage,
     user,
-    avatar,
-    confirmDetails,
     currency,
     language,
     updateCurrency,
@@ -35,6 +32,7 @@ const App: React.FC = () => {
     updateConfirmDetails,
   } = userStore()
   const [isLoading, setLoading] = useState(true)
+  const [isLoaded, setLoaded] = useState(false)
   useEffect(() => {
     return onAuthStateChanged(auth, (data) => {
       if (data) {
@@ -49,25 +47,31 @@ const App: React.FC = () => {
       console.log(1)
       if (!user) return
       console.log(2)
-      setLoading(true)
-      const q = doc(db, 'users', user.uid)
-      const querySnapshot = await getDoc(q)
-      const fetchData = querySnapshot.data()
-      updateProfile(fetchData?.profile)
-      updateName(fetchData?.name)
-      updateAddress(fetchData?.address)
-      updateAvatar(fetchData?.avatar)
-      updatePhoneNo(fetchData?.phoneNo)
-      updateLanguage(fetchData?.language)
-      updateCurrency(fetchData?.currency)
-      updateRate(fetchData?.rate)
-      updateConfirmDetails(fetchData?.confirmDetails)
+      if (user && user.emailVerified) {
+        if (!isLoaded) {
+          setLoading(true)
+        }
+
+        const q = doc(db, 'users', user.uid)
+        const querySnapshot = await getDoc(q)
+        const fetchData = querySnapshot.data()
+        updateProfile(fetchData?.profile)
+        updateName(fetchData?.name)
+        updateAddress(fetchData?.address)
+        updateAvatar(fetchData?.avatar)
+        updatePhoneNo(fetchData?.phoneNo)
+        updateLanguage(fetchData?.language)
+        updateCurrency(fetchData?.currency)
+        updateRate(fetchData?.rate)
+        updateConfirmDetails(fetchData?.confirmDetails)
+        setLoaded(true)
+      }
     } catch (error) {
       console.error('Error fetching data from Firestore:', error)
     } finally {
       setLoading(false)
     }
-  }, [user])
+  }, [user, isLoaded])
 
   useEffect(() => {
     fetchDataFromFirestore()

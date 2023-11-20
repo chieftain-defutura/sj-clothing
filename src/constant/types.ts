@@ -38,10 +38,10 @@ export interface CartComponentProps {
 }
 
 export interface ICheckout {
-  navigation: any
-  id: string
+  navigation?: any
+  id?: string
   // route: RouteProp<RootStackParamList, 'Checkout'>
-  size: {
+  size?: {
     country: string
     sizeVarient: {
       size: string
@@ -49,12 +49,12 @@ export interface ICheckout {
       quantity: number
     }
   }
-  description: string
-  price: string
-  offerPrice: string
-  gender: string
-  productName: string
-  productImage: any
+  description?: string
+  price?: string
+  offerPrice?: string
+  gender?: string
+  productName?: string
+  productImage?: any
 }
 
 export interface IPremiumData {

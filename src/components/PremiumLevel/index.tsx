@@ -30,6 +30,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   const [productId, setProductId] = useState('')
   const [focus, setFocus] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [openCheckout, setOpenCheckout] = useState(false)
 
   const [login, setLogin] = useState(false)
   const [signUp, setSignUp] = useState(false)
@@ -81,137 +82,154 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
       } else {
         setFocus(true)
         setErrorMessage('')
-        const docRef = await addDoc(collection(db, 'Orders'), {
-          sizes: isSize,
-          productImage: FilteredData[0].productImage,
-          description: FilteredData[0].description,
-          price: FilteredData[0].normalPrice,
-          offerPrice: FilteredData[0].offerPrice,
-          paymentStatus: 'pending',
-          userId: user?.uid,
-          gender: FilteredData[0].gender,
-          type: 'Premium-Level',
-          productName: FilteredData[0].productName,
-          giftMessage: '',
-          orderStatus: {
-            orderplaced: {
-              createdAt: null,
-              description: '',
-              status: false,
-            },
-            manufacturing: {
-              createdAt: null,
-              description: '',
-              status: false,
-            },
-            readyToShip: {
-              createdAt: null,
-              description: '',
-              status: false,
-            },
-            shipping: {
-              createdAt: null,
-              description: '',
-              status: false,
-            },
-            delivery: {
-              createdAt: null,
-              description: '',
-              status: false,
-            },
-          },
-        })
-        updateOderId(docRef.id)
+        // const docRef = await addDoc(collection(db, 'Orders'), {
+        //   sizes: isSize,
+        //   productImage: FilteredData[0].productImage,
+        //   description: FilteredData[0].description,
+        //   price: FilteredData[0].normalPrice,
+        //   offerPrice: FilteredData[0].offerPrice,
+        //   paymentStatus: 'pending',
+        //   userId: user?.uid,
+        //   gender: FilteredData[0].gender,
+        //   type: 'Premium-Level',
+        //   productName: FilteredData[0].productName,
+        //   giftMessage: '',
+        //   orderStatus: {
+        //     orderplaced: {
+        //       createdAt: null,
+        //       description: '',
+        //       status: false,
+        //     },
+        //     manufacturing: {
+        //       createdAt: null,
+        //       description: '',
+        //       status: false,
+        //     },
+        //     readyToShip: {
+        //       createdAt: null,
+        //       description: '',
+        //       status: false,
+        //     },
+        //     shipping: {
+        //       createdAt: null,
+        //       description: '',
+        //       status: false,
+        //     },
+        //     delivery: {
+        //       createdAt: null,
+        //       description: '',
+        //       status: false,
+        //     },
+        //   },
+        // })
+        // updateOderId(docRef.id)
+        setOpenCheckout(true)
         setOpenDetails(false)
-        navigation.navigate('Checkout')
       }
     }
   }
   if (!data) return <Text>No Data</Text>
   return (
     <View style={{ flex: 1 }}>
-      {openDetails ? (
+      {!openCheckout && (
         <View style={{ flex: 1 }}>
-          {FilteredData?.map((item, index) => (
-            <PremiumThreeSixtyDegree
-              key={index}
-              errorMessage={errorMessage}
-              setOpenDetails={setOpenDetails}
-              data={item}
-              focus={focus}
-              handleSubmit={handleSubmit}
-              setFocus={setFocus}
-            />
-          ))}
-        </View>
-      ) : (
-        <View>
-          {openCard && (
-            <View>
+          {openDetails ? (
+            <View style={{ flex: 1 }}>
               {FilteredData?.map((item, index) => (
-                <PremiumDetailsCard
+                <PremiumThreeSixtyDegree
                   key={index}
-                  data={item}
+                  errorMessage={errorMessage}
                   setOpenDetails={setOpenDetails}
-                  setSize={setSize}
-                  handleBack={handleBack}
-                  isSize={isSize}
+                  data={item}
+                  focus={focus}
                   handleSubmit={handleSubmit}
+                  setFocus={setFocus}
                 />
               ))}
             </View>
-          )}
-          <View
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              width: width / 1.6,
-              columnGap: 150,
-            }}
-          >
-            {data
-              .filter((f) => f.id !== productId)
-              .map((item, index) => (
-                <View key={index} style={{ flex: 1 }}>
-                  <PremiumCard
-                    data={item}
-                    setSize={setSize}
-                    setOpenCard={setOpenCard}
-                    setProductId={setProductId}
-                  />
+          ) : (
+            <View>
+              {openCard && (
+                <View>
+                  {FilteredData?.map((item, index) => (
+                    <PremiumDetailsCard
+                      key={index}
+                      data={item}
+                      setOpenDetails={setOpenDetails}
+                      setSize={setSize}
+                      handleBack={handleBack}
+                      isSize={isSize}
+                      handleSubmit={handleSubmit}
+                    />
+                  ))}
                 </View>
-              ))}
-          </View>
+              )}
+              <View
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  width: width / 1.6,
+                  columnGap: 150,
+                }}
+              >
+                {data
+                  .filter((f) => f.id !== productId)
+                  .map((item, index) => (
+                    <View key={index} style={{ flex: 1 }}>
+                      <PremiumCard
+                        data={item}
+                        setSize={setSize}
+                        setOpenCard={setOpenCard}
+                        setProductId={setProductId}
+                      />
+                    </View>
+                  ))}
+              </View>
+            </View>
+          )}
+          {login && (
+            <LoginModal
+              onForgotClick={() => {
+                setForgotmail(true), setLogin(false)
+              }}
+              onSignClick={() => {
+                setSignUp(true), setLogin(false)
+              }}
+              onClose={() => setLogin(false)}
+            />
+          )}
+
+          {signUp && (
+            <SignupModal
+              onLoginClick={() => {
+                setLogin(true), setSignUp(false)
+              }}
+              onClose={() => setSignUp(false)}
+            />
+          )}
+          {forgotMail && (
+            <ForgotMail
+              onLoginClick={() => {
+                setLogin(true), setForgotmail(false)
+              }}
+              onClose={() => setForgotmail(false)}
+            />
+          )}
         </View>
       )}
-      {login && (
-        <LoginModal
-          onForgotClick={() => {
-            setForgotmail(true), setLogin(false)
-          }}
-          onSignClick={() => {
-            setSignUp(true), setLogin(false)
-          }}
-          onClose={() => setLogin(false)}
-        />
-      )}
-
-      {signUp && (
-        <SignupModal
-          onLoginClick={() => {
-            setLogin(true), setSignUp(false)
-          }}
-          onClose={() => setSignUp(false)}
-        />
-      )}
-      {forgotMail && (
-        <ForgotMail
-          onLoginClick={() => {
-            setLogin(true), setForgotmail(false)
-          }}
-          onClose={() => setForgotmail(false)}
+      {openCheckout && FilteredData && (
+        <Checkout
+          id={FilteredData[0].id}
+          description={FilteredData[0].description}
+          gender={FilteredData[0].gender}
+          navigation={navigation}
+          offerPrice={FilteredData[0].offerPrice}
+          price={FilteredData[0].normalPrice}
+          productImage={FilteredData[0].productImage}
+          productName={FilteredData[0].productName}
+          size={isSize}
         />
       )}
     </View>

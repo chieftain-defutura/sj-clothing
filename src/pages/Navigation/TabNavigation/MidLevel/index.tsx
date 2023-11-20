@@ -14,7 +14,7 @@ const MidLevel: React.FC = () => {
   return (
     <Animated.View style={{ flex: 1 }}>
       <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
-        {user && confirmDetails ? <Medium /> : <BeforeUser />}
+        {confirmDetails ? <Medium /> : <BeforeUser />}
       </LinearGradient>
     </Animated.View>
   )

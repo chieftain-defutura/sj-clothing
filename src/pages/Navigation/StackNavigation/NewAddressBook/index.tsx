@@ -231,7 +231,6 @@ const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay }) => {
           <AddAddress
             setDisplay={setDisplay}
             onSavePress={() => {
-              setDisplay(1)
               changeHeight('52%')
             }}
             location={locText}

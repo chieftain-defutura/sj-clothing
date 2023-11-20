@@ -31,7 +31,7 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender, data }) => 
               key={index}
               style={{
                 width: width / 1.2,
-                height: height / 3.4,
+                height: height / 3.8,
                 borderColor: isGender === gender.gender ? COLORS.textSecondaryClr : '#FFF',
                 borderWidth: 1,
                 borderRadius: 30,
@@ -45,7 +45,7 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender, data }) => 
                 <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Image
                     source={gender.image}
-                    style={{ width: width / 1.8, height: height / 3.8 }}
+                    style={{ width: width / 1.8, height: height / 4.3 }}
                   />
                   <Text
                     style={[
@@ -83,7 +83,10 @@ export default Gender
 
 const styles = StyleSheet.create({
   genderContainer: {
-    flex: 1,
+    paddingTop: 5,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
 
   bottomWrapper: {

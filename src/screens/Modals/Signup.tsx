@@ -59,7 +59,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const updateUser = userStore((state) => state.updateUser)
-  const { user, confirmDetails, language, currency } = userStore()
+  const { user, confirmDetails, language, currency, avatar } = userStore()
   const updateFetching = userStore((state) => state.updateFetching)
   const [isChecked, setChecked] = useState(false)
   const [isCreated, setIsCreated] = useState(false)
@@ -122,7 +122,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           address: [],
           profile: null,
           phoneNo: null,
-          avatar: null,
+          avatar: avatar,
           termsAndConditions: false,
           currency: currency,
           language: language,
