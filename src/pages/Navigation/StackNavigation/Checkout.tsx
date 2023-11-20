@@ -97,36 +97,6 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
     fetchData()
   }, [fetchData])
 
-  // useEffect(() => {
-  //   if (!user) return
-  //   const temp = async () => {
-  //     if (!user) return
-  //     const userDocRef = doc(db, 'users', user.uid)
-  //     const userDoc = await getDoc(userDocRef)
-  //     const userData = userDoc.data()
-  //     if (!userData) return
-  //     setCartItems(userData.CartProduct)
-  //     await updateDoc(userDocRef, userData)
-  //   }
-
-  //   const handleError = async () => {
-  //     const userDocRef = doc(db, 'users', user.uid)
-  //     const userDoc = await getDoc(userDocRef)
-  //     const userData = userDoc.data()
-  //     if (!userData) return
-  //     setCartItems(userData.CartProduct)
-  //     await updateDoc(userDocRef, userData)
-  //   }
-  //   temp()
-  //     .then(() => {
-  //       console.log('success')
-  //     })
-  //     .catch(() => {
-  //       handleError()
-  //       console.log('handled error')
-  //     })
-  // }, [])
-
   const fetchOrderData = useCallback(async () => {
     try {
       const OrderDocRef = doc(db, 'Orders', orderId as string)
@@ -150,8 +120,10 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   const processPay = async () => {
     try {
       const amount = orderData?.offerPrice
-        ? Number(orderData?.offerPrice) + Number(deliveryFees?.DeliveryFees)
-        : Number(orderData?.price) + Number(deliveryFees?.DeliveryFees)
+        ? Number(orderData?.offerPrice) + Number(deliveryFees?.DeliveryFees || 0)
+        : Number(orderData?.price) + Number(deliveryFees?.DeliveryFees || 0)
+
+      console.log('orderData', orderData)
 
       const address = addr
       if (!address) {
@@ -174,6 +146,8 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
           amount: Number(amount) * (rate as number),
         }),
       })
+
+      console.log('amount', Number(amount) * (rate as number))
 
       const data = await response.json()
       console.log('data', data.message)

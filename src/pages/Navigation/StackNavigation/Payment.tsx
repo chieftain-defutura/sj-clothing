@@ -18,7 +18,7 @@
 //       const response = await RNUpiPayment.initializePayment(
 //         {
 //           vpa: '7358247659@ibl', // UPI ID of the receiver
-//           payeeName: 'subaa', // Name of the receiver
+//           payeeName: 'suganya', // Name of the receiver
 //           amount: '1.00', // Amount to be paid
 //           transactionRef: orderId(), // Unique transaction reference ID
 //           // transactionNote: 'Payment for goods', // Transaction note
