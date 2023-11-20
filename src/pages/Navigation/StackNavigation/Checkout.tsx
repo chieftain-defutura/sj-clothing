@@ -27,7 +27,7 @@ interface IDeliveryfees {
   DeliveryFees: number
 }
 
-const API_URL = 'https://sj-clothing-backend.cyclic.app'
+const API_URL = 'https://b021-2405-201-e006-8138-b835-327d-842b-eb8b.ngrok-free.app'
 
 interface AddressData {
   name: string
@@ -49,6 +49,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   const [cartItems, setCartItems] = useState()
   const [orderData, setOrderData] = useState<ICheckout | null>(null)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
+
   const { user, orderId, rate, currency } = userStore()
   const stripe = useStripe()
 
@@ -137,13 +138,24 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
         },
         body: JSON.stringify({
           productIds: orderData?.id,
-          name: user?.displayName,
           email: user?.email,
-          currency: currency.currency,
           address: address,
           paymentStatus: 'pending',
           userid: user?.uid,
           amount: Number(amount) * (rate as number),
+          shipping: {
+            name: user?.displayName,
+            address: {
+              line1: '510 townsend st',
+              postal_code: '268168',
+              city: 'San Francisco',
+              state: 'CA',
+              country: 'US',
+              line2: '',
+            },
+          },
+          description: 'shipping address',
+          currency: currency.currency,
         }),
       })
 
@@ -167,7 +179,7 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
       const userDoc = await getDoc(userDocRef)
       const userData = userDoc.data()
 
-      console.log(userData?.my_orders)
+      console.log('userData', userData?.my_orders)
       if (userData && !userData?.my_orders) {
         userData.my_orders = []
       }
@@ -183,9 +195,11 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
         console.error(initSheet.error)
         return Alert.alert(initSheet.error.message)
       }
+
       const presentSheet = await stripe.presentPaymentSheet({
         clientSecret: data.clientSecret,
       })
+
       // const presentSheet = await stripe.presentGooglePay({
       //   clientSecret: data.clientSecret,
       // })
