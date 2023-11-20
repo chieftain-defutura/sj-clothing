@@ -40,7 +40,10 @@ export interface CartComponentProps {
 export interface ICheckout {
   navigation?: any
   id?: string
-  // route: RouteProp<RootStackParamList, 'Checkout'>
+  style?: string
+  sizes?: string
+  color?: string
+  textAndImage?: string
   size?: {
     country: string
     sizeVarient: {
@@ -55,6 +58,7 @@ export interface ICheckout {
   gender?: string
   productName?: string
   productImage?: any
+  setOpenCheckout: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export interface IPremiumData {

@@ -67,7 +67,7 @@ const CurrencyData = [
 ]
 
 const Currency = () => {
-  const { currency, updateCurrency, updateRate, user, confirmDetails } = userStore()
+  const { currency, updateCurrency, updateRate, user, confirmDetails, rate } = userStore()
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)

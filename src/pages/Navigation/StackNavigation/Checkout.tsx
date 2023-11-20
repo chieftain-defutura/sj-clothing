@@ -49,6 +49,7 @@ const Checkout: React.FC<ICheckout> = ({
   productName,
   size,
   id,
+  setOpenCheckout,
 }) => {
   const [closedItems, setClosedItems] = useState<number[]>([])
   const [isOrderPlacedVisible, setOrderPlacedVisible] = React.useState(false)
@@ -163,7 +164,7 @@ const Checkout: React.FC<ICheckout> = ({
         gender: gender,
         type: 'Premium-Level',
         productName: productName,
-        giftMessage: '',
+        giftMessage: giftOptions,
         orderStatus: {
           orderplaced: {
             createdAt: null,
@@ -284,19 +285,23 @@ const Checkout: React.FC<ICheckout> = ({
         <Animated.View
           entering={SlideInRight.duration(500).delay(200)}
           exiting={SlideOutRight.duration(500).delay(200)}
-          style={{ flex: 1 }}
+          style={{
+            flex: 1,
+            // backgroundColor: 'red',
+          }}
         >
           <ScrollViewContent showsVerticalScrollIndicator={false}>
             <View style={{ paddingBottom: 80 }}>
               <GoBackArrowContent
                 onPress={() => {
-                  navigation.goBack()
+                  setOpenCheckout(false)
                 }}
               >
                 <LeftArrow width={24} height={24} />
                 <CartText>Check Out</CartText>
               </GoBackArrowContent>
               <CartCard
+                setOpenCheckout={setOpenCheckout}
                 offerPrice={offerPrice}
                 price={price}
                 productImage={productImage}
@@ -389,7 +394,7 @@ const Checkout: React.FC<ICheckout> = ({
             fontSize={16}
             style={{
               position: 'absolute',
-              bottom: 0,
+              bottom: -20,
               left: 0,
               right: 0,
               width: '100%',
@@ -397,7 +402,7 @@ const Checkout: React.FC<ICheckout> = ({
             }}
           />
 
-          <OrderPlaced isVisible={isOrderPlacedVisible} onClose={closeOrderPlaced} />
+          {/* <OrderPlaced isVisible={isOrderPlacedVisible} onClose={closeOrderPlaced} /> */}
         </Animated.View>
       )}
       {openGift && (

@@ -176,7 +176,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
   }
 
   return (
-    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1, position: 'relative' }}>
       <KeyboardAvoidingView style={[styles.container]} contentContainerStyle={{ height: 900 }}>
         {showDisplay === 0 && (
           <>
@@ -246,16 +246,25 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
         )}
         {showDisplay === 1 && (
           <>
+            <GoBackArrowContent
+              onPress={() => {
+                navigation.goBack()
+              }}
+            >
+              <LeftArrow width={24} height={24} />
+              <CartText>{'Addressbook'}</CartText>
+            </GoBackArrowContent>
             <View
               style={{
-                position: 'absolute',
-                top: 10,
-                zIndex: 10,
+                // position: 'absolute',
+                // top: 10,
+                // zIndex: 15000,
                 display: 'flex',
                 alignItems: 'center',
                 flexDirection: 'column',
                 gap: 30,
                 paddingHorizontal: 20,
+                paddingVertical: 10,
               }}
             >
               <View style={[styles.searchInputBox, { backgroundColor: 'white' }]}>

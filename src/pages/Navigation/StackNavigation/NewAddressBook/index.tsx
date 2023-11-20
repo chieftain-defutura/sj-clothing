@@ -1,4 +1,11 @@
-import { StyleSheet, View, KeyboardAvoidingView, FlatList, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native'
 import React, { useState } from 'react'
 import MapView, { Marker } from 'react-native-maps'
 import CustomButton from '../../../../components/Button'
@@ -25,7 +32,7 @@ interface Suggestion {
   display_name: string
   place_id: number
 }
-
+const { height, width } = Dimensions.get('window')
 const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay }) => {
   const { t } = useTranslation('account')
   const height = useSharedValue('0%')
@@ -166,18 +173,18 @@ const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay }) => {
   }
 
   return (
-    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <KeyboardAvoidingView style={[styles.container]} contentContainerStyle={{ height: 900 }}>
-        <GoBackArrowContent
+        {/* <GoBackArrowContent
           onPress={() => {
             navigation.goBack()
           }}
         >
           <LeftArrow width={24} height={24} />
           <CartText>{'Addressbook'}</CartText>
-        </GoBackArrowContent>
+        </GoBackArrowContent> */}
 
-        <MapView
+        {/* <MapView
           ref={mapRef}
           style={{ flex: 1 }}
           initialRegion={{
@@ -211,7 +218,7 @@ const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay }) => {
             <CurrentLocationIcon width={16} height={16} />
             <UseCurrentLocationText>Use current location</UseCurrentLocationText>
           </FlexRow>
-        </CurrentLocationWrapper>
+        </CurrentLocationWrapper> */}
 
         <SelectAddressBtn>
           <CustomButton
@@ -220,6 +227,7 @@ const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay }) => {
             text='Enter Complete Address'
             fontFamily='Arvo-Regular'
             fontSize={16}
+            style={{ width: width / 1.1 }}
           />
         </SelectAddressBtn>
         <Animated.View style={[styles.parent, editAnimationStyle]}>
@@ -281,7 +289,7 @@ const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay }) => {
           )} */}
         </Animated.View>
       </KeyboardAvoidingView>
-    </LinearGradient>
+    </View>
   )
 }
 
@@ -304,9 +312,10 @@ const CartText = styled.Text`
 `
 
 const SelectAddressBtn = styled.View`
-  background: ${COLORS.iconsNormalClr};
   padding-horizontal: 16px;
   padding-vertical: 24px;
+  position: absolute;
+  bottom: 0px;
 `
 
 const UseCurrentLocationText = styled.Text`

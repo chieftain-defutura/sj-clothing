@@ -10,6 +10,7 @@ const CartCard: React.FC<ICheckout> = ({ price, offerPrice, productName, product
   const { currency, rate } = userStore()
   console.log('price', price)
   console.log('offerPrice', offerPrice)
+  console.log(rate)
   return (
     <CartPageContent>
       <View>
