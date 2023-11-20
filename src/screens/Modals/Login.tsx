@@ -3,7 +3,11 @@ import { Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import { View, Modal, StyleSheet, Pressable } from 'react-native'
-import { AuthErrorCodes, signInWithEmailAndPassword } from 'firebase/auth'
+import {
+  AuthErrorCodes,
+  fetchSignInMethodsForEmail,
+  signInWithEmailAndPassword,
+} from 'firebase/auth'
 import { auth } from '../../../firebase'
 import { COLORS } from '../../styles/theme'
 import { FirebaseError } from 'firebase/app'
@@ -62,15 +66,19 @@ const LoginModal: React.FC<LoginModalProps> = ({
   const handleSubmit = async (values: typeof initialValues) => {
     try {
       setIsLoading(true)
-      // const getPassword = await AsyncStorage.getItem('password')
-      // const getEmail = await AsyncStorage.getItem('mail')
 
-      // if (values.email !== getEmail) {
-      //   setErrorMessage('User does not exist. Create an account')
-      // }
-      // if (values.password !== getPassword) {
-      //   setErrorMessage('Invalid Password')
-      // }
+      const signInMethods = await fetchSignInMethodsForEmail(auth, values.email)
+      console.log(signInMethods)
+      const emailExists = signInMethods.length > 0
+
+      if (emailExists) {
+        await signInWithEmailAndPassword(auth, values.email, values.password)
+        console.log('User logged in successfully')
+        onClose?.()
+      } else {
+        setErrorMessage('User not found')
+      }
+
       await signInWithEmailAndPassword(auth, values.email, values.password)
       console.log('User logged in successfully')
       onClose?.()

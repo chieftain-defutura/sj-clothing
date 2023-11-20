@@ -124,8 +124,10 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   const processPay = async () => {
     try {
       const amount = orderData?.offerPrice
-        ? Number(orderData?.offerPrice) + Number(deliveryFees?.DeliveryFees)
-        : Number(orderData?.price) + Number(deliveryFees?.DeliveryFees)
+        ? Number(orderData?.offerPrice) + Number(deliveryFees?.DeliveryFees || 0)
+        : Number(orderData?.price) + Number(deliveryFees?.DeliveryFees || 0)
+
+      console.log('orderData', orderData)
 
       const address = addr
       if (!address) {
@@ -148,6 +150,8 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
           amount: Number(amount) * (rate as number),
         }),
       })
+
+      console.log('amount', Number(amount) * (rate as number))
 
       const data = await response.json()
       console.log('data', data.message)

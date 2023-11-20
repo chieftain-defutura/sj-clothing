@@ -1,17 +1,7 @@
-import { StyleSheet, Text, View, Dimensions } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import {
-  getDoc,
-  doc,
-  setDoc,
-  updateDoc,
-  query,
-  collection,
-  where,
-  DocumentData,
-  Query,
-} from 'firebase/firestore/lite'
+import { getDoc, doc, setDoc, updateDoc } from 'firebase/firestore/lite'
 import {
   query as defaultQuery,
   collection as defualtCollection,
@@ -24,13 +14,11 @@ import { useNavigation } from '@react-navigation/native'
 
 import Gender from './Gender'
 import Skintone from './Skintone'
-import { COLORS, gradientColors } from '../../../styles/theme'
+import { COLORS } from '../../../styles/theme'
 import Animated, { FadeInUp, FadeOut, FadeOutDown } from 'react-native-reanimated'
-import { WebView } from 'react-native-webview'
 import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 
-const { height, width } = Dimensions.get('window')
 export const gradientOpacityColors = [
   // 'rgba(191, 148, 228, 0.8)',
   'rgba(215, 180, 232, 0.1)',
