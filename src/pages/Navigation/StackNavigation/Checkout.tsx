@@ -12,13 +12,12 @@ import Phonepe from '../../../assets/icons/Phonepe'
 import TruckMovingIcon from '../../../assets/icons/TruckMoving'
 import OrderPlaced from '../../../screens/OrderPlaced'
 import CartCard from '../../../components/CartCard'
-import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore/lite'
+import { collection, doc, getDoc, getDocs, updateDoc, setDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { ICheckout } from '../../../constant/types'
 import GiftIcon from '../../../assets/icons/GiftIcon'
 import GiftOptions from './GiftOptions'
-import { setDoc } from 'firebase/firestore'
 
 type RootStackParamList = {
   Checkout: { product: string }
@@ -57,6 +56,7 @@ const Checkout: React.FC<ICheckout> = ({
   const [cartItems, setCartItems] = useState()
   // const [orderData, setOrderData] = useState<ICheckout | null>(null)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
+
   const { user, orderId, rate, currency } = userStore()
   const [openGift, setOpengift] = useState(false)
   const [giftOptions, setGiftOptions] = useState({ giftMessage: '', from: '' })
@@ -108,6 +108,22 @@ const Checkout: React.FC<ICheckout> = ({
     fetchData()
   }, [fetchData])
 
+  const addressParts = addr?.fullAddress?.split(',').map((f) => f.trim()) ?? []
+
+  const line1 = addressParts[0] || ''
+  const line2 = addressParts[1] || ''
+  const city = addressParts[2] || ''
+  const state = addressParts[3] || ''
+  const pinCode = addressParts[4] || ''
+  const country = addressParts[5] || ''
+
+  console.log('line 1:', line1)
+  console.log('line 2:', line2)
+  console.log('city:', city)
+  console.log('state:', state)
+  console.log('pinCode:', pinCode)
+  console.log('country:', country)
+
   const processPay = async () => {
     try {
       const amount = offerPrice
@@ -128,11 +144,19 @@ const Checkout: React.FC<ICheckout> = ({
           productIds: id,
           name: user?.displayName,
           email: user?.email,
-          currency: currency.currency,
-          address: address,
           paymentStatus: 'pending',
           userid: user?.uid,
-          amount: Number(amount) * (rate as number),
+          amount: Number((Number(amount) * (rate as number)).toFixed(2)) * 100,
+          address: {
+            line1: line1,
+            line2: line2,
+            postal_code: pinCode,
+            city: city,
+            state: state,
+            country: country,
+          },
+          description: 'shipping address',
+          currency: currency.currency,
         }),
       })
 
@@ -203,9 +227,11 @@ const Checkout: React.FC<ICheckout> = ({
         console.error(initSheet.error)
         return Alert.alert(initSheet.error.message)
       }
+
       const presentSheet = await stripe.presentPaymentSheet({
         clientSecret: data.clientSecret,
       })
+
       // const presentSheet = await stripe.presentGooglePay({
       //   clientSecret: data.clientSecret,
       // })
