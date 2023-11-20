@@ -65,7 +65,6 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
       ...prevState,
       country: item,
     }))
-    handleIncreaseSteps()
     setDropDown(false)
   }
   return (

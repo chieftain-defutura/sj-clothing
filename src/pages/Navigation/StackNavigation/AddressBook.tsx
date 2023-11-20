@@ -77,7 +77,6 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
     try {
       const response = await axios.get(url)
       const data = response.data
-      console.log(data)
       if (data.display_name) {
         return data.display_name
       } else {
@@ -200,7 +199,17 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
                   placeholderTextColor={COLORS.SecondaryTwo}
                 />
               </View>
-              <View style={{ position: 'absolute', zIndex: 10, top: 120 }}>
+              <View
+                style={{
+                  position: 'absolute',
+                  zIndex: 10,
+                  top: 120,
+                  backgroundColor: 'white',
+                  left: 20,
+                  height: 240,
+                  borderRadius: 4,
+                }}
+              >
                 <FlatList
                   data={suggestions}
                   renderItem={({ item }) => (
@@ -213,8 +222,8 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
                       style={{
                         borderBottomColor: '#E5CEF5',
                         borderBottomWidth: 1,
-                        paddingHorizontal: 8,
-                        paddingVertical: 4,
+                        paddingHorizontal: 12,
+                        paddingVertical: 12,
                       }}
                     >
                       <HeaderStyle>{item.display_name}</HeaderStyle>
@@ -259,31 +268,33 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
                   placeholderTextColor={COLORS.SecondaryTwo}
                 />
               </View>
-              <View style={{ backgroundColor: 'white', height: 250 }}>
-                <FlatList
-                  data={suggestions}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity
-                      onPress={() => {
-                        // suggestion(item.display_name)
-                        setOnSearchChange(item.display_name)
-                        setSuggestions(null)
-                      }}
-                      style={{
-                        borderBottomColor: '#E5CEF5',
-                        borderBottomWidth: 1,
-                        paddingHorizontal: 8,
-                        paddingVertical: 8,
-                      }}
-                    >
-                      <HeaderStyle>{item.display_name}</HeaderStyle>
-                    </TouchableOpacity>
-                  )}
-                  keyExtractor={(item) => item.place_id.toString()}
-                  scrollEnabled={true}
-                  horizontal={false}
-                />
-              </View>
+              {suggestions && (
+                <View style={{ backgroundColor: 'white', height: 250 }}>
+                  <FlatList
+                    data={suggestions}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity
+                        onPress={() => {
+                          // suggestion(item.display_name)
+                          setOnSearchChange(item.display_name)
+                          setSuggestions(null)
+                        }}
+                        style={{
+                          borderBottomColor: '#E5CEF5',
+                          borderBottomWidth: 1,
+                          paddingHorizontal: 8,
+                          paddingVertical: 8,
+                        }}
+                      >
+                        <HeaderStyle>{item.display_name}</HeaderStyle>
+                      </TouchableOpacity>
+                    )}
+                    keyExtractor={(item) => item.place_id.toString()}
+                    scrollEnabled={true}
+                    horizontal={false}
+                  />
+                </View>
+              )}
             </View>
             <AddAddressBook navigation={navigation} setDisplay={setDisplay} />
           </>

@@ -17,6 +17,7 @@ interface ISelectDesign {
     designs: {
       hashtag: string
       image: string
+      originalImage: string
     }
   }
   setDone: React.Dispatch<React.SetStateAction<boolean>>
@@ -29,6 +30,7 @@ interface ISelectDesign {
       designs: {
         hashtag: string
         image: string
+        originalImage: string
       }
     }>
   >
@@ -113,7 +115,11 @@ const SelectDesign: React.FC<ISelectDesign> = ({
               onPress={() =>
                 setImageOrText((prevState) => ({
                   ...prevState,
-                  designs: { hashtag: item.hashTag, image: isImageOrText.designs.image },
+                  designs: {
+                    hashtag: item.hashTag,
+                    image: isImageOrText.designs.image,
+                    originalImage: isImageOrText.designs.originalImage,
+                  },
                 }))
               }
               style={{
@@ -166,7 +172,11 @@ const SelectDesign: React.FC<ISelectDesign> = ({
                     isImageOrText.position === 'Front' || 'Back'
                       ? Number(item?.imagePrices?.FrontAndBack)
                       : Number(item?.imagePrices?.LeftAndRight),
-                  designs: { hashtag: item.hashTag, image: item.Images },
+                  designs: {
+                    hashtag: item.hashTag,
+                    image: item.Images,
+                    originalImage: item.OriginalImages,
+                  },
                 })),
                   setDone(true)
               }}

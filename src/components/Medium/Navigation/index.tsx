@@ -33,6 +33,7 @@ interface INavigation {
       designs: {
         hashtag: string
         image: string
+        originalImage: string
       }
     }>
   >

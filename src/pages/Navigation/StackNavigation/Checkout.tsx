@@ -12,11 +12,12 @@ import Phonepe from '../../../assets/icons/Phonepe'
 import TruckMovingIcon from '../../../assets/icons/TruckMoving'
 import OrderPlaced from '../../../screens/OrderPlaced'
 import CartCard from '../../../components/CartCard'
-import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore/lite'
+import { collection, doc, getDoc, getDocs, updateDoc, setDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { ICheckout } from '../../../constant/types'
 import GiftIcon from '../../../assets/icons/GiftIcon'
+import GiftOptions from './GiftOptions'
 
 type RootStackParamList = {
   Checkout: { product: string }
@@ -27,32 +28,40 @@ interface IDeliveryfees {
   DeliveryFees: number
 }
 
-const API_URL = 'https://b021-2405-201-e006-8138-b835-327d-842b-eb8b.ngrok-free.app'
+const API_URL = 'https://sj-clothing-backend.cyclic.app'
 
 interface AddressData {
-  name: string
-  mobile: string
-  email: string
-  addressLineOne: string
-  addressLineTwo: string
-  city: string
-  region: string
-  pinCode: string
-  saveAsAddress: string
+  floor: string
+  fullAddress: string
   isSelected: boolean
+  phoneNo: string
+  saveAddressAs: string
 }
 
-const Checkout: React.FC<ICheckout> = ({ navigation }) => {
+const Checkout: React.FC<ICheckout> = ({
+  navigation,
+  description,
+  gender,
+  offerPrice,
+  price,
+  productImage,
+  productName,
+  size,
+  id,
+}) => {
   const [closedItems, setClosedItems] = useState<number[]>([])
   const [isOrderPlacedVisible, setOrderPlacedVisible] = React.useState(false)
   const [addr, setAddr] = useState<AddressData | null>(null)
   const [cartItems, setCartItems] = useState()
-  const [orderData, setOrderData] = useState<ICheckout | null>(null)
+  // const [orderData, setOrderData] = useState<ICheckout | null>(null)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
 
   const { user, orderId, rate, currency } = userStore()
+  const [openGift, setOpengift] = useState(false)
+  const [giftOptions, setGiftOptions] = useState({ giftMessage: '', from: '' })
   const stripe = useStripe()
 
+  console.log(giftOptions)
   const openOrderPlaced = () => {
     setOrderPlacedVisible(true)
   }
@@ -98,33 +107,27 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
     fetchData()
   }, [fetchData])
 
-  const fetchOrderData = useCallback(async () => {
-    try {
-      const OrderDocRef = doc(db, 'Orders', orderId as string)
-      const OrderDoc = await getDoc(OrderDocRef)
-      const data = OrderDoc.data()
+  const addressParts = addr?.fullAddress?.split(',').map((f) => f.trim()) ?? []
 
-      if (data) {
-        setOrderData(data as ICheckout)
-      } else {
-        console.warn('Order data is undefined.')
-      }
-    } catch (error) {
-      console.error('Error fetching order data: ', error)
-    }
-  }, [orderId])
+  const line1 = addressParts[0] || ''
+  const line2 = addressParts[1] || ''
+  const city = addressParts[2] || ''
+  const state = addressParts[3] || ''
+  const pinCode = addressParts[4] || ''
+  const country = addressParts[5] || ''
 
-  useEffect(() => {
-    fetchOrderData()
-  }, [fetchOrderData])
+  console.log('line 1:', line1)
+  console.log('line 2:', line2)
+  console.log('city:', city)
+  console.log('state:', state)
+  console.log('pinCode:', pinCode)
+  console.log('country:', country)
 
   const processPay = async () => {
     try {
-      const amount = orderData?.offerPrice
-        ? Number(orderData?.offerPrice) + Number(deliveryFees?.DeliveryFees || 0)
-        : Number(orderData?.price) + Number(deliveryFees?.DeliveryFees || 0)
-
-      console.log('orderData', orderData)
+      const amount = offerPrice
+        ? Number(offerPrice) + Number(deliveryFees?.DeliveryFees || 0)
+        : Number(price) + Number(deliveryFees?.DeliveryFees || 0)
 
       const address = addr
       if (!address) {
@@ -137,22 +140,19 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          productIds: orderData?.id,
+          productIds: id,
+          name: user?.displayName,
           email: user?.email,
-          address: address,
           paymentStatus: 'pending',
           userid: user?.uid,
-          amount: Number(amount) * (rate as number),
-          shipping: {
-            name: user?.displayName,
-            address: {
-              line1: '510 townsend st',
-              postal_code: '268168',
-              city: 'San Francisco',
-              state: 'CA',
-              country: 'US',
-              line2: '',
-            },
+          amount: Number((Number(amount) * (rate as number)).toFixed(2)) * 100,
+          address: {
+            line1: line1,
+            line2: line2,
+            postal_code: pinCode,
+            city: city,
+            state: state,
+            country: country,
           },
           description: 'shipping address',
           currency: currency.currency,
@@ -172,20 +172,51 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
       //1. order create
       const { paymentId } = data
       console.log('payment id', paymentId)
-      if (!user) return
 
       //creating order
-      const userDocRef = doc(db, 'users', user.uid)
-      const userDoc = await getDoc(userDocRef)
-      const userData = userDoc.data()
+      const userDocRef = doc(db, 'Orders', paymentId)
 
-      console.log('userData', userData?.my_orders)
-      if (userData && !userData?.my_orders) {
-        userData.my_orders = []
-      }
-      userData?.my_orders.push(orderData)
-      await updateDoc(userDocRef, userData)
-
+      await setDoc(userDocRef, {
+        sizes: size,
+        productImage: productImage,
+        description: description,
+        price: price,
+        offerPrice: offerPrice,
+        paymentStatus: 'pending',
+        userId: user?.uid,
+        gender: gender,
+        type: 'Premium-Level',
+        productName: productName,
+        giftMessage: '',
+        orderStatus: {
+          orderplaced: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          manufacturing: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          readyToShip: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          shipping: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          delivery: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+        },
+      })
+      // payment
       const initSheet = await stripe.initPaymentSheet({
         paymentIntentClientSecret: data.clientSecret,
         merchantDisplayName: 'Dewall',
@@ -226,15 +257,6 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
       )
       console.log('addressData', addressData)
       setAddr(addressData)
-      // if (fetchData?.address) {
-      //   const addressData: AddressData[] = Object.values(fetchData?.address)
-      //   addressData.forEach((d, index) => {
-      //     if (d.isSelected === true) {
-      //       setAddr(d)
-      //       console.log('selected', d)
-      //     }
-      //   })
-      // }
     } catch (error) {
       console.log(error)
     }
@@ -279,156 +301,139 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
     getDeliveryFees()
   }, [getDeliveryFees])
 
+  console.log('addr', addr)
+  console.log(price)
+  console.log(offerPrice)
   return (
-    <LinearGradient colors={gradientOpacityColors}>
-      <Animated.View
-        entering={SlideInRight.duration(500).delay(200)}
-        exiting={SlideOutRight.duration(500).delay(200)}
-      >
-        <ScrollViewContent showsVerticalScrollIndicator={false}>
-          <View style={{ paddingBottom: 80 }}>
-            <GoBackArrowContent
-              onPress={() => {
-                navigation.goBack()
-              }}
-            >
-              <LeftArrow width={24} height={24} />
-              <CartText>Check Out</CartText>
-            </GoBackArrowContent>
-            {orderData ? (
-              <CartCard cartData={orderData} closedItems={closedItems} handleClose={handleClose} />
-            ) : (
-              <Text>No item</Text>
-            )}
-            <CartPageContent>
-              <HomeFlexContent onPress={() => navigation.navigate('LocationAddAddress')}>
-                {addr ? (
-                  <Pressable>
-                    <View>
-                      <HomeText>{addr.saveAsAddress}</HomeText>
-                      <HomeDescription>
-                        {addr.addressLineOne}, {addr.addressLineTwo}, {addr.city}, {addr.region},{' '}
-                        {addr.isSelected}
-                        {addr.email}, {addr.pinCode}, {addr.mobile}
-                      </HomeDescription>
+    <View style={{ flex: 1 }}>
+      {!openGift && (
+        <Animated.View
+          entering={SlideInRight.duration(500).delay(200)}
+          exiting={SlideOutRight.duration(500).delay(200)}
+          style={{ flex: 1 }}
+        >
+          <ScrollViewContent showsVerticalScrollIndicator={false}>
+            <View style={{ paddingBottom: 80 }}>
+              <GoBackArrowContent
+                onPress={() => {
+                  navigation.goBack()
+                }}
+              >
+                <LeftArrow width={24} height={24} />
+                <CartText>Check Out</CartText>
+              </GoBackArrowContent>
+              <CartCard
+                offerPrice={offerPrice}
+                price={price}
+                productImage={productImage}
+                productName={productName}
+              />
+
+              <CartPageContent>
+                <HomeFlexContent onPress={() => navigation.navigate('LocationAddAddress')}>
+                  {addr ? (
+                    <Pressable>
+                      <View>
+                        <HomeText>{addr.saveAddressAs}</HomeText>
+                        <HomeDescription>
+                          {addr.floor}, {addr.fullAddress}, {addr.phoneNo}
+                        </HomeDescription>
+                      </View>
+                    </Pressable>
+                  ) : (
+                    <View style={{ paddingVertical: 12 }}>
+                      <Pressable>
+                        <HomeText>Please add a address first</HomeText>
+                      </Pressable>
                     </View>
+                  )}
+                  <Pressable>
+                    <ChevronLeft width={16} height={16} />
                   </Pressable>
-                ) : (
-                  <View style={{ paddingVertical: 12 }}>
-                    <Pressable>
-                      <HomeText>Please add a address first</HomeText>
-                    </Pressable>
-                  </View>
-                )}
-                <Pressable>
-                  <ChevronLeft width={16} height={16} />
-                </Pressable>
-              </HomeFlexContent>
+                </HomeFlexContent>
 
-              <PhonepeWrapper>
-                <GiftContent onPress={() => navigation.navigate('GiftOptions')}>
-                  <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    colors={['#462D85', '#DB00FF']}
-                    style={styles.gradientColor}
-                  >
-                    <GiftIcon width={16} height={16} />
-                  </LinearGradient>
-                  <GiftText>Gift options available</GiftText>
-                </GiftContent>
+                <PhonepeWrapper>
+                  <GiftContent onPress={() => setOpengift(true)}>
+                    <LinearGradient
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                      colors={['#462D85', '#DB00FF']}
+                      style={styles.gradientColor}
+                    >
+                      <GiftIcon width={16} height={16} />
+                    </LinearGradient>
+                    <GiftText>Gift options available</GiftText>
+                  </GiftContent>
 
-                <Pressable>
-                  <ChevronLeft width={16} height={16} />
-                </Pressable>
-              </PhonepeWrapper>
+                  <Pressable>
+                    <ChevronLeft width={16} height={16} />
+                  </Pressable>
+                </PhonepeWrapper>
 
-              <PhonepeWrapper>
-                <GiftContent onPress={processPay}>
-                  <Phonepe width={32} height={32} />
-                  <GiftText>Payment</GiftText>
-                </GiftContent>
+                <PhonepeWrapper>
+                  <GiftContent onPress={processPay}>
+                    <Phonepe width={32} height={32} />
+                    <GiftText>Payment</GiftText>
+                  </GiftContent>
 
-                <Pressable>
-                  <ChevronLeft width={16} height={16} />
-                </Pressable>
-              </PhonepeWrapper>
+                  <Pressable>
+                    <ChevronLeft width={16} height={16} />
+                  </Pressable>
+                </PhonepeWrapper>
 
-              {/* <PhonepeWrapper>
-                <GiftContent>
-                  <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    colors={['#462D85', '#DB00FF']}
-                    style={styles.gradientColor}
-                  >
-                    <SackDollar width={16} height={16} />
-                  </LinearGradient>
-                  <GiftText>Royalties</GiftText>
-
-                  <InrBorderRadius>
-                    <InrText>1200INR</InrText>
-                  </InrBorderRadius>
-                </GiftContent>
-                <UseBorderRadius>
-                  <UseText>Use</UseText>
-                </UseBorderRadius>
-              </PhonepeWrapper> */}
-              <Content>
-                <DeliveryWrapper>
-                  <DeliveryContent>
-                    <Pressable>
-                      <TruckMovingIcon width={24} height={24} />
-                    </Pressable>
-                    <DeliveryText>Delivery fee</DeliveryText>
-                  </DeliveryContent>
-                  <INRText>
-                    {Number(deliveryFees?.DeliveryFees) * (rate as number)}
+                <Content>
+                  <DeliveryWrapper>
+                    <DeliveryContent>
+                      <Pressable>
+                        <TruckMovingIcon width={24} height={24} />
+                      </Pressable>
+                      <DeliveryText>Delivery fee</DeliveryText>
+                    </DeliveryContent>
+                    <INRText>
+                      {Number(deliveryFees?.DeliveryFees) * (rate as number)}
+                      {currency.symbol}
+                    </INRText>
+                  </DeliveryWrapper>
+                </Content>
+                <TotalContent>
+                  <TotalText>Total</TotalText>
+                  <TotalValue>
+                    {offerPrice
+                      ? Number(offerPrice) + Number(deliveryFees?.DeliveryFees)
+                      : Number(price) + Number(deliveryFees?.DeliveryFees)}
                     {currency.symbol}
-                  </INRText>
-                </DeliveryWrapper>
+                  </TotalValue>
+                </TotalContent>
+              </CartPageContent>
+            </View>
+          </ScrollViewContent>
+          <CustomButton
+            variant='primary'
+            text='Place order'
+            fontFamily='Arvo-Regular'
+            onPress={processPay}
+            fontSize={16}
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              width: '100%',
+              padding: 16,
+            }}
+          />
 
-                {/* <DeliveryWrapper style={{ marginTop: 20 }}>
-                  <DeliveryContent>
-                    <Pressable>
-                      <ShippingIcon width={24} height={24} />
-                    </Pressable>
-                    <DeliveryText>Shipping fee</DeliveryText>
-                  </DeliveryContent>
-                  <INRText>900 INR</INRText>
-                </DeliveryWrapper> */}
-              </Content>
-              <TotalContent>
-                <TotalText>Total</TotalText>
-                <TotalValue>
-                  {orderData?.offerPrice
-                    ? Number(orderData?.offerPrice) + Number(deliveryFees?.DeliveryFees)
-                    : Number(orderData?.price) + Number(deliveryFees?.DeliveryFees)}
-                  {currency.symbol}
-                </TotalValue>
-              </TotalContent>
-            </CartPageContent>
-          </View>
-        </ScrollViewContent>
-        <CustomButton
-          variant='primary'
-          text='Place order'
-          fontFamily='Arvo-Regular'
-          onPress={openOrderPlaced}
-          fontSize={16}
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            width: '100%',
-            backgroundColor: 'rgba(145, 177, 225, 0.2)',
-            padding: 16,
-          }}
+          <OrderPlaced isVisible={isOrderPlacedVisible} onClose={closeOrderPlaced} />
+        </Animated.View>
+      )}
+      {openGift && (
+        <GiftOptions
+          navigation={navigation}
+          setGiftOptions={setGiftOptions}
+          setOpengift={setOpengift}
         />
-        <OrderPlaced isVisible={isOrderPlacedVisible} onClose={closeOrderPlaced} />
-      </Animated.View>
-    </LinearGradient>
+      )}
+    </View>
   )
 }
 

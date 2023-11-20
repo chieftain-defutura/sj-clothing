@@ -434,7 +434,6 @@ import NotUserIcon from '../../../../assets/icons/AccountPageIcon/NotUserIcon'
 import { RouteProp } from '@react-navigation/native'
 import { RootStackParamList } from '../../../ScreenTypes'
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore/lite'
-import AuthNavigate from '../../../../screens/AuthNavigate'
 import { useTranslation } from 'react-i18next'
 import { IOrder } from '../../../../constant/types'
 import LoginModal from '../../../../screens/Modals/Login'
@@ -469,7 +468,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
     updateAddress,
     updatePhoneNo,
     updateName,
-    name,
   } = userStore()
 
   const handleLogin = () => {
@@ -502,7 +500,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
     } catch (error) {
       console.error('Error fetching data from Firestore:', error)
     }
-  }, [user, updateProfile])
+  }, [user, profile])
 
   useEffect(() => {
     fetchDataFromFirestore()
@@ -560,8 +558,8 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
     getData()
   }, [getData])
 
-  const onToolTipClose = () => {}
-
+  console.log(profile)
+  console.log(image)
   return (
     <LinearGradient colors={gradientOpacityColors}>
       {/* <AuthNavigate focus={focus} onClose={onClose}> */}
@@ -580,7 +578,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                       borderBottomRightRadius: 50,
                     }}
                   />
-                ) : user ? (
+                ) : user && profile ? (
                   <Image
                     source={{ uri: profile as string }}
                     style={{

@@ -59,13 +59,10 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const updateUser = userStore((state) => state.updateUser)
-  const user = userStore((state) => state.user)
+  const { user, confirmDetails, language, currency, avatar } = userStore()
   const updateFetching = userStore((state) => state.updateFetching)
   const [isChecked, setChecked] = useState(false)
   const [isCreated, setIsCreated] = useState(false)
-  // const [verificationId, setVerificationId] = useState<string | null>(null)
-  // const [confirmation, setConfirmation] = useState<ConfirmationResult | null>(null)
-  // const recaptchaVerifier = React.useRef<any>(null)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -125,11 +122,12 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           address: [],
           profile: null,
           phoneNo: null,
-          avatar: null,
+          avatar: avatar,
           termsAndConditions: false,
-          currency: null,
-          language: null,
+          currency: currency,
+          language: language,
           rate: null,
+          confirmDetails: confirmDetails,
         })
         await sendEmailVerification(user)
       } catch (error) {

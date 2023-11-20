@@ -8,9 +8,6 @@ import { COLORS, FONT_FAMILY } from '../../../../styles/theme'
 import NotUserIcon from '../../../../assets/icons/AccountPageIcon/NotUserIcon'
 import LeftArrow from '../../../../assets/icons/LeftArrow'
 import Input from '../../../../components/Input'
-// import { auth, db, storage } from '../../../../../firebase'
-// import { ref, getDownloadURL, uploadString } from 'firebase/storage'
-import { updateProfile } from 'firebase/auth'
 import { userStore } from '../../../../store/userStore'
 import { doc, updateDoc } from 'firebase/firestore/lite'
 import { db, storage } from '../../../../../firebase'
@@ -49,13 +46,13 @@ const validationSchema = yup.object({
 const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   const [image, setImage] = React.useState<string | null>(null)
   const [url, setUrl] = useState<string | null>(null)
-  const user = userStore((state) => state.user)
+  const { user, updateProfile } = userStore()
   const updateName = userStore((name) => name.updateName)
 
   const onSubmit = async (values: { fullName: string }) => {
     if (user) {
       updateName(user?.displayName)
-      updateProfile(user, { displayName: values.fullName })
+      updateProfile(url)
       await updateDoc(doc(db, 'users', user.uid), {
         name: values.fullName,
         profile: url,

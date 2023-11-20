@@ -39,7 +39,7 @@ const LanguagesData = [
 
 const Languages = () => {
   const { i18n } = useTranslation()
-  const { language, updateLanguage, user } = userStore()
+  const { language, updateLanguage, user, confirmDetails } = userStore()
   const { t } = useTranslation('language')
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
   const toggleDropdownSizes = () => {
@@ -57,52 +57,103 @@ const Languages = () => {
   }
 
   return (
-    <View
-      // colors={gradientOpacityColors}
-      style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: 25,
-      }}
-    >
-      <Text style={styles.title}>{t('Choose Your Language')}</Text>
-      <LanguageGrayIcon width={190} height={190} />
-      <View style={{ width: 208, paddingTop: 14 }}>
-        <SelectContent onPress={toggleDropdownSizes}>
-          <SelectText> {LanguagesData.find((f) => f.lang === language)?.language}</SelectText>
-          <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
-            <Path
-              d='M5 7.5L10 12.5L15 7.5'
-              stroke='#DB00FF'
-              stroke-linecap='round'
-              stroke-linejoin='round'
-            />
-          </Svg>
-        </SelectContent>
-        {isDropdownSizesOpen && (
-          <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
-            <SelectDropDownList>
-              <ScrollView style={{ height: 240 }}>
-                {LanguagesData.filter((f) => f.lang !== language).map((f: any, i: number) => (
-                  <Pressable
-                    key={i}
-                    onPress={() => [
-                      updateLanguage(f.lang),
-                      toggleDropdownSizes(),
-                      changeLanguage(f.lang),
-                    ]}
-                  >
-                    <SelectListText>{f.language}</SelectListText>
-                  </Pressable>
-                ))}
-              </ScrollView>
-            </SelectDropDownList>
-          </Animated.View>
-        )}
-      </View>
-    </View>
+    <>
+      {!confirmDetails ? (
+        <View
+          // colors={gradientOpacityColors}
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: 25,
+          }}
+        >
+          <Text style={styles.title}>{t('Choose Your Language')}</Text>
+          <LanguageGrayIcon width={190} height={190} />
+          <View style={{ width: 208, paddingTop: 14 }}>
+            <SelectContent onPress={toggleDropdownSizes}>
+              <SelectText> {LanguagesData.find((f) => f.lang === language)?.language}</SelectText>
+              <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
+                <Path
+                  d='M5 7.5L10 12.5L15 7.5'
+                  stroke='#DB00FF'
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                />
+              </Svg>
+            </SelectContent>
+            {isDropdownSizesOpen && (
+              <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
+                <SelectDropDownList>
+                  <ScrollView style={{ height: 240 }}>
+                    {LanguagesData.filter((f) => f.lang !== language).map((f: any, i: number) => (
+                      <Pressable
+                        key={i}
+                        onPress={() => [
+                          updateLanguage(f.lang),
+                          toggleDropdownSizes(),
+                          changeLanguage(f.lang),
+                        ]}
+                      >
+                        <SelectListText>{f.language}</SelectListText>
+                      </Pressable>
+                    ))}
+                  </ScrollView>
+                </SelectDropDownList>
+              </Animated.View>
+            )}
+          </View>
+        </View>
+      ) : (
+        <LinearGradient
+          colors={gradientOpacityColors}
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: 25,
+          }}
+        >
+          <Text style={styles.title}>{t('Choose Your Language')}</Text>
+          <LanguageGrayIcon width={190} height={190} />
+          <View style={{ width: 208, paddingTop: 14 }}>
+            <SelectContent onPress={toggleDropdownSizes}>
+              <SelectText> {LanguagesData.find((f) => f.lang === language)?.language}</SelectText>
+              <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
+                <Path
+                  d='M5 7.5L10 12.5L15 7.5'
+                  stroke='#DB00FF'
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                />
+              </Svg>
+            </SelectContent>
+            {isDropdownSizesOpen && (
+              <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
+                <SelectDropDownList>
+                  <ScrollView style={{ height: 240 }}>
+                    {LanguagesData.filter((f) => f.lang !== language).map((f: any, i: number) => (
+                      <Pressable
+                        key={i}
+                        onPress={() => [
+                          updateLanguage(f.lang),
+                          toggleDropdownSizes(),
+                          changeLanguage(f.lang),
+                        ]}
+                      >
+                        <SelectListText>{f.language}</SelectListText>
+                      </Pressable>
+                    ))}
+                  </ScrollView>
+                </SelectDropDownList>
+              </Animated.View>
+            )}
+          </View>
+        </LinearGradient>
+      )}
+    </>
   )
 }
 
