@@ -67,7 +67,7 @@ const CurrencyData = [
 ]
 
 const Currency = () => {
-  const { currency, updateCurrency, updateRate, user } = userStore()
+  const { currency, updateCurrency, updateRate, user, confirmDetails } = userStore()
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
@@ -93,7 +93,7 @@ const Currency = () => {
     getCurrency()
   }, [getCurrency])
 
-  const handleCurrency = async (currency: { symbol: null; currency: string; abrive: string }) => {
+  const handleCurrency = async (currency: { symbol: string; currency: string; abrive: string }) => {
     updateCurrency({
       abrive: currency.abrive,
       currency: currency.currency,
@@ -114,70 +114,139 @@ const Currency = () => {
     toggleDropdownSizes()
   }
   return (
-    <View
-      // colors={gradientOpacityColors}
-      style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: 25,
-      }}
-    >
-      <Text style={styles.title}>Choose your Currency</Text>
-      <CurrencyGrayIcon width={190} height={190} />
-      <View style={{ width: 238, paddingTop: 14 }}>
-        <SelectContent onPress={toggleDropdownSizes}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: 8,
-            }}
-          >
-            <SelectText style={{ fontSize: 20 }}>{currency ? currency.symbol : ''}</SelectText>
-            <SelectText>{currency ? currency.abrive : ''}</SelectText>
+    <>
+      {!confirmDetails ? (
+        <View
+          // colors={gradientOpacityColors}
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: 25,
+          }}
+        >
+          <Text style={styles.title}>Choose your Currency</Text>
+          <CurrencyGrayIcon width={190} height={190} />
+          <View style={{ width: 238, paddingTop: 14 }}>
+            <SelectContent onPress={toggleDropdownSizes}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: 8,
+                }}
+              >
+                <SelectText style={{ fontSize: 20 }}>{currency ? currency.symbol : ''}</SelectText>
+                <SelectText>{currency ? currency.abrive : ''}</SelectText>
+              </View>
+              <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
+                <Path
+                  d='M5 7.5L10 12.5L15 7.5'
+                  stroke='#DB00FF'
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                />
+              </Svg>
+            </SelectContent>
+            {isDropdownSizesOpen && (
+              <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
+                <SelectDropDownList>
+                  <ScrollView style={{ height: 240 }}>
+                    {CurrencyData.filter(
+                      (f) => f.currency !== (currency ? currency.currency : ''),
+                    ).map((f: any, i: number) => (
+                      <Pressable
+                        key={i}
+                        onPress={() => handleCurrency(f)}
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          gap: 10,
+                          paddingHorizontal: 12,
+                        }}
+                      >
+                        <SelectListText>{f.symbol}</SelectListText>
+                        <SelectListText>{f.abrive}</SelectListText>
+                      </Pressable>
+                    ))}
+                  </ScrollView>
+                </SelectDropDownList>
+              </Animated.View>
+            )}
           </View>
-          <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
-            <Path
-              d='M5 7.5L10 12.5L15 7.5'
-              stroke='#DB00FF'
-              stroke-linecap='round'
-              stroke-linejoin='round'
-            />
-          </Svg>
-        </SelectContent>
-        {isDropdownSizesOpen && (
-          <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
-            <SelectDropDownList>
-              <ScrollView style={{ height: 240 }}>
-                {CurrencyData.filter((f) => f.currency !== (currency ? currency.currency : '')).map(
-                  (f: any, i: number) => (
-                    <Pressable
-                      key={i}
-                      onPress={() => handleCurrency(f)}
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
-                        gap: 10,
-                        paddingHorizontal: 12,
-                      }}
-                    >
-                      <SelectListText>{f.symbol}</SelectListText>
-                      <SelectListText>{f.abrive}</SelectListText>
-                    </Pressable>
-                  ),
-                )}
-              </ScrollView>
-            </SelectDropDownList>
-          </Animated.View>
-        )}
-      </View>
-    </View>
+        </View>
+      ) : (
+        <LinearGradient
+          colors={gradientOpacityColors}
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: 25,
+          }}
+        >
+          <Text style={styles.title}>Choose your Currency</Text>
+          <CurrencyGrayIcon width={190} height={190} />
+          <View style={{ width: 238, paddingTop: 14 }}>
+            <SelectContent onPress={toggleDropdownSizes}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: 8,
+                }}
+              >
+                <SelectText style={{ fontSize: 20 }}>{currency ? currency.symbol : ''}</SelectText>
+                <SelectText>{currency ? currency.abrive : ''}</SelectText>
+              </View>
+              <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
+                <Path
+                  d='M5 7.5L10 12.5L15 7.5'
+                  stroke='#DB00FF'
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                />
+              </Svg>
+            </SelectContent>
+            {isDropdownSizesOpen && (
+              <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
+                <SelectDropDownList>
+                  <ScrollView style={{ height: 240 }}>
+                    {CurrencyData.filter(
+                      (f) => f.currency !== (currency ? currency.currency : ''),
+                    ).map((f: any, i: number) => (
+                      <Pressable
+                        key={i}
+                        onPress={() => handleCurrency(f)}
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          gap: 10,
+                          paddingHorizontal: 12,
+                        }}
+                      >
+                        <SelectListText>{f.symbol}</SelectListText>
+                        <SelectListText>{f.abrive}</SelectListText>
+                      </Pressable>
+                    ))}
+                  </ScrollView>
+                </SelectDropDownList>
+              </Animated.View>
+            )}
+          </View>
+        </LinearGradient>
+      )}
+    </>
   )
 }
 

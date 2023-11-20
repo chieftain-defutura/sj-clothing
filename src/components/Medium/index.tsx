@@ -70,6 +70,7 @@ const Medium = () => {
     designs: {
       hashtag: '',
       image: '',
+      originalImage: '',
     },
   })
 
@@ -143,13 +144,23 @@ const Medium = () => {
       console.log(error)
     }
   }, [isSize])
+  const handleUpdateImageAndText = useCallback(async () => {
+    if (!isImageOrText || !uid) return
+    try {
+      const docRef = doc(db, 'ModelsMidlevel', uid)
+      await updateDoc(docRef, { image: isImageOrText.designs.originalImage })
+      console.log('updated')
+    } catch (error) {
+      console.log(error)
+    }
+  }, [isImageOrText])
 
   useEffect(() => {
     handleSetUid()
     handleUpdateColor()
     handleUpdateSize()
-  }, [handleSetUid, handleUpdateColor, handleUpdateSize])
-  console.log(avatar)
+    handleUpdateImageAndText()
+  }, [handleSetUid, handleUpdateColor, handleUpdateSize, handleUpdateImageAndText])
   useEffect(() => {
     const Filtereddata = data?.find((f) => f.styles === isSelectedStyle)
     setFilteredData(Filtereddata)

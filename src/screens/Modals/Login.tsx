@@ -62,28 +62,31 @@ const LoginModal: React.FC<LoginModalProps> = ({
   const handleSubmit = async (values: typeof initialValues) => {
     try {
       setIsLoading(true)
-      const getPassword = await AsyncStorage.getItem('password')
-      const getEmail = await AsyncStorage.getItem('mail')
+      // const getPassword = await AsyncStorage.getItem('password')
+      // const getEmail = await AsyncStorage.getItem('mail')
 
-      if (values.email !== getEmail) {
-        setErrorMessage('User does not exist. Create an account')
-      }
-      if (values.password !== getPassword) {
-        setErrorMessage('Invalid Password')
-      }
-
+      // if (values.email !== getEmail) {
+      //   setErrorMessage('User does not exist. Create an account')
+      // }
+      // if (values.password !== getPassword) {
+      //   setErrorMessage('Invalid Password')
+      // }
       await signInWithEmailAndPassword(auth, values.email, values.password)
       console.log('User logged in successfully')
       onClose?.()
     } catch (error) {
       console.log(error)
       if (error instanceof FirebaseError) {
-        if (error.code === AuthErrorCodes.INVALID_PASSWORD) {
-          setErrorMessage('Invalid password')
-        } else if (error.code === AuthErrorCodes.USER_DELETED) {
+        if (error.code === 'auth/invalid-email') {
+          setErrorMessage('invalid email')
+        } else if (error.code === 'auth/invalid-login-credentials') {
+          setErrorMessage('Incorrect Password')
+        } else if (error.code === 'auth/user-not-found') {
           setErrorMessage('User not found')
-        } else if (error.code === AuthErrorCodes.NETWORK_REQUEST_FAILED) {
+        } else if (error.code === 'auth/network-request-failed') {
           setErrorMessage('Network Error')
+        } else if (error.code === 'auth/too-many-requests') {
+          setErrorMessage('Too many request slow down')
         }
       }
     } finally {
@@ -153,7 +156,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
                 <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
               </Pressable>
 
-              {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
+              {errorMessage && <ErrorText style={{ marginBottom: 12 }}>{errorMessage}</ErrorText>}
 
               <CustomButton
                 variant='primary'

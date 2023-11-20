@@ -29,6 +29,7 @@ interface IAddImageOrText {
       designs: {
         hashtag: string
         image: string
+        originalImage: string
       }
     }>
   >

@@ -127,6 +127,7 @@ export interface IDesigns {
   activePost: boolean
   hashTag: string
   type: string
+  OriginalImages: string
   imagePrices: {
     FrontAndBack: string
     LeftAndRight: string

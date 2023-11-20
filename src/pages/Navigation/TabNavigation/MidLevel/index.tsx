@@ -10,7 +10,7 @@ import BeforeUser from '../../../../components/BeforeUser'
 
 const MidLevel: React.FC = () => {
   const { user, confirmDetails } = userStore()
-
+  console.log('confirmDetails', confirmDetails)
   return (
     <Animated.View style={{ flex: 1 }}>
       <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>

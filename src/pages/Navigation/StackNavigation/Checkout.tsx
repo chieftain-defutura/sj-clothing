@@ -17,6 +17,7 @@ import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { ICheckout } from '../../../constant/types'
 import GiftIcon from '../../../assets/icons/GiftIcon'
+import GiftOptions from './GiftOptions'
 
 type RootStackParamList = {
   Checkout: { product: string }
@@ -50,8 +51,11 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   const [orderData, setOrderData] = useState<ICheckout | null>(null)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
   const { user, orderId, rate, currency } = userStore()
+  const [openGift, setOpengift] = useState(false)
+  const [giftOptions, setGiftOptions] = useState({ giftMessage: '', from: '' })
   const stripe = useStripe()
 
+  console.log(giftOptions)
   const openOrderPlaced = () => {
     setOrderPlacedVisible(true)
   }
@@ -96,36 +100,6 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
   useEffect(() => {
     fetchData()
   }, [fetchData])
-
-  // useEffect(() => {
-  //   if (!user) return
-  //   const temp = async () => {
-  //     if (!user) return
-  //     const userDocRef = doc(db, 'users', user.uid)
-  //     const userDoc = await getDoc(userDocRef)
-  //     const userData = userDoc.data()
-  //     if (!userData) return
-  //     setCartItems(userData.CartProduct)
-  //     await updateDoc(userDocRef, userData)
-  //   }
-
-  //   const handleError = async () => {
-  //     const userDocRef = doc(db, 'users', user.uid)
-  //     const userDoc = await getDoc(userDocRef)
-  //     const userData = userDoc.data()
-  //     if (!userData) return
-  //     setCartItems(userData.CartProduct)
-  //     await updateDoc(userDocRef, userData)
-  //   }
-  //   temp()
-  //     .then(() => {
-  //       console.log('success')
-  //     })
-  //     .catch(() => {
-  //       handleError()
-  //       console.log('handled error')
-  //     })
-  // }, [])
 
   const fetchOrderData = useCallback(async () => {
     try {
@@ -293,153 +267,136 @@ const Checkout: React.FC<ICheckout> = ({ navigation }) => {
 
   return (
     <LinearGradient colors={gradientOpacityColors}>
-      <Animated.View
-        entering={SlideInRight.duration(500).delay(200)}
-        exiting={SlideOutRight.duration(500).delay(200)}
-      >
-        <ScrollViewContent showsVerticalScrollIndicator={false}>
-          <View style={{ paddingBottom: 80 }}>
-            <GoBackArrowContent
-              onPress={() => {
-                navigation.goBack()
-              }}
-            >
-              <LeftArrow width={24} height={24} />
-              <CartText>Check Out</CartText>
-            </GoBackArrowContent>
-            {orderData ? (
-              <CartCard cartData={orderData} closedItems={closedItems} handleClose={handleClose} />
-            ) : (
-              <Text>No item</Text>
-            )}
-            <CartPageContent>
-              <HomeFlexContent onPress={() => navigation.navigate('LocationAddAddress')}>
-                {addr ? (
-                  <Pressable>
-                    <View>
-                      <HomeText>{addr.saveAsAddress}</HomeText>
-                      <HomeDescription>
-                        {addr.addressLineOne}, {addr.addressLineTwo}, {addr.city}, {addr.region},{' '}
-                        {addr.isSelected}
-                        {addr.email}, {addr.pinCode}, {addr.mobile}
-                      </HomeDescription>
+      {!openGift && (
+        <Animated.View
+          entering={SlideInRight.duration(500).delay(200)}
+          exiting={SlideOutRight.duration(500).delay(200)}
+        >
+          <ScrollViewContent showsVerticalScrollIndicator={false}>
+            <View style={{ paddingBottom: 80 }}>
+              <GoBackArrowContent
+                onPress={() => {
+                  navigation.goBack()
+                }}
+              >
+                <LeftArrow width={24} height={24} />
+                <CartText>Check Out</CartText>
+              </GoBackArrowContent>
+              {orderData ? (
+                <CartCard
+                  cartData={orderData}
+                  closedItems={closedItems}
+                  handleClose={handleClose}
+                />
+              ) : (
+                <Text>No item</Text>
+              )}
+              <CartPageContent>
+                <HomeFlexContent onPress={() => navigation.navigate('LocationAddAddress')}>
+                  {addr ? (
+                    <Pressable>
+                      <View>
+                        <HomeText>{addr.saveAsAddress}</HomeText>
+                        <HomeDescription>
+                          {addr.addressLineOne}, {addr.addressLineTwo}, {addr.city}, {addr.region},{' '}
+                          {addr.isSelected}
+                          {addr.email}, {addr.pinCode}, {addr.mobile}
+                        </HomeDescription>
+                      </View>
+                    </Pressable>
+                  ) : (
+                    <View style={{ paddingVertical: 12 }}>
+                      <Pressable>
+                        <HomeText>Please add a address first</HomeText>
+                      </Pressable>
                     </View>
+                  )}
+                  <Pressable>
+                    <ChevronLeft width={16} height={16} />
                   </Pressable>
-                ) : (
-                  <View style={{ paddingVertical: 12 }}>
-                    <Pressable>
-                      <HomeText>Please add a address first</HomeText>
-                    </Pressable>
-                  </View>
-                )}
-                <Pressable>
-                  <ChevronLeft width={16} height={16} />
-                </Pressable>
-              </HomeFlexContent>
+                </HomeFlexContent>
 
-              <PhonepeWrapper>
-                <GiftContent onPress={() => navigation.navigate('GiftOptions')}>
-                  <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    colors={['#462D85', '#DB00FF']}
-                    style={styles.gradientColor}
-                  >
-                    <GiftIcon width={16} height={16} />
-                  </LinearGradient>
-                  <GiftText>Gift options available</GiftText>
-                </GiftContent>
+                <PhonepeWrapper>
+                  <GiftContent onPress={() => setOpengift(true)}>
+                    <LinearGradient
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                      colors={['#462D85', '#DB00FF']}
+                      style={styles.gradientColor}
+                    >
+                      <GiftIcon width={16} height={16} />
+                    </LinearGradient>
+                    <GiftText>Gift options available</GiftText>
+                  </GiftContent>
 
-                <Pressable>
-                  <ChevronLeft width={16} height={16} />
-                </Pressable>
-              </PhonepeWrapper>
+                  <Pressable>
+                    <ChevronLeft width={16} height={16} />
+                  </Pressable>
+                </PhonepeWrapper>
 
-              <PhonepeWrapper>
-                <GiftContent onPress={processPay}>
-                  <Phonepe width={32} height={32} />
-                  <GiftText>Payment</GiftText>
-                </GiftContent>
+                <PhonepeWrapper>
+                  <GiftContent onPress={processPay}>
+                    <Phonepe width={32} height={32} />
+                    <GiftText>Payment</GiftText>
+                  </GiftContent>
 
-                <Pressable>
-                  <ChevronLeft width={16} height={16} />
-                </Pressable>
-              </PhonepeWrapper>
+                  <Pressable>
+                    <ChevronLeft width={16} height={16} />
+                  </Pressable>
+                </PhonepeWrapper>
 
-              {/* <PhonepeWrapper>
-                <GiftContent>
-                  <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    colors={['#462D85', '#DB00FF']}
-                    style={styles.gradientColor}
-                  >
-                    <SackDollar width={16} height={16} />
-                  </LinearGradient>
-                  <GiftText>Royalties</GiftText>
-
-                  <InrBorderRadius>
-                    <InrText>1200INR</InrText>
-                  </InrBorderRadius>
-                </GiftContent>
-                <UseBorderRadius>
-                  <UseText>Use</UseText>
-                </UseBorderRadius>
-              </PhonepeWrapper> */}
-              <Content>
-                <DeliveryWrapper>
-                  <DeliveryContent>
-                    <Pressable>
-                      <TruckMovingIcon width={24} height={24} />
-                    </Pressable>
-                    <DeliveryText>Delivery fee</DeliveryText>
-                  </DeliveryContent>
-                  <INRText>
-                    {Number(deliveryFees?.DeliveryFees) * (rate as number)}
+                <Content>
+                  <DeliveryWrapper>
+                    <DeliveryContent>
+                      <Pressable>
+                        <TruckMovingIcon width={24} height={24} />
+                      </Pressable>
+                      <DeliveryText>Delivery fee</DeliveryText>
+                    </DeliveryContent>
+                    <INRText>
+                      {Number(deliveryFees?.DeliveryFees) * (rate as number)}
+                      {currency.symbol}
+                    </INRText>
+                  </DeliveryWrapper>
+                </Content>
+                <TotalContent>
+                  <TotalText>Total</TotalText>
+                  <TotalValue>
+                    {orderData?.offerPrice
+                      ? Number(orderData?.offerPrice) + Number(deliveryFees?.DeliveryFees)
+                      : Number(orderData?.price) + Number(deliveryFees?.DeliveryFees)}
                     {currency.symbol}
-                  </INRText>
-                </DeliveryWrapper>
-
-                {/* <DeliveryWrapper style={{ marginTop: 20 }}>
-                  <DeliveryContent>
-                    <Pressable>
-                      <ShippingIcon width={24} height={24} />
-                    </Pressable>
-                    <DeliveryText>Shipping fee</DeliveryText>
-                  </DeliveryContent>
-                  <INRText>900 INR</INRText>
-                </DeliveryWrapper> */}
-              </Content>
-              <TotalContent>
-                <TotalText>Total</TotalText>
-                <TotalValue>
-                  {orderData?.offerPrice
-                    ? Number(orderData?.offerPrice) + Number(deliveryFees?.DeliveryFees)
-                    : Number(orderData?.price) + Number(deliveryFees?.DeliveryFees)}
-                  {currency.symbol}
-                </TotalValue>
-              </TotalContent>
-            </CartPageContent>
-          </View>
-        </ScrollViewContent>
-        <CustomButton
-          variant='primary'
-          text='Place order'
-          fontFamily='Arvo-Regular'
-          onPress={openOrderPlaced}
-          fontSize={16}
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            width: '100%',
-            backgroundColor: 'rgba(145, 177, 225, 0.2)',
-            padding: 16,
-          }}
+                  </TotalValue>
+                </TotalContent>
+              </CartPageContent>
+            </View>
+          </ScrollViewContent>
+          <CustomButton
+            variant='primary'
+            text='Place order'
+            fontFamily='Arvo-Regular'
+            onPress={openOrderPlaced}
+            fontSize={16}
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              width: '100%',
+              backgroundColor: 'rgba(145, 177, 225, 0.2)',
+              padding: 16,
+            }}
+          />
+          <OrderPlaced isVisible={isOrderPlacedVisible} onClose={closeOrderPlaced} />
+        </Animated.View>
+      )}
+      {openGift && (
+        <GiftOptions
+          navigation={navigation}
+          setGiftOptions={setGiftOptions}
+          setOpengift={setOpengift}
         />
-        <OrderPlaced isVisible={isOrderPlacedVisible} onClose={closeOrderPlaced} />
-      </Animated.View>
+      )}
     </LinearGradient>
   )
 }
