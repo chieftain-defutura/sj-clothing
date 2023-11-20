@@ -41,17 +41,26 @@ export interface ICheckout {
   navigation?: any
   id?: string
   style?: string
-  sizes?: string
   color?: string
-  textAndImage?: string
+  textAndImage?: {
+    title: string
+    position: string
+    rate: number
+    designs: {
+      hashtag: string
+      image: string
+      originalImage: string
+    }
+  }
   size?: {
     country: string
     sizeVarient: {
       size: string
       measurement: string
-      quantity: number
+      quantity: number | string
     }
   }
+  type?: string
   description?: string
   price?: string
   offerPrice?: string

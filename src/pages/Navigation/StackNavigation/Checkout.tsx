@@ -48,6 +48,10 @@ const Checkout: React.FC<ICheckout> = ({
   productName,
   size,
   id,
+  color,
+  style,
+  textAndImage,
+  type,
   setOpenCheckout,
 }) => {
   const [closedItems, setClosedItems] = useState<number[]>([])
@@ -179,6 +183,9 @@ const Checkout: React.FC<ICheckout> = ({
 
       await setDoc(userDocRef, {
         sizes: size,
+        style: style,
+        color: color,
+        textAndImage: textAndImage,
         productImage: productImage,
         description: description,
         price: price,
@@ -186,7 +193,7 @@ const Checkout: React.FC<ICheckout> = ({
         paymentStatus: 'pending',
         userId: user?.uid,
         gender: gender,
-        type: 'Premium-Level',
+        type: type,
         productName: productName,
         giftMessage: giftOptions,
         orderStatus: {
@@ -420,7 +427,7 @@ const Checkout: React.FC<ICheckout> = ({
             fontSize={16}
             style={{
               position: 'absolute',
-              bottom: -20,
+              bottom: 0,
               left: 0,
               right: 0,
               width: '100%',

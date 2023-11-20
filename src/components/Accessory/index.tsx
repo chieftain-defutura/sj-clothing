@@ -15,6 +15,7 @@ import { userStore } from '../../store/userStore'
 import LoginModal from '../../screens/Modals/Login'
 import SignupModal from '../../screens/Modals/Signup'
 import ForgotMail from '../../screens/Modals/ForgotMail'
+import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 
 const { width } = Dimensions.get('window')
 
@@ -25,7 +26,7 @@ const Accessory = () => {
   const [productId, setProductId] = useState('')
   const [openDetails, setOpenDetails] = useState(false)
   const { user, updateOderId } = userStore()
-  const [focus, setFocus] = useState(false)
+  const [openCheckout, setOpenCheckout] = useState(false)
 
   const [login, setLogin] = useState(false)
   const [signUp, setSignUp] = useState(false)
@@ -56,9 +57,7 @@ const Accessory = () => {
 
   const handleSubmit = async () => {
     if (!FilteredData) return
-    if (!user) {
-      setFocus(true)
-    }
+
     if (!user) {
       setLogin(true)
     }
@@ -69,46 +68,45 @@ const Accessory = () => {
     //   setSignUp(true)
     // }
     if (user && user.emailVerified) {
-      setFocus(true)
-      const docRef = await addDoc(collection(db, 'Orders'), {
-        sizes: isSize,
-        productImage: FilteredData[0].productImage,
-        description: FilteredData[0].description,
-        price: FilteredData[0].normalPrice,
-        offerPrice: FilteredData[0].offerPrice,
-        paymentStatus: 'pending',
-        userId: user?.uid,
-        type: 'Premium-Level',
-        productName: FilteredData[0].productName,
-        orderStatus: {
-          orderplaced: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          manufacturing: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          readyToShip: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          shipping: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          delivery: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-        },
-      })
-      updateOderId(docRef.id)
+      // const docRef = await addDoc(collection(db, 'Orders'), {
+      //   sizes: isSize,
+      //   productImage: FilteredData[0].productImage,
+      //   description: FilteredData[0].description,
+      //   price: FilteredData[0].normalPrice,
+      //   offerPrice: FilteredData[0].offerPrice,
+      //   paymentStatus: 'pending',
+      //   userId: user?.uid,
+      //   type: 'Premium-Level',
+      //   productName: FilteredData[0].productName,
+      //   orderStatus: {
+      //     orderplaced: {
+      //       createdAt: null,
+      //       description: '',
+      //       status: false,
+      //     },
+      //     manufacturing: {
+      //       createdAt: null,
+      //       description: '',
+      //       status: false,
+      //     },
+      //     readyToShip: {
+      //       createdAt: null,
+      //       description: '',
+      //       status: false,
+      //     },
+      //     shipping: {
+      //       createdAt: null,
+      //       description: '',
+      //       status: false,
+      //     },
+      //     delivery: {
+      //       createdAt: null,
+      //       description: '',
+      //       status: false,
+      //     },
+      //   },
+      // })
+      // updateOderId(docRef.id)
       setOpenDetails(false)
       navigation.navigate('Checkout')
     }
@@ -116,88 +114,106 @@ const Accessory = () => {
 
   if (!data) return <Text>No Data</Text>
   return (
-    <View style={{ flex: 1 }}>
-      <ScrollView scrollEnabled={openDetails ? false : true}>
-        <View>
-          {openDetails ? (
+    <View>
+      {!openCheckout && (
+        <View style={{ flex: 1 }}>
+          <ScrollView scrollEnabled={openDetails ? false : true}>
             <View>
-              {FilteredData?.map((item, index) => (
-                <AccessoryThreeSixtyDegree
-                  key={index}
-                  navigation={navigation}
-                  setOpenDetails={setOpenDetails}
-                  data={item}
-                  handleSubmit={handleSubmit}
-                />
-              ))}
-            </View>
-          ) : (
-            <View>
-              {openCard && (
+              {openDetails ? (
                 <View>
                   {FilteredData?.map((item, index) => (
-                    <AccessoryDetailsCard
+                    <AccessoryThreeSixtyDegree
                       key={index}
-                      data={item}
+                      navigation={navigation}
                       setOpenDetails={setOpenDetails}
-                      handleBack={handleBack}
+                      data={item}
                       handleSubmit={handleSubmit}
                     />
                   ))}
                 </View>
-              )}
-              <View
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                  width: width / 1.6,
-                  columnGap: 150,
-                }}
-              >
-                {data
-                  .filter((f) => f.id !== productId)
-                  .map((item, index) => (
-                    <View key={index} style={{ flex: 1 }}>
-                      <AccessoryCard
-                        data={item}
-                        setOpenCard={setOpenCard}
-                        setProductId={setProductId}
-                      />
+              ) : (
+                <View>
+                  {openCard && (
+                    <View>
+                      {FilteredData?.map((item, index) => (
+                        <AccessoryDetailsCard
+                          key={index}
+                          data={item}
+                          setOpenDetails={setOpenDetails}
+                          handleBack={handleBack}
+                          handleSubmit={handleSubmit}
+                        />
+                      ))}
                     </View>
-                  ))}
-              </View>
+                  )}
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      width: width / 1.6,
+                      columnGap: 150,
+                    }}
+                  >
+                    {data
+                      .filter((f) => f.id !== productId)
+                      .map((item, index) => (
+                        <View key={index} style={{ flex: 1 }}>
+                          <AccessoryCard
+                            data={item}
+                            setOpenCard={setOpenCard}
+                            setProductId={setProductId}
+                          />
+                        </View>
+                      ))}
+                  </View>
+                </View>
+              )}
             </View>
+          </ScrollView>
+          {login && (
+            <LoginModal
+              onForgotClick={() => {
+                setForgotmail(true), setLogin(false)
+              }}
+              onSignClick={() => {
+                setSignUp(true), setLogin(false)
+              }}
+              onClose={() => setLogin(false)}
+            />
+          )}
+
+          {signUp && (
+            <SignupModal
+              onLoginClick={() => {
+                setLogin(true), setSignUp(false)
+              }}
+              onClose={() => setSignUp(false)}
+            />
+          )}
+          {forgotMail && (
+            <ForgotMail
+              onLoginClick={() => {
+                setLogin(true), setForgotmail(false)
+              }}
+              onClose={() => setForgotmail(false)}
+            />
           )}
         </View>
-      </ScrollView>
-      {login && (
-        <LoginModal
-          onForgotClick={() => {
-            setForgotmail(true), setLogin(false)
-          }}
-          onSignClick={() => {
-            setSignUp(true), setLogin(false)
-          }}
-          onClose={() => setLogin(false)}
-        />
       )}
-
-      {signUp && (
-        <SignupModal
-          onLoginClick={() => {
-            setLogin(true), setSignUp(false)
-          }}
-          onClose={() => setSignUp(false)}
-        />
-      )}
-      {forgotMail && (
-        <ForgotMail
-          onLoginClick={() => {
-            setLogin(true), setForgotmail(false)
-          }}
-          onClose={() => setForgotmail(false)}
+      {openCheckout && FilteredData && (
+        <Checkout
+          type='Accessory-Level'
+          setOpenCheckout={setOpenCheckout}
+          id={FilteredData[0].id}
+          description={FilteredData[0].description}
+          navigation={navigation}
+          offerPrice={FilteredData[0].offerPrice}
+          price={FilteredData[0].normalPrice}
+          productImage={FilteredData[0].productImage}
+          productName={FilteredData[0].productName}
+          size={isSize}
         />
       )}
     </View>

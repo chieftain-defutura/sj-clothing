@@ -221,6 +221,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
       )}
       {openCheckout && FilteredData && (
         <Checkout
+          type='Premium-Level'
           setOpenCheckout={setOpenCheckout}
           id={FilteredData[0].id}
           description={FilteredData[0].description}

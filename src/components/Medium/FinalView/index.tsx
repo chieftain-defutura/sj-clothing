@@ -155,7 +155,8 @@ const FinalView: React.FC<IFinalView> = ({
 
               <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
                 {isImageOrText.designs.hashtag ? isImageOrText.designs.hashtag : '-'}
-                {isImageOrText.rate !== 0 && Number(isImageOrText.rate) * (rate as number)}
+                {isImageOrText.rate !== 0 &&
+                  (Number(isImageOrText.rate) * (rate as number)).toFixed(2)}
                 {isImageOrText.rate !== 0 && currency.symbol}
               </Text>
             </View>

@@ -23,6 +23,7 @@ import SelectDesign from './SelectDesign'
 import LoginModal from '../../screens/Modals/Login'
 import SignupModal from '../../screens/Modals/Signup'
 import ForgotMail from '../../screens/Modals/ForgotMail'
+import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 
 const { width } = Dimensions.get('window')
 
@@ -73,6 +74,7 @@ const Medium = () => {
       originalImage: '',
     },
   })
+  const [openCheckout, setOpenCheckout] = useState(false)
 
   const handleDecreaseSteps = () => {
     if (isSteps !== 1) {
@@ -225,184 +227,205 @@ const Medium = () => {
     //   setSignUp(true)
     // }
     if (user && user.emailVerified) {
-      const docRef = await addDoc(collection(db, 'Orders'), {
-        style: isSelectedStyle,
-        sizes: isSize,
-        color: isColor,
-        textAndImage: isImageOrText,
-        description: FilteredData.description,
-        price: FilteredData.normalPrice,
-        offerPrice: FilteredData.offerPrice,
-        paymentStatus: 'pending',
-        productId: FilteredData.id,
-        userId: user?.uid,
-        gender: avatar?.gender,
-        type: 'MidLevel',
-        productImage: FilteredData.productImage,
-        productName: FilteredData.productName,
-        orderStatus: {
-          orderplaced: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          manufacturing: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          readyToShip: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          shipping: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-          delivery: {
-            createdAt: null,
-            description: '',
-            status: false,
-          },
-        },
-      })
-      updateOderId(docRef.id)
-      navigation.navigate('Checkout')
-      setFocus(true)
+      // const docRef = await addDoc(collection(db, 'Orders'), {
+      //   style: isSelectedStyle,
+      //   sizes: isSize,
+      //   color: isColor,
+      //   textAndImage: isImageOrText,
+      //   description: FilteredData.description,
+      //   price: FilteredData.normalPrice,
+      //   offerPrice: FilteredData.offerPrice,
+      //   paymentStatus: 'pending',
+      //   productId: FilteredData.id,
+      //   userId: user?.uid,
+      //   gender: avatar?.gender,
+      //   type: 'MidLevel',
+      //   productImage: FilteredData.productImage,
+      //   productName: FilteredData.productName,
+      //   orderStatus: {
+      //     orderplaced: {
+      //       createdAt: null,
+      //       description: '',
+      //       status: false,
+      //     },
+      //     manufacturing: {
+      //       createdAt: null,
+      //       description: '',
+      //       status: false,
+      //     },
+      //     readyToShip: {
+      //       createdAt: null,
+      //       description: '',
+      //       status: false,
+      //     },
+      //     shipping: {
+      //       createdAt: null,
+      //       description: '',
+      //       status: false,
+      //     },
+      //     delivery: {
+      //       createdAt: null,
+      //       description: '',
+      //       status: false,
+      //     },
+      //   },
+      // })
+      setOpenCheckout(true)
+      // updateOderId(docRef.id)
+      // setFocus(true)
     }
   }
+  console.log(FilteredData)
 
   return (
-    // <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
-    <View
-      style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-        justifyContent: 'space-between',
-        zIndex: 10,
-      }}
-    >
-      <Navigation
-        warning={warning}
-        setImageOrText={setImageOrText}
-        steps={isSteps}
-        isDone={isDone}
-        setDone={setDone}
-        dropDown={isDropDown}
-        slideValue={slideValue}
-        setDropDown={setDropDown}
-        isOpenDesign={isOpenDesign}
-        setOpenDesign={setOpenDesign}
-        handleDecreaseSteps={handleDecreaseSteps}
-        handleIncreaseSteps={handleIncreaseSteps}
-      />
-      <View style={{ zIndex: 5, width: width, position: 'absolute', top: 0 }}>
-        {isSteps === 1 && data && isDropDown && (
-          <SelectStyle
-            data={data}
-            setDropDown={setDropDown}
-            isSelectedStyle={isSelectedStyle}
-            setSelectedStyle={setSelectedStyle}
-          />
-        )}
-        {isSteps === 2 && isDropDown && FilteredData && (
-          <SelectCountry
-            data={FilteredData}
-            isSize={isSize}
-            setSize={setSize}
-            handleIncreaseSteps={handleIncreaseSteps}
-            setDropDown={setDropDown}
-          />
-        )}
-        {isSteps === 3 && isDropDown && FilteredData && (
-          <SelectSize
-            data={FilteredData}
-            isDropDown={isDropDown}
-            isSize={isSize}
-            setSize={setSize}
-            handleIncreaseSteps={handleIncreaseSteps}
-            setDropDown={setDropDown}
-          />
-        )}
-        {isSteps === 4 && isDropDown && FilteredData && (
-          <SelectColor
-            data={FilteredData}
-            isColor={isColor}
-            isDropDown={isDropDown}
-            setDropDown={setDropDown}
-            setColor={setColor}
-          />
-        )}
-        {isSteps === 6 && isDropDown && FilteredData && (
-          <AddImageOrText
-            data={FilteredData}
-            isDropDown={isDropDown}
-            setDropDown={setDropDown}
-            isImageOrText={isImageOrText}
+    <View style={{ flex: 1 }}>
+      {!openCheckout && (
+        <View
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            justifyContent: 'space-between',
+            zIndex: 10,
+          }}
+        >
+          <Navigation
+            warning={warning}
             setImageOrText={setImageOrText}
+            steps={isSteps}
+            isDone={isDone}
+            setDone={setDone}
+            dropDown={isDropDown}
+            slideValue={slideValue}
+            setDropDown={setDropDown}
+            isOpenDesign={isOpenDesign}
             setOpenDesign={setOpenDesign}
+            handleDecreaseSteps={handleDecreaseSteps}
+            handleIncreaseSteps={handleIncreaseSteps}
           />
-        )}
-      </View>
+          <View style={{ zIndex: 5, width: width, position: 'absolute', top: 0 }}>
+            {isSteps === 1 && data && isDropDown && (
+              <SelectStyle
+                data={data}
+                setDropDown={setDropDown}
+                isSelectedStyle={isSelectedStyle}
+                setSelectedStyle={setSelectedStyle}
+              />
+            )}
+            {isSteps === 2 && isDropDown && FilteredData && (
+              <SelectCountry
+                data={FilteredData}
+                isSize={isSize}
+                setSize={setSize}
+                handleIncreaseSteps={handleIncreaseSteps}
+                setDropDown={setDropDown}
+              />
+            )}
+            {isSteps === 3 && isDropDown && FilteredData && (
+              <SelectSize
+                data={FilteredData}
+                isDropDown={isDropDown}
+                isSize={isSize}
+                setSize={setSize}
+                handleIncreaseSteps={handleIncreaseSteps}
+                setDropDown={setDropDown}
+              />
+            )}
+            {isSteps === 4 && isDropDown && FilteredData && (
+              <SelectColor
+                data={FilteredData}
+                isColor={isColor}
+                isDropDown={isDropDown}
+                setDropDown={setDropDown}
+                setColor={setColor}
+              />
+            )}
+            {isSteps === 6 && isDropDown && FilteredData && (
+              <AddImageOrText
+                data={FilteredData}
+                isDropDown={isDropDown}
+                setDropDown={setDropDown}
+                isImageOrText={isImageOrText}
+                setImageOrText={setImageOrText}
+                setOpenDesign={setOpenDesign}
+              />
+            )}
+          </View>
 
-      <TShirt uid={uid} steps={isSteps} />
-      {isSteps === 5 && FilteredData && (
-        <FinalView
+          <TShirt uid={uid} steps={isSteps} />
+          {isSteps === 5 && FilteredData && (
+            <FinalView
+              color={isColor}
+              data={FilteredData}
+              focus={focus}
+              handleSubmit={handleSubmit}
+              isSize={isSize}
+              setFocus={setFocus}
+              setSize={setSize}
+              style={isSelectedStyle}
+              isImageOrText={isImageOrText}
+            />
+          )}
+          {isSteps === 6 && Design && isOpenDesign && !isDone && (
+            <SelectDesign
+              isImageOrText={isImageOrText}
+              designs={Design}
+              setOpenDesign={setOpenDesign}
+              isDone={isDone}
+              setDone={setDone}
+              setImageOrText={setImageOrText}
+            />
+          )}
+          {login && (
+            <LoginModal
+              onForgotClick={() => {
+                setForgotmail(true), setLogin(false)
+              }}
+              onSignClick={() => {
+                setSignUp(true), setLogin(false)
+              }}
+              onClose={() => setLogin(false)}
+            />
+          )}
+
+          {signUp && (
+            <SignupModal
+              onLoginClick={() => {
+                setLogin(true), setSignUp(false)
+              }}
+              onClose={() => setSignUp(false)}
+            />
+          )}
+          {forgotMail && (
+            <ForgotMail
+              onLoginClick={() => {
+                setLogin(true), setForgotmail(false)
+              }}
+              onClose={() => setForgotmail(false)}
+            />
+          )}
+        </View>
+      )}
+      {openCheckout && FilteredData && (
+        // <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+        <Checkout
+          setOpenCheckout={setOpenCheckout}
           color={isColor}
-          data={FilteredData}
-          focus={focus}
-          handleSubmit={handleSubmit}
-          isSize={isSize}
-          setFocus={setFocus}
-          setSize={setSize}
+          textAndImage={isImageOrText}
+          description={FilteredData?.description}
+          gender={avatar.gender as string}
+          offerPrice={FilteredData?.offerPrice}
+          price={FilteredData?.normalPrice}
+          productImage={FilteredData?.productImage}
+          productName={FilteredData?.productName}
+          size={{ country: isSize.country, sizeVarient: isSize.sizeVarient[0] }}
           style={isSelectedStyle}
-          isImageOrText={isImageOrText}
-        />
-      )}
-      {isSteps === 6 && Design && isOpenDesign && !isDone && (
-        <SelectDesign
-          isImageOrText={isImageOrText}
-          designs={Design}
-          setOpenDesign={setOpenDesign}
-          isDone={isDone}
-          setDone={setDone}
-          setImageOrText={setImageOrText}
-        />
-      )}
-      {login && (
-        <LoginModal
-          onForgotClick={() => {
-            setForgotmail(true), setLogin(false)
-          }}
-          onSignClick={() => {
-            setSignUp(true), setLogin(false)
-          }}
-          onClose={() => setLogin(false)}
-        />
-      )}
-
-      {signUp && (
-        <SignupModal
-          onLoginClick={() => {
-            setLogin(true), setSignUp(false)
-          }}
-          onClose={() => setSignUp(false)}
-        />
-      )}
-      {forgotMail && (
-        <ForgotMail
-          onLoginClick={() => {
-            setLogin(true), setForgotmail(false)
-          }}
-          onClose={() => setForgotmail(false)}
+          id={FilteredData?.id}
+          type='MidLevel'
         />
       )}
     </View>
-    // </LinearGradient>
   )
 }
 
