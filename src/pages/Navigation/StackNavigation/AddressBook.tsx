@@ -77,7 +77,6 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
     try {
       const response = await axios.get(url)
       const data = response.data
-      console.log(data)
       if (data.display_name) {
         return data.display_name
       } else {

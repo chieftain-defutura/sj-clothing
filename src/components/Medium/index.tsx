@@ -149,7 +149,7 @@ const Medium = () => {
     handleUpdateColor()
     handleUpdateSize()
   }, [handleSetUid, handleUpdateColor, handleUpdateSize])
-
+  console.log(avatar)
   useEffect(() => {
     const Filtereddata = data?.find((f) => f.styles === isSelectedStyle)
     setFilteredData(Filtereddata)
@@ -173,7 +173,7 @@ const Medium = () => {
         },
       ])
     }
-  }, [isSelectedStyle, data])
+  }, [isSelectedStyle, data, avatar])
 
   useEffect(() => {
     const Designs = designs?.filter((f) => f.type === isImageOrText.title)
@@ -293,7 +293,7 @@ const Medium = () => {
         {isSteps === 1 && data && isDropDown && (
           <SelectStyle
             data={data}
-            handleIncreaseSteps={handleIncreaseSteps}
+            setDropDown={setDropDown}
             isSelectedStyle={isSelectedStyle}
             setSelectedStyle={setSelectedStyle}
           />

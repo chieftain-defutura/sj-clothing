@@ -11,19 +11,20 @@ import { useTranslation } from 'react-i18next'
 interface ISelectStyle {
   isSelectedStyle: string
   data: IMidlevel[]
-  handleIncreaseSteps: () => void
+  setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setSelectedStyle: React.Dispatch<React.SetStateAction<string>>
 }
 
 const SelectStyle: React.FC<ISelectStyle> = ({
   data,
-  handleIncreaseSteps,
+  setDropDown,
   isSelectedStyle,
   setSelectedStyle,
 }) => {
   const { t } = useTranslation('midlevel')
   const handleSelect = (title: string) => {
     setSelectedStyle(title)
+    setDropDown(false)
   }
 
   return (

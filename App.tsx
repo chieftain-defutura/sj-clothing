@@ -22,6 +22,9 @@ const App: React.FC = () => {
     updateLanguage,
     user,
     avatar,
+    confirmDetails,
+    currency,
+    language,
     updateCurrency,
     updateRate,
     updateProfile,
@@ -29,6 +32,7 @@ const App: React.FC = () => {
     updateName,
     updateAddress,
     updateAvatar,
+    updateConfirmDetails,
   } = userStore()
   useEffect(() => {
     return onAuthStateChanged(auth, (data) => {
@@ -52,14 +56,43 @@ const App: React.FC = () => {
       updateLanguage(fetchData?.language)
       updateCurrency(fetchData?.currency)
       updateRate(fetchData?.rate)
+      updateConfirmDetails(fetchData?.confirmDetails)
     } catch (error) {
       console.error('Error fetching data from Firestore:', error)
     }
-  }, [user])
+  }, [])
+
   useEffect(() => {
     fetchDataFromFirestore()
   }, [fetchDataFromFirestore])
 
+  const getLanguage = useCallback(async () => {
+    if (language) {
+      updateLanguage(language)
+      i18n.changeLanguage(language as string)
+    }
+  }, [])
+  useEffect(() => {
+    getLanguage()
+  }, [getLanguage])
+
+  const getCurrency = useCallback(async () => {
+    if (currency) {
+      updateCurrency({
+        currency: currency.currency as string,
+        abrive: currency.abrive as string,
+        symbol: currency.symbol as string,
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    getCurrency()
+  }, [getCurrency])
+
+  console.log(avatar)
+  console.log(language)
+  console.log('currency', currency)
   const [fontsLoaded] = useFonts({
     'Arvo-Regular': require('./src/assets/fonts/timesbold.ttf'), //font-weight 400
     'Gilroy-Medium': require('./src/assets/fonts/times.ttf'), //font-weight 500

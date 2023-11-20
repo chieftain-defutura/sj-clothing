@@ -67,7 +67,6 @@ const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay }) => {
     try {
       const response = await axios.get(url)
       const data = response.data
-      console.log('data', data)
       if (data.display_name) {
         return data.display_name
       } else {

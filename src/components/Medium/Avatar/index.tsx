@@ -48,7 +48,7 @@ interface IAvatar {
 const Avatar: React.FC<IAvatar> = ({ path, setSteps, steps }) => {
   const { t } = useTranslation('avatar')
   const { avatar } = userStore()
-  const [toggle, setToggle] = useState(steps === 0 ? true : false)
+  const [toggle, setToggle] = useState(false)
   const [isGender, setGender] = useState(avatar && (avatar.gender ? (avatar.gender as string) : ''))
   const [skinColor, setSkinColor] = useState('3')
   const [uid, setUid] = useState<string | null>(null)

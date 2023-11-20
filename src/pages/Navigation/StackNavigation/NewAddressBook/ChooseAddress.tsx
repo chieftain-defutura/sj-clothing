@@ -92,7 +92,6 @@ const ChooseAddress: React.FC<IChooseLocation> = () => {
 
       if (querySnapshot.exists()) {
         const fetchData = querySnapshot.data()
-        console.log(fetchData)
         setData(fetchData.address)
         fetchData.address.forEach((d: any, index: any) => {
           if (d.isSelected === true) {
