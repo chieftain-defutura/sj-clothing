@@ -11,6 +11,8 @@ import { StatusBar } from 'expo-status-bar'
 import { I18nextProvider } from 'react-i18next'
 import i18n from './i18n'
 import { doc, getDoc } from 'firebase/firestore/lite'
+import * as Linking from 'expo-linking'
+import Constants from 'expo-constants'
 
 const PUBLISHABLE_KEY =
   'pk_test_51O6p0wSGEesR2xZcTMeDvXgwTJgLfsOMehC1tZcDo7bphTUPo65HjeJJUcKIRYTqA115nRZi3CbzYH2GsuY69Htf00ewXq6Z7m'
@@ -120,12 +122,16 @@ const App: React.FC = () => {
     'Montserrat-SemiBold': require('./src/assets/fonts/timesbold.ttf'), //font-weight 600
   })
 
+  const getAppUrlScheme = () => {
+    return Constants.appOwnership === 'expo' ? Linking.createURL('/--/') : Linking.createURL('/')
+  }
+
   if (!fontsLoaded) {
     return null
   }
   return (
     <Fragment>
-      <StripeProvider publishableKey={PUBLISHABLE_KEY}>
+      <StripeProvider publishableKey={PUBLISHABLE_KEY} urlScheme={getAppUrlScheme()}>
         <I18nextProvider i18n={i18n}>
           <SafeAreaView style={{ flex: 0, backgroundColor: 'rgba(191, 148, 228, 0.8)' }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(145, 177, 225, 0.85)' }}>
