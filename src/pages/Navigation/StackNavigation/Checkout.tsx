@@ -17,7 +17,6 @@ import { userStore } from '../../../store/userStore'
 import { ICheckout } from '../../../constant/types'
 import GiftIcon from '../../../assets/icons/GiftIcon'
 import GiftOptions from './GiftOptions'
-import Thankyou from './Thankyou'
 
 type RootStackParamList = {
   Checkout: { product: string }
@@ -55,21 +54,17 @@ const Checkout: React.FC<ICheckout> = ({
   setOpenCheckout,
 }) => {
   const [closedItems, setClosedItems] = useState<number[]>([])
-  const [isOrderPlacedVisible, setOrderPlacedVisible] = React.useState(false)
   const [addr, setAddr] = useState<AddressData | null>(null)
   const [cartItems, setCartItems] = useState()
   // const [orderData, setOrderData] = useState<ICheckout | null>(null)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
-  const [openThankyou, setOpenThankyou] = useState(false)
+
   const { user, orderId, rate, currency } = userStore()
   const [openGift, setOpengift] = useState(false)
   const [giftOptions, setGiftOptions] = useState({ giftMessage: '', from: '' })
   const stripe = useStripe()
 
   console.log(giftOptions)
-  const openOrderPlaced = () => {
-    setOrderPlacedVisible(true)
-  }
 
   const fetchData = useCallback(async () => {
     try {
@@ -246,8 +241,8 @@ const Checkout: React.FC<ICheckout> = ({
         console.error(presentSheet.error)
         return Alert.alert(presentSheet.error.message)
       }
-      setOpenCheckout(true)
       Alert.alert('Payment successfully! Thank you.')
+      navigation.navigate('Thankyou')
     } catch (err) {
       console.error(err)
       Alert.alert('failed!', err.message)
@@ -274,10 +269,6 @@ const Checkout: React.FC<ICheckout> = ({
   useEffect(() => {
     getData()
   }, [getData])
-
-  const closeOrderPlaced = () => {
-    setOrderPlacedVisible(false)
-  }
 
   const handleClose = (index: number) => {
     const temp = async (index: any) => {
@@ -315,131 +306,128 @@ const Checkout: React.FC<ICheckout> = ({
   console.log(offerPrice)
   return (
     <View style={{ flex: 1 }}>
-      {!openGift ||
-        (!openThankyou && (
-          <Animated.View
-            entering={SlideInRight.duration(500).delay(200)}
-            exiting={SlideOutRight.duration(500).delay(200)}
-            style={{
-              flex: 1,
-              // backgroundColor: 'red',
-            }}
-          >
-            <ScrollViewContent showsVerticalScrollIndicator={false}>
-              <View style={{ paddingBottom: 80 }}>
-                <GoBackArrowContent
-                  onPress={() => {
-                    setOpenCheckout(false)
-                  }}
-                >
-                  <LeftArrow width={24} height={24} />
-                  <CartText>Check Out</CartText>
-                </GoBackArrowContent>
-                <CartCard
-                  setOpenCheckout={setOpenCheckout}
-                  offerPrice={offerPrice}
-                  price={price}
-                  productImage={productImage}
-                  productName={productName}
-                />
+      {!openGift && (
+        <Animated.View
+          entering={SlideInRight.duration(500).delay(200)}
+          exiting={SlideOutRight.duration(500).delay(200)}
+          style={{
+            flex: 1,
+            // backgroundColor: 'red',
+          }}
+        >
+          <ScrollViewContent showsVerticalScrollIndicator={false}>
+            <View style={{ paddingBottom: 80 }}>
+              <GoBackArrowContent
+                onPress={() => {
+                  setOpenCheckout(false)
+                }}
+              >
+                <LeftArrow width={24} height={24} />
+                <CartText>Check Out</CartText>
+              </GoBackArrowContent>
+              <CartCard
+                setOpenCheckout={setOpenCheckout}
+                offerPrice={offerPrice}
+                price={price}
+                productImage={productImage}
+                productName={productName}
+              />
 
-                <CartPageContent>
-                  <HomeFlexContent onPress={() => navigation.navigate('LocationAddAddress')}>
-                    {addr ? (
-                      <Pressable>
-                        <View>
-                          <HomeText>{addr.saveAddressAs}</HomeText>
-                          <HomeDescription>
-                            {addr.floor}, {addr.fullAddress}, {addr.phoneNo}
-                          </HomeDescription>
-                        </View>
-                      </Pressable>
-                    ) : (
-                      <View style={{ paddingVertical: 12 }}>
-                        <Pressable>
-                          <HomeText>Please add a address first</HomeText>
-                        </Pressable>
+              <CartPageContent>
+                <HomeFlexContent onPress={() => navigation.navigate('LocationAddAddress')}>
+                  {addr ? (
+                    <Pressable>
+                      <View>
+                        <HomeText>{addr.saveAddressAs}</HomeText>
+                        <HomeDescription>
+                          {addr.floor}, {addr.fullAddress}, {addr.phoneNo}
+                        </HomeDescription>
                       </View>
-                    )}
-                    <Pressable>
-                      <ChevronLeft width={16} height={16} />
                     </Pressable>
-                  </HomeFlexContent>
+                  ) : (
+                    <View style={{ paddingVertical: 12 }}>
+                      <Pressable>
+                        <HomeText>Please add a address first</HomeText>
+                      </Pressable>
+                    </View>
+                  )}
+                  <Pressable>
+                    <ChevronLeft width={16} height={16} />
+                  </Pressable>
+                </HomeFlexContent>
 
-                  <PhonepeWrapper>
-                    <GiftContent onPress={() => setOpengift(true)}>
-                      <LinearGradient
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 0 }}
-                        colors={['#462D85', '#DB00FF']}
-                        style={styles.gradientColor}
-                      >
-                        <GiftIcon width={16} height={16} />
-                      </LinearGradient>
-                      <GiftText>Gift options available</GiftText>
-                    </GiftContent>
+                <PhonepeWrapper>
+                  <GiftContent onPress={() => setOpengift(true)}>
+                    <LinearGradient
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                      colors={['#462D85', '#DB00FF']}
+                      style={styles.gradientColor}
+                    >
+                      <GiftIcon width={16} height={16} />
+                    </LinearGradient>
+                    <GiftText>Gift options available</GiftText>
+                  </GiftContent>
 
-                    <Pressable>
-                      <ChevronLeft width={16} height={16} />
-                    </Pressable>
-                  </PhonepeWrapper>
+                  <Pressable>
+                    <ChevronLeft width={16} height={16} />
+                  </Pressable>
+                </PhonepeWrapper>
 
-                  <PhonepeWrapper>
-                    <GiftContent onPress={processPay}>
-                      <Phonepe width={32} height={32} />
-                      <GiftText>Payment</GiftText>
-                    </GiftContent>
+                <PhonepeWrapper>
+                  <GiftContent onPress={processPay}>
+                    <Phonepe width={32} height={32} />
+                    <GiftText>Payment</GiftText>
+                  </GiftContent>
 
-                    <Pressable>
-                      <ChevronLeft width={16} height={16} />
-                    </Pressable>
-                  </PhonepeWrapper>
+                  <Pressable>
+                    <ChevronLeft width={16} height={16} />
+                  </Pressable>
+                </PhonepeWrapper>
 
-                  <Content>
-                    <DeliveryWrapper>
-                      <DeliveryContent>
-                        <Pressable>
-                          <TruckMovingIcon width={24} height={24} />
-                        </Pressable>
-                        <DeliveryText>Delivery fee</DeliveryText>
-                      </DeliveryContent>
-                      <INRText>
-                        {Number(deliveryFees?.DeliveryFees) * (rate as number)}
-                        {currency.symbol}
-                      </INRText>
-                    </DeliveryWrapper>
-                  </Content>
-                  <TotalContent>
-                    <TotalText>Total</TotalText>
-                    <TotalValue>
-                      {offerPrice
-                        ? Number(offerPrice) + Number(deliveryFees?.DeliveryFees)
-                        : Number(price) + Number(deliveryFees?.DeliveryFees)}
+                <Content>
+                  <DeliveryWrapper>
+                    <DeliveryContent>
+                      <Pressable>
+                        <TruckMovingIcon width={24} height={24} />
+                      </Pressable>
+                      <DeliveryText>Delivery fee</DeliveryText>
+                    </DeliveryContent>
+                    <INRText>
+                      {Number(deliveryFees?.DeliveryFees) * (rate as number)}
                       {currency.symbol}
-                    </TotalValue>
-                  </TotalContent>
-                </CartPageContent>
-              </View>
-            </ScrollViewContent>
-            <CustomButton
-              variant='primary'
-              text='Place order'
-              fontFamily='Arvo-Regular'
-              onPress={processPay}
-              fontSize={16}
-              style={{
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                width: '100%',
-                padding: 16,
-              }}
-            />
-
-            {/* <OrderPlaced isVisible={isOrderPlacedVisible} onClose={closeOrderPlaced} /> */}
-          </Animated.View>
-        ))}
+                    </INRText>
+                  </DeliveryWrapper>
+                </Content>
+                <TotalContent>
+                  <TotalText>Total</TotalText>
+                  <TotalValue>
+                    {offerPrice
+                      ? Number(offerPrice) + Number(deliveryFees?.DeliveryFees)
+                      : Number(price) + Number(deliveryFees?.DeliveryFees)}
+                    {currency.symbol}
+                  </TotalValue>
+                </TotalContent>
+              </CartPageContent>
+            </View>
+          </ScrollViewContent>
+          <CustomButton
+            variant='primary'
+            text='Place order'
+            fontFamily='Arvo-Regular'
+            onPress={processPay}
+            fontSize={16}
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              width: '100%',
+              padding: 16,
+            }}
+          />
+        </Animated.View>
+      )}
       {openGift && (
         <GiftOptions
           navigation={navigation}
@@ -447,7 +435,6 @@ const Checkout: React.FC<ICheckout> = ({
           setOpengift={setOpengift}
         />
       )}
-      {openThankyou && <Thankyou />}
     </View>
   )
 }

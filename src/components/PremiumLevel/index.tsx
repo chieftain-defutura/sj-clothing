@@ -66,9 +66,9 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   }, [errorMessage])
   const handleSubmit = async () => {
     if (!FilteredData) return
-    if (!user) {
-      setFocus(true)
-    }
+    // if (!user) {
+    //   setFocus(true)
+    // }
     if (!user) {
       setLogin(true)
     }
