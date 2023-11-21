@@ -94,8 +94,10 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
     getOrderDataById()
   }, [getOrderDataById])
 
+  console.log('orderData', orderData)
+
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       {!orderData ? (
         <Text>No data</Text>
       ) : (
@@ -114,7 +116,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                 <CartText>Track order</CartText>
               </GoBackArrowContent>
               <TShirtImageWrapper>
-                <TShirtImage source={require('../../../assets/images/t-shirt.png')} />
+                <TShirtImage source={{ uri: orderData.productImage }} />
                 {/* <ThreeSixtyDegreeImage>
               <ThreeSixtyDegree width={40} height={40} />
             </ThreeSixtyDegreeImage> */}

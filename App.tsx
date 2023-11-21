@@ -14,7 +14,6 @@ import { doc, getDoc } from 'firebase/firestore/lite'
 
 const PUBLISHABLE_KEY =
   'pk_test_51O6p0wSGEesR2xZcTMeDvXgwTJgLfsOMehC1tZcDo7bphTUPo65HjeJJUcKIRYTqA115nRZi3CbzYH2GsuY69Htf00ewXq6Z7m'
-const { height, width } = Dimensions.get('window')
 const App: React.FC = () => {
   const {
     updateUser,
@@ -31,8 +30,7 @@ const App: React.FC = () => {
     updateAvatar,
     updateConfirmDetails,
   } = userStore()
-  const [isLoading, setLoading] = useState(true)
-  const [isLoaded, setLoaded] = useState(false)
+
   useEffect(() => {
     return onAuthStateChanged(auth, (data) => {
       if (data) {
@@ -69,7 +67,7 @@ const App: React.FC = () => {
     } catch (error) {
       console.error('Error fetching data from Firestore:', error)
     }
-  }, [user, isLoaded])
+  }, [user])
 
   useEffect(() => {
     fetchDataFromFirestore()
