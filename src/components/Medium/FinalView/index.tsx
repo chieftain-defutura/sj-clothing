@@ -69,7 +69,7 @@ const FinalView: React.FC<IFinalView> = ({
   return (
     <>
       <ScrollView style={styles.finalViewContainer}>
-        <View>
+        <View style={{ paddingHorizontal: 20 }}>
           <CustomButton
             variant='primary'
             text={`${t('Buy now')}`}
@@ -289,6 +289,8 @@ const FinalView: React.FC<IFinalView> = ({
                   fontFamily: 'Arvo-Regular',
                   fontSize: 14,
                   backgroundColor: color,
+                  width: 50,
+                  marginTop: 4,
                 }}
               ></Text>
             </View>

@@ -17,6 +17,7 @@ import { userStore } from '../../../store/userStore'
 import { ICheckout } from '../../../constant/types'
 import GiftIcon from '../../../assets/icons/GiftIcon'
 import GiftOptions from './GiftOptions'
+import { useNavigation } from '@react-navigation/native'
 
 type RootStackParamList = {
   Checkout: { product: string }
@@ -44,7 +45,6 @@ interface AddressData {
 }
 
 const Checkout: React.FC<ICheckout> = ({
-  navigation,
   description,
   gender,
   offerPrice,
@@ -59,6 +59,7 @@ const Checkout: React.FC<ICheckout> = ({
   type,
   setOpenCheckout,
 }) => {
+  const navigation = useNavigation()
   const [closedItems, setClosedItems] = useState<number[]>([])
   const [addr, setAddr] = useState<AddressData | null>(null)
   const [cartItems, setCartItems] = useState()
@@ -191,7 +192,12 @@ const Checkout: React.FC<ICheckout> = ({
         description: description,
         price: price,
         offerPrice: offerPrice,
-        totalamount: `${amount}${currency.symbol}`,
+        totalamount: `    ${
+          offerPrice
+            ? Number(offerPrice) + Number(deliveryFees?.DeliveryFees || 0) * (rate as number)
+            : Number(price) + Number(deliveryFees?.DeliveryFees || 0) * (rate as number)
+        }
+       ${currency.symbol}`,
         paymentStatus: 'pending',
         userId: user?.uid,
         gender: gender,
@@ -276,6 +282,7 @@ const Checkout: React.FC<ICheckout> = ({
   useEffect(() => {
     getData()
   }, [getData])
+  console.log('deliveryFees', deliveryFees)
 
   const handleClose = (index: number) => {
     const temp = async (index: any) => {
@@ -412,8 +419,9 @@ const Checkout: React.FC<ICheckout> = ({
                   <TotalText>Total</TotalText>
                   <TotalValue>
                     {offerPrice
-                      ? Number(offerPrice) + Number(deliveryFees?.DeliveryFees)
-                      : Number(price) + Number(deliveryFees?.DeliveryFees)}
+                      ? Number(offerPrice) +
+                        Number(deliveryFees?.DeliveryFees || 0) * (rate as number)
+                      : Number(price) + Number(deliveryFees?.DeliveryFees || 0) * (rate as number)}
                     {currency.symbol}
                   </TotalValue>
                 </TotalContent>
