@@ -38,17 +38,15 @@ const Skintone: React.FC<ISkintone> = ({
             backgroundColor: 'transparent',
           }}
         >
-          {
-            <WebView
-              style={{
-                backgroundColor: 'transparent',
-              }}
-              source={{
-                // uri: `http://localhost:5173/create-avatar/?uid=${uid}`,
-                uri: `https://sj-threejs-development.netlify.app/create-avatar/?uid=${uid}`,
-              }}
-            />
-          }
+          <WebView
+            style={{
+              backgroundColor: 'red',
+            }}
+            source={{
+              // uri: `http://localhost:5173/create-avatar/?uid=${uid}`,
+              uri: `https://sj-threejs-development.netlify.app/create-avatar/?uid=${uid}`,
+            }}
+          />
         </View>
       </Animated.View>
       <View style={styles.bottomWrapper}>

@@ -38,6 +38,18 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   const isMounted = useRef(false)
   const { avatar, user } = userStore()
   const [uid, setUid] = useState<string>('')
+  const [pageY, setPageY] = useState<number | null>(null)
+  const [elementHeight, setElementHeight] = useState<number | null>(null)
+  const elementRef = useRef<View | null>(null)
+
+  const handleLayout = () => {
+    if (elementRef.current) {
+      elementRef.current.measure((x, y, width, height, pageX, pageY) => {
+        setPageY(pageY)
+        setElementHeight(height)
+      })
+    }
+  }
 
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
@@ -95,15 +107,17 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               backgroundColor: 'transparent',
               marginTop: 18,
             }}
+            onLayout={(event) => handleLayout()}
+            ref={elementRef}
           >
-            {uid && (
+            {uid && pageY && elementHeight && (
               <WebView
                 style={{
                   backgroundColor: 'transparent',
                 }}
                 source={{
-                  // uri: `http://localhost:5173/create-avatar/?uid=${uid}`,
-                  uri: `https://sj-threejs-development.netlify.app/premium/?uid=${uid}`,
+                  uri: `http://localhost:5173/premium/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
+                  // uri: `https://sj-threejs-development.netlify.app/premium/?uid=${uid}`,
                 }}
               />
             )}
