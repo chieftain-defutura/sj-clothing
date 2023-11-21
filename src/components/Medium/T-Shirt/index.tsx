@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
 import { Dimensions, StyleSheet, Text, View } from 'react-native'
 
@@ -10,6 +10,19 @@ interface ITShirtProps {
 }
 
 const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
+  const [pageY, setPageY] = useState<number | null>(null)
+  const [elementHeight, setElementHeight] = useState<number | null>(null)
+  const elementRef = useRef<View | null>(null)
+
+  const handleLayout = () => {
+    if (elementRef.current) {
+      elementRef.current.measure((x, y, width, height, pageX, pageY) => {
+        setPageY(pageY)
+        setElementHeight(height)
+      })
+    }
+  }
+
   return (
     <View
       style={{
@@ -19,16 +32,20 @@ const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
         zIndex: 1,
         backgroundColor: 'transparent',
       }}
+      ref={elementRef}
+      onLayout={handleLayout}
     >
-      <WebView
-        style={{
-          backgroundColor: 'transparent',
-        }}
-        source={{
-          // uri: `http://localhost:5173/midlevel/?uid=${uid}`,
-          uri: `https://sj-threejs-development.netlify.app/midlevel/?uid=${uid}`,
-        }}
-      />
+      {pageY && elementHeight && (
+        <WebView
+          style={{
+            backgroundColor: 'transparent',
+          }}
+          source={{
+            // uri: `http://localhost:5173/midlevel/?uid=${uid}`,
+            uri: `https://sj-threejs-development.netlify.app/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
+          }}
+        />
+      )}
     </View>
   )
 }
