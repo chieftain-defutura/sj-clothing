@@ -246,64 +246,66 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
         )}
         {showDisplay === 1 && (
           <>
-            <GoBackArrowContent
-              onPress={() => {
-                navigation.goBack()
-              }}
-            >
-              <LeftArrow width={24} height={24} />
-              <CartText>{'Addressbook'}</CartText>
-            </GoBackArrowContent>
-            <View
-              style={{
-                // position: 'absolute',
-                // top: 10,
-                // zIndex: 15000,
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'column',
-                gap: 30,
-                paddingHorizontal: 20,
-                paddingVertical: 10,
-              }}
-            >
-              <View style={[styles.searchInputBox, { backgroundColor: 'white' }]}>
-                <Search width={16} height={16} />
-                <InputBox
-                  placeholder='Search for area, street name'
-                  onChangeText={(text) => handleSearchText(text)}
-                  value={onText}
-                  style={styles.inputBox}
-                  placeholderTextColor={COLORS.SecondaryTwo}
-                />
-              </View>
-              {suggestions && (
-                <View style={{ backgroundColor: 'white', height: 250 }}>
-                  <FlatList
-                    data={suggestions}
-                    renderItem={({ item }) => (
-                      <TouchableOpacity
-                        onPress={() => {
-                          // suggestion(item.display_name)
-                          setOnSearchChange(item.display_name)
-                          setSuggestions(null)
-                        }}
-                        style={{
-                          borderBottomColor: '#E5CEF5',
-                          borderBottomWidth: 1,
-                          paddingHorizontal: 8,
-                          paddingVertical: 8,
-                        }}
-                      >
-                        <HeaderStyle>{item.display_name}</HeaderStyle>
-                      </TouchableOpacity>
-                    )}
-                    keyExtractor={(item) => item.place_id.toString()}
-                    scrollEnabled={true}
-                    horizontal={false}
+            <View style={{ position: 'absolute', top: 10, zIndex: 15000 }}>
+              <GoBackArrowContent
+                onPress={() => {
+                  navigation.goBack()
+                }}
+              >
+                <LeftArrow width={24} height={24} />
+                <CartText>{'Addressbook'}</CartText>
+              </GoBackArrowContent>
+              <View
+                style={{
+                  // position: 'absolute',
+                  // top: 10,
+                  // zIndex: 15000,
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  gap: 30,
+                  paddingHorizontal: 20,
+                  paddingVertical: 10,
+                }}
+              >
+                <View style={[styles.searchInputBox, { backgroundColor: 'white' }]}>
+                  <Search width={16} height={16} />
+                  <InputBox
+                    placeholder='Search for area, street name'
+                    onChangeText={(text) => handleSearchText(text)}
+                    value={onText}
+                    style={styles.inputBox}
+                    placeholderTextColor={COLORS.SecondaryTwo}
                   />
                 </View>
-              )}
+                {suggestions && (
+                  <View style={{ backgroundColor: 'white', height: 250 }}>
+                    <FlatList
+                      data={suggestions}
+                      renderItem={({ item }) => (
+                        <TouchableOpacity
+                          onPress={() => {
+                            // suggestion(item.display_name)
+                            setOnSearchChange(item.display_name)
+                            setSuggestions(null)
+                          }}
+                          style={{
+                            borderBottomColor: '#E5CEF5',
+                            borderBottomWidth: 1,
+                            paddingHorizontal: 8,
+                            paddingVertical: 8,
+                          }}
+                        >
+                          <HeaderStyle>{item.display_name}</HeaderStyle>
+                        </TouchableOpacity>
+                      )}
+                      keyExtractor={(item) => item.place_id.toString()}
+                      scrollEnabled={true}
+                      horizontal={false}
+                    />
+                  </View>
+                )}
+              </View>
             </View>
             <AddAddressBook navigation={navigation} setDisplay={setDisplay} />
           </>

@@ -3,6 +3,7 @@ import React from 'react'
 import { COLORS } from '../../../styles/theme'
 import CustomButton from '../../Button'
 import { useTranslation } from 'react-i18next'
+import WebView from 'react-native-webview'
 
 interface IGender {
   isGender: string
@@ -43,9 +44,18 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender, data }) => 
                 style={styles.genderButton}
               >
                 <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Image
+                  {/* <Image
                     source={gender.image}
                     style={{ width: width / 1.8, height: height / 4.3 }}
+                  /> */}
+                  <WebView
+                    style={{
+                      backgroundColor: 'transparent',
+                    }}
+                    source={{
+                      // uri: `http://localhost:5173/midlevel/?uid=${uid}`,
+                      uri: `https://sj-threejs-development.netlify.app/`,
+                    }}
                   />
                   <Text
                     style={[

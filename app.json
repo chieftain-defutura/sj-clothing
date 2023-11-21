@@ -21,7 +21,7 @@
       },
       "config": {
         "googleMaps": {
-          "apiKey": "XXXXXXXXX-XXXXXXXXX_XXXXXX_g"
+          "apiKey": "AIzaSyDgFFGbaEKBnJJT73Ewzftdg0tljD_ZA9c"
         }
       },
       "package": "com.braj1410.Sprinkle",
@@ -43,6 +43,10 @@
         }
       ]
     ],
-    "extra": {}
+    "extra": {
+      "eas": {
+        "projectId": "3f866d31-5243-45d6-b35e-7dcc398752d5"
+      }
+    }
   }
 }

@@ -7,7 +7,7 @@ import {
   Dimensions,
 } from 'react-native'
 import React, { useState } from 'react'
-import MapView, { Marker } from 'react-native-maps'
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import CustomButton from '../../../../components/Button'
 import styled from 'styled-components/native'
 import { Pressable } from 'react-native'
@@ -184,7 +184,8 @@ const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay }) => {
           <CartText>{'Addressbook'}</CartText>
         </GoBackArrowContent> */}
 
-        {/* <MapView
+        <MapView
+          provider={PROVIDER_GOOGLE}
           ref={mapRef}
           style={{ flex: 1 }}
           initialRegion={{
@@ -218,7 +219,7 @@ const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay }) => {
             <CurrentLocationIcon width={16} height={16} />
             <UseCurrentLocationText>Use current location</UseCurrentLocationText>
           </FlexRow>
-        </CurrentLocationWrapper> */}
+        </CurrentLocationWrapper>
 
         <SelectAddressBtn>
           <CustomButton
