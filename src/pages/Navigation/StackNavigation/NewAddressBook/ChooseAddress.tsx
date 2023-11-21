@@ -9,9 +9,6 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../../firebase'
 import { COLORS, FONT_FAMILY } from '../../../../styles/theme'
 import HomeIcon from '../../../../assets/icons/HomeIcon'
-import Plus from '../../../../assets/icons/PlusIcon'
-import CustomButton from '../../../../components/Button'
-import TickIcon from '../../../../assets/icons/TickIcon'
 import { ScrollView } from 'react-native-gesture-handler'
 
 // interface AddressData {

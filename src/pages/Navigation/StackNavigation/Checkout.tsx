@@ -30,6 +30,12 @@ interface IDeliveryfees {
 const API_URL = 'https://sj-clothing-backend.cyclic.app'
 
 interface AddressData {
+  addressOne: string
+  addressTwo: string
+  city: string
+  state: string
+  pinCode: string
+  country: string
   floor: string
   fullAddress: string
   isSelected: boolean
@@ -340,7 +346,9 @@ const Checkout: React.FC<ICheckout> = ({
                       <View>
                         <HomeText>{addr.saveAddressAs}</HomeText>
                         <HomeDescription>
-                          {addr.floor}, {addr.fullAddress}, {addr.phoneNo}
+                          {addr.addressOne}, {addr.addressTwo}, {addr.city}, {addr.state},{' '}
+                          {addr.pinCode}, {addr.country}
+                          {addr.floor}, {addr.phoneNo}
                         </HomeDescription>
                       </View>
                     </Pressable>
