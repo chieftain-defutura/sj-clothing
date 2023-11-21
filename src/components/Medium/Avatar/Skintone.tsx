@@ -95,8 +95,8 @@ const Skintone: React.FC<ISkintone> = ({}) => {
                 backgroundColor: 'transparent',
               }}
               source={{
-                uri: `http://localhost:5173/create-avatar/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
-                // uri: `https://sj-threejs-development.netlify.app/create-avatar/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
+                // uri: `http://localhost:5173/create-avatar/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
+                uri: `https://sj-threejs-development.netlify.app/create-avatar/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
               }}
             />
           )}
