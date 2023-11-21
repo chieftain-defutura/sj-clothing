@@ -151,6 +151,7 @@ export interface IOrder {
   description: string
   gender: string
   id: string
+  totalamount: string
   orderStatus: {
     delivery: {
       createdAt: string

@@ -11,8 +11,8 @@ interface IGender {}
 const { width, height } = Dimensions.get('window')
 
 const GenderData = [
-  { gender: 'male', image: `https://sj-threejs-development.netlify.app/male` },
-  { gender: 'female', image: `https://sj-threejs-development.netlify.app/female` },
+  { gender: 'male', image: require('../../../assets/logo/boyImage.png') },
+  { gender: 'female', image: require('../../../assets/logo/girlImage.png') },
 ]
 
 const GenderModel = ({
@@ -52,14 +52,11 @@ const GenderModel = ({
         style={styles.genderButton}
       >
         <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          {/* <Image
-        source={gender.image}
-        style={{ width: width / 1.8, height: height / 4.3 }}
-      /> */}
+          {/* <Image source={gender.image} style={{ width: width / 1.8, height: height / 4.3 }} /> */}
           <View
             style={{
-              width: width / 1.3,
-              height: height / 4,
+              // width: width / 1.3,
+              // height: height / 4,
               borderColor: avatar.gender === gender.gender ? COLORS.textSecondaryClr : '#FFF',
               borderWidth: 1,
               borderRadius: 30,
@@ -69,7 +66,8 @@ const GenderModel = ({
             ref={elementRef}
             onLayout={handleLayout}
           >
-            {pageY && elementHeight && (
+            <Image source={gender.image} style={{ width: width / 1.5, height: height / 4.1 }} />
+            {/* {pageY && elementHeight && (
               <WebView
                 style={{
                   backgroundColor: 'transparent',
@@ -77,8 +75,7 @@ const GenderModel = ({
                 source={{
                   uri: `${gender.image}?pageY=${pageY}&h=${height}&elh=${elementHeight}`,
                 }}
-              />
-            )}
+              /> */}
           </View>
           <Text
             style={[
@@ -94,6 +91,52 @@ const GenderModel = ({
         </View>
       </TouchableOpacity>
     </View>
+    // <View style={styles.genderContainer}>
+    //   <Text style={styles.bottomTitle}>1.{t('select your gender')}.</Text>
+
+    //   <View style={styles.bottomWrapper}>
+    //     <View style={styles.genderButtonWrapper}>
+    //       {GenderData.map((gender, index) => (
+    //         <View
+    //           key={index}
+    //           style={{
+    //             width: width / 1.2,
+    //             height: height / 3.8,
+    //             borderColor: avatar.gender === gender.gender ? COLORS.textSecondaryClr : '#FFF',
+    //             borderWidth: 1,
+    //             borderRadius: 30,
+    //             marginVertical: 14,
+    //           }}
+    //         >
+    //           <TouchableOpacity
+    //             onPress={() => updateAvatar({ gender: gender.gender as string, skinTone: '' })}
+    //             style={styles.genderButton}
+    //           >
+    //             <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    //               <Image
+    //                 source={gender.image}
+    //                 style={{ width: width / 1.8, height: height / 4.3 }}
+    //               />
+    //               <Text
+    //                 style={[
+    //                   styles.buttonText,
+    //                   {
+    //                     color:
+    //                       avatar.gender === gender.gender
+    //                         ? COLORS.textSecondaryClr
+    //                         : COLORS.textRGBAClr,
+    //                   },
+    //                 ]}
+    //               >
+    //                 {t(gender.gender)}
+    //               </Text>
+    //             </View>
+    //           </TouchableOpacity>
+    //         </View>
+    //       ))}
+    //     </View>
+    //   </View>
+    // </View>
   )
 }
 

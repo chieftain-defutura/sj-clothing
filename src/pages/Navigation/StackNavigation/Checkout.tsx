@@ -191,6 +191,7 @@ const Checkout: React.FC<ICheckout> = ({
         description: description,
         price: price,
         offerPrice: offerPrice,
+        totalamount: `${amount}${currency.symbol}`,
         paymentStatus: 'pending',
         userId: user?.uid,
         gender: gender,
@@ -199,9 +200,9 @@ const Checkout: React.FC<ICheckout> = ({
         giftMessage: giftOptions,
         orderStatus: {
           orderplaced: {
-            createdAt: null,
-            description: '',
-            status: false,
+            createdAt: Date.now(),
+            description: 'Your order has been placed successfully',
+            status: true,
           },
           manufacturing: {
             createdAt: null,
@@ -247,7 +248,7 @@ const Checkout: React.FC<ICheckout> = ({
         console.error(presentSheet.error)
         return Alert.alert(presentSheet.error.message)
       }
-      Alert.alert('Payment successfully! Thank you.')
+      // Alert.alert('Payment successfully! Thank you.')
       navigation.navigate('Thankyou')
     } catch (err) {
       console.error(err)

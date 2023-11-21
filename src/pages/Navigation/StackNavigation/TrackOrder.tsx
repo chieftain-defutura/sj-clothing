@@ -5,11 +5,11 @@ import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { RadioButton } from 'react-native-paper'
-// import ThreeSixtyDegree from '../../../assets/icons/360-degree'
-import { LinearGradient } from 'expo-linear-gradient'
+import moment from 'moment'
 import { doc, getDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { IOrder } from '../../../constant/types'
+import { userStore } from '../../../store/userStore'
 
 // const { height, width } = Dimensions.get('window')
 
@@ -18,39 +18,6 @@ interface ITrackOrder {
   orderId: string
   setOpenTrackOrder: React.Dispatch<React.SetStateAction<boolean>>
 }
-
-const data = [
-  {
-    orderName: 'Order placed',
-    orderDate: '23 Jul, 2023',
-    orderDescription:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut laboredolore aliqua.',
-  },
-  {
-    orderName: 'Manufacturing',
-    orderDate: '23 Jul, 2023',
-    orderDescription:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut laboredolore aliqua.',
-  },
-  {
-    orderName: 'Ready to ship',
-    orderDate: '23 Jul, 2023',
-    orderDescription:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut laboredolore aliqua.',
-  },
-  {
-    orderName: 'Shipping',
-    orderDate: '23 Jul, 2023',
-    orderDescription:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut laboredolore aliqua.',
-  },
-  {
-    orderName: 'Delivery',
-    orderDate: '23 Jul, 2023',
-    orderDescription:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut laboredolore aliqua.',
-  },
-]
 
 const ProductData = [
   {
@@ -81,6 +48,9 @@ const ProductData = [
 
 const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOrder }) => {
   const [orderData, setOrderData] = useState<IOrder>()
+  const rate = userStore((state) => state.rate)
+  const currency = userStore((state) => state.currency)
+
   const getOrderDataById = useCallback(async () => {
     const q = doc(db, 'Orders', orderId)
     const querySnapshot = await getDoc(q)
@@ -94,7 +64,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
     getOrderDataById()
   }, [getOrderDataById])
 
-  console.log('orderData', orderData)
+  console.log('orderData', orderData?.totalamount)
 
   return (
     <View style={{ flex: 1 }}>
@@ -121,7 +91,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
               <ThreeSixtyDegree width={40} height={40} />
             </ThreeSixtyDegreeImage> */}
               </TShirtImageWrapper>
-              <TrackOrderContent>
+              {/* <TrackOrderContent>
                 <Container>
                   <Row>
                     {ProductData.slice(0, 3).map((f, index) => (
@@ -141,7 +111,256 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                     ))}
                   </Row>
                 </Container>
-              </TrackOrderContent>
+              </TrackOrderContent> */}
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  paddingHorizontal: 50,
+                  paddingVertical: 20,
+                }}
+              >
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    gap: 37,
+                  }}
+                >
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: 95,
+                      paddingTop: 16,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: COLORS.textClr,
+                        fontFamily: 'Montserrat-Regular',
+                        fontSize: 10,
+                      }}
+                    >
+                      Product Name
+                    </Text>
+                    <Text
+                      style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
+                    >
+                      {orderData.productName}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: 95,
+                      paddingTop: 16,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: COLORS.textClr,
+                        fontFamily: 'Montserrat-Regular',
+                        fontSize: 10,
+                      }}
+                    >
+                      Size
+                    </Text>
+                    <View style={{ display: 'flex', flexDirection: 'row' }}>
+                      <Text
+                        style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
+                      >
+                        {orderData?.sizes.sizeVarient.size}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: 155,
+                      paddingTop: 16,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: COLORS.textClr,
+                        fontFamily: 'Montserrat-Regular',
+                        fontSize: 10,
+                      }}
+                    >
+                      Price
+                    </Text>
+
+                    <Text
+                      style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
+                    >
+                      {orderData.totalamount}
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    gap: 37,
+                  }}
+                >
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: 95,
+                      paddingTop: 16,
+                    }}
+                  >
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: 6,
+                        alignItems: 'center',
+                      }}
+                    >
+                      <View>
+                        <View>
+                          <ProductText>Ordered on</ProductText>
+                        </View>
+                        <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
+                          <View
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <ProductName>
+                              {orderData?.orderStatus?.orderplaced?.createdAt
+                                ? moment(orderData?.orderStatus?.orderplaced?.createdAt).format(
+                                    'DD-MM-YYYY',
+                                  )
+                                : ''}
+                            </ProductName>
+                          </View>
+                        </View>
+                      </View>
+                      {/* {!orderData?.offerPrice ? (
+                      <View>
+                        <ProductText>price</ProductText>
+                        <View
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <ProductName>
+                            {(
+                              Number(orderData?.price ? orderData?.price : 0) * (rate as number)
+                            ).toFixed(2)}
+                          </ProductName>
+                          <ProductName>{currency.symbol}</ProductName>
+                        </View>
+                      </View>
+                    ) : (
+                      <View>
+                        <View>
+                          <ProductText>price</ProductText>
+                        </View>
+                        <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
+                          <View
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <OldPriceText>
+                              {(Number(orderData.price) * (rate as number)).toFixed(2)}
+                            </OldPriceText>
+                            <OldPriceText> {currency.symbol}</OldPriceText>
+                          </View>
+                          <View
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <ProductName>
+                              {(Number(orderData.offerPrice) * (rate as number)).toFixed(2)}
+                            </ProductName>
+                            <ProductName>{currency.symbol}</ProductName>
+                          </View>
+                        </View>
+                      </View>
+                    )} */}
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: 97,
+                      paddingTop: 16,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: COLORS.textClr,
+                        fontFamily: 'Montserrat-Regular',
+                        fontSize: 10,
+                      }}
+                    >
+                      Delivered on
+                    </Text>
+                    <Text
+                      style={{
+                        color: COLORS.textClr,
+                        fontFamily: 'Arvo-Regular',
+                        fontSize: 14,
+                        textTransform: 'capitalize',
+                      }}
+                    >
+                      {orderData?.orderStatus?.delivery?.createdAt
+                        ? moment(orderData?.orderStatus?.delivery?.createdAt).format('DD-MM-YYYY')
+                        : '-'}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: 155,
+                      paddingTop: 16,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: COLORS.textClr,
+                        fontFamily: 'Montserrat-Regular',
+                        fontSize: 10,
+                      }}
+                    >
+                      Quantity
+                    </Text>
+                    <Text
+                      style={{
+                        color: COLORS.textClr,
+                        fontFamily: 'Arvo-Regular',
+                        fontSize: 14,
+                        // backgroundColor: color,
+                      }}
+                    >
+                      1
+                    </Text>
+                  </View>
+                </View>
+              </View>
 
               <TrackOrderContent>
                 <OrderGroupContent>
@@ -162,11 +381,14 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                         <View>
                           <OrderPlacedText>Order Placed</OrderPlacedText>
                         </View>
-                        <View>
-                          <OrderPlacedDate>
-                            {orderData?.orderStatus?.orderplaced?.createdAt}
-                          </OrderPlacedDate>
-                        </View>
+
+                        <OrderPlacedDate>
+                          {orderData?.orderStatus?.orderplaced?.createdAt
+                            ? moment(orderData?.orderStatus?.orderplaced?.createdAt).format(
+                                'DD-MM-YYYY',
+                              )
+                            : ''}
+                        </OrderPlacedDate>
                       </OrderPlacedFlexContent>
 
                       <OrderDescription>
@@ -182,7 +404,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                       <RadioButton.Android
                         value='option1'
                         status={
-                          orderData?.orderStatus?.orderplaced?.status ? 'checked' : 'unchecked'
+                          orderData?.orderStatus?.manufacturing?.status ? 'checked' : 'unchecked'
                         }
                         // onPress={() => setOnCheckOrderPlaced()}
                         color={COLORS.textSecondaryClr}
@@ -195,13 +417,17 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                         </View>
                         <View>
                           <OrderPlacedDate>
-                            {orderData?.orderStatus?.orderplaced?.createdAt}
+                            {orderData?.orderStatus?.manufacturing?.createdAt
+                              ? moment(orderData?.orderStatus?.manufacturing?.createdAt).format(
+                                  'DD-MM-YYYY',
+                                )
+                              : ''}
                           </OrderPlacedDate>
                         </View>
                       </OrderPlacedFlexContent>
 
                       <OrderDescription>
-                        {orderData?.orderStatus?.orderplaced?.description}
+                        {orderData?.orderStatus?.manufacturing?.description}
                       </OrderDescription>
                     </FlexOrder>
                   </View>
@@ -213,7 +439,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                       <RadioButton.Android
                         value='option1'
                         status={
-                          orderData?.orderStatus?.orderplaced?.status ? 'checked' : 'unchecked'
+                          orderData?.orderStatus?.readyToShip?.status ? 'checked' : 'unchecked'
                         }
                         // onPress={() => setOnCheckOrderPlaced()}
                         color={COLORS.textSecondaryClr}
@@ -226,13 +452,17 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                         </View>
                         <View>
                           <OrderPlacedDate>
-                            {orderData?.orderStatus?.orderplaced?.createdAt}
+                            {orderData?.orderStatus?.readyToShip?.createdAt
+                              ? moment(orderData?.orderStatus?.readyToShip?.createdAt).format(
+                                  'DD-MM-YYYY',
+                                )
+                              : ''}
                           </OrderPlacedDate>
                         </View>
                       </OrderPlacedFlexContent>
 
                       <OrderDescription>
-                        {orderData?.orderStatus?.orderplaced?.description}
+                        {orderData?.orderStatus?.readyToShip?.description}
                       </OrderDescription>
                     </FlexOrder>
                   </View>
@@ -243,9 +473,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                       {/* <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} /> */}
                       <RadioButton.Android
                         value='option1'
-                        status={
-                          orderData?.orderStatus?.orderplaced?.status ? 'checked' : 'unchecked'
-                        }
+                        status={orderData?.orderStatus?.shipping?.status ? 'checked' : 'unchecked'}
                         // onPress={() => setOnCheckOrderPlaced()}
                         color={COLORS.textSecondaryClr}
                       />
@@ -257,13 +485,17 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                         </View>
                         <View>
                           <OrderPlacedDate>
-                            {orderData?.orderStatus?.orderplaced?.createdAt}
+                            {orderData?.orderStatus?.shipping?.createdAt
+                              ? moment(orderData?.orderStatus?.shipping?.createdAt).format(
+                                  'DD-MM-YYYY',
+                                )
+                              : ''}
                           </OrderPlacedDate>
                         </View>
                       </OrderPlacedFlexContent>
 
                       <OrderDescription>
-                        {orderData?.orderStatus?.orderplaced?.description}
+                        {orderData?.orderStatus?.shipping?.description}
                       </OrderDescription>
                     </FlexOrder>
                   </View>
@@ -274,9 +506,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                       {/* <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} /> */}
                       <RadioButton.Android
                         value='option1'
-                        status={
-                          orderData?.orderStatus?.orderplaced?.status ? 'checked' : 'unchecked'
-                        }
+                        status={orderData?.orderStatus?.delivery?.status ? 'checked' : 'unchecked'}
                         // onPress={() => setOnCheckOrderPlaced()}
                         color={COLORS.textSecondaryClr}
                       />
@@ -288,13 +518,17 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                         </View>
                         <View>
                           <OrderPlacedDate>
-                            {orderData?.orderStatus?.orderplaced?.createdAt}
+                            {orderData?.orderStatus?.delivery?.createdAt
+                              ? moment(orderData?.orderStatus?.delivery?.createdAt).format(
+                                  'DD-MM-YYYY',
+                                )
+                              : ''}
                           </OrderPlacedDate>
                         </View>
                       </OrderPlacedFlexContent>
 
                       <OrderDescription>
-                        {orderData?.orderStatus?.orderplaced?.description}
+                        {orderData?.orderStatus?.delivery?.description}
                       </OrderDescription>
                     </FlexOrder>
                   </View>
@@ -343,6 +577,7 @@ const OrderPlacedDate = styled.Text`
   font-size: 12px;
   color: ${COLORS.SecondaryTwo};
   font-family: Gilroy-Regular;
+  padding-left: 145px;
 `
 
 const OrderGroupContent = styled.View`
@@ -392,9 +627,12 @@ const TShirtImageWrapper = styled.View`
   align-items: center;
 `
 
-const ThreeSixtyDegreeImage = styled.View`
-  margin-top: 24px;
-  margin-bottom: 8px;
+const OldPriceText = styled.Text`
+  font-size: 13px;
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  color: ${COLORS.SecondaryTwo};
+  text-decoration-line: line-through;
+  margin-top: 4px;
 `
 
 const TShirtImage = styled.Image`
