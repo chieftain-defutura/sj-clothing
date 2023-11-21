@@ -18,7 +18,7 @@ const TermsAndConditions = () => {
         padding: 25,
       }}
     >
-      <ScrollView showsHorizontalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <CenterText>{t('TERMS & CONDITIONS')}</CenterText>
           <NormalText style={{ paddingBottom: 8 }}>{t('Welcome to')} SJ clothing.</NormalText>
@@ -148,6 +148,7 @@ const CenterText = styled.Text`
   color: ${COLORS.textClr};
   font-family: ${FONT_FAMILY.GilroySemiBold};
   padding: 8px;
+  margin-bottom: 16px;
 `
 const HeadingText = styled.Text`
   color: ${COLORS.textClr};
