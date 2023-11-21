@@ -187,7 +187,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
               }}
             >
               <LeftArrow width={24} height={24} />
-              <CartText>{'Addressbook'}</CartText>
+              <CartText>{'Address book'}</CartText>
             </GoBackArrowContent>
             <View style={{ padding: 20, display: 'flex', alignItems: 'flex-start', gap: 20 }}>
               <View style={styles.searchInputBox}>
@@ -203,7 +203,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
               <View
                 style={{
                   position: 'absolute',
-                  zIndex: 10,
+                  zIndex: 100000,
                   top: 120,
                   backgroundColor: 'white',
                   left: 20,
@@ -247,14 +247,14 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
         )}
         {showDisplay === 1 && (
           <>
-            <View style={{ position: 'absolute', top: 10, zIndex: 15000 }}>
+            <View style={{ position: 'absolute', top: 10, zIndex: 10000 }}>
               <GoBackArrowContent
                 onPress={() => {
                   navigation.goBack()
                 }}
               >
                 <LeftArrow width={24} height={24} />
-                <CartText>{'Addressbook'}</CartText>
+                <CartText>{'Address Book'}</CartText>
               </GoBackArrowContent>
               <View
                 style={{
@@ -505,7 +505,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
     bottom: 0,
-    zIndex: 10,
+    zIndex: 100000,
   },
 
   cancelContainer: {
