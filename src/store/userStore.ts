@@ -94,7 +94,7 @@ export const userStore = create<State & Action>((set) => ({
   phoneNo: null,
   avatar: {
     gender: null,
-    skinTone: null,
+    skinTone: '3',
   },
   language: 'en',
   address: [

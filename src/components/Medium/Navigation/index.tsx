@@ -124,7 +124,7 @@ const Navigation: React.FC<INavigation> = ({
 
                 {steps !== 5 && <DropDownArrowIcon />}
               </Pressable>
-              {warning && steps === 1 && (
+              {warning && (
                 <Text
                   style={{
                     color: COLORS.textSecondaryClr,

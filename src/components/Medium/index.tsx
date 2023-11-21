@@ -54,7 +54,7 @@ const Medium = () => {
 
   //size
   const [isSize, setSize] = useState({
-    country: 'Canada',
+    country: '',
     sizeVarient: [{ size: '', measurement: '', quantity: '' }],
   })
 
@@ -92,7 +92,30 @@ const Medium = () => {
   }
 
   const handleIncreaseSteps = () => {
-    if (isSelectedStyle) {
+    let currentField
+    switch (isSteps) {
+      case 1:
+        currentField = isSelectedStyle
+        break
+      case 2:
+        currentField = isSize.country
+        break
+      case 3:
+        currentField = isSize.sizeVarient[0].size
+        break
+      case 4:
+        currentField = isColor
+        break
+      default:
+        currentField = 'any'
+    }
+
+    if (currentField === '') {
+      // setError('Please fill in the current field before proceeding.');
+      setWarning('Please select current field before proceeding.')
+      setSteps(isSteps)
+    } else {
+      // Clear any previous error and move to the next step
       setSteps(isSteps + 1)
       setDropDown(false)
       setOpenDesign(false)
@@ -101,9 +124,6 @@ const Medium = () => {
         withTiming(1, { duration: 400 }), // Slide out
         withTiming(0, { duration: 400 }), // Slide back to original state
       )
-    } else {
-      setWarning('Select Style to move further')
-      setSteps(1)
     }
   }
   useEffect(() => {
@@ -111,6 +131,7 @@ const Medium = () => {
       setWarning('') // Set the state to null after 5 seconds
     }, 2000)
   }, [warning])
+  console.log(isSize)
 
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
@@ -131,7 +152,6 @@ const Medium = () => {
     try {
       const docRef = doc(db, 'ModelsMidlevel', uid)
       await updateDoc(docRef, { color: isColor })
-      console.log('updated')
     } catch (error) {
       console.log(error)
     }
@@ -141,7 +161,6 @@ const Medium = () => {
     try {
       const docRef = doc(db, 'ModelsMidlevel', uid)
       await updateDoc(docRef, { size: isSize.sizeVarient[0].size })
-      console.log('updated')
     } catch (error) {
       console.log(error)
     }
@@ -151,7 +170,6 @@ const Medium = () => {
     try {
       const docRef = doc(db, 'ModelsMidlevel', uid)
       await updateDoc(docRef, { image: isImageOrText.designs.originalImage })
-      console.log('updated')
     } catch (error) {
       console.log(error)
     }
@@ -275,7 +293,6 @@ const Medium = () => {
       // setFocus(true)
     }
   }
-  console.log(FilteredData)
 
   return (
     <View style={{ flex: 1 }}>
@@ -304,6 +321,7 @@ const Medium = () => {
             handleDecreaseSteps={handleDecreaseSteps}
             handleIncreaseSteps={handleIncreaseSteps}
           />
+
           <View style={{ zIndex: 5, width: width, position: 'absolute', top: 0 }}>
             {isSteps === 1 && data && isDropDown && (
               <SelectStyle

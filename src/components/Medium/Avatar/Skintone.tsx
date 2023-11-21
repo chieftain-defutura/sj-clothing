@@ -79,6 +79,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
 
   return (
     <View style={styles.SkintoneContainer}>
+      <Text style={styles.bottomTitle}>{t('select your skintone')}</Text>
       <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
         <View
           style={{
@@ -103,8 +104,6 @@ const Skintone: React.FC<ISkintone> = ({}) => {
         </View>
       </Animated.View>
       <View style={styles.bottomWrapper}>
-        <Text style={styles.bottomTitle}>1.{t('select your skintone')}.</Text>
-
         <View style={styles.skinCollection}>
           {['#805244', '#a07160', '#c69d92', '#dabdaf'].map((m, index) => (
             <TouchableOpacity
@@ -167,6 +166,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     fontFamily: 'Arvo-Regular',
+    textTransform: 'uppercase',
   },
   SkintoneButtonWrapper: {
     display: 'flex',

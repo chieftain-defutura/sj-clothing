@@ -102,7 +102,7 @@ const Gender: React.FC<IGender> = ({}) => {
 
   return (
     <View style={styles.genderContainer}>
-      <Text style={styles.bottomTitle}>1.{t('select your gender')}.</Text>
+      <Text style={styles.bottomTitle}>{t('select your gender')}</Text>
 
       <View style={styles.bottomWrapper}>
         <View style={styles.genderButtonWrapper}>
@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     fontFamily: 'Arvo-Regular',
+    textTransform: 'uppercase',
   },
   genderButtonWrapper: {
     display: 'flex',

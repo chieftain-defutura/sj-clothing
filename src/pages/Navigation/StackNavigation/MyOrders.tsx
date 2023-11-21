@@ -50,7 +50,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
     getData()
   }, [getData])
   return (
-    <LinearGradient colors={gradientOpacityColors}>
+    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
       {!openTrackOrder ? (
         <Animated.View
           entering={SlideInRight.duration(500).delay(200)}

@@ -8,14 +8,13 @@ import PremiumDetailsCard from './PremiumDetailsCard'
 import PremiumThreeSixtyDegree from './PremiumThreeSixtyDegree'
 import { useNavigation } from '@react-navigation/native'
 import { IPremiumData } from '../../constant/types'
-import axios from 'axios'
 import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 import { userStore } from '../../store/userStore'
 import LoginModal from '../../screens/Modals/Login'
 import SignupModal from '../../screens/Modals/Signup'
 import ForgotMail from '../../screens/Modals/ForgotMail'
 
-const { width, height } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 interface IPremiumLevel {
   openDetails: boolean
@@ -24,7 +23,7 @@ interface IPremiumLevel {
 
 const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) => {
   const navigation = useNavigation()
-  const { user, updateOderId } = userStore()
+  const user = userStore((state) => state.user)
   const [data, setData] = useState<IPremiumData[]>()
   const [openCard, setOpenCard] = useState(false)
   const [productId, setProductId] = useState('')

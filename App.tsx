@@ -16,7 +16,6 @@ import Constants from 'expo-constants'
 
 const PUBLISHABLE_KEY =
   'pk_test_51O6p0wSGEesR2xZcTMeDvXgwTJgLfsOMehC1tZcDo7bphTUPo65HjeJJUcKIRYTqA115nRZi3CbzYH2GsuY69Htf00ewXq6Z7m'
-const { height, width } = Dimensions.get('window')
 const App: React.FC = () => {
   const {
     updateUser,
@@ -33,8 +32,7 @@ const App: React.FC = () => {
     updateAvatar,
     updateConfirmDetails,
   } = userStore()
-  const [isLoading, setLoading] = useState(true)
-  const [isLoaded, setLoaded] = useState(false)
+
   useEffect(() => {
     return onAuthStateChanged(auth, (data) => {
       if (data) {
@@ -50,9 +48,9 @@ const App: React.FC = () => {
       if (!user) return
       console.log(2)
       if (user && user.emailVerified) {
-        if (!isLoaded) {
-          setLoading(true)
-        }
+        // if (!isLoaded) {
+        //   setLoading(true)
+        // }
 
         const q = doc(db, 'users', user.uid)
         const querySnapshot = await getDoc(q)
@@ -66,14 +64,12 @@ const App: React.FC = () => {
         updateCurrency(fetchData?.currency)
         updateRate(fetchData?.rate)
         updateConfirmDetails(fetchData?.confirmDetails)
-        setLoaded(true)
+        // setLoaded(true)
       }
     } catch (error) {
       console.error('Error fetching data from Firestore:', error)
-    } finally {
-      setLoading(false)
     }
-  }, [user, isLoaded])
+  }, [user])
 
   useEffect(() => {
     fetchDataFromFirestore()
@@ -142,14 +138,15 @@ const App: React.FC = () => {
                 // barStyle={'dark-content'}
                 style='dark'
               />
-              {isLoading ? (
+              {/* {isLoading ? (
                 <Image
                   style={{ width: width, height: height, objectFit: 'cover' }}
                   source={require('./assets/iPhone.png')}
                 />
               ) : (
                 <StackNavigationRoutes />
-              )}
+              )} */}
+              <StackNavigationRoutes />
             </NavigationContainer>
           </SafeAreaView>
         </I18nextProvider>
