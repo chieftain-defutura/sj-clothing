@@ -48,9 +48,9 @@ const App: React.FC = () => {
       if (!user) return
       console.log(2)
       if (user && user.emailVerified) {
-        if (!isLoaded) {
-          setLoading(true)
-        }
+        // if (!isLoaded) {
+        //   setLoading(true)
+        // }
 
         const q = doc(db, 'users', user.uid)
         const querySnapshot = await getDoc(q)
@@ -64,12 +64,10 @@ const App: React.FC = () => {
         updateCurrency(fetchData?.currency)
         updateRate(fetchData?.rate)
         updateConfirmDetails(fetchData?.confirmDetails)
-        setLoaded(true)
+        // setLoaded(true)
       }
     } catch (error) {
       console.error('Error fetching data from Firestore:', error)
-    } finally {
-      setLoading(false)
     }
   }, [user, isLoaded])
 
@@ -136,14 +134,15 @@ const App: React.FC = () => {
                 // barStyle={'dark-content'}
                 style='dark'
               />
-              {isLoading ? (
+              {/* {isLoading ? (
                 <Image
                   style={{ width: width, height: height, objectFit: 'cover' }}
                   source={require('./assets/iPhone.png')}
                 />
               ) : (
                 <StackNavigationRoutes />
-              )}
+              )} */}
+              <StackNavigationRoutes />
             </NavigationContainer>
           </SafeAreaView>
         </I18nextProvider>

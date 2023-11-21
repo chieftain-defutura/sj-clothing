@@ -33,8 +33,6 @@ import Currency from './Currency'
 import AvatarNavigation from './Avatar'
 import TermsAndConditions from './TermsAndConditions'
 import Thankyou from './Thankyou'
-// import NewAddressBook from './NewAddressBook'
-// import Payment from './Payment'
 
 const Stack = createStackNavigator()
 
@@ -44,9 +42,6 @@ const StackNavigationRoutes: React.FC = () => {
       screenOptions={{
         headerTitleAlign: 'center',
         headerStyle: { backgroundColor: 'rgba(191, 148, 228, 0.8)' },
-        // headerLeft: HeaderLeft,
-        // headerRight: HeaderRight,
-
         headerTitle: HeaderLeft,
         headerShadowVisible: false,
       }}
@@ -76,11 +71,7 @@ const StackNavigationRoutes: React.FC = () => {
         component={CartPage}
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
       />
-      <Stack.Screen
-        name='Checkout'
-        component={Checkout}
-        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-      />
+
       <Stack.Screen
         name='MyPosts'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
@@ -156,15 +147,7 @@ const StackNavigationRoutes: React.FC = () => {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={Thankyou}
       />
-      {/* <Stack.Screen
-        name='Payment'
-        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-        component={Payment}
-      /> */}
-
       <Stack.Screen name='MyOrders' component={MyOrders} />
-      <Stack.Screen name='TrackOrder' component={TrackOrder} />
-      <Stack.Screen name='GiftOptions' component={GiftOptions} />
       <Stack.Screen name='Notification' component={NotificationPage} />
       <Stack.Screen name='Premiumm' component={Premium} />
       <Stack.Screen name='PremiumBuynow' component={PremiumBuyNow} />
