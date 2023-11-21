@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native'
 
 import CustomButton from '../../Button'
@@ -9,25 +9,10 @@ import Animated, { FadeInUp, FadeOut } from 'react-native-reanimated'
 
 const { height, width } = Dimensions.get('window')
 
-interface ISkintone {
-  skinColor: string
-  setSkinColor: React.Dispatch<React.SetStateAction<string>>
-  setToggle: React.Dispatch<React.SetStateAction<boolean>>
-  handleSubmit: () => void
-  path: string
-  setSteps: React.Dispatch<React.SetStateAction<number>>
-  uid: string
-}
-const Skintone: React.FC<ISkintone> = ({
-  setToggle,
-  skinColor,
-  setSkinColor,
-  handleSubmit,
-  path,
-  uid,
-  setSteps,
-}) => {
+interface ISkintone {}
+const Skintone: React.FC<ISkintone> = ({}) => {
   const { t } = useTranslation('avatar')
+  const [skinColor, setSkinColor] = useState('3')
   return (
     <View style={styles.SkintoneContainer}>
       <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
@@ -45,7 +30,7 @@ const Skintone: React.FC<ISkintone> = ({
               }}
               source={{
                 // uri: `http://localhost:5173/create-avatar/?uid=${uid}`,
-                uri: `https://sj-threejs-development.netlify.app/create-avatar/?uid=${uid}`,
+                uri: `https://sj-threejs-development.netlify.app/male`,
               }}
             />
           }
@@ -72,7 +57,7 @@ const Skintone: React.FC<ISkintone> = ({
             </TouchableOpacity>
           ))}
         </View>
-        <View style={styles.SkintoneButtonWrapper}>
+        {/* <View style={styles.SkintoneButtonWrapper}>
           <CustomButton
             text={`${t('previous')}`}
             variant='primary'
@@ -89,7 +74,7 @@ const Skintone: React.FC<ISkintone> = ({
             fontSize={16}
             style={{ width: 180 }}
           />
-        </View>
+        </View> */}
       </View>
     </View>
   )

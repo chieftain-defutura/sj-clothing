@@ -4,23 +4,20 @@ import { COLORS } from '../../../styles/theme'
 import CustomButton from '../../Button'
 import { useTranslation } from 'react-i18next'
 import WebView from 'react-native-webview'
+import { userStore } from '../../../store/userStore'
 
-interface IGender {
-  isGender: string
-  setGender: React.Dispatch<React.SetStateAction<string>>
-  setToggle: React.Dispatch<React.SetStateAction<boolean>>
-  data: { uid: string; animationFinished?: boolean } | null
-}
+interface IGender {}
 
 const { width, height } = Dimensions.get('window')
 
 const GenderData = [
-  { gender: 'male', image: require('../../../assets/logo/boyImage.png') },
-  { gender: 'female', image: require('../../../assets/logo/girlImage.png') },
+  { gender: 'male', image: `https://sj-threejs-development.netlify.app/male` },
+  { gender: 'female', image: `https://sj-threejs-development.netlify.app/female` },
 ]
 
-const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender, data }) => {
+const Gender: React.FC<IGender> = ({}) => {
   const { t } = useTranslation('avatar')
+  const { updateAvatar, avatar } = userStore()
   return (
     <View style={styles.genderContainer}>
       <Text style={styles.bottomTitle}>1.{t('select your gender')}.</Text>
@@ -33,14 +30,12 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender, data }) => 
               style={{
                 width: width / 1.2,
                 height: height / 3.8,
-                borderColor: isGender === gender.gender ? COLORS.textSecondaryClr : '#FFF',
-                borderWidth: 1,
-                borderRadius: 30,
+
                 marginVertical: 14,
               }}
             >
               <TouchableOpacity
-                onPress={() => setGender(gender.gender)}
+                onPress={() => updateAvatar({ gender: gender.gender as string, skinTone: '' })}
                 style={styles.genderButton}
               >
                 <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -48,21 +43,36 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender, data }) => 
                     source={gender.image}
                     style={{ width: width / 1.8, height: height / 4.3 }}
                   /> */}
-                  <WebView
+                  <View
                     style={{
+                      width: width / 1.3,
+                      height: height / 4,
+                      borderColor:
+                        avatar.gender === gender.gender ? COLORS.textSecondaryClr : '#FFF',
+                      borderWidth: 1,
+                      borderRadius: 30,
                       backgroundColor: 'transparent',
+                      overflow: 'hidden',
                     }}
-                    source={{
-                      // uri: `http://localhost:5173/midlevel/?uid=${uid}`,
-                      uri: `https://sj-threejs-development.netlify.app/`,
-                    }}
-                  />
+                  >
+                    <WebView
+                      style={{
+                        backgroundColor: 'transparent',
+                      }}
+                      source={{
+                        // uri: `http://localhost:5173/midlevel/?uid=${uid}`,
+                        uri: gender.image,
+                      }}
+                    />
+                  </View>
                   <Text
                     style={[
                       styles.buttonText,
                       {
                         color:
-                          isGender === gender.gender ? COLORS.textSecondaryClr : COLORS.textRGBAClr,
+                          avatar.gender === gender.gender
+                            ? COLORS.textSecondaryClr
+                            : COLORS.textRGBAClr,
                       },
                     ]}
                   >
@@ -73,17 +83,6 @@ const Gender: React.FC<IGender> = ({ setToggle, isGender, setGender, data }) => 
             </View>
           ))}
         </View>
-      </View>
-      <View>
-        <CustomButton
-          text={`${t('next')}`}
-          variant='primary'
-          fontFamily='Arvo-Regular'
-          fontSize={16}
-          // disabled={!data?.animationFinished}
-          onPress={() => setToggle(true)}
-          style={{ width: width, paddingHorizontal: 24, marginTop: 18 }}
-        />
       </View>
     </View>
   )
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
     fontFamily: 'Arvo-Regular',
-    marginTop: 28,
+    marginTop: 8,
     fontSize: 16,
   },
 })

@@ -95,7 +95,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
   }, [getOrderDataById])
 
   return (
-    <LinearGradient colors={gradientOpacityColors}>
+    <View>
       {!orderData ? (
         <Text>No data</Text>
       ) : (
@@ -302,7 +302,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
           </ScrollViewContent>
         </Animated.View>
       )}
-    </LinearGradient>
+    </View>
   )
 }
 
