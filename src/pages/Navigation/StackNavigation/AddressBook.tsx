@@ -46,8 +46,9 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
   const mapRef = React.useRef<MapView>(null)
   const [addedAddress, setAddedAddress] = useState<any>()
   const [editAddress, setEditAddress] = useState<any>()
-  const [onText, setOnSearchChange] = React.useState<string>()
+  const [onText, setOnSearchChange] = React.useState<string | null>(null)
   const [suggestions, setSuggestions] = React.useState<Suggestion[] | null>([])
+  console.log('location', onText)
 
   const getLocationFromAddress = async (address: string) => {
     try {
@@ -160,7 +161,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
     try {
       if (text === '') {
         setSuggestions([])
-        setOnSearchChange(text)
+        setOnSearchChange(null)
       } else {
         setOnSearchChange(text)
 
@@ -194,7 +195,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
                 <InputBox
                   placeholder='Search for area, street name'
                   onChangeText={(text) => handleSearchText(text)}
-                  value={onText}
+                  value={onText || ''}
                   style={styles.inputBox}
                   placeholderTextColor={COLORS.SecondaryTwo}
                 />
@@ -273,7 +274,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
                   <InputBox
                     placeholder='Search for area, street name'
                     onChangeText={(text) => handleSearchText(text)}
-                    value={onText}
+                    value={onText || ''}
                     style={styles.inputBox}
                     placeholderTextColor={COLORS.SecondaryTwo}
                   />
@@ -307,7 +308,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
                 )}
               </View>
             </View>
-            <AddAddressBook navigation={navigation} setDisplay={setDisplay} />
+            <AddAddressBook navigation={navigation} setDisplay={setDisplay} onText={onText} />
           </>
         )}
 

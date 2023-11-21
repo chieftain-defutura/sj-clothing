@@ -27,13 +27,14 @@ import { LinearGradient } from 'expo-linear-gradient'
 interface IAddressBook {
   navigation: any
   setDisplay: React.Dispatch<React.SetStateAction<number>>
+  onText: string | null
 }
 interface Suggestion {
   display_name: string
   place_id: number
 }
 const { height, width } = Dimensions.get('window')
-const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay }) => {
+const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay, onText }) => {
   const { t } = useTranslation('account')
   const height = useSharedValue('0%')
   const displayAddressSelection = useSharedValue('none')
@@ -43,7 +44,7 @@ const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay }) => {
   const mapRef = React.useRef<MapView>(null)
   const [addedAddress, setAddedAddress] = useState<any>()
   const [editAddress, setEditAddress] = useState<any>()
-  const [onText, setOnSearchChange] = React.useState<string>()
+  // const [onText, setOnSearchChange] = React.useState<string>()
   const [suggestions, setSuggestions] = React.useState<Suggestion[] | null>([])
 
   const getLocationFromAddress = async (address: string) => {
@@ -113,7 +114,7 @@ const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay }) => {
   // }, [])
 
   const handlePress = () => {
-    height.value = withTiming('52%')
+    height.value = withTiming('100%')
     displayAddressSelection.value = 'flex'
   }
 
@@ -153,28 +154,28 @@ const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay }) => {
       })
   }
 
-  const handleSearchText = async (text: string) => {
-    try {
-      if (text === '') {
-        setSuggestions([])
-        setOnSearchChange(text)
-      } else {
-        setOnSearchChange(text)
+  // const handleSearchText = async (text: string) => {
+  //   try {
+  //     if (text === '') {
+  //       setSuggestions([])
+  //       setOnSearchChange(text)
+  //     } else {
+  //       setOnSearchChange(text)
 
-        const response = await axios.get(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${text}`,
-        )
+  //       const response = await axios.get(
+  //         `https://nominatim.openstreetmap.org/search?format=json&q=${text}`,
+  //       )
 
-        setSuggestions(response.data)
-      }
-    } catch (error) {
-      console.error('Error handling search text:', error)
-    }
-  }
+  //       setSuggestions(response.data)
+  //     }
+  //   } catch (error) {
+  //     console.error('Error handling search text:', error)
+  //   }
+  // }
 
   return (
     <View style={{ flex: 1 }}>
-      <KeyboardAvoidingView style={[styles.container]} contentContainerStyle={{ height: 900 }}>
+      <KeyboardAvoidingView style={[styles.container]} contentContainerStyle={{ height: 1000 }}>
         {/* <GoBackArrowContent
           onPress={() => {
             navigation.goBack()
@@ -238,9 +239,10 @@ const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay }) => {
             </Pressable>
           </View>
           <AddAddress
+            onText={onText}
             setDisplay={setDisplay}
             onSavePress={() => {
-              changeHeight('52%')
+              changeHeight('60%')
             }}
             location={locText}
             saveAddress={(addr) => {

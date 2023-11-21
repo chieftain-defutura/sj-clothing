@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, Pressable, StyleSheet, Text, Alert } from 'react-native'
+import { View, Pressable, StyleSheet, Alert } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
-import { COLORS, gradientOpacityColors } from '../../../styles/theme'
+import { COLORS } from '../../../styles/theme'
 import { useStripe } from '@stripe/stripe-react-native'
 import CustomButton from '../../../components/Button'
 import LeftArrow from '../../../assets/icons/LeftArrow'
@@ -10,7 +10,6 @@ import { LinearGradient } from 'expo-linear-gradient'
 import ChevronLeft from '../../../assets/icons/ChevronLeft'
 import Phonepe from '../../../assets/icons/Phonepe'
 import TruckMovingIcon from '../../../assets/icons/TruckMoving'
-import OrderPlaced from '../../../screens/OrderPlaced'
 import CartCard from '../../../components/CartCard'
 import { collection, doc, getDoc, getDocs, updateDoc, setDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
@@ -115,15 +114,15 @@ const Checkout: React.FC<ICheckout> = ({
 
   const addressParts = addr?.fullAddress?.split(',').map((f) => f.trim()) ?? []
 
-  const line1 = addressParts[0] || ''
-  const line2 = addressParts[1] || ''
+  const addressOne = addressParts[0] || ''
+  const addressTwo = addressParts[1] || ''
   const city = addressParts[2] || ''
   const state = addressParts[3] || ''
   const pinCode = addressParts[4] || ''
   const country = addressParts[5] || ''
 
-  console.log('line 1:', line1)
-  console.log('line 2:', line2)
+  console.log('line 1:', addressOne)
+  console.log('line 2:', addressTwo)
   console.log('city:', city)
   console.log('state:', state)
   console.log('pinCode:', pinCode)
@@ -153,8 +152,8 @@ const Checkout: React.FC<ICheckout> = ({
           userid: user?.uid,
           amount: Number((Number(amount) * (rate as number)).toFixed(2)) * 100,
           address: {
-            line1: line1,
-            line2: line2,
+            line1: addressOne,
+            line2: addressTwo,
             postal_code: pinCode,
             city: city,
             state: state,

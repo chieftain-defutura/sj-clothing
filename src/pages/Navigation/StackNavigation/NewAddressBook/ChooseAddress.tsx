@@ -12,6 +12,7 @@ import HomeIcon from '../../../../assets/icons/HomeIcon'
 import Plus from '../../../../assets/icons/PlusIcon'
 import CustomButton from '../../../../components/Button'
 import TickIcon from '../../../../assets/icons/TickIcon'
+import { ScrollView } from 'react-native-gesture-handler'
 
 // interface AddressData {
 //   name: string
@@ -27,6 +28,12 @@ import TickIcon from '../../../../assets/icons/TickIcon'
 // }
 
 interface AddressData {
+  addressOne: string
+  addressTwo: string
+  city: string
+  state: string
+  pinCode: string
+  country: string
   floor: string
   fullAddress: string
   isSelected: boolean
@@ -113,6 +120,7 @@ const ChooseAddress: React.FC<IChooseLocation> = () => {
     <View>
       <View style={{ padding: 22 }}>
         <Header>Choose Address</Header>
+
         <RadioButton.Group
           onValueChange={(newValue) => {
             updateData(newValue)
@@ -125,7 +133,7 @@ const ChooseAddress: React.FC<IChooseLocation> = () => {
               <Text style={styles.errorText}>No address</Text>
             </View>
           ) : data ? (
-            <View>
+            <ScrollView style={{ height: 500 }} showsVerticalScrollIndicator={false}>
               {data.map((f, index) => (
                 <View key={index} style={styles.radioBtn}>
                   <Pressable>
@@ -137,9 +145,8 @@ const ChooseAddress: React.FC<IChooseLocation> = () => {
                       <HeaderStyle>{f.saveAddressAs}</HeaderStyle>
                     </View>
                     <DescriptionText>
-                      {/* {f.addressLineOne}, {f.addressLineTwo}, {f.city}, {f.region}, {f.isSelected},{' '}
-                      {f.email}, {f.pinCode}, {f.mobile} */}
-                      {f.floor},{f.fullAddress}, {f.phoneNo}
+                      {f.addressOne}, {f.addressTwo}, {f.city}, {f.state}, {f.pinCode}, {f.country}
+                      {f.floor}, {f.phoneNo}
                     </DescriptionText>
                   </View>
                   {/* <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
@@ -147,7 +154,7 @@ const ChooseAddress: React.FC<IChooseLocation> = () => {
                   </Pressable> */}
                 </View>
               ))}
-            </View>
+            </ScrollView>
           ) : (
             <View style={styles.errorContainer}>
               <Text style={styles.errorText}>Loading</Text>

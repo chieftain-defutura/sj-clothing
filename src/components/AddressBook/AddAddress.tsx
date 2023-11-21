@@ -23,47 +23,62 @@ interface IAddAddress {
   location: string
   saveAddress: (data: any) => void
   setDisplay: React.Dispatch<React.SetStateAction<number>>
+  onText: string | null
 }
 
 const validationSchema = yup.object({
-  fullAddress: yup.string().required('Please enter full address'),
-  floor: yup.string().required('Please enter your floor'),
+  fullAddress: yup.string().required('*Please enter addressOne'),
+  addressOne: yup.string().required('*Please enter addressOne'),
+  addressTwo: yup.string().required('*Please enter addressTwo'),
+  city: yup.string().required('*Please enter city'),
+  state: yup.string().required('*Please enter your state'),
+  pinCode: yup.string().required('*Please enter your pinCode'),
+  country: yup.string().required('*Please enter your country'),
+  floor: yup.string().required('*Please enter your floor'),
   phoneNo: yup.string().required('*Please enter your phoneNo no'),
-  saveAddressAs: yup.string().required('Please enter save address'),
+  saveAddressAs: yup.string().required('*Please enter save address'),
 })
 
-const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress, setDisplay }) => {
+const AddAddress: React.FC<IAddAddress> = ({
+  onSavePress,
+  location,
+  saveAddress,
+  setDisplay,
+  onText,
+}) => {
   const height = useSharedValue(0)
   const scrollRed = useRef<ScrollView>(null)
-  const [onText, setOnSearchChange] = React.useState<string>()
+  // const [onText, setOnSearchChange] = React.useState<string>()
   const [keyboardStatus, setKeyboardStatus] = React.useState('')
   const [Addr, setAddr] = useState<string | null>(null)
   const [padding, setPadding] = useState(0)
   const { user } = userStore()
 
-  const getPermissions = async () => {
-    try {
-      let { status } = await Location.requestForegroundPermissionsAsync()
+  console.log('addAddresss', onText)
 
-      if (status !== 'granted') {
-        console.log('Please grant location permissions')
-        return
-      }
+  // const getPermissions = async () => {
+  //   try {
+  //     let { status } = await Location.requestForegroundPermissionsAsync()
 
-      let currentLocation = await Location.getCurrentPositionAsync({})
-      const loc = {
-        latitude: currentLocation.coords.latitude,
-        longitude: currentLocation.coords.longitude,
-      }
+  //     if (status !== 'granted') {
+  //       console.log('Please grant location permissions')
+  //       return
+  //     }
 
-      // Call the reverseGeocode function with a callback
-      reverseGeocode(loc.latitude, loc.longitude, (data) => {
-        formik.setValues({ ...formik.values, ...data })
-      })
-    } catch (error) {
-      console.error('Error:', error)
-    }
-  }
+  //     let currentLocation = await Location.getCurrentPositionAsync({})
+  //     const loc = {
+  //       latitude: currentLocation.coords.latitude,
+  //       longitude: currentLocation.coords.longitude,
+  //     }
+
+  //     // Call the reverseGeocode function with a callback
+  //     reverseGeocode(loc.latitude, loc.longitude, (data) => {
+  //       formik.setValues({ ...formik.values, ...data })
+  //     })
+  //   } catch (error) {
+  //     console.error('Error:', error)
+  //   }
+  // }
 
   async function reverseGeocode(latitude: number, longitude: number, success: (data: any) => void) {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
@@ -74,6 +89,7 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress,
 
       if (data.display_name) {
         setAddr(data.display_name)
+
         formik.setValues({ ...formik.values, fullAddress: data.display_name })
         success(data.display_name)
         return data.display_name
@@ -91,7 +107,12 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress,
     try {
       const addressArray = [
         {
-          fullAddress: formik.values.fullAddress,
+          addressOne: formik.values.addressOne,
+          addressTwo: formik.values.addressTwo,
+          city: formik.values.city,
+          state: formik.values.state,
+          pinCode: formik.values.pinCode,
+          country: formik.values.country,
           floor: formik.values.floor,
           phoneNo: formik.values.phoneNo,
           saveAddressAs: formik.values.saveAddressAs,
@@ -153,10 +174,17 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress,
       hideSubscription.remove()
     }
   }, [])
+  let addressone = ''
 
   const formik = useFormik({
     initialValues: {
       fullAddress: location ? location : '',
+      addressOne: onText?.split(',')[0],
+      addressTwo: onText?.split(',')[1],
+      city: '',
+      state: onText?.split(',')[2],
+      pinCode: onText?.split(',')[3],
+      country: onText?.split(',')[4],
       floor: '',
       phoneNo: '',
       saveAddressAs: '',
@@ -165,9 +193,9 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress,
     onSubmit: onSubmit,
   })
 
-  const handleSearchText = (text: string) => {
-    setOnSearchChange(text)
-  }
+  // const handleSearchText = (text: string) => {
+  //   setOnSearchChange(text)
+  // }
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', _keyboardDidShow)
@@ -196,7 +224,7 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress,
   })
 
   useEffect(() => {
-    height.value = withTiming(500)
+    height.value = withTiming(900)
   })
 
   return (
@@ -242,15 +270,76 @@ const AddAddress: React.FC<IAddAddress> = ({ onSavePress, location, saveAddress,
               </View> */}
               <View style={styles.inputContainer}>
                 <Text style={styles.header}>Add Address</Text>
-                <View>
+                {/* <View>
                   <Input
-                    placeholder='Full address'
+                    placeholder='Full Address'
                     value={formik.values.fullAddress}
                     onChangeText={formik.handleChange('fullAddress')}
                     onBlur={formik.handleBlur('fullAddress')}
                     onSubmitEditing={Keyboard.dismiss}
                   />
                   {formik.errors.fullAddress && <ErrorText>{formik.errors.fullAddress}</ErrorText>}
+                </View> */}
+                <View>
+                  <Input
+                    placeholder='Address One'
+                    value={formik.values.addressOne}
+                    onChangeText={formik.handleChange('addressOne')}
+                    onBlur={formik.handleBlur('addressOne')}
+                    onSubmitEditing={Keyboard.dismiss}
+                  />
+                  {formik.errors.addressOne && <ErrorText>{formik.errors.addressOne}</ErrorText>}
+                </View>
+                <View>
+                  <Input
+                    placeholder='Address Two'
+                    value={formik.values.addressTwo}
+                    onChangeText={formik.handleChange('addressTwo')}
+                    onBlur={formik.handleBlur('addressTwo')}
+                    onSubmitEditing={Keyboard.dismiss}
+                  />
+                  {formik.errors.addressTwo && <ErrorText>{formik.errors.addressTwo}</ErrorText>}
+                </View>
+                <View>
+                  <Input
+                    placeholder='City'
+                    value={formik.values.city}
+                    onChangeText={formik.handleChange('city')}
+                    onBlur={formik.handleBlur('city')}
+                    onSubmitEditing={Keyboard.dismiss}
+                  />
+                  {formik.errors.city && <ErrorText>{formik.errors.city}</ErrorText>}
+                </View>
+                <View>
+                  <Input
+                    placeholder='State'
+                    value={formik.values.state}
+                    onChangeText={formik.handleChange('state')}
+                    onBlur={formik.handleBlur('state')}
+                    onSubmitEditing={Keyboard.dismiss}
+                  />
+                  {formik.errors.state && <ErrorText>{formik.errors.state}</ErrorText>}
+                </View>
+
+                <View>
+                  <Input
+                    placeholder='PinCode'
+                    value={formik.values.pinCode}
+                    onChangeText={formik.handleChange('pinCode')}
+                    onBlur={formik.handleBlur('pinCode')}
+                    onSubmitEditing={Keyboard.dismiss}
+                  />
+                  {formik.errors.pinCode && <ErrorText>{formik.errors.pinCode}</ErrorText>}
+                </View>
+                <View>
+                  <Input
+                    placeholder='Country'
+                    value={formik.values.country}
+                    onChangeText={formik.handleChange('country')}
+                    onBlur={formik.handleBlur('country')}
+                    onSubmitEditing={Keyboard.dismiss}
+                  />
+                  {formik.errors.country && <ErrorText>{formik.errors.country}</ErrorText>}
                 </View>
                 <View>
                   <Input
