@@ -3,13 +3,19 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-nati
 import { useTranslation } from 'react-i18next'
 import uuid from 'react-native-uuid'
 import { getDoc, doc, setDoc, updateDoc } from 'firebase/firestore/lite'
+import {
+  query as defaultQuery,
+  collection as defualtCollection,
+  where as defaultWhere,
+  onSnapshot,
+} from 'firebase/firestore'
 
 import CustomButton from '../../Button'
 import { COLORS } from '../../../styles/theme'
 import WebView from 'react-native-webview'
 import Animated, { FadeInUp, FadeOut } from 'react-native-reanimated'
 import { userStore } from '../../../store/userStore'
-import { db } from '../../../../firebase'
+import { db, dbDefault } from '../../../../firebase'
 
 const { height, width } = Dimensions.get('window')
 
@@ -18,11 +24,32 @@ const Skintone: React.FC<ISkintone> = ({}) => {
   const { t } = useTranslation('avatar')
   const avatar = userStore((store) => store.avatar)
   const updateAvatar = userStore((store) => store.updateAvatar)
+  const updateAnimation = userStore((store) => store.updateAnimation)
   const [uid, setUid] = useState<string | null>(null)
   const isMounted = useRef(false)
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
+  const [data, setData] = useState<{ uid: string; animationFinished?: boolean } | null>(null)
+
+  const handleGetData = useCallback(() => {
+    if (!uid) return
+    const q = defaultQuery(
+      defualtCollection(dbDefault, 'CreateAvatar'),
+      defaultWhere('uid', '==', uid),
+    )
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        console.log(doc.data())
+        setData(doc.data() as any)
+        if (doc.data()['animationFinished']) updateAnimation(doc.data()['animationFinished'])
+      })
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [uid])
 
   const handleLayout = () => {
     if (elementRef.current) {
@@ -40,7 +67,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
         isMounted.current = true
         const tempUid = uuid.v4().toString()
         const docRef = doc(db, 'CreateAvatar', tempUid)
-        await setDoc(docRef, { uid: tempUid, gender: avatar.gender })
+        await setDoc(docRef, { uid: tempUid, gender: avatar.gender, skin: avatar.skinTone || '3' })
         console.log('added')
         setUid(tempUid)
       } catch (error) {
@@ -75,7 +102,8 @@ const Skintone: React.FC<ISkintone> = ({}) => {
     handleSetUid()
     handleUpdateGender()
     handleUpdateSkintone()
-  }, [handleSetUid, handleUpdateGender, handleUpdateSkintone])
+    handleGetData()
+  }, [handleSetUid, handleUpdateGender, handleUpdateSkintone, handleGetData])
 
   return (
     <View style={styles.SkintoneContainer}>

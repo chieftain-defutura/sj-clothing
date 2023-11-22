@@ -55,6 +55,7 @@ type State = {
   rate: number | null
   orderId: string | null
   confirmDetails: boolean
+  createAvatarAnimationFinished: boolean
 }
 
 type Action = {
@@ -82,6 +83,7 @@ type Action = {
   updateOderId: (orderId: string | null) => void
   updateRate: (rate: number | null) => void
   updateConfirmDetails: (confirmDetails: boolean) => void
+  updateAnimation: (value: boolean) => void
 }
 
 export const userStore = create<State & Action>((set) => ({
@@ -113,6 +115,7 @@ export const userStore = create<State & Action>((set) => ({
   rate: null,
   orderId: null,
   confirmDetails: false,
+  createAvatarAnimationFinished: false,
   updateFetching: (fetching) => set(() => ({ isFetching: fetching })),
   updateUser: (user) => set(() => ({ user })),
   updateUserData: (userData) => set(() => ({ userData })),
@@ -127,4 +130,5 @@ export const userStore = create<State & Action>((set) => ({
   updateOderId: (orderId) => set(() => ({ orderId })),
   updateRate: (rate) => set(() => ({ rate })),
   updateConfirmDetails: (confirmDetails) => set(() => ({ confirmDetails })),
+  updateAnimation: (value) => set(() => ({ createAvatarAnimationFinished: value })),
 }))

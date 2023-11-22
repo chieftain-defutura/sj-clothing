@@ -125,6 +125,7 @@ const App: React.FC = () => {
   if (!fontsLoaded) {
     return null
   }
+
   return (
     <Fragment>
       <StripeProvider publishableKey={PUBLISHABLE_KEY} urlScheme={getAppUrlScheme()}>
