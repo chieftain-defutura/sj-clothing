@@ -63,6 +63,8 @@ const AddAddress: React.FC<IAddAddress> = ({
     country: '',
   })
 
+  console.log('onText', onText)
+
   console.log('addr', Addr)
 
   const Addrs = Addr?.split(',')
@@ -104,7 +106,19 @@ const AddAddress: React.FC<IAddAddress> = ({
 
       // Call the reverseGeocode function with a callback
       reverseGeocode(loc.latitude, loc.longitude, (data) => {
-        formik.setValues({ ...formik.values, ...data })
+        // formik.setValues({ ...formik.values, ...data })
+        formik.setValues({
+          fullAddress: location ? location : '',
+          addressOne: data.split(',')[0],
+          addressTwo: data.split(',')[1],
+          city: data.split(',').reverse()[3],
+          state: data.split(',').reverse()[2],
+          pinCode: data.split(',').reverse()[1],
+          country: data.split(',').reverse()[0],
+          floor: '',
+          phoneNo: '',
+          saveAddressAs: '',
+        })
         console.log('Current Location Address:', data)
       })
     } catch (error) {
@@ -234,6 +248,21 @@ const AddAddress: React.FC<IAddAddress> = ({
   //   }
   // }, [onText, Addr])
 
+  // useEffect(() => {
+  //   if (onText) {
+  //     console.log('address', onText)
+
+  //     setAddress({
+  //       addressOne: onText,
+  //       addressTwo: onText,
+  //       state: onText,
+  //       country: onText,
+  //       pinCode: onText,
+  //       city: onText,
+  //     })
+  //   }
+  // }, [onText])
+
   useEffect(() => {
     if (onText) {
       console.log('address', onText)
@@ -246,12 +275,7 @@ const AddAddress: React.FC<IAddAddress> = ({
         pinCode: onText,
         city: onText,
       })
-      // setAddr('')
-    }
-  }, [onText])
-
-  useEffect(() => {
-    if (Addr) {
+    } else if (Addr) {
       console.log('map address')
       console.log(Addr)
 
@@ -271,10 +295,10 @@ const AddAddress: React.FC<IAddAddress> = ({
       fullAddress: location ? location : '',
       addressOne: address.addressOne.split(',')[0],
       addressTwo: address.addressTwo.split(',')[1],
-      city: city,
-      state: state,
-      pinCode: pinCode,
-      country: country,
+      city: !onText ? city : onText.split(',').reverse()[3],
+      state: !onText ? state : onText.split(',').reverse()[2],
+      pinCode: !onText ? pinCode : onText.split(',').reverse()[1],
+      country: !onText ? country : onText.split(',').reverse()[0],
       floor: '',
       phoneNo: '',
       saveAddressAs: '',

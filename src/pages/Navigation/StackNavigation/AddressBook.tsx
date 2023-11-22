@@ -248,15 +248,15 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
         {showDisplay === 1 && (
           <>
             <View style={{ position: 'absolute', top: 10, zIndex: 10000 }}>
-              <GoBackArrowContent
+              {/* <GoBackArrowContent
                 onPress={() => {
                   navigation.goBack()
                 }}
               >
                 <LeftArrow width={24} height={24} />
                 <CartText>{'Address Book'}</CartText>
-              </GoBackArrowContent>
-              <View
+              </GoBackArrowContent> */}
+              {/* <View
                 style={{
                   // position: 'absolute',
                   // top: 10,
@@ -306,7 +306,7 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
                     />
                   </View>
                 )}
-              </View>
+              </View> */}
             </View>
             <AddAddressBook
               navigation={navigation}
