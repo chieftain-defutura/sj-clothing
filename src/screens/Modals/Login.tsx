@@ -77,6 +77,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
         onClose?.()
       } else {
         setErrorMessage('User not found')
+        return
       }
 
       await signInWithEmailAndPassword(auth, values.email, values.password)

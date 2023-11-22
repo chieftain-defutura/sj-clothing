@@ -174,7 +174,6 @@ const AddAddress: React.FC<IAddAddress> = ({
       hideSubscription.remove()
     }
   }, [])
-  let addressone = ''
 
   const formik = useFormik({
     initialValues: {

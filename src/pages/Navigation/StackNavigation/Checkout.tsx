@@ -114,14 +114,12 @@ const Checkout: React.FC<ICheckout> = ({
     fetchData()
   }, [fetchData])
 
-  const addressParts = addr?.fullAddress?.split(',').map((f) => f.trim()) ?? []
-
-  const addressOne = addressParts[0] || ''
-  const addressTwo = addressParts[1] || ''
-  const city = addressParts[2] || ''
-  const state = addressParts[3] || ''
-  const pinCode = addressParts[4] || ''
-  const country = addressParts[5] || ''
+  const addressOne = addr?.addressOne
+  const addressTwo = addr?.addressTwo
+  const city = addr?.city
+  const state = addr?.state
+  const pinCode = addr?.pinCode
+  const country = addr?.country
 
   console.log('line 1:', addressOne)
   console.log('line 2:', addressTwo)
@@ -254,11 +252,10 @@ const Checkout: React.FC<ICheckout> = ({
         console.error(presentSheet.error)
         return Alert.alert(presentSheet.error.message)
       }
-      // Alert.alert('Payment successfully! Thank you.')
-      navigation.navigate('Thankyou')
+      Alert.alert('Payment successfully! Thank you.')
     } catch (err) {
       console.error(err)
-      Alert.alert('failed!', err.message)
+      Alert.alert('failed!')
     }
   }
 
@@ -355,8 +352,7 @@ const Checkout: React.FC<ICheckout> = ({
                         <HomeText>{addr.saveAddressAs}</HomeText>
                         <HomeDescription>
                           {addr.addressOne}, {addr.addressTwo}, {addr.city}, {addr.state},{' '}
-                          {addr.pinCode}, {addr.country}
-                          {addr.floor}, {addr.phoneNo}
+                          {addr.pinCode}, {addr.country}, {addr.floor}, {addr.phoneNo}
                         </HomeDescription>
                       </View>
                     </Pressable>
