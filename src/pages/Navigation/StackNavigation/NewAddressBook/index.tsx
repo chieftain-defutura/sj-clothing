@@ -28,13 +28,19 @@ interface IAddressBook {
   navigation: any
   setDisplay: React.Dispatch<React.SetStateAction<number>>
   onText: string | null
+  setOnSearchChange: React.Dispatch<React.SetStateAction<string | null>>
 }
 interface Suggestion {
   display_name: string
   place_id: number
 }
 const { height, width } = Dimensions.get('window')
-const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay, onText }) => {
+const AddAddressBook: React.FC<IAddressBook> = ({
+  navigation,
+  setDisplay,
+  onText,
+  setOnSearchChange,
+}) => {
   const { t } = useTranslation('account')
   const height = useSharedValue('0%')
   const displayAddressSelection = useSharedValue('none')
@@ -251,6 +257,7 @@ const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay, onText
               console.log(addr)
               setAddedAddress(addr)
             }}
+            setOnSearchChange={setOnSearchChange}
           />
           {/* {showDisplay == 1 && (
             <ChooseLocation

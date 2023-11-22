@@ -308,7 +308,12 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
                 )}
               </View>
             </View>
-            <AddAddressBook navigation={navigation} setDisplay={setDisplay} onText={onText} />
+            <AddAddressBook
+              navigation={navigation}
+              setDisplay={setDisplay}
+              onText={onText}
+              setOnSearchChange={setOnSearchChange}
+            />
           </>
         )}
 

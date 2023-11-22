@@ -23,6 +23,7 @@ interface IAddAddress {
   saveAddress: (data: any) => void
   setDisplay: React.Dispatch<React.SetStateAction<number>>
   onText: string | null
+  setOnSearchChange: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const validationSchema = yup.object({
@@ -44,6 +45,7 @@ const AddAddress: React.FC<IAddAddress> = ({
   saveAddress,
   setDisplay,
   onText,
+  setOnSearchChange,
 }) => {
   const height = useSharedValue(0)
   const scrollRed = useRef<ScrollView>(null)
@@ -52,6 +54,14 @@ const AddAddress: React.FC<IAddAddress> = ({
   const [Addr, setAddr] = useState<string | null>(null)
   const [padding, setPadding] = useState(0)
   const { user } = userStore()
+  const [address, setAddress] = useState({
+    addressOne: '',
+    addressTwo: '',
+    city: '',
+    state: '',
+    pinCode: '',
+    country: '',
+  })
 
   const getPermissions = async () => {
     try {
@@ -173,21 +183,70 @@ const AddAddress: React.FC<IAddAddress> = ({
     }
   }, [])
 
+  console.log('use current location', Addr)
+  console.log('choose Address', onText)
+
+  const handleDataSwitch = () => {
+    if (onText && !Addr) {
+      setAddr(onText)
+      setOnSearchChange(null)
+    } else if (Addr && !onText) {
+      setOnSearchChange(Addr)
+      setAddr(null)
+    }
+  }
+
+  useEffect(() => {
+    handleDataSwitch()
+  }, [])
+
+  useEffect(() => {
+    if (onText) {
+      console.log('address', onText)
+
+      setAddress({
+        addressOne: onText,
+        addressTwo: onText,
+        state: onText,
+        country: onText,
+        pinCode: onText,
+        city: onText,
+      })
+    }
+  }, [onText])
+
+  useEffect(() => {
+    if (Addr) {
+      console.log('map address')
+      console.log(Addr)
+
+      setAddress({
+        addressOne: 'map one',
+        addressTwo: 'one',
+        state: '/us',
+        country: '/us',
+        pinCode: '8998',
+        city: 'city',
+      })
+    }
+  }, [Addr])
+
   const formik = useFormik({
     initialValues: {
       fullAddress: location ? location : '',
-      addressOne: onText?.split(',')[0],
-      addressTwo: onText?.split(',')[1],
-      city: '',
-      state: onText?.split(',')[2],
-      pinCode: onText?.split(',')[3],
-      country: onText?.split(',')[4],
+      addressOne: address.addressOne,
+      addressTwo: address.addressTwo,
+      city: address.city,
+      state: address.state,
+      pinCode: address.pinCode,
+      country: address.country,
       floor: '',
       phoneNo: '',
       saveAddressAs: '',
     },
     validationSchema: validationSchema,
     onSubmit: onSubmit,
+    enableReinitialize: true,
   })
 
   // const handleSearchText = (text: string) => {
