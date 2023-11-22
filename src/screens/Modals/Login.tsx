@@ -2,13 +2,13 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, Modal, StyleSheet, Pressable } from 'react-native'
+import { View, Modal, StyleSheet, Pressable, Alert } from 'react-native'
 import {
   AuthErrorCodes,
   fetchSignInMethodsForEmail,
   signInWithEmailAndPassword,
 } from 'firebase/auth'
-import { auth } from '../../../firebase'
+import { auth, db } from '../../../firebase'
 import { COLORS } from '../../styles/theme'
 import { FirebaseError } from 'firebase/app'
 import CloseIcon from '../../assets/icons/Close'
@@ -16,6 +16,7 @@ import EyeIcon from '../../assets/icons/EyeIcon'
 import CustomButton from '../../components/Button'
 import EyeHideIcon from '../../assets/icons/EyeIconHide'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { collection, getDocs, query, where } from 'firebase/firestore/lite'
 
 interface LoginModalProps {
   isVisible?: boolean
@@ -63,19 +64,21 @@ const LoginModal: React.FC<LoginModalProps> = ({
       return () => clearTimeout(timer)
     }
   }, [errorMessage])
+
+  const checkUserExists = async (email: string) => {
+    const q = query(collection(db, 'users'), where('email', '==', email))
+    const docs = await getDocs(q)
+
+    return docs.size > 0
+  }
+
   const handleSubmit = async (values: typeof initialValues) => {
     try {
       setIsLoading(true)
 
-      const signInMethods = await fetchSignInMethodsForEmail(auth, values.email)
-      console.log(signInMethods)
-      const emailExists = signInMethods.length > 0
+      const isUserExist = await checkUserExists(values.email)
 
-      if (emailExists) {
-        await signInWithEmailAndPassword(auth, values.email, values.password)
-        console.log('User logged in successfully')
-        onClose?.()
-      } else {
+      if (!isUserExist) {
         setErrorMessage('User not found')
         return
       }
