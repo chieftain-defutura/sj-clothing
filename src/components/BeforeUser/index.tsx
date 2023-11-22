@@ -18,6 +18,7 @@ const BeforeUser = () => {
   const slideValue = useSharedValue(0)
   const { updateConfirmDetails } = userStore()
   const avatar = userStore((store) => store.avatar)
+  const updateAnimation = userStore((store) => store.updateAnimation)
   const createAvatarAnimationFinished = userStore((store) => store.createAvatarAnimationFinished)
   const [steps, setSteps] = useState(0)
 
@@ -92,7 +93,14 @@ const BeforeUser = () => {
               padding: 24,
             }}
           >
-            <CustomButton style={{ width: 180 }} text='Previous' onPress={handleDecreaseSteps} />
+            <CustomButton
+              style={{ width: 180 }}
+              text='Previous'
+              onPress={() => {
+                updateAnimation(false)
+                handleDecreaseSteps()
+              }}
+            />
             <CustomButton
               style={{ width: 180 }}
               disabled={!createAvatarAnimationFinished}

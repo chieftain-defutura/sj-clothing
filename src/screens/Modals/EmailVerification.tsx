@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native'
 import { sendEmailVerification } from 'firebase/auth'
 import { auth } from '../../../firebase'
 import { COLORS } from '../../styles/theme'
@@ -11,18 +11,24 @@ interface IEmailVerification {
   closeModal?: () => void
   errorMessage?: string | null
   setIsCreated: React.Dispatch<React.SetStateAction<boolean>>
+  setShowVerificationModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 const EmailVerification: React.FC<IEmailVerification> = ({
   closeModal,
   setIsCreated,
   errorMessage,
+  setShowVerificationModal,
 }) => {
-  const { user } = userStore()
+  const user = userStore((store) => store.user)
+  const updateUser = userStore((store) => store.updateUser)
   const [isSendVerifyMail, setSendVerifyMail] = useState(false)
 
   const handleClose = async () => {
-    auth.currentUser?.reload()
-    if (user?.emailVerified) {
+    await auth.currentUser?.reload()
+    const currentUser = auth.currentUser
+    updateUser(user)
+    if (currentUser?.emailVerified) {
+      setShowVerificationModal(false)
       setIsCreated(true)
     }
   }

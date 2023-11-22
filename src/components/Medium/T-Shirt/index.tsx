@@ -19,9 +19,6 @@ const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
       elementRef.current.measure((x, y, width, height, pageX, pageY) => {
         setPageY(pageY)
         setElementHeight(height)
-        console.log('element HEIGHT', height)
-        console.log('pageY', pageY)
-        console.log('pageY', pageY)
       })
     }
   }
