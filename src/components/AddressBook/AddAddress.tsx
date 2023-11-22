@@ -1,22 +1,21 @@
-import { Pressable } from 'react-native'
 import styled from 'styled-components/native'
 import axios from 'axios'
 import TickIcon from '../../assets/icons/TickIcon'
 import CustomButton from '../Button'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
-import CurrentLocationIcon from '../../assets/icons/CurrentLocationIcon'
-import ChevronLeft from '../../assets/icons/ChevronLeft'
 import Input from '../Input'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { StyleSheet, Text, View, ScrollView, Keyboard } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Keyboard, Pressable } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import Animated from 'react-native-reanimated'
-import { doc, updateDoc, addDoc, collection, setDoc, getDoc } from 'firebase/firestore/lite'
+import { doc, updateDoc, getDoc } from 'firebase/firestore/lite'
 import { userStore } from '../../store/userStore'
 import { db } from '../../../firebase'
 import * as Location from 'expo-location'
+import CurrentLocationIcon from '../../assets/icons/CurrentLocationIcon'
+import ChevronLeft from '../../assets/icons/ChevronLeft'
 
 interface IAddAddress {
   onSavePress: () => void
@@ -54,31 +53,30 @@ const AddAddress: React.FC<IAddAddress> = ({
   const [padding, setPadding] = useState(0)
   const { user } = userStore()
 
-  console.log('addAddresss', onText)
+  const getPermissions = async () => {
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync()
 
-  // const getPermissions = async () => {
-  //   try {
-  //     let { status } = await Location.requestForegroundPermissionsAsync()
+      if (status !== 'granted') {
+        console.log('Please grant location permissions')
+        return
+      }
 
-  //     if (status !== 'granted') {
-  //       console.log('Please grant location permissions')
-  //       return
-  //     }
+      let currentLocation = await Location.getCurrentPositionAsync({})
+      const loc = {
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
+      }
 
-  //     let currentLocation = await Location.getCurrentPositionAsync({})
-  //     const loc = {
-  //       latitude: currentLocation.coords.latitude,
-  //       longitude: currentLocation.coords.longitude,
-  //     }
-
-  //     // Call the reverseGeocode function with a callback
-  //     reverseGeocode(loc.latitude, loc.longitude, (data) => {
-  //       formik.setValues({ ...formik.values, ...data })
-  //     })
-  //   } catch (error) {
-  //     console.error('Error:', error)
-  //   }
-  // }
+      // Call the reverseGeocode function with a callback
+      reverseGeocode(loc.latitude, loc.longitude, (data) => {
+        formik.setValues({ ...formik.values, ...data })
+        console.log('Current Location Address:', data)
+      })
+    } catch (error) {
+      console.error('Error:', error)
+    }
+  }
 
   async function reverseGeocode(latitude: number, longitude: number, success: (data: any) => void) {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
@@ -223,11 +221,11 @@ const AddAddress: React.FC<IAddAddress> = ({
   })
 
   useEffect(() => {
-    height.value = withTiming(900)
+    height.value = withTiming(950)
   })
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <Animated.View style={[styles.curve, animatedStyles]}>
         <ScrollView
           ref={scrollRed}
@@ -236,7 +234,8 @@ const AddAddress: React.FC<IAddAddress> = ({
         >
           <View>
             <View>
-              {/* <View style={styles.currentLocation}>
+              <Text style={styles.header}>Add Address</Text>
+              <View style={styles.currentLocation}>
                 <Pressable
                   style={{
                     display: 'flex',
@@ -266,9 +265,8 @@ const AddAddress: React.FC<IAddAddress> = ({
                 <Pressable style={styles.editStyle}>
                   <ChevronLeft width={16} height={16} />
                 </Pressable>
-              </View> */}
+              </View>
               <View style={styles.inputContainer}>
-                <Text style={styles.header}>Add Address</Text>
                 {/* <View>
                   <Input
                     placeholder='Full Address'
@@ -452,7 +450,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     gap: 8,
-    marginVertical: 8,
+    marginVertical: 14,
     justifyContent: 'space-between',
   },
   RadioTitle: {
@@ -475,7 +473,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontFamily: FONT_FAMILY.GilroySemiBold,
-    fontSize: 16,
+    fontSize: 18,
     color: COLORS.iconsHighlightClr,
   },
   flexBox: {

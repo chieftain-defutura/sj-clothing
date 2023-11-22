@@ -101,7 +101,9 @@ const AddAddressBook: React.FC<IAddressBook> = ({ navigation, setDisplay, onText
         longitude: currentLocation.coords.longitude,
       }
 
-      reverseGeocode(loc.latitude, loc.longitude)
+      // reverseGeocode(loc.latitude, loc.longitude)
+      const address = await reverseGeocode(loc.latitude, loc.longitude)
+      console.log('Current Location Address:', address)
       setLocation(loc)
       moveMapToMarker(loc)
     } catch (error) {
