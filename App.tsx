@@ -1,10 +1,10 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { StripeProvider } from '@stripe/stripe-react-native'
 import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
 import { useFonts } from 'expo-font'
 import { userStore } from './src/store/userStore'
-import { onAuthStateChanged } from 'firebase/auth'
+import { User, onAuthStateChanged } from 'firebase/auth'
 import { auth, db } from './firebase'
 import { Image, SafeAreaView, Dimensions } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
@@ -13,10 +13,16 @@ import i18n from './i18n'
 import { doc, getDoc } from 'firebase/firestore/lite'
 import * as Linking from 'expo-linking'
 import Constants from 'expo-constants'
+import * as SplashScreen from 'expo-splash-screen'
+
+SplashScreen.preventAutoHideAsync()
 
 const PUBLISHABLE_KEY =
   'pk_test_51O6p0wSGEesR2xZcTMeDvXgwTJgLfsOMehC1tZcDo7bphTUPo65HjeJJUcKIRYTqA115nRZi3CbzYH2GsuY69Htf00ewXq6Z7m'
 const App: React.FC = () => {
+  const loadedRef = useRef(false)
+  const [loading, setLoading] = useState(true)
+
   const {
     updateUser,
     updateLanguage,
@@ -33,21 +39,12 @@ const App: React.FC = () => {
     updateConfirmDetails,
   } = userStore()
 
-  useEffect(() => {
-    return onAuthStateChanged(auth, (data) => {
-      if (data) {
-        updateUser(data)
-      }
-    })
-  }, [])
-  // console.log(user)
-
-  const fetchDataFromFirestore = useCallback(async () => {
+  const fetchDataFromFirestore = useCallback(async (user: User) => {
     try {
       console.log(1)
       if (!user) return
       console.log(2)
-      if (user && user.emailVerified) {
+      if (user) {
         // if (!isLoaded) {
         //   setLoading(true)
         // }
@@ -64,16 +61,40 @@ const App: React.FC = () => {
         updateCurrency(fetchData?.currency)
         updateRate(fetchData?.rate)
         updateConfirmDetails(fetchData?.confirmDetails)
+
+        if (!loadedRef.current) {
+          loadedRef.current = true
+          setLoading(false)
+        }
+
         // setLoaded(true)
       }
     } catch (error) {
       console.error('Error fetching data from Firestore:', error)
     }
-  }, [user])
+  }, [])
 
   useEffect(() => {
-    fetchDataFromFirestore()
-  }, [fetchDataFromFirestore])
+    return onAuthStateChanged(auth, (data) => {
+      if (data) {
+        updateUser(data)
+        fetchDataFromFirestore(data)
+      } else {
+        setLoading(false)
+      }
+    })
+  }, [])
+
+  const handleAppLoading = useCallback(async () => {
+    if (!loading) {
+      await SplashScreen.hideAsync()
+    }
+  }, [loading])
+
+  useEffect(() => {
+    handleAppLoading()
+  }, [handleAppLoading])
+  // console.log(user)
 
   const getLanguage = useCallback(async () => {
     if (language) {

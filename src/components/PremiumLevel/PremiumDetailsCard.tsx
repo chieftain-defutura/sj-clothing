@@ -83,7 +83,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   const onSubmit = () => {
     if (!user) {
       console.log('user not found')
-      setFocus(true)
+      handleSubmit()
     } else {
       handleSubmit()
     }

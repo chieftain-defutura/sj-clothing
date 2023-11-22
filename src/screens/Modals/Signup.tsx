@@ -58,32 +58,33 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const { confirmDetails, language, currency, avatar } = userStore()
+  const user = userStore((store) => store.user)
   const updateUser = userStore((state) => state.updateUser)
-  const { user, confirmDetails, language, currency, avatar } = userStore()
-  const updateFetching = userStore((state) => state.updateFetching)
   const [isChecked, setChecked] = useState(false)
   const [isCreated, setIsCreated] = useState(false)
+  const [showVerificationModal, setShowVerificationModal] = useState(false)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
 
-  useEffect(() => {
-    return onAuthStateChanged(auth, (data) => {
-      if (data) {
-        updateUser(data)
-        setTimeout(() => {
-          updateFetching(false)
-          isVisible = false
-        }, 0)
-      } else {
-        setTimeout(() => {
-          updateFetching(false)
-          isVisible = false
-        }, 0)
-      }
-    })
-  }, [])
+  // useEffect(() => {
+  //   return onAuthStateChanged(auth, (data) => {
+  //     if (data) {
+  //       updateUser(data)
+  //       setTimeout(() => {
+  //         updateFetching(false)
+  //         isVisible = false
+  //       }, 0)
+  //     } else {
+  //       setTimeout(() => {
+  //         updateFetching(false)
+  //         isVisible = false
+  //       }, 0)
+  //     }
+  //   })
+  // }, [])
 
   useEffect(() => {
     if (errorMessage) {
@@ -115,6 +116,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
         await AsyncStorage.setItem('mail', values.email)
         await AsyncStorage.setItem('password', values.password)
         const userDocRef = doc(db, 'users', user.uid)
+        updateUser(user)
 
         await setDoc(userDocRef, {
           name: user.displayName,
@@ -130,6 +132,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           confirmDetails: confirmDetails,
         })
         await sendEmailVerification(user)
+        setShowVerificationModal(true)
       } catch (error) {
         if (error instanceof FirebaseError) {
           if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
@@ -143,6 +146,10 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       }
     }
   }
+
+  console.log('USER AUTh')
+  console.log(user?.emailVerified)
+  console.log(isCreated)
 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
@@ -311,9 +318,10 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
         </SignUpWrapper>
       )}
 
-      {user && !user.emailVerified && !isCreated && (
+      {((user && !user.emailVerified) || showVerificationModal) && (
         <EmailVerification
           setIsCreated={setIsCreated}
+          setShowVerificationModal={setShowVerificationModal}
           errorMessage={errorMessage}
           closeModal={onClose}
         />

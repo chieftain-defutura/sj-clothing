@@ -137,6 +137,7 @@ const Medium = () => {
     if (!isMounted.current) {
       try {
         isMounted.current = true
+        console.log('AVATAR', avatar)
         const tempUid = uuid.v4().toString()
         const docRef = doc(db, 'ModelsMidlevel', tempUid)
         await setDoc(docRef, { uid: tempUid, skin: avatar?.skinTone, gender: avatar?.gender })
@@ -147,6 +148,7 @@ const Medium = () => {
       }
     }
   }, [])
+
   const handleUpdateColor = useCallback(async () => {
     if (!isColor || !uid) return
     try {
