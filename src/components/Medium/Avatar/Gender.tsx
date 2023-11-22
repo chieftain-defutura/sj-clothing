@@ -48,7 +48,7 @@ const GenderModel = ({
       }}
     >
       <TouchableOpacity
-        onPress={() => updateAvatar({ gender: gender.gender as string, skinTone: '' })}
+        onPress={() => updateAvatar({ gender: gender.gender as string, skinTone: '3' })}
         style={styles.genderButton}
       >
         <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

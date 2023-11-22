@@ -17,6 +17,8 @@ const { width } = Dimensions.get('window')
 const BeforeUser = () => {
   const slideValue = useSharedValue(0)
   const { updateConfirmDetails } = userStore()
+  const avatar = userStore((store) => store.avatar)
+  const createAvatarAnimationFinished = userStore((store) => store.createAvatarAnimationFinished)
   const [steps, setSteps] = useState(0)
 
   const slideX = useAnimatedStyle(() => {
@@ -69,6 +71,7 @@ const BeforeUser = () => {
           >
             {/* <CustomButton style={{ width: 180 }} text='Previous' onPress={() => setSteps(0)} /> */}
             <CustomButton
+              disabled={!avatar.gender}
               style={{ width: width / 1.3 }}
               text='Next'
               onPress={handleIncreaseSteps}
@@ -90,7 +93,12 @@ const BeforeUser = () => {
             }}
           >
             <CustomButton style={{ width: 180 }} text='Previous' onPress={handleDecreaseSteps} />
-            <CustomButton style={{ width: 180 }} text='Next' onPress={handleIncreaseSteps} />
+            <CustomButton
+              style={{ width: 180 }}
+              disabled={!createAvatarAnimationFinished}
+              text='Next'
+              onPress={handleIncreaseSteps}
+            />
           </View>
         </>
       )}
