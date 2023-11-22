@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Sprinkle",
+    "scheme": "sjclothing",
     "slug": "react-native-expo-project",
     "version": "3.0.0",
     "orientation": "portrait",

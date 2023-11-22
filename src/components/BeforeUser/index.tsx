@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import CustomButton from '../Button'
 import Languages from '../../pages/Navigation/StackNavigation/Languages'
@@ -13,6 +13,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 
+const { width } = Dimensions.get('window')
 const BeforeUser = () => {
   const slideValue = useSharedValue(0)
   const { updateConfirmDetails } = userStore()
@@ -67,7 +68,11 @@ const BeforeUser = () => {
             }}
           >
             {/* <CustomButton style={{ width: 180 }} text='Previous' onPress={() => setSteps(0)} /> */}
-            <CustomButton style={{ width: 180 }} text='Next' onPress={handleIncreaseSteps} />
+            <CustomButton
+              style={{ width: width / 1.3 }}
+              text='Next'
+              onPress={handleIncreaseSteps}
+            />
           </View>
         </View>
       )}
