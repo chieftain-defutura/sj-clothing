@@ -63,6 +63,30 @@ const AddAddress: React.FC<IAddAddress> = ({
     country: '',
   })
 
+  console.log('addr', Addr)
+
+  const Addrs = Addr?.split(',')
+
+  const Addrss = Addrs?.reverse()
+  console.log('Addreeeeee', Addrss)
+
+  let country = ''
+  let pinCode = ''
+  let state = ''
+  let city = ''
+  if (Addrss && Addrss.length > 0) {
+    country = Addrss[0].trim()
+    if (Addrss.length > 1) {
+      pinCode = Addrss[1].trim()
+    }
+    if (Addrss.length > 2) {
+      state = Addrss[2].trim()
+    }
+    if (Addrss.length > 2) {
+      city = Addrss[3].trim()
+    }
+  }
+
   const getPermissions = async () => {
     try {
       let { status } = await Location.requestForegroundPermissionsAsync()
@@ -186,19 +210,29 @@ const AddAddress: React.FC<IAddAddress> = ({
   console.log('use current location', Addr)
   console.log('choose Address', onText)
 
-  const handleDataSwitch = () => {
-    if (onText && !Addr) {
-      setAddr(onText)
-      setOnSearchChange(null)
-    } else if (Addr && !onText) {
-      setOnSearchChange(Addr)
-      setAddr(null)
-    }
-  }
-
-  useEffect(() => {
-    handleDataSwitch()
-  }, [])
+  // useEffect(() => {
+  //   if (onText) {
+  //     console.log('address from onText:', onText)
+  //     setAddress({
+  //       addressOne: onText,
+  //       addressTwo: onText,
+  //       state: onText,
+  //       country: onText,
+  //       pinCode: onText,
+  //       city: onText,
+  //     })
+  //   } else if (Addr) {
+  //     console.log('address from Addr:', Addr)
+  //     setAddress({
+  //       addressOne: Addr?.split(',')[0],
+  //       addressTwo: Addr?.split(',')[1],
+  //       state: Addr?.split(',')[2],
+  //       country: Addr,
+  //       pinCode: Addr,
+  //       city: Addr,
+  //     })
+  //   }
+  // }, [onText, Addr])
 
   useEffect(() => {
     if (onText) {
@@ -212,6 +246,7 @@ const AddAddress: React.FC<IAddAddress> = ({
         pinCode: onText,
         city: onText,
       })
+      // setAddr('')
     }
   }, [onText])
 
@@ -221,12 +256,12 @@ const AddAddress: React.FC<IAddAddress> = ({
       console.log(Addr)
 
       setAddress({
-        addressOne: 'map one',
-        addressTwo: 'one',
-        state: '/us',
-        country: '/us',
-        pinCode: '8998',
-        city: 'city',
+        addressOne: Addr,
+        addressTwo: Addr,
+        state: Addr,
+        pinCode: Addr,
+        city: Addr,
+        country: Addr,
       })
     }
   }, [Addr])
@@ -234,12 +269,12 @@ const AddAddress: React.FC<IAddAddress> = ({
   const formik = useFormik({
     initialValues: {
       fullAddress: location ? location : '',
-      addressOne: address.addressOne,
-      addressTwo: address.addressTwo,
-      city: address.city,
-      state: address.state,
-      pinCode: address.pinCode,
-      country: address.country,
+      addressOne: address.addressOne.split(',')[0],
+      addressTwo: address.addressTwo.split(',')[1],
+      city: city,
+      state: state,
+      pinCode: pinCode,
+      country: country,
       floor: '',
       phoneNo: '',
       saveAddressAs: '',
@@ -344,7 +379,11 @@ const AddAddress: React.FC<IAddAddress> = ({
                     onBlur={formik.handleBlur('addressOne')}
                     onSubmitEditing={Keyboard.dismiss}
                   />
-                  {formik.errors.addressOne && <ErrorText>{formik.errors.addressOne}</ErrorText>}
+
+                  {(formik.values.addressOne === undefined ||
+                    formik.values.addressOne.length === 0) &&
+                    formik.touched.addressOne && <ErrorText>*Please enter Address One</ErrorText>}
+                  {/* {formik.errors.addressOne && <ErrorText>{formik.errors.addressOne}</ErrorText>} */}
                 </View>
                 <View>
                   <Input
@@ -354,7 +393,10 @@ const AddAddress: React.FC<IAddAddress> = ({
                     onBlur={formik.handleBlur('addressTwo')}
                     onSubmitEditing={Keyboard.dismiss}
                   />
-                  {formik.errors.addressTwo && <ErrorText>{formik.errors.addressTwo}</ErrorText>}
+                  {(formik.values.addressTwo === undefined ||
+                    formik.values.addressTwo.length === 0) &&
+                    formik.touched.addressTwo && <ErrorText>*Please enter Address Two</ErrorText>}
+                  {/* {formik.errors.addressTwo && <ErrorText>{formik.errors.addressTwo}</ErrorText>} */}
                 </View>
                 <View>
                   <Input
@@ -364,7 +406,9 @@ const AddAddress: React.FC<IAddAddress> = ({
                     onBlur={formik.handleBlur('city')}
                     onSubmitEditing={Keyboard.dismiss}
                   />
-                  {formik.errors.city && <ErrorText>{formik.errors.city}</ErrorText>}
+                  {(formik.values.city === undefined || formik.values.city.length === 0) &&
+                    formik.touched.city && <ErrorText>*Please enter city</ErrorText>}
+                  {/* {formik.errors.city && <ErrorText>{formik.errors.city}</ErrorText>} */}
                 </View>
                 <View>
                   <Input
@@ -374,7 +418,9 @@ const AddAddress: React.FC<IAddAddress> = ({
                     onBlur={formik.handleBlur('state')}
                     onSubmitEditing={Keyboard.dismiss}
                   />
-                  {formik.errors.state && <ErrorText>{formik.errors.state}</ErrorText>}
+                  {(formik.values.state === undefined || formik.values.state.length === 0) &&
+                    formik.touched.state && <ErrorText>*Please enter state</ErrorText>}
+                  {/* {formik.errors.state && <ErrorText>{formik.errors.state}</ErrorText>} */}
                 </View>
 
                 <View>
@@ -385,7 +431,9 @@ const AddAddress: React.FC<IAddAddress> = ({
                     onBlur={formik.handleBlur('pinCode')}
                     onSubmitEditing={Keyboard.dismiss}
                   />
-                  {formik.errors.pinCode && <ErrorText>{formik.errors.pinCode}</ErrorText>}
+                  {(formik.values.pinCode === undefined || formik.values.pinCode.length === 0) &&
+                    formik.touched.pinCode && <ErrorText>*Please enter pinCode</ErrorText>}
+                  {/* {formik.errors.pinCode && <ErrorText>{formik.errors.pinCode}</ErrorText>} */}
                 </View>
                 <View>
                   <Input
@@ -395,7 +443,9 @@ const AddAddress: React.FC<IAddAddress> = ({
                     onBlur={formik.handleBlur('country')}
                     onSubmitEditing={Keyboard.dismiss}
                   />
-                  {formik.errors.country && <ErrorText>{formik.errors.country}</ErrorText>}
+                  {(formik.values.country === undefined || formik.values.country.length === 0) &&
+                    formik.touched.country && <ErrorText>*Please enter country</ErrorText>}
+                  {/* {formik.errors.country && <ErrorText>{formik.errors.country}</ErrorText>} */}
                 </View>
                 <View>
                   <Input

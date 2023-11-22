@@ -50,27 +50,27 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
   const [suggestions, setSuggestions] = React.useState<Suggestion[] | null>([])
   console.log('location', onText)
 
-  const getLocationFromAddress = async (address: string) => {
-    try {
-      const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${address}`,
-      )
+  // const getLocationFromAddress = async (address: string) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `https://nominatim.openstreetmap.org/search?format=json&q=${address}`,
+  //     )
 
-      if (response.data.length > 0) {
-        const location = response.data[0]
-        return {
-          latitude: parseFloat(location.lat),
-          longitude: parseFloat(location.lon),
-        }
-        // return location
-      } else {
-        throw new Error('Location not found')
-      }
-    } catch (error) {
-      console.error('Error fetching location:', error)
-      throw error
-    }
-  }
+  //     if (response.data.length > 0) {
+  //       const location = response.data[0]
+  //       return {
+  //         latitude: parseFloat(location.lat),
+  //         longitude: parseFloat(location.lon),
+  //       }
+  //       // return location
+  //     } else {
+  //       throw new Error('Location not found')
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching location:', error)
+  //     throw error
+  //   }
+  // }
 
   async function reverseGeocode(latitude: number, longitude: number) {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
@@ -145,17 +145,17 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
       })
     }
   }
-  const handleMarking = (data: any) => {
-    getLocationFromAddress(data)
-      .then((location) => {
-        console.log('Location:', location)
-        setLocation(location)
-        moveMapToMarker(location)
-      })
-      .catch((error) => {
-        console.error('Error:', error)
-      })
-  }
+  // const handleMarking = (data: any) => {
+  //   getLocationFromAddress(data)
+  //     .then((location) => {
+  //       console.log('Location:', location)
+  //       setLocation(location)
+  //       moveMapToMarker(location)
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error)
+  //     })
+  // }
 
   const handleSearchText = async (text: string) => {
     try {

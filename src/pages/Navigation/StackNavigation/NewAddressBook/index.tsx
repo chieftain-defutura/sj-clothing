@@ -150,17 +150,17 @@ const AddAddressBook: React.FC<IAddressBook> = ({
       })
     }
   }
-  const handleMarking = (data: any) => {
-    getLocationFromAddress(data)
-      .then((location) => {
-        console.log('Location:', location)
-        setLocation(location)
-        moveMapToMarker(location)
-      })
-      .catch((error) => {
-        console.error('Error:', error)
-      })
-  }
+  // const handleMarking = (data: any) => {
+  //   getLocationFromAddress(data)
+  //     .then((location) => {
+  //       console.log('Location:', location)
+  //       setLocation(location)
+  //       moveMapToMarker(location)
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error)
+  //     })
+  // }
 
   // const handleSearchText = async (text: string) => {
   //   try {
