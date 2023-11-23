@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import LeftArrow from '../../../assets/icons/LeftArrow'
-import { COLORS, gradientOpacityColors } from '../../../styles/theme'
+import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import CustomButton from '../../../components/Button'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -165,6 +165,9 @@ const InputStyle = styled.TextInput`
   padding-horizontal: 16px;
   padding-left: 14px;
   font-family: Gilroy-Medium;
+  font-size: 14px;
+  color: ${COLORS.iconsHighlightClr};
+  font-family: ${FONT_FAMILY.GilroyMedium};
 `
 
 const ErrorText = styled.Text`
@@ -179,6 +182,9 @@ const TextArea = styled.TextInput`
   margin-top: 8px;
   padding-horizontal: 16px;
   padding-vertical: 12px;
+  font-size: 14px;
+  color: ${COLORS.iconsHighlightClr};
+  font-family: ${FONT_FAMILY.GilroyMedium};
 `
 
 const GiftMessageText = styled.Text`
