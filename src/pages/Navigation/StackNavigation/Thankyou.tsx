@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import uuid from 'react-native-uuid'
 import WebView from 'react-native-webview'
 import CustomButton from '../../../components/Button'
@@ -50,6 +50,10 @@ const Thankyou = () => {
       }
     }
   }, [])
+
+  useEffect(() => {
+    handleSetUid()
+  }, [handleSetUid])
 
   return (
     <LinearGradient style={{ flex: 1 }} colors={gradientOpacityColors}>

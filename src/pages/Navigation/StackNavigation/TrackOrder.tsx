@@ -123,7 +123,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                       display: 'flex',
                       flexDirection: 'column',
                       paddingTop: 16,
-                      marginLeft: -20,
+                      marginLeft: -45,
                     }}
                   >
                     <ProductText>Size</ProductText>
@@ -140,7 +140,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                       display: 'flex',
                       flexDirection: 'column',
                       paddingTop: 16,
-                      width: width / 5,
+                      width: width / 4.3,
                     }}
                   >
                     <ProductText>Price</ProductText>
