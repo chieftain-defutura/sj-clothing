@@ -20,12 +20,6 @@ import {
 import { userStore } from '../../store/userStore'
 import { IOrder, IRatings } from '../../constant/types'
 import { db, dbDefault } from '../../../firebase'
-import ChevronLeft from '../../assets/icons/ChevronLeft'
-import TrackOrder from '../../pages/Navigation/StackNavigation/TrackOrder'
-
-interface IMyOrders {
-  navigation: any
-}
 
 const StartIcons = [
   { startActive: StarActive, startInActive: StarInActive },
@@ -35,104 +29,35 @@ const StartIcons = [
   { startActive: StarActive, startInActive: StarInActive },
 ]
 
-const Rating: React.FC<IMyOrders> = ({ navigation }) => {
-  const { user } = userStore()
-  const { t } = useTranslation('account')
-  const [openTrackOrder, setOpenTrackOrder] = useState(false)
-  const [orderId, setOrderId] = useState('')
-  const [orderData, setOrderData] = useState<IOrder[]>([])
-
-  const getData = useCallback(async () => {
-    if (!user) return
-    const ProductRef = await getDocs(collectionLite(db, 'Orders'))
-    const fetchProduct = ProductRef.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as any),
-    }))
-    const data = fetchProduct.filter((f) => f.userId === user.uid)
-    setOrderData(data)
-  }, [])
-
-  useEffect(() => {
-    getData()
-  }, [getData])
-  return (
-    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
-      {!openTrackOrder ? (
-        <Animated.View
-          entering={SlideInRight.duration(500).delay(200)}
-          exiting={SlideOutRight.duration(500).delay(200)}
-        >
-          <ScrollViewContent>
-            <View>
-              <GoBackArrowContent
-                onPress={() => {
-                  navigation.goBack()
-                }}
-              >
-                <LeftArrow width={24} height={24} />
-                <CartText>{t('Review product')}</CartText>
-              </GoBackArrowContent>
-              <CartPageContent>
-                {orderData.map((f, index) => {
-                  return (
-                    <OrderCard
-                      key={index}
-                      id={f.id}
-                      productId={f.productId}
-                      productImage={f.productImage}
-                      productName={f.productName}
-                      setOpenTrackOrder={setOpenTrackOrder}
-                      setOrderId={setOrderId}
-                    />
-                  )
-                })}
-              </CartPageContent>
-            </View>
-          </ScrollViewContent>
-        </Animated.View>
-      ) : (
-        <TrackOrder
-          navigation={navigation}
-          orderId={orderId}
-          setOpenTrackOrder={setOpenTrackOrder}
-        />
-      )}
-    </LinearGradient>
-  )
-}
-
 interface IOrderCard {
-  id: string
-  productId: string
-  productImage: string
-  productName: string
-  setOrderId: React.Dispatch<React.SetStateAction<string>>
-  setOpenTrackOrder: React.Dispatch<React.SetStateAction<boolean>>
+  orderId: string
+  setOpenReview: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const OrderCard: React.FC<IOrderCard> = ({
-  id,
-  productId,
-  productImage,
-  productName,
-  setOrderId,
-  setOpenTrackOrder,
-}) => {
+const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
   const user = userStore((state: { user: any }) => state.user)
   const [ratings, setRatings] = useState<IRatings>()
+  const [review, setReview] = useState(ratings?.review ? ratings?.review : '')
   const [stars, setStars] = useState(0)
+  const [orderData, setOrderData] = useState<IOrder>()
 
-  // const getRatings = useCallback(async () => {
-  //   const ratingDocRef = doc(db, 'Ratings', id)
-  //   const userDoc = await getDoc(ratingDocRef)
-  //   const userData = userDoc.data()
-  //   setRatings(userData as IRatings)
-  // }, [id])
+  const getOrderDataById = useCallback(async () => {
+    if (!orderId) return
+    const q = doc(db, 'Orders', orderId)
+    const querySnapshot = await getDoc(q)
+
+    const fetchData = querySnapshot.data()
+    // if(!fetchData) return
+    setOrderData(fetchData as IOrder)
+  }, [orderId])
+
+  useEffect(() => {
+    getOrderDataById()
+  }, [getOrderDataById])
 
   const handleGetData = useCallback(() => {
-    if (!id) return
-    const q = query(collection(dbDefault, 'Ratings'), where('orderId', '==', id))
+    if (!orderId) return
+    const q = query(collection(dbDefault, 'Ratings'), where('orderId', '==', orderId))
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docs.forEach((doc) => {
         console.log(doc.data())
@@ -143,32 +68,40 @@ const OrderCard: React.FC<IOrderCard> = ({
     return () => {
       unsubscribe()
     }
-  }, [id])
+  }, [orderId])
 
   useEffect(() => {
     handleGetData()
   }, [handleGetData])
 
-  // console.log(Number(ratings.ratings))
+  const handleTextChange = (text: React.SetStateAction<string>) => {
+    setReview(text)
+  }
 
-  const handleStarClick = async (index: number) => {
+  const handleStarClick = (index: number) => {
+    setStars(index + 1)
+  }
+
+  const handleReview = async () => {
     try {
       if (!user) return
-      const ratingDocRef = doc(db, 'Ratings', id)
+      const ratingDocRef = doc(db, 'Ratings', orderId)
 
       if (!ratings) {
         await setDoc(ratingDocRef, {
           userId: user.uid,
-          productId: productId,
-          orderId: id,
-          ratings: index + 1,
-          review: '',
+          productId: orderData?.productId,
+          orderId: orderId,
+          ratings: stars,
+          review: review,
         })
+        setOpenReview(false)
       }
       if (ratings) {
-        console.log(index)
-        console.log(id)
-        await updateDoc(ratingDocRef, { ratings: index + 1 })
+        console.log(stars)
+        console.log(orderId)
+        await updateDoc(ratingDocRef, { ratings: stars })
+        setOpenReview(false)
       }
     } catch (error) {
       console.log(error)
@@ -178,18 +111,14 @@ const OrderCard: React.FC<IOrderCard> = ({
   return (
     <View>
       <CartPageContainer>
-        <CartPageData
-          onPress={() => {
-            setOpenTrackOrder(true), setOrderId(id)
-          }}
-        >
+        <CartPageData onPress={() => {}}>
           <View>
-            <TShirtImage source={{ uri: productImage }} />
+            <TShirtImage source={{ uri: orderData?.productImage }} />
           </View>
           <View>
             <ProductWrapper>
               <View style={{ marginBottom: -100, marginLeft: -20 }}>
-                <ProductShirtText>{productName}</ProductShirtText>
+                <ProductShirtText>{orderData?.productName}</ProductShirtText>
                 {/* <ProductText>{productName}</ProductText> */}
                 <View
                   style={{
@@ -202,7 +131,7 @@ const OrderCard: React.FC<IOrderCard> = ({
                   <StarContainer>
                     {StartIcons.map((star, index) => (
                       <TouchableOpacity key={index} onPress={() => handleStarClick(index)}>
-                        {index < Number(ratings?.ratings) ? (
+                        {index < Number(stars === 0 ? ratings?.ratings : stars) ? (
                           <star.startActive width={24} height={24} />
                         ) : (
                           <star.startInActive width={24} height={24} />
@@ -210,9 +139,9 @@ const OrderCard: React.FC<IOrderCard> = ({
                       </TouchableOpacity>
                     ))}
                   </StarContainer>
-                  <View>
-                    <StatusText>Save a review</StatusText>
-                  </View>
+                  <Pressable onPress={handleReview}>
+                    <StatusText>{ratings?.review ? 'Edit a review' : 'Save a review'}</StatusText>
+                  </Pressable>
                 </View>
                 {/* <ProductShirtText>{f.statusName}</ProductShirtText> */}
                 {/* <ProductShirtText>{f.date}</ProductShirtText> */}
@@ -229,14 +158,17 @@ const OrderCard: React.FC<IOrderCard> = ({
         <TextArea
           multiline={true}
           numberOfLines={3}
-          placeholder='Enjoy your gift!'
+          placeholder='How is the product? What do you like? What do you hate?'
           placeholderTextColor={COLORS.SecondaryTwo}
+          onChangeText={handleTextChange}
+          value={review}
         />
       </View>
     </View>
   )
 }
 
+export default Rating
 const ScrollViewContent = styled.ScrollView`
   height: 100%;
 `
@@ -328,5 +260,3 @@ const CartPageContent = styled.View`
   justify-content: center;
   align-items: center;
 `
-
-export default Rating
