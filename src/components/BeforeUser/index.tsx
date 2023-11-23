@@ -91,10 +91,11 @@ const BeforeUser = () => {
               alignItems: 'center',
               gap: 16,
               padding: 24,
+              marginTop: -10,
             }}
           >
             <CustomButton
-              style={{ width: 180 }}
+              style={{ width: width / 2.4 }}
               text='Previous'
               onPress={() => {
                 updateAnimation(false)
@@ -102,7 +103,7 @@ const BeforeUser = () => {
               }}
             />
             <CustomButton
-              style={{ width: 180 }}
+              style={{ width: width / 2.4 }}
               disabled={!createAvatarAnimationFinished}
               text='Next'
               onPress={handleIncreaseSteps}
@@ -124,8 +125,16 @@ const BeforeUser = () => {
               padding: 24,
             }}
           >
-            <CustomButton style={{ width: 180 }} text='Previous' onPress={handleDecreaseSteps} />
-            <CustomButton style={{ width: 180 }} text='Next' onPress={handleIncreaseSteps} />
+            <CustomButton
+              style={{ width: width / 2.4 }}
+              text='Previous'
+              onPress={handleDecreaseSteps}
+            />
+            <CustomButton
+              style={{ width: width / 2.4 }}
+              text='Next'
+              onPress={handleIncreaseSteps}
+            />
           </View>
         </>
       )}
@@ -142,9 +151,13 @@ const BeforeUser = () => {
               padding: 24,
             }}
           >
-            <CustomButton style={{ width: 180 }} text='Previous' onPress={handleDecreaseSteps} />
             <CustomButton
-              style={{ width: 180 }}
+              style={{ width: width / 2.4 }}
+              text='Previous'
+              onPress={handleDecreaseSteps}
+            />
+            <CustomButton
+              style={{ width: width / 2.4 }}
               text='Confirm'
               onPress={() => updateConfirmDetails(true)}
             />

@@ -43,7 +43,6 @@ const GenderModel = ({
       style={{
         width: width / 1.2,
         height: height / 3.8,
-
         marginVertical: 14,
       }}
     >
@@ -63,7 +62,7 @@ const GenderModel = ({
             ref={elementRef}
             onLayout={handleLayout}
           >
-            <Image source={gender.image} style={{ width: width / 1.5, height: height / 4.1 }} />
+            <Image source={gender.image} style={{ width: width / 1.3, height: height / 4.1 }} />
           </View>
           <Text
             style={[

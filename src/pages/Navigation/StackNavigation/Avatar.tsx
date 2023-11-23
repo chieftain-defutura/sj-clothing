@@ -60,9 +60,13 @@ const AvatarNavigation = () => {
                 padding: 24,
               }}
             >
-              <CustomButton style={{ width: 180 }} text='Previous' onPress={() => setSteps(0)} />
               <CustomButton
-                style={{ width: 180 }}
+                style={{ width: width / 2.4 }}
+                text='Previous'
+                onPress={() => setSteps(0)}
+              />
+              <CustomButton
+                style={{ width: width / 2.4 }}
                 text='Done'
                 onPress={() => navigation.goBack()}
               />

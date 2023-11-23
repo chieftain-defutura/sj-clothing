@@ -211,17 +211,22 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
                         width: width / 2.6,
                         height: height / 4,
                         borderRadius: 35,
+                        position: 'relative',
                       }}
-                    ></View>
+                    >
+                      <View
+                        style={{
+                          width: width / 2.6,
+                          marginBottom: 8,
+                          position: 'absolute',
+                          top: 85,
+                          right: 20,
+                        }}
+                      >
+                        <ProductText>Coming soon</ProductText>
+                      </View>
+                    </View>
                   </BlurView>
-                  <View
-                    style={{
-                      width: width / 2.6,
-                      marginBottom: 8,
-                    }}
-                  >
-                    <ProductText>Coming soon</ProductText>
-                  </View>
                 </View>
               </Animated.View>
             </View>

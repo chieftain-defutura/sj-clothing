@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { useNavigation } from '@react-navigation/native'
 import {
   ScrollView,
   Image,
@@ -11,7 +10,6 @@ import {
   TouchableOpacity,
   Share,
 } from 'react-native'
-import { PlatformPay, confirmPlatformPayPayment } from '@stripe/stripe-react-native'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import LeftArrow from '../../assets/icons/LeftArrow'
 import ShareArrow from '../../assets/icons/ShareArrow'
@@ -225,8 +223,9 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                       style={{
                         width: width / 1.2,
                         height: height * 0.45,
-                        resizeMode: 'contain',
+                        resizeMode: 'cover',
                         borderRadius: 6,
+                        marginLeft: 26,
                       }}
                     />
                   </TouchableOpacity>
@@ -250,7 +249,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'flex-start',
-                        width: 80,
+                        width: width / 4,
                       }}
                     >
                       <ProductText>product</ProductText>
@@ -329,7 +328,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
               </PremiumDetailsContent>
 
               <DropDownContainer>
-                <View style={{ width: 160 }}>
+                <View style={{ width: width / 2.5 }}>
                   <SelectContent onPress={toggleDropdown}>
                     <SelectText>{selectedCountry || 'Select a country'}</SelectText>
                     <Animatable.View
@@ -363,7 +362,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                     </Animated.View>
                   )}
                 </View>
-                <View style={{ width: 158 }}>
+                <View style={{ width: width / 2.5 }}>
                   <SelectContent onPress={toggleDropdownSizes}>
                     <SelectText>
                       {isSize.sizeVarient.size
@@ -435,11 +434,17 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
             <Animated.View entering={FadeInUp.duration(2000)} exiting={FadeOut}>
               <Btns>
                 {showDetails ? (
-                  <HideDetailsBorder onPress={() => setShowDetails(false)}>
+                  <HideDetailsBorder
+                    style={{ width: width / 2.5 }}
+                    onPress={() => setShowDetails(false)}
+                  >
                     <HideDetailsText>Hide details</HideDetailsText>
                   </HideDetailsBorder>
                 ) : (
-                  <HideDetailsBorder onPress={() => setShowDetails(true)}>
+                  <HideDetailsBorder
+                    style={{ width: width / 2.5 }}
+                    onPress={() => setShowDetails(true)}
+                  >
                     <HideDetailsText>View details</HideDetailsText>
                   </HideDetailsBorder>
                 )}
@@ -478,6 +483,7 @@ const DropDownContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   padding-horizontal: 16px;
+  gap: 5px;
 `
 
 const SelectDropDownList = styled.View`
@@ -593,7 +599,6 @@ const HideDetailsBorder = styled.TouchableOpacity`
   border-color: ${COLORS.textSecondaryClr};
   padding-vertical: 12px;
   padding-horizontal: 20px;
-  width: 170px;
 `
 
 const ProductName = styled.Text`
