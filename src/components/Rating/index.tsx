@@ -1,0 +1,332 @@
+import React, { useCallback, useEffect, useState } from 'react'
+import styled from 'styled-components/native'
+import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
+import { View, Pressable, TouchableOpacity } from 'react-native'
+import LeftArrow from '../../assets/icons/LeftArrow'
+import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../styles/theme'
+import { query, collection, where, onSnapshot } from 'firebase/firestore'
+import { LinearGradient } from 'expo-linear-gradient'
+import StarActive from '../../assets/icons/PostPageIcon/StarActive'
+import StarInActive from '../../assets/icons/PostPageIcon/StarInActive'
+import { useTranslation } from 'react-i18next'
+import {
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+  collection as collectionLite,
+} from 'firebase/firestore/lite'
+import { userStore } from '../../store/userStore'
+import { IOrder, IRatings } from '../../constant/types'
+import { db, dbDefault } from '../../../firebase'
+import ChevronLeft from '../../assets/icons/ChevronLeft'
+import TrackOrder from '../../pages/Navigation/StackNavigation/TrackOrder'
+
+interface IMyOrders {
+  navigation: any
+}
+
+const StartIcons = [
+  { startActive: StarActive, startInActive: StarInActive },
+  { startActive: StarActive, startInActive: StarInActive },
+  { startActive: StarActive, startInActive: StarInActive },
+  { startActive: StarActive, startInActive: StarInActive },
+  { startActive: StarActive, startInActive: StarInActive },
+]
+
+const Rating: React.FC<IMyOrders> = ({ navigation }) => {
+  const { user } = userStore()
+  const { t } = useTranslation('account')
+  const [openTrackOrder, setOpenTrackOrder] = useState(false)
+  const [orderId, setOrderId] = useState('')
+  const [orderData, setOrderData] = useState<IOrder[]>([])
+
+  const getData = useCallback(async () => {
+    if (!user) return
+    const ProductRef = await getDocs(collectionLite(db, 'Orders'))
+    const fetchProduct = ProductRef.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as any),
+    }))
+    const data = fetchProduct.filter((f) => f.userId === user.uid)
+    setOrderData(data)
+  }, [])
+
+  useEffect(() => {
+    getData()
+  }, [getData])
+  return (
+    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+      {!openTrackOrder ? (
+        <Animated.View
+          entering={SlideInRight.duration(500).delay(200)}
+          exiting={SlideOutRight.duration(500).delay(200)}
+        >
+          <ScrollViewContent>
+            <View>
+              <GoBackArrowContent
+                onPress={() => {
+                  navigation.goBack()
+                }}
+              >
+                <LeftArrow width={24} height={24} />
+                <CartText>{t('Review product')}</CartText>
+              </GoBackArrowContent>
+              <CartPageContent>
+                {orderData.map((f, index) => {
+                  return (
+                    <OrderCard
+                      key={index}
+                      id={f.id}
+                      productId={f.productId}
+                      productImage={f.productImage}
+                      productName={f.productName}
+                      setOpenTrackOrder={setOpenTrackOrder}
+                      setOrderId={setOrderId}
+                    />
+                  )
+                })}
+              </CartPageContent>
+            </View>
+          </ScrollViewContent>
+        </Animated.View>
+      ) : (
+        <TrackOrder
+          navigation={navigation}
+          orderId={orderId}
+          setOpenTrackOrder={setOpenTrackOrder}
+        />
+      )}
+    </LinearGradient>
+  )
+}
+
+interface IOrderCard {
+  id: string
+  productId: string
+  productImage: string
+  productName: string
+  setOrderId: React.Dispatch<React.SetStateAction<string>>
+  setOpenTrackOrder: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const OrderCard: React.FC<IOrderCard> = ({
+  id,
+  productId,
+  productImage,
+  productName,
+  setOrderId,
+  setOpenTrackOrder,
+}) => {
+  const user = userStore((state: { user: any }) => state.user)
+  const [ratings, setRatings] = useState<IRatings>()
+  const [stars, setStars] = useState(0)
+
+  // const getRatings = useCallback(async () => {
+  //   const ratingDocRef = doc(db, 'Ratings', id)
+  //   const userDoc = await getDoc(ratingDocRef)
+  //   const userData = userDoc.data()
+  //   setRatings(userData as IRatings)
+  // }, [id])
+
+  const handleGetData = useCallback(() => {
+    if (!id) return
+    const q = query(collection(dbDefault, 'Ratings'), where('orderId', '==', id))
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        console.log(doc.data())
+        setRatings(doc.data() as IRatings)
+      })
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [id])
+
+  useEffect(() => {
+    handleGetData()
+  }, [handleGetData])
+
+  // console.log(Number(ratings.ratings))
+
+  const handleStarClick = async (index: number) => {
+    try {
+      if (!user) return
+      const ratingDocRef = doc(db, 'Ratings', id)
+
+      if (!ratings) {
+        await setDoc(ratingDocRef, {
+          userId: user.uid,
+          productId: productId,
+          orderId: id,
+          ratings: index + 1,
+          review: '',
+        })
+      }
+      if (ratings) {
+        console.log(index)
+        console.log(id)
+        await updateDoc(ratingDocRef, { ratings: index + 1 })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  return (
+    <View>
+      <CartPageContainer>
+        <CartPageData
+          onPress={() => {
+            setOpenTrackOrder(true), setOrderId(id)
+          }}
+        >
+          <View>
+            <TShirtImage source={{ uri: productImage }} />
+          </View>
+          <View>
+            <ProductWrapper>
+              <View style={{ marginBottom: -100, marginLeft: -20 }}>
+                <ProductShirtText>{productName}</ProductShirtText>
+                {/* <ProductText>{productName}</ProductText> */}
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 28,
+                  }}
+                >
+                  <StarContainer>
+                    {StartIcons.map((star, index) => (
+                      <TouchableOpacity key={index} onPress={() => handleStarClick(index)}>
+                        {index < Number(ratings?.ratings) ? (
+                          <star.startActive width={24} height={24} />
+                        ) : (
+                          <star.startInActive width={24} height={24} />
+                        )}
+                      </TouchableOpacity>
+                    ))}
+                  </StarContainer>
+                  <View>
+                    <StatusText>Save a review</StatusText>
+                  </View>
+                </View>
+                {/* <ProductShirtText>{f.statusName}</ProductShirtText> */}
+                {/* <ProductShirtText>{f.date}</ProductShirtText> */}
+              </View>
+              {/* <Pressable>
+                <ChevronLeft width={16} height={16} />
+              </Pressable> */}
+            </ProductWrapper>
+          </View>
+        </CartPageData>
+      </CartPageContainer>
+
+      <View>
+        <TextArea
+          multiline={true}
+          numberOfLines={3}
+          placeholder='Enjoy your gift!'
+          placeholderTextColor={COLORS.SecondaryTwo}
+        />
+      </View>
+    </View>
+  )
+}
+
+const ScrollViewContent = styled.ScrollView`
+  height: 100%;
+`
+
+const GoBackArrowContent = styled.Pressable`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+`
+
+const TextArea = styled.TextInput`
+  border-width: 1px;
+  border-color: ${COLORS.dropDownClr};
+  border-radius: 5px;
+  margin-top: 8px;
+  padding-horizontal: 16px;
+  padding-vertical: 12px;
+  margin-bottom: 40px;
+  font-size: 14px;
+  color: ${COLORS.iconsHighlightClr};
+  font-family: ${FONT_FAMILY.GilroyMedium};
+`
+
+const StatusText = styled.Text`
+  font-size: 13px;
+  font-family: ${FONT_FAMILY.GilroyMedium};
+  color: ${COLORS.textSecondaryClr};
+  margin-top: 8px;
+`
+
+const ProductText = styled.Text`
+  color: ${COLORS.SecondaryTwo};
+  font-family: ${FONT_FAMILY.GilroyMedium};
+  font-size: 12px;
+`
+const ProductShirtText = styled.Text`
+  font-size: 14px;
+  font-family: ${FONT_FAMILY.GilroyMedium};
+  color: ${COLORS.iconsHighlightClr};
+`
+
+const CartText = styled.Text`
+  color: ${COLORS.textClr};
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  font-size: 20px;
+  letter-spacing: -0.4px;
+`
+
+const ProductWrapper = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+`
+
+const TShirtImage = styled.Image`
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  object-fit: cover;
+`
+
+const StarContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1px;
+  margin-top: 16px;
+`
+
+const CartPageContainer = styled.View`
+  /* border-bottom-color: ${COLORS.strokeClr}; */
+  /* border-bottom-width: 1px; */
+`
+const CartPageData = styled.Pressable`
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  padding-vertical: 12px;
+  width: 350px;
+`
+
+const CartPageContent = styled.View`
+  padding-horizontal: 24px;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`
+
+export default Rating

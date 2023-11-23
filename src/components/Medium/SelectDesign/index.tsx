@@ -35,11 +35,10 @@ interface ISelectDesign {
     }>
   >
 }
-const { height, width } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 const SelectDesign: React.FC<ISelectDesign> = ({
   designs,
   isImageOrText,
-  isDone,
   setOpenDesign,
   setImageOrText,
   setDone,

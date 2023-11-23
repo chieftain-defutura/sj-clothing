@@ -16,6 +16,7 @@ import { db } from '../../../firebase'
 import * as Location from 'expo-location'
 import CurrentLocationIcon from '../../assets/icons/CurrentLocationIcon'
 import ChevronLeft from '../../assets/icons/ChevronLeft'
+import CountryCode from '../CountryCode'
 
 interface IAddAddress {
   onSavePress: () => void
@@ -52,6 +53,9 @@ const AddAddress: React.FC<IAddAddress> = ({
   // const [onText, setOnSearchChange] = React.useState<string>()
   const [keyboardStatus, setKeyboardStatus] = React.useState('')
   const [Addr, setAddr] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [countryCode, setCountryCode] = useState('+91')
+  const [show, setShow] = useState(false)
   const [padding, setPadding] = useState(0)
   const { user } = userStore()
   const [address, setAddress] = useState({
@@ -63,15 +67,12 @@ const AddAddress: React.FC<IAddAddress> = ({
     country: '',
   })
 
-  console.log('onText', onText)
-
-  console.log('addr', Addr)
-
   const Addrs = Addr?.split(',')
 
   const Addrss = Addrs?.reverse()
-  console.log('Addreeeeee', Addrss)
 
+  let addressOne = address.addressOne.split(',')[0]
+  let addressTwo = address.addressTwo.split(',')[1]
   let country = ''
   let pinCode = ''
   let state = ''
@@ -151,6 +152,8 @@ const AddAddress: React.FC<IAddAddress> = ({
 
   const onSubmit = async () => {
     try {
+      setIsLoading(true)
+
       const addressArray = [
         {
           addressOne: formik.values.addressOne,
@@ -180,6 +183,8 @@ const AddAddress: React.FC<IAddAddress> = ({
       setDisplay(0)
     } catch (error) {
       console.error('Error:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -221,52 +226,8 @@ const AddAddress: React.FC<IAddAddress> = ({
     }
   }, [])
 
-  console.log('use current location', Addr)
-  console.log('choose Address', onText)
-
-  // useEffect(() => {
-  //   if (onText) {
-  //     console.log('address from onText:', onText)
-  //     setAddress({
-  //       addressOne: onText,
-  //       addressTwo: onText,
-  //       state: onText,
-  //       country: onText,
-  //       pinCode: onText,
-  //       city: onText,
-  //     })
-  //   } else if (Addr) {
-  //     console.log('address from Addr:', Addr)
-  //     setAddress({
-  //       addressOne: Addr?.split(',')[0],
-  //       addressTwo: Addr?.split(',')[1],
-  //       state: Addr?.split(',')[2],
-  //       country: Addr,
-  //       pinCode: Addr,
-  //       city: Addr,
-  //     })
-  //   }
-  // }, [onText, Addr])
-
-  // useEffect(() => {
-  //   if (onText) {
-  //     console.log('address', onText)
-
-  //     setAddress({
-  //       addressOne: onText,
-  //       addressTwo: onText,
-  //       state: onText,
-  //       country: onText,
-  //       pinCode: onText,
-  //       city: onText,
-  //     })
-  //   }
-  // }, [onText])
-
   useEffect(() => {
     if (onText) {
-      console.log('address', onText)
-
       setAddress({
         addressOne: onText,
         addressTwo: onText,
@@ -276,9 +237,6 @@ const AddAddress: React.FC<IAddAddress> = ({
         city: onText,
       })
     } else if (Addr) {
-      console.log('map address')
-      console.log(Addr)
-
       setAddress({
         addressOne: Addr,
         addressTwo: Addr,
@@ -293,8 +251,8 @@ const AddAddress: React.FC<IAddAddress> = ({
   const formik = useFormik({
     initialValues: {
       fullAddress: location ? location : '',
-      addressOne: address.addressOne.split(',')[0],
-      addressTwo: address.addressTwo.split(',')[1],
+      addressOne: !onText ? addressOne : onText.split(',')[0],
+      addressTwo: !onText ? addressTwo : onText.split(',')[1],
       city: !onText ? city : onText.split(',').reverse()[3],
       state: !onText ? state : onText.split(',').reverse()[2],
       pinCode: !onText ? pinCode : onText.split(',').reverse()[1],
@@ -479,18 +437,26 @@ const AddAddress: React.FC<IAddAddress> = ({
                     onBlur={formik.handleBlur('floor')}
                     onSubmitEditing={Keyboard.dismiss}
                   />
-                  {formik.errors.floor && <ErrorText>{formik.errors.floor}</ErrorText>}
+                  {(formik.values.floor === undefined || formik.values.floor.length === 0) &&
+                    formik.touched.floor && <ErrorText>*Please enter floor</ErrorText>}
+                  {/* {formik.errors.floor && <ErrorText>{formik.errors.floor}</ErrorText>} */}
                 </View>
-                <View>
+                <View style={{ display: 'flex', flexDirection: 'row' }}>
+                  <CountryCode
+                    countryCode={countryCode}
+                    setCountryCode={setCountryCode}
+                    setShow={setShow}
+                    show={show}
+                  />
                   <Input
-                    leftContent={<Text></Text>}
-                    placeholder='phoneNo'
+                    placeholder='phone No'
                     value={formik.values.phoneNo}
                     onChangeText={formik.handleChange('phoneNo')}
                     onBlur={formik.handleBlur('phoneNo')}
                     keyboardType='numeric'
                   />
-                  {formik.errors.phoneNo && <ErrorText>{formik.errors.phoneNo}</ErrorText>}
+                  {(formik.values.phoneNo === undefined || formik.values.phoneNo.length === 0) &&
+                    formik.touched.phoneNo && <ErrorText>*Please enter phoneNo</ErrorText>}
                 </View>
 
                 <View>
@@ -501,19 +467,25 @@ const AddAddress: React.FC<IAddAddress> = ({
                     onBlur={formik.handleBlur('saveAddressAs')}
                     onSubmitEditing={Keyboard.dismiss}
                   />
-                  {formik.errors.saveAddressAs && (
+                  {(formik.values.saveAddressAs === undefined ||
+                    formik.values.saveAddressAs.length === 0) &&
+                    formik.touched.saveAddressAs && (
+                      <ErrorText>*Please enter saveAddressAs</ErrorText>
+                    )}
+                  {/* {formik.errors.saveAddressAs && (
                     <ErrorText>{formik.errors.saveAddressAs}</ErrorText>
-                  )}
+                  )} */}
                 </View>
 
                 <CustomButton
                   variant='primary'
-                  text='Save Address'
+                  text={isLoading ? 'Saving Address...' : 'Save Address'}
                   leftIcon={<TickIcon width={16} height={16} />}
                   onPress={() => {
                     formik.handleSubmit()
                     onSavePress()
                   }}
+                  disabled={isLoading}
                 />
               </View>
             </View>

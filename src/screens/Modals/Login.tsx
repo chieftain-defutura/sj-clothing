@@ -176,6 +176,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
                 onPress={() => {
                   handleSubmit()
                 }}
+                disabled={isLoading}
                 fontFamily='Arvo-Regular'
                 fontSize={14}
                 buttonStyle={[styles.submitBtn]}

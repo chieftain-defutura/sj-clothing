@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, Image } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { addDoc, collection, getDocs } from 'firebase/firestore/lite'
 import styled from 'styled-components/native'
@@ -10,11 +10,14 @@ import { useNavigation } from '@react-navigation/native'
 import { IPremiumData } from '../../constant/types'
 import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 import { userStore } from '../../store/userStore'
+import { BlurView } from 'expo-blur'
 import LoginModal from '../../screens/Modals/Login'
 import SignupModal from '../../screens/Modals/Signup'
 import ForgotMail from '../../screens/Modals/ForgotMail'
+import { COLORS, FONT_FAMILY } from '../../styles/theme'
+import Animated, { FadeInLeft, FadeOutLeft } from 'react-native-reanimated'
 
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 interface IPremiumLevel {
   openDetails: boolean
@@ -127,7 +130,12 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
       }
     }
   }
-  if (!data) return <Text>No Data</Text>
+  if (!data)
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
+        <ProductText>Loading...</ProductText>
+      </View>
+    )
   return (
     <View style={{ flex: 1 }}>
       {!openCheckout && (
@@ -186,6 +194,36 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
                     </View>
                   ))}
               </View>
+              <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>
+                <View>
+                  <BlurView
+                    intensity={90}
+                    style={{
+                      width: width / 2.6,
+                      height: height / 4,
+                      marginLeft: 22,
+                      marginBottom: 16,
+                      marginTop: 18,
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: width / 2.6,
+                        height: height / 4,
+                        borderRadius: 35,
+                      }}
+                    ></View>
+                  </BlurView>
+                  <View
+                    style={{
+                      width: width / 2.6,
+                      marginBottom: 8,
+                    }}
+                  >
+                    <ProductText>Coming soon</ProductText>
+                  </View>
+                </View>
+              </Animated.View>
             </View>
           )}
           {login && (
@@ -237,10 +275,12 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   )
 }
 
-export default PremiumLevel
-
-const styles = StyleSheet.create({})
-const CardPairContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
+const ProductText = styled.Text`
+  font-size: 14px;
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  color: ${COLORS.iconsHighlightClr};
+  text-align: center;
+  margin-left: 39px;
 `
+
+export default PremiumLevel
