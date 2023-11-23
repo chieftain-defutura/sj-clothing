@@ -225,7 +225,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                       style={{
                         width: width / 1.2,
                         height: height * 0.45,
-                        resizeMode: 'contain',
+                        resizeMode: 'cover',
                         borderRadius: 6,
                       }}
                     />

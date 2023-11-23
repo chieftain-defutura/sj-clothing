@@ -132,10 +132,11 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                     <Image
                       source={{ uri: data.productImage }}
                       style={{
-                        width: width / 1.4,
+                        width: width / 1.2,
                         height: height * 0.3,
-                        resizeMode: 'cover',
+                        resizeMode: 'contain',
                         borderRadius: 6,
+                        marginVertical: 12,
                       }}
                     />
                   </TouchableOpacity>
@@ -152,7 +153,7 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                       alignItems: 'center',
                       gap: 30,
                       paddingHorizontal: 30,
-                      paddingBottom: 20,
+                      paddingBottom: 5,
                     }}
                   >
                     <View

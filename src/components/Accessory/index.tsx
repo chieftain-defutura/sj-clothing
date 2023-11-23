@@ -25,17 +25,12 @@ const Accessory = () => {
   const [openCard, setOpenCard] = useState(false)
   const [productId, setProductId] = useState('')
   const [openDetails, setOpenDetails] = useState(false)
-  const { user, updateOderId } = userStore()
+  const user = userStore((state) => state.user)
   const [openCheckout, setOpenCheckout] = useState(false)
 
   const [login, setLogin] = useState(false)
   const [signUp, setSignUp] = useState(false)
   const [forgotMail, setForgotmail] = useState(false)
-
-  const [isSize, setSize] = useState({
-    country: '',
-    sizeVarient: { size: '', measurement: '', quantity: 1 },
-  })
 
   const getData = useCallback(async () => {
     const ProductRef = await getDocs(collection(db, 'Products'))
@@ -108,13 +103,13 @@ const Accessory = () => {
       // })
       // updateOderId(docRef.id)
       setOpenDetails(false)
-      navigation.navigate('Checkout')
+      setOpenCheckout(true)
     }
   }
 
   if (!data) return <Text>No Data</Text>
   return (
-    <View>
+    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
       {!openCheckout && (
         <View style={{ flex: 1 }}>
           <ScrollView scrollEnabled={openDetails ? false : true}>
@@ -213,10 +208,9 @@ const Accessory = () => {
           price={FilteredData[0].normalPrice}
           productImage={FilteredData[0].productImage}
           productName={FilteredData[0].productName}
-          size={isSize}
         />
       )}
-    </View>
+    </LinearGradient>
   )
 }
 
