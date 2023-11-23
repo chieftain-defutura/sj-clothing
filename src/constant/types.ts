@@ -202,4 +202,5 @@ export interface IRatings {
   productId: string
   orderId: string
   ratings: string
+  review: string
 }

@@ -22,6 +22,7 @@ import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { IOrder, IRatings } from '../../../constant/types'
 import TrackOrder from './TrackOrder'
+import Rating from '../../../components/Rating'
 
 interface IMyOrders {
   navigation: any
@@ -41,7 +42,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
   const [openTrackOrder, setOpenTrackOrder] = useState(false)
   const [orderId, setOrderId] = useState('')
   const [orderData, setOrderData] = useState<IOrder[]>([])
-
+  const [openReview, setOpenReview] = useState(false)
   const getData = useCallback(async () => {
     if (!user) return
     const ProductRef = await getDocs(collectionLite(db, 'Orders'))
@@ -56,48 +57,55 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
   useEffect(() => {
     getData()
   }, [getData])
+  console.log(openReview)
   return (
     <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
-      {!openTrackOrder ? (
-        <Animated.View
-          entering={SlideInRight.duration(500).delay(200)}
-          exiting={SlideOutRight.duration(500).delay(200)}
-        >
-          <ScrollViewContent>
-            <View>
-              <GoBackArrowContent
-                onPress={() => {
-                  navigation.goBack()
-                }}
-              >
-                <LeftArrow width={24} height={24} />
-                <CartText>{t('My orders')}</CartText>
-              </GoBackArrowContent>
-              <CartPageContent>
-                {orderData.map((f, index) => {
-                  return (
-                    <OrderCard
-                      key={index}
-                      id={f.id}
-                      productId={f.productId}
-                      productImage={f.productImage}
-                      productName={f.productName}
-                      setOpenTrackOrder={setOpenTrackOrder}
-                      setOrderId={setOrderId}
-                    />
-                  )
-                })}
-              </CartPageContent>
-            </View>
-          </ScrollViewContent>
-        </Animated.View>
-      ) : (
-        <TrackOrder
-          navigation={navigation}
-          orderId={orderId}
-          setOpenTrackOrder={setOpenTrackOrder}
-        />
+      {!openReview && (
+        <>
+          {!openTrackOrder ? (
+            <Animated.View
+              entering={SlideInRight.duration(500).delay(200)}
+              exiting={SlideOutRight.duration(500).delay(200)}
+            >
+              <ScrollViewContent>
+                <View>
+                  <GoBackArrowContent
+                    onPress={() => {
+                      navigation.goBack()
+                    }}
+                  >
+                    <LeftArrow width={24} height={24} />
+                    <CartText>{t('My orders')}</CartText>
+                  </GoBackArrowContent>
+                  <CartPageContent>
+                    {orderData.map((f, index) => {
+                      return (
+                        <OrderCard
+                          key={index}
+                          id={f.id}
+                          productId={f.productId}
+                          productImage={f.productImage}
+                          productName={f.productName}
+                          setOpenTrackOrder={setOpenTrackOrder}
+                          setOpenReview={setOpenReview}
+                          setOrderId={setOrderId}
+                        />
+                      )
+                    })}
+                  </CartPageContent>
+                </View>
+              </ScrollViewContent>
+            </Animated.View>
+          ) : (
+            <TrackOrder
+              navigation={navigation}
+              orderId={orderId}
+              setOpenTrackOrder={setOpenTrackOrder}
+            />
+          )}
+        </>
       )}
+      {openReview && <Rating orderId={orderId} setOpenReview={setOpenReview} />}
     </LinearGradient>
   )
 }
@@ -109,6 +117,7 @@ interface IOrderCard {
   productName: string
   setOrderId: React.Dispatch<React.SetStateAction<string>>
   setOpenTrackOrder: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenReview: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const OrderCard: React.FC<IOrderCard> = ({
@@ -118,17 +127,9 @@ const OrderCard: React.FC<IOrderCard> = ({
   productName,
   setOrderId,
   setOpenTrackOrder,
+  setOpenReview,
 }) => {
-  const user = userStore((state: { user: any }) => state.user)
   const [ratings, setRatings] = useState<IRatings>()
-  const [stars, setStars] = useState(0)
-
-  // const getRatings = useCallback(async () => {
-  //   const ratingDocRef = doc(db, 'Ratings', id)
-  //   const userDoc = await getDoc(ratingDocRef)
-  //   const userData = userDoc.data()
-  //   setRatings(userData as IRatings)
-  // }, [id])
 
   const handleGetData = useCallback(() => {
     if (!id) return
@@ -149,32 +150,6 @@ const OrderCard: React.FC<IOrderCard> = ({
     handleGetData()
   }, [handleGetData])
 
-  // console.log(Number(ratings.ratings))
-
-  const handleStarClick = async (index: number) => {
-    try {
-      if (!user) return
-      const ratingDocRef = doc(db, 'Ratings', id)
-
-      if (!ratings) {
-        await setDoc(ratingDocRef, {
-          userId: user.uid,
-          productId: productId,
-          orderId: id,
-          ratings: index + 1,
-          review: '',
-        })
-      }
-      if (ratings) {
-        console.log(index)
-        console.log(id)
-        await updateDoc(ratingDocRef, { ratings: index + 1 })
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   return (
     <View>
       <CartPageContainer>
@@ -191,20 +166,24 @@ const OrderCard: React.FC<IOrderCard> = ({
               <View>
                 <ProductShirtText>{productName}</ProductShirtText>
                 <ProductText>{productName}</ProductText>
-                <StarContainer>
-                  {StartIcons.map((star, index) => (
-                    <TouchableOpacity key={index} onPress={() => handleStarClick(index)}>
-                      {index < Number(ratings?.ratings) ? (
-                        <star.startActive width={24} height={24} />
-                      ) : (
-                        <star.startInActive width={24} height={24} />
-                      )}
-                    </TouchableOpacity>
-                  ))}
-                </StarContainer>
-                <StatusText>Write a review</StatusText>
-                {/* <ProductShirtText>{f.statusName}</ProductShirtText> */}
-                {/* <ProductShirtText>{f.date}</ProductShirtText> */}
+                <Pressable
+                  onPress={() => {
+                    setOpenReview(true), setOrderId(id)
+                  }}
+                >
+                  <StarContainer>
+                    {StartIcons.map((star, index) => (
+                      <View key={index}>
+                        {index < Number(ratings?.ratings) ? (
+                          <star.startActive width={24} height={24} />
+                        ) : (
+                          <star.startInActive width={24} height={24} />
+                        )}
+                      </View>
+                    ))}
+                  </StarContainer>
+                  <StatusText>Write a review</StatusText>
+                </Pressable>
               </View>
               <Pressable>
                 <ChevronLeft width={16} height={16} />

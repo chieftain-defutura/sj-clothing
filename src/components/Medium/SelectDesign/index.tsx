@@ -90,8 +90,16 @@ const SelectDesign: React.FC<ISelectDesign> = ({
         </Text>
         <Text style={{ fontSize: 14, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>
           {isImageOrText.position === 'Front' || 'Back'
-            ? (Number(FilteredData[0]?.imagePrices?.FrontAndBack) * (rate as number)).toFixed(2)
-            : (Number(FilteredData[0]?.imagePrices?.LeftAndRight) * (rate as number)).toFixed(2)}
+            ? (
+                Number(
+                  FilteredData[0]?.imagePrices ? FilteredData[0]?.imagePrices?.FrontAndBack : '0',
+                ) * (rate as number)
+              ).toFixed(2)
+            : (
+                Number(
+                  FilteredData[0]?.imagePrices ? FilteredData[0]?.imagePrices?.LeftAndRight : '0',
+                ) * (rate as number)
+              ).toFixed(2)}
         </Text>
         <Text style={{ fontSize: 14, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>
           {currency.symbol}

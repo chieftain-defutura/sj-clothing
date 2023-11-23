@@ -56,6 +56,7 @@ const Thankyou = () => {
           fontSize={16}
           style={{
             padding: 16,
+            backgroundColor: 'rgba(145, 177, 225, 0.8)',
           }}
         />
       </View>

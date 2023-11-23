@@ -21,8 +21,6 @@ interface ITrackOrder {
 
 const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
   const [orderData, setOrderData] = useState<IOrder>()
-  const rate = userStore((state) => state.rate)
-  const currency = userStore((state) => state.currency)
 
   const getOrderDataById = useCallback(async () => {
     const q = doc(db, 'Orders', orderId)
