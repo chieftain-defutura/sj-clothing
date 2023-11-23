@@ -5,7 +5,13 @@ import CustomButton from '../../../components/Button'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import { useNavigation } from '@react-navigation/native'
-import Animated, { FadeIn, FadeInUp, FadeOut } from 'react-native-reanimated'
+import Animated, {
+  FadeIn,
+  FadeInUp,
+  FadeOut,
+  StretchInX,
+  StretchOutX,
+} from 'react-native-reanimated'
 
 const { height } = Dimensions.get('window')
 const Thankyou = () => {
@@ -26,7 +32,7 @@ const Thankyou = () => {
   return (
     <LinearGradient style={{ flex: 1 }} colors={gradientOpacityColors}>
       <View style={{ flex: 1 }}>
-        <Animated.View entering={FadeInUp.duration(700)} exiting={FadeOut}>
+        <Animated.View entering={StretchInX.duration(1000)} exiting={StretchOutX}>
           <Text style={styles.title}>Thank You</Text>
         </Animated.View>
         <View style={{ flex: 1 }} onLayout={handleLayout} ref={elementRef}>

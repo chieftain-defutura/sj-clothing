@@ -67,12 +67,10 @@ const Checkout: React.FC<ICheckout> = ({
   // const [orderData, setOrderData] = useState<ICheckout | null>(null)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
 
-  const { user, orderId, rate, currency } = userStore()
+  const { user, rate, currency } = userStore()
   const [openGift, setOpengift] = useState(false)
   const [giftOptions, setGiftOptions] = useState({ giftMessage: '', from: '' })
   const stripe = useStripe()
-
-  console.log(giftOptions)
 
   const fetchData = useCallback(async () => {
     try {
@@ -122,19 +120,19 @@ const Checkout: React.FC<ICheckout> = ({
   const pinCode = addr?.pinCode
   const country = addr?.country
 
-  console.log('line 1:', addressOne)
-  console.log('line 2:', addressTwo)
-  console.log('city:', city)
-  console.log('state:', state)
-  console.log('pinCode:', pinCode)
-  console.log('country:', country)
+  // console.log('line 1:', addressOne)
+  // console.log('line 2:', addressTwo)
+  // console.log('city:', city)
+  // console.log('state:', state)
+  // console.log('pinCode:', pinCode)
+  // console.log('country:', country)
 
   const processPay = async () => {
     try {
       setIsLoading(true)
       const amount = offerPrice
-        ? Number(offerPrice) + Number(deliveryFees?.DeliveryFees || 0)
-        : Number(price) + Number(deliveryFees?.DeliveryFees || 0)
+        ? Number(offerPrice) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)
+        : Number(price) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)
 
       const address = addr
       if (!address) {
@@ -192,10 +190,17 @@ const Checkout: React.FC<ICheckout> = ({
         description: description,
         price: price,
         offerPrice: offerPrice,
+        productId: id,
         totalamount: `    ${
           offerPrice
-            ? Number(offerPrice) + Number(deliveryFees?.DeliveryFees || 0) * (rate as number)
-            : Number(price) + Number(deliveryFees?.DeliveryFees || 0) * (rate as number)
+            ? (
+                (Number(offerPrice) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
+                (rate as number)
+              ).toFixed(2)
+            : (
+                (Number(price) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
+                (rate as number)
+              ).toFixed(2)
         }
        ${currency.symbol}`,
         paymentStatus: 'pending',
@@ -205,7 +210,7 @@ const Checkout: React.FC<ICheckout> = ({
         productName: productName,
         giftMessage: giftOptions,
         orderStatus: {
-          orderplaced: {
+          orderPlaced: {
             createdAt: Date.now(),
             description: 'Your order has been placed successfully',
             status: true,
@@ -254,7 +259,8 @@ const Checkout: React.FC<ICheckout> = ({
         console.error(presentSheet.error)
         return Alert.alert(presentSheet.error.message)
       }
-      Alert.alert('Payment successfully! Thank you.')
+      navigation.navigate('Thankyou')
+      // Alert.alert('Payment successfully! Thank you.')
     } catch (err) {
       console.error(err)
       Alert.alert('failed!')
@@ -283,7 +289,6 @@ const Checkout: React.FC<ICheckout> = ({
   useEffect(() => {
     getData()
   }, [getData])
-  console.log('deliveryFees', deliveryFees)
 
   const handleClose = (index: number) => {
     const temp = async (index: any) => {
@@ -316,9 +321,6 @@ const Checkout: React.FC<ICheckout> = ({
     getDeliveryFees()
   }, [getDeliveryFees])
 
-  console.log('addr', addr)
-  console.log(price)
-  console.log(offerPrice)
   return (
     <View style={{ flex: 1 }}>
       {!openGift && (
@@ -418,9 +420,15 @@ const Checkout: React.FC<ICheckout> = ({
                   <TotalText>Total</TotalText>
                   <TotalValue>
                     {offerPrice
-                      ? Number(offerPrice) +
-                        Number(deliveryFees?.DeliveryFees || 0) * (rate as number)
-                      : Number(price) + Number(deliveryFees?.DeliveryFees || 0) * (rate as number)}
+                      ? (
+                          (Number(offerPrice) +
+                            Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
+                          (rate as number)
+                        ).toFixed(2)
+                      : (
+                          (Number(price) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
+                          (rate as number)
+                        ).toFixed(2)}
                     {currency.symbol}
                   </TotalValue>
                 </TotalContent>

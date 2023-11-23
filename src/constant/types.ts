@@ -152,6 +152,7 @@ export interface IOrder {
   gender: string
   id: string
   totalamount: string
+  productId: string
   orderStatus: {
     delivery: {
       createdAt: string
@@ -163,7 +164,7 @@ export interface IOrder {
       description: string
       status: boolean
     }
-    orderplaced: {
+    orderPlaced: {
       createdAt: string
       description: string
       status: boolean
@@ -194,4 +195,11 @@ export interface IOrder {
   paymentStatus: string
   type: string
   userId: string
+}
+
+export interface IRatings {
+  userId: string
+  productId: string
+  orderId: string
+  ratings: string
 }

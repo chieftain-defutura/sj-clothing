@@ -64,7 +64,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
     getOrderDataById()
   }, [getOrderDataById])
 
-  console.log('orderData', orderData?.totalamount)
+  console.log('orderData', orderData?.orderStatus)
 
   return (
     <View style={{ flex: 1 }}>
@@ -137,15 +137,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                       paddingTop: 16,
                     }}
                   >
-                    <Text
-                      style={{
-                        color: COLORS.textClr,
-                        fontFamily: 'Montserrat-Regular',
-                        fontSize: 10,
-                      }}
-                    >
-                      Product Name
-                    </Text>
+                    <ProductText>Product Name</ProductText>
                     <Text
                       style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
                     >
@@ -160,15 +152,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                       paddingTop: 16,
                     }}
                   >
-                    <Text
-                      style={{
-                        color: COLORS.textClr,
-                        fontFamily: 'Montserrat-Regular',
-                        fontSize: 10,
-                      }}
-                    >
-                      Size
-                    </Text>
+                    <ProductText>Size</ProductText>
                     <View style={{ display: 'flex', flexDirection: 'row' }}>
                       <Text
                         style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
@@ -181,19 +165,11 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      width: 155,
+                      width: 195,
                       paddingTop: 16,
                     }}
                   >
-                    <Text
-                      style={{
-                        color: COLORS.textClr,
-                        fontFamily: 'Montserrat-Regular',
-                        fontSize: 10,
-                      }}
-                    >
-                      Price
-                    </Text>
+                    <ProductText>Price</ProductText>
 
                     <Text
                       style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
@@ -239,8 +215,8 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                             }}
                           >
                             <ProductName>
-                              {orderData?.orderStatus?.orderplaced?.createdAt
-                                ? moment(orderData?.orderStatus?.orderplaced?.createdAt).format(
+                              {orderData?.orderStatus?.orderPlaced?.createdAt
+                                ? moment(orderData?.orderStatus?.orderPlaced?.createdAt).format(
                                     'DD-MM-YYYY',
                                   )
                                 : ''}
@@ -248,57 +224,6 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                           </View>
                         </View>
                       </View>
-                      {/* {!orderData?.offerPrice ? (
-                      <View>
-                        <ProductText>price</ProductText>
-                        <View
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <ProductName>
-                            {(
-                              Number(orderData?.price ? orderData?.price : 0) * (rate as number)
-                            ).toFixed(2)}
-                          </ProductName>
-                          <ProductName>{currency.symbol}</ProductName>
-                        </View>
-                      </View>
-                    ) : (
-                      <View>
-                        <View>
-                          <ProductText>price</ProductText>
-                        </View>
-                        <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
-                          <View
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <OldPriceText>
-                              {(Number(orderData.price) * (rate as number)).toFixed(2)}
-                            </OldPriceText>
-                            <OldPriceText> {currency.symbol}</OldPriceText>
-                          </View>
-                          <View
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <ProductName>
-                              {(Number(orderData.offerPrice) * (rate as number)).toFixed(2)}
-                            </ProductName>
-                            <ProductName>{currency.symbol}</ProductName>
-                          </View>
-                        </View>
-                      </View>
-                    )} */}
                     </View>
                   </View>
                   <View
@@ -309,15 +234,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                       paddingTop: 16,
                     }}
                   >
-                    <Text
-                      style={{
-                        color: COLORS.textClr,
-                        fontFamily: 'Montserrat-Regular',
-                        fontSize: 10,
-                      }}
-                    >
-                      Delivered on
-                    </Text>
+                    <ProductText>Delivered on</ProductText>
                     <Text
                       style={{
                         color: COLORS.textClr,
@@ -335,19 +252,11 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      width: 155,
+                      width: 115,
                       paddingTop: 16,
                     }}
                   >
-                    <Text
-                      style={{
-                        color: COLORS.textClr,
-                        fontFamily: 'Montserrat-Regular',
-                        fontSize: 10,
-                      }}
-                    >
-                      Quantity
-                    </Text>
+                    <ProductText>Quantity</ProductText>
                     <Text
                       style={{
                         color: COLORS.textClr,
@@ -370,7 +279,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                       <RadioButton.Android
                         value='option1'
                         status={
-                          orderData?.orderStatus?.orderplaced?.status ? 'checked' : 'unchecked'
+                          orderData?.orderStatus?.orderPlaced?.status ? 'checked' : 'unchecked'
                         }
                         // onPress={() => setOnCheckOrderPlaced()}
                         color={COLORS.textSecondaryClr}
@@ -383,8 +292,8 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                         </View>
 
                         <OrderPlacedDate>
-                          {orderData?.orderStatus?.orderplaced?.createdAt
-                            ? moment(orderData?.orderStatus?.orderplaced?.createdAt).format(
+                          {orderData?.orderStatus?.orderPlaced?.createdAt
+                            ? moment(orderData?.orderStatus?.orderPlaced?.createdAt).format(
                                 'DD-MM-YYYY',
                               )
                             : ''}
@@ -392,7 +301,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                       </OrderPlacedFlexContent>
 
                       <OrderDescription>
-                        {orderData?.orderStatus?.orderplaced?.description}
+                        {orderData?.orderStatus?.orderPlaced?.description}
                       </OrderDescription>
                     </FlexOrder>
                   </View>

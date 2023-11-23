@@ -5,15 +5,22 @@ import { View, Pressable, TouchableOpacity } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import ChevronLeft from '../../../assets/icons/ChevronLeft'
-import { MyOrdersData } from '../../../utils/data/myOrdersData'
+import { query, collection, where, onSnapshot } from 'firebase/firestore'
 import { LinearGradient } from 'expo-linear-gradient'
 import StarActive from '../../../assets/icons/PostPageIcon/StarActive'
 import StarInActive from '../../../assets/icons/PostPageIcon/StarInActive'
 import { useTranslation } from 'react-i18next'
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore/lite'
-import { db } from '../../../../firebase'
+import {
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+  collection as collectionLite,
+} from 'firebase/firestore/lite'
+import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
-import { IOrder } from '../../../constant/types'
+import { IOrder, IRatings } from '../../../constant/types'
 import TrackOrder from './TrackOrder'
 
 interface IMyOrders {
@@ -37,7 +44,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
 
   const getData = useCallback(async () => {
     if (!user) return
-    const ProductRef = await getDocs(collection(db, 'Orders'))
+    const ProductRef = await getDocs(collectionLite(db, 'Orders'))
     const fetchProduct = ProductRef.docs.map((doc) => ({
       id: doc.id,
       ...(doc.data() as any),
@@ -72,6 +79,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
                     <OrderCard
                       key={index}
                       id={f.id}
+                      productId={f.productId}
                       productImage={f.productImage}
                       productName={f.productName}
                       setOpenTrackOrder={setOpenTrackOrder}
@@ -96,6 +104,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
 
 interface IOrderCard {
   id: string
+  productId: string
   productImage: string
   productName: string
   setOrderId: React.Dispatch<React.SetStateAction<string>>
@@ -104,14 +113,66 @@ interface IOrderCard {
 
 const OrderCard: React.FC<IOrderCard> = ({
   id,
+  productId,
   productImage,
   productName,
   setOrderId,
   setOpenTrackOrder,
 }) => {
-  const [stars, setStars] = useState(4)
-  const handleStarClick = (index: number) => {
-    setStars(index + 1)
+  const user = userStore((state: { user: any }) => state.user)
+  const [ratings, setRatings] = useState<IRatings>()
+  const [stars, setStars] = useState(0)
+
+  // const getRatings = useCallback(async () => {
+  //   const ratingDocRef = doc(db, 'Ratings', id)
+  //   const userDoc = await getDoc(ratingDocRef)
+  //   const userData = userDoc.data()
+  //   setRatings(userData as IRatings)
+  // }, [id])
+
+  const handleGetData = useCallback(() => {
+    if (!id) return
+    const q = query(collection(dbDefault, 'Ratings'), where('orderId', '==', id))
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        console.log(doc.data())
+        setRatings(doc.data() as IRatings)
+      })
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [id])
+
+  useEffect(() => {
+    handleGetData()
+  }, [handleGetData])
+
+  // console.log(Number(ratings.ratings))
+
+  const handleStarClick = async (index: number) => {
+    try {
+      if (!user) return
+      const ratingDocRef = doc(db, 'Ratings', id)
+
+      if (!ratings) {
+        await setDoc(ratingDocRef, {
+          userId: user.uid,
+          productId: productId,
+          orderId: id,
+          ratings: index + 1,
+          review: '',
+        })
+      }
+      if (ratings) {
+        console.log(index)
+        console.log(id)
+        await updateDoc(ratingDocRef, { ratings: index + 1 })
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -133,7 +194,7 @@ const OrderCard: React.FC<IOrderCard> = ({
                 <StarContainer>
                   {StartIcons.map((star, index) => (
                     <TouchableOpacity key={index} onPress={() => handleStarClick(index)}>
-                      {index < stars ? (
+                      {index < Number(ratings?.ratings) ? (
                         <star.startActive width={24} height={24} />
                       ) : (
                         <star.startInActive width={24} height={24} />

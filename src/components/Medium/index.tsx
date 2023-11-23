@@ -64,6 +64,7 @@ const Medium = () => {
   //image&text
   const [isOpenDesign, setOpenDesign] = useState(false)
   const [isDone, setDone] = useState(false)
+
   const [isImageOrText, setImageOrText] = useState({
     title: '',
     position: 'Front',
