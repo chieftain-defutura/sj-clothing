@@ -63,6 +63,7 @@ const Checkout: React.FC<ICheckout> = ({
   const [closedItems, setClosedItems] = useState<number[]>([])
   const [addr, setAddr] = useState<AddressData | null>(null)
   const [cartItems, setCartItems] = useState()
+  const [isLoading, setIsLoading] = useState(false)
   // const [orderData, setOrderData] = useState<ICheckout | null>(null)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
 
@@ -130,6 +131,7 @@ const Checkout: React.FC<ICheckout> = ({
 
   const processPay = async () => {
     try {
+      setIsLoading(true)
       const amount = offerPrice
         ? Number(offerPrice) + Number(deliveryFees?.DeliveryFees || 0)
         : Number(price) + Number(deliveryFees?.DeliveryFees || 0)
@@ -256,6 +258,8 @@ const Checkout: React.FC<ICheckout> = ({
     } catch (err) {
       console.error(err)
       Alert.alert('failed!')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -323,7 +327,6 @@ const Checkout: React.FC<ICheckout> = ({
           exiting={SlideOutRight.duration(500).delay(200)}
           style={{
             flex: 1,
-            // backgroundColor: 'red',
           }}
         >
           <ScrollViewContent showsVerticalScrollIndicator={false}>
@@ -386,7 +389,7 @@ const Checkout: React.FC<ICheckout> = ({
                   </Pressable>
                 </PhonepeWrapper>
 
-                <PhonepeWrapper>
+                {/* <PhonepeWrapper style={{ borderTopWidth: 0 }}>
                   <GiftContent onPress={processPay}>
                     <Phonepe width={32} height={32} />
                     <GiftText>Payment</GiftText>
@@ -395,7 +398,7 @@ const Checkout: React.FC<ICheckout> = ({
                   <Pressable>
                     <ChevronLeft width={16} height={16} />
                   </Pressable>
-                </PhonepeWrapper>
+                </PhonepeWrapper> */}
 
                 <Content>
                   <DeliveryWrapper>
@@ -426,9 +429,10 @@ const Checkout: React.FC<ICheckout> = ({
           </ScrollViewContent>
           <CustomButton
             variant='primary'
-            text='Place order'
+            text={isLoading ? 'Your Order is placing...' : 'Place order'}
             fontFamily='Arvo-Regular'
             onPress={processPay}
+            disabled={isLoading}
             fontSize={16}
             style={{
               position: 'absolute',

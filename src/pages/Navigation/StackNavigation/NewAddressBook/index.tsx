@@ -183,7 +183,7 @@ const AddAddressBook: React.FC<IAddressBook> = ({
           }}
         >
           <LeftArrow width={24} height={24} />
-          <CartText>{'Addressbook'}</CartText>
+          <CartText>{'AddressBook'}</CartText>
         </GoBackArrowContent>
 
         <MapView

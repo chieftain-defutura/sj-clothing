@@ -108,6 +108,7 @@ const SelectSize: React.FC<ISelectSize> = ({
                 <FlatList
                   data={sizeData?.filter((f) => f.show === true)}
                   horizontal
+                  showsHorizontalScrollIndicator={false}
                   contentContainerStyle={{
                     display: 'flex',
                     flexDirection: 'row',

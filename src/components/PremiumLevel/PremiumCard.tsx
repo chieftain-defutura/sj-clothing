@@ -34,7 +34,7 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
         flexDirection: 'column',
         width: width / 2.2,
         height: height / 3.2,
-        marginLeft: 8,
+        marginLeft: 16,
         marginBottom: 18,
       }}
     >
@@ -75,7 +75,6 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
         </View>
       </View>
     </View>
-    //</LinearGradient>
   )
 }
 

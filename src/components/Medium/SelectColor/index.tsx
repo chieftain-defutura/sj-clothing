@@ -59,6 +59,7 @@ const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, se
             <FlatList
               data={data.colors}
               horizontal
+              showsHorizontalScrollIndicator={false}
               contentContainerStyle={{
                 display: 'flex',
                 flexDirection: 'row',
