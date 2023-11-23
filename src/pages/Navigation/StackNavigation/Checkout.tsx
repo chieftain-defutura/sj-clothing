@@ -131,8 +131,8 @@ const Checkout: React.FC<ICheckout> = ({
   const processPay = async () => {
     try {
       const amount = offerPrice
-        ? Number(offerPrice) + Number(deliveryFees?.DeliveryFees || 0)
-        : Number(price) + Number(deliveryFees?.DeliveryFees || 0)
+        ? Number(offerPrice) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)
+        : Number(price) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)
 
       const address = addr
       if (!address) {
@@ -192,8 +192,10 @@ const Checkout: React.FC<ICheckout> = ({
         offerPrice: offerPrice,
         totalamount: `    ${
           offerPrice
-            ? Number(offerPrice) + Number(deliveryFees?.DeliveryFees || 0) * (rate as number)
-            : Number(price) + Number(deliveryFees?.DeliveryFees || 0) * (rate as number)
+            ? (Number(offerPrice) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
+              (rate as number)
+            : (Number(price) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
+              (rate as number)
         }
        ${currency.symbol}`,
         paymentStatus: 'pending',
@@ -313,8 +315,16 @@ const Checkout: React.FC<ICheckout> = ({
   }, [getDeliveryFees])
 
   console.log('addr', addr)
-  console.log(price)
   console.log(offerPrice)
+  console.log(deliveryFees?.DeliveryFees)
+
+  console.log(
+    'shhjjjd',
+    offerPrice ? offerPrice : '0' + deliveryFees ? deliveryFees?.DeliveryFees : '0',
+  )
+  console.log(
+    (Number(offerPrice) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) * (rate as number),
+  )
   return (
     <View style={{ flex: 1 }}>
       {!openGift && (
@@ -415,9 +425,11 @@ const Checkout: React.FC<ICheckout> = ({
                   <TotalText>Total</TotalText>
                   <TotalValue>
                     {offerPrice
-                      ? Number(offerPrice) +
-                        Number(deliveryFees?.DeliveryFees || 0) * (rate as number)
-                      : Number(price) + Number(deliveryFees?.DeliveryFees || 0) * (rate as number)}
+                      ? (Number(offerPrice) +
+                          Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
+                        (rate as number)
+                      : (Number(price) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
+                        (rate as number)}
                     {currency.symbol}
                   </TotalValue>
                 </TotalContent>
