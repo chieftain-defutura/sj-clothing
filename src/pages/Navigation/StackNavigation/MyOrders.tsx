@@ -78,20 +78,22 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
                     <CartText>{t('My orders')}</CartText>
                   </GoBackArrowContent>
                   <CartPageContent>
-                    {orderData.map((f, index) => {
-                      return (
-                        <OrderCard
-                          key={index}
-                          id={f.id}
-                          productId={f.productId}
-                          productImage={f.productImage}
-                          productName={f.productName}
-                          setOpenTrackOrder={setOpenTrackOrder}
-                          setOpenReview={setOpenReview}
-                          setOrderId={setOrderId}
-                        />
-                      )
-                    })}
+                    {orderData
+                      .filter((f) => f.paymentStatus === 'SUCCESS')
+                      .map((f, index) => {
+                        return (
+                          <OrderCard
+                            key={index}
+                            id={f.id}
+                            productId={f.productId}
+                            productImage={f.productImage}
+                            productName={f.productName}
+                            setOpenTrackOrder={setOpenTrackOrder}
+                            setOpenReview={setOpenReview}
+                            setOrderId={setOrderId}
+                          />
+                        )
+                      })}
                   </CartPageContent>
                 </View>
               </ScrollViewContent>
@@ -185,9 +187,9 @@ const OrderCard: React.FC<IOrderCard> = ({
                   <StatusText>Write a review</StatusText>
                 </Pressable>
               </View>
-              <Pressable>
+              {/* <Pressable>
                 <ChevronLeft width={16} height={16} />
-              </Pressable>
+              </Pressable> */}
             </ProductWrapper>
           </View>
         </CartPageData>

@@ -191,7 +191,7 @@ const Checkout: React.FC<ICheckout> = ({
         price: price,
         offerPrice: offerPrice,
         productId: id,
-        totalamount: `    ${
+        totalamount: `${
           offerPrice
             ? (
                 (Number(offerPrice) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
@@ -201,8 +201,7 @@ const Checkout: React.FC<ICheckout> = ({
                 (Number(price) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
                 (rate as number)
               ).toFixed(2)
-        }
-       ${currency.symbol}`,
+        } ${currency.symbol}`,
         paymentStatus: 'pending',
         userId: user?.uid,
         gender: gender,
