@@ -69,7 +69,7 @@ const FinalView: React.FC<IFinalView> = ({
   return (
     <>
       <ScrollView style={styles.finalViewContainer}>
-        <View style={{ paddingHorizontal: 20 }}>
+        <View style={{ paddingHorizontal: 15 }}>
           <CustomButton
             variant='primary'
             text={`${t('Buy now')}`}
@@ -78,6 +78,7 @@ const FinalView: React.FC<IFinalView> = ({
             onPress={() => handleSubmit()}
             buttonStyle={[styles.submitBtn]}
           />
+
           <View
             style={{
               display: 'flex',
@@ -90,7 +91,7 @@ const FinalView: React.FC<IFinalView> = ({
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                width: 95,
+                width: width / 4,
                 paddingTop: 16,
               }}
             >
@@ -98,7 +99,8 @@ const FinalView: React.FC<IFinalView> = ({
                 style={{
                   color: COLORS.textClr,
                   fontFamily: 'Montserrat-Regular',
-                  fontSize: 10,
+                  fontSize: 12,
+                  marginBottom: 4,
                 }}
               >
                 Style
@@ -111,7 +113,7 @@ const FinalView: React.FC<IFinalView> = ({
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                width: 95,
+                width: width / 4,
                 paddingTop: 16,
               }}
             >
@@ -119,7 +121,8 @@ const FinalView: React.FC<IFinalView> = ({
                 style={{
                   color: COLORS.textClr,
                   fontFamily: 'Montserrat-Regular',
-                  fontSize: 10,
+                  fontSize: 12,
+                  marginBottom: 4,
                 }}
               >
                 Size
@@ -139,7 +142,7 @@ const FinalView: React.FC<IFinalView> = ({
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                width: 155,
+                width: width / 4,
                 paddingTop: 16,
               }}
             >
@@ -147,7 +150,8 @@ const FinalView: React.FC<IFinalView> = ({
                 style={{
                   color: COLORS.textClr,
                   fontFamily: 'Montserrat-Regular',
-                  fontSize: 10,
+                  fontSize: 12,
+                  marginBottom: 4,
                 }}
               >
                 Text/Image
@@ -173,7 +177,7 @@ const FinalView: React.FC<IFinalView> = ({
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                width: 95,
+                width: width / 4,
                 paddingTop: 16,
               }}
             >
@@ -187,7 +191,7 @@ const FinalView: React.FC<IFinalView> = ({
               >
                 {!data.offerPrice ? (
                   <View>
-                    <ProductText>price</ProductText>
+                    <ProductText style={{ color: COLORS.textClr }}>price</ProductText>
                     <View
                       style={{
                         display: 'flex',
@@ -206,7 +210,9 @@ const FinalView: React.FC<IFinalView> = ({
                 ) : (
                   <View>
                     <View>
-                      <ProductText>price</ProductText>
+                      <ProductText style={{ fontSize: 14, color: COLORS.textClr }}>
+                        price
+                      </ProductText>
                     </View>
                     <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
                       <View
@@ -242,7 +248,7 @@ const FinalView: React.FC<IFinalView> = ({
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                width: 97,
+                width: width / 4,
                 paddingTop: 16,
               }}
             >
@@ -250,7 +256,7 @@ const FinalView: React.FC<IFinalView> = ({
                 style={{
                   color: COLORS.textClr,
                   fontFamily: 'Montserrat-Regular',
-                  fontSize: 10,
+                  fontSize: 12,
                 }}
               >
                 Gender
@@ -270,7 +276,7 @@ const FinalView: React.FC<IFinalView> = ({
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                width: 155,
+                width: width / 4,
                 paddingTop: 16,
               }}
             >
@@ -278,7 +284,7 @@ const FinalView: React.FC<IFinalView> = ({
                 style={{
                   color: COLORS.textClr,
                   fontFamily: 'Montserrat-Regular',
-                  fontSize: 10,
+                  fontSize: 12,
                 }}
               >
                 Color
@@ -287,9 +293,9 @@ const FinalView: React.FC<IFinalView> = ({
                 style={{
                   color: COLORS.textClr,
                   fontFamily: 'Arvo-Regular',
-                  fontSize: 14,
+                  fontSize: 18,
                   backgroundColor: color,
-                  width: 50,
+                  width: 30,
                   marginTop: 4,
                 }}
               ></Text>
@@ -365,9 +371,10 @@ const OldPriceText = styled.Text`
   margin-top: 4px;
 `
 const ProductText = styled.Text`
-  font-size: 12px;
+  font-size: 13px;
   font-family: ${FONT_FAMILY.MontserratRegular};
   color: ${COLORS.SecondaryTwo};
+  margin-bottom: 4px;
 `
 
 const InputBorder = styled.View`

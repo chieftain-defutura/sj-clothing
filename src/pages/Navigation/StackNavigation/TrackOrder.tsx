@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import { View, StyleSheet, Dimensions, Text } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
-import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
+import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { RadioButton } from 'react-native-paper'
 import moment from 'moment'
@@ -11,7 +11,7 @@ import { db } from '../../../../firebase'
 import { IOrder } from '../../../constant/types'
 import { userStore } from '../../../store/userStore'
 
-// const { height, width } = Dimensions.get('window')
+const { height, width } = Dimensions.get('window')
 
 interface ITrackOrder {
   navigation: any
@@ -19,34 +19,7 @@ interface ITrackOrder {
   setOpenTrackOrder: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ProductData = [
-  {
-    product: 'Product',
-    productName: 'purple ape t-shirt',
-  },
-  {
-    product: 'Style',
-    productName: 'Half sleeve',
-  },
-  {
-    product: 'Quantity',
-    productName: 'x50',
-  },
-  {
-    product: 'Ordered on',
-    productName: '23 June, 2023',
-  },
-  {
-    product: 'Delivery on',
-    productName: '23 June, 2023',
-  },
-  {
-    product: 'Price',
-    productName: '450 INR',
-  },
-]
-
-const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOrder }) => {
+const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
   const [orderData, setOrderData] = useState<IOrder>()
 
   const getOrderDataById = useCallback(async () => {
@@ -63,11 +36,14 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
   }, [getOrderDataById])
 
   console.log('orderData', orderData?.orderStatus)
+  console.log('jbjjhjhj', orderData?.totalamount)
 
   return (
     <View style={{ flex: 1 }}>
       {!orderData ? (
-        <Text>No data</Text>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
+          <ProductText>Loading...</ProductText>
+        </View>
       ) : (
         <Animated.View
           entering={SlideInRight.duration(500).delay(200)}
@@ -115,7 +91,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
-                  paddingHorizontal: 50,
+                  paddingHorizontal: 30,
                   paddingVertical: 20,
                 }}
               >
@@ -131,11 +107,11 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      width: 95,
+                      width: width / 4,
                       paddingTop: 16,
                     }}
                   >
-                    <ProductText>Product Name</ProductText>
+                    <ProductText>Product</ProductText>
                     <Text
                       style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
                     >
@@ -146,7 +122,6 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      width: 95,
                       paddingTop: 16,
                     }}
                   >
@@ -163,14 +138,18 @@ const TrackOrder: React.FC<ITrackOrder> = ({ navigation, orderId, setOpenTrackOr
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      width: 195,
                       paddingTop: 16,
+                      width: width / 4,
                     }}
                   >
                     <ProductText>Price</ProductText>
 
                     <Text
-                      style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
+                      style={{
+                        color: COLORS.textClr,
+                        fontFamily: 'Arvo-Regular',
+                        fontSize: 14,
+                      }}
                     >
                       {orderData.totalamount}
                     </Text>
@@ -510,9 +489,10 @@ const Column = styled.View`
 
 const ProductText = styled.Text`
   text-align: left;
-  font-size: 11px;
+  font-size: 12px;
   font-family: ${FONT_FAMILY.MontserratRegular};
   color: ${COLORS.SecondaryTwo};
+  margin-bottom: 4px;
 `
 const ProductName = styled.Text`
   font-family: ${FONT_FAMILY.ArvoRegular};

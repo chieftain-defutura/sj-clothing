@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
-import { View, Pressable, TouchableOpacity } from 'react-native'
+import { View, Dimensions, TouchableOpacity, Pressable } from 'react-native'
 import LeftArrow from '../../assets/icons/LeftArrow'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../styles/theme'
 import { query, collection, where, onSnapshot } from 'firebase/firestore'
@@ -20,6 +19,7 @@ import {
 import { userStore } from '../../store/userStore'
 import { IOrder, IRatings } from '../../constant/types'
 import { db, dbDefault } from '../../../firebase'
+import CustomButton from '../Button'
 
 const StartIcons = [
   { startActive: StarActive, startInActive: StarInActive },
@@ -34,12 +34,15 @@ interface IOrderCard {
   setOpenReview: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+const { height, width } = Dimensions.get('window')
+
 const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
   const user = userStore((state: { user: any }) => state.user)
   const [ratings, setRatings] = useState<IRatings>()
-  const [review, setReview] = useState(ratings?.review ? ratings?.review : '')
+  const [review, setReview] = useState('')
   const [stars, setStars] = useState(0)
   const [orderData, setOrderData] = useState<IOrder>()
+  const [isLoading, setIsLoading] = useState(false)
 
   const getOrderDataById = useCallback(async () => {
     if (!orderId) return
@@ -82,8 +85,11 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
     setStars(index + 1)
   }
 
+  console.log('product id', orderData?.productId)
+
   const handleReview = async () => {
     try {
+      setIsLoading(true)
       if (!user) return
       const ratingDocRef = doc(db, 'Ratings', orderId)
 
@@ -105,13 +111,23 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
       }
     } catch (error) {
       console.log(error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
   return (
-    <View>
-      <CartPageContainer>
-        <CartPageData onPress={() => {}}>
+    <View style={{ flex: 1 }}>
+      <GoBackArrowContent
+        onPress={() => {
+          setOpenReview(false)
+        }}
+      >
+        <LeftArrow width={24} height={24} />
+        <CartText>Review product</CartText>
+      </GoBackArrowContent>
+      <CartPageContainer style={{ paddingHorizontal: 16 }}>
+        <CartPageData>
           <View>
             <TShirtImage source={{ uri: orderData?.productImage }} />
           </View>
@@ -139,9 +155,9 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
                       </TouchableOpacity>
                     ))}
                   </StarContainer>
-                  <Pressable onPress={handleReview}>
+                  {/* <Pressable onPress={handleReview}>
                     <StatusText>{ratings?.review ? 'Edit a review' : 'Save a review'}</StatusText>
-                  </Pressable>
+                  </Pressable> */}
                 </View>
                 {/* <ProductShirtText>{f.statusName}</ProductShirtText> */}
                 {/* <ProductShirtText>{f.date}</ProductShirtText> */}
@@ -154,7 +170,7 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
         </CartPageData>
       </CartPageContainer>
 
-      <View>
+      <View style={{ paddingHorizontal: 20 }}>
         <TextArea
           multiline={true}
           numberOfLines={3}
@@ -164,6 +180,21 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
           value={review}
         />
       </View>
+      <CustomButton
+        variant='primary'
+        text={isLoading ? 'Submiting...' : 'Submit'}
+        fontFamily='Arvo-Regular'
+        onPress={handleReview}
+        disabled={isLoading}
+        fontSize={16}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: 16,
+        }}
+      />
     </View>
   )
 }
@@ -187,6 +218,7 @@ const TextArea = styled.TextInput`
   border-radius: 5px;
   margin-top: 8px;
   padding-horizontal: 16px;
+  margin-horizontal: 13px;
   padding-vertical: 12px;
   margin-bottom: 40px;
   font-size: 14px;
@@ -245,6 +277,7 @@ const StarContainer = styled.View`
 const CartPageContainer = styled.View`
   /* border-bottom-color: ${COLORS.strokeClr}; */
   /* border-bottom-width: 1px; */
+  margin-top: 15px;
 `
 const CartPageData = styled.Pressable`
   display: flex;

@@ -34,7 +34,7 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
         flexDirection: 'column',
         width: width / 2.2,
         height: height / 3.2,
-        marginLeft: 16,
+        marginLeft: 12,
         marginBottom: 18,
       }}
     >
@@ -64,7 +64,9 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
             </Animated.View>
           </Pressable>
           <View style={{ alignItems: 'center', marginTop: 14 }}>
-            <ProductText>{data.productName}</ProductText>
+            <ProductText style={{ width: width / 2.3, textAlign: 'center' }}>
+              {data.productName}
+            </ProductText>
             <FlexContent>
               <PriceText>
                 {rate ? (Number(data.normalPrice) * (rate as number)).toFixed(2) : data.normalPrice}
