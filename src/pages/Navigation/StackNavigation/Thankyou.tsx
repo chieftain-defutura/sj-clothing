@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
+import uuid from 'react-native-uuid'
 import WebView from 'react-native-webview'
 import CustomButton from '../../../components/Button'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -12,10 +13,16 @@ import Animated, {
   StretchInX,
   StretchOutX,
 } from 'react-native-reanimated'
+import { userStore } from '../../../store/userStore'
+import { doc, setDoc } from 'firebase/firestore'
+import { db } from '../../../../firebase'
 
 const { height } = Dimensions.get('window')
 const Thankyou = () => {
   const navigation = useNavigation()
+  const isMounted = useRef(false)
+  const avatar = userStore((store) => store.avatar)
+  const [uid, setUid] = useState<string | null>(null)
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
@@ -28,6 +35,21 @@ const Thankyou = () => {
       })
     }
   }
+  const handleSetUid = useCallback(async () => {
+    if (!isMounted.current) {
+      try {
+        console.log('rendered', avatar.gender)
+        isMounted.current = true
+        const tempUid = uuid.v4().toString()
+        const docRef = doc(db, 'Greetings', tempUid)
+        await setDoc(docRef, { uid: tempUid, gender: avatar.gender, skin: avatar.skinTone || '3' })
+        console.log('added')
+        setUid(tempUid)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }, [])
 
   return (
     <LinearGradient style={{ flex: 1 }} colors={gradientOpacityColors}>
@@ -43,7 +65,7 @@ const Thankyou = () => {
               }}
               source={{
                 // uri: `http://localhost:5173/create-avatar/?uid=${uid}`,
-                uri: `https://sj-threejs-development.netlify.app/thankyou?pageY=${pageY}&h=${height}&elh=${elementHeight}`,
+                uri: `https://sj-threejs-development.netlify.app/thankyou?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
               }}
             />
           )}
