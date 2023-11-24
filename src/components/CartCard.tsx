@@ -43,7 +43,7 @@ const CartCard: React.FC<ICheckout> = ({ price, offerPrice, productName, product
               <View>
                 <ProductText>price</ProductText>
               </View>
-              <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
+              <View style={{ display: 'flex', flexDirection: 'row', gap: 6 }}>
                 <View
                   style={{
                     display: 'flex',

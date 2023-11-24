@@ -8,7 +8,6 @@ import CustomButton from '../../../components/Button'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { LinearGradient } from 'expo-linear-gradient'
 import ChevronLeft from '../../../assets/icons/ChevronLeft'
-import Phonepe from '../../../assets/icons/Phonepe'
 import TruckMovingIcon from '../../../assets/icons/TruckMoving'
 import CartCard from '../../../components/CartCard'
 import { query, collection as defaultCollection, where, onSnapshot } from 'firebase/firestore'
@@ -20,10 +19,6 @@ import GiftIcon from '../../../assets/icons/GiftIcon'
 import GiftOptions from './GiftOptions'
 import { useNavigation } from '@react-navigation/native'
 
-type RootStackParamList = {
-  Checkout: { product: string }
-}
-
 interface IDeliveryfees {
   Continents: string
   DeliveryFees: number
@@ -32,6 +27,7 @@ interface IDeliveryfees {
 const API_URL = 'https://sj-clothing-backend.cyclic.app'
 
 interface AddressData {
+  name: string
   addressOne: string
   addressTwo: string
   city: string
@@ -73,7 +69,7 @@ const Checkout: React.FC<ICheckout> = ({
   const [openGift, setOpengift] = useState(false)
   const [giftOptions, setGiftOptions] = useState({ giftMessage: '', from: '' })
   const stripe = useStripe()
-  const { isPlatformPaySupported, confirmPlatformPayPayment } = usePlatformPay()
+  const { isPlatformPaySupported } = usePlatformPay()
   const [isPaySupported, setIsPaySupported] = useState(false)
 
   const setup = useCallback(async () => {
@@ -362,14 +358,15 @@ const Checkout: React.FC<ICheckout> = ({
               />
 
               <CartPageContent>
-                <HomeFlexContent onPress={() => navigation.navigate('LocationAddAddress')}>
+                <HomeFlexContent onPress={() => navigation.navigate('Location')}>
                   {addr ? (
                     <Pressable>
                       <View>
                         <HomeText>{addr.saveAddressAs}</HomeText>
                         <HomeDescription>
-                          {addr.addressOne}, {addr.addressTwo}, {addr.city}, {addr.state},{' '}
-                          {addr.pinCode}, {addr.country}, {addr.floor}, {addr.phoneNo}
+                          {addr.name}, {addr.phoneNo}, {addr.floor}, {addr.addressOne},{' '}
+                          {addr.addressTwo}, {addr.city}, {addr.state}, {addr.country},{' '}
+                          {addr.pinCode}.
                         </HomeDescription>
                       </View>
                     </Pressable>
