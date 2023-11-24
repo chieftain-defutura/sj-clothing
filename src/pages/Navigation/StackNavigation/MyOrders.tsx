@@ -120,10 +120,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
                         return (
                           <OrderCard
                             key={index}
-                            id={f.id}
-                            productId={f.productId}
-                            productImage={f.productImage}
-                            productName={f.productName}
+                            data={f}
                             setOpenTrackOrder={setOpenTrackOrder}
                             setOpenReview={setOpenReview}
                             setOrderId={setOrderId}
@@ -149,20 +146,14 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
 }
 
 interface IOrderCard {
-  id: string
-  productId: string
-  productImage: string
-  productName: string
+  data: IOrder
   setOrderId: React.Dispatch<React.SetStateAction<string>>
   setOpenTrackOrder: React.Dispatch<React.SetStateAction<boolean>>
   setOpenReview: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const OrderCard: React.FC<IOrderCard> = ({
-  id,
-  productId,
-  productImage,
-  productName,
+  data,
   setOrderId,
   setOpenTrackOrder,
   setOpenReview,
@@ -170,8 +161,8 @@ const OrderCard: React.FC<IOrderCard> = ({
   const [ratings, setRatings] = useState<IRatings>()
 
   const handleGetData = useCallback(() => {
-    if (!id) return
-    const q = query(collection(dbDefault, 'Ratings'), where('orderId', '==', id))
+    if (!data.id) return
+    const q = query(collection(dbDefault, 'Ratings'), where('orderId', '==', data.id))
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docs.forEach((doc) => {
         console.log(doc.data())
@@ -182,7 +173,7 @@ const OrderCard: React.FC<IOrderCard> = ({
     return () => {
       unsubscribe()
     }
-  }, [id])
+  }, [data.id])
 
   useEffect(() => {
     handleGetData()
@@ -193,35 +184,36 @@ const OrderCard: React.FC<IOrderCard> = ({
       <CartPageContainer>
         <CartPageData
           onPress={() => {
-            setOpenTrackOrder(true), setOrderId(id)
+            setOpenTrackOrder(true), setOrderId(data.id)
           }}
         >
           <View>
-            <TShirtImage source={{ uri: productImage }} />
+            <TShirtImage source={{ uri: data.productImage }} />
           </View>
           <View>
             <ProductWrapper>
               <View>
-                <ProductShirtText>{productName}</ProductShirtText>
-                <ProductText>{productName}</ProductText>
-                <Pressable
-                  onPress={() => {
-                    setOpenReview(true), setOrderId(id)
-                  }}
-                >
-                  <StarContainer>
-                    {StartIcons.map((star, index) => (
-                      <View key={index}>
-                        {index < Number(ratings?.ratings) ? (
-                          <star.startActive width={24} height={24} />
-                        ) : (
-                          <star.startInActive width={24} height={24} />
-                        )}
-                      </View>
-                    ))}
-                  </StarContainer>
-                  <StatusText>Write a review</StatusText>
-                </Pressable>
+                <ProductShirtText>{data.productName}</ProductShirtText>
+                {data.orderStatus.delivery.status && (
+                  <Pressable
+                    onPress={() => {
+                      setOpenReview(true), setOrderId(data.id)
+                    }}
+                  >
+                    <StarContainer>
+                      {StartIcons.map((star, index) => (
+                        <View key={index}>
+                          {index < Number(ratings?.ratings) ? (
+                            <star.startActive width={24} height={24} />
+                          ) : (
+                            <star.startInActive width={24} height={24} />
+                          )}
+                        </View>
+                      ))}
+                    </StarContainer>
+                    <StatusText>Write a review</StatusText>
+                  </Pressable>
+                )}
               </View>
               {/* <Pressable>
                 <ChevronLeft width={16} height={16} />
@@ -259,7 +251,8 @@ const ProductText = styled.Text`
   font-size: 12px;
 `
 const ProductShirtText = styled.Text`
-  font-size: 14px;
+  font-size: 18px;
+  margin-top: 10px;
   font-family: ${FONT_FAMILY.GilroyMedium};
   color: ${COLORS.iconsHighlightClr};
 `
