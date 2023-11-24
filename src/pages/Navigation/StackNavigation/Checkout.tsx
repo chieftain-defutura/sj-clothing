@@ -358,7 +358,7 @@ const Checkout: React.FC<ICheckout> = ({
               />
 
               <CartPageContent>
-                <HomeFlexContent onPress={() => navigation.navigate('LocationAddAddress')}>
+                <HomeFlexContent onPress={() => navigation.navigate('Location')}>
                   {addr ? (
                     <Pressable>
                       <View>
