@@ -8,20 +8,16 @@ import CustomButton from '../../../components/Button'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { LinearGradient } from 'expo-linear-gradient'
 import ChevronLeft from '../../../assets/icons/ChevronLeft'
-import Phonepe from '../../../assets/icons/Phonepe'
 import TruckMovingIcon from '../../../assets/icons/TruckMoving'
 import CartCard from '../../../components/CartCard'
+import { query, collection as defaultCollection, where, onSnapshot } from 'firebase/firestore'
 import { collection, doc, getDoc, getDocs, updateDoc, setDoc } from 'firebase/firestore/lite'
-import { db } from '../../../../firebase'
+import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { ICheckout } from '../../../constant/types'
 import GiftIcon from '../../../assets/icons/GiftIcon'
 import GiftOptions from './GiftOptions'
 import { useNavigation } from '@react-navigation/native'
-
-type RootStackParamList = {
-  Checkout: { product: string }
-}
 
 interface IDeliveryfees {
   Continents: string
@@ -31,6 +27,7 @@ interface IDeliveryfees {
 const API_URL = 'https://sj-clothing-backend.cyclic.app'
 
 interface AddressData {
+  name: string
   addressOne: string
   addressTwo: string
   city: string
@@ -72,7 +69,7 @@ const Checkout: React.FC<ICheckout> = ({
   const [openGift, setOpengift] = useState(false)
   const [giftOptions, setGiftOptions] = useState({ giftMessage: '', from: '' })
   const stripe = useStripe()
-  const { isPlatformPaySupported, confirmPlatformPayPayment } = usePlatformPay()
+  const { isPlatformPaySupported } = usePlatformPay()
   const [isPaySupported, setIsPaySupported] = useState(false)
 
   const setup = useCallback(async () => {
@@ -153,7 +150,7 @@ const Checkout: React.FC<ICheckout> = ({
         return
       }
 
-      const fixedAmount = Number((Number(amount) * (rate as number)).toFixed(2)) * 100
+      const fixedAmount = Number((Number(amount) * (rate as number)).toFixed(2))
 
       const response = await fetch(`${API_URL}/create-payment-intent`, {
         method: 'POST',
@@ -293,25 +290,29 @@ const Checkout: React.FC<ICheckout> = ({
     }
   }
 
-  const getData = useCallback(async () => {
-    try {
-      if (!user) return
-      const q = doc(db, 'users', user.uid)
-      const querySnapshot = await getDoc(q)
+  const handleGetData = useCallback(() => {
+    if (!user) return
+    const q = query(defaultCollection(dbDefault, 'users'), where('email', '==', user.email))
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        console.log(doc.data())
 
-      const fetchData = querySnapshot.data()
-      const addressData = fetchData?.address.find(
-        (f: { isSelected: boolean }) => f.isSelected === true,
-      )
-      setAddr(addressData)
-    } catch (error) {
-      console.log(error)
+        const addressData = doc
+          .data()
+          ?.address.find((f: { isSelected: boolean }) => f.isSelected === true)
+        setAddr(addressData)
+      })
+    })
+
+    return () => {
+      unsubscribe()
     }
   }, [user])
 
   useEffect(() => {
-    getData()
-  }, [getData])
+    handleGetData()
+  }, [handleGetData])
+  console.log('addr', addr)
 
   const getDeliveryFees = useCallback(async () => {
     try {
@@ -357,14 +358,15 @@ const Checkout: React.FC<ICheckout> = ({
               />
 
               <CartPageContent>
-                <HomeFlexContent onPress={() => navigation.navigate('LocationAddAddress')}>
+                <HomeFlexContent onPress={() => navigation.navigate('Location')}>
                   {addr ? (
                     <Pressable>
                       <View>
                         <HomeText>{addr.saveAddressAs}</HomeText>
                         <HomeDescription>
-                          {addr.addressOne}, {addr.addressTwo}, {addr.city}, {addr.state},{' '}
-                          {addr.pinCode}, {addr.country}, {addr.floor}, {addr.phoneNo}
+                          {addr.name}, {addr.phoneNo}, {addr.floor}, {addr.addressOne},{' '}
+                          {addr.addressTwo}, {addr.city}, {addr.state}, {addr.country},{' '}
+                          {addr.pinCode}.
                         </HomeDescription>
                       </View>
                     </Pressable>
@@ -418,7 +420,10 @@ const Checkout: React.FC<ICheckout> = ({
                       <DeliveryText>Delivery fee</DeliveryText>
                     </DeliveryContent>
                     <INRText>
-                      {(Number(deliveryFees?.DeliveryFees) * (rate as number)).toFixed(2)}
+                      {(
+                        Number(deliveryFees?.DeliveryFees ? deliveryFees.DeliveryFees : 0) *
+                        (rate as number)
+                      ).toFixed(2)}
                       {currency.symbol}
                     </INRText>
                   </DeliveryWrapper>

@@ -532,18 +532,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   }
 
   const handleLogout = async () => {
-    // try {
-    //   await auth.signOut()
-    //   const data = await AsyncStorage.getItem('mail')
-    //   await AsyncStorage.removeItem('mail')
-    //   if (!data) {
-    //     updateUser(null)
-    //     navigation.navigate('Account')
-    //     console.log('Signed out successfully')
-    //   }
-    // } catch (error) {
-    //   console.log(error)
-    // }
     setLogOut(true)
   }
 
@@ -554,7 +542,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
       id: doc.id,
       ...(doc.data() as any),
     }))
-    const data = fetchProduct.filter((f) => f.userId === user.uid)
+    const data = fetchProduct.filter((f) => f.userId === user.uid && f.paymentStatus === 'SUCCESS')
     setOrderData(data)
   }, [])
 

@@ -2,11 +2,8 @@ import React from 'react'
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack'
 import BuyNow from './BuyNow'
 import CartPage from './Cart'
-import Checkout from './Checkout'
 import MyOrders from './MyOrders'
-import TrackOrder from './TrackOrder'
-import GiftOptions from './GiftOptions'
-import AddressBook from './AddressBook'
+// import AddressBook from './AddressBook'
 import MostSearches from './MostSearches'
 import LoginModal from '../../../screens/Modals/Login'
 import SignupModal from '../../../screens/Modals/Signup'
@@ -52,11 +49,11 @@ const StackNavigationRoutes: React.FC = () => {
         component={TabNavigationRoutes}
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name='AddressBook'
         component={AddressBook}
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-      />
+      /> */}
       <Stack.Screen
         name='Buynow'
         component={BuyNow}
@@ -128,11 +125,11 @@ const StackNavigationRoutes: React.FC = () => {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={TermsAndConditions}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name='LocationAddAddress'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={AddressBook}
-      />
+      /> */}
       <Stack.Screen
         name='Location'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
