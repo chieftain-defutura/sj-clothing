@@ -5,6 +5,9 @@ import CustomButton from '../../Button'
 import { useTranslation } from 'react-i18next'
 import WebView from 'react-native-webview'
 import { userStore } from '../../../store/userStore'
+import { updateDoc, doc } from 'firebase/firestore/lite'
+
+import { db } from '../../../../firebase'
 
 interface IGender {}
 
@@ -25,6 +28,7 @@ const GenderModel = ({
 }) => {
   const { t } = useTranslation('avatar')
   const avatar = userStore((state) => state.avatar)
+  const user = userStore((state) => state.user)
   const updateAvatar = userStore((state) => state.updateAvatar)
 
   const [pageY, setPageY] = useState<number | null>(null)
@@ -40,6 +44,21 @@ const GenderModel = ({
     }
   }
 
+  const handleSubmit = async () => {
+    if (user) {
+      updateAvatar({ gender: gender.gender, skinTone: '3' })
+      await updateDoc(doc(db, 'users', user.uid), {
+        avatar: {
+          gender: gender.gender,
+          skinTone: '3',
+        },
+      })
+    }
+    if (!user) {
+      updateAvatar({ gender: gender.gender, skinTone: '3' })
+    }
+  }
+
   return (
     <View
       style={{
@@ -48,10 +67,7 @@ const GenderModel = ({
         marginVertical: 14,
       }}
     >
-      <TouchableOpacity
-        onPress={() => updateAvatar({ gender: gender.gender as string, skinTone: '3' })}
-        style={styles.genderButton}
-      >
+      <TouchableOpacity onPress={handleSubmit} style={styles.genderButton}>
         <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <View
             style={{

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Sprinkle",
     "scheme": "sjclothing",
-    "slug": "react-native-expo-project",
+    "slug": "sj-clothing",
     "version": "3.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -42,6 +42,14 @@
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Allow Sprinkle Nadar to use your location."
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
         }
       ]
     ],

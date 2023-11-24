@@ -24,6 +24,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
   const { t } = useTranslation('avatar')
   const elementRef = useRef<View | null>(null)
   const avatar = userStore((store) => store.avatar)
+  const user = userStore((store) => store.user)
   const [uid, setUid] = useState<string | null>(null)
   const [pageY, setPageY] = useState<number | null>(null)
   const updateAvatar = userStore((store) => store.updateAvatar)
@@ -102,6 +103,20 @@ const Skintone: React.FC<ISkintone> = ({}) => {
     handleUpdateSkintone()
     handleGetData()
   }, [handleSetUid, handleUpdateGender, handleUpdateSkintone, handleGetData])
+  const handleSubmit = async (index: number) => {
+    if (user) {
+      updateAvatar({ gender: avatar.gender, skinTone: (index + 1).toString() })
+      await updateDoc(doc(db, 'users', user.uid), {
+        avatar: {
+          gender: avatar.gender,
+          skinTone: (index + 1).toString(),
+        },
+      })
+    }
+    if (!user) {
+      updateAvatar({ gender: avatar.gender, skinTone: (index + 1).toString() })
+    }
+  }
 
   return (
     <View style={styles.SkintoneContainer}>
@@ -145,9 +160,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
                   opacity: !createAvatarAnimationFinished ? 0.7 : 1,
                 },
               ]}
-              onPress={() =>
-                updateAvatar({ gender: avatar.gender, skinTone: (index + 1).toString() })
-              }
+              onPress={() => handleSubmit(index)}
               disabled={!createAvatarAnimationFinished}
             >
               <View style={{ flex: 1, backgroundColor: m, borderRadius: 20 }}></View>

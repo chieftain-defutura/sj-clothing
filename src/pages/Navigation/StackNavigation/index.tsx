@@ -43,6 +43,8 @@ const StackNavigationRoutes: React.FC = () => {
         headerStyle: { backgroundColor: 'rgba(191, 148, 228, 0.8)' },
         headerTitle: HeaderLeft,
         headerShadowVisible: false,
+        headerLeftLabelVisible: false,
+        headerBackTitleVisible: false,
       }}
     >
       <Stack.Screen
