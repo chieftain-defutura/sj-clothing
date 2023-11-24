@@ -41,10 +41,10 @@ const validationSchema = yup.object({
 })
 
 const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSavePress }) => {
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
+  const user = userStore((state) => state.user)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { user } = userStore()
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prevState) => !prevState)
@@ -57,15 +57,12 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
 
   const onSubmit = async () => {
     try {
-      console.log('Formik Data:', formik.values)
-
       setIsLoading(true)
 
       if (!user) return
       const userDocRef = doc(db, 'users', user.uid)
       const userDoc = await getDoc(userDocRef)
       const userData = userDoc.data()
-      console.log('userdaaaaa', userData)
       if (!userData) return
 
       const addressArray = [

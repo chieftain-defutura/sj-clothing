@@ -5,10 +5,7 @@ import LeftArrow from '../../assets/icons/LeftArrow'
 // import ThreeSixtyDegree from '../../assets/icons/360-degree'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import CustomButton from '../Button'
-import { addDoc, collection } from 'firebase/firestore/lite'
-import { db } from '../../../firebase'
 import { IAccessory } from '../../constant/types'
-import { userStore } from '../../store/userStore'
 import AuthNavigate from '../../screens/AuthNavigate'
 
 interface IAccessoryThreeSixtyDegree {
@@ -28,7 +25,6 @@ const AccessoryThreeSixtyDegree: React.FC<IAccessoryThreeSixtyDegree> = ({
 }) => {
   const [isPressed, setIsPressed] = useState(false)
   const [focus, setFocus] = useState(false)
-  const user = userStore((state) => state.user)
 
   const onClose = () => {
     setFocus(false)

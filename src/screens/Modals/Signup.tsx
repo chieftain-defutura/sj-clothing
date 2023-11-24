@@ -55,36 +55,22 @@ const ValidationSchema = Yup.object({
 
 const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginClick }) => {
   const navigation = useNavigation()
-  const [showPassword, setShowPassword] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const { confirmDetails, language, currency, avatar } = userStore()
   const user = userStore((store) => store.user)
-  const updateUser = userStore((state) => state.updateUser)
   const [isChecked, setChecked] = useState(false)
   const [isCreated, setIsCreated] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const avatar = userStore((state) => state.avatar)
+  const currency = userStore((state) => state.currency)
+  const language = userStore((state) => state.language)
+  const updateUser = userStore((state) => state.updateUser)
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const confirmDetails = userStore((state) => state.confirmDetails)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [showVerificationModal, setShowVerificationModal] = useState(false)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
-
-  // useEffect(() => {
-  //   return onAuthStateChanged(auth, (data) => {
-  //     if (data) {
-  //       updateUser(data)
-  //       setTimeout(() => {
-  //         updateFetching(false)
-  //         isVisible = false
-  //       }, 0)
-  //     } else {
-  //       setTimeout(() => {
-  //         updateFetching(false)
-  //         isVisible = false
-  //       }, 0)
-  //     }
-  //   })
-  // }, [])
 
   useEffect(() => {
     if (errorMessage) {
@@ -146,10 +132,6 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       }
     }
   }
-
-  console.log('USER AUTh')
-  console.log(user?.emailVerified)
-  console.log(isCreated)
 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>

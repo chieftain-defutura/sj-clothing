@@ -28,7 +28,7 @@ interface IUploadDesign {
 }
 const { height, width } = Dimensions.get('window')
 const UploadDesign: React.FC<IUploadDesign> = ({ setDone, setImageOrText, isImageOrText }) => {
-  const { user } = userStore()
+  const user = userStore((state) => state.user)
   const handleSelectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,

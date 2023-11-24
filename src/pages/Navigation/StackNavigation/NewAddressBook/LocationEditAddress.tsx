@@ -54,10 +54,10 @@ const validationSchema = yup.object({
 })
 
 const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddress }) => {
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
+  const user = userStore((state) => state.user)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { user } = userStore()
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prevState) => !prevState)
@@ -70,7 +70,6 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
 
   const onSubmit = async () => {
     try {
-      console.log('Formik Data:', formik.values)
       setIsLoading(true)
       if (!user) return
       const addressArray = [
@@ -93,7 +92,6 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
       const arr = userData.address.filter((element: AddressData) => {
         return element.email !== selectedAddress.email
       })
-      console.log(arr)
       userData.address = [...arr, ...addressArray]
       await updateDoc(userDocRef, userData)
     } catch (error) {

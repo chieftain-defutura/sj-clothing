@@ -16,7 +16,7 @@ import Animated, {
 const { width } = Dimensions.get('window')
 const BeforeUser = () => {
   const slideValue = useSharedValue(0)
-  const { updateConfirmDetails } = userStore()
+  const updateConfirmDetails = userStore((state) => state.updateConfirmDetails)
   const avatar = userStore((store) => store.avatar)
   const updateAnimation = userStore((store) => store.updateAnimation)
   const createAvatarAnimationFinished = userStore((store) => store.createAvatarAnimationFinished)

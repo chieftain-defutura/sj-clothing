@@ -17,8 +17,9 @@ import { userStore } from '../../../store/userStore'
 const Tab = createBottomTabNavigator()
 
 const TabNavigationRoutes: React.FC = () => {
-  const { confirmDetails } = userStore()
   const opacityValue = useSharedValue(2)
+  const confirmDetails = userStore((state) => state.confirmDetails)
+
   if (Platform.OS === 'android') {
     NavigationBar.setPositionAsync('relative')
     NavigationBar.setBackgroundColorAsync('rgba(145, 177, 225, 0.85)')

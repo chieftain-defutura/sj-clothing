@@ -1,16 +1,14 @@
 import React from 'react'
 import { View } from 'react-native'
-import { CartComponentProps, ICheckout } from '../constant/types'
+import { ICheckout } from '../constant/types'
 import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../styles/theme'
-import CircleClose from '../assets/icons/CircleClose'
 import { userStore } from '../store/userStore'
 
 const CartCard: React.FC<ICheckout> = ({ price, offerPrice, productName, productImage }) => {
-  const { currency, rate } = userStore()
-  console.log('price', price)
-  console.log('offerPrice', offerPrice)
-  console.log(rate)
+  const rate = userStore((state) => state.rate)
+  const currency = userStore((state) => state.currency)
+
   return (
     <CartPageContent>
       <View>

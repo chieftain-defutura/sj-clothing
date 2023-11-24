@@ -24,7 +24,9 @@ const GenderModel = ({
   }
 }) => {
   const { t } = useTranslation('avatar')
-  const { updateAvatar, avatar } = userStore()
+  const avatar = userStore((state) => state.avatar)
+  const updateAvatar = userStore((state) => state.updateAvatar)
+
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)

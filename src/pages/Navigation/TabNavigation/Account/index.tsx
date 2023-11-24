@@ -460,15 +460,18 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [forgotMail, setForgotmail] = useState(false)
   // const isFocused = useIsFocused()
   const [image, setImage] = useState<string | null>(null)
-  const {
-    updateUser,
-    updateProfile,
-    profile,
-    updateAvatar,
-    updateAddress,
-    updatePhoneNo,
-    updateName,
-  } = userStore()
+  // const {
+  //   updateUser,
+  //   updateProfile,
+  //   profile,
+  //   updateAvatar,
+  //   updateAddress,
+  //   updatePhoneNo,
+  //   updateName,
+  // } = userStore()
+
+  const updateUser = userStore((state) => state.updateUser)
+  const profile = userStore((state) => state.profile)
 
   const handleLogin = () => {
     if (!user) {
@@ -485,35 +488,35 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
     }
   }
 
-  const fetchDataFromFirestore = useCallback(async () => {
-    try {
-      if (!user) return
-      const q = doc(db, 'users', user.uid)
-      const querySnapshot = await getDoc(q)
+  // const fetchDataFromFirestore = useCallback(async () => {
+  //   try {
+  //     if (!user) return
+  //     const q = doc(db, 'users', user.uid)
+  //     const querySnapshot = await getDoc(q)
 
-      const fetchData = querySnapshot.data()
-      updateProfile(fetchData?.profile)
-      updateName(fetchData?.name)
-      updateAddress(fetchData?.address)
-      updateAvatar(fetchData?.avatar)
-      updatePhoneNo(fetchData?.phoneNo)
-    } catch (error) {
-      console.error('Error fetching data from Firestore:', error)
-    }
-  }, [user, profile])
+  //     const fetchData = querySnapshot.data()
+  //     updateProfile(fetchData?.profile)
+  //     updateName(fetchData?.name)
+  //     updateAddress(fetchData?.address)
+  //     updateAvatar(fetchData?.avatar)
+  //     updatePhoneNo(fetchData?.phoneNo)
+  //   } catch (error) {
+  //     console.error('Error fetching data from Firestore:', error)
+  //   }
+  // }, [user, profile])
 
-  useEffect(() => {
-    fetchDataFromFirestore()
-    if (route.params) {
-      if (route.params.profileImg) {
-        setImage(profile)
-      } else {
-        setImage(profile)
-      }
-    } else {
-      setImage(profile)
-    }
-  }, [fetchDataFromFirestore])
+  // useEffect(() => {
+  //   fetchDataFromFirestore()
+  //   if (route.params) {
+  //     if (route.params.profileImg) {
+  //       setImage(profile)
+  //     } else {
+  //       setImage(profile)
+  //     }
+  //   } else {
+  //     setImage(profile)
+  //   }
+  // }, [fetchDataFromFirestore])
 
   const handleCustomerCarePress = () => {
     const phoneNumber = '1234567890'
@@ -550,7 +553,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
       ...(doc.data() as any),
     }))
     const data = fetchProduct.filter((f) => f.userId === user.uid)
-    console.log(fetchProduct)
     setOrderData(data)
   }, [])
 
@@ -558,8 +560,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
     getData()
   }, [getData])
 
-  console.log(profile)
-  console.log(image)
   return (
     <LinearGradient colors={gradientOpacityColors}>
       {/* <AuthNavigate focus={focus} onClose={onClose}> */}

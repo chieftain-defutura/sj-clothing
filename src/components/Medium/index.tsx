@@ -1,37 +1,34 @@
 import uuid from 'react-native-uuid'
-import { Alert, Dimensions, StyleSheet, Text, View } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
+import { Alert, Dimensions, StyleSheet, View } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSharedValue, withSequence, withTiming } from 'react-native-reanimated'
+import { collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
 
 import TShirt from './T-Shirt'
+import FinalView from './FinalView'
 import Navigation from './Navigation'
-import Avatar from './Avatar'
-import { userStore } from '../../store/userStore'
-import { gradientOpacityColors } from '../../styles/theme'
-import { addDoc, collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
+import SelectSize from './Selectsize'
 import { db } from '../../../firebase'
 import SelectStyle from './SelectStyle'
-import { IDesigns, IMidlevel } from '../../constant/types'
-import SelectSize from './Selectsize'
 import SelectColor from './SelectColor'
-import FinalView from './FinalView'
-import { useNavigation } from '@react-navigation/native'
-import AddImageOrText from './AddImageOrText'
-import SelectCountry from './SelectCountry'
 import SelectDesign from './SelectDesign'
+import SelectCountry from './SelectCountry'
+import AddImageOrText from './AddImageOrText'
+import { userStore } from '../../store/userStore'
 import LoginModal from '../../screens/Modals/Login'
 import SignupModal from '../../screens/Modals/Signup'
 import ForgotMail from '../../screens/Modals/ForgotMail'
+import { IDesigns, IMidlevel } from '../../constant/types'
 import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 
 const { width } = Dimensions.get('window')
 
 const Medium = () => {
   const isMounted = useRef(false)
-  const navigation = useNavigation()
   const slideValue = useSharedValue(0)
-  const { avatar, user, updateOderId } = userStore()
+  const avatar = userStore((state) => state.avatar)
+  const user = userStore((state) => state.user)
+
   const [isSteps, setSteps] = useState(1)
   const [isDropDown, setDropDown] = useState(false)
   const [uid, setUid] = useState<string>('')
@@ -132,13 +129,11 @@ const Medium = () => {
       setWarning('') // Set the state to null after 5 seconds
     }, 2000)
   }, [warning])
-  console.log(isSize)
 
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
       try {
         isMounted.current = true
-        console.log('AVATAR', avatar)
         const tempUid = uuid.v4().toString()
         const docRef = doc(db, 'ModelsMidlevel', tempUid)
         await setDoc(docRef, { uid: tempUid, skin: avatar?.skinTone, gender: avatar?.gender })

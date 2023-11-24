@@ -11,7 +11,6 @@ import LoginModal from '../screens/Modals/Login'
 import SaveIcon from '../assets/icons/SaveIcon'
 import { useState } from 'react'
 import SignupModal from '../screens/Modals/Signup'
-import { userStore } from '../store/userStore'
 
 interface componentNameProps {}
 
@@ -42,9 +41,8 @@ interface PostCardProps {
 const PostCard: React.FC<PostCardProps> = ({ props: componentNameProps, onPress }) => {
   const [isLoginModalVisible, setLoginModalVisible] = React.useState(false)
   const [isSignUpModel, setSignupMoodel] = React.useState(false)
-  const [userMail, setUserMail] = useState<string | null>('')
+  const [userMail] = useState<string | null>('')
   const [currentIndex, setCurrentIndex] = useState(0)
-  const user = userStore((state) => state.user)
   const tabHeight = 110
   const reelsHeight = height - tabHeight
 

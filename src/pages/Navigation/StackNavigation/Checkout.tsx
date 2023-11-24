@@ -66,8 +66,9 @@ const Checkout: React.FC<ICheckout> = ({
   const [isLoading, setIsLoading] = useState(false)
   // const [orderData, setOrderData] = useState<ICheckout | null>(null)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
-
-  const { user, rate, currency } = userStore()
+  const rate = userStore((state) => state.rate)
+  const user = userStore((state) => state.user)
+  const currency = userStore((state) => state.currency)
   const [openGift, setOpengift] = useState(false)
   const [giftOptions, setGiftOptions] = useState({ giftMessage: '', from: '' })
   const stripe = useStripe()
@@ -90,6 +91,7 @@ const Checkout: React.FC<ICheckout> = ({
     setup()
   }, [setup])
 
+  console.log('checkoutrate', rate)
   const fetchData = useCallback(async () => {
     try {
       if (!user) return
@@ -138,13 +140,6 @@ const Checkout: React.FC<ICheckout> = ({
   const pinCode = addr?.pinCode
   const country = addr?.country
 
-  // console.log('line 1:', addressOne)
-  // console.log('line 2:', addressTwo)
-  // console.log('city:', city)
-  // console.log('state:', state)
-  // console.log('pinCode:', pinCode)
-  // console.log('country:', country)
-
   const processPay = async () => {
     try {
       setIsLoading(true)
@@ -182,11 +177,7 @@ const Checkout: React.FC<ICheckout> = ({
         }),
       })
 
-      console.log('amount', Number(amount) * (rate as number))
-
       const data = await response.json()
-      console.log('data', data.message)
-      console.log(response.ok)
 
       if (!response.ok) {
         return Alert.alert(data.message)
@@ -194,7 +185,6 @@ const Checkout: React.FC<ICheckout> = ({
 
       //1. order create
       const { paymentId } = data
-      console.log('payment id', paymentId)
 
       //creating order
       const userDocRef = doc(db, 'Orders', paymentId)
@@ -311,7 +301,6 @@ const Checkout: React.FC<ICheckout> = ({
       const addressData = fetchData?.address.find(
         (f: { isSelected: boolean }) => f.isSelected === true,
       )
-      console.log('addressData', addressData)
       setAddr(addressData)
     } catch (error) {
       console.log(error)
@@ -443,7 +432,7 @@ const Checkout: React.FC<ICheckout> = ({
                       <DeliveryText>Delivery fee</DeliveryText>
                     </DeliveryContent>
                     <INRText>
-                      {Number(deliveryFees?.DeliveryFees) * (rate as number)}
+                      {(Number(deliveryFees?.DeliveryFees) * (rate as number)).toFixed(2)}
                       {currency.symbol}
                     </INRText>
                   </DeliveryWrapper>

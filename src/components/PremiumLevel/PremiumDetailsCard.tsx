@@ -10,10 +10,6 @@ import {
   TouchableOpacity,
   Share,
 } from 'react-native'
-import { COLORS, FONT_FAMILY } from '../../styles/theme'
-import LeftArrow from '../../assets/icons/LeftArrow'
-import ShareArrow from '../../assets/icons/ShareArrow'
-import * as Animatable from 'react-native-animatable'
 import Animated, {
   FadeInLeft,
   FadeInRight,
@@ -23,14 +19,19 @@ import Animated, {
   FadeOutRight,
   FadeOutUp,
 } from 'react-native-reanimated'
-import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
 import { Svg, Circle } from 'react-native-svg'
+import * as Animatable from 'react-native-animatable'
+
 import CustomButton from '../Button'
-import { IPremiumData } from '../../constant/types'
-import PremiumVideo from '../../screens/PremiumVideo'
-import DownArrow from '../../assets/icons/DownArrow'
 import { userStore } from '../../store/userStore'
+import { IPremiumData } from '../../constant/types'
+import LeftArrow from '../../assets/icons/LeftArrow'
+import DownArrow from '../../assets/icons/DownArrow'
+import PremiumVideo from '../../screens/PremiumVideo'
 import AuthNavigate from '../../screens/AuthNavigate'
+import ShareArrow from '../../assets/icons/ShareArrow'
+import { COLORS, FONT_FAMILY } from '../../styles/theme'
+import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
 
 const { height, width } = Dimensions.get('window')
 
@@ -67,7 +68,6 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   setOpenDetails,
   handleSubmit,
 }) => {
-  const { currency, rate } = userStore()
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
@@ -77,6 +77,8 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
   const [focus, setFocus] = useState(false)
   const user = userStore((state) => state.user)
+  const rate = userStore((state) => state.rate)
+  const currency = userStore((state) => state.currency)
 
   const onSubmit = () => {
     if (!user) {
@@ -86,42 +88,6 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
       handleSubmit()
     }
   }
-
-  const fetchPaymentIntentClientSecret = async () => {
-    const reqData = {
-      name: 'johns',
-      email: 'a@a.com',
-      currency: 'INR',
-      amount: 200,
-    }
-    const response = await fetch('https://sj-clothing-backend.cyclic.app/create-payment-intent', {
-      method: 'POST',
-      body: JSON.stringify(reqData),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    const data = await response.json()
-    return data
-  }
-
-  // const pay = async () => {
-  //   const clientSecret = await fetchPaymentIntentClientSecret()
-
-  //   const { error } = await confirmPlatformPayPayment(clientSecret, {
-  //     googlePay: {
-  //       testEnv: true,
-  //       merchantName: 'Sj clothing',
-  //       merchantCountryCode: 'US',
-  //       currencyCode: 'USD',
-  //       billingAddressConfig: {
-  //         format: PlatformPay.BillingAddressFormat.Full,
-  //         isPhoneNumberRequired: true,
-  //         isRequired: true,
-  //       },
-  //     },
-  //   })
-  // }
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prevState) => !prevState)
@@ -159,15 +125,6 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
       console.log(error)
     }
   }
-
-  // const handleLogin = () => {
-  //   if (!user) {
-  //     setFocus(true)
-  //   } else {
-  //     navigation.navigate('Checkout')
-  //     setFocus(true)
-  //   }
-  // }
 
   const onClose = () => {
     setFocus(false)

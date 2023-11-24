@@ -57,7 +57,7 @@ const AddAddress: React.FC<IAddAddress> = ({
   const [countryCode, setCountryCode] = useState('+91')
   const [show, setShow] = useState(false)
   const [padding, setPadding] = useState(0)
-  const { user } = userStore()
+  const user = userStore((state) => state.user)
   const [address, setAddress] = useState({
     addressOne: '',
     addressTwo: '',
@@ -120,7 +120,6 @@ const AddAddress: React.FC<IAddAddress> = ({
           phoneNo: '',
           saveAddressAs: '',
         })
-        console.log('Current Location Address:', data)
       })
     } catch (error) {
       console.error('Error:', error)

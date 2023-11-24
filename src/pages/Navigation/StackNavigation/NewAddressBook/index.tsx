@@ -102,7 +102,6 @@ const AddAddressBook: React.FC<IAddressBook> = ({
 
       // reverseGeocode(loc.latitude, loc.longitude)
       const address = await reverseGeocode(loc.latitude, loc.longitude)
-      console.log('Current Location Address:', address)
       setLocation(loc)
       moveMapToMarker(loc)
     } catch (error) {
@@ -143,36 +142,6 @@ const AddAddressBook: React.FC<IAddressBook> = ({
       })
     }
   }
-  // const handleMarking = (data: any) => {
-  //   getLocationFromAddress(data)
-  //     .then((location) => {
-  //       console.log('Location:', location)
-  //       setLocation(location)
-  //       moveMapToMarker(location)
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error:', error)
-  //     })
-  // }
-
-  // const handleSearchText = async (text: string) => {
-  //   try {
-  //     if (text === '') {
-  //       setSuggestions([])
-  //       setOnSearchChange(text)
-  //     } else {
-  //       setOnSearchChange(text)
-
-  //       const response = await axios.get(
-  //         `https://nominatim.openstreetmap.org/search?format=json&q=${text}`,
-  //       )
-
-  //       setSuggestions(response.data)
-  //     }
-  //   } catch (error) {
-  //     console.error('Error handling search text:', error)
-  //   }
-  // }
 
   return (
     <View style={{ flex: 1 }}>
@@ -247,7 +216,6 @@ const AddAddressBook: React.FC<IAddressBook> = ({
             }}
             location={locText}
             saveAddress={(addr) => {
-              console.log(addr)
               setAddedAddress(addr)
             }}
             setOnSearchChange={setOnSearchChange}

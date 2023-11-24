@@ -39,7 +39,8 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
   setDropDown,
 }) => {
   const { t } = useTranslation('midlevel')
-  const { avatar } = userStore()
+  const avatar = userStore((state) => state.avatar)
+
   const [country, setCountry] = useState<
     {
       country: string
