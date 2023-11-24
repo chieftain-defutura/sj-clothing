@@ -39,14 +39,14 @@ interface AddressData {
 }
 interface IChooseLocation {
   // addedAddress: AddressData[]
-  // onEditPress?: (event: GestureResponderEvent, address: AddressData) => void | undefined | null
+  onEditPress?: (event: GestureResponderEvent, address: AddressData) => void | undefined | null
   // onAddPress: (
   //   event: GestureResponderEvent,
   //   location: string | undefined,
   // ) => void | undefined | null
 }
 
-const ChooseAddress: React.FC<IChooseLocation> = () => {
+const ChooseAddress: React.FC<IChooseLocation> = ({ onEditPress }) => {
   const user = userStore((state) => state.user)
   const [data, setData] = useState<AddressData[] | null>([])
   const [checked, setChecked] = React.useState<string | null>(null)
@@ -143,9 +143,9 @@ const ChooseAddress: React.FC<IChooseLocation> = () => {
                       {f.floor}, {f.phoneNo}
                     </DescriptionText>
                   </View>
-                  {/* <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
+                  <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
                     <Text style={styles.editText}>Edit</Text>
-                  </Pressable> */}
+                  </Pressable>
                 </View>
               ))}
             </ScrollView>
