@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
-import { View, Pressable, TouchableOpacity } from 'react-native'
+import { View, Pressable, Dimensions } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import ChevronLeft from '../../../assets/icons/ChevronLeft'
@@ -24,6 +24,8 @@ import { IOrder, IRatings } from '../../../constant/types'
 import TrackOrder from './TrackOrder'
 import Rating from '../../../components/Rating'
 
+const { height } = Dimensions.get('window')
+
 interface IMyOrders {
   navigation: any
 }
@@ -40,24 +42,57 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
   const { t } = useTranslation('account')
   const [orderId, setOrderId] = useState('')
   const user = userStore((state) => state.user)
+  const [isLoading, setLoading] = useState(false)
   const [openReview, setOpenReview] = useState(false)
   const [orderData, setOrderData] = useState<IOrder[]>([])
   const [openTrackOrder, setOpenTrackOrder] = useState(false)
-
   const getData = useCallback(async () => {
-    if (!user) return
-    const ProductRef = await getDocs(collectionLite(db, 'Orders'))
-    const fetchProduct = ProductRef.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as any),
-    }))
-    const data = fetchProduct.filter((f) => f.userId === user.uid)
-    setOrderData(data)
+    try {
+      setLoading(true)
+      if (!user) return
+      const ProductRef = await getDocs(collectionLite(db, 'Orders'))
+      const fetchProduct = ProductRef.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as any),
+      }))
+      const data = fetchProduct.filter((f: { userId: string }) => f.userId === user.uid)
+      setOrderData(data)
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   useEffect(() => {
     getData()
   }, [getData])
+
+  if (isLoading)
+    return (
+      <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
+          <ProductText>Loading...</ProductText>
+        </View>
+      </LinearGradient>
+    )
+  if (!orderData.length)
+    return (
+      <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+        <GoBackArrowContent
+          onPress={() => {
+            navigation.goBack()
+          }}
+        >
+          <LeftArrow width={24} height={24} />
+          <CartText>{t('My orders')}</CartText>
+        </GoBackArrowContent>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
+          <ProductText>No Data</ProductText>
+        </View>
+      </LinearGradient>
+    )
 
   return (
     <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
