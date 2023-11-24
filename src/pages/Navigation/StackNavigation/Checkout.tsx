@@ -186,6 +186,8 @@ const Checkout: React.FC<ICheckout> = ({
       //1. order create
       const { paymentId } = data
 
+      console.log(paymentId)
+
       //creating order
       const userDocRef = doc(db, 'Orders', paymentId)
 

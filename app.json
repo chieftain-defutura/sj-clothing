@@ -2,7 +2,7 @@
   "expo": {
     "name": "Sprinkle",
     "scheme": "sjclothing",
-    "slug": "react-native-expo-project",
+    "slug": "sj-clothing",
     "version": "3.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -43,11 +43,19 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow Sprinkle Nadar to use your location."
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
       ]
     ],
     "extra": {
       "eas": {
-        "projectId": "3f866d31-5243-45d6-b35e-7dcc398752d5"
+        "projectId": "78d85b5a-8351-42b5-a5a6-6937fb28159c"
       }
     }
   }
