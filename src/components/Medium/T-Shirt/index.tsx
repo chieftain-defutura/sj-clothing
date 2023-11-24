@@ -44,6 +44,7 @@ const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
             // uri: `http://localhost:5173/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
             uri: `https://sj-threejs-development.netlify.app/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
           }}
+          scrollEnabled={false}
         />
       )}
     </View>

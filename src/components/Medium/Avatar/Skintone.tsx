@@ -25,6 +25,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
   const avatar = userStore((store) => store.avatar)
   const updateAvatar = userStore((store) => store.updateAvatar)
   const updateAnimation = userStore((store) => store.updateAnimation)
+  const createAvatarAnimationFinished = userStore((store) => store.createAvatarAnimationFinished)
   const [uid, setUid] = useState<string | null>(null)
   const isMounted = useRef(false)
   const [pageY, setPageY] = useState<number | null>(null)
@@ -127,6 +128,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
                 // uri: `http://localhost:5173/create-avatar/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
                 uri: `https://sj-threejs-development.netlify.app/create-avatar/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
               }}
+              scrollEnabled={false}
             />
           )}
         </View>
@@ -143,11 +145,13 @@ const Skintone: React.FC<ISkintone> = ({}) => {
                     avatar.skinTone === (index + 1).toString() ? '#DB00FF' : 'transparent',
                   borderWidth: 1,
                   padding: 2,
+                  opacity: !createAvatarAnimationFinished ? 0.7 : 1,
                 },
               ]}
               onPress={() =>
                 updateAvatar({ gender: avatar.gender, skinTone: (index + 1).toString() })
               }
+              disabled={!createAvatarAnimationFinished}
             >
               <View style={{ flex: 1, backgroundColor: m, borderRadius: 20 }}></View>
             </TouchableOpacity>

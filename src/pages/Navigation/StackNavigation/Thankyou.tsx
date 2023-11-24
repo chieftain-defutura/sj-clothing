@@ -14,7 +14,7 @@ import Animated, {
   StretchOutX,
 } from 'react-native-reanimated'
 import { userStore } from '../../../store/userStore'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, setDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 
 const { height } = Dimensions.get('window')
@@ -61,8 +61,8 @@ const Thankyou = () => {
         <Animated.View entering={StretchInX.duration(1000)} exiting={StretchOutX}>
           <Text style={styles.title}>Thank You</Text>
         </Animated.View>
-        <View style={{ flex: 1 }} onLayout={handleLayout} ref={elementRef}>
-          {Boolean(pageY) && Boolean(elementHeight) && (
+        <View style={{ flex: 1 }} ref={elementRef} onLayout={handleLayout}>
+          {uid && Boolean(pageY) && Boolean(elementHeight) && (
             <WebView
               style={{
                 backgroundColor: 'transparent',
@@ -71,6 +71,7 @@ const Thankyou = () => {
                 // uri: `http://localhost:5173/create-avatar/?uid=${uid}`,
                 uri: `https://sj-threejs-development.netlify.app/thankyou?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
               }}
+              scrollEnabled={false}
             />
           )}
         </View>

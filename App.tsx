@@ -149,7 +149,11 @@ const App: React.FC = () => {
 
   return (
     <Fragment>
-      <StripeProvider publishableKey={PUBLISHABLE_KEY} urlScheme={getAppUrlScheme()}>
+      <StripeProvider
+        publishableKey={PUBLISHABLE_KEY}
+        urlScheme={getAppUrlScheme()}
+        merchantIdentifier='merchant.com.sjclothing'
+      >
         <I18nextProvider i18n={i18n}>
           <SafeAreaView style={{ flex: 0, backgroundColor: 'rgba(191, 148, 228, 0.8)' }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(145, 177, 225, 0.85)' }}>
