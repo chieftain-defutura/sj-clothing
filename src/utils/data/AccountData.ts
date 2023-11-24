@@ -20,6 +20,7 @@ export const AccountData = [
     rightIcon: ChevronLeft,
     navigation: 'Avatar',
   },
+
   // {
   //   name: `Payment`,
   //   rightIcon: ChevronLeft,
@@ -59,7 +60,7 @@ export const AccountData = [
     leftIcon: HomeLocation,
     name: 'Address Book',
     rightText: 'Home',
-    navigation: 'LocationAddAddress',
+    navigation: 'Location',
   },
   {
     leftIcon: CustomerCare,

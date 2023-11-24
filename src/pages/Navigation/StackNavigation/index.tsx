@@ -33,6 +33,8 @@ import Currency from './Currency'
 import AvatarNavigation from './Avatar'
 import TermsAndConditions from './TermsAndConditions'
 import Thankyou from './Thankyou'
+import Location from '../../../components/Location'
+import Locations from '../../../components/Location'
 
 const Stack = createStackNavigator()
 
@@ -141,6 +143,11 @@ const StackNavigationRoutes: React.FC = () => {
         name='LocationAddAddress'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={AddressBook}
+      />
+      <Stack.Screen
+        name='Location'
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+        component={Locations}
       />
       <Stack.Screen
         name='Thankyou'
