@@ -440,6 +440,7 @@ import LoginModal from '../../../../screens/Modals/Login'
 import SignupModal from '../../../../screens/Modals/Signup'
 import ForgotMail from '../../../../screens/Modals/ForgotMail'
 import Tooltip from '../../../../screens/Modals/TooltipModel'
+import LogOut from '../../../../screens/Modals/LogOut'
 
 interface IAccount {
   navigation: any
@@ -459,7 +460,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [signUp, setSignUp] = useState(false)
   const [forgotMail, setForgotmail] = useState(false)
   // const isFocused = useIsFocused()
-  const [image, setImage] = useState<string | null>(null)
+  const [logOut, setLogOut] = useState(false)
   // const {
   //   updateUser,
   //   updateProfile,
@@ -531,18 +532,19 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   }
 
   const handleLogout = async () => {
-    try {
-      await auth.signOut()
-      const data = await AsyncStorage.getItem('mail')
-      await AsyncStorage.removeItem('mail')
-      if (!data) {
-        updateUser(null)
-        navigation.navigate('Account')
-        console.log('Signed out successfully')
-      }
-    } catch (error) {
-      console.log(error)
-    }
+    // try {
+    //   await auth.signOut()
+    //   const data = await AsyncStorage.getItem('mail')
+    //   await AsyncStorage.removeItem('mail')
+    //   if (!data) {
+    //     updateUser(null)
+    //     navigation.navigate('Account')
+    //     console.log('Signed out successfully')
+    //   }
+    // } catch (error) {
+    //   console.log(error)
+    // }
+    setLogOut(true)
   }
 
   const getData = useCallback(async () => {
@@ -723,6 +725,8 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
           onClose={() => setForgotmail(false)}
         />
       )}
+
+      {logOut && <LogOut closeModal={() => setLogOut(false)} />}
 
       <Tooltip
         isVisible={toolTip}

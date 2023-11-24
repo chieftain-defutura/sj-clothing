@@ -84,47 +84,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
       } else {
         setFocus(true)
         setErrorMessage('')
-        // const docRef = await addDoc(collection(db, 'Orders'), {
-        //   sizes: isSize,
-        //   productImage: FilteredData[0].productImage,
-        //   description: FilteredData[0].description,
-        //   price: FilteredData[0].normalPrice,
-        //   offerPrice: FilteredData[0].offerPrice,
-        //   paymentStatus: 'pending',
-        //   userId: user?.uid,
-        //   gender: FilteredData[0].gender,
-        //   type: 'Premium-Level',
-        //   productName: FilteredData[0].productName,
-        //   giftMessage: '',
-        //   orderStatus: {
-        //     orderplaced: {
-        //       createdAt: null,
-        //       description: '',
-        //       status: false,
-        //     },
-        //     manufacturing: {
-        //       createdAt: null,
-        //       description: '',
-        //       status: false,
-        //     },
-        //     readyToShip: {
-        //       createdAt: null,
-        //       description: '',
-        //       status: false,
-        //     },
-        //     shipping: {
-        //       createdAt: null,
-        //       description: '',
-        //       status: false,
-        //     },
-        //     delivery: {
-        //       createdAt: null,
-        //       description: '',
-        //       status: false,
-        //     },
-        //   },
-        // })
-        // updateOderId(docRef.id)
+
         setOpenCheckout(true)
         setOpenDetails(false)
       }

@@ -1,4 +1,11 @@
-import { StyleSheet, View, KeyboardAvoidingView, FlatList, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MapView from 'react-native-maps'
 import styled from 'styled-components/native'
@@ -12,6 +19,10 @@ import Plus from '../../assets/icons/PlusIcon'
 import LeftArrow from '../../assets/icons/LeftArrow'
 import ChooseAddress from '../../pages/Navigation/StackNavigation/NewAddressBook/ChooseAddress'
 import Map from './map'
+import ForgotMail from '../../screens/Modals/ForgotMail'
+import SignupModal from '../../screens/Modals/Signup'
+import LoginModal from '../../screens/Modals/Login'
+import { userStore } from '../../store/userStore'
 
 interface IAddressBook {
   navigation: any
@@ -21,12 +32,18 @@ interface Suggestion {
   place_id: number
 }
 
+const { width } = Dimensions.get('window')
+
 const Locations: React.FC<IAddressBook> = ({ navigation }) => {
   const [showDisplay, setDisplay] = useState(0)
   const [location, setLocation] = useState<any>()
   const mapRef = React.useRef<MapView>(null)
   const [onText, setOnSearchChange] = React.useState<string | null>(null)
   const [suggestions, setSuggestions] = React.useState<Suggestion[] | null>([])
+  const user = userStore((state) => state.user)
+  const [login, setLogin] = useState(false)
+  const [signUp, setSignUp] = useState(false)
+  const [forgotMail, setForgotmail] = useState(false)
 
   async function reverseGeocode(latitude: number, longitude: number) {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
@@ -102,6 +119,18 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
     }
   }
 
+  const handleAddAddress = () => {
+    if (!user) {
+      setLogin(true)
+    }
+    if (user && !user.emailVerified) {
+      setSignUp(true)
+    }
+
+    if (user && user.emailVerified) {
+      setDisplay(1)
+    }
+  }
   return (
     <LinearGradient colors={gradientOpacityColors} style={{ flex: 1, position: 'relative' }}>
       <KeyboardAvoidingView style={[styles.container]} contentContainerStyle={{ height: 900 }}>
@@ -129,7 +158,7 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
               <View
                 style={{
                   position: 'absolute',
-                  zIndex: 100000,
+                  zIndex: 10,
                   top: 120,
                   backgroundColor: 'white',
                   left: 20,
@@ -160,7 +189,7 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
                   horizontal={false}
                 />
               </View>
-              <Pressable onPress={() => setDisplay(1)}>
+              <Pressable onPress={handleAddAddress}>
                 <AddAddressBtn>
                   <Plus width={16} height={16} />
                   <BtnText>Add new Address</BtnText>
@@ -179,6 +208,33 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
           />
         )}
       </KeyboardAvoidingView>
+      {login && (
+        <LoginModal
+          onForgotClick={() => {
+            setForgotmail(true), setLogin(false)
+          }}
+          onSignClick={() => {
+            setSignUp(true), setLogin(false)
+          }}
+          onClose={() => setLogin(false)}
+        />
+      )}
+      {signUp && (
+        <SignupModal
+          onLoginClick={() => {
+            setLogin(true), setSignUp(false)
+          }}
+          onClose={() => setSignUp(false)}
+        />
+      )}
+      {forgotMail && (
+        <ForgotMail
+          onLoginClick={() => {
+            setLogin(true), setForgotmail(false)
+          }}
+          onClose={() => setForgotmail(false)}
+        />
+      )}
     </LinearGradient>
   )
 }
