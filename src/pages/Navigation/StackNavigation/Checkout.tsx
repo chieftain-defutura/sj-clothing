@@ -64,6 +64,8 @@ const Checkout: React.FC<ICheckout> = ({
   // const [orderData, setOrderData] = useState<ICheckout | null>(null)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
   const rate = userStore((state) => state.rate)
+  const avatar = userStore((state) => state.avatar)
+
   const user = userStore((state) => state.user)
   const currency = userStore((state) => state.currency)
   const [openGift, setOpengift] = useState(false)
@@ -208,10 +210,10 @@ const Checkout: React.FC<ICheckout> = ({
                 (Number(price) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
                 (rate as number)
               ).toFixed(2)
-        } ${currency.symbol}`,
+        } ${currency.symbol ? currency.symbol : '$'}`,
         paymentStatus: 'pending',
         userId: user?.uid,
-        gender: gender,
+        gender: gender ? gender : 'male',
         type: type,
         productName: productName,
         giftMessage: giftOptions,
@@ -289,6 +291,8 @@ const Checkout: React.FC<ICheckout> = ({
       setIsLoading(false)
     }
   }
+
+  console.log('currnebxsbcy', currency)
 
   const handleGetData = useCallback(() => {
     if (!user) return
@@ -424,7 +428,7 @@ const Checkout: React.FC<ICheckout> = ({
                         Number(deliveryFees?.DeliveryFees ? deliveryFees.DeliveryFees : 0) *
                         (rate as number)
                       ).toFixed(2)}
-                      {currency.symbol}
+                      {currency.symbol ? currency.symbol : '$'}
                     </INRText>
                   </DeliveryWrapper>
                 </Content>
@@ -441,7 +445,7 @@ const Checkout: React.FC<ICheckout> = ({
                           (Number(price) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
                           (rate as number)
                         ).toFixed(2)}
-                    {currency.symbol}
+                    {currency.symbol ? currency.symbol : '$'}
                   </TotalValue>
                 </TotalContent>
               </CartPageContent>

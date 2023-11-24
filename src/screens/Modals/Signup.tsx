@@ -60,6 +60,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const [isCreated, setIsCreated] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const avatar = userStore((state) => state.avatar)
+  const rate = userStore((state) => state.rate)
   const currency = userStore((state) => state.currency)
   const language = userStore((state) => state.language)
   const updateUser = userStore((state) => state.updateUser)
@@ -114,7 +115,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           termsAndConditions: false,
           currency: currency,
           language: language,
-          rate: null,
+          rate: rate,
           confirmDetails: confirmDetails,
         })
         await sendEmailVerification(user)
