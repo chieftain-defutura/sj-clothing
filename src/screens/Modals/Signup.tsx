@@ -123,7 +123,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       } catch (error) {
         if (error instanceof FirebaseError) {
           if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
-            setErrorMessage('Email is already in use. Please choose a different email.')
+            setErrorMessage('Email is a lready in use. Please choose a different email.')
           }
         } else {
           setErrorMessage('An error occurred while signing up. Please try again.')
