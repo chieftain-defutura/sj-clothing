@@ -63,7 +63,7 @@ const Thankyou = () => {
           <Text style={styles.title}>Thank You</Text>
         </Animated.View>
         <View style={{ flex: 1 }} ref={elementRef} onLayout={handleLayout}>
-          {uid && Boolean(pageY) && Boolean(elementHeight) && (
+          {uid && pageY && elementHeight && (
             <WebView
               style={{
                 backgroundColor: 'transparent',
