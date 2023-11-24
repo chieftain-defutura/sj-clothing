@@ -212,10 +212,10 @@ const Checkout: React.FC<ICheckout> = ({
                 (Number(price) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
                 (rate as number)
               ).toFixed(2)
-        } ${currency.symbol ? currency.symbol : '$'}`,
+        } ${currency.symbol}`,
         paymentStatus: 'pending',
         userId: user?.uid,
-        gender: gender ? gender : 'male',
+        gender: gender,
         type: type,
         productName: productName,
         giftMessage: giftOptions,
@@ -430,7 +430,7 @@ const Checkout: React.FC<ICheckout> = ({
                         Number(deliveryFees?.DeliveryFees ? deliveryFees.DeliveryFees : 0) *
                         (rate as number)
                       ).toFixed(2)}
-                      {currency.symbol ? currency.symbol : '$'}
+                      {currency.symbol}
                     </INRText>
                   </DeliveryWrapper>
                 </Content>
@@ -447,7 +447,7 @@ const Checkout: React.FC<ICheckout> = ({
                           (Number(price) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
                           (rate as number)
                         ).toFixed(2)}
-                    {currency.symbol ? currency.symbol : '$'}
+                    {currency.symbol}
                   </TotalValue>
                 </TotalContent>
               </CartPageContent>
