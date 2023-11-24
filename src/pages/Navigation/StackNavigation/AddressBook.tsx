@@ -42,13 +42,10 @@ const AddressBook: React.FC<IAddressBook> = ({ navigation }) => {
   const displayAddressSelection = useSharedValue('none')
   const [showDisplay, setDisplay] = useState(0)
   const [location, setLocation] = useState<any>()
-  const [locText, setLocText] = useState<any>()
   const mapRef = React.useRef<MapView>(null)
-  const [addedAddress, setAddedAddress] = useState<any>()
-  const [editAddress, setEditAddress] = useState<any>()
+
   const [onText, setOnSearchChange] = React.useState<string | null>(null)
   const [suggestions, setSuggestions] = React.useState<Suggestion[] | null>([])
-  console.log('location', onText)
 
   // const getLocationFromAddress = async (address: string) => {
   //   try {

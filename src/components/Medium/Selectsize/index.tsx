@@ -48,7 +48,7 @@ const SelectSize: React.FC<ISelectSize> = ({
   setSize,
   handleIncreaseSteps,
 }) => {
-  const { avatar } = userStore()
+  const avatar = userStore((state) => state.avatar)
   const { t } = useTranslation('midlevel')
   const [sizeData, setSizeData] = useState<
     | {

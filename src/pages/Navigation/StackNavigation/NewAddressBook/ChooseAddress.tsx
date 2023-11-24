@@ -47,12 +47,9 @@ interface IChooseLocation {
 }
 
 const ChooseAddress: React.FC<IChooseLocation> = () => {
-  const [onText, setOnSearchChange] = React.useState<string>()
+  const user = userStore((state) => state.user)
   const [data, setData] = useState<AddressData[] | null>([])
   const [checked, setChecked] = React.useState<string | null>(null)
-  const navigation = useNavigation()
-  const { user } = userStore()
-  const focus = useIsFocused()
 
   const updateData = async (index: string) => {
     try {

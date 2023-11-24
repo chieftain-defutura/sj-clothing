@@ -37,12 +37,13 @@ const StartIcons = [
 ]
 
 const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
-  const { user } = userStore()
   const { t } = useTranslation('account')
-  const [openTrackOrder, setOpenTrackOrder] = useState(false)
   const [orderId, setOrderId] = useState('')
-  const [orderData, setOrderData] = useState<IOrder[]>([])
+  const user = userStore((state) => state.user)
   const [openReview, setOpenReview] = useState(false)
+  const [orderData, setOrderData] = useState<IOrder[]>([])
+  const [openTrackOrder, setOpenTrackOrder] = useState(false)
+
   const getData = useCallback(async () => {
     if (!user) return
     const ProductRef = await getDocs(collectionLite(db, 'Orders'))
@@ -57,7 +58,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
   useEffect(() => {
     getData()
   }, [getData])
-  console.log(openReview)
+
   return (
     <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
       {!openReview && (

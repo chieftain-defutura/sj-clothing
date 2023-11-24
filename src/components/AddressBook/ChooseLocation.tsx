@@ -21,8 +21,6 @@ import axios from 'axios'
 import { doc, getDoc, updateDoc } from 'firebase/firestore/lite'
 import { db } from '../../../firebase'
 import { userStore } from '../../store/userStore'
-import { useIsFocused } from '@react-navigation/native'
-import * as Location from 'expo-location'
 
 interface AddressData {
   floor: string
@@ -47,40 +45,12 @@ interface IChooseLocation {
   addedAddress: AddressData[]
 }
 
-const ChooseLocation: React.FC<IChooseLocation> = ({
-  onAddPress,
-  onEditPress,
-  suggestion,
-  addedAddress,
-}) => {
-  const [checked, setChecked] = React.useState<string | null>(null)
-  const [onText, setOnSearchChange] = React.useState<string>()
-  const [suggestions, setSuggestions] = React.useState<Suggestion[] | null>([])
+const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, suggestion }) => {
+  const user = userStore((state) => state.user)
   const [data, setData] = useState<AddressData[] | null>([])
-  const [location, setLocation] = useState<Location.LocationObject>()
-  const { user } = userStore()
-  const focus = useIsFocused()
-
-  // const updateData = async (index: string) => {
-  //   if (data) {
-  //     data.forEach((item, i) => {
-  //       if (i === parseInt(index)) {
-  //         item.isSelected = true
-  //       } else {
-  //         item.isSelected = false
-  //       }
-  //     })
-  //     const updatedData = [...data]
-  //     setData(updatedData)
-  //     //@ts-ignore
-  //     const userDocRef = doc(db, 'users', user.uid)
-  //     const userDoc = await getDoc(userDocRef)
-  //     const userData = userDoc.data()
-  //     if (!userData) return
-  //     userData.address = [...data]
-  //     await updateDoc(userDocRef, userData)
-  //   }
-  // }
+  const [onText, setOnSearchChange] = React.useState<string>()
+  const [checked, setChecked] = React.useState<string | null>(null)
+  const [suggestions, setSuggestions] = React.useState<Suggestion[] | null>([])
 
   const updateData = async (index: string) => {
     try {
@@ -115,26 +85,6 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
     }
   }
 
-  // const getData = async () => {
-  //   if (!user) return
-  //   const q = doc(db, 'users', user.uid)
-  //   const querySnapshot = await getDoc(q)
-
-  //   const fetchData = querySnapshot.data()
-  //   if (addedAddress && fetchData?.adddress) {
-  //     const array = [...addedAddress, ...fetchData?.adddress]
-  //     setData(array)
-  //   } else if (fetchData?.address) {
-  //     const addressData: AddressData[] = Object.values(fetchData?.address)
-  //     setData(addressData)
-  //     addressData.forEach((d, index) => {
-  //       if (d.isSelected === true) {
-  //         setChecked(index.toString())
-  //       }
-  //     })
-  //   }
-  // }
-
   const getData = useCallback(async () => {
     try {
       if (!user) return
@@ -143,25 +93,6 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
       const querySnapshot = await getDoc(q)
       const fetchData = querySnapshot.data()
       setData(fetchData?.address)
-
-      // if (querySnapshot.exists()) {
-      //   const fetchData = querySnapshot.data()
-
-      //   if (addedAddress && fetchData?.address) {
-      //     const array = [...addedAddress, ...fetchData.address]
-      //     setData(array)
-      //   } else if (fetchData?.address) {
-      //     const addressData: AddressData[] = Object.values(fetchData.address)
-      //     setData(addressData)
-      //     addressData.forEach((d, index) => {
-      //       if (d.isSelected === true) {
-      //         setChecked(index.toString())
-      //       }
-      //     })
-      //   }
-      // } else {
-      //   console.log('Document not found')
-      // }
     } catch (error) {
       console.error('Error fetching data:', error)
     }
@@ -170,16 +101,6 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
   useEffect(() => {
     getData()
   }, [getData])
-  // const handleSearchText = async (text: string) => {
-  //   if (text === '') setSuggestions([])
-  //   setOnSearchChange(text)
-
-  //   const response = await axios.get(
-  //     `https://nominatim.openstreetmap.org/search?format=json&q=${text}`,
-  //   )
-
-  //   setSuggestions(response.data)
-  // }
 
   const handleSearchText = async (text: string) => {
     try {
@@ -199,17 +120,6 @@ const ChooseLocation: React.FC<IChooseLocation> = ({
       console.error('Error handling search text:', error)
     }
   }
-
-  // const getLocationPermissions = async () => {
-  //   let { status } = await Location.requestForegroundPermissionsAsync()
-  //   if (status !== 'granted') {
-  //     console.log('Please grant location permissions')
-  //     return
-  //   }
-
-  //   let currentLocation = await Location.getCurrentPositionAsync({})
-  //   setLocation(currentLocation)
-  // }
 
   const renderItem = (txt: string) => (
     <TouchableOpacity

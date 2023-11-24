@@ -9,7 +9,6 @@ import moment from 'moment'
 import { doc, getDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { IOrder } from '../../../constant/types'
-import { userStore } from '../../../store/userStore'
 
 const { height, width } = Dimensions.get('window')
 
@@ -34,9 +33,6 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
   useEffect(() => {
     getOrderDataById()
   }, [getOrderDataById])
-
-  console.log('orderData', orderData?.orderStatus)
-  console.log('jbjjhjhj', orderData?.totalamount)
 
   return (
     <View style={{ flex: 1 }}>

@@ -85,8 +85,6 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
     setStars(index + 1)
   }
 
-  console.log('product id', orderData?.productId)
-
   const handleReview = async () => {
     try {
       setIsLoading(true)
@@ -104,8 +102,6 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
         setOpenReview(false)
       }
       if (ratings) {
-        console.log(stars)
-        console.log(orderId)
         await updateDoc(ratingDocRef, { ratings: stars })
         setOpenReview(false)
       }

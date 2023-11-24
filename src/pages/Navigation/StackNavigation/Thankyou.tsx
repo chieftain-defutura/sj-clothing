@@ -19,13 +19,13 @@ import { db } from '../../../../firebase'
 
 const { height } = Dimensions.get('window')
 const Thankyou = () => {
-  const navigation = useNavigation()
   const isMounted = useRef(false)
+  const navigation = useNavigation()
+  const elementRef = useRef<View | null>(null)
   const avatar = userStore((store) => store.avatar)
   const [uid, setUid] = useState<string | null>(null)
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
-  const elementRef = useRef<View | null>(null)
 
   const handleLayout = () => {
     if (elementRef.current) {
@@ -35,6 +35,7 @@ const Thankyou = () => {
       })
     }
   }
+
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
       try {

@@ -67,8 +67,15 @@ const CurrencyData = [
 ]
 
 const Currency = () => {
-  const { currency, updateCurrency, updateRate, user, confirmDetails, rate } = userStore()
+  const rate = userStore((state) => state.rate)
+  const user = userStore((state) => state.user)
+  const currency = userStore((state) => state.currency)
+  const updateRate = userStore((state) => state.updateRate)
+  const confirmDetails = userStore((state) => state.confirmDetails)
+  const updateCurrency = userStore((state) => state.updateCurrency)
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
+
+  console.log('rate', rate)
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
   }
@@ -88,7 +95,7 @@ const Currency = () => {
     } catch (error) {
       console.log(error)
     }
-  }, [currency])
+  }, [currency, user])
   useEffect(() => {
     getCurrency()
   }, [getCurrency])

@@ -44,9 +44,9 @@ const validationSchema = yup.object({
 })
 
 const EditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddress }) => {
-  const [keyboardStatus, setKeyboardStatus] = React.useState('')
   const [addr, setAddr] = useState<string>('')
-  const { user } = userStore()
+  const user = userStore((state) => state.user)
+  const [keyboardStatus, setKeyboardStatus] = React.useState('')
 
   const onSubmit = async () => {
     try {

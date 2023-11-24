@@ -16,7 +16,8 @@ interface IAccessoryCard {
 }
 
 const AccessIAccessoryCard: React.FC<IAccessoryCard> = ({ data, setOpenCard, setProductId }) => {
-  const { currency, rate } = userStore()
+  const rate = userStore((state) => state.rate)
+  const currency = userStore((state) => state.currency)
   return (
     <View
       style={{

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { TextInputProps, View, Text, Pressable } from 'react-native'
 import styled from 'styled-components/native'
 import { CountryPicker } from 'react-native-country-codes-picker'
+import { TextInputProps, View, Text, Pressable } from 'react-native'
+
 import { COLORS, FONT_FAMILY } from '../styles/theme'
 
 interface InputProps extends TextInputProps {
