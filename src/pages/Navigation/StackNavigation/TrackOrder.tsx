@@ -9,7 +9,6 @@ import moment from 'moment'
 import { doc, getDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { IOrder } from '../../../constant/types'
-import { userStore } from '../../../store/userStore'
 
 const { height, width } = Dimensions.get('window')
 
@@ -34,9 +33,6 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
   useEffect(() => {
     getOrderDataById()
   }, [getOrderDataById])
-
-  console.log('orderData', orderData?.orderStatus)
-  console.log('jbjjhjhj', orderData?.totalamount)
 
   return (
     <View style={{ flex: 1 }}>
@@ -123,7 +119,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                       display: 'flex',
                       flexDirection: 'column',
                       paddingTop: 16,
-                      marginLeft: -20,
+                      marginLeft: -45,
                     }}
                   >
                     <ProductText>Size</ProductText>
@@ -140,7 +136,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                       display: 'flex',
                       flexDirection: 'column',
                       paddingTop: 16,
-                      width: width / 5,
+                      width: width / 4.3,
                     }}
                   >
                     <ProductText>Price</ProductText>

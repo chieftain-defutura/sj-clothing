@@ -14,13 +14,11 @@ interface AuthNavigateProps {
 }
 
 const AuthNavigate: React.FC<AuthNavigateProps> = ({ children, focus, onClose }) => {
+  const user = userStore((state) => state.user)
   const [isSignUpModal, setSignupModal] = useState(false)
+  const [userMail, setUserMail] = useState<string | null>('')
   const [isLoginModalVisible, setLoginModalVisible] = useState(false)
   const [isForgotModalVisible, setForgotModalVisible] = useState(false)
-  const [userMail, setUserMail] = useState<string | null>('')
-  const user = userStore((state) => state.user)
-
-  const navigation = useNavigation()
 
   const onSignUpClick = () => {
     setLoginModalVisible(false)

@@ -37,12 +37,13 @@ const StartIcons = [
 ]
 
 const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
-  const { user } = userStore()
   const { t } = useTranslation('account')
-  const [openTrackOrder, setOpenTrackOrder] = useState(false)
   const [orderId, setOrderId] = useState('')
-  const [orderData, setOrderData] = useState<IOrder[]>([])
+  const user = userStore((state) => state.user)
   const [openReview, setOpenReview] = useState(false)
+  const [orderData, setOrderData] = useState<IOrder[]>([])
+  const [openTrackOrder, setOpenTrackOrder] = useState(false)
+
   const getData = useCallback(async () => {
     if (!user) return
     const ProductRef = await getDocs(collectionLite(db, 'Orders'))
@@ -57,7 +58,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
   useEffect(() => {
     getData()
   }, [getData])
-  console.log(openReview)
+
   return (
     <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
       {!openReview && (
@@ -78,20 +79,22 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
                     <CartText>{t('My orders')}</CartText>
                   </GoBackArrowContent>
                   <CartPageContent>
-                    {orderData.map((f, index) => {
-                      return (
-                        <OrderCard
-                          key={index}
-                          id={f.id}
-                          productId={f.productId}
-                          productImage={f.productImage}
-                          productName={f.productName}
-                          setOpenTrackOrder={setOpenTrackOrder}
-                          setOpenReview={setOpenReview}
-                          setOrderId={setOrderId}
-                        />
-                      )
-                    })}
+                    {orderData
+                      .filter((f) => f.paymentStatus === 'SUCCESS')
+                      .map((f, index) => {
+                        return (
+                          <OrderCard
+                            key={index}
+                            id={f.id}
+                            productId={f.productId}
+                            productImage={f.productImage}
+                            productName={f.productName}
+                            setOpenTrackOrder={setOpenTrackOrder}
+                            setOpenReview={setOpenReview}
+                            setOrderId={setOrderId}
+                          />
+                        )
+                      })}
                   </CartPageContent>
                 </View>
               </ScrollViewContent>
@@ -185,9 +188,9 @@ const OrderCard: React.FC<IOrderCard> = ({
                   <StatusText>Write a review</StatusText>
                 </Pressable>
               </View>
-              <Pressable>
+              {/* <Pressable>
                 <ChevronLeft width={16} height={16} />
-              </Pressable>
+              </Pressable> */}
             </ProductWrapper>
           </View>
         </CartPageData>

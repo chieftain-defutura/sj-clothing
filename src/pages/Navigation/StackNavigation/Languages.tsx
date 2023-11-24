@@ -39,9 +39,13 @@ const LanguagesData = [
 
 const Languages = () => {
   const { i18n } = useTranslation()
-  const { language, updateLanguage, user, confirmDetails } = userStore()
   const { t } = useTranslation('language')
+  const user = userStore((state) => state.user)
+  const language = userStore((state) => state.language)
+  const updateLanguage = userStore((state) => state.updateLanguage)
+  const confirmDetails = userStore((state) => state.confirmDetails)
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
+
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
   }
@@ -60,7 +64,6 @@ const Languages = () => {
     <>
       {!confirmDetails ? (
         <View
-          // colors={gradientOpacityColors}
           style={{
             flex: 1,
             display: 'flex',

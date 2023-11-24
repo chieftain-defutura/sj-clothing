@@ -7,6 +7,7 @@ import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 import { IMidlevel } from '../../../constant/types'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
 import { useTranslation } from 'react-i18next'
+import { userStore } from '../../../store/userStore'
 
 interface ISelectStyle {
   isSelectedStyle: string
@@ -21,6 +22,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
   isSelectedStyle,
   setSelectedStyle,
 }) => {
+  const avatar = userStore((state) => state.avatar)
   const { t } = useTranslation('midlevel')
   const handleSelect = (title: string) => {
     setSelectedStyle(title)
@@ -66,7 +68,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
           }}
         >
           <FlatList
-            data={data}
+            data={data.filter((f) => f.gender.toLowerCase() === avatar.gender?.toLowerCase())}
             numColumns={3}
             columnWrapperStyle={{
               display: 'flex',

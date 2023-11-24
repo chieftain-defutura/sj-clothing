@@ -26,7 +26,8 @@ interface IPremiumCard {
 }
 
 const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, setSize }) => {
-  const { currency, rate } = userStore()
+  const rate = userStore((state) => state.rate)
+  const currency = userStore((state) => state.currency)
   return (
     <View
       style={{

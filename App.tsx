@@ -1,19 +1,20 @@
-import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import { StripeProvider } from '@stripe/stripe-react-native'
-import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
 import { useFonts } from 'expo-font'
-import { userStore } from './src/store/userStore'
-import { User, onAuthStateChanged } from 'firebase/auth'
-import { auth, db } from './firebase'
-import { Image, SafeAreaView, Dimensions } from 'react-native'
-import { StatusBar } from 'expo-status-bar'
-import { I18nextProvider } from 'react-i18next'
-import i18n from './i18n'
-import { doc, getDoc } from 'firebase/firestore/lite'
-import * as Linking from 'expo-linking'
 import Constants from 'expo-constants'
+import * as Linking from 'expo-linking'
+import { StatusBar } from 'expo-status-bar'
+import { SafeAreaView } from 'react-native'
+import { I18nextProvider } from 'react-i18next'
 import * as SplashScreen from 'expo-splash-screen'
+import { doc, getDoc } from 'firebase/firestore/lite'
+import { User, onAuthStateChanged } from 'firebase/auth'
+import { StripeProvider } from '@stripe/stripe-react-native'
+import { NavigationContainer } from '@react-navigation/native'
+import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
+
+import i18n from './i18n'
+import { auth, db } from './firebase'
+import { userStore } from './src/store/userStore'
+import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -22,33 +23,23 @@ const PUBLISHABLE_KEY =
 const App: React.FC = () => {
   const loadedRef = useRef(false)
   const [loading, setLoading] = useState(true)
-
-  const {
-    updateUser,
-    updateLanguage,
-    user,
-    currency,
-    language,
-    updateCurrency,
-    updateRate,
-    updateProfile,
-    updatePhoneNo,
-    updateName,
-    updateAddress,
-    updateAvatar,
-    updateConfirmDetails,
-  } = userStore()
+  const currency = userStore((state) => state.currency)
+  const language = userStore((state) => state.language)
+  const updateRate = userStore((state) => state.updateRate)
+  const updateUser = userStore((state) => state.updateUser)
+  const updateName = userStore((state) => state.updateName)
+  const updateAvatar = userStore((state) => state.updateAvatar)
+  const updatePhoneNo = userStore((state) => state.updatePhoneNo)
+  const updateAddress = userStore((state) => state.updateAddress)
+  const updateCurrency = userStore((state) => state.updateCurrency)
+  const updateLanguage = userStore((state) => state.updateLanguage)
+  const updateProfile = userStore((state) => state.updateProfile)
+  const updateConfirmDetails = userStore((state) => state.updateConfirmDetails)
 
   const fetchDataFromFirestore = useCallback(async (user: User) => {
     try {
-      console.log(1)
       if (!user) return
-      console.log(2)
       if (user) {
-        // if (!isLoaded) {
-        //   setLoading(true)
-        // }
-
         const q = doc(db, 'users', user.uid)
         const querySnapshot = await getDoc(q)
         const fetchData = querySnapshot.data()
@@ -66,8 +57,6 @@ const App: React.FC = () => {
           loadedRef.current = true
           setLoading(false)
         }
-
-        // setLoaded(true)
       }
     } catch (error) {
       console.error('Error fetching data from Firestore:', error)
@@ -94,7 +83,6 @@ const App: React.FC = () => {
   useEffect(() => {
     handleAppLoading()
   }, [handleAppLoading])
-  // console.log(user)
 
   const getLanguage = useCallback(async () => {
     if (language) {
@@ -120,15 +108,6 @@ const App: React.FC = () => {
     getCurrency()
   }, [getCurrency])
 
-  // if (isLoading) {
-  //   // If the app is not ready, display the loading screen
-  //   return <Text> loading</Text>
-  // }
-
-  // console.log(avatar)
-  // console.log(confirmDetails)
-  // console.log(language)
-  // console.log('currency', currency)
   const [fontsLoaded] = useFonts({
     'Arvo-Regular': require('./src/assets/fonts/timesbold.ttf'), //font-weight 400
     'Gilroy-Medium': require('./src/assets/fonts/times.ttf'), //font-weight 500
@@ -149,25 +128,16 @@ const App: React.FC = () => {
 
   return (
     <Fragment>
-      <StripeProvider publishableKey={PUBLISHABLE_KEY} urlScheme={getAppUrlScheme()}>
+      <StripeProvider
+        publishableKey={PUBLISHABLE_KEY}
+        urlScheme={getAppUrlScheme()}
+        merchantIdentifier='merchant.com.sjclothing'
+      >
         <I18nextProvider i18n={i18n}>
           <SafeAreaView style={{ flex: 0, backgroundColor: 'rgba(191, 148, 228, 0.8)' }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(145, 177, 225, 0.85)' }}>
             <NavigationContainer>
-              <StatusBar
-                animated={true}
-                backgroundColor='rgba(191, 148, 228, 0.1)'
-                // barStyle={'dark-content'}
-                style='dark'
-              />
-              {/* {isLoading ? (
-                <Image
-                  style={{ width: width, height: height, objectFit: 'cover' }}
-                  source={require('./assets/iPhone.png')}
-                />
-              ) : (
-                <StackNavigationRoutes />
-              )} */}
+              <StatusBar animated={true} backgroundColor='rgba(191, 148, 228, 0.1)' style='dark' />
               <StackNavigationRoutes />
             </NavigationContainer>
           </SafeAreaView>

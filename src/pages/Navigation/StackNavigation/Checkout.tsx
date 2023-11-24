@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, Pressable, StyleSheet, Alert } from 'react-native'
+import { View, Pressable, StyleSheet, Alert, Platform } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
-import { useStripe } from '@stripe/stripe-react-native'
+import { PlatformPay, usePlatformPay, useStripe } from '@stripe/stripe-react-native'
 import CustomButton from '../../../components/Button'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -66,12 +66,32 @@ const Checkout: React.FC<ICheckout> = ({
   const [isLoading, setIsLoading] = useState(false)
   // const [orderData, setOrderData] = useState<ICheckout | null>(null)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
-
-  const { user, rate, currency } = userStore()
+  const rate = userStore((state) => state.rate)
+  const user = userStore((state) => state.user)
+  const currency = userStore((state) => state.currency)
   const [openGift, setOpengift] = useState(false)
   const [giftOptions, setGiftOptions] = useState({ giftMessage: '', from: '' })
   const stripe = useStripe()
+  const { isPlatformPaySupported, confirmPlatformPayPayment } = usePlatformPay()
+  const [isPaySupported, setIsPaySupported] = useState(false)
 
+  const setup = useCallback(async () => {
+    if (!(await isPlatformPaySupported())) {
+      Alert.alert(
+        'ERROR',
+        `${Platform.OS === 'android' ? 'google' : 'apple'} pay is not supported on this platform`,
+      )
+      setIsPaySupported(false)
+    } else {
+      setIsPaySupported(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    setup()
+  }, [setup])
+
+  console.log('checkoutrate', rate)
   const fetchData = useCallback(async () => {
     try {
       if (!user) return
@@ -120,13 +140,6 @@ const Checkout: React.FC<ICheckout> = ({
   const pinCode = addr?.pinCode
   const country = addr?.country
 
-  // console.log('line 1:', addressOne)
-  // console.log('line 2:', addressTwo)
-  // console.log('city:', city)
-  // console.log('state:', state)
-  // console.log('pinCode:', pinCode)
-  // console.log('country:', country)
-
   const processPay = async () => {
     try {
       setIsLoading(true)
@@ -139,18 +152,18 @@ const Checkout: React.FC<ICheckout> = ({
         Alert.alert('Please add address first')
         return
       }
+
+      const fixedAmount = Number((Number(amount) * (rate as number)).toFixed(2)) * 100
+
       const response = await fetch(`${API_URL}/create-payment-intent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          productIds: id,
           name: user?.displayName,
           email: user?.email,
-          paymentStatus: 'pending',
-          userid: user?.uid,
-          amount: Number((Number(amount) * (rate as number)).toFixed(2)) * 100,
+          amount: fixedAmount,
           address: {
             line1: addressOne,
             line2: addressTwo,
@@ -159,16 +172,12 @@ const Checkout: React.FC<ICheckout> = ({
             state: state,
             country: country,
           },
-          description: 'shipping address',
+          description: 'sjclothing merchant product',
           currency: currency.currency,
         }),
       })
 
-      console.log('amount', Number(amount) * (rate as number))
-
       const data = await response.json()
-      console.log('data', data.message)
-      console.log(response.ok)
 
       if (!response.ok) {
         return Alert.alert(data.message)
@@ -176,7 +185,6 @@ const Checkout: React.FC<ICheckout> = ({
 
       //1. order create
       const { paymentId } = data
-      console.log('payment id', paymentId)
 
       //creating order
       const userDocRef = doc(db, 'Orders', paymentId)
@@ -191,7 +199,7 @@ const Checkout: React.FC<ICheckout> = ({
         price: price,
         offerPrice: offerPrice,
         productId: id,
-        totalamount: `    ${
+        totalamount: `${
           offerPrice
             ? (
                 (Number(offerPrice) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
@@ -201,8 +209,7 @@ const Checkout: React.FC<ICheckout> = ({
                 (Number(price) + Number(deliveryFees ? deliveryFees?.DeliveryFees : 0)) *
                 (rate as number)
               ).toFixed(2)
-        }
-       ${currency.symbol}`,
+        } ${currency.symbol}`,
         paymentStatus: 'pending',
         userId: user?.uid,
         gender: gender,
@@ -240,7 +247,22 @@ const Checkout: React.FC<ICheckout> = ({
       // payment
       const initSheet = await stripe.initPaymentSheet({
         paymentIntentClientSecret: data.clientSecret,
-        merchantDisplayName: 'Dewall',
+        merchantDisplayName: 'Sj Clothing',
+        applePay: {
+          merchantCountryCode: 'IN',
+          cartItems: [
+            {
+              label: 'Total',
+              amount: fixedAmount.toString(),
+              paymentType: PlatformPay.PaymentType.Immediate,
+            },
+          ],
+        },
+        googlePay: {
+          merchantCountryCode: 'IN',
+          currencyCode: 'USD',
+          testEnv: true,
+        },
       })
 
       if (initSheet.error) {
@@ -279,7 +301,6 @@ const Checkout: React.FC<ICheckout> = ({
       const addressData = fetchData?.address.find(
         (f: { isSelected: boolean }) => f.isSelected === true,
       )
-      console.log('addressData', addressData)
       setAddr(addressData)
     } catch (error) {
       console.log(error)
@@ -411,7 +432,7 @@ const Checkout: React.FC<ICheckout> = ({
                       <DeliveryText>Delivery fee</DeliveryText>
                     </DeliveryContent>
                     <INRText>
-                      {Number(deliveryFees?.DeliveryFees) * (rate as number)}
+                      {(Number(deliveryFees?.DeliveryFees) * (rate as number)).toFixed(2)}
                       {currency.symbol}
                     </INRText>
                   </DeliveryWrapper>

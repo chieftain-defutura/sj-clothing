@@ -23,10 +23,9 @@ import Animated, {
   FadeOutRight,
 } from 'react-native-reanimated'
 import { Svg, Circle } from 'react-native-svg'
+
 import CustomButton from '../Button'
 import { IAccessory } from '../../constant/types'
-import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
-import PremiumVideo from '../../screens/PremiumVideo'
 import { userStore } from '../../store/userStore'
 import AuthNavigate from '../../screens/AuthNavigate'
 
@@ -45,13 +44,12 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
   setOpenDetails,
   handleSubmit,
 }) => {
-  const navigation = useNavigation()
-  const { currency, rate } = userStore()
-  const [showDetails, setShowDetails] = useState(false)
-  const [isPressed, setIsPressed] = useState(false)
-  const [openModal, setOpenModal] = useState(false)
   const [focus, setFocus] = useState(false)
   const user = userStore((state) => state.user)
+  const rate = userStore((state) => state.rate)
+  const [isPressed, setIsPressed] = useState(false)
+  const [showDetails, setShowDetails] = useState(false)
+  const currency = userStore((state) => state.currency)
 
   const onSubmit = () => {
     if (!user) {
@@ -62,35 +60,8 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
     }
   }
 
-  const handleLogin = () => {
-    if (!user) {
-      setFocus(true)
-    } else {
-      navigation.navigate('Checkout')
-      setFocus(true)
-    }
-  }
-
   const onClose = () => {
     setFocus(false)
-  }
-
-  const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
-  const share = async () => {
-    try {
-      const result = await Share.share({ message: 'Bug:' + `\n` + url })
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          console.log('shared with active type', result.activityType)
-        } else {
-          console.log('shared')
-        }
-      } else if (result.action === Share.dismissedAction) {
-        console.log('dismissed')
-      }
-    } catch (error) {
-      console.log(error)
-    }
   }
 
   const Description = data.description.split(',')

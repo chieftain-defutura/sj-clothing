@@ -36,7 +36,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
 }) => {
   const [isPressed, setIsPressed] = useState(false)
   const isMounted = useRef(false)
-  const { avatar, user } = userStore()
+  const avatar = userStore((state) => state.avatar)
   const [uid, setUid] = useState<string>('')
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
@@ -119,6 +119,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
                   // uri: `http://localhost:5173/premium/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
                   uri: `https://sj-threejs-development.netlify.app/premium/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
                 }}
+                scrollEnabled={false}
               />
             )}
           </View>
