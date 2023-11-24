@@ -52,7 +52,7 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
   const [show, setShow] = useState(false)
   const [padding, setPadding] = useState(0)
   const navigation = useNavigation()
-  const { user } = userStore()
+  const user = userStore((state) => state.user)
   const [address, setAddress] = useState({
     addressOne: '',
     addressTwo: '',
@@ -147,6 +147,7 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
 
   const onSubmit = async () => {
     try {
+      console.log(1)
       setIsLoading(true)
 
       const addressArray = [
@@ -158,7 +159,7 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
           pinCode: formik.values.pinCode,
           country: formik.values.country,
           floor: formik.values.floor,
-          phoneNo: formik.values.phoneNo,
+          phoneNo: countryCode + formik.values.phoneNo,
           saveAddressAs: formik.values.saveAddressAs,
           isSelected: false,
         },
