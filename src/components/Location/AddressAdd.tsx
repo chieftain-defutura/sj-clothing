@@ -2,7 +2,7 @@ import styled from 'styled-components/native'
 import axios from 'axios'
 import TickIcon from '../../assets/icons/TickIcon'
 import CustomButton from '../Button'
-import { COLORS, gradientOpacityColors } from '../../styles/theme'
+import { COLORS } from '../../styles/theme'
 import Input from '../Input'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -17,7 +17,6 @@ import * as Location from 'expo-location'
 import CurrentLocationIcon from '../../assets/icons/CurrentLocationIcon'
 import ChevronLeft from '../../assets/icons/ChevronLeft'
 import CountryCode from '../CountryCode'
-import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation } from '@react-navigation/native'
 import LeftArrow from '../../assets/icons/LeftArrow'
 
@@ -115,6 +114,13 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
           phoneNo: '',
           saveAddressAs: '',
         })
+        console.log('1', addressOne)
+        console.log('2', addressTwo)
+        console.log('3', city)
+        console.log('4', state)
+        console.log('5', pinCode)
+        console.log('6', country)
+
         console.log('Current Location Address:', data)
       })
     } catch (error) {
@@ -134,6 +140,8 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
 
         formik.setValues({ ...formik.values, fullAddress: data.display_name })
         success(data.display_name)
+        console.log('setValue', data.display_name)
+
         return data.display_name
       } else {
         setAddr('')
@@ -242,6 +250,8 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
       })
     }
   }, [Addr])
+
+  console.log('addr', Addr)
 
   const formik = useFormik({
     initialValues: {
