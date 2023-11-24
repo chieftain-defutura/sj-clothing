@@ -63,6 +63,8 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const avatar = userStore((state) => state.avatar)
   const currency = userStore((state) => state.currency)
   const language = userStore((state) => state.language)
+  const updateSignupUpdate = userStore((state) => state.updateSignupUpdate)
+
   const updateUser = userStore((state) => state.updateUser)
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const confirmDetails = userStore((state) => state.confirmDetails)
@@ -120,6 +122,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
         })
         await sendEmailVerification(user)
         setShowVerificationModal(true)
+        updateSignupUpdate(true)
       } catch (error) {
         if (error instanceof FirebaseError) {
           if (error.code === AuthErrorCodes.EMAIL_EXISTS) {

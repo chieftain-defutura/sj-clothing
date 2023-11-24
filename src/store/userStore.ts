@@ -56,6 +56,7 @@ type State = {
   orderId: string | null
   confirmDetails: boolean
   createAvatarAnimationFinished: boolean
+  signupUpdate: boolean
 }
 
 type Action = {
@@ -64,6 +65,7 @@ type Action = {
   updateUserData: (userData: IUserData) => void
   updateName: (name: string | null) => void
   // Add actions to update name, email, address, profile, phoneNo, and avatar
+  updateSignupUpdate: (signupUpdate: boolean) => void
   updateProfile: (profile: string | null) => void
   updateEmail: (email: string | null) => void
   updatePhoneNo: (phoneNo: number | null) => void
@@ -94,6 +96,7 @@ export const userStore = create<State & Action>((set) => ({
   email: null,
   profile: null,
   phoneNo: null,
+  signupUpdate: false,
   avatar: {
     gender: null,
     skinTone: '3',
@@ -129,6 +132,7 @@ export const userStore = create<State & Action>((set) => ({
   updateCurrency: (currency) => set(() => ({ currency })),
   updateOderId: (orderId) => set(() => ({ orderId })),
   updateRate: (rate) => set(() => ({ rate })),
+  updateSignupUpdate: (signupUpdate) => set(() => ({ signupUpdate })),
   updateConfirmDetails: (confirmDetails) => set(() => ({ confirmDetails })),
   updateAnimation: (value) => set(() => ({ createAvatarAnimationFinished: value })),
 }))

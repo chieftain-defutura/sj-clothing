@@ -72,6 +72,9 @@ const Checkout: React.FC<ICheckout> = ({
   const { isPlatformPaySupported } = usePlatformPay()
   const [isPaySupported, setIsPaySupported] = useState(false)
 
+  console.log('currency', currency)
+  console.log('gender', gender)
+
   const setup = useCallback(async () => {
     if (!(await isPlatformPaySupported())) {
       Alert.alert(
@@ -88,7 +91,6 @@ const Checkout: React.FC<ICheckout> = ({
     setup()
   }, [setup])
 
-  console.log('checkoutrate', rate)
   const fetchData = useCallback(async () => {
     try {
       if (!user) return

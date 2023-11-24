@@ -24,9 +24,12 @@ const App: React.FC = () => {
   const loadedRef = useRef(false)
   const [loading, setLoading] = useState(true)
   const rate = userStore((state) => state.rate)
-
   const currency = userStore((state) => state.currency)
   const language = userStore((state) => state.language)
+  const avatar = userStore((state) => state.avatar)
+  const signupUpdate = userStore((state) => state.signupUpdate)
+  const user = userStore((state) => state.user)
+
   const updateRate = userStore((state) => state.updateRate)
   const updateUser = userStore((state) => state.updateUser)
   const updateName = userStore((state) => state.updateName)
@@ -38,14 +41,16 @@ const App: React.FC = () => {
   const updateProfile = userStore((state) => state.updateProfile)
   const updateConfirmDetails = userStore((state) => state.updateConfirmDetails)
   console.log('ratingkpokp', rate)
+  console.log('currencybsn', currency)
+  console.log('avatardlkd', avatar)
 
-  const fetchDataFromFirestore = useCallback(async (user: User) => {
+  const fetchDataFromFirestore = useCallback(async () => {
     try {
-      if (!user) return
       if (user) {
         const q = doc(db, 'users', user.uid)
         const querySnapshot = await getDoc(q)
         const fetchData = querySnapshot.data()
+
         updateProfile(fetchData?.profile)
         updateName(fetchData?.name)
         updateAddress(fetchData?.address)
@@ -64,13 +69,13 @@ const App: React.FC = () => {
     } catch (error) {
       console.error('Error fetching data from Firestore:', error)
     }
-  }, [])
+  }, [signupUpdate, user])
 
   useEffect(() => {
     return onAuthStateChanged(auth, (data) => {
       if (data) {
         updateUser(data)
-        fetchDataFromFirestore(data)
+        fetchDataFromFirestore()
       } else {
         setLoading(false)
       }
