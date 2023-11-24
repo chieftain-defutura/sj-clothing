@@ -141,6 +141,7 @@ const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSear
                 display: 'flex',
                 alignItems: 'center',
                 flexDirection: 'row',
+                justifyContent: 'center',
                 gap: 8,
               }}
             >
@@ -220,7 +221,7 @@ const UseCurrentLocationText = styled.Text`
 const CurrentLocationWrapper = styled.Pressable`
   position: absolute;
   bottom: 120px;
-  left: 100px;
+  left: 130px;
 `
 
 const FlexRow = styled.View`
