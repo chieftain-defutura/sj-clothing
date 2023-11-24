@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, Pressable, StyleSheet, Alert } from 'react-native'
+import { View, Pressable, StyleSheet, Alert, Platform } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
-import { useStripe } from '@stripe/stripe-react-native'
+import { PlatformPay, usePlatformPay, useStripe } from '@stripe/stripe-react-native'
 import CustomButton from '../../../components/Button'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -72,6 +72,24 @@ const Checkout: React.FC<ICheckout> = ({
   const [openGift, setOpengift] = useState(false)
   const [giftOptions, setGiftOptions] = useState({ giftMessage: '', from: '' })
   const stripe = useStripe()
+  const { isPlatformPaySupported, confirmPlatformPayPayment } = usePlatformPay()
+  const [isPaySupported, setIsPaySupported] = useState(false)
+
+  const setup = useCallback(async () => {
+    if (!(await isPlatformPaySupported())) {
+      Alert.alert(
+        'ERROR',
+        `${Platform.OS === 'android' ? 'google' : 'apple'} pay is not supported on this platform`,
+      )
+      setIsPaySupported(false)
+    } else {
+      setIsPaySupported(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    setup()
+  }, [setup])
 
   console.log('checkoutrate', rate)
   const fetchData = useCallback(async () => {
@@ -134,18 +152,18 @@ const Checkout: React.FC<ICheckout> = ({
         Alert.alert('Please add address first')
         return
       }
+
+      const fixedAmount = Number((Number(amount) * (rate as number)).toFixed(2)) * 100
+
       const response = await fetch(`${API_URL}/create-payment-intent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          productIds: id,
           name: user?.displayName,
           email: user?.email,
-          paymentStatus: 'pending',
-          userid: user?.uid,
-          amount: Number((Number(amount) * (rate as number)).toFixed(2)) * 100,
+          amount: fixedAmount,
           address: {
             line1: addressOne,
             line2: addressTwo,
@@ -154,7 +172,7 @@ const Checkout: React.FC<ICheckout> = ({
             state: state,
             country: country,
           },
-          description: 'shipping address',
+          description: 'sjclothing merchant product',
           currency: currency.currency,
         }),
       })
@@ -229,7 +247,22 @@ const Checkout: React.FC<ICheckout> = ({
       // payment
       const initSheet = await stripe.initPaymentSheet({
         paymentIntentClientSecret: data.clientSecret,
-        merchantDisplayName: 'Dewall',
+        merchantDisplayName: 'Sj Clothing',
+        applePay: {
+          merchantCountryCode: 'IN',
+          cartItems: [
+            {
+              label: 'Total',
+              amount: fixedAmount.toString(),
+              paymentType: PlatformPay.PaymentType.Immediate,
+            },
+          ],
+        },
+        googlePay: {
+          merchantCountryCode: 'IN',
+          currencyCode: 'USD',
+          testEnv: true,
+        },
       })
 
       if (initSheet.error) {
