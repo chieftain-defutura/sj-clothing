@@ -17,12 +17,12 @@ import { LinearGradient } from 'expo-linear-gradient'
 import Search from '../../assets/icons/SearchIcon'
 import Plus from '../../assets/icons/PlusIcon'
 import LeftArrow from '../../assets/icons/LeftArrow'
-import ChooseAddress from '../../pages/Navigation/StackNavigation/NewAddressBook/ChooseAddress'
 import Map from './map'
 import ForgotMail from '../../screens/Modals/ForgotMail'
 import SignupModal from '../../screens/Modals/Signup'
 import LoginModal from '../../screens/Modals/Login'
 import { userStore } from '../../store/userStore'
+import AddressChoose from './AddressChoose'
 
 interface IAddressBook {
   navigation: any
@@ -195,7 +195,7 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
                   <BtnText>Add new Address</BtnText>
                 </AddAddressBtn>
               </Pressable>
-              <ChooseAddress />
+              <AddressChoose />
             </View>
           </>
         )}

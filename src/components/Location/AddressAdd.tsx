@@ -30,6 +30,7 @@ interface IAddAddress {
 
 const validationSchema = yup.object({
   fullAddress: yup.string(),
+  name: yup.string().required('*Please enter name'),
   addressOne: yup.string().required('*Please enter addressOne'),
   addressTwo: yup.string().required('*Please enter addressTwo'),
   city: yup.string().required('*Please enter city'),
@@ -104,6 +105,7 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
         // formik.setValues({ ...formik.values, ...data })
         formik.setValues({
           fullAddress: location ? location : '',
+          name: '',
           addressOne: data.split(',')[0],
           addressTwo: data.split(',')[1],
           city: data.split(',').reverse()[3],
@@ -114,12 +116,6 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
           phoneNo: '',
           saveAddressAs: '',
         })
-        console.log('1', addressOne)
-        console.log('2', addressTwo)
-        console.log('3', city)
-        console.log('4', state)
-        console.log('5', pinCode)
-        console.log('6', country)
 
         console.log('Current Location Address:', data)
       })
@@ -160,6 +156,7 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
 
       const addressArray = [
         {
+          name: formik.values.name,
           addressOne: formik.values.addressOne,
           addressTwo: formik.values.addressTwo,
           city: formik.values.city,
@@ -257,6 +254,7 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
   const formik = useFormik({
     initialValues: {
       fullAddress: location ? location : '',
+      name: '',
       addressOne: !onText ? addressOne : onText.split(',')[0],
       addressTwo: !onText ? addressTwo : onText.split(',')[1],
       city: !onText ? city : onText.split(',').reverse()[3],
@@ -362,6 +360,18 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                 </View> */}
               <View>
                 <Input
+                  placeholder='Name'
+                  value={formik.values.name}
+                  onChangeText={formik.handleChange('name')}
+                  onBlur={formik.handleBlur('name')}
+                  onSubmitEditing={Keyboard.dismiss}
+                />
+
+                {(formik.values.name === undefined || formik.values.name.length === 0) &&
+                  formik.touched.name && <ErrorText>*Please enter name</ErrorText>}
+              </View>
+              <View>
+                <Input
                   placeholder='Address One'
                   value={formik.values.addressOne}
                   onChangeText={formik.handleChange('addressOne')}
@@ -372,7 +382,6 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                 {(formik.values.addressOne === undefined ||
                   formik.values.addressOne.length === 0) &&
                   formik.touched.addressOne && <ErrorText>*Please enter Address One</ErrorText>}
-                {/* {formik.errors.addressOne && <ErrorText>{formik.errors.addressOne}</ErrorText>} */}
               </View>
               <View>
                 <Input
@@ -385,7 +394,6 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                 {(formik.values.addressTwo === undefined ||
                   formik.values.addressTwo.length === 0) &&
                   formik.touched.addressTwo && <ErrorText>*Please enter Address Two</ErrorText>}
-                {/* {formik.errors.addressTwo && <ErrorText>{formik.errors.addressTwo}</ErrorText>} */}
               </View>
               <View>
                 <Input
@@ -397,7 +405,6 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                 />
                 {(formik.values.city === undefined || formik.values.city.length === 0) &&
                   formik.touched.city && <ErrorText>*Please enter city</ErrorText>}
-                {/* {formik.errors.city && <ErrorText>{formik.errors.city}</ErrorText>} */}
               </View>
               <View>
                 <Input
@@ -409,7 +416,6 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                 />
                 {(formik.values.state === undefined || formik.values.state.length === 0) &&
                   formik.touched.state && <ErrorText>*Please enter state</ErrorText>}
-                {/* {formik.errors.state && <ErrorText>{formik.errors.state}</ErrorText>} */}
               </View>
 
               <View>
@@ -422,7 +428,6 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                 />
                 {(formik.values.pinCode === undefined || formik.values.pinCode.length === 0) &&
                   formik.touched.pinCode && <ErrorText>*Please enter pinCode</ErrorText>}
-                {/* {formik.errors.pinCode && <ErrorText>{formik.errors.pinCode}</ErrorText>} */}
               </View>
               <View>
                 <Input
@@ -434,7 +439,6 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                 />
                 {(formik.values.country === undefined || formik.values.country.length === 0) &&
                   formik.touched.country && <ErrorText>*Please enter country</ErrorText>}
-                {/* {formik.errors.country && <ErrorText>{formik.errors.country}</ErrorText>} */}
               </View>
               <View>
                 <Input
@@ -446,22 +450,23 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                 />
                 {(formik.values.floor === undefined || formik.values.floor.length === 0) &&
                   formik.touched.floor && <ErrorText>*Please enter floor</ErrorText>}
-                {/* {formik.errors.floor && <ErrorText>{formik.errors.floor}</ErrorText>} */}
               </View>
-              <View style={{ display: 'flex', flexDirection: 'row' }}>
-                <CountryCode
-                  countryCode={countryCode}
-                  setCountryCode={setCountryCode}
-                  setShow={setShow}
-                  show={show}
-                />
-                <Input
-                  placeholder='phone No'
-                  value={formik.values.phoneNo}
-                  onChangeText={formik.handleChange('phoneNo')}
-                  onBlur={formik.handleBlur('phoneNo')}
-                  keyboardType='numeric'
-                />
+              <View>
+                <View style={{ display: 'flex', flexDirection: 'row' }}>
+                  <CountryCode
+                    countryCode={countryCode}
+                    setCountryCode={setCountryCode}
+                    setShow={setShow}
+                    show={show}
+                  />
+                  <Input
+                    placeholder='phone No'
+                    value={formik.values.phoneNo}
+                    onChangeText={formik.handleChange('phoneNo')}
+                    onBlur={formik.handleBlur('phoneNo')}
+                    keyboardType='numeric'
+                  />
+                </View>
                 {(formik.values.phoneNo === undefined || formik.values.phoneNo.length === 0) &&
                   formik.touched.phoneNo && <ErrorText>*Please enter phoneNo</ErrorText>}
               </View>

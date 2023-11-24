@@ -134,21 +134,29 @@ const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSear
               />
             )}
           </MapView>
-
-          <CurrentLocationWrapper onPress={() => getPermissions()}>
-            <FlexRow
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                gap: 8,
-              }}
-            >
-              <CurrentLocationIcon width={16} height={16} />
-              <UseCurrentLocationText>Use current location</UseCurrentLocationText>
-            </FlexRow>
-          </CurrentLocationWrapper>
+          <View
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'row',
+            }}
+          >
+            <CurrentLocationWrapper onPress={() => getPermissions()}>
+              <FlexRow
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: 8,
+                }}
+              >
+                <CurrentLocationIcon width={16} height={16} />
+                <UseCurrentLocationText>Use current location</UseCurrentLocationText>
+              </FlexRow>
+            </CurrentLocationWrapper>
+          </View>
 
           <SelectAddressBtn>
             <CustomButton
@@ -221,7 +229,6 @@ const UseCurrentLocationText = styled.Text`
 const CurrentLocationWrapper = styled.Pressable`
   position: absolute;
   bottom: 120px;
-  left: 100px;
 `
 
 const FlexRow = styled.View`
