@@ -20,6 +20,7 @@ import { userStore } from '../../store/userStore'
 import { IOrder, IRatings } from '../../constant/types'
 import { db, dbDefault } from '../../../firebase'
 import CustomButton from '../Button'
+import Animated, { FadeInDown, FadeInUp, FadeOutDown } from 'react-native-reanimated'
 
 const StartIcons = [
   { startActive: StarActive, startInActive: StarInActive },
@@ -113,7 +114,11 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <Animated.View
+      entering={FadeInDown.duration(1400)}
+      exiting={FadeOutDown.duration(800)}
+      style={{ flex: 1 }}
+    >
       <GoBackArrowContent
         onPress={() => {
           setOpenReview(false)
@@ -191,7 +196,7 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
           padding: 16,
         }}
       />
-    </View>
+    </Animated.View>
   )
 }
 
