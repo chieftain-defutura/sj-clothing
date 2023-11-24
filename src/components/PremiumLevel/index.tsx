@@ -33,7 +33,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   const [focus, setFocus] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [openCheckout, setOpenCheckout] = useState(false)
-
+  const [isLoading, setLoading] = useState(false)
   const [login, setLogin] = useState(false)
   const [signUp, setSignUp] = useState(false)
   const [forgotMail, setForgotmail] = useState(false)
@@ -44,13 +44,21 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   })
 
   const getData = useCallback(async () => {
-    const ProductRef = await getDocs(collection(db, 'Products'))
-    const fetchProduct = ProductRef.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as any),
-    }))
-    const data = fetchProduct.filter((f) => f.type === 'PREMIUM-PRODUCTS')
-    setData(data)
+    try {
+      setLoading(true)
+      const ProductRef = await getDocs(collection(db, 'Products'))
+      const fetchProduct = ProductRef.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as any),
+      }))
+      const data = fetchProduct.filter((f) => f.type === 'PREMIUM-PRODUCTS')
+      setData(data)
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
   }, [db])
   useEffect(() => {
     getData()
@@ -90,10 +98,16 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
       }
     }
   }
-  if (!data)
+  if (isLoading)
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
         <ProductText>Loading...</ProductText>
+      </View>
+    )
+  if (!data)
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
+        <ProductText>No Data</ProductText>
       </View>
     )
   return (

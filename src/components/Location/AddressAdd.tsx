@@ -29,7 +29,7 @@ interface IAddAddress {
 }
 
 const validationSchema = yup.object({
-  fullAddress: yup.string().required('*Please enter addressOne'),
+  fullAddress: yup.string(),
   addressOne: yup.string().required('*Please enter addressOne'),
   addressTwo: yup.string().required('*Please enter addressTwo'),
   city: yup.string().required('*Please enter city'),
@@ -291,6 +291,8 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
     console.log('Keyboard did hide')
     setPadding(0)
   }
+
+  console.log(formik.errors)
 
   return (
     <Animated.View

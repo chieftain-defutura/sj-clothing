@@ -141,6 +141,7 @@ const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSear
                 display: 'flex',
                 alignItems: 'center',
                 flexDirection: 'row',
+                justifyContent: 'center',
                 gap: 8,
               }}
             >
