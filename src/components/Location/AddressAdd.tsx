@@ -571,7 +571,6 @@ const styles = StyleSheet.create({
   RadioTitle: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
     marginBottom: 3,

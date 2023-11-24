@@ -221,7 +221,7 @@ const UseCurrentLocationText = styled.Text`
 const CurrentLocationWrapper = styled.Pressable`
   position: absolute;
   bottom: 120px;
-  left: 130px;
+  left: 100px;
 `
 
 const FlexRow = styled.View`
