@@ -278,22 +278,6 @@ const Checkout: React.FC<ICheckout> = ({
     getData()
   }, [getData])
 
-  const handleClose = (index: number) => {
-    const temp = async (index: any) => {
-      if (!user) return
-      const userDocRef = doc(db, 'users', user.uid)
-      const userDoc = await getDoc(userDocRef)
-      const userData = userDoc.data()
-      if (!userData) return
-      const newProds = userData.CartProduct.filter((element: any) => {
-        userData.CartProduct.indexOf(element) !== index
-      })
-      await updateDoc(userDocRef, { newProds })
-    }
-    setClosedItems([...closedItems, index])
-    temp(index)
-  }
-
   const getDeliveryFees = useCallback(async () => {
     try {
       const deliveryFeesCollection = await getDocs(collection(db, 'DeliveryFees'))
