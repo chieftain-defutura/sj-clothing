@@ -55,6 +55,7 @@ const ValidationSchema = Yup.object({
 
 const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginClick }) => {
   const navigation = useNavigation()
+  const rate = userStore((state) => state.rate)
   const user = userStore((store) => store.user)
   const [isChecked, setChecked] = useState(false)
   const [isCreated, setIsCreated] = useState(false)
@@ -114,7 +115,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           termsAndConditions: false,
           currency: currency,
           language: language,
-          rate: null,
+          rate: rate,
           confirmDetails: confirmDetails,
         })
         await sendEmailVerification(user)
