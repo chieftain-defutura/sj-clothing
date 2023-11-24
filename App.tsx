@@ -47,6 +47,7 @@ const App: React.FC = () => {
   const fetchDataFromFirestore = useCallback(async () => {
     try {
       if (user) {
+        console.log(user.uid)
         const q = doc(db, 'users', user.uid)
         const querySnapshot = await getDoc(q)
         const fetchData = querySnapshot.data()
@@ -63,8 +64,8 @@ const App: React.FC = () => {
 
         if (!loadedRef.current) {
           loadedRef.current = true
-          setLoading(false)
         }
+        setLoading(false)
       }
     } catch (error) {
       console.error('Error fetching data from Firestore:', error)
@@ -72,10 +73,13 @@ const App: React.FC = () => {
   }, [signupUpdate, user])
 
   useEffect(() => {
+    fetchDataFromFirestore()
+  }, [fetchDataFromFirestore])
+
+  useEffect(() => {
     return onAuthStateChanged(auth, (data) => {
       if (data) {
         updateUser(data)
-        fetchDataFromFirestore()
       } else {
         setLoading(false)
       }
