@@ -23,6 +23,8 @@ const PUBLISHABLE_KEY =
 const App: React.FC = () => {
   const loadedRef = useRef(false)
   const [loading, setLoading] = useState(true)
+  const rate = userStore((state) => state.rate)
+
   const currency = userStore((state) => state.currency)
   const language = userStore((state) => state.language)
   const updateRate = userStore((state) => state.updateRate)
@@ -35,6 +37,7 @@ const App: React.FC = () => {
   const updateLanguage = userStore((state) => state.updateLanguage)
   const updateProfile = userStore((state) => state.updateProfile)
   const updateConfirmDetails = userStore((state) => state.updateConfirmDetails)
+  console.log('ratingkpokp', rate)
 
   const fetchDataFromFirestore = useCallback(async (user: User) => {
     try {
