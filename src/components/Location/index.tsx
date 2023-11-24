@@ -158,7 +158,7 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
               <View
                 style={{
                   position: 'absolute',
-                  zIndex: 10,
+                  zIndex: 100000,
                   top: 120,
                   backgroundColor: 'white',
                   left: 20,
