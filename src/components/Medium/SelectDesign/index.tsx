@@ -45,6 +45,8 @@ const SelectDesign: React.FC<ISelectDesign> = ({
 }) => {
   const { t } = useTranslation('midlevel')
   const rate = userStore((state) => state.rate)
+  const currency = userStore((state) => state.currency)
+
   const uniqueArr = [...new Map(designs?.map((v) => [v.hashTag, v])).values()]
   const FilteredData =
     isImageOrText.designs.hashtag === ''

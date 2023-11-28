@@ -280,13 +280,144 @@
 // `
 
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { LinearGradient } from 'expo-linear-gradient'
+import { gradientOpacityColors } from '../../styles/theme'
+import PostNavigator from './PostNavigator'
+import { useSharedValue, withSequence, withTiming } from 'react-native-reanimated'
+import { userStore } from '../../store/userStore'
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '../../../firebase'
+import { IMidlevel } from '../../constant/types'
+import SelectStyle from '../Medium/SelectStyle'
 
 const PostCreation = () => {
+  const isMounted = useRef(false)
+  const slideValue = useSharedValue(0)
+  const avatar = userStore((state) => state.avatar)
+  const user = userStore((state) => state.user)
+
+  const [isSteps, setSteps] = useState(1)
+  const [isDropDown, setDropDown] = useState(false)
+  const [uid, setUid] = useState<string>('')
+  const [focus, setFocus] = useState(false)
+
+  //login
+  const [login, setLogin] = useState(false)
+  const [signUp, setSignUp] = useState(false)
+  const [forgotMail, setForgotmail] = useState(false)
+
+  //style
+  const [isSelectedStyle, setSelectedStyle] = useState('')
+  const [warning, setWarning] = useState('')
+
+  //size
+  const [isSize, setSize] = useState({
+    country: '',
+    sizeVarient: [{ size: '', measurement: '', quantity: '' }],
+  })
+
+  //color
+  const [isColor, setColor] = useState('')
+
+  //data
+  const [data, setData] = useState<IMidlevel[]>()
+
+  //image&text
+  const [isOpenDesign, setOpenDesign] = useState(false)
+  const [isDone, setDone] = useState(false)
+
+  const [isImageOrText, setImageOrText] = useState({
+    title: '',
+    position: 'Front',
+    rate: 0,
+    designs: {
+      hashtag: '',
+      image: '',
+      originalImage: '',
+    },
+  })
+
+  const handleDecreaseSteps = () => {
+    if (isSteps !== 1) {
+      setSteps(isSteps - 1)
+      setDropDown(false)
+      setOpenDesign(false)
+    }
+    if (isSteps === 2) {
+      setSelectedStyle('')
+    }
+    slideValue.value = withSequence(
+      withTiming(-1, { duration: 400 }), // Slide out
+      withTiming(0, { duration: 400 }),
+    )
+  }
+
+  const handleIncreaseSteps = () => {
+    let currentField
+    switch (isSteps) {
+      case 1:
+        currentField = isSelectedStyle
+        break
+      case 2:
+        currentField = isSize.country
+        break
+      case 3:
+        currentField = isSize.sizeVarient[0].size
+        break
+      case 4:
+        currentField = isColor
+        break
+      default:
+        currentField = 'any'
+    }
+
+    if (currentField === '') {
+      // setError('Please fill in the current field before proceeding.');
+      setWarning('Please select current field before proceeding.')
+      setSteps(isSteps)
+    } else {
+      // Clear any previous error and move to the next step
+      setSteps(isSteps + 1)
+      setDropDown(false)
+      setOpenDesign(false)
+      setDone(false)
+      slideValue.value = withSequence(
+        withTiming(1, { duration: 400 }), // Slide out
+        withTiming(0, { duration: 400 }), // Slide back to original state
+      )
+    }
+  }
+  useEffect(() => {
+    setTimeout(() => {
+      setWarning('') // Set the state to null after 5 seconds
+    }, 2000)
+  }, [warning])
+
+  const getData = useCallback(async () => {
+    const ProductRef = await getDocs(collection(db, 'Products'))
+    const fetchProduct = ProductRef.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as any),
+    }))
+    const data = fetchProduct.filter((f) => f.type === 'MIDLEVEL-PRODUCTS')
+    setData(data)
+  }, [db])
+  useEffect(() => {
+    getData()
+  }, [getData])
+
   return (
-    <View>
-      <Text>PostCreation</Text>
-    </View>
+    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
+        <PostNavigator
+          steps={isSteps}
+          warning={warning}
+          handleDecreaseSteps={handleDecreaseSteps}
+          handleIncreaseSteps={handleIncreaseSteps}
+        />
+      </View>
+    </LinearGradient>
   )
 }
 

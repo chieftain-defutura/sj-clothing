@@ -11,9 +11,7 @@
       "image": "./assets/iPhone.png",
       "resizeMode": "cover"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.dewallstreet.sprinkle"
@@ -56,9 +54,7 @@
       ]
     ],
     "extra": {
-      "eas": {
-        "projectId": "78d85b5a-8351-42b5-a5a6-6937fb28159c"
-      }
+      "eas": {}
     }
   }
 }
