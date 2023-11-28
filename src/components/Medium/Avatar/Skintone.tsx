@@ -109,7 +109,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
       await updateDoc(doc(db, 'users', user.uid), {
         avatar: {
           gender: avatar.gender,
-          skinTone: (index + 1).toString(),
+          skinTone: index.toString(),
         },
       })
     }
@@ -147,20 +147,20 @@ const Skintone: React.FC<ISkintone> = ({}) => {
       </Animated.View>
       <View style={styles.bottomWrapper}>
         <View style={styles.skinCollection}>
-          {['#805244', '#a07160', '#c69d92', '#dabdaf'].map((m, index) => (
+          {['#a07160', '#c69d92', '#dabdaf'].map((m, index) => (
             <TouchableOpacity
               key={m}
               style={[
                 styles.skinTab,
                 {
                   borderColor:
-                    avatar.skinTone === (index + 1).toString() ? '#DB00FF' : 'transparent',
+                    avatar.skinTone === (index + 2).toString() ? '#DB00FF' : 'transparent',
                   borderWidth: 1,
                   padding: 2,
                   opacity: !createAvatarAnimationFinished ? 0.7 : 1,
                 },
               ]}
-              onPress={() => handleSubmit(index)}
+              onPress={() => handleSubmit(index + 2)}
               disabled={!createAvatarAnimationFinished}
             >
               <View style={{ flex: 1, backgroundColor: m, borderRadius: 20 }}></View>

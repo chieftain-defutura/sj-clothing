@@ -16,6 +16,12 @@
     "production": {}
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "sprinklenadar@gmail.com",
+        "ascAppId": "6473019959",
+        "appleTeamId": "B6R5MG79VB"
+      }
+    }
   }
 }
