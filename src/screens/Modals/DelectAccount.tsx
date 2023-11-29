@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native'
 import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth'
 import { doc, deleteDoc } from 'firebase/firestore/lite'
 import { db } from '../../../firebase'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface IDelectAccount {
   closeModal?: () => void
@@ -29,7 +30,13 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
         const userDocRef = doc(db, 'users', user.uid)
         await deleteDoc(userDocRef)
         await deleteUser(currentUser)
+        await auth.signOut()
         closeModal?.()
+        const data = await AsyncStorage.getItem('mail')
+        await AsyncStorage.removeItem('mail')
+        // if (!data) {
+        //   updateUser(null)
+        // }
         console.log('User account successfully deleted.')
       } else {
         console.error('No authenticated user found.')
