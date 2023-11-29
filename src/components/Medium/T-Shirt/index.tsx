@@ -22,7 +22,7 @@ const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
       })
     }
   }
-
+  console.log(pageY, elementHeight)
   return (
     <View
       style={{

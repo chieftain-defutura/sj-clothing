@@ -11,7 +11,9 @@
       "image": "./assets/iPhone.png",
       "resizeMode": "cover"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.dewallstreet.sprinkle"
@@ -51,10 +53,19 @@
             "useFrameworks": "static"
           }
         }
+      ],
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.com.sjclothing",
+          "enableGooglePay": true
+        }
       ]
     ],
     "extra": {
-      "eas": {}
+      "eas": {
+        "projectId": "891c84f9-f8db-4baf-9fe1-6d1c1265f85d"
+      }
     }
   }
 }

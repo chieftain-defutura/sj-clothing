@@ -3,7 +3,12 @@ import styled from 'styled-components/native'
 import { View, Pressable, StyleSheet, Alert, Platform } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
-import { PlatformPay, usePlatformPay, useStripe } from '@stripe/stripe-react-native'
+import {
+  PlatformPay,
+  PlatformPayButton,
+  usePlatformPay,
+  useStripe,
+} from '@stripe/stripe-react-native'
 import CustomButton from '../../../components/Button'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -250,7 +255,7 @@ const Checkout: React.FC<ICheckout> = ({
       // payment
       const initSheet = await stripe.initPaymentSheet({
         paymentIntentClientSecret: data.clientSecret,
-        merchantDisplayName: 'Sj Clothing',
+        merchantDisplayName: 'Sprinkle Nadar',
         applePay: {
           merchantCountryCode: 'IN',
           cartItems: [
@@ -262,7 +267,7 @@ const Checkout: React.FC<ICheckout> = ({
           ],
         },
         googlePay: {
-          merchantCountryCode: 'IN',
+          merchantCountryCode: 'US',
           currencyCode: 'USD',
           testEnv: true,
         },
