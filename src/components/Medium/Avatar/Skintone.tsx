@@ -105,7 +105,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
   }, [handleSetUid, handleUpdateGender, handleUpdateSkintone, handleGetData])
   const handleSubmit = async (index: number) => {
     if (user) {
-      updateAvatar({ gender: avatar.gender, skinTone: (index + 1).toString() })
+      updateAvatar({ gender: avatar.gender, skinTone: index.toString() })
       await updateDoc(doc(db, 'users', user.uid), {
         avatar: {
           gender: avatar.gender,
@@ -114,7 +114,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
       })
     }
     if (!user) {
-      updateAvatar({ gender: avatar.gender, skinTone: (index + 1).toString() })
+      updateAvatar({ gender: avatar.gender, skinTone: index.toString() })
     }
   }
 
