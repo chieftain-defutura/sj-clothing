@@ -57,8 +57,10 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
             <CloseIcon width={24} height={24} />
           </Pressable> */}
           <AlertIcon width={130} height={130} />
-          <Text style={styles.header}>Are You Leaving</Text>
-          <Text style={styles.description}>
+          <Text allowFontScaling={false} style={styles.header}>
+            Are You Leaving
+          </Text>
+          <Text allowFontScaling={false} style={styles.description}>
             Hi {user?.displayName}, Are you sure, want to logout?
           </Text>
           {errorMessage && (

@@ -133,7 +133,9 @@ const Currency = () => {
             padding: 25,
           }}
         >
-          <Text style={styles.title}>Choose your Currency</Text>
+          <Text allowFontScaling={false} style={styles.title}>
+            Choose your Currency
+          </Text>
           <CurrencyGrayIcon width={190} height={190} />
           <View style={{ width: 238, paddingTop: 14 }}>
             <SelectContent onPress={toggleDropdownSizes}>
@@ -146,8 +148,12 @@ const Currency = () => {
                   gap: 8,
                 }}
               >
-                <SelectText style={{ fontSize: 20 }}>{currency ? currency.symbol : ''}</SelectText>
-                <SelectText>{currency ? currency.abrive : ''}</SelectText>
+                <Text allowFontScaling={false} style={(styles.selectText, { fontSize: 20 })}>
+                  {currency ? currency.symbol : ''}
+                </Text>
+                <Text allowFontScaling={false} style={styles.selectText}>
+                  {currency ? currency.abrive : ''}
+                </Text>
               </View>
               <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
                 <Path
@@ -177,8 +183,12 @@ const Currency = () => {
                           paddingHorizontal: 12,
                         }}
                       >
-                        <SelectListText>{f.symbol}</SelectListText>
-                        <SelectListText>{f.abrive}</SelectListText>
+                        <Text allowFontScaling={false} style={styles.selectListText}>
+                          {f.symbol}
+                        </Text>
+                        <Text allowFontScaling={false} style={styles.selectListText}>
+                          {f.abrive}
+                        </Text>
                       </Pressable>
                     ))}
                   </ScrollView>
@@ -198,7 +208,9 @@ const Currency = () => {
             padding: 25,
           }}
         >
-          <Text style={styles.title}>Choose your Currency</Text>
+          <Text allowFontScaling={false} style={styles.title}>
+            Choose your Currency
+          </Text>
           <CurrencyGrayIcon width={190} height={190} />
           <View style={{ width: 238, paddingTop: 14 }}>
             <SelectContent onPress={toggleDropdownSizes}>
@@ -211,8 +223,15 @@ const Currency = () => {
                   gap: 8,
                 }}
               >
-                <SelectText style={{ fontSize: 20 }}>{currency ? currency.symbol : ''}</SelectText>
-                <SelectText>{currency ? currency.abrive : ''}</SelectText>
+                <Text
+                  allowFontScaling={false}
+                  style={(styles.selectText, { fontSize: 20, color: `${COLORS.textSecondaryClr}` })}
+                >
+                  {currency ? currency.symbol : ''}
+                </Text>
+                <Text allowFontScaling={false} style={styles.selectText}>
+                  {currency ? currency.abrive : ''}
+                </Text>
               </View>
               <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
                 <Path
@@ -242,8 +261,12 @@ const Currency = () => {
                           paddingHorizontal: 12,
                         }}
                       >
-                        <SelectListText>{f.symbol}</SelectListText>
-                        <SelectListText>{f.abrive}</SelectListText>
+                        <Text allowFontScaling={false} style={styles.selectListText}>
+                          {f.abrive}
+                        </Text>
+                        <Text allowFontScaling={false} style={styles.selectListText}>
+                          {f.symbol}
+                        </Text>
                       </Pressable>
                     ))}
                   </ScrollView>
@@ -267,6 +290,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingBottom: 24,
   },
+  selectText: {
+    fontSize: 14,
+    fontFamily: FONT_FAMILY.ArvoRegular,
+    color: COLORS.textSecondaryClr,
+  },
+  selectListText: {
+    fontSize: 14,
+    fontFamily: FONT_FAMILY.ArvoRegular,
+    color: COLORS.SecondaryTwo,
+    paddingVertical: 7,
+  },
 })
 
 const SelectContent = styled.Pressable`
@@ -287,16 +321,4 @@ const SelectDropDownList = styled.View`
   margin-top: 8px;
   padding-top: 4px;
   padding-bottom: 4px;
-`
-
-const SelectText = styled.Text`
-  font-size: 14px;
-  font-family: ${FONT_FAMILY.ArvoRegular};
-  color: ${COLORS.textSecondaryClr};
-`
-const SelectListText = styled.Text`
-  font-size: 14px;
-  font-family: ${FONT_FAMILY.ArvoRegular};
-  color: ${COLORS.SecondaryTwo};
-  padding-vertical: 7px;
 `

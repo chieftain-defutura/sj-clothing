@@ -28,7 +28,9 @@ const PremiumVideo: React.FC<PremiumVideoModalProps> = ({ isVisible, onClose, vi
             useNativeControls
           />
         ) : (
-          <Text style={{ color: 'white' }}>No Video</Text>
+          <Text allowFontScaling={false} style={{ color: 'white' }}>
+            No Video
+          </Text>
         )}
       </PremiumVideoWrapper>
     </Modal>

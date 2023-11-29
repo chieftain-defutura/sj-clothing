@@ -9,6 +9,7 @@ import {
   Pressable,
   TouchableOpacity,
   Share,
+  Modal,
 } from 'react-native'
 import Animated, {
   FadeInLeft,
@@ -68,6 +69,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   setOpenDetails,
   handleSubmit,
 }) => {
+  const [openImage, setOpenImage] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
@@ -269,10 +271,23 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                         </View>
                       )}
                     </View>
-                    <WatchVideoBorder onPress={() => setOpenModal(true)}>
-                      <PlayCircleIcon width={12} height={12} />
-                      <WatchVideoText>Watch video</WatchVideoText>
-                    </WatchVideoBorder>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 2,
+                      }}
+                    >
+                      <WatchVideoBorder onPress={() => setOpenModal(true)}>
+                        <PlayCircleIcon width={12} height={12} />
+                        <WatchVideoText>Watch video</WatchVideoText>
+                      </WatchVideoBorder>
+                      <WatchVideoBorder onPress={() => setOpenImage(true)}>
+                        <WatchVideoText>View Image</WatchVideoText>
+                      </WatchVideoBorder>
+                    </View>
                   </View>
                   {openModal && (
                     <PremiumVideo
@@ -280,6 +295,17 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                       onClose={() => setOpenModal(false)}
                       isVisible={openModal}
                     />
+                  )}
+                  {openImage && (
+                    <Modal animationType='fade' transparent={true}>
+                      <ImageWrapper onPress={() => setOpenImage(false)}>
+                        <Image
+                          source={require('../../assets/images/fabric.jpg')}
+                          alt=''
+                          style={{ width: 400, height: 300 }}
+                        />
+                      </ImageWrapper>
+                    </Modal>
                   )}
                 </Animated.View>
               </PremiumDetailsContent>
@@ -428,6 +454,13 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 })
+const ImageWrapper = styled.Pressable`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+`
 
 const CardPairContainer = styled.View`
   flex-direction: row;
@@ -546,8 +579,10 @@ const WatchVideoBorder = styled.Pressable`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   padding: 8px;
+  width: 90;
 `
 
 const HideDetailsBorder = styled.TouchableOpacity`
@@ -567,6 +602,7 @@ const ProductName = styled.Text`
 const WatchVideoText = styled.Text`
   font-size: 10px;
   color: ${COLORS.textSecondaryClr};
+  text-align: center;
 `
 
 const HideDetailsText = styled.Text`

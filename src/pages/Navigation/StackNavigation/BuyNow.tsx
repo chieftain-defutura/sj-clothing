@@ -68,7 +68,10 @@ const BuyNow: React.FC<IBuyNow> = ({ navigation }) => {
             justifyContent: 'center',
           }}
         >
-          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 16 }}>
+          <Text
+            allowFontScaling={false}
+            style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 16 }}
+          >
             White T-shirt
           </Text>
           <Text
@@ -88,8 +91,16 @@ const BuyNow: React.FC<IBuyNow> = ({ navigation }) => {
         <ThreeSixtyDegree width={40} height={40} />
       </View> */}
       <View style={{ paddingVertical: 8, display: 'flex', gap: 4 }}>
-        <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>#Round neck</Text>
-        <Text style={{ color: COLORS.textTertiaryClr, fontFamily: 'Gilroy-Regular' }}>
+        <Text
+          allowFontScaling={false}
+          style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}
+        >
+          #Round neck
+        </Text>
+        <Text
+          allowFontScaling={false}
+          style={{ color: COLORS.textTertiaryClr, fontFamily: 'Gilroy-Regular' }}
+        >
           Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus , eleifend
           tellus augue lec.
         </Text>
@@ -121,7 +132,10 @@ const BuyNow: React.FC<IBuyNow> = ({ navigation }) => {
               >
                 {item.title}
               </Text>
-              <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+              <Text
+                allowFontScaling={false}
+                style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
+              >
                 {item.content}
               </Text>
             </View>

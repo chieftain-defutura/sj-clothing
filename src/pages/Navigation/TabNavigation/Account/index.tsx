@@ -415,7 +415,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { Pressable, ScrollView, View, StyleSheet, Dimensions, Linking, Image } from 'react-native'
+import { Pressable, ScrollView, Text, StyleSheet, Dimensions, Linking, Image } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { auth, db } from '../../../../../firebase'
 import { COLORS, gradientOpacityColors } from '../../../../styles/theme'
@@ -598,9 +598,13 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
             </UserWrapper>
 
             {route.params?.dName ? (
-              <ProfileName>{route.params.dName}</ProfileName>
+              <Text allowFontScaling={false} style={styles.ProfileName}>
+                {route.params.dName}
+              </Text>
             ) : (
-              <ProfileName>{user?.displayName}</ProfileName>
+              <Text allowFontScaling={false} style={styles.ProfileName}>
+                {user?.displayName}
+              </Text>
             )}
 
             {/* <View style={{ padding: 16 }}>
@@ -639,13 +643,15 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                   <ProfileUserContent>
                     <FlexIcon>
                       <f.leftIcon width={20} height={20} />
-                      <UserText>{t(f.name)}</UserText>
+                      <Text allowFontScaling={false} style={styles.UserText}>
+                        {t(f.name)}
+                      </Text>
                     </FlexIcon>
                     {f.rightIcon && <f.rightIcon width={20} height={20} />}
                     {f.rightText && (
-                      <RightText>
+                      <Text allowFontScaling={false} style={styles.RightText}>
                         {f.name === 'My orders' ? `${orderData.length} items` : f.rightText}
-                      </RightText>
+                      </Text>
                     )}
                   </ProfileUserContent>
                 </Pressable>
@@ -655,7 +661,9 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
               <ProfileUserContent>
                 <FlexIcon>
                   <CustomerCare width={20} height={20} />
-                  <UserText>{t('Customer care')}</UserText>
+                  <Text allowFontScaling={false} style={styles.UserText}>
+                    {t('Customer care')}
+                  </Text>
                 </FlexIcon>
               </ProfileUserContent>
             </Pressable>
@@ -665,7 +673,9 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                 <ProfileUserContent>
                   <FlexIcon>
                     <LogoutIcon width={24} height={24} />
-                    <LogoutText>{t('Log out')}</LogoutText>
+                    <Text allowFontScaling={false} style={styles.LogoutText}>
+                      {t('Log out')}
+                    </Text>
                   </FlexIcon>
                 </ProfileUserContent>
               </LogoutPressable>
@@ -674,7 +684,12 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                 <ProfileUserContent>
                   <FlexIcon>
                     {/* <LogoutIcon width={24} height={24} /> */}
-                    <LogoutText style={{ color: '#462D85' }}>{t('Log In')}</LogoutText>
+                    <Text
+                      allowFontScaling={false}
+                      style={(styles.LogoutText, { color: '#462D85' })}
+                    >
+                      {t('Log In')}
+                    </Text>
                   </FlexIcon>
                 </ProfileUserContent>
               </LogoutPressable>
@@ -756,17 +771,6 @@ const NotUserContent = styled.View`
   flex: 1;
 `
 
-const RightText = styled.Text`
-  font-size: 14px;
-  font-family: Gilroy-Medium;
-  color: ${COLORS.SecondaryTwo};
-`
-const LogoutText = styled.Text`
-  font-size: 14px;
-  font-family: Gilroy-Medium;
-  color: #ef5757;
-`
-
 const EditContent = styled.Pressable`
   position: absolute;
   top: 16px;
@@ -817,14 +821,6 @@ const ProfileImage = styled.Image`
   object-fit: fill;
 `
 
-const ProfileName = styled.Text`
-  font-size: 20px;
-  font-family: Montserrat-SemiBold;
-  color: ${COLORS.iconsHighlightClr};
-  text-align: center;
-  margin-top: 8px;
-`
-
 const AccountText = styled.Text`
   font-size: 28px;
 `
@@ -843,5 +839,27 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.24,
     shadowRadius: 0,
     elevation: 5,
+  },
+  ProfileName: {
+    fontSize: 20,
+    fontFamily: 'Montserrat-SemiBold',
+    color: COLORS.iconsHighlightClr,
+    textAlign: 'center',
+    marginTop: 8,
+  },
+  UserText: {
+    fontFamily: 'Gilroy-Medium',
+    color: COLORS.iconsHighlightClr,
+    fontSize: 14,
+  },
+  RightText: {
+    fontSize: 14,
+    fontFamily: 'Gilroy-Medium',
+    color: COLORS.SecondaryTwo,
+  },
+  LogoutText: {
+    fontSize: 14,
+    fontFamily: 'Gilroy-Medium',
+    color: '#ef5757',
   },
 })

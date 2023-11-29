@@ -72,11 +72,15 @@ const Languages = () => {
             padding: 25,
           }}
         >
-          <Text style={styles.title}>{t('Choose Your Language')}</Text>
+          <Text allowFontScaling={false} style={styles.title}>
+            {t('Choose Your Language')}
+          </Text>
           <LanguageGrayIcon width={190} height={190} />
           <View style={{ width: 208, paddingTop: 14 }}>
             <SelectContent onPress={toggleDropdownSizes}>
-              <SelectText> {LanguagesData.find((f) => f.lang === language)?.language}</SelectText>
+              <Text allowFontScaling={false} style={styles.selectText}>
+                {LanguagesData.find((f) => f.lang === language)?.language}
+              </Text>
               <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
                 <Path
                   d='M5 7.5L10 12.5L15 7.5'
@@ -99,7 +103,9 @@ const Languages = () => {
                           changeLanguage(f.lang),
                         ]}
                       >
-                        <SelectListText>{f.language}</SelectListText>
+                        <Text allowFontScaling={false} style={styles.selectListText}>
+                          {f.language}
+                        </Text>
                       </Pressable>
                     ))}
                   </ScrollView>
@@ -119,11 +125,16 @@ const Languages = () => {
             padding: 25,
           }}
         >
-          <Text style={styles.title}>{t('Choose Your Language')}</Text>
+          <Text allowFontScaling={false} style={styles.title}>
+            {t('Choose Your Language')}
+          </Text>
           <LanguageGrayIcon width={190} height={190} />
           <View style={{ width: 208, paddingTop: 14 }}>
             <SelectContent onPress={toggleDropdownSizes}>
-              <SelectText> {LanguagesData.find((f) => f.lang === language)?.language}</SelectText>
+              <Text allowFontScaling={false} style={styles.selectText}>
+                {' '}
+                {LanguagesData.find((f) => f.lang === language)?.language}
+              </Text>
               <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
                 <Path
                   d='M5 7.5L10 12.5L15 7.5'
@@ -146,7 +157,9 @@ const Languages = () => {
                           changeLanguage(f.lang),
                         ]}
                       >
-                        <SelectListText>{f.language}</SelectListText>
+                        <Text allowFontScaling={false} style={styles.selectListText}>
+                          {f.language}
+                        </Text>
                       </Pressable>
                     ))}
                   </ScrollView>
@@ -169,6 +182,18 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.ArvoRegular,
     textAlign: 'center',
     paddingBottom: 24,
+  },
+  selectText: {
+    fontSize: 14,
+    fontFamily: FONT_FAMILY.ArvoRegular,
+    color: COLORS.textSecondaryClr,
+  },
+  selectListText: {
+    fontSize: 14,
+    fontFamily: FONT_FAMILY.ArvoRegular,
+    color: COLORS.textTertiaryClr,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
   },
 })
 

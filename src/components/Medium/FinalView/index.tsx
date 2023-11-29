@@ -106,7 +106,10 @@ const FinalView: React.FC<IFinalView> = ({
               >
                 Style
               </Text>
-              <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+              <Text
+                allowFontScaling={false}
+                style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
+              >
                 {style}
               </Text>
             </View>
@@ -158,7 +161,10 @@ const FinalView: React.FC<IFinalView> = ({
                 Text/Image
               </Text>
 
-              <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+              <Text
+                allowFontScaling={false}
+                style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
+              >
                 {isImageOrText.designs.hashtag ? isImageOrText.designs.hashtag : '-'}
                 {isImageOrText.rate !== 0 &&
                   (Number(isImageOrText.rate) * (rate as number)).toFixed(2)}

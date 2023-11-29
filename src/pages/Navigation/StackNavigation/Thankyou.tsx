@@ -60,7 +60,9 @@ const Thankyou = () => {
     <LinearGradient style={{ flex: 1 }} colors={gradientOpacityColors}>
       <View style={{ flex: 1 }}>
         <Animated.View entering={StretchInX.duration(1000)} exiting={StretchOutX}>
-          <Text style={styles.title}>Thank You</Text>
+          <Text allowFontScaling={false} style={styles.title}>
+            Thank You
+          </Text>
         </Animated.View>
         <View style={{ flex: 1 }} ref={elementRef} onLayout={handleLayout}>
           {uid && pageY && elementHeight && (

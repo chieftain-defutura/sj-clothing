@@ -83,6 +83,7 @@ const GenderModel = ({
             <Image source={gender.image} style={{ width: width / 1.3, height: height / 4.1 }} />
           </View>
           <Text
+            allowFontScaling={false}
             style={[
               styles.buttonText,
               {
@@ -104,7 +105,9 @@ const Gender: React.FC<IGender> = ({}) => {
 
   return (
     <View style={styles.genderContainer}>
-      <Text style={styles.bottomTitle}>{t('select your gender')}</Text>
+      <Text allowFontScaling={false} style={styles.bottomTitle}>
+        {t('select your gender')}
+      </Text>
 
       <View style={styles.bottomWrapper}>
         <View style={styles.genderButtonWrapper}>

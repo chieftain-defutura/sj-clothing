@@ -310,12 +310,16 @@ const Medium = () => {
             setImageOrText={setImageOrText}
             steps={isSteps}
             isDone={isDone}
+            isColor={isColor}
             setDone={setDone}
             dropDown={isDropDown}
             slideValue={slideValue}
+            country={isSize.country}
             setDropDown={setDropDown}
             isOpenDesign={isOpenDesign}
             setOpenDesign={setOpenDesign}
+            sizeVarient={isSize.sizeVarient[0]}
+            isSelectedStyle={isSelectedStyle}
             handleDecreaseSteps={handleDecreaseSteps}
             handleIncreaseSteps={handleIncreaseSteps}
           />

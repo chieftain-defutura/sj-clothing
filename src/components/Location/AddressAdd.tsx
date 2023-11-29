@@ -315,7 +315,7 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
         </GoBackArrowContent>
         <View style={{ paddingHorizontal: 26 }}>
           <View>
-            {/* <Text style={styles.header}>Add Address</Text> */}
+            {/* <Text allowFontScaling={false} style={styles.header}>Add Address</Text> */}
             <View style={styles.currentLocation}>
               <Pressable
                 style={{

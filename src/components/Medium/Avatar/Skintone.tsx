@@ -120,7 +120,9 @@ const Skintone: React.FC<ISkintone> = ({}) => {
 
   return (
     <View style={styles.SkintoneContainer}>
-      <Text style={styles.bottomTitle}>{t('select your skintone')}</Text>
+      <Text allowFontScaling={false} style={styles.bottomTitle}>
+        {t('select your skintone')}
+      </Text>
       <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
         <View
           style={{

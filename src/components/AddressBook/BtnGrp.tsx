@@ -27,7 +27,9 @@ const ButtonGroup: React.FC<btnGroup> = ({ value }) => {
           style={[styles.button, selectedButton === button.label && styles.selectedButton]}
           onPress={() => handleButtonPress(button.label)}
         >
-          <Text style={styles.buttonText}>{button.label}</Text>
+          <Text allowFontScaling={false} style={styles.buttonText}>
+            {button.label}
+          </Text>
         </TouchableOpacity>
       ))}
     </View>

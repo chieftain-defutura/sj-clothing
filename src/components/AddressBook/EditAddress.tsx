@@ -205,7 +205,9 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddress }) =
               </Pressable>
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.header}>Edit address</Text>
+              <Text allowFontScaling={false} style={styles.header}>
+                Edit address
+              </Text>
               <View>
                 <Input
                   placeholder='Dewallstreet, No.1, Mahalakshmi...'

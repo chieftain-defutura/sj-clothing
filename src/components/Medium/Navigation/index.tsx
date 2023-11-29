@@ -20,6 +20,15 @@ interface INavigation {
   warning: string
   dropDown: boolean
   isDone: boolean
+  isSelectedStyle: string
+  country: string
+  sizeVarient: {
+    size: string
+    measurement: string
+    quantity: string
+  }
+  isColor: string
+
   handleIncreaseSteps: () => void
   handleDecreaseSteps: () => void
   setDone: React.Dispatch<React.SetStateAction<boolean>>
@@ -46,6 +55,11 @@ const Navigation: React.FC<INavigation> = ({
   warning,
   dropDown,
   isDone,
+  country,
+  isColor,
+  isSelectedStyle,
+
+  sizeVarient,
   setOpenDesign,
   handleIncreaseSteps,
   handleDecreaseSteps,
@@ -84,7 +98,12 @@ const Navigation: React.FC<INavigation> = ({
               setOpenDesign(false), handleDecreaseSteps()
             }}
           >
-            <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>{t('Done')}</Text>
+            <Text
+              allowFontScaling={false}
+              style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}
+            >
+              {t('Done')}
+            </Text>
           </Pressable>
         </View>
       )}
@@ -101,28 +120,55 @@ const Navigation: React.FC<INavigation> = ({
             },
           ]}
         >
-          <Pressable onPress={handleDecreaseSteps}>
+          <Pressable
+            style={{ opacity: steps === 1 ? 0 : 1 }}
+            onPress={() => steps !== 1 && handleDecreaseSteps()}
+          >
             <Animated.View>
               <ArrowCircleLeft width={24} height={24} />
             </Animated.View>
           </Pressable>
           {steps !== 6 && (
             <View
-              style={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+                alignItems: 'center',
+                borderRadius: 50,
+                backgroundColor: steps === 4 ? isColor : 'transparent',
+              }}
             >
               <Pressable
                 onPress={() => (steps !== 5 ? setDropDown(true) : handleIncreaseSteps())}
                 style={styles.Dropdown}
               >
-                <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
-                  {steps === 1 && `${t('Select Style')}`}
-                  {steps === 2 && `${t('Select Country')}`}
-                  {steps === 3 && `${t('Select Size')}`}
-                  {steps === 4 && `${t('Select Color')}`}
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    color: COLORS.textClr,
+                    fontFamily: 'Gilroy-Medium',
+                    opacity: steps === 4 && isColor ? 0 : 1,
+                  }}
+                >
+                  {steps === 1 && `${t(isSelectedStyle ? isSelectedStyle : 'Select Style')}`}
+                  {steps === 2 && `${t(country ? country : 'Select Country')}`}
+                  {steps === 3 &&
+                    `${t(
+                      sizeVarient.size
+                        ? `${sizeVarient.size}-${sizeVarient.measurement}`
+                        : 'Select Size',
+                    )}`}
+                  {steps === 4 && `${t(isColor ? isColor : 'Select Color')}`}
                   {steps === 5 && `${t('Add more')}`}
                 </Text>
+                {steps === 1 && !isSelectedStyle && <DropDownArrowIcon />}
+                {steps === 2 && !country && <DropDownArrowIcon />}
+                {steps === 3 && !sizeVarient.size && <DropDownArrowIcon />}
 
-                {steps !== 5 && <DropDownArrowIcon />}
+                {steps === 4 && !isColor && <DropDownArrowIcon />}
+
+                {/* {steps !== 5 && <DropDownArrowIcon />} */}
               </Pressable>
               {warning && (
                 <Text
@@ -150,7 +196,10 @@ const Navigation: React.FC<INavigation> = ({
                 }}
                 style={styles.Dropdown}
               >
-                <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                <Text
+                  allowFontScaling={false}
+                  style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}
+                >
                   {t('Add Image')}
                 </Text>
               </Pressable>
@@ -165,7 +214,10 @@ const Navigation: React.FC<INavigation> = ({
                 }}
                 style={styles.Dropdown}
               >
-                <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                <Text
+                  allowFontScaling={false}
+                  style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}
+                >
                   {t('Add Text')}
                 </Text>
               </Pressable>
@@ -197,8 +249,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
     borderWidth: 1,
-    borderColor: '#462D85',
     borderRadius: 50,
+    borderColor: '#462D85',
     paddingHorizontal: 16,
     paddingVertical: 8,
     alignItems: 'center',
