@@ -103,6 +103,7 @@ const App: React.FC = () => {
       i18n.changeLanguage(language as string)
     }
   }, [])
+
   useEffect(() => {
     getLanguage()
   }, [getLanguage])

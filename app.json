@@ -51,10 +51,15 @@
             "useFrameworks": "static"
           }
         }
+      ],
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.com.sjclothing",
+          "enableGooglePay": true
+        }
       ]
     ],
-    "extra": {
-      "eas": {}
-    }
+    "extra": {}
   }
 }
