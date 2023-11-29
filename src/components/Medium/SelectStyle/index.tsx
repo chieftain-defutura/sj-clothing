@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { FlatList } from 'react-native-gesture-handler'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
@@ -22,13 +22,17 @@ const SelectStyle: React.FC<ISelectStyle> = ({
   isSelectedStyle,
   setSelectedStyle,
 }) => {
-  const avatar = userStore((state) => state.avatar)
   const { t } = useTranslation('midlevel')
+  const avatar = userStore((state) => state.avatar)
   const handleSelect = (title: string) => {
-    setSelectedStyle(title)
-    setDropDown(false)
+    if (title === 'There is no styles available right now') {
+      setSelectedStyle('')
+      setDropDown(false)
+    } else {
+      setSelectedStyle(title)
+      setDropDown(false)
+    }
   }
-
   return (
     <LinearGradient
       colors={dropDownGradient}
@@ -87,18 +91,30 @@ const SelectStyle: React.FC<ISelectStyle> = ({
                   paddingVertical: 4,
                 }}
               >
-                <Text
-                  style={{
-                    textAlign: 'left',
-                    fontFamily: 'Gilroy-Medium',
-                    color:
-                      isSelectedStyle === item.styles
-                        ? COLORS.textSecondaryClr
-                        : COLORS.iconsNormalClr,
-                  }}
-                >
-                  {item.styles}
-                </Text>
+                {item.styles ? (
+                  <Text
+                    style={{
+                      textAlign: 'left',
+                      fontFamily: 'Gilroy-Medium',
+                      color:
+                        isSelectedStyle === item.styles
+                          ? COLORS.textSecondaryClr
+                          : COLORS.iconsNormalClr,
+                    }}
+                  >
+                    {item.styles}
+                  </Text>
+                ) : (
+                  <Text
+                    style={{
+                      textAlign: 'left',
+                      fontFamily: 'Gilroy-Medium',
+                      color: COLORS.textSecondaryClr,
+                    }}
+                  >
+                    There is no styles available right now
+                  </Text>
+                )}
               </Pressable>
             )}
           />

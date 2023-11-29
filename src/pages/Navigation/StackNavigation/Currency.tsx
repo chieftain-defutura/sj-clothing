@@ -148,11 +148,14 @@ const Currency = () => {
                   gap: 8,
                 }}
               >
-                <Text allowFontScaling={false} style={(styles.selectText, { fontSize: 20 })}>
-                  {currency ? currency.symbol : ''}
-                </Text>
                 <Text allowFontScaling={false} style={styles.selectText}>
                   {currency ? currency.abrive : ''}
+                </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={(styles.selectText, { fontSize: 20, color: `${COLORS.textSecondaryClr}` })}
+                >
+                  {currency ? currency.symbol : ''}
                 </Text>
               </View>
               <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
@@ -184,10 +187,10 @@ const Currency = () => {
                         }}
                       >
                         <Text allowFontScaling={false} style={styles.selectListText}>
-                          {f.symbol}
+                          {f.abrive}
                         </Text>
                         <Text allowFontScaling={false} style={styles.selectListText}>
-                          {f.abrive}
+                          {f.symbol}
                         </Text>
                       </Pressable>
                     ))}

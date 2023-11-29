@@ -5,12 +5,15 @@ import { userStore } from '../../store/userStore'
 import CustomButton from '../../components/Button'
 import AlertIcon from '../../assets/icons/Alert'
 import { useNavigation } from '@react-navigation/native'
-import { getAuth, deleteUser } from 'firebase/auth'
+import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth'
+import { doc, deleteDoc } from 'firebase/firestore/lite'
+import { db } from '../../../firebase'
 
 interface IDelectAccount {
   closeModal?: () => void
   errorMessage?: string | null
 }
+
 const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) => {
   const user = userStore((store) => store.user)
   const updateUser = userStore((store) => store.updateUser)
@@ -19,13 +22,15 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
 
   const handleDelete = async () => {
     try {
+      if (!user) return
       const auth = getAuth()
       const currentUser = auth.currentUser
 
       if (currentUser) {
+        const userDocRef = doc(db, 'users', user.uid)
+        await deleteDoc(userDocRef)
         await deleteUser(currentUser)
         closeModal?.()
-        navigation.navigate('MidLevel')
         console.log('User account successfully deleted.')
       } else {
         console.error('No authenticated user found.')

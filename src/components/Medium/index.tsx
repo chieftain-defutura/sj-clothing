@@ -20,6 +20,7 @@ import SignupModal from '../../screens/Modals/Signup'
 import ForgotMail from '../../screens/Modals/ForgotMail'
 import { IDesigns, IMidlevel } from '../../constant/types'
 import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
+import AlertModal from '../../screens/Modals/AlertModal'
 
 const { width } = Dimensions.get('window')
 
@@ -33,6 +34,7 @@ const Medium = () => {
   const [isDropDown, setDropDown] = useState(false)
   const [uid, setUid] = useState<string>('')
   const [focus, setFocus] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
 
   //data
   const [data, setData] = useState<IMidlevel[]>()
@@ -180,28 +182,33 @@ const Medium = () => {
     handleUpdateImageAndText()
   }, [handleSetUid, handleUpdateColor, handleUpdateSize, handleUpdateImageAndText])
   useEffect(() => {
-    const Filtereddata = data?.find((f) => f.styles === isSelectedStyle)
+    const Filtereddata = data?.find(
+      (f) =>
+        f.styles.toLowerCase() === isSelectedStyle.toLowerCase() &&
+        f.gender.toLowerCase() === avatar.gender?.toLowerCase(),
+    )
     setFilteredData(Filtereddata)
-    if (
-      Filtereddata?.gender.toLowerCase() !== avatar?.gender?.toLowerCase() &&
-      isSelectedStyle !== ''
-    ) {
-      Alert.alert(`Alert ${avatar?.gender}`, 'Not Available', [
-        {
-          text: 'Cancel',
-          onPress: () => {
-            setSteps(1)
-          },
-          style: 'cancel',
-        },
-        {
-          text: 'OK',
-          onPress: () => {
-            setSteps(1)
-          },
-        },
-      ])
-    }
+    // if (
+    //   Filtereddata?.gender.toLowerCase() !== avatar?.gender?.toLowerCase() &&
+    //   isSelectedStyle !== ''
+    // ) {
+    //   // Alert.alert(`Alert ${avatar?.gender}`, 'Not Available', [
+    //   //   {
+    //   //     text: 'Cancel',
+    //   //     onPress: () => {
+    //   //       setSteps(1)
+    //   //     },
+    //   //     style: 'cancel',
+    //   //   },
+    //   //   {
+    //   //     text: 'OK',
+    //   //     onPress: () => {
+    //   //       setSteps(1)
+    //   //     },
+    //   //   },
+    //   // ])
+    //   setOpenModal(true)
+    // }
   }, [isSelectedStyle, data, avatar])
 
   useEffect(() => {
@@ -425,6 +432,7 @@ const Medium = () => {
               onClose={() => setForgotmail(false)}
             />
           )}
+          {openModal && <AlertModal />}
         </View>
       )}
       {openCheckout && FilteredData && (
