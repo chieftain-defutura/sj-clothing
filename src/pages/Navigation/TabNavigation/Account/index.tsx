@@ -32,6 +32,7 @@ import ForgotMail from '../../../../screens/Modals/ForgotMail'
 import Tooltip from '../../../../screens/Modals/TooltipModel'
 import LogOut from '../../../../screens/Modals/LogOut'
 import DelectAccount from '../../../../screens/Modals/DelectAccount'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface IAccount {
   navigation: any
@@ -61,6 +62,19 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   //   updatePhoneNo,
   //   updateName,
   // } = userStore()
+
+  const isShowToolTip = async () => {
+    const data = await AsyncStorage.getItem('showToolTip')
+    console.log(data)
+    if (!data) {
+      AsyncStorage.setItem('showToolTip', '0')
+      showToolTip(true)
+    }
+    // await AsyncStorage.removeItem('mail')
+  }
+  useEffect(() => {
+    isShowToolTip()
+  })
 
   const updateUser = userStore((state) => state.updateUser)
   const profile = userStore((state) => state.profile)
@@ -163,7 +177,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                       borderBottomRightRadius: 50,
                     }}
                   />
-                ) : user && profile ? (
+                ) : user || profile ? (
                   <Image
                     source={{ uri: profile as string }}
                     style={{
@@ -325,7 +339,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
           }}
           onClose={() => {
             setSignUp(false)
-            showToolTip(true)
+            // showToolTip(true)
           }}
         />
       )}
