@@ -63,13 +63,18 @@ const EmailVerification: React.FC<IEmailVerification> = ({
         >
           <CloseIcon width={24} height={24} />
         </Pressable>
-        <Text style={styles.header}>Verify Your Mail</Text>
-        <Text style={styles.description}>
+        <Text allowFontScaling={false} style={styles.header}>
+          Verify Your Mail
+        </Text>
+        <Text allowFontScaling={false} style={styles.description}>
           Hi {user?.displayName}, Please verify your email address by clicking the link send to{' '}
           {user?.email}
         </Text>
         {errorMessage && (
-          <Text style={{ fontSize: 12, color: `${COLORS.errorClr}`, fontFamily: `Gilroy-Regular` }}>
+          <Text
+            allowFontScaling={false}
+            style={{ fontSize: 12, color: `${COLORS.errorClr}`, fontFamily: `Gilroy-Regular` }}
+          >
             {errorMessage}
           </Text>
         )}

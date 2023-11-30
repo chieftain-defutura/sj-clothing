@@ -80,9 +80,9 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation, setGiftOptions, setOpe
                 <CartText>Gift options</CartText>
               </GoBackArrowContent>
 
-              <GiftImage>
+              {/* <GiftImage>
                 <TShirtImage source={require('../../../assets/images/t-shirt.png')} />
-              </GiftImage>
+              </GiftImage> */}
             </View>
           )}
           <Formik

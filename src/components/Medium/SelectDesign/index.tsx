@@ -77,7 +77,10 @@ const SelectDesign: React.FC<ISelectDesign> = ({
         }}
       >
         <View>
-          <Text style={{ fontSize: 16, color: COLORS.textClr, fontFamily: 'Arvo-Regular' }}>
+          <Text
+            allowFontScaling={false}
+            style={{ fontSize: 16, color: COLORS.textClr, fontFamily: 'Arvo-Regular' }}
+          >
             {t('Select Design')}
           </Text>
         </View>
@@ -87,10 +90,16 @@ const SelectDesign: React.FC<ISelectDesign> = ({
       </View>
 
       <View style={{ display: 'flex', flexDirection: 'row', gap: 3, alignItems: 'center' }}>
-        <Text style={{ fontSize: 14, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>
+        <Text
+          allowFontScaling={false}
+          style={{ fontSize: 14, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}
+        >
           {isImageOrText.position} position costs
         </Text>
-        <Text style={{ fontSize: 14, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>
+        <Text
+          allowFontScaling={false}
+          style={{ fontSize: 14, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}
+        >
           {isImageOrText.position === 'Front' || 'Back'
             ? (
                 Number(
@@ -103,7 +112,10 @@ const SelectDesign: React.FC<ISelectDesign> = ({
                 ) * (rate as number)
               ).toFixed(2)}
         </Text>
-        <Text style={{ fontSize: 14, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>
+        <Text
+          allowFontScaling={false}
+          style={{ fontSize: 14, color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}
+        >
           {currency.symbol}
         </Text>
       </View>

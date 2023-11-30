@@ -15,6 +15,7 @@ import i18n from './i18n'
 import { auth, db } from './firebase'
 import { userStore } from './src/store/userStore'
 import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
+import { Text } from 'react-native'
 
 SplashScreen.preventAutoHideAsync()
 

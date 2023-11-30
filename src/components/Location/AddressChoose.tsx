@@ -104,7 +104,9 @@ const AddressChoose: React.FC = () => {
         >
           {data?.length === 0 ? (
             <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>No Address</Text>
+              <Text allowFontScaling={false} style={styles.errorText}>
+                No Address
+              </Text>
             </View>
           ) : data ? (
             <ScrollView style={{ height: 500 }} showsVerticalScrollIndicator={false}>
@@ -124,14 +126,16 @@ const AddressChoose: React.FC = () => {
                     </DescriptionText>
                   </View>
                   {/* <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
-                    <Text style={styles.editText}>Edit</Text>
+                    <Text allowFontScaling={false} style={styles.editText}>Edit</Text>
                   </Pressable> */}
                 </View>
               ))}
             </ScrollView>
           ) : (
             <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>Loading</Text>
+              <Text allowFontScaling={false} style={styles.errorText}>
+                Loading
+              </Text>
             </View>
           )}
         </RadioButton.Group>

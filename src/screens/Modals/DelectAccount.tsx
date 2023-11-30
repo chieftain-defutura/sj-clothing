@@ -23,6 +23,7 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
 
   const handleDelete = async () => {
     try {
+      if (!user) return
       const auth = getAuth()
       const currentUser = auth.currentUser
 

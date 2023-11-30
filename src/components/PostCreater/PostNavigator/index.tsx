@@ -103,22 +103,22 @@
 //                   style={styles.Dropdown}
 //                 >
 //                   {steps === 1 && (
-//                     <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+//                     <Text allowFontScaling={false} style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
 //                       Select Style
 //                     </Text>
 //                   )}
 //                   {steps === 2 && (
-//                     <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+//                     <Text allowFontScaling={false} style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
 //                       Select Size
 //                     </Text>
 //                   )}
 //                   {steps === 3 && (
-//                     <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+//                     <Text allowFontScaling={false} style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
 //                       Select Color
 //                     </Text>
 //                   )}
 //                   {steps === 4 && (
-//                     <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+//                     <Text allowFontScaling={false} style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
 //                       Add Image
 //                     </Text>
 //                   )}
@@ -138,7 +138,7 @@
 //                     }}
 //                     style={styles.Dropdown}
 //                   >
-//                     <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+//                     <Text allowFontScaling={false} style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
 //                       Add Text
 //                     </Text>
 //                     <DropDownArrowIcon />
@@ -160,7 +160,7 @@
 
 //       {isDone && (
 //         <Pressable onPress={handleIncreaseSteps}>
-//           <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>Done</Text>
+//           <Text allowFontScaling={false} style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}>Done</Text>
 //         </Pressable>
 //       )}
 
@@ -238,7 +238,10 @@ const PostNavigator: React.FC<IPostNavigation> = ({
       </Pressable>
       <View style={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
         <Pressable onPress={() => handleIncreaseSteps()} style={styles.Dropdown}>
-          <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+          <Text
+            allowFontScaling={false}
+            style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}
+          >
             {steps === 1 && `${t('Select Style')}`}
             {steps === 2 && `${t('Select Country')}`}
             {steps === 3 && `${t('Select Size')}`}
