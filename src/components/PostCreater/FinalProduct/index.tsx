@@ -79,6 +79,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           }}
         >
           <Text
+            allowFontScaling={false}
             style={{
               color: COLORS.textClr,
               fontFamily: 'Montserrat-Regular',
@@ -103,6 +104,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           }}
         >
           <Text
+            allowFontScaling={false}
             style={{
               color: COLORS.textClr,
               fontFamily: 'Montserrat-Regular',
@@ -127,6 +129,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           }}
         >
           <Text
+            allowFontScaling={false}
             style={{
               color: COLORS.textClr,
               fontFamily: 'Montserrat-Regular',
@@ -160,6 +163,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           }}
         >
           <Text
+            allowFontScaling={false}
             style={{
               color: COLORS.textClr,
               fontFamily: 'Montserrat-Regular',
@@ -184,6 +188,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           }}
         >
           <Text
+            allowFontScaling={false}
             style={{
               color: COLORS.textClr,
               fontFamily: 'Montserrat-Regular',
@@ -208,6 +213,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           }}
         >
           <Text
+            allowFontScaling={false}
             style={{
               color: COLORS.textClr,
               fontFamily: 'Montserrat-Regular',
@@ -217,6 +223,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
             Color
           </Text>
           <Text
+            allowFontScaling={false}
             style={{
               color: COLORS.textClr,
               fontFamily: 'Arvo-Regular',
@@ -227,14 +234,14 @@ const FinalProduct: React.FC<IFinalProduct> = ({
         </View>
       </View>
       <View style={{ marginTop: 14 }}>
-        <DetailsHeading>Detailed features</DetailsHeading>
+        <DetailsHeading allowFontScaling={false}>Detailed features</DetailsHeading>
         {Description.map((f, index) => (
           <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
             <Svg width={8} height={8}>
               <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
             </Svg>
 
-            <DetailsParaText key={index} style={{ marginLeft: 8 }}>
+            <DetailsParaText allowFontScaling={false} key={index} style={{ marginLeft: 8 }}>
               {f}
             </DetailsParaText>
           </View>

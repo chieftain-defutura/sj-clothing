@@ -199,7 +199,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
                             right: 20,
                           }}
                         >
-                          <ProductText>Coming soon</ProductText>
+                          <ProductText allowFontScaling={false}>Coming soon</ProductText>
                         </View>
                       </View>
                     </BlurView>

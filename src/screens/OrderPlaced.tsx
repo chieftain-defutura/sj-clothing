@@ -20,7 +20,7 @@ const OrderPlaced: React.FC<PlaceOrderModalProps> = ({ isVisible, onClose }) => 
           <IconEnd onPress={onClose}>
             <CloseIcon width={24} height={24} />
           </IconEnd>
-          <OrderPlacedText>Order placed!</OrderPlacedText>
+          <OrderPlacedText allowFontScaling={false}>Order placed!</OrderPlacedText>
           <CustomButton
             variant='primary'
             text='My orders'

@@ -93,7 +93,7 @@ const AddressChoose: React.FC = () => {
   return (
     <View>
       <View style={{ marginTop: 26, marginLeft: 8 }}>
-        <Header>Choose Address</Header>
+        <Header allowFontScaling={false}>Choose Address</Header>
 
         <RadioButton.Group
           onValueChange={(newValue) => {
@@ -118,9 +118,9 @@ const AddressChoose: React.FC = () => {
                   <View style={{ display: 'flex', flexDirection: 'column' }}>
                     <View style={styles.RadioTitle}>
                       <HomeIcon width={16} height={16} color={'black'} />
-                      <HeaderStyle>{f.saveAddressAs}</HeaderStyle>
+                      <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
                     </View>
-                    <DescriptionText>
+                    <DescriptionText allowFontScaling={false}>
                       {f.name}, {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city},{' '}
                       {f.state}, {f.country}, {f.pinCode}.
                     </DescriptionText>

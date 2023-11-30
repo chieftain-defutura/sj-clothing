@@ -10,12 +10,12 @@ import CloseIcon from '../../assets/icons/Close'
 interface IEmailVerification {
   closeModal?: () => void
   errorMessage?: string | null
-  setIsCreated: React.Dispatch<React.SetStateAction<boolean>>
+  // setIsCreated: React.Dispatch<React.SetStateAction<boolean>>
   setShowVerificationModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 const EmailVerification: React.FC<IEmailVerification> = ({
   closeModal,
-  setIsCreated,
+  // setIsCreated,
   errorMessage,
   setShowVerificationModal,
 }) => {
@@ -29,7 +29,7 @@ const EmailVerification: React.FC<IEmailVerification> = ({
     updateUser(user)
     if (currentUser?.emailVerified) {
       setShowVerificationModal(false)
-      setIsCreated(true)
+      // setIsCreated(true)
     }
   }
 

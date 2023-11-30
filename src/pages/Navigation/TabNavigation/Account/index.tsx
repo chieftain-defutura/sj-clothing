@@ -86,10 +86,10 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
     if (user && !user.emailVerified) {
       setSignUp(true)
     }
-    // if (user && user.emailVerified && !user.phoneNumber) {
-    //   setSignUp(true)
-    // }
-    if (user && user.emailVerified) {
+    if (user && user.emailVerified && !user.phoneNumber) {
+      setSignUp(true)
+    }
+    if (user && user.emailVerified && user.phoneNumber) {
       navigation.navigate('EditProfile')
     }
   }

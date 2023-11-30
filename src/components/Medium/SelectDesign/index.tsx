@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { userStore } from '../../../store/userStore'
 
 interface ISelectDesign {
+  color: string
   isDone: boolean
   designs: IDesigns[]
   isImageOrText: {
@@ -42,6 +43,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
   setOpenDesign,
   setImageOrText,
   setDone,
+  color,
 }) => {
   const { t } = useTranslation('midlevel')
   const rate = userStore((state) => state.rate)
@@ -52,6 +54,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
     isImageOrText.designs.hashtag === ''
       ? designs
       : designs?.filter((design) => design.hashTag === isImageOrText.designs.hashtag)
+
   return (
     <Animated.View
       entering={SlideInDown.duration(800)}
@@ -155,6 +158,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
               }}
             >
               <Text
+                allowFontScaling={false}
                 style={{
                   color:
                     isImageOrText.designs.hashtag === item.hashTag
@@ -196,7 +200,8 @@ const SelectDesign: React.FC<ISelectDesign> = ({
                   designs: {
                     hashtag: item.hashTag,
                     image: item.Images,
-                    originalImage: item.OriginalImages,
+                    originalImage: item.originalImages.filter((f) => f.colorCode === color)?.[0]
+                      .url,
                   },
                 })),
                   setDone(true)

@@ -102,14 +102,14 @@ const PostCard: React.FC<PostCardProps> = ({ props: componentNameProps, onPress 
             <Pressable onPress={onLikePressed}>
               <Heart height={20} width={20} />
             </Pressable>
-            <LikeText>10.01k</LikeText>
+            <LikeText allowFontScaling={false}>10.01k</LikeText>
           </ContentView>
         </CardContent>
         <EyeContent>
           <Pressable onPress={onLikePressed}>
             <EyeIcon height={20} width={20} />
           </Pressable>
-          <EyeText>10.01k</EyeText>
+          <EyeText allowFontScaling={false}>10.01k</EyeText>
         </EyeContent>
       </ImageContent>
     )
@@ -133,7 +133,7 @@ const PostCard: React.FC<PostCardProps> = ({ props: componentNameProps, onPress 
 
       <PostCardContent>
         <FlexContent>
-          <SliderNumber>{currentIndex + 1}/2</SliderNumber>
+          <SliderNumber allowFontScaling={false}>{currentIndex + 1}/2</SliderNumber>
           <SliderDots>
             <View
               style={{
@@ -163,8 +163,8 @@ const PostCard: React.FC<PostCardProps> = ({ props: componentNameProps, onPress 
           </Pressable>
         </FlexContent>
         <Content>
-          <PostCardText>Post Card</PostCardText>
-          <PostDescription>
+          <PostCardText allowFontScaling={false}>Post Card</PostCardText>
+          <PostDescription allowFontScaling={false}>
             Imperdiet in sit rhoncus , eleifend tellus augue lec ... more
           </PostDescription>
         </Content>

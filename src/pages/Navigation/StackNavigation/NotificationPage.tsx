@@ -15,7 +15,7 @@ const NotificationPage: React.FC = () => {
       >
         <ScrollViewContent showsVerticalScrollIndicator={false}>
           <View>
-            <NotificationHead>Today</NotificationHead>
+            <NotificationHead allowFontScaling={false}>Today</NotificationHead>
             {NotificationData.map((f, index) => {
               return (
                 <NotificationFlexContent key={index}>
@@ -23,14 +23,14 @@ const NotificationPage: React.FC = () => {
                     <f.notificationIcon width={24} height={24} />
                   </IconView>
                   <View>
-                    <TextHead>{f.name}</TextHead>
-                    <TextDescription>{f.description}</TextDescription>
-                    <DateText>{f.date}</DateText>
+                    <TextHead allowFontScaling={false}>{f.name}</TextHead>
+                    <TextDescription allowFontScaling={false}>{f.description}</TextDescription>
+                    <DateText allowFontScaling={false}>{f.date}</DateText>
                   </View>
                 </NotificationFlexContent>
               )
             })}
-            <NotificationHead>YESTERDAY</NotificationHead>
+            <NotificationHead allowFontScaling={false}>YESTERDAY</NotificationHead>
             {NotificationData.map((f, index) => {
               return (
                 <NotificationFlexContent key={index}>
@@ -38,9 +38,9 @@ const NotificationPage: React.FC = () => {
                     <f.notificationIcon width={24} height={24} />
                   </IconView>
                   <View>
-                    <TextHead>{f.name}</TextHead>
-                    <TextDescription>{f.description}</TextDescription>
-                    <DateText>{f.date}</DateText>
+                    <TextHead allowFontScaling={false}>{f.name}</TextHead>
+                    <TextDescription allowFontScaling={false}>{f.description}</TextDescription>
+                    <DateText allowFontScaling={false}>{f.date}</DateText>
                   </View>
                 </NotificationFlexContent>
               )

@@ -29,7 +29,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <SearchContainer>
       {leftIcon && <LeftIcon>{leftIcon}</LeftIcon>}
-      <InputText placeholder={placeholder} onChangeText={onChangeText} value={value} />
+      <InputText
+        allowFontScaling={false}
+        placeholder={placeholder}
+        onChangeText={onChangeText}
+        value={value}
+      />
       <Pressable onPress={handleClearPress}>{rightIcon && <View>{rightIcon}</View>}</Pressable>
     </SearchContainer>
   )

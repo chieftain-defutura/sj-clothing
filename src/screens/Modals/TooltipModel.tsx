@@ -50,8 +50,8 @@ const Tooltip: React.FC<TooltipProps> = ({ isVisible, onClose }) => {
           </Animated.View>
         </TooltipContainer>
         <View style={{ position: 'absolute', bottom: 160 }}>
-          <Heading>{header}</Heading>
-          <Paragraph>{body}</Paragraph>
+          <Heading allowFontScaling={false}>{header}</Heading>
+          <Paragraph allowFontScaling={false}>{body}</Paragraph>
           <Animated.View
             entering={LightSpeedInLeft.duration(1000).delay(200)}
             exiting={LightSpeedOutLeft}

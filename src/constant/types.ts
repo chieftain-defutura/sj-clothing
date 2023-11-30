@@ -140,7 +140,10 @@ export interface IDesigns {
   activePost: boolean
   hashTag: string
   type: string
-  OriginalImages: string
+  originalImages: {
+    colorCode: string
+    url: string
+  }[]
   imagePrices: {
     FrontAndBack: string
     LeftAndRight: string

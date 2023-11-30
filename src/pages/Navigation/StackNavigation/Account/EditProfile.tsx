@@ -125,7 +125,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
               formik.handleSubmit()
             }}
           >
-            <LocationText>Done</LocationText>
+            <LocationText allowFontScaling={false}>Done</LocationText>
           </Pressable>
         </FlexContent>
         <NotUserContent onPress={pickImage}>
@@ -142,18 +142,20 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
           ) : (
             <NotUserIcon width={128} height={128} />
           )}
-          <ChangeProfileText>Change profile picture</ChangeProfileText>
+          <ChangeProfileText allowFontScaling={false}>Change profile picture</ChangeProfileText>
         </NotUserContent>
       </UserWrapper>
       <View style={{ padding: 16 }}>
-        <Label>Full name</Label>
+        <Label allowFontScaling={false}>Full name</Label>
         <Input
           placeholder='John David'
           value={formik.values.fullName}
           onChangeText={formik.handleChange('fullName')}
           onBlur={formik.handleBlur('fullName')}
         />
-        {formik.errors.fullName && <ErrorText>{formik.errors.fullName}</ErrorText>}
+        {formik.errors.fullName && (
+          <ErrorText allowFontScaling={false}>{formik.errors.fullName}</ErrorText>
+        )}
       </View>
     </View>
   )

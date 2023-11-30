@@ -40,12 +40,12 @@ const FAQ: React.FC<IFAQ> = ({ navigation }) => {
               }}
             >
               <LeftArrow width={24} height={24} />
-              <CartText>{t('Help & FAQ')}</CartText>
+              <CartText allowFontScaling={false}>{t('Help & FAQ')}</CartText>
             </GoBackArrowContent>
             {FAQData.map((f, index) => (
               <View key={index} style={{ marginHorizontal: 16 }}>
                 <FAQBox onPress={() => toggleFAQ(index)}>
-                  <FAQHead>{f.heading}</FAQHead>
+                  <FAQHead allowFontScaling={false}>{f.heading}</FAQHead>
                   {expandedFAQIndex === index ? (
                     <MinusIcon width={14} height={14} />
                   ) : (
@@ -56,9 +56,9 @@ const FAQ: React.FC<IFAQ> = ({ navigation }) => {
                   <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
                     <FAQParaBox>
                       <FlexBox>
-                        <FAQHead>{f.title}</FAQHead>
+                        <FAQHead allowFontScaling={false}>{f.title}</FAQHead>
                       </FlexBox>
-                      <Paragraph>{f.description}</Paragraph>
+                      <Paragraph allowFontScaling={false}>{f.description}</Paragraph>
                     </FAQParaBox>
                   </Animated.View>
                 )}

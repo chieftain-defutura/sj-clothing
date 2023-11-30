@@ -117,14 +117,14 @@ const LoginModal: React.FC<LoginModalProps> = ({
           {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
             <LoginContainer>
               <LoginHead>
-                <LoginHeading>Log in</LoginHeading>
+                <LoginHeading allowFontScaling={false}>Log in</LoginHeading>
                 <Pressable onPress={onClose}>
                   <CloseIcon width={24} height={24} />
                 </Pressable>
               </LoginHead>
 
               <View>
-                <LabelText>E-mail</LabelText>
+                <LabelText allowFontScaling={false}>E-mail</LabelText>
                 <InputBorder>
                   <InputStyle
                     placeholder='Enter your e-mail'
@@ -135,10 +135,12 @@ const LoginModal: React.FC<LoginModalProps> = ({
                     autoCorrect={false}
                   />
                 </InputBorder>
-                {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
+                {touched.email && errors.email && (
+                  <ErrorText allowFontScaling={false}>{errors.email}</ErrorText>
+                )}
               </View>
               <View>
-                <LabelText>Password</LabelText>
+                <LabelText allowFontScaling={false}>Password</LabelText>
                 <InputBorder>
                   <InputStyle
                     secureTextEntry={!showPassword}
@@ -162,13 +164,19 @@ const LoginModal: React.FC<LoginModalProps> = ({
                     )}
                   </Pressable>
                 </InputBorder>
-                {touched.password && errors.password && <ErrorText>{errors.password}</ErrorText>}
+                {touched.password && errors.password && (
+                  <ErrorText allowFontScaling={false}>{errors.password}</ErrorText>
+                )}
               </View>
               <Pressable onPress={onForgotClick}>
-                <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
+                <ForgotPasswordText allowFontScaling={false}>Forgot Password?</ForgotPasswordText>
               </Pressable>
 
-              {errorMessage && <ErrorText style={{ marginBottom: 12 }}>{errorMessage}</ErrorText>}
+              {errorMessage && (
+                <ErrorText allowFontScaling={false} style={{ marginBottom: 12 }}>
+                  {errorMessage}
+                </ErrorText>
+              )}
 
               <CustomButton
                 variant='primary'
@@ -183,9 +191,9 @@ const LoginModal: React.FC<LoginModalProps> = ({
               />
 
               <AccountView>
-                <AccountViewText>Don’t have an account?</AccountViewText>
+                <AccountViewText allowFontScaling={false}>Don’t have an account?</AccountViewText>
                 <Pressable onPress={() => onSignClick?.()}>
-                  <SignUpLink>Create Account</SignUpLink>
+                  <SignUpLink allowFontScaling={false}>Create Account</SignUpLink>
                 </Pressable>
               </AccountView>
             </LoginContainer>

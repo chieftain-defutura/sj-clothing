@@ -21,7 +21,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({ setProduct, setCaptio
     <View style={styles.ProductAndCaptionContainer}>
       <SignUpContainer>
         <View>
-          <LabelText>Product name</LabelText>
+          <LabelText allowFontScaling={false}>Product name</LabelText>
           <InputStyle
             placeholder='Product Name'
             onChangeText={(text) => setProduct(text)}
@@ -29,7 +29,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({ setProduct, setCaptio
           />
         </View>
         <View>
-          <LabelText>Caption</LabelText>
+          <LabelText allowFontScaling={false}>Caption</LabelText>
           <InputStyle
             placeholder='Caption'
             onChangeText={(text) => setCaption(text)}

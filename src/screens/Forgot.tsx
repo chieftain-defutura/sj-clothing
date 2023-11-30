@@ -65,14 +65,14 @@ const ForgotModal: React.FC<ForgotModalProps> = ({ isVisible, onClose, onLoginCl
           {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
             <SignUpContainer>
               <SignUpHead>
-                <SignUpHeading>Forgot password</SignUpHeading>
+                <SignUpHeading allowFontScaling={false}>Forgot password</SignUpHeading>
                 <Pressable onPress={onClose}>
                   <CloseIcon width={24} height={24} />
                 </Pressable>
               </SignUpHead>
 
               <View>
-                <LabelText>E-mail</LabelText>
+                <LabelText allowFontScaling={false}>E-mail</LabelText>
                 <InputBorder>
                   <InputStyle
                     placeholder='Enter your e-mail'
@@ -82,10 +82,12 @@ const ForgotModal: React.FC<ForgotModalProps> = ({ isVisible, onClose, onLoginCl
                     placeholderTextColor={COLORS.SecondaryTwo}
                   />
                 </InputBorder>
-                {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
+                {touched.email && errors.email && (
+                  <ErrorText allowFontScaling={false}>{errors.email}</ErrorText>
+                )}
               </View>
               <View>
-                <LabelText>Password</LabelText>
+                <LabelText allowFontScaling={false}>Password</LabelText>
                 <InputBorder>
                   <InputStyle
                     secureTextEntry={!showPassword}
@@ -103,10 +105,12 @@ const ForgotModal: React.FC<ForgotModalProps> = ({ isVisible, onClose, onLoginCl
                     )}
                   </Pressable>
                 </InputBorder>
-                {touched.password && errors.password && <ErrorText>{errors.password}</ErrorText>}
+                {touched.password && errors.password && (
+                  <ErrorText allowFontScaling={false}>{errors.password}</ErrorText>
+                )}
               </View>
               <View>
-                <LabelText>Confirm password</LabelText>
+                <LabelText allowFontScaling={false}>Confirm password</LabelText>
                 <InputBorder>
                   <InputStyle
                     secureTextEntry={!showPassword}
@@ -125,7 +129,7 @@ const ForgotModal: React.FC<ForgotModalProps> = ({ isVisible, onClose, onLoginCl
                   </Pressable>
                 </InputBorder>
                 {touched.confirmPassword && errors.confirmPassword && (
-                  <ErrorText>{errors.confirmPassword}</ErrorText>
+                  <ErrorText allowFontScaling={false}>{errors.confirmPassword}</ErrorText>
                 )}
               </View>
 
@@ -139,9 +143,9 @@ const ForgotModal: React.FC<ForgotModalProps> = ({ isVisible, onClose, onLoginCl
               />
 
               <AccountView>
-                <AccountViewText>Already have an account?</AccountViewText>
+                <AccountViewText allowFontScaling={false}>Already have an account?</AccountViewText>
                 <Pressable onPress={onLoginClick}>
-                  <LoginLink>Log in</LoginLink>
+                  <LoginLink allowFontScaling={false}>Log in</LoginLink>
                 </Pressable>
               </AccountView>
             </SignUpContainer>

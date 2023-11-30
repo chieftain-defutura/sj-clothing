@@ -172,6 +172,7 @@ const Navigation: React.FC<INavigation> = ({
               </Pressable>
               {warning && (
                 <Text
+                  allowFontScaling={false}
                   style={{
                     color: COLORS.textSecondaryClr,
                     fontFamily: 'Gilroy-Medium',

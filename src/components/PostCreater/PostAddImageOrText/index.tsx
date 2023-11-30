@@ -81,6 +81,7 @@ const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
             }}
           >
             <Text
+              allowFontScaling={false}
               style={{
                 textAlign: 'center',
                 borderBottomColor: COLORS.borderClr,

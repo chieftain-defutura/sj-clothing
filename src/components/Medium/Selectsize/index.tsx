@@ -94,6 +94,7 @@ const SelectSize: React.FC<ISelectSize> = ({
           >
             <View style={{ paddingVertical: 16, paddingHorizontal: 24 }}>
               <Text
+                allowFontScaling={false}
                 style={{
                   paddingTop: 8,
                   paddingBottom: 16,
@@ -133,6 +134,7 @@ const SelectSize: React.FC<ISelectSize> = ({
                         key={index}
                       >
                         <Text
+                          allowFontScaling={false}
                           style={{
                             fontSize: 12,
                             color:

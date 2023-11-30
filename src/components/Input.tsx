@@ -40,6 +40,7 @@ const Input: React.FC<InputProps> = ({
           }}
         >
           <Text
+            allowFontScaling={false}
             style={{
               color: '#8C73CB',
               fontSize: 16,
@@ -61,6 +62,7 @@ const Input: React.FC<InputProps> = ({
 
       {leftIcon && <View>{leftIcon}</View>}
       <StyledTextInput
+        allowFontScaling={false}
         placeholder={placeholder}
         value={value}
         onChangeText={(text) => {

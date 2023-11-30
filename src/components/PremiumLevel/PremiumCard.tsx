@@ -65,14 +65,17 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
             </Animated.View>
           </Pressable>
           <View style={{ alignItems: 'center', marginTop: 14 }}>
-            <ProductText style={{ width: width / 2.3, textAlign: 'center' }}>
+            <ProductText
+              allowFontScaling={false}
+              style={{ width: width / 2.3, textAlign: 'center' }}
+            >
               {data.productName}
             </ProductText>
             <FlexContent>
-              <PriceText>
+              <PriceText allowFontScaling={false}>
                 {rate ? (Number(data.normalPrice) * (rate as number)).toFixed(2) : data.normalPrice}
               </PriceText>
-              <PriceText>{currency ? currency.symbol : '₹'}</PriceText>
+              <PriceText allowFontScaling={false}>{currency ? currency.symbol : '₹'}</PriceText>
             </FlexContent>
           </View>
         </View>

@@ -65,6 +65,7 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
           </Text>
           {errorMessage && (
             <Text
+              allowFontScaling={false}
               style={{ fontSize: 12, color: `${COLORS.errorClr}`, fontFamily: `Gilroy-Regular` }}
             >
               {errorMessage}

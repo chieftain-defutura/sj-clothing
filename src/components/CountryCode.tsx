@@ -28,6 +28,7 @@ const CountryCode: React.FC<ICountryCode> = ({ countryCode, setCountryCode, setS
             color: '#8C73CB',
             fontSize: 14,
           }}
+          allowFontScaling={false}
         >
           {countryCode}
         </Text>
