@@ -65,6 +65,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
 
   const isShowToolTip = async () => {
     const data = await AsyncStorage.getItem('showToolTip')
+
     console.log(data)
     if (!data) {
       AsyncStorage.setItem('showToolTip', '0')
@@ -74,7 +75,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   }
   useEffect(() => {
     isShowToolTip()
-  })
+  }, [isShowToolTip])
 
   const updateUser = userStore((state) => state.updateUser)
   const profile = userStore((state) => state.profile)
@@ -125,7 +126,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   // }, [fetchDataFromFirestore])
 
   const handleCustomerCarePress = () => {
-    const phoneNumber = '1234567890'
+    const phoneNumber = '7358947141'
     Linking.openURL(`tel:${phoneNumber}`)
   }
 
@@ -293,7 +294,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                   <Pressable onPress={handleDelectAccount}>
                     <ProfileUserContent>
                       <FlexIcon>
-                        {/* <LogoutIcon width={24} height={24} /> */}
                         <Text allowFontScaling={false} style={styles.LogoutText}>
                           Delect Account
                         </Text>
@@ -306,7 +306,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
               <LogoutPressable onPress={() => setLogin(true)}>
                 <ProfileUserContent>
                   <FlexIcon>
-                    {/* <LogoutIcon width={24} height={24} /> */}
                     <Text
                       allowFontScaling={false}
                       style={(styles.LogoutText, { color: '#462D85' })}

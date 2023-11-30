@@ -135,6 +135,7 @@ const StackNavigationRoutes: React.FC = () => {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={Locations}
       />
+
       <Stack.Screen
         name='Thankyou'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}

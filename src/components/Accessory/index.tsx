@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Dimensions } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
-import { addDoc, collection, getDocs } from 'firebase/firestore/lite'
+import { collection, getDocs } from 'firebase/firestore/lite'
 import styled from 'styled-components/native'
 import { db } from '../../../firebase'
 import AccessoryCard from './AccessoryCard'
@@ -9,15 +9,16 @@ import AccessoryThreeSixtyDegree from './AccessoryThreeSixtyDegree'
 import { useNavigation } from '@react-navigation/native'
 import { IAccessory } from '../../constant/types'
 import { LinearGradient } from 'expo-linear-gradient'
-import { gradientOpacityColors } from '../../styles/theme'
+import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../styles/theme'
 import { ScrollView } from 'react-native-gesture-handler'
 import { userStore } from '../../store/userStore'
 import LoginModal from '../../screens/Modals/Login'
 import SignupModal from '../../screens/Modals/Signup'
 import ForgotMail from '../../screens/Modals/ForgotMail'
 import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
+import Loader from '../Loading'
 
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 const Accessory = () => {
   const navigation = useNavigation()
@@ -27,20 +28,29 @@ const Accessory = () => {
   const [openDetails, setOpenDetails] = useState(false)
   const user = userStore((state) => state.user)
   const [openCheckout, setOpenCheckout] = useState(false)
-
   const [login, setLogin] = useState(false)
+  const [isLoading, setLoading] = useState(false)
   const [signUp, setSignUp] = useState(false)
   const [forgotMail, setForgotmail] = useState(false)
 
   const getData = useCallback(async () => {
-    const ProductRef = await getDocs(collection(db, 'Products'))
-    const fetchProduct = ProductRef.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as any),
-    }))
-    const data = fetchProduct.filter((f) => f.type === 'ACCESSORY-PRODUCTS')
-    setData(data)
+    try {
+      setLoading(true)
+      const ProductRef = await getDocs(collection(db, 'Products'))
+      const fetchProduct = ProductRef.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as any),
+      }))
+      const data = fetchProduct.filter((f) => f.type === 'ACCESSORY-PRODUCTS')
+      setData(data)
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
   }, [db])
+
   useEffect(() => {
     getData()
   }, [getData])
@@ -107,7 +117,24 @@ const Accessory = () => {
     }
   }
 
-  if (!data) return <Text>No Data</Text>
+  if (isLoading)
+    return (
+      <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
+          <Loader />
+        </View>
+      </LinearGradient>
+    )
+
+  if (!data)
+    return (
+      <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
+          <ProductText>No Data</ProductText>
+        </View>
+      </LinearGradient>
+    )
+
   return (
     <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
       {!openCheckout && (
@@ -216,8 +243,10 @@ const Accessory = () => {
 
 export default Accessory
 
-const styles = StyleSheet.create({})
-const CardPairContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
+const ProductText = styled.Text`
+  font-size: 14px;
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  color: ${COLORS.iconsHighlightClr};
+  text-align: center;
+  margin-left: 39px;
 `

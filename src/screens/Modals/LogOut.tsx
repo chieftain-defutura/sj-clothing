@@ -58,11 +58,11 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
           </Pressable> */}
           <AlertIcon width={130} height={130} />
           <Text allowFontScaling={false} style={styles.header}>
-            Are You Leaving
+            Are You Leaving ?
           </Text>
-          <Text allowFontScaling={false} style={styles.description}>
-            Hi {user?.displayName}, Are you sure, want to logout?
-          </Text>
+          {/* <Text allowFontScaling={false} style={styles.description}>
+            Hi {user?.displayName}, Are you sure, you want to logout?
+          </Text> */}
           {errorMessage && (
             <Text
               style={{ fontSize: 12, color: `${COLORS.errorClr}`, fontFamily: `Gilroy-Regular` }}
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Arvo-Regular',
     color: `${COLORS.textClr}`,
     textAlign: 'center',
+    marginBottom: 28,
   },
   description: {
     fontSize: 15,

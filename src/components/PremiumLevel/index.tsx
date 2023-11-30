@@ -16,6 +16,7 @@ import SignupModal from '../../screens/Modals/Signup'
 import ForgotMail from '../../screens/Modals/ForgotMail'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import Animated, { FadeInLeft, FadeOutLeft } from 'react-native-reanimated'
+import Loader from '../Loading'
 
 const { width, height } = Dimensions.get('window')
 
@@ -101,7 +102,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   if (isLoading)
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
-        <ProductText>Loading...</ProductText>
+        <Loader />
       </View>
     )
   if (!data)

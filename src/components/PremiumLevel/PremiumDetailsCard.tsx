@@ -582,7 +582,7 @@ const WatchVideoBorder = styled.Pressable`
   justify-content: center;
   gap: 4px;
   padding: 8px;
-  width: 90;
+  width: 90px;
 `
 
 const HideDetailsBorder = styled.TouchableOpacity`

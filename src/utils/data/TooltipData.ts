@@ -18,12 +18,12 @@
 // ]
 
 export const TooltipData = [
-  {
-    title: 'Post',
-    description:
-      'Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus , eleifend tellus augue lec.',
-    image: require('../../assets/images/PostImage/ArrowRight.png'),
-  },
+  // {
+  //   title: 'Post',
+  //   description:
+  //     'Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus , eleifend tellus augue lec.',
+  //   image: require('../../assets/images/PostImage/ArrowRight.png'),
+  // },
   {
     title: 'Mid level',
     description:
