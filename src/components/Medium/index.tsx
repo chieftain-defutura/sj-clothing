@@ -396,6 +396,7 @@ const Medium = () => {
           )}
           {isSteps === 6 && Design && isOpenDesign && !isDone && (
             <SelectDesign
+              color={isColor}
               isImageOrText={isImageOrText}
               designs={Design}
               setOpenDesign={setOpenDesign}
