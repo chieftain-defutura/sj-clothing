@@ -54,6 +54,10 @@ const SelectDesign: React.FC<ISelectDesign> = ({
     isImageOrText.designs.hashtag === ''
       ? designs
       : designs?.filter((design) => design.hashTag === isImageOrText.designs.hashtag)
+  console.log(
+    FilteredData.map((f) => f.originalImages.filter((s) => s.colorCode === color)?.[0].url),
+  )
+  console.log(color)
 
   return (
     <Animated.View
@@ -176,53 +180,68 @@ const SelectDesign: React.FC<ISelectDesign> = ({
         />
       </View>
       <View style={{ borderWidth: 1, borderColor: COLORS.borderClr }}></View>
-      <FlatList
-        contentContainerStyle={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          gap: 8,
-          paddingVertical: 16,
-        }}
-        data={FilteredData?.filter((f) => f.activePost === true)}
-        horizontal
-        renderItem={({ item, index }) => (
-          <View key={index}>
-            <Pressable
-              onPress={() => {
-                setImageOrText((prevState) => ({
-                  ...prevState,
-                  rate:
-                    isImageOrText.position === 'Front' || 'Back'
-                      ? Number(item?.imagePrices?.FrontAndBack)
-                      : Number(item?.imagePrices?.LeftAndRight),
-                  designs: {
-                    hashtag: item.hashTag,
-                    image: item.Images,
-                    originalImage: item.originalImages.filter((f) => f.colorCode === color)?.[0]
-                      .url,
-                  },
-                })),
-                  setDone(true)
-              }}
-              style={{
-                backgroundColor: COLORS.cardClr,
-                padding: 5,
-                borderRadius: 5,
-                borderColor:
-                  isImageOrText.designs.image === item.Images ? COLORS.textSecondaryClr : 'red',
-                borderWidth: isImageOrText.designs.image === item.Images ? 1 : 0,
-              }}
-            >
-              <Image
-                style={{ width: 100, height: 100, objectFit: 'cover' }}
-                source={{ uri: item.Images }}
-              />
-            </Pressable>
-          </View>
-        )}
-      />
+      {FilteredData.length ? (
+        <FlatList
+          contentContainerStyle={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            gap: 8,
+            paddingVertical: 16,
+          }}
+          data={FilteredData?.filter((f) => f.activePost === true)}
+          horizontal
+          renderItem={({ item, index }) => (
+            <View key={index}>
+              <Pressable
+                onPress={() => {
+                  setImageOrText((prevState) => ({
+                    ...prevState,
+                    rate:
+                      isImageOrText.position === 'Front' || 'Back'
+                        ? Number(item?.imagePrices?.FrontAndBack)
+                        : Number(item?.imagePrices?.LeftAndRight),
+                    designs: {
+                      hashtag: item.hashTag,
+                      image: item.Images,
+                      originalImage: item.originalImages.filter((f) => f.colorCode === color)?.[0]
+                        .url,
+                    },
+                  })),
+                    setDone(true)
+                }}
+                style={{
+                  backgroundColor: COLORS.cardClr,
+                  padding: 5,
+                  borderRadius: 5,
+                  borderColor:
+                    isImageOrText.designs.image === item.Images ? COLORS.textSecondaryClr : 'red',
+                  borderWidth: isImageOrText.designs.image === item.Images ? 1 : 0,
+                }}
+              >
+                <Image
+                  style={{ width: 100, height: 100, objectFit: 'cover' }}
+                  source={{ uri: item.Images }}
+                />
+              </Pressable>
+            </View>
+          )}
+        />
+      ) : (
+        <Text
+          allowFontScaling={false}
+          style={{
+            color: COLORS.textClr,
+            fontFamily: 'Gilroy-Regular',
+            width: 'auto',
+            textAlign: 'center',
+            paddingTop: 20,
+          }}
+        >
+          No designs available right now
+        </Text>
+      )}
     </Animated.View>
   )
 }

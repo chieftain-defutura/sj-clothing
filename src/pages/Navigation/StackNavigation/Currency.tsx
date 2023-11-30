@@ -75,7 +75,6 @@ const Currency = () => {
   const updateCurrency = userStore((state) => state.updateCurrency)
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
 
-  console.log('rate', rate)
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
   }

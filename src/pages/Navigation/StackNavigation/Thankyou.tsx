@@ -39,7 +39,6 @@ const Thankyou = () => {
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
       try {
-        console.log('rendered', avatar.gender)
         isMounted.current = true
         const tempUid = uuid.v4().toString()
         const docRef = doc(db, 'Greetings', tempUid)
