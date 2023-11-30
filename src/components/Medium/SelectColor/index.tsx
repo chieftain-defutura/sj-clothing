@@ -2,7 +2,6 @@ import React from 'react'
 import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 import { LinearGradient } from 'expo-linear-gradient'
 import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native'
-
 import { IMidlevel } from '../../../constant/types'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
 import { useTranslation } from 'react-i18next'
@@ -47,6 +46,7 @@ const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, se
             ]}
           >
             <Text
+              allowFontScaling={false}
               style={{
                 textAlign: 'center',
                 fontFamily: 'Gilroy-Medium',

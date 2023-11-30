@@ -1,17 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, Dimensions, TouchableOpacity, Pressable } from 'react-native'
+import { View, TouchableOpacity } from 'react-native'
 import LeftArrow from '../../assets/icons/LeftArrow'
-import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../styles/theme'
+import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import { query, collection, where, onSnapshot } from 'firebase/firestore'
-import { LinearGradient } from 'expo-linear-gradient'
 import StarActive from '../../assets/icons/PostPageIcon/StarActive'
 import StarInActive from '../../assets/icons/PostPageIcon/StarInActive'
-import { useTranslation } from 'react-i18next'
 import {
   doc,
   getDoc,
-  getDocs,
   setDoc,
   updateDoc,
   collection as collectionLite,
@@ -20,7 +17,7 @@ import { userStore } from '../../store/userStore'
 import { IOrder, IRatings } from '../../constant/types'
 import { db, dbDefault } from '../../../firebase'
 import CustomButton from '../Button'
-import Animated, { FadeInDown, FadeInUp, FadeOutDown } from 'react-native-reanimated'
+import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated'
 
 const StartIcons = [
   { startActive: StarActive, startInActive: StarInActive },
@@ -34,8 +31,6 @@ interface IOrderCard {
   orderId: string
   setOpenReview: React.Dispatch<React.SetStateAction<boolean>>
 }
-
-const { height, width } = Dimensions.get('window')
 
 const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
   const user = userStore((state: { user: any }) => state.user)
@@ -135,7 +130,9 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
           <View>
             <ProductWrapper>
               <View style={{ marginBottom: -100, marginLeft: -20 }}>
-                <ProductShirtText>{orderData?.productName}</ProductShirtText>
+                <ProductShirtText allowFontScaling={false}>
+                  {orderData?.productName}
+                </ProductShirtText>
                 {/* <ProductText>{productName}</ProductText> */}
                 <View
                   style={{

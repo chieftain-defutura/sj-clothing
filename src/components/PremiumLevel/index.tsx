@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Dimensions, Image } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
-import { addDoc, collection, getDocs } from 'firebase/firestore/lite'
+import { collection, getDocs } from 'firebase/firestore/lite'
 import styled from 'styled-components/native'
 import { db } from '../../../firebase'
 import PremiumCard from './PremiumCard'
@@ -16,6 +16,7 @@ import SignupModal from '../../screens/Modals/Signup'
 import ForgotMail from '../../screens/Modals/ForgotMail'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import Animated, { FadeInLeft, FadeOutLeft } from 'react-native-reanimated'
+import Loader from '../Loading'
 
 const { width, height } = Dimensions.get('window')
 
@@ -60,6 +61,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
       setLoading(false)
     }
   }, [db])
+
   useEffect(() => {
     getData()
   }, [getData])
@@ -101,13 +103,13 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   if (isLoading)
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
-        <ProductText>Loading...</ProductText>
+        <Loader />
       </View>
     )
   if (!data)
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
-        <ProductText>No Data</ProductText>
+        <ProductText allowFontScaling={false}>No Data</ProductText>
       </View>
     )
   return (

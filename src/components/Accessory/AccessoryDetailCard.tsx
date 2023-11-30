@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { useNavigation } from '@react-navigation/native'
 import {
   ScrollView,
   Image,
@@ -9,11 +8,9 @@ import {
   View,
   Pressable,
   TouchableOpacity,
-  Share,
 } from 'react-native'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import LeftArrow from '../../assets/icons/LeftArrow'
-import ShareArrow from '../../assets/icons/ShareArrow'
 import Animated, {
   FadeInLeft,
   FadeInRight,
@@ -23,7 +20,6 @@ import Animated, {
   FadeOutRight,
 } from 'react-native-reanimated'
 import { Svg, Circle } from 'react-native-svg'
-
 import CustomButton from '../Button'
 import { IAccessory } from '../../constant/types'
 import { userStore } from '../../store/userStore'

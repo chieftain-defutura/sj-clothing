@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import CustomButton from '../Button'
 import Languages from '../../pages/Navigation/StackNavigation/Languages'
@@ -169,5 +169,3 @@ const BeforeUser = () => {
 }
 
 export default BeforeUser
-
-const styles = StyleSheet.create({})

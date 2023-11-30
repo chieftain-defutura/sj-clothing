@@ -1,9 +1,8 @@
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { FlatList } from 'react-native-gesture-handler'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
-
 import { IMidlevel } from '../../../constant/types'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
 import { useTranslation } from 'react-i18next'
@@ -74,16 +73,26 @@ const SelectStyle: React.FC<ISelectStyle> = ({
         >
           <FlatList
             data={data.filter((f) => f.gender.toLowerCase() === avatar.gender?.toLowerCase())}
-            numColumns={3}
-            columnWrapperStyle={{
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'center',
+              justifyContent: 'space-evenly',
               alignItems: 'center',
-              flexGrow: 1,
-              gap: 65,
-              paddingVertical: 5,
+              gap: 38,
+              paddingVertical: 8,
             }}
+            // columnWrapperStyle={{
+            //   display: 'flex',
+            //   flexDirection: 'row',
+            //   justifyContent: 'center',
+            //   alignItems: 'center',
+            //   flexGrow: 1,
+            //   gap: 65,
+            //   paddingVertical: 5,
+            // }}
+
             renderItem={({ item, index }) => (
               <Pressable
                 key={index}
@@ -151,5 +160,3 @@ const SelectStyle: React.FC<ISelectStyle> = ({
 }
 
 export default SelectStyle
-
-const styles = StyleSheet.create({})

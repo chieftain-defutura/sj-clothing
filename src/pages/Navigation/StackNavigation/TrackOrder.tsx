@@ -9,6 +9,7 @@ import moment from 'moment'
 import { doc, getDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { IOrder } from '../../../constant/types'
+import Loader from '../../../components/Loading'
 
 const { height, width } = Dimensions.get('window')
 
@@ -38,7 +39,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
     <View style={{ flex: 1 }}>
       {!orderData ? (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
-          <ProductText allowFontScaling={false}>Loading...</ProductText>
+          <Loader />
         </View>
       ) : (
         <Animated.View

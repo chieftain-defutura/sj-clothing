@@ -8,6 +8,7 @@ import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import HomeIcon from '../../assets/icons/HomeIcon'
 import { ScrollView } from 'react-native-gesture-handler'
 import { db } from '../../../firebase'
+import Loader from '../Loading'
 
 interface AddressData {
   name: string
@@ -24,12 +25,13 @@ interface AddressData {
   saveAddressAs: string
 }
 
-const { height, width } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 const AddressChoose: React.FC = () => {
   const user = userStore((state) => state.user)
   const [data, setData] = useState<AddressData[] | null>([])
   const [checked, setChecked] = React.useState<string | null>(null)
+  const [isLoading, setLoading] = useState(false)
 
   const updateData = async (index: string) => {
     try {
@@ -66,6 +68,8 @@ const AddressChoose: React.FC = () => {
 
   const getData = useCallback(async () => {
     try {
+      setLoading(true)
+
       if (!user) return
 
       const q = doc(db, 'users', user.uid)
@@ -79,16 +83,35 @@ const AddressChoose: React.FC = () => {
             setChecked(index.toString())
           }
         })
+        setLoading(false)
       } else {
         console.log('Document not found')
+        setLoading(false)
       }
     } catch (error) {
       console.error('Error fetching data:', error)
+      setLoading(false)
+    } finally {
+      setLoading(false)
     }
   }, [user])
+
   useEffect(() => {
     getData()
   }, [getData])
+
+  if (isLoading)
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 50,
+        marginLeft: 10,
+      }}
+    >
+      <Loader />
+    </View>
 
   return (
     <View>
@@ -102,13 +125,7 @@ const AddressChoose: React.FC = () => {
           }}
           value={checked as string}
         >
-          {data?.length === 0 ? (
-            <View style={styles.errorContainer}>
-              <Text allowFontScaling={false} style={styles.errorText}>
-                No Address
-              </Text>
-            </View>
-          ) : data ? (
+          {data?.length ? (
             <ScrollView style={{ height: 500 }} showsVerticalScrollIndicator={false}>
               {data.map((f, index) => (
                 <View key={index} style={styles.radioBtn}>
@@ -126,16 +143,14 @@ const AddressChoose: React.FC = () => {
                     </DescriptionText>
                   </View>
                   {/* <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
-                    <Text allowFontScaling={false} style={styles.editText}>Edit</Text>
-                  </Pressable> */}
+                      <Text allowFontScaling={false} style={styles.editText}>Edit</Text>
+                   </Pressable> */}
                 </View>
               ))}
             </ScrollView>
           ) : (
-            <View style={styles.errorContainer}>
-              <Text allowFontScaling={false} style={styles.errorText}>
-                Loading
-              </Text>
+            <View style={{ marginTop: 40 }}>
+              <ProductText allowFontScaling={false}>No Address</ProductText>
             </View>
           )}
         </RadioButton.Group>
@@ -183,6 +198,7 @@ const Header = styled.Text`
   font-size: 18px;
   color: ${COLORS.iconsHighlightClr};
   margin-bottom: 12px;
+  margin-top: 12px;
 `
 
 const FlexContent = styled.View`
@@ -205,6 +221,13 @@ const AddAddressBtn = styled.View`
   align-items: center;
   gap: 2px;
   width: 165px;
+`
+const ProductText = styled.Text`
+  font-size: 14px;
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  color: ${COLORS.iconsHighlightClr};
+  text-align: center;
+  margin-left: 39px;
 `
 
 const styles = StyleSheet.create({

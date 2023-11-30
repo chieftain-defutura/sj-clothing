@@ -153,6 +153,7 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
                   value={onText || ''}
                   style={styles.inputBox}
                   placeholderTextColor={COLORS.SecondaryTwo}
+                  allowFontScaling={false}
                 />
               </View>
               <View

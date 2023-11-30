@@ -58,7 +58,6 @@ const Navigation: React.FC<INavigation> = ({
   country,
   isColor,
   isSelectedStyle,
-
   sizeVarient,
   setOpenDesign,
   handleIncreaseSteps,

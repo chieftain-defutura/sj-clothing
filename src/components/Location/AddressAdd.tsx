@@ -311,7 +311,7 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
           }}
         >
           <LeftArrow width={24} height={24} />
-          <CartText>Add Address</CartText>
+          <CartText allowFontScaling={false}>Add Address</CartText>
         </GoBackArrowContent>
         <View style={{ paddingHorizontal: 26 }}>
           <View>

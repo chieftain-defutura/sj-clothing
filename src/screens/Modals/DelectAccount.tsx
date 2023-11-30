@@ -60,12 +60,12 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
       <View style={styles.VerificationContainer}>
         <View style={styles.VerificationWrapper}>
           <AlertIcon width={130} height={130} />
-          <Text allowFontScaling={false} style={styles.header}>
-            Are you sure!
+          <Text style={styles.header} allowFontScaling={false}>
+            Are you sure want to Delete account ?
           </Text>
-          <Text allowFontScaling={false} style={styles.description}>
+          {/* <Text style={styles.description}>
             Hi {user?.displayName}, Are you sure you want to delete your account?
-          </Text>
+          </Text> */}
           {errorMessage && (
             <Text
               allowFontScaling={false}
@@ -120,6 +120,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Arvo-Regular',
     color: `${COLORS.textClr}`,
     textAlign: 'center',
+    marginBottom: 28,
+    lineHeight: 32,
   },
   description: {
     fontSize: 15,

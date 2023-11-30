@@ -112,16 +112,26 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
         >
           <FlatList
             data={country}
-            numColumns={3}
-            columnWrapperStyle={{
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'center',
+              justifyContent: 'space-evenly',
               alignItems: 'center',
-              flexGrow: 1,
-              gap: 65,
-              paddingVertical: 5,
+              gap: 38,
+              paddingVertical: 8,
             }}
+            // numColumns={3}
+            // columnWrapperStyle={{
+            //   display: 'flex',
+            //   flexDirection: 'row',
+            //   justifyContent: 'center',
+            //   alignItems: 'center',
+            //   flexGrow: 1,
+            //   gap: 65,
+            //   paddingVertical: 5,
+            // }}
             renderItem={({ item, index }) => (
               <Pressable
                 key={index}

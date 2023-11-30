@@ -23,6 +23,7 @@ import { userStore } from '../../../store/userStore'
 import { IOrder, IRatings } from '../../../constant/types'
 import TrackOrder from './TrackOrder'
 import Rating from '../../../components/Rating'
+import Loader from '../../../components/Loading'
 
 const { height } = Dimensions.get('window')
 
@@ -73,7 +74,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
     return (
       <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
-          <ProductText allowFontScaling={false}>Loading...</ProductText>
+          <Loader />
         </View>
       </LinearGradient>
     )
