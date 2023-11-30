@@ -145,6 +145,7 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
                     onBlur={handleBlur('phoneNumber')}
                     placeholderTextColor={COLORS.SecondaryTwo}
                     autoCorrect={false}
+                    allowFontScaling={false}
                   />
                 </View>
                 <Pressable onPress={() => handleSendCode(values.phoneNumber)}>
@@ -165,6 +166,7 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
                   onBlur={handleBlur('verifyCode')}
                   placeholderTextColor={COLORS.SecondaryTwo}
                   autoCorrect={false}
+                  allowFontScaling={false}
                 />
                 {/* <Pressable onPress={() => handleVerifyCode(values.verifyCode)}>
                     <VerifyText>Verify</VerifyText>

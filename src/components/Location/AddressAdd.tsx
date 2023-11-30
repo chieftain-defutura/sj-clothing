@@ -294,8 +294,8 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
 
   return (
     <Animated.View
-      entering={SlideInDown.duration(500).delay(200)}
-      exiting={SlideOutDown.duration(500).delay(200)}
+      entering={SlideInDown}
+      exiting={SlideOutDown}
       style={{
         flex: 1,
       }}
