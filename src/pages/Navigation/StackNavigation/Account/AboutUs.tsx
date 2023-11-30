@@ -29,7 +29,7 @@ const AboutUs: React.FC<IAboutUs> = ({ navigation }) => {
               }}
             >
               <LeftArrow width={24} height={24} />
-              <CartText>{t('About us')}</CartText>
+              <CartText allowFontScaling={false}>{t('About us')}</CartText>
             </GoBackArrowContent>
 
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -39,7 +39,7 @@ const AboutUs: React.FC<IAboutUs> = ({ navigation }) => {
               />
             </View>
             <View style={{ padding: 16 }}>
-              <Paragraph>
+              <Paragraph allowFontScaling={false}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
                 exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum
@@ -47,11 +47,11 @@ const AboutUs: React.FC<IAboutUs> = ({ navigation }) => {
                 labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                 ullamco laboris.
               </Paragraph>
-              <Paragraph style={{ marginVertical: 8 }}>
+              <Paragraph allowFontScaling={false} style={{ marginVertical: 8 }}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                 incididunt ut labore et dolore magna aliqua.
               </Paragraph>
-              <Paragraph>
+              <Paragraph allowFontScaling={false}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
                 exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum

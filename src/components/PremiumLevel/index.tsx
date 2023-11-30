@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Dimensions, Image } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
-import { addDoc, collection, getDocs } from 'firebase/firestore/lite'
+import { collection, getDocs } from 'firebase/firestore/lite'
 import styled from 'styled-components/native'
 import { db } from '../../../firebase'
 import PremiumCard from './PremiumCard'
@@ -61,6 +61,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
       setLoading(false)
     }
   }, [db])
+
   useEffect(() => {
     getData()
   }, [getData])
@@ -108,7 +109,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   if (!data)
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
-        <ProductText>No Data</ProductText>
+        <ProductText allowFontScaling={false}>No Data</ProductText>
       </View>
     )
   return (
@@ -200,7 +201,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
                             right: 20,
                           }}
                         >
-                          <ProductText>Coming soon</ProductText>
+                          <ProductText allowFontScaling={false}>Coming soon</ProductText>
                         </View>
                       </View>
                     </BlurView>

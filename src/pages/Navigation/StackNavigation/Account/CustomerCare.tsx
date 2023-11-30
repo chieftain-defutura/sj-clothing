@@ -14,7 +14,7 @@ const Customer: React.FC = () => {
       <TouchableOpacity onPress={handleCall}>
         <View>
           {/* Your "Customer Care" view */}
-          <Text>Customer Care</Text>
+          <Text allowFontScaling={false}>Customer Care</Text>
         </View>
       </TouchableOpacity>
     </View>

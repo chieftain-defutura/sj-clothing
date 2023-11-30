@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-
+import React from 'react'
 import { StyleSheet, Text, View, Image, Pressable, Dimensions } from 'react-native'
 import Animated, {
   BounceInUp,
@@ -81,6 +80,7 @@ const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
             }}
           >
             <Text
+              allowFontScaling={false}
               style={{
                 textAlign: 'center',
                 borderBottomColor: COLORS.borderClr,

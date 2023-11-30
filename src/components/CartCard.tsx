@@ -19,8 +19,8 @@ const CartCard: React.FC<ICheckout> = ({ price, offerPrice, productName, product
           <View>
             <ProductWrapper>
               <View style={{ marginBottom: 16 }}>
-                <ProductText>Product</ProductText>
-                <ProductShirtText>{productName}</ProductShirtText>
+                <ProductText allowFontScaling={false}>Product</ProductText>
+                <ProductShirtText allowFontScaling={false}>{productName}</ProductShirtText>
               </View>
               {/* <Pressable onPress={() => handleClose(index)}>
                         <CircleClose width={20} height={20} />
@@ -41,7 +41,7 @@ const CartCard: React.FC<ICheckout> = ({ price, offerPrice, productName, product
 
             <View>
               <View>
-                <ProductText>price</ProductText>
+                <ProductText allowFontScaling={false}>price</ProductText>
               </View>
               <View style={{ display: 'flex', flexDirection: 'row', gap: 6 }}>
                 <View
@@ -51,8 +51,10 @@ const CartCard: React.FC<ICheckout> = ({ price, offerPrice, productName, product
                     alignItems: 'center',
                   }}
                 >
-                  <OldPriceText>{(Number(price) * (rate as number)).toFixed(2)}</OldPriceText>
-                  <OldPriceText> {currency.symbol}</OldPriceText>
+                  <OldPriceText allowFontScaling={false}>
+                    {(Number(price) * (rate as number)).toFixed(2)}
+                  </OldPriceText>
+                  <OldPriceText allowFontScaling={false}> {currency.symbol}</OldPriceText>
                 </View>
                 <View
                   style={{
@@ -61,8 +63,10 @@ const CartCard: React.FC<ICheckout> = ({ price, offerPrice, productName, product
                     alignItems: 'center',
                   }}
                 >
-                  <ProductName>{(Number(offerPrice) * (rate as number)).toFixed(2)}</ProductName>
-                  <ProductName>{currency.symbol}</ProductName>
+                  <ProductName allowFontScaling={false}>
+                    {(Number(offerPrice) * (rate as number)).toFixed(2)}
+                  </ProductName>
+                  <ProductName allowFontScaling={false}>{currency.symbol}</ProductName>
                 </View>
               </View>
             </View>

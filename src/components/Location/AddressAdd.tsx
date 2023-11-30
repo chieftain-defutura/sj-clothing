@@ -311,7 +311,7 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
           }}
         >
           <LeftArrow width={24} height={24} />
-          <CartText>Add Address</CartText>
+          <CartText allowFontScaling={false}>Add Address</CartText>
         </GoBackArrowContent>
         <View style={{ paddingHorizontal: 26 }}>
           <View>
@@ -337,9 +337,9 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                   }}
                 >
                   <View style={styles.RadioTitle}>
-                    <HeaderStyle>Use current location</HeaderStyle>
+                    <HeaderStyle allowFontScaling={false}>Use current location</HeaderStyle>
                   </View>
-                  {Addr && <DescriptionText>{Addr}</DescriptionText>}
+                  {Addr && <DescriptionText allowFontScaling={false}>{Addr}</DescriptionText>}
                 </View>
               </Pressable>
 
@@ -368,7 +368,9 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                 />
 
                 {(formik.values.name === undefined || formik.values.name.length === 0) &&
-                  formik.touched.name && <ErrorText>*Please enter name</ErrorText>}
+                  formik.touched.name && (
+                    <ErrorText allowFontScaling={false}>*Please enter name</ErrorText>
+                  )}
               </View>
               <View>
                 <Input
@@ -381,7 +383,9 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
 
                 {(formik.values.addressOne === undefined ||
                   formik.values.addressOne.length === 0) &&
-                  formik.touched.addressOne && <ErrorText>*Please enter Address One</ErrorText>}
+                  formik.touched.addressOne && (
+                    <ErrorText allowFontScaling={false}>*Please enter Address One</ErrorText>
+                  )}
               </View>
               <View>
                 <Input
@@ -393,7 +397,9 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                 />
                 {(formik.values.addressTwo === undefined ||
                   formik.values.addressTwo.length === 0) &&
-                  formik.touched.addressTwo && <ErrorText>*Please enter Address Two</ErrorText>}
+                  formik.touched.addressTwo && (
+                    <ErrorText allowFontScaling={false}>*Please enter Address Two</ErrorText>
+                  )}
               </View>
               <View>
                 <Input
@@ -404,7 +410,9 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                   onSubmitEditing={Keyboard.dismiss}
                 />
                 {(formik.values.city === undefined || formik.values.city.length === 0) &&
-                  formik.touched.city && <ErrorText>*Please enter city</ErrorText>}
+                  formik.touched.city && (
+                    <ErrorText allowFontScaling={false}>*Please enter city</ErrorText>
+                  )}
               </View>
               <View>
                 <Input
@@ -415,7 +423,9 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                   onSubmitEditing={Keyboard.dismiss}
                 />
                 {(formik.values.state === undefined || formik.values.state.length === 0) &&
-                  formik.touched.state && <ErrorText>*Please enter state</ErrorText>}
+                  formik.touched.state && (
+                    <ErrorText allowFontScaling={false}>*Please enter state</ErrorText>
+                  )}
               </View>
 
               <View>
@@ -427,7 +437,9 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                   onSubmitEditing={Keyboard.dismiss}
                 />
                 {(formik.values.pinCode === undefined || formik.values.pinCode.length === 0) &&
-                  formik.touched.pinCode && <ErrorText>*Please enter pinCode</ErrorText>}
+                  formik.touched.pinCode && (
+                    <ErrorText allowFontScaling={false}>*Please enter pinCode</ErrorText>
+                  )}
               </View>
               <View>
                 <Input
@@ -438,7 +450,9 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                   onSubmitEditing={Keyboard.dismiss}
                 />
                 {(formik.values.country === undefined || formik.values.country.length === 0) &&
-                  formik.touched.country && <ErrorText>*Please enter country</ErrorText>}
+                  formik.touched.country && (
+                    <ErrorText allowFontScaling={false}>*Please enter country</ErrorText>
+                  )}
               </View>
               <View>
                 <Input
@@ -449,7 +463,9 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                   onSubmitEditing={Keyboard.dismiss}
                 />
                 {(formik.values.floor === undefined || formik.values.floor.length === 0) &&
-                  formik.touched.floor && <ErrorText>*Please enter floor</ErrorText>}
+                  formik.touched.floor && (
+                    <ErrorText allowFontScaling={false}>*Please enter floor</ErrorText>
+                  )}
               </View>
               <View>
                 <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -468,7 +484,9 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                   />
                 </View>
                 {(formik.values.phoneNo === undefined || formik.values.phoneNo.length === 0) &&
-                  formik.touched.phoneNo && <ErrorText>*Please enter phoneNo</ErrorText>}
+                  formik.touched.phoneNo && (
+                    <ErrorText allowFontScaling={false}>*Please enter phoneNo</ErrorText>
+                  )}
               </View>
 
               <View>
@@ -482,7 +500,7 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                 {(formik.values.saveAddressAs === undefined ||
                   formik.values.saveAddressAs.length === 0) &&
                   formik.touched.saveAddressAs && (
-                    <ErrorText>*Please enter saveAddressAs</ErrorText>
+                    <ErrorText allowFontScaling={false}>*Please enter saveAddressAs</ErrorText>
                   )}
                 {/* {formik.errors.saveAddressAs && (
                     <ErrorText>{formik.errors.saveAddressAs}</ErrorText>

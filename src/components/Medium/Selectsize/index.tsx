@@ -1,19 +1,11 @@
-import { StyleSheet, Text, View, Pressable, FlatList, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import CloseIcon from '../../../assets/icons/Close'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
-import Animated, {
-  BounceInUp,
-  BounceOutUp,
-  FlipInXDown,
-  FlipOutXDown,
-} from 'react-native-reanimated'
+import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 import { IMidlevel } from '../../../constant/types'
 import { userStore } from '../../../store/userStore'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useTranslation } from 'react-i18next'
-
-const { width } = Dimensions.get('window')
 
 interface ISelectSize {
   isDropDown: boolean
@@ -94,6 +86,7 @@ const SelectSize: React.FC<ISelectSize> = ({
           >
             <View style={{ paddingVertical: 16, paddingHorizontal: 24 }}>
               <Text
+                allowFontScaling={false}
                 style={{
                   paddingTop: 8,
                   paddingBottom: 16,
@@ -133,6 +126,7 @@ const SelectSize: React.FC<ISelectSize> = ({
                         key={index}
                       >
                         <Text
+                          allowFontScaling={false}
                           style={{
                             fontSize: 12,
                             color:

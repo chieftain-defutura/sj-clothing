@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { useNavigation } from '@react-navigation/native'
 import {
   ScrollView,
   Image,
@@ -9,11 +8,9 @@ import {
   View,
   Pressable,
   TouchableOpacity,
-  Share,
 } from 'react-native'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import LeftArrow from '../../assets/icons/LeftArrow'
-import ShareArrow from '../../assets/icons/ShareArrow'
 import Animated, {
   FadeInLeft,
   FadeInRight,
@@ -23,7 +20,6 @@ import Animated, {
   FadeOutRight,
 } from 'react-native-reanimated'
 import { Svg, Circle } from 'react-native-svg'
-
 import CustomButton from '../Button'
 import { IAccessory } from '../../constant/types'
 import { userStore } from '../../store/userStore'
@@ -134,8 +130,8 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                         alignItems: 'flex-start',
                       }}
                     >
-                      <ProductText>product</ProductText>
-                      <ProductName>{data.productName}</ProductName>
+                      <ProductText allowFontScaling={false}>product</ProductText>
+                      <ProductName allowFontScaling={false}>{data.productName}</ProductName>
                     </View>
 
                     <View
@@ -148,7 +144,7 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                     >
                       {!data.offerPrice ? (
                         <View>
-                          <ProductText>price</ProductText>
+                          <ProductText allowFontScaling={false}>price</ProductText>
                           <View
                             style={{
                               display: 'flex',
@@ -156,18 +152,18 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                               alignItems: 'center',
                             }}
                           >
-                            <ProductName>
+                            <ProductName allowFontScaling={false}>
                               {rate
                                 ? (Number(data.offerPrice) * (rate as number)).toFixed(2)
                                 : data.offerPrice}
                             </ProductName>
-                            <ProductName>{currency.symbol}</ProductName>
+                            <ProductName allowFontScaling={false}>{currency.symbol}</ProductName>
                           </View>
                         </View>
                       ) : (
                         <View>
                           <View>
-                            <ProductText>price</ProductText>
+                            <ProductText allowFontScaling={false}>price</ProductText>
                           </View>
                           <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
                             <View
@@ -177,12 +173,15 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                                 alignItems: 'center',
                               }}
                             >
-                              <OldPriceText>
+                              <OldPriceText allowFontScaling={false}>
                                 {rate
                                   ? (Number(data.normalPrice) * (rate as number)).toFixed(2)
                                   : data.normalPrice}
                               </OldPriceText>
-                              <OldPriceText> {currency ? currency.symbol : '₹'}</OldPriceText>
+                              <OldPriceText allowFontScaling={false}>
+                                {' '}
+                                {currency ? currency.symbol : '₹'}
+                              </OldPriceText>
                             </View>
                             <View
                               style={{
@@ -191,12 +190,14 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                                 alignItems: 'center',
                               }}
                             >
-                              <ProductName>
+                              <ProductName allowFontScaling={false}>
                                 {rate
                                   ? (Number(data.offerPrice) * (rate as number)).toFixed(2)
                                   : data.offerPrice}
                               </ProductName>
-                              <ProductName>{currency ? currency.symbol : '₹'}</ProductName>
+                              <ProductName allowFontScaling={false}>
+                                {currency ? currency.symbol : '₹'}
+                              </ProductName>
                             </View>
                           </View>
                         </View>
@@ -209,7 +210,7 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
               {showDetails && (
                 <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
                   <View style={{ marginTop: 14 }}>
-                    <DetailsHeading>Detailed features</DetailsHeading>
+                    <DetailsHeading allowFontScaling={false}>Detailed features</DetailsHeading>
                     {Description.map((f, index) => (
                       <View
                         key={index}
@@ -219,7 +220,11 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                           <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
                         </Svg>
 
-                        <DetailsParaText key={index} style={{ marginLeft: 8 }}>
+                        <DetailsParaText
+                          allowFontScaling={false}
+                          key={index}
+                          style={{ marginLeft: 8 }}
+                        >
                           {f}
                         </DetailsParaText>
                       </View>
@@ -232,11 +237,11 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
               <Btns>
                 {showDetails ? (
                   <HideDetailsBorder onPress={() => setShowDetails(false)}>
-                    <HideDetailsText>Hide details</HideDetailsText>
+                    <HideDetailsText allowFontScaling={false}>Hide details</HideDetailsText>
                   </HideDetailsBorder>
                 ) : (
                   <HideDetailsBorder onPress={() => setShowDetails(true)}>
-                    <HideDetailsText>View details</HideDetailsText>
+                    <HideDetailsText allowFontScaling={false}>View details</HideDetailsText>
                   </HideDetailsBorder>
                 )}
                 <CustomButton

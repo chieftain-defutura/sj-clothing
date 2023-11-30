@@ -23,7 +23,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import NotUserIcon from '../../../../assets/icons/AccountPageIcon/NotUserIcon'
 import { RouteProp } from '@react-navigation/native'
 import { RootStackParamList } from '../../../ScreenTypes'
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore/lite'
+import { collection, getDocs } from 'firebase/firestore/lite'
 import { useTranslation } from 'react-i18next'
 import { IOrder } from '../../../../constant/types'
 import LoginModal from '../../../../screens/Modals/Login'
@@ -33,6 +33,7 @@ import Tooltip from '../../../../screens/Modals/TooltipModel'
 import LogOut from '../../../../screens/Modals/LogOut'
 import DelectAccount from '../../../../screens/Modals/DelectAccount'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import DeleteIcon from '../../../../assets/icons/AccountPageIcon/DeleteIcon'
 
 interface IAccount {
   navigation: any
@@ -87,12 +88,15 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
     if (user && !user.emailVerified) {
       setSignUp(true)
     }
-    // if (user && user.emailVerified && !user.phoneNumber) {
-    //   setSignUp(true)
-    // }
     if (user && user.emailVerified) {
       navigation.navigate('EditProfile')
     }
+    // if (user && user.emailVerified && !user.phoneNumber) {
+    //   setSignUp(true)
+    // }
+    // if (user && user.emailVerified && user.phoneNumber) {
+    //   navigation.navigate('EditProfile')
+    // }
   }
 
   // const fetchDataFromFirestore = useCallback(async () => {
@@ -178,7 +182,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                       borderBottomRightRadius: 50,
                     }}
                   />
-                ) : user || profile ? (
+                ) : user && profile ? (
                   <Image
                     source={{ uri: profile as string }}
                     style={{
@@ -294,6 +298,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                   <Pressable onPress={handleDelectAccount}>
                     <ProfileUserContent>
                       <FlexIcon>
+                        <DeleteIcon width={24} height={24} />
                         <Text allowFontScaling={false} style={styles.LogoutText}>
                           Delect Account
                         </Text>
@@ -484,6 +489,6 @@ const styles = StyleSheet.create({
   LogoutText: {
     fontSize: 14,
     fontFamily: 'Gilroy-Medium',
-    color: '#ef5757',
+    color: '#FF3636',
   },
 })

@@ -1,9 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image } from 'react-native'
 import React, { useRef, useState } from 'react'
 import { COLORS } from '../../../styles/theme'
-import CustomButton from '../../Button'
 import { useTranslation } from 'react-i18next'
-import WebView from 'react-native-webview'
 import { userStore } from '../../../store/userStore'
 import { updateDoc, doc } from 'firebase/firestore/lite'
 

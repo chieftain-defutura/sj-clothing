@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Slick from 'react-native-slick'
 import * as ImagePicker from 'expo-image-picker'
 import UndrawGiftBox from '../../../assets/icons/Undraw-gift-box'
@@ -71,6 +71,7 @@ const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo }) => {
             <UndrawGiftBox width={248} height={200} />
             <View style={{ paddingVertical: 16 }}>
               <Text
+                allowFontScaling={false}
                 style={{
                   textAlign: 'center',
                   fontSize: 24,
@@ -81,6 +82,7 @@ const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo }) => {
                 Upload Your
               </Text>
               <Text
+                allowFontScaling={false}
                 style={{
                   textAlign: 'center',
                   fontSize: 24,
@@ -91,6 +93,7 @@ const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo }) => {
                 Gift unboxing video
               </Text>
               <Text
+                allowFontScaling={false}
                 style={{
                   textAlign: 'center',
                   fontSize: 24,
@@ -103,6 +106,7 @@ const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo }) => {
             </View>
             <Pressable onPress={pickVideo} style={styles.button}>
               <Text
+                allowFontScaling={false}
                 style={{
                   textAlign: 'center',
                   fontSize: 14,

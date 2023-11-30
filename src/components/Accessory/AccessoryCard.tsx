@@ -50,12 +50,12 @@ const AccessIAccessoryCard: React.FC<IAccessoryCard> = ({ data, setOpenCard, set
             </Animated.View>
           </Pressable>
           <View style={{ alignItems: 'center', marginTop: 14 }}>
-            <ProductText>{data.productName}</ProductText>
+            <ProductText allowFontScaling={false}>{data.productName}</ProductText>
             <FlexContent>
-              <PriceText>
+              <PriceText allowFontScaling={false}>
                 {rate ? (Number(data.normalPrice) * (rate as number)).toFixed(2) : data.normalPrice}
               </PriceText>
-              <PriceText>{currency ? currency.symbol : '₹'}</PriceText>
+              <PriceText allowFontScaling={false}>{currency ? currency.symbol : '₹'}</PriceText>
             </FlexContent>
           </View>
         </View>

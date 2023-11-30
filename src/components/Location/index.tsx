@@ -142,7 +142,7 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
               }}
             >
               <LeftArrow width={24} height={24} />
-              <CartText>Address Book</CartText>
+              <CartText allowFontScaling={false}>Address Book</CartText>
             </GoBackArrowContent>
             <View style={{ padding: 20, display: 'flex', alignItems: 'flex-start', gap: 20 }}>
               <View style={styles.searchInputBox}>
@@ -153,6 +153,7 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
                   value={onText || ''}
                   style={styles.inputBox}
                   placeholderTextColor={COLORS.SecondaryTwo}
+                  allowFontScaling={false}
                 />
               </View>
               <View
@@ -181,7 +182,7 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
                         paddingVertical: 12,
                       }}
                     >
-                      <HeaderStyle>{item.display_name}</HeaderStyle>
+                      <HeaderStyle allowFontScaling={false}>{item.display_name}</HeaderStyle>
                     </TouchableOpacity>
                   )}
                   keyExtractor={(item) => item.place_id.toString()}
@@ -192,7 +193,7 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
               <Pressable onPress={handleAddAddress}>
                 <AddAddressBtn>
                   <Plus width={16} height={16} />
-                  <BtnText>Add new Address</BtnText>
+                  <BtnText allowFontScaling={false}>Add new Address</BtnText>
                 </AddAddressBtn>
               </Pressable>
               <AddressChoose />

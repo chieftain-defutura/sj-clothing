@@ -57,7 +57,11 @@ const CustomButton: React.FC<Props> = ({
       >
         <StyledView>
           {leftIcon && <View>{leftIcon}</View>}
-          <ButtonText variant={variant} style={{ fontFamily: fontFamily, fontSize: fontSize }}>
+          <ButtonText
+            allowFontScaling={false}
+            variant={variant}
+            style={{ fontFamily: fontFamily, fontSize: fontSize }}
+          >
             {text}
           </ButtonText>
           {rightIcon && <View>{rightIcon}</View>}

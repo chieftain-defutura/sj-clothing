@@ -109,7 +109,7 @@ const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSear
             }}
           >
             <LeftArrow width={24} height={24} />
-            <CartText>Address Book</CartText>
+            <CartText allowFontScaling={false}>Address Book</CartText>
           </GoBackArrowContent>
 
           <MapView
@@ -153,7 +153,9 @@ const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSear
                 }}
               >
                 <CurrentLocationIcon width={16} height={16} />
-                <UseCurrentLocationText>Use current location</UseCurrentLocationText>
+                <UseCurrentLocationText allowFontScaling={false}>
+                  Use current location
+                </UseCurrentLocationText>
               </FlexRow>
             </CurrentLocationWrapper>
           </View>

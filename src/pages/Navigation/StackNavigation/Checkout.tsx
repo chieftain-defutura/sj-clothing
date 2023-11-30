@@ -358,7 +358,7 @@ const Checkout: React.FC<ICheckout> = ({
                 }}
               >
                 <LeftArrow width={24} height={24} />
-                <CartText>Check Out</CartText>
+                <CartText allowFontScaling={false}>Check Out</CartText>
               </GoBackArrowContent>
               <CartCard
                 setOpenCheckout={setOpenCheckout}
@@ -373,8 +373,8 @@ const Checkout: React.FC<ICheckout> = ({
                   {addr ? (
                     <Pressable>
                       <View>
-                        <HomeText>{addr.saveAddressAs}</HomeText>
-                        <HomeDescription>
+                        <HomeText allowFontScaling={false}>{addr.saveAddressAs}</HomeText>
+                        <HomeDescription allowFontScaling={false}>
                           {addr.name}, {addr.phoneNo}, {addr.floor}, {addr.addressOne},{' '}
                           {addr.addressTwo}, {addr.city}, {addr.state}, {addr.country},{' '}
                           {addr.pinCode}.
@@ -384,7 +384,7 @@ const Checkout: React.FC<ICheckout> = ({
                   ) : (
                     <View style={{ paddingVertical: 12 }}>
                       <Pressable>
-                        <HomeText>Please add a address first</HomeText>
+                        <HomeText allowFontScaling={false}>Please add a address first</HomeText>
                       </Pressable>
                     </View>
                   )}
@@ -403,7 +403,7 @@ const Checkout: React.FC<ICheckout> = ({
                     >
                       <GiftIcon width={16} height={16} />
                     </LinearGradient>
-                    <GiftText>Gift options available</GiftText>
+                    <GiftText allowFontScaling={false}>Gift options available</GiftText>
                   </GiftContent>
 
                   <Pressable>
@@ -428,9 +428,9 @@ const Checkout: React.FC<ICheckout> = ({
                       <Pressable>
                         <TruckMovingIcon width={24} height={24} />
                       </Pressable>
-                      <DeliveryText>Delivery fee</DeliveryText>
+                      <DeliveryText allowFontScaling={false}>Delivery fee</DeliveryText>
                     </DeliveryContent>
-                    <INRText>
+                    <INRText allowFontScaling={false}>
                       {(
                         Number(deliveryFees?.DeliveryFees ? deliveryFees.DeliveryFees : 0) *
                         (rate as number)
@@ -440,8 +440,8 @@ const Checkout: React.FC<ICheckout> = ({
                   </DeliveryWrapper>
                 </Content>
                 <TotalContent>
-                  <TotalText>Total</TotalText>
-                  <TotalValue>
+                  <TotalText allowFontScaling={false}>Total</TotalText>
+                  <TotalValue allowFontScaling={false}>
                     {offerPrice
                       ? (
                           (Number(offerPrice) +

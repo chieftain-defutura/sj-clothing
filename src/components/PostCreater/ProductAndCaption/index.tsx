@@ -1,9 +1,6 @@
-import React, { useState } from 'react'
-import * as Yup from 'yup'
-import { Formik } from 'formik'
+import React from 'react'
 import styled from 'styled-components/native'
-import { StyleSheet, View, Image, Pressable, ScrollView } from 'react-native'
-
+import { StyleSheet, View } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 
 interface IProductAndCaption {
@@ -11,17 +8,12 @@ interface IProductAndCaption {
   setCaption: React.Dispatch<React.SetStateAction<string>>
 }
 
-const ValidationSchema = Yup.object({
-  productname: Yup.string().required('Please enter your product name'),
-  caption: Yup.string().required('Please enter your caption'),
-})
-
 const ProductAndCaption: React.FC<IProductAndCaption> = ({ setProduct, setCaption }) => {
   return (
     <View style={styles.ProductAndCaptionContainer}>
       <SignUpContainer>
         <View>
-          <LabelText>Product name</LabelText>
+          <LabelText allowFontScaling={false}>Product name</LabelText>
           <InputStyle
             placeholder='Product Name'
             onChangeText={(text) => setProduct(text)}
@@ -29,7 +21,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({ setProduct, setCaptio
           />
         </View>
         <View>
-          <LabelText>Caption</LabelText>
+          <LabelText allowFontScaling={false}>Caption</LabelText>
           <InputStyle
             placeholder='Caption'
             onChangeText={(text) => setCaption(text)}

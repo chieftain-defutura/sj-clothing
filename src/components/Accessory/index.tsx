@@ -130,7 +130,7 @@ const Accessory = () => {
     return (
       <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
-          <ProductText>No Data</ProductText>
+          <ProductText allowFontScaling={false}>No Data</ProductText>
         </View>
       </LinearGradient>
     )

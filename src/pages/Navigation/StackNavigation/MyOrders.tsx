@@ -87,10 +87,10 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
           }}
         >
           <LeftArrow width={24} height={24} />
-          <CartText>{t('My orders')}</CartText>
+          <CartText allowFontScaling={false}>{t('My orders')}</CartText>
         </GoBackArrowContent>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
-          <ProductText>No Data</ProductText>
+          <ProductText allowFontScaling={false}>No Data</ProductText>
         </View>
       </LinearGradient>
     )
@@ -112,7 +112,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
                     }}
                   >
                     <LeftArrow width={24} height={24} />
-                    <CartText>{t('My orders')}</CartText>
+                    <CartText allowFontScaling={false}>{t('My orders')}</CartText>
                   </GoBackArrowContent>
                   <CartPageContent>
                     {orderData
@@ -194,7 +194,7 @@ const OrderCard: React.FC<IOrderCard> = ({
           <View>
             <ProductWrapper>
               <View>
-                <ProductShirtText>{data.productName}</ProductShirtText>
+                <ProductShirtText allowFontScaling={false}>{data.productName}</ProductShirtText>
                 {data.orderStatus.delivery.status && (
                   <Pressable
                     onPress={() => {
@@ -212,7 +212,7 @@ const OrderCard: React.FC<IOrderCard> = ({
                         </View>
                       ))}
                     </StarContainer>
-                    <StatusText>Write a review</StatusText>
+                    <StatusText allowFontScaling={false}>Write a review</StatusText>
                   </Pressable>
                 )}
               </View>

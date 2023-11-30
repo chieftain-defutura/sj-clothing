@@ -11,7 +11,7 @@ const AlertModal = () => {
       <View style={styles.VerificationContainer}>
         <View style={styles.VerificationWrapper}>
           <AlertIcon width={130} height={130} />
-          <Text style={styles.description}>
+          <Text allowFontScaling={false} style={styles.description}>
             Hi {user?.displayName}, Are you sure you want to delete your account?
           </Text>
         </View>

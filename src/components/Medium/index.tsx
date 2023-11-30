@@ -1,9 +1,8 @@
 import uuid from 'react-native-uuid'
-import { Alert, Dimensions, StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSharedValue, withSequence, withTiming } from 'react-native-reanimated'
 import { collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
-
 import TShirt from './T-Shirt'
 import FinalView from './FinalView'
 import Navigation from './Navigation'
@@ -29,7 +28,6 @@ const Medium = () => {
   const slideValue = useSharedValue(0)
   const avatar = userStore((state) => state.avatar)
   const user = userStore((state) => state.user)
-
   const [isSteps, setSteps] = useState(1)
   const [isDropDown, setDropDown] = useState(false)
   const [uid, setUid] = useState<string>('')
@@ -396,6 +394,7 @@ const Medium = () => {
           )}
           {isSteps === 6 && Design && isOpenDesign && !isDone && (
             <SelectDesign
+              color={isColor}
               isImageOrText={isImageOrText}
               designs={Design}
               setOpenDesign={setOpenDesign}

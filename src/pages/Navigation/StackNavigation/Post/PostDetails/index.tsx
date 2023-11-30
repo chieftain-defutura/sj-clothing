@@ -100,8 +100,8 @@ const PostDetails: React.FC<IPostDetails> = ({ navigation }) => {
               </ThreeSixtyDegreeImage> */}
             </TShirtImageWrapper>
             <Content>
-              <Head>#Round neck</Head>
-              <Para>
+              <Head allowFontScaling={false}>#Round neck</Head>
+              <Para allowFontScaling={false}>
                 Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus ,
                 eleifend tellus augue lec.
               </Para>
@@ -110,8 +110,8 @@ const PostDetails: React.FC<IPostDetails> = ({ navigation }) => {
                 <Row>
                   {ProductData.slice(0, 3).map((f, index) => (
                     <Column key={index}>
-                      <ProductText>{f.product}</ProductText>
-                      <ProductName>{f.productName}</ProductName>
+                      <ProductText allowFontScaling={false}>{f.product}</ProductText>
+                      <ProductName allowFontScaling={false}>{f.productName}</ProductName>
                     </Column>
                   ))}
                 </Row>
@@ -119,8 +119,8 @@ const PostDetails: React.FC<IPostDetails> = ({ navigation }) => {
                 <Row>
                   {ProductData.slice(3, 6).map((f, index) => (
                     <Column key={index}>
-                      <ProductText>{f.product}</ProductText>
-                      <ProductName>{f.productName}</ProductName>
+                      <ProductText allowFontScaling={false}>{f.product}</ProductText>
+                      <ProductName allowFontScaling={false}>{f.productName}</ProductName>
                     </Column>
                   ))}
                 </Row>

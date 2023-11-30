@@ -253,6 +253,7 @@ const PostNavigator: React.FC<IPostNavigation> = ({
         </Pressable>
         {warning && (
           <Text
+            allowFontScaling={false}
             style={{
               color: COLORS.textSecondaryClr,
               fontFamily: 'Gilroy-Medium',
