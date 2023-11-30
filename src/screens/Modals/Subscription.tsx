@@ -231,7 +231,12 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                   >
                     790
                   </Text>
-                  <Text style={{ textAlign: 'center', color: COLORS.textClr }}>INR</Text>
+                  <Text
+                    allowFontScaling={false}
+                    style={{ textAlign: 'center', color: COLORS.textClr }}
+                  >
+                    INR
+                  </Text>
                 </View>
               </View>
               <CustomButton

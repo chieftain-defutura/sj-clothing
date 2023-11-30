@@ -136,7 +136,12 @@ const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
                     />
                   </View>
 
-                  <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Front</Text>
+                  <Text
+                    allowFontScaling={false}
+                    style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}
+                  >
+                    Front
+                  </Text>
                 </Pressable>
               )}
               {data.frontSide && (
@@ -171,7 +176,12 @@ const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
                     />
                   </View>
 
-                  <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Back</Text>
+                  <Text
+                    allowFontScaling={false}
+                    style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}
+                  >
+                    Back
+                  </Text>
                 </Pressable>
               )}
               {data.rightSide && (
@@ -207,7 +217,10 @@ const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
                     />
                   </View>
 
-                  <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                  <Text
+                    allowFontScaling={false}
+                    style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}
+                  >
                     Right arm
                   </Text>
                 </Pressable>
@@ -245,7 +258,10 @@ const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
                     />
                   </View>
 
-                  <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>
+                  <Text
+                    allowFontScaling={false}
+                    style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}
+                  >
                     Left arm
                   </Text>
                 </Pressable>

@@ -23,6 +23,7 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
 
   const handleDelete = async () => {
     try {
+      if (!user) return
       const auth = getAuth()
       const currentUser = auth.currentUser
 
@@ -34,9 +35,7 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
         closeModal?.()
         const data = await AsyncStorage.getItem('mail')
         await AsyncStorage.removeItem('mail')
-        // if (!data) {
-        //   updateUser(null)
-        // }
+        updateUser(null)
         console.log('User account successfully deleted.')
       } else {
         console.error('No authenticated user found.')

@@ -47,8 +47,16 @@ const FinalProduct: React.FC<IFinalProduct> = ({
       </View>
 
       <View style={{ paddingVertical: 8, display: 'flex', gap: 4 }}>
-        <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>#{product}</Text>
-        <Text style={{ color: COLORS.textTertiaryClr, fontFamily: 'Gilroy-Regular' }}>
+        <Text
+          allowFontScaling={false}
+          style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}
+        >
+          #{product}
+        </Text>
+        <Text
+          allowFontScaling={false}
+          style={{ color: COLORS.textTertiaryClr, fontFamily: 'Gilroy-Regular' }}
+        >
           {caption === ''
             ? 'Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus , eleifend tellus augue lec.'
             : caption}
@@ -79,7 +87,10 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           >
             Style
           </Text>
-          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+          <Text
+            allowFontScaling={false}
+            style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
+          >
             {style}
           </Text>
         </View>
@@ -100,7 +111,10 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           >
             Size
           </Text>
-          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+          <Text
+            allowFontScaling={false}
+            style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
+          >
             s {/* {size} */}
           </Text>
         </View>
@@ -121,7 +135,10 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           >
             Quantity
           </Text>
-          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+          <Text
+            allowFontScaling={false}
+            style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
+          >
             x1
           </Text>
         </View>
@@ -151,7 +168,10 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           >
             Price
           </Text>
-          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+          <Text
+            allowFontScaling={false}
+            style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
+          >
             {price ? price : 0}
           </Text>
         </View>
@@ -172,7 +192,10 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           >
             Offer Price
           </Text>
-          <Text style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}>
+          <Text
+            allowFontScaling={false}
+            style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
+          >
             {offerPrice ? offerPrice : '-'}
           </Text>
         </View>

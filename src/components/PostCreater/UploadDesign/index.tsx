@@ -92,7 +92,10 @@ const UploadDesign: React.FC<IUploadDesign> = ({ setDone, setImageOrText, isImag
         }}
       >
         <View>
-          <Text style={{ fontSize: 16, color: COLORS.textClr, fontFamily: 'Arvo-Regular' }}>
+          <Text
+            allowFontScaling={false}
+            style={{ fontSize: 16, color: COLORS.textClr, fontFamily: 'Arvo-Regular' }}
+          >
             Upload Design
           </Text>
         </View>

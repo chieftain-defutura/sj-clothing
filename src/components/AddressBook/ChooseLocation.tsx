@@ -171,7 +171,9 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
         >
           {data?.length === 0 ? (
             <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>No address</Text>
+              <Text allowFontScaling={false} style={styles.errorText}>
+                No address
+              </Text>
             </View>
           ) : data ? (
             <ScrollView showsVerticalScrollIndicator={false} style={{ height: '67%' }}>
@@ -190,14 +192,18 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
                     </DescriptionText>
                   </View>
                   <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
-                    <Text style={styles.editText}>Edit</Text>
+                    <Text allowFontScaling={false} style={styles.editText}>
+                      Edit
+                    </Text>
                   </Pressable>
                 </View>
               ))}
             </ScrollView>
           ) : (
             <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>Loading</Text>
+              <Text allowFontScaling={false} style={styles.errorText}>
+                Loading
+              </Text>
             </View>
           )}
         </RadioButton.Group>

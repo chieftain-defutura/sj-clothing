@@ -320,7 +320,10 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
         <SignUpWrapper>
           <CreatedAccount>
             <GreenTick width={100} height={100} />
-            <Text style={{ fontSize: 20, color: COLORS.textRGBAClr, fontFamily: 'Gilroy-Medium' }}>
+            <Text
+              allowFontScaling={false}
+              style={{ fontSize: 20, color: COLORS.textRGBAClr, fontFamily: 'Gilroy-Medium' }}
+            >
               Account Created
             </Text>
           </CreatedAccount>

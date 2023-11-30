@@ -142,7 +142,12 @@ const SimpleDropdownWithAnimation: React.FC<ISelectColor> = ({ setPostCreationSt
             <ArrowCircleLeft width={24} height={24} />
           </Pressable>
           <Pressable onPress={() => setOpen(true)} style={styles.selectColorDropdown}>
-            <Text style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}>Select Color</Text>
+            <Text
+              allowFontScaling={false}
+              style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}
+            >
+              Select Color
+            </Text>
             <DropDownArrowIcon />
           </Pressable>
           <Pressable

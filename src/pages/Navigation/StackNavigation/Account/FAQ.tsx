@@ -46,14 +46,17 @@ const FAQ: React.FC<IFAQ> = ({ navigation }) => {
               <View key={index} style={{ marginHorizontal: 16 }}>
                 <FAQBox onPress={() => toggleFAQ(index)}>
                   <FAQHead>{f.heading}</FAQHead>
-                  <FaqPlusIcon width={14} height={14} />
+                  {expandedFAQIndex === index ? (
+                    <MinusIcon width={14} height={14} />
+                  ) : (
+                    <FaqPlusIcon width={14} height={14} />
+                  )}
                 </FAQBox>
                 {expandedFAQIndex === index && (
                   <Animated.View entering={FadeInUp.duration(800)} exiting={FadeOut}>
                     <FAQParaBox>
                       <FlexBox>
                         <FAQHead>{f.title}</FAQHead>
-                        <MinusIcon width={14} height={14} />
                       </FlexBox>
                       <Paragraph>{f.description}</Paragraph>
                     </FAQParaBox>
