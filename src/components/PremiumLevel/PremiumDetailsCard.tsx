@@ -211,8 +211,8 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                         width: width / 4,
                       }}
                     >
-                      <ProductText>product</ProductText>
-                      <ProductName>{data.productName}</ProductName>
+                      <ProductText allowFontScaling={false}>product</ProductText>
+                      <ProductName allowFontScaling={false}>{data.productName}</ProductName>
                     </View>
 
                     <View
@@ -225,8 +225,8 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                     >
                       {!data.offerPrice ? (
                         <View>
-                          <ProductText>price</ProductText>
-                          <ProductName>
+                          <ProductText allowFontScaling={false}>price</ProductText>
+                          <ProductName allowFontScaling={false}>
                             {rate
                               ? (Number(data.normalPrice) * (rate as number)).toFixed(2)
                               : data.normalPrice}
@@ -236,7 +236,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                       ) : (
                         <View>
                           <View>
-                            <ProductText>price</ProductText>
+                            <ProductText allowFontScaling={false}>price</ProductText>
                           </View>
                           <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
                             <View
@@ -246,12 +246,14 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                                 alignItems: 'center',
                               }}
                             >
-                              <OldPriceText>
+                              <OldPriceText allowFontScaling={false}>
                                 {rate
                                   ? (Number(data.normalPrice) * (rate as number)).toFixed(2)
                                   : data.normalPrice}
                               </OldPriceText>
-                              <OldPriceText>{currency ? currency.symbol : '₹'}</OldPriceText>
+                              <OldPriceText allowFontScaling={false}>
+                                {currency ? currency.symbol : '₹'}
+                              </OldPriceText>
                             </View>
                             <View
                               style={{
@@ -260,12 +262,14 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                                 alignItems: 'center',
                               }}
                             >
-                              <ProductName>
+                              <ProductName allowFontScaling={false}>
                                 {rate
                                   ? (Number(data.offerPrice) * (rate as number)).toFixed(2)
                                   : data.offerPrice}
                               </ProductName>
-                              <ProductName>{currency ? currency.symbol : '₹'}</ProductName>
+                              <ProductName allowFontScaling={false}>
+                                {currency ? currency.symbol : '₹'}
+                              </ProductName>
                             </View>
                           </View>
                         </View>
@@ -282,10 +286,10 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                     >
                       <WatchVideoBorder onPress={() => setOpenModal(true)}>
                         <PlayCircleIcon width={12} height={12} />
-                        <WatchVideoText>Watch video</WatchVideoText>
+                        <WatchVideoText allowFontScaling={false}>Watch video</WatchVideoText>
                       </WatchVideoBorder>
                       <WatchVideoBorder onPress={() => setOpenImage(true)}>
-                        <WatchVideoText>View Image</WatchVideoText>
+                        <WatchVideoText allowFontScaling={false}>View Image</WatchVideoText>
                       </WatchVideoBorder>
                     </View>
                   </View>
@@ -313,7 +317,9 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
               <DropDownContainer>
                 <View style={{ width: width / 2.5 }}>
                   <SelectContent onPress={toggleDropdown}>
-                    <SelectText>{selectedCountry || 'Select a country'}</SelectText>
+                    <SelectText allowFontScaling={false}>
+                      {selectedCountry || 'Select a country'}
+                    </SelectText>
                     <Animatable.View
                       animation={isDropdownOpen ? 'rotate' : ''}
                       duration={500}
@@ -338,7 +344,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                                 handleSelectCountry(f.country)
                               }}
                             >
-                              <SelectListText>{f.country}</SelectListText>
+                              <SelectListText allowFontScaling={false}>{f.country}</SelectListText>
                             </Pressable>
                           ))}
                       </SelectDropDownList>
@@ -347,7 +353,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                 </View>
                 <View style={{ width: width / 2.5 }}>
                   <SelectContent onPress={toggleDropdownSizes}>
-                    <SelectText>
+                    <SelectText allowFontScaling={false}>
                       {isSize.sizeVarient.size
                         ? `${isSize.sizeVarient.size}-${isSize.sizeVarient.measurement}`
                         : 'Select a Sizes'}
@@ -379,7 +385,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                                 handleSelectSizes(f.sizes)
                               }}
                             >
-                              <SelectListText>
+                              <SelectListText allowFontScaling={false}>
                                 {f.size} - {f.measurement}
                               </SelectListText>
                             </Pressable>
@@ -404,7 +410,11 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                           <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
                         </Svg>
 
-                        <DetailsParaText key={index} style={{ marginLeft: 8 }}>
+                        <DetailsParaText
+                          allowFontScaling={false}
+                          key={index}
+                          style={{ marginLeft: 8 }}
+                        >
                           {f}
                         </DetailsParaText>
                       </View>
@@ -421,14 +431,14 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                     style={{ width: width / 2.5 }}
                     onPress={() => setShowDetails(false)}
                   >
-                    <HideDetailsText>Hide details</HideDetailsText>
+                    <HideDetailsText allowFontScaling={false}>Hide details</HideDetailsText>
                   </HideDetailsBorder>
                 ) : (
                   <HideDetailsBorder
                     style={{ width: width / 2.5 }}
                     onPress={() => setShowDetails(true)}
                   >
-                    <HideDetailsText>View details</HideDetailsText>
+                    <HideDetailsText allowFontScaling={false}>View details</HideDetailsText>
                   </HideDetailsBorder>
                 )}
                 <CustomButton

@@ -39,6 +39,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
             <View style={styles.SubscriptionWrapper}>
               <View style={styles.SubscriptionHead}>
                 <Text
+                  allowFontScaling={false}
                   style={{
                     fontSize: 20,
                     letterSpacing: -0.4,
@@ -62,11 +63,13 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                   </View>
                   <View>
                     <Text
+                      allowFontScaling={false}
                       style={{ fontSize: 16, fontFamily: 'Gilroy-Medium', color: COLORS.textClr }}
                     >
                       PREMIUM
                     </Text>
                     <Text
+                      allowFontScaling={false}
                       style={{
                         fontSize: 12,
                         fontFamily: 'Gilroy-Regular',
@@ -79,6 +82,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                 </View>
                 <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
                   <Text
+                    allowFontScaling={false}
                     style={{
                       fontSize: 20,
                       fontFamily: 'Montserrat-SemiBold',
@@ -88,6 +92,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                     790
                   </Text>
                   <Text
+                    allowFontScaling={false}
                     style={{ fontSize: 12, fontFamily: 'Gilroy-Medium', color: COLORS.textClr }}
                   >
                     INR/month
@@ -103,6 +108,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                   }}
                 >
                   <Text
+                    allowFontScaling={false}
                     style={{
                       paddingTop: 20,
                       paddingBottom: 20,
@@ -113,6 +119,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                     FEATURES
                   </Text>
                   <Text
+                    allowFontScaling={false}
                     style={{
                       paddingTop: 20,
                       paddingBottom: 20,
@@ -136,6 +143,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                     }}
                   >
                     <Text
+                      allowFontScaling={false}
                       style={{
                         textAlign: 'center',
                         color: COLORS.textClr,
@@ -145,6 +153,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                       STANDARD
                     </Text>
                     <Text
+                      allowFontScaling={false}
                       style={{
                         textAlign: 'center',
                         color: COLORS.textClr,
@@ -177,6 +186,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                     }}
                   >
                     <Text
+                      allowFontScaling={false}
                       style={{
                         textAlign: 'center',
                         color: COLORS.textClr,
@@ -186,6 +196,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                       PREMIUM
                     </Text>
                     <Text
+                      allowFontScaling={false}
                       style={{
                         textAlign: 'center',
                         color: COLORS.textClr,
@@ -196,6 +207,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                     </Text>
                   </View>
                   <Text
+                    allowFontScaling={false}
                     style={{
                       paddingTop: 20,
                       paddingBottom: 20,
@@ -213,6 +225,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
               </View>
               <View style={styles.totalContainer}>
                 <Text
+                  allowFontScaling={false}
                   style={{
                     textAlign: 'center',
                     color: COLORS.textClr,
@@ -223,6 +236,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                 </Text>
                 <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'baseline' }}>
                   <Text
+                    allowFontScaling={false}
                     style={{
                       fontSize: 20,
                       color: COLORS.textClr,

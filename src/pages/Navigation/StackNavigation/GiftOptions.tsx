@@ -77,7 +77,7 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation, setGiftOptions, setOpe
                 }}
               >
                 <LeftArrow width={24} height={24} />
-                <CartText>Gift options</CartText>
+                <CartText allowFontScaling={false}>Gift options</CartText>
               </GoBackArrowContent>
 
               {/* <GiftImage>
@@ -94,7 +94,7 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation, setGiftOptions, setOpe
               <GiftMessageWrapper>
                 <View style={{ padding: 16 }}>
                   <View>
-                    <GiftMessageText>Gift message</GiftMessageText>
+                    <GiftMessageText allowFontScaling={false}>Gift message</GiftMessageText>
                     <View>
                       <TextArea
                         multiline={true}
@@ -111,7 +111,7 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation, setGiftOptions, setOpe
                     </View>
                   </View>
                   <InputStyleContent>
-                    <GiftMessageText>From</GiftMessageText>
+                    <GiftMessageText allowFontScaling={false}>From</GiftMessageText>
                     <InputStyle
                       value={values.from}
                       onChangeText={handleChange('from')}
@@ -129,7 +129,7 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation, setGiftOptions, setOpe
                   fontFamily='Arvo-Regular'
                   fontSize={16}
                   onPress={() => {
-                    handleSubmit(), navigation.navigate('Checkout')
+                    handleSubmit()
                   }}
                   style={{
                     padding: 16,
@@ -144,7 +144,9 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation, setGiftOptions, setOpe
   )
 }
 
-const GiftContent = styled.View``
+const GiftContent = styled.View`
+  flex: 1;
+`
 
 const GiftMessageWrapper = styled.View`
   flex: 1;

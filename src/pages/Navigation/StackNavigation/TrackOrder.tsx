@@ -38,7 +38,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
     <View style={{ flex: 1 }}>
       {!orderData ? (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: height }}>
-          <ProductText>Loading...</ProductText>
+          <ProductText allowFontScaling={false}>Loading...</ProductText>
         </View>
       ) : (
         <Animated.View
@@ -53,7 +53,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                 }}
               >
                 <LeftArrow width={24} height={24} />
-                <CartText>Track order</CartText>
+                <CartText allowFontScaling={false}>Track order</CartText>
               </GoBackArrowContent>
               <TShirtImageWrapper>
                 <TShirtImage source={{ uri: orderData.productImage }} />
@@ -107,8 +107,9 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                       paddingTop: 16,
                     }}
                   >
-                    <ProductText>Product</ProductText>
+                    <ProductText allowFontScaling={false}>Product</ProductText>
                     <Text
+                      allowFontScaling={false}
                       style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
                     >
                       {orderData.productName}
@@ -122,9 +123,10 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                       marginLeft: -45,
                     }}
                   >
-                    <ProductText>Size</ProductText>
+                    <ProductText allowFontScaling={false}>Size</ProductText>
                     <View style={{ display: 'flex', flexDirection: 'row' }}>
                       <Text
+                        allowFontScaling={false}
                         style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
                       >
                         {orderData?.sizes.sizeVarient.size}
@@ -139,9 +141,10 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                       width: width / 4.3,
                     }}
                   >
-                    <ProductText>Price</ProductText>
+                    <ProductText allowFontScaling={false}>Price</ProductText>
 
                     <Text
+                      allowFontScaling={false}
                       style={{
                         color: COLORS.textClr,
                         fontFamily: 'Arvo-Regular',
@@ -178,7 +181,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                     >
                       <View>
                         <View>
-                          <ProductText>Ordered on</ProductText>
+                          <ProductText allowFontScaling={false}>Ordered on</ProductText>
                         </View>
                         <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
                           <View
@@ -188,7 +191,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                               alignItems: 'center',
                             }}
                           >
-                            <ProductName>
+                            <ProductName allowFontScaling={false}>
                               {orderData?.orderStatus?.orderPlaced?.createdAt
                                 ? moment(orderData?.orderStatus?.orderPlaced?.createdAt).format(
                                     'DD-MM-YYYY',
@@ -209,8 +212,9 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                       marginLeft: 20,
                     }}
                   >
-                    <ProductText>Delivered on</ProductText>
+                    <ProductText allowFontScaling={false}>Delivered on</ProductText>
                     <Text
+                      allowFontScaling={false}
                       style={{
                         color: COLORS.textClr,
                         fontFamily: 'Arvo-Regular',
@@ -232,8 +236,9 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                       marginLeft: -30,
                     }}
                   >
-                    <ProductText>Quantity</ProductText>
+                    <ProductText allowFontScaling={false}>Quantity</ProductText>
                     <Text
+                      allowFontScaling={false}
                       style={{
                         color: COLORS.textClr,
                         fontFamily: 'Arvo-Regular',
@@ -264,10 +269,10 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                     <FlexOrder>
                       <OrderPlacedFlexContent>
                         <View>
-                          <OrderPlacedText>Order Placed</OrderPlacedText>
+                          <OrderPlacedText allowFontScaling={false}>Order Placed</OrderPlacedText>
                         </View>
 
-                        <OrderPlacedDate>
+                        <OrderPlacedDate allowFontScaling={false}>
                           {orderData?.orderStatus?.orderPlaced?.createdAt
                             ? moment(orderData?.orderStatus?.orderPlaced?.createdAt).format(
                                 'DD-MM-YYYY',
@@ -276,7 +281,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                         </OrderPlacedDate>
                       </OrderPlacedFlexContent>
 
-                      <OrderDescription>
+                      <OrderDescription allowFontScaling={false}>
                         {orderData?.orderStatus?.orderPlaced?.description}
                       </OrderDescription>
                     </FlexOrder>
@@ -298,10 +303,10 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                     <FlexOrder>
                       <OrderPlacedFlexContent>
                         <View>
-                          <OrderPlacedText>Manufacturing</OrderPlacedText>
+                          <OrderPlacedText allowFontScaling={false}>Manufacturing</OrderPlacedText>
                         </View>
                         <View>
-                          <OrderPlacedDate>
+                          <OrderPlacedDate allowFontScaling={false}>
                             {orderData?.orderStatus?.manufacturing?.createdAt
                               ? moment(orderData?.orderStatus?.manufacturing?.createdAt).format(
                                   'DD-MM-YYYY',
@@ -311,7 +316,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                         </View>
                       </OrderPlacedFlexContent>
 
-                      <OrderDescription>
+                      <OrderDescription allowFontScaling={false}>
                         {orderData?.orderStatus?.manufacturing?.description}
                       </OrderDescription>
                     </FlexOrder>
@@ -333,10 +338,10 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                     <FlexOrder>
                       <OrderPlacedFlexContent>
                         <View>
-                          <OrderPlacedText>Ready to ship</OrderPlacedText>
+                          <OrderPlacedText allowFontScaling={false}>Ready to ship</OrderPlacedText>
                         </View>
                         <View>
-                          <OrderPlacedDate>
+                          <OrderPlacedDate allowFontScaling={false}>
                             {orderData?.orderStatus?.readyToShip?.createdAt
                               ? moment(orderData?.orderStatus?.readyToShip?.createdAt).format(
                                   'DD-MM-YYYY',
@@ -346,7 +351,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                         </View>
                       </OrderPlacedFlexContent>
 
-                      <OrderDescription>
+                      <OrderDescription allowFontScaling={false}>
                         {orderData?.orderStatus?.readyToShip?.description}
                       </OrderDescription>
                     </FlexOrder>
@@ -366,10 +371,10 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                     <FlexOrder>
                       <OrderPlacedFlexContent>
                         <View>
-                          <OrderPlacedText>Shipping</OrderPlacedText>
+                          <OrderPlacedText allowFontScaling={false}>Shipping</OrderPlacedText>
                         </View>
                         <View>
-                          <OrderPlacedDate>
+                          <OrderPlacedDate allowFontScaling={false}>
                             {orderData?.orderStatus?.shipping?.createdAt
                               ? moment(orderData?.orderStatus?.shipping?.createdAt).format(
                                   'DD-MM-YYYY',
@@ -379,7 +384,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                         </View>
                       </OrderPlacedFlexContent>
 
-                      <OrderDescription>
+                      <OrderDescription allowFontScaling={false}>
                         {orderData?.orderStatus?.shipping?.description}
                       </OrderDescription>
                     </FlexOrder>
@@ -399,10 +404,10 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                     <FlexOrder>
                       <OrderPlacedFlexContent>
                         <View>
-                          <OrderPlacedText>Delivery</OrderPlacedText>
+                          <OrderPlacedText allowFontScaling={false}>Delivery</OrderPlacedText>
                         </View>
                         <View>
-                          <OrderPlacedDate>
+                          <OrderPlacedDate allowFontScaling={false}>
                             {orderData?.orderStatus?.delivery?.createdAt
                               ? moment(orderData?.orderStatus?.delivery?.createdAt).format(
                                   'DD-MM-YYYY',
@@ -412,7 +417,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                         </View>
                       </OrderPlacedFlexContent>
 
-                      <OrderDescription>
+                      <OrderDescription allowFontScaling={false}>
                         {orderData?.orderStatus?.delivery?.description}
                       </OrderDescription>
                     </FlexOrder>

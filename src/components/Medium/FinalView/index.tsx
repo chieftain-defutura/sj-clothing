@@ -97,6 +97,7 @@ const FinalView: React.FC<IFinalView> = ({
               }}
             >
               <Text
+                allowFontScaling={false}
                 style={{
                   color: COLORS.textClr,
                   fontFamily: 'Montserrat-Regular',
@@ -122,6 +123,7 @@ const FinalView: React.FC<IFinalView> = ({
               }}
             >
               <Text
+                allowFontScaling={false}
                 style={{
                   color: COLORS.textClr,
                   fontFamily: 'Montserrat-Regular',
@@ -134,6 +136,7 @@ const FinalView: React.FC<IFinalView> = ({
               <View style={{ display: 'flex', flexDirection: 'row' }}>
                 {isSize.sizeVarient.map((f, index) => (
                   <Text
+                    allowFontScaling={false}
                     key={index}
                     style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
                   >
@@ -151,6 +154,7 @@ const FinalView: React.FC<IFinalView> = ({
               }}
             >
               <Text
+                allowFontScaling={false}
                 style={{
                   color: COLORS.textClr,
                   fontFamily: 'Montserrat-Regular',
@@ -198,7 +202,9 @@ const FinalView: React.FC<IFinalView> = ({
               >
                 {!data.offerPrice ? (
                   <View>
-                    <ProductText style={{ color: COLORS.textClr }}>price</ProductText>
+                    <ProductText allowFontScaling={false} style={{ color: COLORS.textClr }}>
+                      price
+                    </ProductText>
                     <View
                       style={{
                         display: 'flex',
@@ -206,18 +212,21 @@ const FinalView: React.FC<IFinalView> = ({
                         alignItems: 'center',
                       }}
                     >
-                      <ProductName>
+                      <ProductName allowFontScaling={false}>
                         {(
                           Number(data.normalPrice ? data.normalPrice : 0) * (rate as number)
                         ).toFixed(2)}
                       </ProductName>
-                      <ProductName>{currency.symbol}</ProductName>
+                      <ProductName allowFontScaling={false}>{currency.symbol}</ProductName>
                     </View>
                   </View>
                 ) : (
                   <View>
                     <View>
-                      <ProductText style={{ fontSize: 14, color: COLORS.textClr }}>
+                      <ProductText
+                        allowFontScaling={false}
+                        style={{ fontSize: 14, color: COLORS.textClr }}
+                      >
                         price
                       </ProductText>
                     </View>
@@ -229,10 +238,10 @@ const FinalView: React.FC<IFinalView> = ({
                           alignItems: 'center',
                         }}
                       >
-                        <OldPriceText>
+                        <OldPriceText allowFontScaling={false}>
                           {(Number(data.normalPrice) * (rate as number)).toFixed(2)}
                         </OldPriceText>
-                        <OldPriceText> {currency.symbol}</OldPriceText>
+                        <OldPriceText allowFontScaling={false}> {currency.symbol}</OldPriceText>
                       </View>
                       <View
                         style={{
@@ -241,10 +250,10 @@ const FinalView: React.FC<IFinalView> = ({
                           alignItems: 'center',
                         }}
                       >
-                        <ProductName>
+                        <ProductName allowFontScaling={false}>
                           {(Number(data.offerPrice) * (rate as number)).toFixed(2)}
                         </ProductName>
-                        <ProductName>{currency.symbol}</ProductName>
+                        <ProductName allowFontScaling={false}>{currency.symbol}</ProductName>
                       </View>
                     </View>
                   </View>
@@ -260,6 +269,7 @@ const FinalView: React.FC<IFinalView> = ({
               }}
             >
               <Text
+                allowFontScaling={false}
                 style={{
                   color: COLORS.textClr,
                   fontFamily: 'Montserrat-Regular',
@@ -269,6 +279,7 @@ const FinalView: React.FC<IFinalView> = ({
                 Gender
               </Text>
               <Text
+                allowFontScaling={false}
                 style={{
                   color: COLORS.textClr,
                   fontFamily: 'Arvo-Regular',
@@ -288,6 +299,7 @@ const FinalView: React.FC<IFinalView> = ({
               }}
             >
               <Text
+                allowFontScaling={false}
                 style={{
                   color: COLORS.textClr,
                   fontFamily: 'Montserrat-Regular',
@@ -297,6 +309,7 @@ const FinalView: React.FC<IFinalView> = ({
                 Color
               </Text>
               <Text
+                allowFontScaling={false}
                 style={{
                   color: COLORS.textClr,
                   fontFamily: 'Arvo-Regular',
@@ -309,7 +322,7 @@ const FinalView: React.FC<IFinalView> = ({
             </View>
           </View>
           <View style={{ marginTop: 14 }}>
-            <DetailsHeading>Detailed features</DetailsHeading>
+            <DetailsHeading allowFontScaling={false}>Detailed features</DetailsHeading>
             {Description.map((f, index) => (
               <View
                 key={index}
@@ -318,7 +331,7 @@ const FinalView: React.FC<IFinalView> = ({
                 <Svg width={8} height={8}>
                   <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
                 </Svg>
-                <DetailsParaText key={index} style={{ marginLeft: 8 }}>
+                <DetailsParaText allowFontScaling={false} key={index} style={{ marginLeft: 8 }}>
                   {f}
                 </DetailsParaText>
               </View>

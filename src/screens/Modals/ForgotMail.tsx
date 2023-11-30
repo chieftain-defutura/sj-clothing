@@ -49,14 +49,14 @@ const ForgotMail: React.FC<ForgotMailProps> = ({ isVisible, onClose, onLoginClic
           {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
             <SignUpContainer>
               <SignUpHead>
-                <SignUpHeading>Forgot password</SignUpHeading>
+                <SignUpHeading allowFontScaling={false}>Forgot password</SignUpHeading>
                 <Pressable onPress={onClose}>
                   <CloseIcon width={24} height={24} />
                 </Pressable>
               </SignUpHead>
 
               <View>
-                <LabelText>E-mail</LabelText>
+                <LabelText allowFontScaling={false}>E-mail</LabelText>
                 <InputBorder>
                   <InputStyle
                     placeholder='Enter your e-mail'
@@ -67,8 +67,14 @@ const ForgotMail: React.FC<ForgotMailProps> = ({ isVisible, onClose, onLoginClic
                     autoCorrect={false}
                   />
                 </InputBorder>
-                {errorMessage && <ErrorText style={{ color: 'green' }}>{errorMessage}</ErrorText>}
-                {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
+                {errorMessage && (
+                  <ErrorText allowFontScaling={false} style={{ color: 'green' }}>
+                    {errorMessage}
+                  </ErrorText>
+                )}
+                {touched.email && errors.email && (
+                  <ErrorText allowFontScaling={false}>{errors.email}</ErrorText>
+                )}
               </View>
 
               <CustomButton

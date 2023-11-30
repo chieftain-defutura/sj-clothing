@@ -58,6 +58,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
           }}
         >
           <Text
+            allowFontScaling={false}
             style={{
               textAlign: 'center',
               color: COLORS.iconsHighlightClr,
@@ -93,6 +94,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
               >
                 {item.styles ? (
                   <Text
+                    allowFontScaling={false}
                     style={{
                       textAlign: 'left',
                       fontFamily: 'Gilroy-Medium',
@@ -106,6 +108,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
                   </Text>
                 ) : (
                   <Text
+                    allowFontScaling={false}
                     style={{
                       textAlign: 'left',
                       fontFamily: 'Gilroy-Medium',

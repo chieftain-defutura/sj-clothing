@@ -122,14 +122,14 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
         {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
           <SignUpContainer>
             <SignUpHead>
-              <SignUpHeading>Phone Verification</SignUpHeading>
+              <SignUpHeading allowFontScaling={false}>Phone Verification</SignUpHeading>
               <Pressable onPress={closeModal}>
                 <CloseIcon width={24} height={24} />
               </Pressable>
             </SignUpHead>
 
             <View>
-              <LabelText>Phone Number</LabelText>
+              <LabelText allowFontScaling={false}>Phone Number</LabelText>
               <InputBorder>
                 <View style={{ display: 'flex', flexDirection: 'row', gap: 5 }}>
                   <CountryCode
@@ -148,15 +148,15 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
                   />
                 </View>
                 <Pressable onPress={() => handleSendCode(values.phoneNumber)}>
-                  <VerifyText>Send</VerifyText>
+                  <VerifyText allowFontScaling={false}>Send</VerifyText>
                 </Pressable>
               </InputBorder>
               {touched.phoneNumber && errors.phoneNumber && (
-                <ErrorText>{errors.phoneNumber}</ErrorText>
+                <ErrorText allowFontScaling={false}>{errors.phoneNumber}</ErrorText>
               )}
             </View>
             <View>
-              <LabelText>Verify Code</LabelText>
+              <LabelText allowFontScaling={false}>Verify Code</LabelText>
               <InputBorder>
                 <InputStyle
                   placeholder='Enter your verifyCode'
@@ -171,11 +171,11 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
                   </Pressable> */}
               </InputBorder>
               {touched.verifyCode && errors.verifyCode && (
-                <ErrorText>{errors.verifyCode}</ErrorText>
+                <ErrorText allowFontScaling={false}>{errors.verifyCode}</ErrorText>
               )}
             </View>
 
-            {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
+            {errorMessage && <ErrorText allowFontScaling={false}>{errorMessage}</ErrorText>}
 
             <CustomButton
               variant='primary'

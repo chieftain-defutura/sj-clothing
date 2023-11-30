@@ -149,13 +149,13 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
             {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
               <SignUpContainer>
                 <SignUpHead>
-                  <SignUpHeading>Create Account</SignUpHeading>
+                  <SignUpHeading allowFontScaling={false}>Create Account</SignUpHeading>
                   <Pressable onPress={onClose}>
                     <CloseIcon width={24} height={24} />
                   </Pressable>
                 </SignUpHead>
                 <View>
-                  <LabelText>Full name</LabelText>
+                  <LabelText allowFontScaling={false}>Full name</LabelText>
                   <InputBorder>
                     <InputStyle
                       placeholder='Enter your name'
@@ -166,10 +166,12 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                       autoCorrect={false}
                     />
                   </InputBorder>
-                  {touched.name && errors.name && <ErrorText>{errors.name}</ErrorText>}
+                  {touched.name && errors.name && (
+                    <ErrorText allowFontScaling={false}>{errors.name}</ErrorText>
+                  )}
                 </View>
                 <View>
-                  <LabelText>E-mail</LabelText>
+                  <LabelText allowFontScaling={false}>E-mail</LabelText>
                   <InputBorder>
                     <InputStyle
                       placeholder='Enter your e-mail'
@@ -183,10 +185,12 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                       <VerifyText>Verify</VerifyText>
                     </Pressable> */}
                   </InputBorder>
-                  {touched.email && errors.email && <ErrorText>{errors.email}</ErrorText>}
+                  {touched.email && errors.email && (
+                    <ErrorText allowFontScaling={false}>{errors.email}</ErrorText>
+                  )}
                 </View>
                 <View>
-                  <LabelText>Create Password</LabelText>
+                  <LabelText allowFontScaling={false}>Create Password</LabelText>
                   <InputBorder>
                     <InputStyle
                       secureTextEntry={!showPassword}
@@ -205,7 +209,9 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                       )}
                     </Pressable>
                   </InputBorder>
-                  {touched.password && errors.password && <ErrorText>{errors.password}</ErrorText>}
+                  {touched.password && errors.password && (
+                    <ErrorText allowFontScaling={false}>{errors.password}</ErrorText>
+                  )}
                 </View>
                 {/* <View>
                   <LabelText>Phone Number</LabelText>
@@ -257,7 +263,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                     measurementId: 'G-5643DV97N4',
                   }}
                 /> */}
-                {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
+                {errorMessage && <ErrorText allowFontScaling={false}>{errorMessage}</ErrorText>}
                 <View
                   style={{
                     display: 'flex',
@@ -273,9 +279,9 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                     onValueChange={setChecked}
                     color={isChecked ? COLORS.textSecondaryClr : undefined}
                   />
-                  <AccountViewText>Accept all</AccountViewText>
+                  <AccountViewText allowFontScaling={false}>Accept all</AccountViewText>
                   <TouchableOpacity onPress={() => navigation.navigate('TermsAndConditions')}>
-                    <AccountViewText style={{ color: COLORS.textClr }}>
+                    <AccountViewText allowFontScaling={false} style={{ color: COLORS.textClr }}>
                       Terms and conditions
                     </AccountViewText>
                   </TouchableOpacity>
@@ -293,9 +299,11 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                 />
 
                 <AccountView>
-                  <AccountViewText>Already have an account?</AccountViewText>
+                  <AccountViewText allowFontScaling={false}>
+                    Already have an account?
+                  </AccountViewText>
                   <Pressable onPress={onLoginClick}>
-                    <LoginLink>Log in</LoginLink>
+                    <LoginLink allowFontScaling={false}>Log in</LoginLink>
                   </Pressable>
                 </AccountView>
               </SignUpContainer>

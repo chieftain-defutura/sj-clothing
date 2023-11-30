@@ -114,7 +114,7 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
     >
       <View style={{ paddingBottom: 80 }}>
         <InputContainer>
-          <Header>Add Address</Header>
+          <Header allowFontScaling={false}>Add Address</Header>
 
           <View>
             <Input
@@ -123,7 +123,9 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
               onChangeText={formik.handleChange('name')}
               onBlur={formik.handleBlur('name')}
             />
-            {formik.errors.name && <ErrorText>{formik.errors.name}</ErrorText>}
+            {formik.errors.name && (
+              <ErrorText allowFontScaling={false}>{formik.errors.name}</ErrorText>
+            )}
           </View>
 
           <View>
@@ -135,7 +137,9 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
               onBlur={formik.handleBlur('mobile')}
               keyboardType='numeric'
             />
-            {formik.errors.mobile && <ErrorText>{formik.errors.mobile}</ErrorText>}
+            {formik.errors.mobile && (
+              <ErrorText allowFontScaling={false}>{formik.errors.mobile}</ErrorText>
+            )}
           </View>
           <View>
             <Input
@@ -144,7 +148,9 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
               onChangeText={formik.handleChange('email')}
               onBlur={formik.handleBlur('email')}
             />
-            {formik.errors.email && <ErrorText>{formik.errors.email}</ErrorText>}
+            {formik.errors.email && (
+              <ErrorText allowFontScaling={false}>{formik.errors.email}</ErrorText>
+            )}
           </View>
           <View>
             <Input
@@ -153,7 +159,9 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
               onChangeText={formik.handleChange('addressLineOne')}
               onBlur={formik.handleBlur('addressLineOne')}
             />
-            {formik.errors.addressLineOne && <ErrorText>{formik.errors.addressLineOne}</ErrorText>}
+            {formik.errors.addressLineOne && (
+              <ErrorText allowFontScaling={false}>{formik.errors.addressLineOne}</ErrorText>
+            )}
           </View>
           <View>
             <Input
@@ -162,7 +170,9 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
               onChangeText={formik.handleChange('addressLineTwo')}
               onBlur={formik.handleBlur('addressLineTwo')}
             />
-            {formik.errors.addressLineTwo && <ErrorText>{formik.errors.addressLineTwo}</ErrorText>}
+            {formik.errors.addressLineTwo && (
+              <ErrorText allowFontScaling={false}>{formik.errors.addressLineTwo}</ErrorText>
+            )}
           </View>
           <View>
             <Input
@@ -171,7 +181,9 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
               onChangeText={formik.handleChange('city')}
               onBlur={formik.handleBlur('city')}
             />
-            {formik.errors.city && <ErrorText>{formik.errors.city}</ErrorText>}
+            {formik.errors.city && (
+              <ErrorText allowFontScaling={false}>{formik.errors.city}</ErrorText>
+            )}
           </View>
 
           <DropDownContainer>
@@ -191,7 +203,7 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
                   <SelectDropDownList>
                     {regionData.map((f, index) => (
                       <Pressable key={index} onPress={() => handleSelectCountry(f)}>
-                        <SelectListText>{f}</SelectListText>
+                        <SelectListText allowFontScaling={false}>{f}</SelectListText>
                       </Pressable>
                     ))}
                   </SelectDropDownList>
@@ -207,7 +219,9 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
               onChangeText={formik.handleChange('pinCode')}
               onBlur={formik.handleBlur('pinCode')}
             />
-            {formik.errors.pinCode && <ErrorText>{formik.errors.pinCode}</ErrorText>}
+            {formik.errors.pinCode && (
+              <ErrorText allowFontScaling={false}>{formik.errors.pinCode}</ErrorText>
+            )}
           </View>
           <View>
             <Input
@@ -216,7 +230,9 @@ const LocationAddAddress: React.FC<ILocationAddAddress> = ({ saveAddress, onSave
               onChangeText={formik.handleChange('saveAsAddress')}
               onBlur={formik.handleBlur('saveAsAddress')}
             />
-            {formik.errors.saveAsAddress && <ErrorText>{formik.errors.saveAsAddress}</ErrorText>}
+            {formik.errors.saveAsAddress && (
+              <ErrorText allowFontScaling={false}>{formik.errors.saveAsAddress}</ErrorText>
+            )}
           </View>
         </InputContainer>
       </View>

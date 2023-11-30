@@ -125,7 +125,7 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
         }}
       >
         <LeftArrow width={24} height={24} />
-        <CartText>Review product</CartText>
+        <CartText allowFontScaling={false}>Review product</CartText>
       </GoBackArrowContent>
       <CartPageContainer style={{ paddingHorizontal: 16 }}>
         <CartPageData>

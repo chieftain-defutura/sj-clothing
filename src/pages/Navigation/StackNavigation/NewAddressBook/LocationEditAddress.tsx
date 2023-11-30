@@ -123,7 +123,7 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
     >
       <View style={{ paddingBottom: 80 }}>
         <InputContainer>
-          <Header>Edit Address</Header>
+          <Header allowFontScaling={false}>Edit Address</Header>
           <View>
             <Input
               placeholder='Name'
@@ -131,7 +131,9 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
               onChangeText={formik.handleChange('name')}
               onBlur={formik.handleBlur('name')}
             />
-            {formik.errors.name && <ErrorText>{formik.errors.name}</ErrorText>}
+            {formik.errors.name && (
+              <ErrorText allowFontScaling={false}>{formik.errors.name}</ErrorText>
+            )}
           </View>
           <View>
             <Input
@@ -140,7 +142,9 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
               onChangeText={formik.handleChange('mobile')}
               onBlur={formik.handleBlur('mobile')}
             />
-            {formik.errors.mobile && <ErrorText>{formik.errors.mobile}</ErrorText>}
+            {formik.errors.mobile && (
+              <ErrorText allowFontScaling={false}>{formik.errors.mobile}</ErrorText>
+            )}
           </View>
           <View>
             <Input
@@ -149,7 +153,9 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
               onChangeText={formik.handleChange('email')}
               onBlur={formik.handleBlur('email')}
             />
-            {formik.errors.email && <ErrorText>{formik.errors.email}</ErrorText>}
+            {formik.errors.email && (
+              <ErrorText allowFontScaling={false}>{formik.errors.email}</ErrorText>
+            )}
           </View>
           <View>
             <Input
@@ -158,7 +164,9 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
               onChangeText={formik.handleChange('addressLineOne')}
               onBlur={formik.handleBlur('addressLineOne')}
             />
-            {formik.errors.addressLineOne && <ErrorText>{formik.errors.addressLineOne}</ErrorText>}
+            {formik.errors.addressLineOne && (
+              <ErrorText allowFontScaling={false}>{formik.errors.addressLineOne}</ErrorText>
+            )}
           </View>
           <View>
             <Input
@@ -167,7 +175,9 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
               onChangeText={formik.handleChange('addressLineTwo')}
               onBlur={formik.handleBlur('addressLineTwo')}
             />
-            {formik.errors.addressLineTwo && <ErrorText>{formik.errors.addressLineTwo}</ErrorText>}
+            {formik.errors.addressLineTwo && (
+              <ErrorText allowFontScaling={false}>{formik.errors.addressLineTwo}</ErrorText>
+            )}
           </View>
           <View>
             <Input
@@ -176,12 +186,16 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
               onChangeText={formik.handleChange('city')}
               onBlur={formik.handleBlur('city')}
             />
-            {formik.errors.city && <ErrorText>{formik.errors.city}</ErrorText>}
+            {formik.errors.city && (
+              <ErrorText allowFontScaling={false}>{formik.errors.city}</ErrorText>
+            )}
           </View>
           <DropDownContainer>
             <View style={{ width: '100%' }}>
               <SelectContent onPress={toggleDropdown}>
-                <SelectText>{selectedCountry || 'Select a country'}</SelectText>
+                <SelectText allowFontScaling={false}>
+                  {selectedCountry || 'Select a country'}
+                </SelectText>
                 <Animatable.View
                   animation={isDropdownOpen ? 'rotate' : ''}
                   duration={500}
@@ -195,7 +209,7 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
                   <SelectDropDownList>
                     {regionData.map((f, index) => (
                       <Pressable key={index} onPress={() => handleSelectCountry(f)}>
-                        <SelectListText>{f}</SelectListText>
+                        <SelectListText allowFontScaling={false}>{f}</SelectListText>
                       </Pressable>
                     ))}
                   </SelectDropDownList>
@@ -210,7 +224,9 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
               onChangeText={formik.handleChange('pinCode')}
               onBlur={formik.handleBlur('pinCode')}
             />
-            {formik.errors.pinCode && <ErrorText>{formik.errors.pinCode}</ErrorText>}
+            {formik.errors.pinCode && (
+              <ErrorText allowFontScaling={false}>{formik.errors.pinCode}</ErrorText>
+            )}
           </View>
           <View>
             <Input
@@ -219,7 +235,9 @@ const LocationEditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddr
               onChangeText={formik.handleChange('saveAsAddress')}
               onBlur={formik.handleBlur('saveAsAddress')}
             />
-            {formik.errors.saveAsAddress && <ErrorText>{formik.errors.saveAsAddress}</ErrorText>}
+            {formik.errors.saveAsAddress && (
+              <ErrorText allowFontScaling={false}>{formik.errors.saveAsAddress}</ErrorText>
+            )}
           </View>
         </InputContainer>
       </View>

@@ -333,9 +333,9 @@ const AddAddress: React.FC<IAddAddress> = ({
                     }}
                   >
                     <View style={styles.RadioTitle}>
-                      <HeaderStyle>Use current location</HeaderStyle>
+                      <HeaderStyle allowFontScaling={false}>Use current location</HeaderStyle>
                     </View>
-                    {Addr && <DescriptionText>{Addr}</DescriptionText>}
+                    {Addr && <DescriptionText allowFontScaling={false}>{Addr}</DescriptionText>}
                   </View>
                 </Pressable>
 

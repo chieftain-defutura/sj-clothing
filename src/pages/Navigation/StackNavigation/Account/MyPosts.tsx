@@ -69,7 +69,7 @@ const MyPosts: React.FC<IMyPosts> = ({ navigation }) => {
             }}
           >
             <LeftArrow width={24} height={24} />
-            <MyPostText>My posts</MyPostText>
+            <MyPostText allowFontScaling={false}>My posts</MyPostText>
           </GoBackArrowContent>
           <MyPostContainer>
             {cardPairs.map((pair, index) => (

@@ -152,7 +152,7 @@ const AddAddressBook: React.FC<IAddressBook> = ({
           }}
         >
           <LeftArrow width={24} height={24} />
-          <CartText>{'AddressBook'}</CartText>
+          <CartText allowFontScaling={false}>{'AddressBook'}</CartText>
         </GoBackArrowContent>
 
         <MapView
@@ -188,7 +188,9 @@ const AddAddressBook: React.FC<IAddressBook> = ({
             }}
           >
             <CurrentLocationIcon width={16} height={16} />
-            <UseCurrentLocationText>Use current location</UseCurrentLocationText>
+            <UseCurrentLocationText allowFontScaling={false}>
+              Use current location
+            </UseCurrentLocationText>
           </FlexRow>
         </CurrentLocationWrapper>
 

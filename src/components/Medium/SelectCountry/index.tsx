@@ -96,6 +96,7 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
           }}
         >
           <Text
+            allowFontScaling={false}
             style={{
               textAlign: 'center',
               color: COLORS.iconsHighlightClr,
@@ -130,6 +131,7 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
                 }}
               >
                 <Text
+                  allowFontScaling={false}
                   style={{
                     textAlign: 'left',
                     fontFamily: 'Gilroy-Medium',

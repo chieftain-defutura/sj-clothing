@@ -113,7 +113,7 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onEditPress }) => {
   return (
     <View>
       <View style={{ padding: 22 }}>
-        <Header>Choose Address</Header>
+        <Header allowFontScaling={false}>Choose Address</Header>
 
         <RadioButton.Group
           onValueChange={(newValue) => {
@@ -138,9 +138,9 @@ const ChooseAddress: React.FC<IChooseLocation> = ({ onEditPress }) => {
                   <View style={{ display: 'flex', flexDirection: 'column' }}>
                     <View style={styles.RadioTitle}>
                       <HomeIcon width={16} height={16} color={'black'} />
-                      <HeaderStyle>{f.saveAddressAs}</HeaderStyle>
+                      <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
                     </View>
-                    <DescriptionText>
+                    <DescriptionText allowFontScaling={false}>
                       {f.addressOne}, {f.addressTwo}, {f.city}, {f.state}, {f.pinCode}, {f.country}
                       {f.floor}, {f.phoneNo}
                     </DescriptionText>

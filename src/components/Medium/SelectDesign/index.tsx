@@ -158,6 +158,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
               }}
             >
               <Text
+                allowFontScaling={false}
                 style={{
                   color:
                     isImageOrText.designs.hashtag === item.hashTag

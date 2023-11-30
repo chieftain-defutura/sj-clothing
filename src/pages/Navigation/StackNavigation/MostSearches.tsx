@@ -44,7 +44,7 @@ const MostSearches: React.FC = () => {
           onClear={handleClearSearch}
           value={searchText}
         />
-        <MostSearchesHead>Most searches</MostSearchesHead>
+        <MostSearchesHead allowFontScaling={false}>Most searches</MostSearchesHead>
         {data.map((item, index) => {
           const isItemClosed = closedItems.includes(index)
 
@@ -54,7 +54,7 @@ const MostSearches: React.FC = () => {
                 <MostSearchContent>
                   <SearchFlexContent>
                     <ArrowUpRightIcon width={14} height={14} />
-                    <SearchText>{item}</SearchText>
+                    <SearchText allowFontScaling={false}>{item}</SearchText>
                   </SearchFlexContent>
                   <Pressable onPress={() => handleClose(index)}>
                     <CloseIcon width={20} height={20} />

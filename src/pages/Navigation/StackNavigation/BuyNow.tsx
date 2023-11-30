@@ -75,6 +75,7 @@ const BuyNow: React.FC<IBuyNow> = ({ navigation }) => {
             White T-shirt
           </Text>
           <Text
+            allowFontScaling={false}
             style={{ color: COLORS.textSecondaryClr, fontFamily: 'Gilroy-Medium', fontSize: 12 }}
           >
             #Roundneck
@@ -128,6 +129,7 @@ const BuyNow: React.FC<IBuyNow> = ({ navigation }) => {
               }}
             >
               <Text
+                allowFontScaling={false}
                 style={{ color: COLORS.textClr, fontFamily: 'Montserrat-Regular', fontSize: 10 }}
               >
                 {item.title}

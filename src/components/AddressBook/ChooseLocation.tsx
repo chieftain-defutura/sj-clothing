@@ -185,9 +185,9 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
                   <View style={{ display: 'flex', flexDirection: 'column' }}>
                     <View style={styles.RadioTitle}>
                       <HomeIcon width={16} height={16} color={'black'} />
-                      <HeaderStyle>{f.saveAddressAs}</HeaderStyle>
+                      <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
                     </View>
-                    <DescriptionText>
+                    <DescriptionText allowFontScaling={false}>
                       {f.fullAddress}, {f.landmark}, {f.floor}
                     </DescriptionText>
                   </View>
@@ -211,7 +211,7 @@ const ChooseLocation: React.FC<IChooseLocation> = ({ onAddPress, onEditPress, su
           <Pressable onPress={(e) => onAddPress(e, onText)}>
             <AddAddressBtn>
               <Plus width={16} height={16} />
-              <BtnText>Add new Address</BtnText>
+              <BtnText allowFontScaling={false}>Add new Address</BtnText>
             </AddAddressBtn>
           </Pressable>
           <View style={{ width: 175 }}>

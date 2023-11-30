@@ -61,6 +61,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
             }}
           >
             <Text
+              allowFontScaling={false}
               style={{
                 textAlign: 'center',
 
@@ -116,6 +117,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                   </View> */}
 
                   <Text
+                    allowFontScaling={false}
                     style={{
                       color:
                         isImageOrText.position === 'Front'
@@ -161,6 +163,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                   </View> */}
 
                   <Text
+                    allowFontScaling={false}
                     style={{
                       color:
                         isImageOrText.position === 'Back'
@@ -207,6 +210,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                   </View> */}
 
                   <Text
+                    allowFontScaling={false}
                     style={{
                       color:
                         isImageOrText.position === 'Right arm'
@@ -253,6 +257,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                   </View> */}
 
                   <Text
+                    allowFontScaling={false}
                     style={{
                       color:
                         isImageOrText.position === 'Left arm'

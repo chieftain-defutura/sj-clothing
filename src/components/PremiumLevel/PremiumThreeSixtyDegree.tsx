@@ -138,6 +138,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
            </ThreeSixtyDegreeImageWrapper> */}
           {errorMessage && (
             <Text
+              allowFontScaling={false}
               style={{
                 textAlign: 'center',
                 marginBottom: -20,

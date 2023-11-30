@@ -189,9 +189,11 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddress }) =
                   }}
                 >
                   <View style={styles.RadioTitle}>
-                    <HeaderStyle>{selectedAddress.saveAddressAs}</HeaderStyle>
+                    <HeaderStyle allowFontScaling={false}>
+                      {selectedAddress.saveAddressAs}
+                    </HeaderStyle>
                   </View>
-                  {addr && <DescriptionText>{addr}</DescriptionText>}
+                  {addr && <DescriptionText allowFontScaling={false}>{addr}</DescriptionText>}
                 </View>
               </View>
 
@@ -201,7 +203,7 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddress }) =
                   formik.setValues({ ...formik.values, editAddress: addr })
                 }}
               >
-                <ChangeText>Change</ChangeText>
+                <ChangeText allowFontScaling={false}>Change</ChangeText>
               </Pressable>
             </View>
             <View style={styles.inputContainer}>
@@ -216,7 +218,9 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddress }) =
                   onBlur={formik.handleBlur('editAddress')}
                   onSubmitEditing={Keyboard.dismiss}
                 />
-                {formik.errors.editAddress && <ErrorText>{formik.errors.editAddress}</ErrorText>}
+                {formik.errors.editAddress && (
+                  <ErrorText allowFontScaling={false}>{formik.errors.editAddress}</ErrorText>
+                )}
               </View>
               <View>
                 <Input
@@ -226,7 +230,9 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddress }) =
                   onBlur={formik.handleBlur('floor')}
                   onSubmitEditing={Keyboard.dismiss}
                 />
-                {formik.errors.floor && <ErrorText>{formik.errors.floor}</ErrorText>}
+                {formik.errors.floor && (
+                  <ErrorText allowFontScaling={false}>{formik.errors.floor}</ErrorText>
+                )}
               </View>
               <View>
                 <Input
@@ -236,7 +242,9 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddress }) =
                   onBlur={formik.handleBlur('landmark')}
                   onSubmitEditing={Keyboard.dismiss}
                 />
-                {formik.errors.landmark && <ErrorText>{formik.errors.landmark}</ErrorText>}
+                {formik.errors.landmark && (
+                  <ErrorText allowFontScaling={false}>{formik.errors.landmark}</ErrorText>
+                )}
               </View>
               <View>
                 <Input
@@ -246,7 +254,9 @@ const EditAddress: React.FC<IEditAddress> = ({ onEditPress, selectedAddress }) =
                   onBlur={formik.handleBlur('displayName')}
                   onSubmitEditing={Keyboard.dismiss}
                 />
-                {formik.errors.displayName && <ErrorText>{formik.errors.displayName}</ErrorText>}
+                {formik.errors.displayName && (
+                  <ErrorText allowFontScaling={false}>{formik.errors.displayName}</ErrorText>
+                )}
               </View>
 
               <CustomButton

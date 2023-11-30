@@ -26,23 +26,23 @@ const Royalties: React.FC<IRoyalties> = ({ navigation }) => {
               }}
             >
               <LeftArrow width={24} height={24} />
-              <CartText>Royalties</CartText>
+              <CartText allowFontScaling={false}>Royalties</CartText>
             </GoBackArrowContent>
           </View>
           <View>
             <RoyaltiesContent>
-              <Paragraph>
+              <Paragraph allowFontScaling={false}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
               </Paragraph>
               <FlexContent>
                 <View>
-                  <RoyalHead>TOTAL EARNED ROYALTIES</RoyalHead>
-                  <RoyalInr>3600 INR</RoyalInr>
+                  <RoyalHead allowFontScaling={false}>TOTAL EARNED ROYALTIES</RoyalHead>
+                  <RoyalInr allowFontScaling={false}>3600 INR</RoyalInr>
                 </View>
                 <View>
-                  <RoyalHead>TOTAL EARNED ROYALTIES</RoyalHead>
-                  <RoyalInr>5%</RoyalInr>
+                  <RoyalHead allowFontScaling={false}>TOTAL EARNED ROYALTIES</RoyalHead>
+                  <RoyalInr allowFontScaling={false}>5%</RoyalInr>
                 </View>
               </FlexContent>
             </RoyaltiesContent>
@@ -54,24 +54,24 @@ const Royalties: React.FC<IRoyalties> = ({ navigation }) => {
                   </View>
                   <View>
                     <View>
-                      <RoyalHead>{f.product}</RoyalHead>
-                      <RoyalInr>
+                      <RoyalHead allowFontScaling={false}>{f.product}</RoyalHead>
+                      <RoyalInr allowFontScaling={false}>
                         {f.productPrice} {f.inr}
                       </RoyalInr>
                     </View>
                     <View style={{ marginTop: 16 }}>
-                      <RoyalHead>{f.royalties}</RoyalHead>
-                      <RoyalInr>{f.royaltiesPercentage}</RoyalInr>
+                      <RoyalHead allowFontScaling={false}>{f.royalties}</RoyalHead>
+                      <RoyalInr allowFontScaling={false}>{f.royaltiesPercentage}</RoyalInr>
                     </View>
                   </View>
                   <View>
                     <View>
-                      <RoyalHead>{f.totalSale}</RoyalHead>
-                      <RoyalInr>{f.total}</RoyalInr>
+                      <RoyalHead allowFontScaling={false}>{f.totalSale}</RoyalHead>
+                      <RoyalInr allowFontScaling={false}>{f.total}</RoyalInr>
                     </View>
                     <View style={{ marginTop: 16 }}>
-                      <RoyalHead>{f.royaltiesInr}</RoyalHead>
-                      <RoyalInr>
+                      <RoyalHead allowFontScaling={false}>{f.royaltiesInr}</RoyalHead>
+                      <RoyalInr allowFontScaling={false}>
                         {f.royaltiesPrice} {f.inr}
                       </RoyalInr>
                     </View>

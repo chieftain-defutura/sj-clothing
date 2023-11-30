@@ -56,6 +56,7 @@ const SimpleDropdownWithAnimation: React.FC<ISelectColor> = ({ setPostCreationSt
             ]}
           >
             <Text
+              allowFontScaling={false}
               style={{
                 textAlign: 'center',
                 fontFamily: 'Gilroy-Medium',
@@ -96,6 +97,7 @@ const SimpleDropdownWithAnimation: React.FC<ISelectColor> = ({ setPostCreationSt
                       ></View>
                     </View>
                     <Text
+                      allowFontScaling={false}
                       style={{
                         color:
                           isSelectedColor === color

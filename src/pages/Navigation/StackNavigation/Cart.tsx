@@ -38,11 +38,11 @@ const CartPage: React.FC<ICartPage> = ({ navigation }) => {
                 }}
               >
                 <LeftArrow width={24} height={24} />
-                <CartText>{t('My cart')}</CartText>
+                <CartText allowFontScaling={false}>{t('My cart')}</CartText>
               </GoBackArrowContent>
               <View style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
                 <LocationIcon width={16} height={16} />
-                <LocationText>{t('Home')}</LocationText>
+                <LocationText allowFontScaling={false}>{t('Home')}</LocationText>
               </View>
             </FlexContent>
 
