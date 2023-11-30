@@ -164,6 +164,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                       onBlur={handleBlur('name')}
                       placeholderTextColor={COLORS.SecondaryTwo}
                       autoCorrect={false}
+                      allowFontScaling={false}
                     />
                   </InputBorder>
                   {touched.name && errors.name && (
@@ -180,6 +181,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                       onBlur={handleBlur('email')}
                       placeholderTextColor={COLORS.SecondaryTwo}
                       autoCorrect={false}
+                      allowFontScaling={false}
                     />
                     {/* <Pressable onPress={handleVerify}>
                       <VerifyText>Verify</VerifyText>
@@ -200,6 +202,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                       onBlur={() => handleBlur('password')}
                       placeholderTextColor={COLORS.SecondaryTwo}
                       autoCorrect={false}
+                      allowFontScaling={false}
                     />
                     <Pressable onPress={togglePasswordVisibility}>
                       {showPassword ? (
