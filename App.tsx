@@ -41,14 +41,10 @@ const App: React.FC = () => {
   const updateLanguage = userStore((state) => state.updateLanguage)
   const updateProfile = userStore((state) => state.updateProfile)
   const updateConfirmDetails = userStore((state) => state.updateConfirmDetails)
-  console.log('ratingkpokp', rate)
-  console.log('currencybsn', currency)
-  console.log('avatardlkd', avatar)
 
   const fetchDataFromFirestore = useCallback(async () => {
     try {
       if (user) {
-        console.log(user.uid)
         const q = doc(db, 'users', user.uid)
         const querySnapshot = await getDoc(q)
         const fetchData = querySnapshot.data()

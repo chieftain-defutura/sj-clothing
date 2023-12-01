@@ -169,9 +169,10 @@ const FinalView: React.FC<IFinalView> = ({
                 allowFontScaling={false}
                 style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
               >
-                {isImageOrText.designs.hashtag ? isImageOrText.designs.hashtag : '-'}
-                {isImageOrText.rate !== 0 &&
-                  (Number(isImageOrText.rate) * (rate as number)).toFixed(2)}
+                {isImageOrText.designs.hashtag ? isImageOrText.designs.hashtag : '-'}{' '}
+                {isImageOrText.rate
+                  ? (Number(isImageOrText.rate) * (rate as number)).toFixed(2)
+                  : '0.00'}
                 {isImageOrText.rate !== 0 && currency.symbol}
               </Text>
             </View>
@@ -287,7 +288,7 @@ const FinalView: React.FC<IFinalView> = ({
                   textTransform: 'capitalize',
                 }}
               >
-                {avatar.gender}
+                {avatar?.gender}
               </Text>
             </View>
             <View

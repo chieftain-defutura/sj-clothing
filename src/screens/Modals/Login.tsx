@@ -133,6 +133,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
                     onBlur={handleBlur('email')}
                     placeholderTextColor={COLORS.SecondaryTwo}
                     autoCorrect={false}
+                    allowFontScaling={false}
                   />
                 </InputBorder>
                 {touched.email && errors.email && (
@@ -150,6 +151,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
                     onBlur={() => handleBlur('password')}
                     placeholderTextColor={COLORS.SecondaryTwo}
                     autoCorrect={false}
+                    allowFontScaling={false}
                   />
                   <Pressable
                     onPress={(event) => {

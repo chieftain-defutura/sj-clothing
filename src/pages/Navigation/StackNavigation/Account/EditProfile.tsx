@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import * as ImagePicker from 'expo-image-picker'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { COLORS, FONT_FAMILY } from '../../../../styles/theme'
+import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../../styles/theme'
 import NotUserIcon from '../../../../assets/icons/AccountPageIcon/NotUserIcon'
 import LeftArrow from '../../../../assets/icons/LeftArrow'
 import Input from '../../../../components/Input'
@@ -12,6 +12,7 @@ import { userStore } from '../../../../store/userStore'
 import { doc, updateDoc } from 'firebase/firestore/lite'
 import { db, storage } from '../../../../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const { width, height } = Dimensions.get('window')
 
@@ -110,7 +111,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   })
 
   return (
-    <View>
+    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
       <UserWrapper style={{ width: width, height: height / 2.5 }}>
         <FlexContent>
           <Pressable
@@ -157,7 +158,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
           <ErrorText allowFontScaling={false}>{formik.errors.fullName}</ErrorText>
         )}
       </View>
-    </View>
+    </LinearGradient>
   )
 }
 
