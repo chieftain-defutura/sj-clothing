@@ -14,7 +14,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.dewallstreet.sprinkle"
+      "bundleIdentifier": "com.dewallstreet.sprinkle",
+      "config": {
+        "googleMapsApiKey": "AIzaSyDgFFGbaEKBnJJT73Ewzftdg0tljD_ZA9c"
+      }
     },
     "android": {
       "adaptiveIcon": {

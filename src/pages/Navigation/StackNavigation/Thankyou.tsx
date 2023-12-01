@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import uuid from 'react-native-uuid'
 import WebView from 'react-native-webview'
@@ -26,6 +26,7 @@ const Thankyou = () => {
   const [uid, setUid] = useState<string | null>(null)
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
+  const [webviewLoading, setWebviewLoading] = useState(true)
 
   const handleLayout = () => {
     if (elementRef.current) {
@@ -63,7 +64,12 @@ const Thankyou = () => {
             Thank You
           </Text>
         </Animated.View>
-        <View style={{ flex: 1 }} ref={elementRef} onLayout={handleLayout}>
+        <View style={{ flex: 1, position: 'relative' }} ref={elementRef} onLayout={handleLayout}>
+          {webviewLoading && (
+            <View style={styles.absoluteContainer}>
+              <ActivityIndicator size='large' color={'#8C73CB'} />
+            </View>
+          )}
           {uid && pageY && elementHeight && (
             <WebView
               style={{
@@ -74,6 +80,7 @@ const Thankyou = () => {
                 uri: `https://sj-threejs-development.netlify.app/thankyou?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
               }}
               scrollEnabled={false}
+              onLoad={() => setWebviewLoading(false)}
             />
           )}
         </View>
@@ -102,5 +109,15 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.ArvoRegular,
     textAlign: 'center',
     padding: 14,
+  },
+  absoluteContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
