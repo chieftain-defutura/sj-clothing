@@ -166,7 +166,7 @@ const Medium = () => {
     }
   }, [isSize])
   const handleUpdateImageAndText = useCallback(async () => {
-    if (!isImageOrText || !uid) return
+    if (!isImageOrText.designs.originalImage || !uid) return
     try {
       const docRef = doc(db, 'ModelsMidlevel', uid)
       await updateDoc(docRef, { image: isImageOrText.designs.originalImage })
