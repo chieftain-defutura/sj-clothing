@@ -7,7 +7,6 @@ import {
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import Checkbox from 'expo-checkbox'
-import emailjs from '@emailjs/browser'
 import { FirebaseError } from 'firebase/app'
 import styled from 'styled-components/native'
 import React, { useEffect, useState } from 'react'
@@ -107,28 +106,6 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
     return Math.floor(Math.random() * (maxDigit - minDigit + 1)) + minDigit
   }
 
-  const handleVerify = async () => {
-    const verificationCode = await generateVerificationCode()
-    setVerificationCode(verificationCode.toString())
-    console.log(verificationCode)
-    const emailParams = {
-      to_email: email,
-      subject: 'verification code',
-      message: `your verification code is ${verificationCode}`,
-      to_name: name,
-      from_name: 'SprinkleNadar',
-    }
-
-    const response = await emailjs.send(
-      'service_ye4n5dl',
-      'template_agvcl0k',
-      emailParams,
-      '85jl960Zew5smr0XV',
-    )
-
-    console.log(response)
-  }
-
   const handleSubmit = async (values: typeof initialValues) => {
     if (!user) {
       try {
@@ -220,7 +197,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                       autoCorrect={false}
                       allowFontScaling={false}
                     />
-                    <Pressable onPress={handleVerify}>
+                    <Pressable>
                       <VerifyText>Verify</VerifyText>
                     </Pressable>
                   </InputBorder>

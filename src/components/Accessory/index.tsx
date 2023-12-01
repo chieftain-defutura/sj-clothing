@@ -1,4 +1,4 @@
-import { View, Dimensions } from 'react-native'
+import { View, Dimensions, Text } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { collection, getDocs } from 'firebase/firestore/lite'
 import styled from 'styled-components/native'
@@ -17,6 +17,7 @@ import SignupModal from '../../screens/Modals/Signup'
 import ForgotMail from '../../screens/Modals/ForgotMail'
 import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 import Loader from '../Loading'
+import LeftArrow from '../../assets/icons/LeftArrow'
 
 const { width, height } = Dimensions.get('window')
 
@@ -137,6 +138,16 @@ const Accessory = () => {
 
   return (
     <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+      {!openCard && (
+        <GoBackArrowContent
+          onPress={() => {
+            navigation.goBack()
+          }}
+        >
+          <LeftArrow width={24} height={24} />
+          <CartText allowFontScaling={false}>Accessory</CartText>
+        </GoBackArrowContent>
+      )}
       {!openCheckout && (
         <View style={{ flex: 1 }}>
           <ScrollView scrollEnabled={openDetails ? false : true}>
@@ -249,4 +260,17 @@ const ProductText = styled.Text`
   color: ${COLORS.iconsHighlightClr};
   text-align: center;
   margin-left: 39px;
+`
+const GoBackArrowContent = styled.Pressable`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+`
+const CartText = styled.Text`
+  color: ${COLORS.textClr};
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  font-size: 20px;
+  letter-spacing: -0.4px;
 `
