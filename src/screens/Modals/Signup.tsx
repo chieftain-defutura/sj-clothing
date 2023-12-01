@@ -120,7 +120,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
         template_params: {
           to_email: email,
           subject: 'verification code',
-          message: `your verification code is ${verificationCode}`,
+          message: `${verificationCode}`,
           to_name: name,
           from_name: 'SprinkleNadar',
         },
