@@ -9,9 +9,11 @@ import Svg, { Path } from 'react-native-svg'
 import { useTranslation } from 'react-i18next'
 import { userStore } from '../../../store/userStore'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigation } from '@react-navigation/native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { doc, updateDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
+import LeftArrow from '../../../assets/icons/LeftArrow'
 
 const LanguagesData = [
   { language: 'Chinese Mandarian', lang: 'ch' },
@@ -45,6 +47,8 @@ const Languages = () => {
   const updateLanguage = userStore((state) => state.updateLanguage)
   const confirmDetails = userStore((state) => state.confirmDetails)
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
+  const [isPressed, setIsPressed] = useState(false)
+  const navigation = useNavigation()
 
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
@@ -125,6 +129,25 @@ const Languages = () => {
             padding: 25,
           }}
         >
+          <GoBackArrowContent
+            onPress={() => {
+              navigation.goBack()
+            }}
+            onPressIn={() => setIsPressed(true)}
+            onPressOut={() => setIsPressed(false)}
+          >
+            {() => (
+              <IconHoverClr
+                style={{
+                  backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
+                }}
+              >
+                <IconHoverPressable>
+                  <LeftArrow width={24} height={24} />
+                </IconHoverPressable>
+              </IconHoverClr>
+            )}
+          </GoBackArrowContent>
           <Text allowFontScaling={false} style={styles.title}>
             {t('Choose Your Language')}
           </Text>
@@ -177,11 +200,12 @@ export default Languages
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 40,
+    fontSize: 36,
     color: COLORS.textClr,
     fontFamily: FONT_FAMILY.ArvoRegular,
     textAlign: 'center',
     paddingBottom: 24,
+    marginTop: 8,
   },
   selectText: {
     fontSize: 14,
@@ -206,6 +230,26 @@ const SelectContent = styled.Pressable`
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
+`
+
+const GoBackArrowContent = styled.Pressable`
+  display: flex;
+  flex-direction: row;
+  align-self: flex-start;
+  margin-left: -8px;
+`
+const IconHoverPressable = styled.View`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 2px;
+  margin-top: 2px;
+`
+
+const IconHoverClr = styled.View`
+  border-radius: 20px;
+  width: 32px;
+  height: 32px;
 `
 
 const SelectDropDownList = styled.View`

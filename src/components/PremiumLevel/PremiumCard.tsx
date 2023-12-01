@@ -34,7 +34,7 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
         display: 'flex',
         flexDirection: 'column',
         width: width / 2.2,
-        height: height / 3.2,
+        height: height / 3.1,
         marginLeft: 12,
         marginBottom: 18,
       }}

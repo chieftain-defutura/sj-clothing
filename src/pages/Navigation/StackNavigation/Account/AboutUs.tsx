@@ -76,6 +76,7 @@ const GoBackArrowContent = styled.Pressable`
   align-items: center;
   gap: 8px;
   padding: 16px;
+  margin-bottom: 14px;
 `
 
 const CartText = styled.Text`

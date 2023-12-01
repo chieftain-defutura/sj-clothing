@@ -1,14 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, Pressable, StyleSheet, Alert, Platform } from 'react-native'
+import { View, Pressable, StyleSheet, Alert } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
-import {
-  PlatformPay,
-  PlatformPayButton,
-  usePlatformPay,
-  useStripe,
-} from '@stripe/stripe-react-native'
+import { PlatformPay, usePlatformPay, useStripe } from '@stripe/stripe-react-native'
 import CustomButton from '../../../components/Button'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -81,10 +76,10 @@ const Checkout: React.FC<ICheckout> = ({
 
   const setup = useCallback(async () => {
     if (!(await isPlatformPaySupported())) {
-      Alert.alert(
-        'ERROR',
-        `${Platform.OS === 'android' ? 'google' : 'apple'} pay is not supported on this platform`,
-      )
+      // Alert.alert(
+      //   'ERROR',
+      //   `${Platform.OS === 'android' ? 'google' : 'apple'} pay is not supported on this platform`,
+      // )
       setIsPaySupported(false)
     } else {
       setIsPaySupported(true)

@@ -2,7 +2,7 @@ import React from 'react'
 import { View, TouchableOpacity, Linking, Text } from 'react-native'
 
 const Customer: React.FC = () => {
-  const phoneNumber = '123456789' // Replace with the actual phone number
+  const phoneNumber = '7358947141'
 
   const handleCall = () => {
     const url = `tel:${phoneNumber}`
@@ -13,7 +13,6 @@ const Customer: React.FC = () => {
     <View>
       <TouchableOpacity onPress={handleCall}>
         <View>
-          {/* Your "Customer Care" view */}
           <Text allowFontScaling={false}>Customer Care</Text>
         </View>
       </TouchableOpacity>

@@ -108,7 +108,7 @@ const AccessoryThreeSixtyDegree: React.FC<IAccessoryThreeSixtyDegree> = ({
                   resizeMode: 'contain',
                   width: width * 0.9,
                   height: height * 0.65,
-                  marginTop: 20,
+                  marginTop: 40,
                 }}
               />
             </ThreeSixtyDegreeImage>
