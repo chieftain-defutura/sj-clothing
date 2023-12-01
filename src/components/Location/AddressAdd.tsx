@@ -249,8 +249,6 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
     }
   }, [Addr])
 
-  console.log('addr', Addr)
-
   const formik = useFormik({
     initialValues: {
       fullAddress: location ? location : '',

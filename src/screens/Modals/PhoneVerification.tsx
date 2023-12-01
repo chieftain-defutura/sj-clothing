@@ -40,6 +40,7 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [verificationId, setVerificationId] = useState<string | null>(null)
   const [countryCode, setCountryCode] = useState('+91')
+  const [isLoading, setLoading] = useState(false)
   const [show, setShow] = useState(false)
   useEffect(() => {
     if (errorMessage) {
@@ -54,6 +55,7 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
   const handleSubmit = async (values: any) => {
     try {
       if (!user) return
+      setLoading(true)
       // if (values.verifyCode === verificationId) {
       //   await updateDoc(doc(db, 'users', user.uid), {
       //     phoneNo: values.phoneNumber,
@@ -68,15 +70,18 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
       updatePhoneNo(Number(countryCode + values.phoneNumber))
       setIsCreated(true)
       closeModal?.()
+      setLoading(false)
       // if (values.verifyCode !== verificationId) {
       //   setErrorMessage('Invalid Verification Code')
       // }
     } catch (error) {
       console.log('verification error', error)
       setErrorMessage('Invalid Verification Code')
+      setLoading(false)
+    } finally {
+      setLoading(false)
     }
   }
-  console.log(verificationId)
   const generateVerificationCode = () => {
     const codeLength = 6
     const minDigit = Math.pow(10, codeLength - 1)
@@ -107,7 +112,7 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
             <View>
               <LabelText allowFontScaling={false}>Phone Number</LabelText>
               <InputBorder>
-                <View style={{ display: 'flex', flexDirection: 'row', gap: 5 }}>
+                <View style={{ display: 'flex', flexDirection: 'row', paddingLeft: 10 }}>
                   <CountryCode
                     countryCode={countryCode}
                     setCountryCode={setCountryCode}
@@ -166,7 +171,8 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
               onPress={() => {
                 handleSubmit()
               }}
-              text='Verify'
+              disabled={isLoading}
+              text={isLoading ? 'Verifing...' : 'Verify'}
               fontFamily='Arvo-Regular'
               fontSize={14}
               buttonStyle={[styles.submitBtn]}

@@ -109,10 +109,9 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   }
 
   const handleVerify = async (email: string, name: string) => {
-    console.log(email, name)
     try {
+      setIsLoading(true)
       const verificationCode = generateVerificationCode()
-      setVerificationCode(verificationCode.toString())
       const templateParams = {
         service_id: 'service_uczg2oi',
         template_id: 'template_973exzj',
@@ -130,13 +129,19 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
         'https://api.emailjs.com/api/v1.0/email/send',
         templateParams,
       )
+      setVerificationCode(verificationCode.toString())
+
       console.log(data)
+      setIsLoading(false)
     } catch (error) {
       console.log('error', Object.values(error as any))
+      setVerificationCode('')
+      setErrorMessage('Invalid email')
+      setIsLoading(false)
+    } finally {
+      setIsLoading(false)
     }
   }
-
-  console.log('isVisible')
 
   const handleVerifyOTP = (otp: string) => {
     if (otp === verificationCode) {
@@ -146,10 +151,13 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
     }
   }
   const handleSubmit = async (values: typeof initialValues) => {
+    console.log('111111111111111', user)
+
     if (!user) {
       try {
         setIsLoading(true)
         const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password)
+        console.log('sufgbuo', user)
         await updateProfile(user, { displayName: values.name })
         await AsyncStorage.setItem('mail', values.email)
         await AsyncStorage.setItem('password', values.password)
@@ -170,7 +178,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           confirmDetails: confirmDetails,
         })
 
-        updateSignupUpdate(true)
+        // updateSignupUpdate(true)
       } catch (error) {
         if (error instanceof FirebaseError) {
           if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
@@ -184,6 +192,8 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       }
     }
   }
+
+  console.log('user', user)
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       {!user && (
@@ -201,117 +211,176 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                     <CloseIcon width={24} height={24} />
                   </Pressable>
                 </SignUpHead>
-                <View>
-                  <LabelText allowFontScaling={false}>Full name</LabelText>
-                  <InputBorder>
-                    <InputStyle
-                      placeholder='Enter your name'
-                      value={values.name}
-                      onChangeText={handleChange('name')}
-                      onBlur={handleBlur('name')}
-                      placeholderTextColor={COLORS.SecondaryTwo}
-                      autoCorrect={false}
-                      allowFontScaling={false}
-                    />
-                  </InputBorder>
-                  {touched.name && errors.name && (
-                    <ErrorText allowFontScaling={false}>{errors.name}</ErrorText>
-                  )}
-                </View>
-                <View>
-                  <LabelText allowFontScaling={false}>E-mail</LabelText>
-                  <InputBorder>
-                    <InputStyle
-                      placeholder='Enter your e-mail'
-                      value={values.email}
-                      onChangeText={handleChange('email')}
-                      onBlur={handleBlur('email')}
-                      placeholderTextColor={COLORS.SecondaryTwo}
-                      autoCorrect={false}
-                      allowFontScaling={false}
-                      style={{ width: 240 }}
-                    />
-                    <Pressable
-                      style={{ opacity: verificationCode ? 0 : 1 }}
-                      onPress={() => handleVerify(values.email, values.name)}
-                    >
-                      <VerifyText>Send OTP</VerifyText>
-                    </Pressable>
-                  </InputBorder>
-                  {touched.email && errors.email && (
-                    <ErrorText allowFontScaling={false}>{errors.email}</ErrorText>
-                  )}
-                </View>
-                {verificationCode && (
-                  <Animated.View entering={FadeInUp.duration(500)} exiting={FadeOutDown}>
-                    <LabelText allowFontScaling={false}>Verify OTP</LabelText>
-                    <InputBorder>
-                      <InputStyle
-                        placeholder='Enter your OTP'
-                        value={values.otp}
-                        onChangeText={handleChange('otp')}
-                        onBlur={handleBlur('otp')}
-                        placeholderTextColor={COLORS.SecondaryTwo}
-                        autoCorrect={false}
-                        allowFontScaling={false}
-                        style={{ width: 200 }}
-                      />
-                      <View style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
-                        <Pressable
-                          style={{ opacity: isVerify ? 0 : 1 }}
-                          disabled={isVerify}
-                          onPress={() => handleVerify(values.otp, values.name)}
-                        >
-                          <VerifyText allowFontScaling={false}>Resend</VerifyText>
-                        </Pressable>
-                        {isVerify ? (
-                          <Pressable
-                          // disabled={isVerify}
-                          >
-                            <VerifyText allowFontScaling={false} style={{ color: '#00BB00' }}>
-                              Verified
-                            </VerifyText>
-                          </Pressable>
-                        ) : (
-                          <Pressable
-                            // disabled={isVerify}
-                            onPress={() => handleVerifyOTP(values.otp)}
-                          >
-                            <VerifyText allowFontScaling={false}>Verify</VerifyText>
-                          </Pressable>
-                        )}
-                      </View>
-                    </InputBorder>
-                    {touched.otp && errors.otp && (
-                      <ErrorText allowFontScaling={false}>{errors.otp}</ErrorText>
-                    )}
-                  </Animated.View>
-                )}
-                <View>
-                  <LabelText allowFontScaling={false}>Create Password</LabelText>
-                  <InputBorder>
-                    <InputStyle
-                      secureTextEntry={!showPassword}
-                      placeholder='Enter password'
-                      value={values.password}
-                      onChangeText={handleChange('password')}
-                      onBlur={() => handleBlur('password')}
-                      placeholderTextColor={COLORS.SecondaryTwo}
-                      autoCorrect={false}
-                      allowFontScaling={false}
-                    />
-                    <Pressable onPress={togglePasswordVisibility}>
-                      {showPassword ? (
-                        <EyeIcon width={14} height={14} />
-                      ) : (
-                        <EyeHideIcon width={14} height={14} />
+                {!verificationCode && (
+                  <>
+                    <View>
+                      <LabelText allowFontScaling={false}>Full name</LabelText>
+                      <InputBorder>
+                        <InputStyle
+                          placeholder='Enter your name'
+                          value={values.name}
+                          onChangeText={handleChange('name')}
+                          onBlur={handleBlur('name')}
+                          placeholderTextColor={COLORS.SecondaryTwo}
+                          autoCorrect={false}
+                          allowFontScaling={false}
+                        />
+                      </InputBorder>
+                      {touched.name && errors.name && (
+                        <ErrorText allowFontScaling={false}>{errors.name}</ErrorText>
                       )}
-                    </Pressable>
-                  </InputBorder>
-                  {touched.password && errors.password && (
-                    <ErrorText allowFontScaling={false}>{errors.password}</ErrorText>
-                  )}
-                </View>
+                    </View>
+                    <View>
+                      <LabelText allowFontScaling={false}>E-mail</LabelText>
+                      <InputBorder>
+                        <InputStyle
+                          placeholder='Enter your e-mail'
+                          value={values.email}
+                          onChangeText={handleChange('email')}
+                          onBlur={handleBlur('email')}
+                          placeholderTextColor={COLORS.SecondaryTwo}
+                          autoCorrect={false}
+                          allowFontScaling={false}
+                          style={{ width: 240 }}
+                        />
+                        {/* <Pressable
+                          style={{ opacity: verificationCode ? 0 : 1 }}
+                          onPress={() => handleVerify(values.email, values.name)}
+                        >
+                          <VerifyText>Send OTP</VerifyText>
+                        </Pressable> */}
+                      </InputBorder>
+
+                      {touched.email && errors.email && (
+                        <ErrorText allowFontScaling={false}>{errors.email}</ErrorText>
+                      )}
+                    </View>
+                    <View>
+                      <LabelText allowFontScaling={false}>Create Password</LabelText>
+                      <InputBorder>
+                        <InputStyle
+                          secureTextEntry={!showPassword}
+                          placeholder='Enter password'
+                          value={values.password}
+                          onChangeText={handleChange('password')}
+                          onBlur={() => handleBlur('password')}
+                          placeholderTextColor={COLORS.SecondaryTwo}
+                          autoCorrect={false}
+                          allowFontScaling={false}
+                        />
+                        <Pressable onPress={togglePasswordVisibility}>
+                          {showPassword ? (
+                            <EyeIcon width={14} height={14} />
+                          ) : (
+                            <EyeHideIcon width={14} height={14} />
+                          )}
+                        </Pressable>
+                      </InputBorder>
+                      {touched.password && errors.password && (
+                        <ErrorText allowFontScaling={false}>{errors.password}</ErrorText>
+                      )}
+                    </View>
+                    {errorMessage && <ErrorText allowFontScaling={false}>{errorMessage}</ErrorText>}
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: 4,
+                        paddingTop: 16,
+                      }}
+                    >
+                      <Checkbox
+                        // style={styles.checkbox}
+                        value={isChecked}
+                        onValueChange={setChecked}
+                        color={isChecked ? COLORS.textSecondaryClr : undefined}
+                      />
+                      <AccountViewText allowFontScaling={false}>Accept all</AccountViewText>
+                      <TouchableOpacity onPress={() => navigation.navigate('TermsAndConditions')}>
+                        <AccountViewText allowFontScaling={false} style={{ color: COLORS.textClr }}>
+                          Terms and conditions
+                        </AccountViewText>
+                      </TouchableOpacity>
+                    </View>
+                    <CustomButton
+                      variant='primary'
+                      text={isLoading ? 'sending...' : 'Send OTP'}
+                      onPress={() => handleVerify(values.email, values.name)}
+                      fontFamily='Arvo-Regular'
+                      disabled={!isChecked || isLoading}
+                      fontSize={14}
+                      buttonStyle={[styles.submitBtn]}
+                    />
+                    <AccountView>
+                      <AccountViewText allowFontScaling={false}>
+                        Already have an account?
+                      </AccountViewText>
+                      <Pressable onPress={onLoginClick}>
+                        <LoginLink allowFontScaling={false}>Log in</LoginLink>
+                      </Pressable>
+                    </AccountView>
+                  </>
+                )}
+                {verificationCode && (
+                  <>
+                    <Animated.View entering={FadeInUp.duration(500)} exiting={FadeOutDown}>
+                      <LabelText allowFontScaling={false}>Verify OTP</LabelText>
+                      <InputBorder>
+                        <InputStyle
+                          placeholder='Enter your OTP'
+                          value={values.otp}
+                          onChangeText={handleChange('otp')}
+                          onBlur={handleBlur('otp')}
+                          placeholderTextColor={COLORS.SecondaryTwo}
+                          autoCorrect={false}
+                          allowFontScaling={false}
+                          style={{ width: 200 }}
+                        />
+                        <View style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
+                          <Pressable
+                            style={{ opacity: isVerify ? 0 : 1 }}
+                            disabled={isVerify}
+                            onPress={() => handleVerify(values.otp, values.name)}
+                          >
+                            <VerifyText allowFontScaling={false}>Resend</VerifyText>
+                          </Pressable>
+                          {/* {isVerify ? (
+                            <Pressable
+                            // disabled={isVerify}
+                            >
+                              <VerifyText allowFontScaling={false} style={{ color: '#00BB00' }}>
+                                Verified
+                              </VerifyText>
+                            </Pressable>
+                          ) : (
+                            <Pressable
+                              // disabled={isVerify}
+                              onPress={() => handleVerifyOTP(values.otp)}
+                            >
+                              <VerifyText allowFontScaling={false}>Verify</VerifyText>
+                            </Pressable>
+                          )} */}
+                        </View>
+                      </InputBorder>
+                      {touched.otp && errors.otp && (
+                        <ErrorText allowFontScaling={false}>{errors.otp}</ErrorText>
+                      )}
+                    </Animated.View>
+
+                    <CustomButton
+                      variant='primary'
+                      text={isLoading ? 'Create Account...' : 'Create Account'}
+                      onPress={() => {
+                        handleSubmit()
+                      }}
+                      fontFamily='Arvo-Regular'
+                      fontSize={14}
+                      buttonStyle={[styles.submitBtn]}
+                    />
+                  </>
+                )}
+
                 {/* <View>
                   <LabelText>Phone Number</LabelText>
                   <InputBorder>
@@ -362,49 +431,6 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                     measurementId: 'G-5643DV97N4',
                   }}
                 /> */}
-                {errorMessage && <ErrorText allowFontScaling={false}>{errorMessage}</ErrorText>}
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 4,
-                    paddingTop: 16,
-                  }}
-                >
-                  <Checkbox
-                    // style={styles.checkbox}
-                    value={isChecked}
-                    onValueChange={setChecked}
-                    color={isChecked ? COLORS.textSecondaryClr : undefined}
-                  />
-                  <AccountViewText allowFontScaling={false}>Accept all</AccountViewText>
-                  <TouchableOpacity onPress={() => navigation.navigate('TermsAndConditions')}>
-                    <AccountViewText allowFontScaling={false} style={{ color: COLORS.textClr }}>
-                      Terms and conditions
-                    </AccountViewText>
-                  </TouchableOpacity>
-                </View>
-                <CustomButton
-                  variant='primary'
-                  text={isLoading ? 'Create Account...' : 'Create Account'}
-                  onPress={() => {
-                    handleSubmit()
-                  }}
-                  disabled={!isChecked || !isVerify}
-                  fontFamily='Arvo-Regular'
-                  fontSize={14}
-                  buttonStyle={[styles.submitBtn]}
-                />
-
-                <AccountView>
-                  <AccountViewText allowFontScaling={false}>
-                    Already have an account?
-                  </AccountViewText>
-                  <Pressable onPress={onLoginClick}>
-                    <LoginLink allowFontScaling={false}>Log in</LoginLink>
-                  </Pressable>
-                </AccountView>
               </SignUpContainer>
             )}
           </Formik>
