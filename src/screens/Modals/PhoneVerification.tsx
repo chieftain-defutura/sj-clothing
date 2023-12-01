@@ -35,7 +35,6 @@ const ValidationSchema = Yup.object({
 const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeModal }) => {
   const user = userStore((state) => state.user)
   const updatePhoneNo = userStore((state) => state.updatePhoneNo)
-
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [verificationId, setVerificationId] = useState<string | null>(null)
   const [countryCode, setCountryCode] = useState('+91')
@@ -57,10 +56,13 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
         await updateDoc(doc(db, 'users', user.uid), {
           phoneNo: values.phoneNumber,
         })
-        updatePhoneNo(values.phoneNumber)
+        updatePhoneNo(Number(countryCode + values.phoneNumber))
         setIsCreated(true)
+        closeModal?.()
       }
-      setErrorMessage('Invalid Verification Code')
+      if (values.verifyCode !== verificationId) {
+        setErrorMessage('Invalid Verification Code')
+      }
     } catch (error) {
       console.log('verification error', error)
       setErrorMessage('Invalid Verification Code')
@@ -114,7 +116,10 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
                     allowFontScaling={false}
                   />
                 </View>
-                <Pressable onPress={() => handleSendCode()}>
+                <Pressable
+                  style={{ opacity: verificationId ? 0 : 1 }}
+                  onPress={() => handleSendCode()}
+                >
                   <VerifyText allowFontScaling={false}>Send</VerifyText>
                 </Pressable>
               </InputBorder>
@@ -134,7 +139,10 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
                   autoCorrect={false}
                   allowFontScaling={false}
                 />
-                <Pressable onPress={() => handleSendCode()}>
+                <Pressable
+                  style={{ opacity: verificationId ? 1 : 0 }}
+                  onPress={() => handleSendCode()}
+                >
                   <VerifyText>Resend</VerifyText>
                 </Pressable>
               </InputBorder>
