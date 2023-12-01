@@ -10,7 +10,14 @@ import { useTranslation } from 'react-i18next'
 import { doc, setDoc, updateDoc } from 'firebase/firestore/lite'
 import Animated, { FadeInUp, FadeOut } from 'react-native-reanimated'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+  ActivityIndicator,
+} from 'react-native'
 
 import { COLORS } from '../../../styles/theme'
 import { userStore } from '../../../store/userStore'
@@ -32,6 +39,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
   const createAvatarAnimationFinished = userStore((store) => store.createAvatarAnimationFinished)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const [data, setData] = useState<{ uid: string; animationFinished?: boolean } | null>(null)
+  const [webviewLoading, setWebviewLoading] = useState(true)
 
   const handleGetData = useCallback(() => {
     if (!uid) return
@@ -129,10 +137,16 @@ const Skintone: React.FC<ISkintone> = ({}) => {
             width: width / 1,
             height: height / 2,
             backgroundColor: 'transparent',
+            position: 'relative',
           }}
           ref={elementRef}
           onLayout={handleLayout}
         >
+          {webviewLoading && (
+            <View style={styles.absoluteContainer}>
+              <ActivityIndicator size='large' color={'#8C73CB'} />
+            </View>
+          )}
           {uid && pageY && elementHeight && (
             <WebView
               style={{
@@ -143,6 +157,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
                 uri: `https://sj-threejs-development.netlify.app/create-avatar/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
               }}
               scrollEnabled={false}
+              onLoad={() => setWebviewLoading(false)}
             />
           )}
         </View>
@@ -234,5 +249,15 @@ const styles = StyleSheet.create({
     width: 40,
     borderRadius: 30,
     overflow: 'hidden',
+  },
+  absoluteContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native'
 
 const { height, width } = Dimensions.get('window')
 
@@ -13,6 +13,7 @@ const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
+  const [webviewLoading, setWebviewLoading] = useState(true)
 
   const handleLayout = () => {
     if (elementRef.current) {
@@ -30,10 +31,16 @@ const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
         // flex: 1,
         zIndex: 1,
         backgroundColor: 'transparent',
+        position: 'relative',
       }}
       ref={elementRef}
       onLayout={handleLayout}
     >
+      {webviewLoading && (
+        <View style={styles.absoluteContainer}>
+          <ActivityIndicator size='large' color={'#8C73CB'} />
+        </View>
+      )}
       {pageY && elementHeight && (
         <WebView
           style={{
@@ -44,6 +51,7 @@ const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
             uri: `https://sj-threejs-development.netlify.app/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
           }}
           scrollEnabled={false}
+          onLoad={() => setWebviewLoading(false)}
         />
       )}
     </View>
@@ -52,4 +60,15 @@ const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
 
 export default TShirt
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  absoluteContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+})
