@@ -136,6 +136,8 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
     }
   }
 
+  console.log('isVisible')
+
   const handleVerifyOTP = (otp: string) => {
     if (otp === verificationCode) {
       setVerify(true)

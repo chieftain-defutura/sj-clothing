@@ -200,11 +200,12 @@ export default Languages
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 40,
+    fontSize: 36,
     color: COLORS.textClr,
     fontFamily: FONT_FAMILY.ArvoRegular,
     textAlign: 'center',
     paddingBottom: 24,
+    marginTop: 8,
   },
   selectText: {
     fontSize: 14,
