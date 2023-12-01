@@ -47,6 +47,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [orderData, setOrderData] = useState<IOrder[]>([])
   const user = userStore((state) => state.user)
+  const phoneNumber = userStore((state) => state.phoneNo)
   const [toolTip, showToolTip] = useState(false)
   const [login, setLogin] = useState(false)
   const [signUp, setSignUp] = useState(false)
@@ -84,11 +85,12 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const handleLogin = () => {
     if (!user) {
       setLogin(true)
+      return
     }
-    if (user && !user.emailVerified) {
+    if (user && !phoneNumber) {
       setSignUp(true)
     }
-    if (user && user.emailVerified) {
+    if (user && phoneNumber) {
       navigation.navigate('EditProfile')
     }
     // if (user && user.emailVerified && !user.phoneNumber) {

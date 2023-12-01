@@ -28,6 +28,8 @@ const Accessory = () => {
   const [productId, setProductId] = useState('')
   const [openDetails, setOpenDetails] = useState(false)
   const user = userStore((state) => state.user)
+  const phoneNumber = userStore((state) => state.phoneNo)
+
   const [openCheckout, setOpenCheckout] = useState(false)
   const [login, setLogin] = useState(false)
   const [isLoading, setLoading] = useState(false)
@@ -67,52 +69,11 @@ const Accessory = () => {
     if (!user) {
       setLogin(true)
     }
-    if (user && !user.emailVerified) {
+    if (user && !phoneNumber) {
       setSignUp(true)
     }
-    // if (user && user.emailVerified && !user.phoneNumber) {
-    //   setSignUp(true)
-    // }
-    if (user && user.emailVerified) {
-      // const docRef = await addDoc(collection(db, 'Orders'), {
-      //   sizes: isSize,
-      //   productImage: FilteredData[0].productImage,
-      //   description: FilteredData[0].description,
-      //   price: FilteredData[0].normalPrice,
-      //   offerPrice: FilteredData[0].offerPrice,
-      //   paymentStatus: 'pending',
-      //   userId: user?.uid,
-      //   type: 'Premium-Level',
-      //   productName: FilteredData[0].productName,
-      //   orderStatus: {
-      //     orderplaced: {
-      //       createdAt: null,
-      //       description: '',
-      //       status: false,
-      //     },
-      //     manufacturing: {
-      //       createdAt: null,
-      //       description: '',
-      //       status: false,
-      //     },
-      //     readyToShip: {
-      //       createdAt: null,
-      //       description: '',
-      //       status: false,
-      //     },
-      //     shipping: {
-      //       createdAt: null,
-      //       description: '',
-      //       status: false,
-      //     },
-      //     delivery: {
-      //       createdAt: null,
-      //       description: '',
-      //       status: false,
-      //     },
-      //   },
-      // })
-      // updateOderId(docRef.id)
+
+    if (user && phoneNumber) {
       setOpenDetails(false)
       setOpenCheckout(true)
     }

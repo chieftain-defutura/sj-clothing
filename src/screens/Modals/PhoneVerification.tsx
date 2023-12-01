@@ -7,11 +7,13 @@ import { StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { PhoneAuthProvider, signInWithCredential } from 'firebase/auth'
 
-import { auth } from '../../../firebase'
+import { auth, db } from '../../../firebase'
 import { COLORS } from '../../styles/theme'
 import CustomButton from '../../components/Button'
 import CountryCode from '../../components/CountryCode'
 import CloseIcon from '../../assets/icons/Close'
+import { doc, updateDoc } from 'firebase/firestore/lite'
+import { userStore } from '../../store/userStore'
 
 interface IPhoneVerification {
   setIsCreated: React.Dispatch<React.SetStateAction<boolean>>
@@ -21,7 +23,7 @@ interface IPhoneVerification {
 const initialValues = { phoneNumber: '', verifyCode: '' }
 
 const ValidationSchema = Yup.object({
-  verifyCode: Yup.string(),
+  verifyCode: Yup.string().required('Enter your OTP'),
   phoneNumber: Yup.string()
     .matches(
       /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/,
@@ -31,7 +33,9 @@ const ValidationSchema = Yup.object({
 })
 
 const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeModal }) => {
-  const recaptchaVerifier = React.useRef<any>(null)
+  const user = userStore((state) => state.user)
+  const updatePhoneNo = userStore((state) => state.updatePhoneNo)
+
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [verificationId, setVerificationId] = useState<string | null>(null)
   const [countryCode, setCountryCode] = useState('+91')
@@ -48,68 +52,30 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
 
   const handleSubmit = async (values: any) => {
     try {
-      const credentials = PhoneAuthProvider.credential(verificationId as string, values.verifyCode)
-
-      await signInWithCredential(auth, credentials)
-      setIsCreated(true)
+      if (!user) return
+      if (values.verifyCode === verificationId) {
+        await updateDoc(doc(db, 'users', user.uid), {
+          phoneNo: values.phoneNumber,
+        })
+        updatePhoneNo(values.phoneNumber)
+        setIsCreated(true)
+      }
+      setErrorMessage('Invalid Verification Code')
     } catch (error) {
       console.log('verification error', error)
       setErrorMessage('Invalid Verification Code')
     }
   }
-  // const handleSendCode = async (phoneNumber: any) => {
-  //   console.log(phoneNumber)
-  //   try {
-  //     const phoneProvider = new PhoneAuthProvider(auth)
-  //     const data = phoneProvider
-  //       .verifyPhoneNumber(countryCode + phoneNumber, recaptchaVerifier.current)
-  //       .then(setVerificationId)
-  //     console.log('data', data)
-  //     setErrorMessage(' Verification Code sent')
-  //   } catch (error) {
-  //     console.log('sendcode error', error)
-  //   }
-  // }
-
-  const handleSendCode = async (phoneNumber: any) => {
-    try {
-      // const axios = require('axios')
-
-      // const options = {
-      //   method: 'GET',
-      //   url: 'https://d7-verify.p.rapidapi.com/messages/v1/balance',
-      //   headers: {
-      //     Token: '<REQUIRED>',
-      //     'X-RapidAPI-Key': '170cad104amsh154e32444b61484p104324jsn8696eb46d7bb',
-      //     'X-RapidAPI-Host': 'd7-verify.p.rapidapi.com',
-      //   },
-      // }
-
-      const { data } = await axios.post(
-        'https://d7-verify.p.rapidapi.com/verify/v1/otp/send-otp',
-        {
-          originator: 'SignOTP',
-          recipient: '+916385126861',
-          content: 'Greetings from D7 API, your mobile verification code is: {}',
-          expiry: '600',
-          data_coding: 'text',
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Token:
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoLWJhY2tlbmQ6YXBwIiwic3ViIjoiYzc4MWU1ZTAtYmFlNy00ZGRhLWI2OGYtNzJjZmE1YzFkYjNiIn0.6mEiOHi2jlJVnxai1WtATKIri_AClQvnz_k4m_giJoc',
-            'X-RapidAPI-Key': '266b2c0a6fmshe08360bc073287ep10e695jsna63fcbdf866d',
-            'X-RapidAPI-Host': 'd7-verify.p.rapidapi.com',
-          },
-        },
-      )
-
-      console.log('data', data)
-    } catch (error) {
-      console.log('error', Object.keys(error as any))
-      console.log('error', Object.values(error as any))
-    }
+  console.log(verificationId)
+  const generateVerificationCode = () => {
+    const codeLength = 6
+    const minDigit = Math.pow(10, codeLength - 1)
+    const maxDigit = Math.pow(10, codeLength) - 1
+    return Math.floor(Math.random() * (maxDigit - minDigit + 1)) + minDigit
+  }
+  const handleSendCode = () => {
+    const verificationCode = generateVerificationCode()
+    setVerificationId(verificationCode.toString())
   }
 
   return (
@@ -148,7 +114,7 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
                     allowFontScaling={false}
                   />
                 </View>
-                <Pressable onPress={() => handleSendCode(values.phoneNumber)}>
+                <Pressable onPress={() => handleSendCode()}>
                   <VerifyText allowFontScaling={false}>Send</VerifyText>
                 </Pressable>
               </InputBorder>
@@ -157,7 +123,7 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
               )}
             </View>
             <View>
-              <LabelText allowFontScaling={false}>Verify Code</LabelText>
+              <LabelText allowFontScaling={false}>Verify OTP</LabelText>
               <InputBorder>
                 <InputStyle
                   placeholder='Enter your verifyCode'
@@ -168,9 +134,9 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
                   autoCorrect={false}
                   allowFontScaling={false}
                 />
-                {/* <Pressable onPress={() => handleVerifyCode(values.verifyCode)}>
-                    <VerifyText>Verify</VerifyText>
-                  </Pressable> */}
+                <Pressable onPress={() => handleSendCode()}>
+                  <VerifyText>Resend</VerifyText>
+                </Pressable>
               </InputBorder>
               {touched.verifyCode && errors.verifyCode && (
                 <ErrorText allowFontScaling={false}>{errors.verifyCode}</ErrorText>
