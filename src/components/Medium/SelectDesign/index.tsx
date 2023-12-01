@@ -54,10 +54,6 @@ const SelectDesign: React.FC<ISelectDesign> = ({
     isImageOrText.designs.hashtag === ''
       ? designs
       : designs?.filter((design) => design.hashTag === isImageOrText.designs.hashtag)
-  console.log(
-    FilteredData.map((f) => f.originalImages.filter((s) => s.colorCode === color)?.[0].url),
-  )
-  console.log(color)
 
   return (
     <Animated.View

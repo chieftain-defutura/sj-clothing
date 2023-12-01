@@ -47,6 +47,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [orderData, setOrderData] = useState<IOrder[]>([])
   const user = userStore((state) => state.user)
+  const profile = userStore((state) => state.profile)
   const phoneNumber = userStore((state) => state.phoneNo)
   const [toolTip, showToolTip] = useState(false)
   const [login, setLogin] = useState(false)
@@ -68,8 +69,8 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const isShowToolTip = async () => {
     const data = await AsyncStorage.getItem('showToolTip')
 
-    console.log(data)
-    if (!data) {
+    console.log('tooltip', data)
+    if (data !== '0') {
       AsyncStorage.setItem('showToolTip', '0')
       showToolTip(true)
     }
@@ -78,9 +79,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   useEffect(() => {
     isShowToolTip()
   }, [isShowToolTip])
-
-  const updateUser = userStore((state) => state.updateUser)
-  const profile = userStore((state) => state.profile)
 
   const handleLogin = () => {
     if (!user) {

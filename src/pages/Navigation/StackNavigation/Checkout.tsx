@@ -291,8 +291,6 @@ const Checkout: React.FC<ICheckout> = ({
     }
   }
 
-  console.log('currnebxsbcy', currency)
-
   const handleGetData = useCallback(() => {
     if (!user) return
     const q = query(defaultCollection(dbDefault, 'users'), where('email', '==', user.email))
