@@ -71,7 +71,9 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                 fontFamily: 'Gilroy-Medium',
               }}
             >
-              {t('Select area to add image')}
+              {t(
+                `Select area to add ${isImageOrText.title === 'design-images' ? 'image' : 'text'} `,
+              )}
             </Text>
             <View
               style={{
@@ -272,29 +274,6 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
               )}
             </View>
           </Animated.View>
-          {/* <Animated.View
-            entering={BounceInUp.duration(800)}
-            exiting={BounceOutUp.duration(700)}
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              paddingVertical: 10,
-            }}
-          >
-            <Pressable
-              onPress={() => setDropDown(false)}
-              style={{
-                backgroundColor: COLORS.iconsNormalClr,
-                width: 42,
-                height: 42,
-                borderRadius: 50,
-                padding: 10,
-              }}
-            >
-              <CloseIcon />
-            </Pressable>
-          </Animated.View> */}
         </Animated.View>
       )}
     </LinearGradient>

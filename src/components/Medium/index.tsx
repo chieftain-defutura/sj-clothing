@@ -27,6 +27,8 @@ const Medium = () => {
   const isMounted = useRef(false)
   const slideValue = useSharedValue(0)
   const avatar = userStore((state) => state.avatar)
+  const phoneNumber = userStore((state) => state.phoneNo)
+
   const user = userStore((state) => state.user)
   const [isSteps, setSteps] = useState(1)
   const [isDropDown, setDropDown] = useState(false)
@@ -235,65 +237,15 @@ const Medium = () => {
 
   const handleSubmit = async () => {
     if (!FilteredData) return
-    if (!user) {
-      setFocus(true)
-    }
+
     if (!user) {
       setLogin(true)
     }
-    if (user && !user.emailVerified) {
+    if (user && !phoneNumber) {
       setSignUp(true)
     }
-    // if (user && user.emailVerified && !user.phoneNumber) {
-    //   setSignUp(true)
-    // }
-    if (user && user.emailVerified) {
-      // const docRef = await addDoc(collection(db, 'Orders'), {
-      //   style: isSelectedStyle,
-      //   sizes: isSize,
-      //   color: isColor,
-      //   textAndImage: isImageOrText,
-      //   description: FilteredData.description,
-      //   price: FilteredData.normalPrice,
-      //   offerPrice: FilteredData.offerPrice,
-      //   paymentStatus: 'pending',
-      //   productId: FilteredData.id,
-      //   userId: user?.uid,
-      //   gender: avatar?.gender,
-      //   type: 'MidLevel',
-      //   productImage: FilteredData.productImage,
-      //   productName: FilteredData.productName,
-      //   orderStatus: {
-      //     orderplaced: {
-      //       createdAt: null,
-      //       description: '',
-      //       status: false,
-      //     },
-      //     manufacturing: {
-      //       createdAt: null,
-      //       description: '',
-      //       status: false,
-      //     },
-      //     readyToShip: {
-      //       createdAt: null,
-      //       description: '',
-      //       status: false,
-      //     },
-      //     shipping: {
-      //       createdAt: null,
-      //       description: '',
-      //       status: false,
-      //     },
-      //     delivery: {
-      //       createdAt: null,
-      //       description: '',
-      //       status: false,
-      //     },
-      //   },
-      // })
+    if (user && phoneNumber) {
       setOpenCheckout(true)
-      // updateOderId(docRef.id)
-      // setFocus(true)
     }
   }
 

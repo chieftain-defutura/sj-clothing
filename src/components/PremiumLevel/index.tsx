@@ -28,6 +28,8 @@ interface IPremiumLevel {
 const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) => {
   const navigation = useNavigation()
   const user = userStore((state) => state.user)
+  const phoneNumber = userStore((state) => state.phoneNo)
+
   const [data, setData] = useState<IPremiumData[]>()
   const [openCard, setOpenCard] = useState(false)
   const [productId, setProductId] = useState('')
@@ -84,11 +86,11 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
     if (!user) {
       setLogin(true)
     }
-    if (user && !user.emailVerified) {
+    if (user && !phoneNumber) {
       setSignUp(true)
     }
 
-    if (user && user.emailVerified) {
+    if (user && phoneNumber) {
       if (!isSize.sizeVarient.size) {
         setErrorMessage('Select size to procced further')
       } else {

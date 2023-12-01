@@ -7,7 +7,6 @@ import {
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import Checkbox from 'expo-checkbox'
-import emailjs from '@emailjs/browser'
 import { FirebaseError } from 'firebase/app'
 import styled from 'styled-components/native'
 import React, { useEffect, useState } from 'react'
@@ -27,6 +26,8 @@ import PhoneVerification from './PhoneVerification'
 import EmailVerification from './EmailVerification'
 import GreenTick from '../../assets/icons/GreenTick'
 import EyeHideIcon from '../../assets/icons/EyeIconHide'
+import axios from 'axios'
+import Animated, { FadeInUp, FadeOutDown } from 'react-native-reanimated'
 
 interface SignupModalProps {
   isVisible?: boolean
@@ -34,7 +35,7 @@ interface SignupModalProps {
   onLoginClick?: () => void
 }
 
-const initialValues = { name: '', email: '', password: '' }
+const initialValues = { name: '', email: '', password: '', otp: '' }
 
 const ValidationSchema = Yup.object({
   name: Yup.string()
@@ -52,6 +53,7 @@ const ValidationSchema = Yup.object({
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
       'Must contain minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character',
     ),
+  otp: Yup.string().required('Please verify your email address'),
 })
 
 const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginClick }) => {
@@ -61,9 +63,8 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const [isChecked, setChecked] = useState(false)
   const [isCreated, setIsCreated] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
   const [verificationCode, setVerificationCode] = useState('')
+  const [isVerify, setVerify] = useState(false)
   const avatar = userStore((state) => state.avatar)
   const currency = userStore((state) => state.currency)
   const language = userStore((state) => state.language)
@@ -107,28 +108,41 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
     return Math.floor(Math.random() * (maxDigit - minDigit + 1)) + minDigit
   }
 
-  const handleVerify = async () => {
-    const verificationCode = await generateVerificationCode()
-    setVerificationCode(verificationCode.toString())
-    console.log(verificationCode)
-    const emailParams = {
-      to_email: email,
-      subject: 'verification code',
-      message: `your verification code is ${verificationCode}`,
-      to_name: name,
-      from_name: 'SprinkleNadar',
+  const handleVerify = async (email: string, name: string) => {
+    console.log(email, name)
+    try {
+      const verificationCode = generateVerificationCode()
+      setVerificationCode(verificationCode.toString())
+      const templateParams = {
+        service_id: 'service_uczg2oi',
+        template_id: 'template_973exzj',
+        user_id: '8Y8laF-lQk4iqwByh',
+        template_params: {
+          to_email: email,
+          subject: 'verification code',
+          message: `your verification code is ${verificationCode}`,
+          to_name: name,
+          from_name: 'SprinkleNadar',
+        },
+        accessToken: '_6XzsH_Ji2J5RtsmYgBH-',
+      }
+      const { data } = await axios.post(
+        'https://api.emailjs.com/api/v1.0/email/send',
+        templateParams,
+      )
+      console.log(data)
+    } catch (error) {
+      console.log('error', Object.values(error as any))
     }
-
-    const response = await emailjs.send(
-      'service_ye4n5dl',
-      'template_agvcl0k',
-      emailParams,
-      '85jl960Zew5smr0XV',
-    )
-
-    console.log(response)
   }
 
+  const handleVerifyOTP = (otp: string) => {
+    if (otp === verificationCode) {
+      setVerify(true)
+    } else {
+      setVerify(false)
+    }
+  }
   const handleSubmit = async (values: typeof initialValues) => {
     if (!user) {
       try {
@@ -153,8 +167,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           rate: rate,
           confirmDetails: confirmDetails,
         })
-        await sendEmailVerification(user)
-        setShowVerificationModal(true)
+
         updateSignupUpdate(true)
       } catch (error) {
         if (error instanceof FirebaseError) {
@@ -169,7 +182,6 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       }
     }
   }
-
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       {!user && (
@@ -177,11 +189,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           <Formik
             initialValues={initialValues}
             validationSchema={ValidationSchema}
-            onSubmit={() => {
-              handleSubmit(initialValues),
-                setEmail(initialValues.email),
-                setName(initialValues.name)
-            }}
+            onSubmit={handleSubmit}
           >
             {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
               <SignUpContainer>
@@ -219,15 +227,64 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                       placeholderTextColor={COLORS.SecondaryTwo}
                       autoCorrect={false}
                       allowFontScaling={false}
+                      style={{ width: 240 }}
                     />
-                    <Pressable onPress={handleVerify}>
-                      <VerifyText>Verify</VerifyText>
+                    <Pressable
+                      style={{ opacity: verificationCode ? 0 : 1 }}
+                      onPress={() => handleVerify(values.email, values.name)}
+                    >
+                      <VerifyText>Send OTP</VerifyText>
                     </Pressable>
                   </InputBorder>
                   {touched.email && errors.email && (
                     <ErrorText allowFontScaling={false}>{errors.email}</ErrorText>
                   )}
                 </View>
+                {verificationCode && (
+                  <Animated.View entering={FadeInUp.duration(500)} exiting={FadeOutDown}>
+                    <LabelText allowFontScaling={false}>Verify OTP</LabelText>
+                    <InputBorder>
+                      <InputStyle
+                        placeholder='Enter your OTP'
+                        value={values.otp}
+                        onChangeText={handleChange('otp')}
+                        onBlur={handleBlur('otp')}
+                        placeholderTextColor={COLORS.SecondaryTwo}
+                        autoCorrect={false}
+                        allowFontScaling={false}
+                        style={{ width: 200 }}
+                      />
+                      <View style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
+                        <Pressable
+                          style={{ opacity: isVerify ? 0 : 1 }}
+                          disabled={isVerify}
+                          onPress={() => handleVerify(values.otp, values.name)}
+                        >
+                          <VerifyText allowFontScaling={false}>Resend</VerifyText>
+                        </Pressable>
+                        {isVerify ? (
+                          <Pressable
+                          // disabled={isVerify}
+                          >
+                            <VerifyText allowFontScaling={false} style={{ color: '#00BB00' }}>
+                              Verified
+                            </VerifyText>
+                          </Pressable>
+                        ) : (
+                          <Pressable
+                            // disabled={isVerify}
+                            onPress={() => handleVerifyOTP(values.otp)}
+                          >
+                            <VerifyText allowFontScaling={false}>Verify</VerifyText>
+                          </Pressable>
+                        )}
+                      </View>
+                    </InputBorder>
+                    {touched.otp && errors.otp && (
+                      <ErrorText allowFontScaling={false}>{errors.otp}</ErrorText>
+                    )}
+                  </Animated.View>
+                )}
                 <View>
                   <LabelText allowFontScaling={false}>Create Password</LabelText>
                   <InputBorder>
@@ -332,7 +389,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                   onPress={() => {
                     handleSubmit()
                   }}
-                  disabled={!isChecked}
+                  disabled={!isChecked || !isVerify}
                   fontFamily='Arvo-Regular'
                   fontSize={14}
                   buttonStyle={[styles.submitBtn]}
@@ -352,19 +409,19 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
         </SignUpWrapper>
       )}
 
-      {((user && !user.emailVerified) || showVerificationModal) && (
+      {/* {((user && !user.emailVerified) || showVerificationModal) && (
         <EmailVerification
           // setIsCreated={setIsCreated}
           setShowVerificationModal={setShowVerificationModal}
           errorMessage={errorMessage}
           closeModal={onClose}
         />
-      )}
-      {user && user.emailVerified && !user.phoneNumber && !isCreated && (
+      )} */}
+      {user && !user.phoneNumber && !isCreated && (
         <PhoneVerification setIsCreated={setIsCreated} closeModal={onClose} />
       )}
 
-      {user && user.emailVerified && isCreated && (
+      {user && user.phoneNumber && isCreated && (
         <SignUpWrapper>
           <CreatedAccount>
             <GreenTick width={100} height={100} />
