@@ -268,20 +268,22 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                           disabled={isVerify}
                           onPress={() => handleVerify(values.otp, values.name)}
                         >
-                          <VerifyText>Resend</VerifyText>
+                          <VerifyText allowFontScaling={false}>Resend</VerifyText>
                         </Pressable>
                         {isVerify ? (
                           <Pressable
                           // disabled={isVerify}
                           >
-                            <VerifyText style={{ color: '#00BB00' }}>Verified</VerifyText>
+                            <VerifyText allowFontScaling={false} style={{ color: '#00BB00' }}>
+                              Verified
+                            </VerifyText>
                           </Pressable>
                         ) : (
                           <Pressable
                             // disabled={isVerify}
                             onPress={() => handleVerifyOTP(values.otp)}
                           >
-                            <VerifyText>Verify</VerifyText>
+                            <VerifyText allowFontScaling={false}>Verify</VerifyText>
                           </Pressable>
                         )}
                       </View>
