@@ -23,7 +23,9 @@ interface IPhoneVerification {
 const initialValues = { phoneNumber: '', verifyCode: '' }
 
 const ValidationSchema = Yup.object({
-  verifyCode: Yup.string().required('Enter your OTP'),
+  // verifyCode: Yup.string().required('Enter your OTP'),
+  verifyCode: Yup.string(),
+
   phoneNumber: Yup.string()
     .matches(
       /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/,
@@ -52,17 +54,23 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
   const handleSubmit = async (values: any) => {
     try {
       if (!user) return
-      if (values.verifyCode === verificationId) {
-        await updateDoc(doc(db, 'users', user.uid), {
-          phoneNo: values.phoneNumber,
-        })
-        updatePhoneNo(Number(countryCode + values.phoneNumber))
-        setIsCreated(true)
-        closeModal?.()
-      }
-      if (values.verifyCode !== verificationId) {
-        setErrorMessage('Invalid Verification Code')
-      }
+      // if (values.verifyCode === verificationId) {
+      //   await updateDoc(doc(db, 'users', user.uid), {
+      //     phoneNo: values.phoneNumber,
+      //   })
+      //   updatePhoneNo(Number(countryCode + values.phoneNumber))
+      //   setIsCreated(true)
+      //   closeModal?.()
+      // }
+      await updateDoc(doc(db, 'users', user.uid), {
+        phoneNo: values.phoneNumber,
+      })
+      updatePhoneNo(Number(countryCode + values.phoneNumber))
+      setIsCreated(true)
+      closeModal?.()
+      // if (values.verifyCode !== verificationId) {
+      //   setErrorMessage('Invalid Verification Code')
+      // }
     } catch (error) {
       console.log('verification error', error)
       setErrorMessage('Invalid Verification Code')
@@ -75,10 +83,10 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
     const maxDigit = Math.pow(10, codeLength) - 1
     return Math.floor(Math.random() * (maxDigit - minDigit + 1)) + minDigit
   }
-  const handleSendCode = () => {
-    const verificationCode = generateVerificationCode()
-    setVerificationId(verificationCode.toString())
-  }
+  // const handleSendCode = () => {
+  //   const verificationCode = generateVerificationCode()
+  //   setVerificationId(verificationCode.toString())
+  // }
 
   return (
     <SignUpWrapper>
@@ -116,18 +124,18 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
                     allowFontScaling={false}
                   />
                 </View>
-                <Pressable
+                {/* <Pressable
                   style={{ opacity: verificationId ? 0 : 1 }}
                   onPress={() => handleSendCode()}
                 >
                   <VerifyText allowFontScaling={false}>Send</VerifyText>
-                </Pressable>
+                </Pressable> */}
               </InputBorder>
               {touched.phoneNumber && errors.phoneNumber && (
                 <ErrorText allowFontScaling={false}>{errors.phoneNumber}</ErrorText>
               )}
             </View>
-            <View>
+            {/* <View>
               <LabelText allowFontScaling={false}>Verify OTP</LabelText>
               <InputBorder>
                 <InputStyle
@@ -151,7 +159,7 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
               )}
             </View>
 
-            {errorMessage && <ErrorText allowFontScaling={false}>{errorMessage}</ErrorText>}
+            {errorMessage && <ErrorText allowFontScaling={false}>{errorMessage}</ErrorText>} */}
 
             <CustomButton
               variant='primary'
