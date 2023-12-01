@@ -108,8 +108,6 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
     return Math.floor(Math.random() * (maxDigit - minDigit + 1)) + minDigit
   }
 
-<<<<<<< HEAD
-=======
   const handleVerify = async (email: string, name: string) => {
     console.log(email, name)
     try {
@@ -145,7 +143,6 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       setVerify(false)
     }
   }
->>>>>>> 715f70d7b592d2f493f52b5b154d752e0091e514
   const handleSubmit = async (values: typeof initialValues) => {
     if (!user) {
       try {
@@ -232,16 +229,11 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                       allowFontScaling={false}
                       style={{ width: 240 }}
                     />
-<<<<<<< HEAD
-                    <Pressable>
-                      <VerifyText>Verify</VerifyText>
-=======
                     <Pressable
                       style={{ opacity: verificationCode ? 0 : 1 }}
                       onPress={() => handleVerify(values.email, values.name)}
                     >
                       <VerifyText>Send OTP</VerifyText>
->>>>>>> 715f70d7b592d2f493f52b5b154d752e0091e514
                     </Pressable>
                   </InputBorder>
                   {touched.email && errors.email && (
