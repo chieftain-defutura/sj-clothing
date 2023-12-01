@@ -14,12 +14,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.dewallstreet.sprinkle",
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyDgFFGbaEKBnJJT73Ewzftdg0tljD_ZA9c"
-        }
-      }
+      "bundleIdentifier": "com.dewallstreet.sprinkle"
     },
     "android": {
       "adaptiveIcon": {
@@ -65,10 +60,6 @@
         }
       ]
     ],
-    "extra": {
-      "eas": {
-        "projectId": "78d85b5a-8351-42b5-a5a6-6937fb28159c"
-      }
-    }
+    "extra": {}
   }
 }

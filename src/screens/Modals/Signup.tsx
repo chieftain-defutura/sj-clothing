@@ -7,6 +7,7 @@ import {
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import Checkbox from 'expo-checkbox'
+import emailjs from '@emailjs/browser'
 import { FirebaseError } from 'firebase/app'
 import styled from 'styled-components/native'
 import React, { useEffect, useState } from 'react'
@@ -60,6 +61,9 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
   const [isChecked, setChecked] = useState(false)
   const [isCreated, setIsCreated] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [verificationCode, setVerificationCode] = useState('')
   const avatar = userStore((state) => state.avatar)
   const currency = userStore((state) => state.currency)
   const language = userStore((state) => state.language)
@@ -95,6 +99,35 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
       return () => clearTimeout(timer)
     }
   }, [isCreated])
+
+  const generateVerificationCode = () => {
+    const codeLength = 6
+    const minDigit = Math.pow(10, codeLength - 1)
+    const maxDigit = Math.pow(10, codeLength) - 1
+    return Math.floor(Math.random() * (maxDigit - minDigit + 1)) + minDigit
+  }
+
+  const handleVerify = async () => {
+    const verificationCode = await generateVerificationCode()
+    setVerificationCode(verificationCode.toString())
+    console.log(verificationCode)
+    const emailParams = {
+      to_email: email,
+      subject: 'verification code',
+      message: `your verification code is ${verificationCode}`,
+      to_name: name,
+      from_name: 'SprinkleNadar',
+    }
+
+    const response = await emailjs.send(
+      'service_ye4n5dl',
+      'template_agvcl0k',
+      emailParams,
+      '85jl960Zew5smr0XV',
+    )
+
+    console.log(response)
+  }
 
   const handleSubmit = async (values: typeof initialValues) => {
     if (!user) {
@@ -144,7 +177,11 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           <Formik
             initialValues={initialValues}
             validationSchema={ValidationSchema}
-            onSubmit={handleSubmit}
+            onSubmit={() => {
+              handleSubmit(initialValues),
+                setEmail(initialValues.email),
+                setName(initialValues.name)
+            }}
           >
             {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
               <SignUpContainer>
@@ -183,9 +220,9 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                       autoCorrect={false}
                       allowFontScaling={false}
                     />
-                    {/* <Pressable onPress={handleVerify}>
+                    <Pressable onPress={handleVerify}>
                       <VerifyText>Verify</VerifyText>
-                    </Pressable> */}
+                    </Pressable>
                   </InputBorder>
                   {touched.email && errors.email && (
                     <ErrorText allowFontScaling={false}>{errors.email}</ErrorText>
