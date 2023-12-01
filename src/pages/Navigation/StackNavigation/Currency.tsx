@@ -7,11 +7,12 @@ import { ScrollView } from 'react-native-gesture-handler'
 import React, { useCallback, useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
-
+import { useNavigation } from '@react-navigation/native'
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import CurrencyGrayIcon from '../../../assets/icons/AccountPageIcon/CurrencyGrayIcon'
+import LeftArrow from '../../../assets/icons/LeftArrow'
 
 const CurrencyData = [
   {
@@ -74,6 +75,8 @@ const Currency = () => {
   const confirmDetails = userStore((state) => state.confirmDetails)
   const updateCurrency = userStore((state) => state.updateCurrency)
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
+  const [isPressed, setIsPressed] = useState(false)
+  const navigation = useNavigation()
 
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
@@ -210,6 +213,26 @@ const Currency = () => {
             padding: 25,
           }}
         >
+          <GoBackArrowContent
+            onPress={() => {
+              navigation.goBack()
+            }}
+            onPressIn={() => setIsPressed(true)}
+            onPressOut={() => setIsPressed(false)}
+          >
+            {() => (
+              <IconHoverClr
+                style={{
+                  backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
+                }}
+              >
+                <IconHoverPressable>
+                  <LeftArrow width={24} height={24} />
+                </IconHoverPressable>
+              </IconHoverClr>
+            )}
+            {/* <LeftArrow width={24} height={24} /> */}
+          </GoBackArrowContent>
           <Text allowFontScaling={false} style={styles.title}>
             Choose your Currency
           </Text>
@@ -286,11 +309,12 @@ export default Currency
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 40,
+    fontSize: 36,
     color: COLORS.textClr,
     fontFamily: FONT_FAMILY.ArvoRegular,
     textAlign: 'center',
     paddingBottom: 24,
+    marginTop: 8,
   },
   selectText: {
     fontSize: 14,
@@ -314,6 +338,26 @@ const SelectContent = styled.Pressable`
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
+`
+
+const GoBackArrowContent = styled.Pressable`
+  display: flex;
+  flex-direction: row;
+  align-self: flex-start;
+  margin-left: -8px;
+`
+const IconHoverPressable = styled.View`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 2px;
+  margin-top: 2px;
+`
+
+const IconHoverClr = styled.View`
+  border-radius: 20px;
+  width: 32px;
+  height: 32px;
 `
 
 const SelectDropDownList = styled.View`

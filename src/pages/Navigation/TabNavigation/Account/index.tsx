@@ -315,7 +315,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                   <FlexIcon>
                     <Text
                       allowFontScaling={false}
-                      style={(styles.LogoutText, { color: '#462D85' })}
+                      style={(styles.LogoutText, { color: '#462D85', fontSize: 14, marginLeft: 6 })}
                     >
                       {t('Log In')}
                     </Text>
