@@ -155,7 +155,7 @@ const Medium = () => {
     }
   }, [isColor])
   const handleUpdateSize = useCallback(async () => {
-    if (!isSize || !uid) return
+    if (!isSize.sizeVarient[0].size || !uid) return
     try {
       const docRef = doc(db, 'ModelsMidlevel', uid)
       await updateDoc(docRef, { size: isSize.sizeVarient[0].size })
