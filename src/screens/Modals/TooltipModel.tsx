@@ -56,16 +56,18 @@ const Tooltip: React.FC<TooltipProps> = ({ isVisible, onClose }) => {
             entering={LightSpeedInLeft.duration(1000).delay(200)}
             exiting={LightSpeedOutLeft}
           >
-            <LinearGradient
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              colors={['#462D85', '#DB00FF']}
-              style={styles.plusIconGradientColor}
-            >
-              <Pressable onPress={handleNext}>
-                <CloudRightArrow width={20} height={20} />
-              </Pressable>
-            </LinearGradient>
+            <Pressable onPress={handleNext}>
+              <LinearGradient
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                colors={['#462D85', '#DB00FF']}
+                style={styles.plusIconGradientColor}
+              >
+                <View>
+                  <CloudRightArrow width={20} height={20} />
+                </View>
+              </LinearGradient>
+            </Pressable>
           </Animated.View>
         </View>
       </TooltipWrapper>
