@@ -57,6 +57,7 @@ type State = {
   confirmDetails: boolean
   createAvatarAnimationFinished: boolean
   signupUpdate?: 'INVALID' | 'VALID'
+  midSteps: string
 }
 
 type Action = {
@@ -69,6 +70,7 @@ type Action = {
   updateProfile: (profile: string | null) => void
   updateEmail: (email: string | null) => void
   updatePhoneNo: (phoneNo: number | null) => void
+  updateMidSteps: (midSteps: string) => void
   updateAddress: (
     address: [
       {
@@ -116,6 +118,7 @@ export const userStore = create<State & Action>((set) => ({
     abrive: 'EUR',
   },
   rate: null,
+  midSteps: '',
   orderId: null,
   confirmDetails: false,
   createAvatarAnimationFinished: false,
@@ -123,6 +126,7 @@ export const userStore = create<State & Action>((set) => ({
   updateUser: (user) => set(() => ({ user })),
   updateUserData: (userData) => set(() => ({ userData })),
   updateName: (name) => set(() => ({ name })),
+  updateMidSteps: (midSteps) => set(() => ({ midSteps })),
   updateProfile: (profile) => set(() => ({ profile })),
   updateEmail: (email) => set(() => ({ email })),
   updatePhoneNo: (phoneNo) => set(() => ({ phoneNo })),

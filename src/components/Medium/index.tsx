@@ -20,6 +20,7 @@ import ForgotMail from '../../screens/Modals/ForgotMail'
 import { IDesigns, IMidlevel } from '../../constant/types'
 import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 import AlertModal from '../../screens/Modals/AlertModal'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const { width } = Dimensions.get('window')
 
@@ -91,6 +92,21 @@ const Medium = () => {
     )
   }
 
+  useEffect(() => {
+    if (isSize.country) {
+      handleIncreaseSteps()
+    }
+  }, [isSize.country])
+
+  // useEffect(() => {
+  //   if (isSteps === 5) {
+  //     AsyncStorage.setItem('mid-steps', isSteps.toString())
+  //   }
+  //   if (isSteps !== 5) {
+  //     AsyncStorage.setItem('mid-steps', '')
+  //   }
+  // }, [isSteps])
+
   const handleIncreaseSteps = () => {
     let currentField
     switch (isSteps) {
@@ -109,6 +125,7 @@ const Medium = () => {
       default:
         currentField = 'any'
     }
+    console.log('currentField', currentField)
 
     if (currentField === '') {
       // setError('Please fill in the current field before proceeding.');
