@@ -16,6 +16,7 @@ import { auth, db } from './firebase'
 import { userStore } from './src/store/userStore'
 import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
 import { Text } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -30,7 +31,7 @@ const App: React.FC = () => {
   const avatar = userStore((state) => state.avatar)
   const signupUpdate = userStore((state) => state.signupUpdate)
   const user = userStore((state) => state.user)
-
+  const updateSteps = userStore((state) => state.midSteps)
   const updateRate = userStore((state) => state.updateRate)
   const updateUser = userStore((state) => state.updateUser)
   const updateName = userStore((state) => state.updateName)
@@ -44,6 +45,9 @@ const App: React.FC = () => {
 
   const fetchDataFromFirestore = useCallback(async () => {
     try {
+      if (signupUpdate === 'INVALID') {
+        return
+      }
       if (user) {
         const q = doc(db, 'users', user.uid)
         const querySnapshot = await getDoc(q)
@@ -117,6 +121,10 @@ const App: React.FC = () => {
   useEffect(() => {
     getCurrency()
   }, [getCurrency])
+
+  // useEffect(() => {
+  //   const MidSteps = AsyncStorage.getItem('mid-steps')
+  // })
 
   const [fontsLoaded] = useFonts({
     'Arvo-Regular': require('./src/assets/fonts/timesbold.ttf'), //font-weight 400

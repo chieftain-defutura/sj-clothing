@@ -243,6 +243,8 @@ const Checkout: React.FC<ICheckout> = ({
             status: false,
           },
         },
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
       })
       // payment
       const initSheet = await stripe.initPaymentSheet({

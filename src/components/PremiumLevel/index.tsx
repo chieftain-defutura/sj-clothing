@@ -18,6 +18,7 @@ import ForgotMail from '../../screens/Modals/ForgotMail'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import Animated, { FadeInLeft, FadeOutLeft } from 'react-native-reanimated'
 import Loader from '../Loading'
+import { generalStore } from '../../store/generalStore'
 
 const { width, height } = Dimensions.get('window')
 
@@ -30,6 +31,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   const navigation = useNavigation()
   const user = userStore((state) => state.user)
   const phoneNumber = userStore((state) => state.phoneNo)
+  const premiumText = generalStore((state) => state.premiumText)
 
   const [data, setData] = useState<IPremiumData[]>()
   const [openCard, setOpenCard] = useState(false)
@@ -82,9 +84,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   const handleSubmit = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
     if (!FilteredData) return
-    // if (!user) {
-    //   setFocus(true)
-    // }
+
     if (!user) {
       setLogin(true)
     }
@@ -98,7 +98,6 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
       } else {
         setFocus(true)
         setErrorMessage('')
-
         setOpenCheckout(true)
         setOpenDetails(false)
       }
@@ -205,7 +204,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
                             right: 20,
                           }}
                         >
-                          <ProductText allowFontScaling={false}>Coming soon</ProductText>
+                          <ProductText allowFontScaling={false}> {premiumText}</ProductText>
                         </View>
                       </View>
                     </BlurView>
