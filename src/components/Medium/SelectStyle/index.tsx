@@ -71,65 +71,107 @@ const SelectStyle: React.FC<ISelectStyle> = ({
             padding: 16,
           }}
         >
-          <FlatList
-            data={data.filter((f) => f.gender.toLowerCase() === avatar.gender?.toLowerCase())}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-              alignItems: 'center',
-              gap: 38,
-              paddingVertical: 8,
-            }}
-            // columnWrapperStyle={{
-            //   display: 'flex',
-            //   flexDirection: 'row',
-            //   justifyContent: 'center',
-            //   alignItems: 'center',
-            //   flexGrow: 1,
-            //   gap: 65,
-            //   paddingVertical: 5,
-            // }}
-
-            renderItem={({ item, index }) => (
-              <Pressable
-                key={index}
-                onPress={() => handleSelect(item.styles)}
-                style={{
-                  paddingVertical: 4,
-                }}
-              >
-                {item.styles ? (
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      textAlign: 'left',
-                      fontFamily: 'Gilroy-Medium',
-                      color:
-                        isSelectedStyle === item.styles
-                          ? COLORS.textSecondaryClr
-                          : COLORS.iconsNormalClr,
-                    }}
-                  >
-                    {item.styles}
-                  </Text>
-                ) : (
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      textAlign: 'left',
-                      fontFamily: 'Gilroy-Medium',
-                      color: COLORS.textSecondaryClr,
-                    }}
-                  >
-                    There is no styles available right now
-                  </Text>
-                )}
-              </Pressable>
-            )}
-          />
+          {data.filter((f) => f.gender.toLowerCase() === avatar.gender?.toLowerCase()).length <=
+          3 ? (
+            <FlatList
+              data={data.filter((f) => f.gender.toLowerCase() === avatar.gender?.toLowerCase())}
+              columnWrapperStyle={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 65,
+                paddingVertical: 8,
+              }}
+              numColumns={3}
+              renderItem={({ item, index }) => (
+                <Pressable
+                  key={index}
+                  onPress={() => handleSelect(item.styles)}
+                  style={{
+                    paddingVertical: 4,
+                  }}
+                >
+                  {item.styles ? (
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        textAlign: 'left',
+                        fontFamily: 'Gilroy-Medium',
+                        color:
+                          isSelectedStyle === item.styles
+                            ? COLORS.textSecondaryClr
+                            : COLORS.iconsNormalClr,
+                      }}
+                    >
+                      {item.styles}
+                    </Text>
+                  ) : (
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        textAlign: 'left',
+                        fontFamily: 'Gilroy-Medium',
+                        color: COLORS.textSecondaryClr,
+                      }}
+                    >
+                      There is no styles available right now
+                    </Text>
+                  )}
+                </Pressable>
+              )}
+            />
+          ) : (
+            <FlatList
+              data={data.filter((f) => f.gender.toLowerCase() === avatar.gender?.toLowerCase())}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 38,
+                paddingVertical: 8,
+              }}
+              renderItem={({ item, index }) => (
+                <Pressable
+                  key={index}
+                  onPress={() => handleSelect(item.styles)}
+                  style={{
+                    paddingVertical: 4,
+                  }}
+                >
+                  {item.styles ? (
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        textAlign: 'left',
+                        fontFamily: 'Gilroy-Medium',
+                        color:
+                          isSelectedStyle === item.styles
+                            ? COLORS.textSecondaryClr
+                            : COLORS.iconsNormalClr,
+                      }}
+                    >
+                      {item.styles}
+                    </Text>
+                  ) : (
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        textAlign: 'left',
+                        fontFamily: 'Gilroy-Medium',
+                        color: COLORS.textSecondaryClr,
+                      }}
+                    >
+                      There is no styles available right now
+                    </Text>
+                  )}
+                </Pressable>
+              )}
+            />
+          )}
         </View>
       </Animated.View>
       {/* <Animated.View

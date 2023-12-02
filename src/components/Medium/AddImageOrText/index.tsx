@@ -79,7 +79,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                justifyContent: 'center',
                 paddingVertical: 20,
                 paddingHorizontal: 24,
                 gap: 10,
@@ -126,6 +126,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                           ? COLORS.textSecondaryClr
                           : COLORS.iconsNormalClr,
                       fontFamily: 'Gilroy-Medium',
+                      paddingBottom: 12,
                     }}
                   >
                     Front
@@ -172,6 +173,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                           ? COLORS.textSecondaryClr
                           : COLORS.iconsNormalClr,
                       fontFamily: 'Gilroy-Medium',
+                      paddingBottom: 12,
                     }}
                   >
                     Back
@@ -219,6 +221,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                           ? COLORS.textSecondaryClr
                           : COLORS.iconsNormalClr,
                       fontFamily: 'Gilroy-Medium',
+                      paddingBottom: 12,
                     }}
                   >
                     Right arm
@@ -266,6 +269,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                           ? COLORS.textSecondaryClr
                           : COLORS.iconsNormalClr,
                       fontFamily: 'Gilroy-Medium',
+                      paddingBottom: 12,
                     }}
                   >
                     Left arm
