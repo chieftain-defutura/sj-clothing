@@ -83,7 +83,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
       <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
         <GoBackArrowContent
           onPress={() => {
-            navigation.goBack()
+            navigation.navigate('Account')
           }}
         >
           <LeftArrow width={24} height={24} />

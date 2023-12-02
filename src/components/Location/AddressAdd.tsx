@@ -372,6 +372,19 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
               </View>
               <View>
                 <Input
+                  placeholder='Floor/HouseNo'
+                  value={formik.values.floor}
+                  onChangeText={formik.handleChange('floor')}
+                  onBlur={formik.handleBlur('floor')}
+                  onSubmitEditing={Keyboard.dismiss}
+                />
+                {(formik.values.floor === undefined || formik.values.floor.length === 0) &&
+                  formik.touched.floor && (
+                    <ErrorText allowFontScaling={false}>*Please enter floor</ErrorText>
+                  )}
+              </View>
+              <View>
+                <Input
                   placeholder='Address One'
                   value={formik.values.addressOne}
                   onChangeText={formik.handleChange('addressOne')}
@@ -452,19 +465,7 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                     <ErrorText allowFontScaling={false}>*Please enter country</ErrorText>
                   )}
               </View>
-              <View>
-                <Input
-                  placeholder='Floor'
-                  value={formik.values.floor}
-                  onChangeText={formik.handleChange('floor')}
-                  onBlur={formik.handleBlur('floor')}
-                  onSubmitEditing={Keyboard.dismiss}
-                />
-                {(formik.values.floor === undefined || formik.values.floor.length === 0) &&
-                  formik.touched.floor && (
-                    <ErrorText allowFontScaling={false}>*Please enter floor</ErrorText>
-                  )}
-              </View>
+
               <View>
                 <View style={{ display: 'flex', flexDirection: 'row' }}>
                   <CountryCode

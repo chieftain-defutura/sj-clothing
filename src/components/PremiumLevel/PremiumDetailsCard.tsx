@@ -281,7 +281,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: 2,
+                        gap: 8,
                       }}
                     >
                       <WatchVideoBorder onPress={() => setOpenModal(true)}>

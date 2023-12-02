@@ -85,7 +85,20 @@ const Navigation: React.FC<INavigation> = ({
         >
           <Pressable
             onPress={() => {
-              isDone ? setDone(false) : (setOpenDesign(false), handleDecreaseSteps())
+              isDone
+                ? setDone(false)
+                : (setOpenDesign(false),
+                  setImageOrText({
+                    title: '',
+                    position: '',
+                    rate: 0,
+                    designs: {
+                      hashtag: '',
+                      image: '',
+                      originalImage: '',
+                    },
+                  }),
+                  handleDecreaseSteps())
             }}
           >
             <Animated.View entering={BounceIn.duration(800)} exiting={BounceOut}>
