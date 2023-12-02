@@ -36,7 +36,7 @@ const TabNavigationRoutes: React.FC = () => {
           elevation: 0,
           display: confirmDetails ? 'flex' : 'none',
         },
-        unmountOnBlur: true,
+        unmountOnBlur: false,
       }}
     >
       {/* <Tab.Screen
