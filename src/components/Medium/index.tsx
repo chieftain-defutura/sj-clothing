@@ -21,6 +21,8 @@ import { IDesigns, IMidlevel } from '../../constant/types'
 import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 import AlertModal from '../../screens/Modals/AlertModal'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as Haptics from 'expo-haptics'
+import { Audio } from 'expo-av'
 
 const { width } = Dimensions.get('window')
 
@@ -76,6 +78,15 @@ const Medium = () => {
     },
   })
   const [openCheckout, setOpenCheckout] = useState(false)
+
+  const playSound = async () => {
+    const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
+    await sound.playAsync()
+  }
+
+  const handleImageClick = () => {
+    playSound()
+  }
 
   const handleDecreaseSteps = () => {
     if (isSteps !== 1) {
@@ -144,6 +155,8 @@ const Medium = () => {
     }
   }
   useEffect(() => {
+    handleImageClick()
+
     setTimeout(() => {
       setWarning('') // Set the state to null after 5 seconds
     }, 2000)
@@ -253,6 +266,7 @@ const Medium = () => {
   }, [getData])
 
   const handleSubmit = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
     if (!FilteredData) return
 
     if (!user) {

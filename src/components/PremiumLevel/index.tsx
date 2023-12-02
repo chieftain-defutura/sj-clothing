@@ -5,6 +5,7 @@ import styled from 'styled-components/native'
 import { db } from '../../../firebase'
 import PremiumCard from './PremiumCard'
 import PremiumDetailsCard from './PremiumDetailsCard'
+import * as Haptics from 'expo-haptics'
 import PremiumThreeSixtyDegree from './PremiumThreeSixtyDegree'
 import { useNavigation } from '@react-navigation/native'
 import { IPremiumData } from '../../constant/types'
@@ -81,6 +82,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
     }, 2000)
   }, [errorMessage])
   const handleSubmit = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
     if (!FilteredData) return
 
     if (!user) {
