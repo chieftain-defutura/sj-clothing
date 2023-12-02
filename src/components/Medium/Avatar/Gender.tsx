@@ -4,8 +4,9 @@ import { COLORS } from '../../../styles/theme'
 import { useTranslation } from 'react-i18next'
 import { userStore } from '../../../store/userStore'
 import { updateDoc, doc } from 'firebase/firestore/lite'
-
+import { useNavigation } from '@react-navigation/native'
 import { db } from '../../../../firebase'
+import LeftArrow from '../../../assets/icons/LeftArrow'
 
 interface IGender {}
 
@@ -28,14 +29,13 @@ const GenderModel = ({
   const avatar = userStore((state) => state.avatar)
   const user = userStore((state) => state.user)
   const updateAvatar = userStore((state) => state.updateAvatar)
-
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
 
   const handleLayout = () => {
     if (elementRef.current) {
-      elementRef.current.measure((x, y, width, height, pageX, pageY) => {
+      elementRef.current.measure((height, pageY) => {
         setPageY(pageY)
         setElementHeight(height)
       })
@@ -100,13 +100,13 @@ const GenderModel = ({
 
 const Gender: React.FC<IGender> = ({}) => {
   const { t } = useTranslation('avatar')
+  const navigation = useNavigation()
 
   return (
     <View style={styles.genderContainer}>
       <Text allowFontScaling={false} style={styles.bottomTitle}>
         {t('select your gender')}
       </Text>
-
       <View style={styles.bottomWrapper}>
         <View style={styles.genderButtonWrapper}>
           {GenderData.map((gender, index) => (

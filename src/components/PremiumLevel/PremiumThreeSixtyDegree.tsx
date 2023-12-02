@@ -1,5 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Pressable, StyleSheet, Dimensions, Image, View, Text } from 'react-native'
+import {
+  Pressable,
+  StyleSheet,
+  Dimensions,
+  Image,
+  View,
+  Text,
+  ActivityIndicator,
+} from 'react-native'
 import { WebView } from 'react-native-webview'
 import styled from 'styled-components/native'
 import uuid from 'react-native-uuid'
@@ -35,6 +43,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   errorMessage,
 }) => {
   const [isPressed, setIsPressed] = useState(false)
+  const [webviewLoading, setWebviewLoading] = useState(true)
   const isMounted = useRef(false)
   const avatar = userStore((state) => state.avatar)
   const [uid, setUid] = useState<string>('')
@@ -106,10 +115,16 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               height: height / 1.6,
               backgroundColor: 'transparent',
               marginTop: 18,
+              position: 'relative',
             }}
             onLayout={(event) => handleLayout()}
             ref={elementRef}
           >
+            {webviewLoading && (
+              <View style={styles.absoluteContainer}>
+                <ActivityIndicator size='large' color={'#8C73CB'} />
+              </View>
+            )}
             {uid && pageY && elementHeight && (
               <WebView
                 style={{
@@ -120,6 +135,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
                   uri: `https://sj-threejs-development.netlify.app/premium/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
                 }}
                 scrollEnabled={false}
+                onLoad={() => setWebviewLoading(false)}
               />
             )}
           </View>
@@ -212,5 +228,15 @@ const styles = StyleSheet.create({
   linearGradient: {
     padding: 16,
     height,
+  },
+  absoluteContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
