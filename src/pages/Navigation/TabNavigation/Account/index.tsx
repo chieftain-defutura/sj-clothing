@@ -34,6 +34,7 @@ import LogOut from '../../../../screens/Modals/LogOut'
 import DelectAccount from '../../../../screens/Modals/DelectAccount'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import DeleteIcon from '../../../../assets/icons/AccountPageIcon/DeleteIcon'
+import { generalStore } from '../../../../store/generalStore'
 
 interface IAccount {
   navigation: any
@@ -49,6 +50,8 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const user = userStore((state) => state.user)
   const profile = userStore((state) => state.profile)
   const phoneNumber = userStore((state) => state.phoneNo)
+  const AccessoryName = generalStore((state) => state.AccessoryName)
+  const Accessory = generalStore((state) => state.Accessory)
   const [toolTip, showToolTip] = useState(false)
   const [login, setLogin] = useState(false)
   const [signUp, setSignUp] = useState(false)
@@ -249,79 +252,157 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
               ))}
             </FlexContent> */}
           </Animated.View>
-
-          <Animated.View entering={FadeInDown.duration(800).delay(200)} exiting={FadeOutDown}>
-            {AccountData.map((f, index) => {
-              return (
-                <Pressable key={index} onPress={() => navigation.navigate(f.navigation)}>
-                  <ProfileUserContent>
-                    <FlexIcon>
-                      <f.leftIcon width={20} height={20} />
-                      <Text allowFontScaling={false} style={styles.UserText}>
-                        {t(f.name)}
-                      </Text>
-                    </FlexIcon>
-                    {f.rightIcon && <f.rightIcon width={20} height={20} />}
-                    {f.rightText && (
-                      <Text allowFontScaling={false} style={styles.RightText}>
-                        {f.name === 'My orders' ? `${orderData.length} items` : f.rightText}
-                      </Text>
-                    )}
-                  </ProfileUserContent>
-                </Pressable>
-              )
-            })}
-            <Pressable onPress={handleCustomerCarePress}>
-              <ProfileUserContent>
-                <FlexIcon>
-                  <CustomerCare width={20} height={20} />
-                  <Text allowFontScaling={false} style={styles.UserText}>
-                    {t('Customer care')}
-                  </Text>
-                </FlexIcon>
-              </ProfileUserContent>
-            </Pressable>
-
-            {user ? (
-              <View>
-                <LogoutPressable>
-                  <Pressable onPress={handleLogout}>
+          {!Accessory ? (
+            <Animated.View entering={FadeInDown.duration(800).delay(200)} exiting={FadeOutDown}>
+              {AccountData.filter((f) => f.name !== AccessoryName).map((f, index) => {
+                return (
+                  <Pressable key={index} onPress={() => navigation.navigate(f.navigation)}>
                     <ProfileUserContent>
                       <FlexIcon>
-                        <LogoutIcon width={24} height={24} />
-                        <Text allowFontScaling={false} style={styles.LogoutText}>
-                          {t('Log out')}
+                        <f.leftIcon width={20} height={20} />
+                        <Text allowFontScaling={false} style={styles.UserText}>
+                          {t(f.name)}
                         </Text>
                       </FlexIcon>
-                    </ProfileUserContent>
-                  </Pressable>
-                  <Pressable onPress={handleDelectAccount}>
-                    <ProfileUserContent>
-                      <FlexIcon>
-                        <DeleteIcon width={24} height={24} />
-                        <Text allowFontScaling={false} style={styles.LogoutText}>
-                          Delect Account
+                      {f.rightIcon && <f.rightIcon width={20} height={20} />}
+                      {f.rightText && (
+                        <Text allowFontScaling={false} style={styles.RightText}>
+                          {f.name === 'My orders' ? `${orderData.length} items` : f.rightText}
                         </Text>
-                      </FlexIcon>
+                      )}
                     </ProfileUserContent>
                   </Pressable>
-                </LogoutPressable>
-              </View>
-            ) : (
-              <LogoutPressable onPress={() => setLogin(true)}>
+                )
+              })}
+              <Pressable onPress={handleCustomerCarePress}>
                 <ProfileUserContent>
                   <FlexIcon>
-                    <Text
-                      allowFontScaling={false}
-                      style={(styles.LogoutText, { color: '#462D85', fontSize: 14, marginLeft: 6 })}
-                    >
-                      {t('Log In')}
+                    <CustomerCare width={20} height={20} />
+                    <Text allowFontScaling={false} style={styles.UserText}>
+                      {t('Customer care')}
                     </Text>
                   </FlexIcon>
                 </ProfileUserContent>
-              </LogoutPressable>
-            )}
-          </Animated.View>
+              </Pressable>
+
+              {user ? (
+                <View>
+                  <LogoutPressable>
+                    <Pressable onPress={handleLogout}>
+                      <ProfileUserContent>
+                        <FlexIcon>
+                          <LogoutIcon width={24} height={24} />
+                          <Text allowFontScaling={false} style={styles.LogoutText}>
+                            {t('Log out')}
+                          </Text>
+                        </FlexIcon>
+                      </ProfileUserContent>
+                    </Pressable>
+                    <Pressable onPress={handleDelectAccount}>
+                      <ProfileUserContent>
+                        <FlexIcon>
+                          <DeleteIcon width={24} height={24} />
+                          <Text allowFontScaling={false} style={styles.LogoutText}>
+                            Delect Account
+                          </Text>
+                        </FlexIcon>
+                      </ProfileUserContent>
+                    </Pressable>
+                  </LogoutPressable>
+                </View>
+              ) : (
+                <LogoutPressable onPress={() => setLogin(true)}>
+                  <ProfileUserContent>
+                    <FlexIcon>
+                      <Text
+                        allowFontScaling={false}
+                        style={
+                          (styles.LogoutText, { color: '#462D85', fontSize: 14, marginLeft: 6 })
+                        }
+                      >
+                        {t('Log In')}
+                      </Text>
+                    </FlexIcon>
+                  </ProfileUserContent>
+                </LogoutPressable>
+              )}
+            </Animated.View>
+          ) : (
+            <Animated.View entering={FadeInDown.duration(800).delay(200)} exiting={FadeOutDown}>
+              {AccountData.map((f, index) => {
+                return (
+                  <Pressable key={index} onPress={() => navigation.navigate(f.navigation)}>
+                    <ProfileUserContent>
+                      <FlexIcon>
+                        <f.leftIcon width={20} height={20} />
+                        <Text allowFontScaling={false} style={styles.UserText}>
+                          {t(f.name)}
+                        </Text>
+                      </FlexIcon>
+                      {f.rightIcon && <f.rightIcon width={20} height={20} />}
+                      {f.rightText && (
+                        <Text allowFontScaling={false} style={styles.RightText}>
+                          {f.name === 'My orders' ? `${orderData.length} items` : f.rightText}
+                        </Text>
+                      )}
+                    </ProfileUserContent>
+                  </Pressable>
+                )
+              })}
+              <Pressable onPress={handleCustomerCarePress}>
+                <ProfileUserContent>
+                  <FlexIcon>
+                    <CustomerCare width={20} height={20} />
+                    <Text allowFontScaling={false} style={styles.UserText}>
+                      {t('Customer care')}
+                    </Text>
+                  </FlexIcon>
+                </ProfileUserContent>
+              </Pressable>
+
+              {user ? (
+                <View>
+                  <LogoutPressable>
+                    <Pressable onPress={handleLogout}>
+                      <ProfileUserContent>
+                        <FlexIcon>
+                          <LogoutIcon width={24} height={24} />
+                          <Text allowFontScaling={false} style={styles.LogoutText}>
+                            {t('Log out')}
+                          </Text>
+                        </FlexIcon>
+                      </ProfileUserContent>
+                    </Pressable>
+                    <Pressable onPress={handleDelectAccount}>
+                      <ProfileUserContent>
+                        <FlexIcon>
+                          <DeleteIcon width={24} height={24} />
+                          <Text allowFontScaling={false} style={styles.LogoutText}>
+                            Delect Account
+                          </Text>
+                        </FlexIcon>
+                      </ProfileUserContent>
+                    </Pressable>
+                  </LogoutPressable>
+                </View>
+              ) : (
+                <LogoutPressable onPress={() => setLogin(true)}>
+                  <ProfileUserContent>
+                    <FlexIcon>
+                      <Text
+                        allowFontScaling={false}
+                        style={
+                          (styles.LogoutText, { color: '#462D85', fontSize: 14, marginLeft: 6 })
+                        }
+                      >
+                        {t('Log In')}
+                      </Text>
+                    </FlexIcon>
+                  </ProfileUserContent>
+                </LogoutPressable>
+              )}
+            </Animated.View>
+          )}
         </AccountWrapper>
       </ScrollView>
       {login && (

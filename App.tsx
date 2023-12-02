@@ -44,6 +44,9 @@ const App: React.FC = () => {
 
   const fetchDataFromFirestore = useCallback(async () => {
     try {
+      if (signupUpdate === 'INVALID') {
+        return
+      }
       if (user) {
         const q = doc(db, 'users', user.uid)
         const querySnapshot = await getDoc(q)
