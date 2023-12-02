@@ -178,7 +178,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
           confirmDetails: confirmDetails,
         })
 
-        // updateSignupUpdate(true)
+        updateSignupUpdate(true)
       } catch (error) {
         if (error instanceof FirebaseError) {
           if (error.code === AuthErrorCodes.EMAIL_EXISTS) {

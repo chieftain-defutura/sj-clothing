@@ -41,6 +41,8 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
   const [onText, setOnSearchChange] = React.useState<string | null>(null)
   const [suggestions, setSuggestions] = React.useState<Suggestion[] | null>([])
   const user = userStore((state) => state.user)
+  const phoneNumber = userStore((state) => state.phoneNo)
+
   const [login, setLogin] = useState(false)
   const [signUp, setSignUp] = useState(false)
   const [forgotMail, setForgotmail] = useState(false)
@@ -123,11 +125,11 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
     if (!user) {
       setLogin(true)
     }
-    if (user && !user.emailVerified) {
+    if (user && !phoneNumber) {
       setSignUp(true)
     }
 
-    if (user && user.emailVerified) {
+    if (user && phoneNumber) {
       setDisplay(1)
     }
   }
