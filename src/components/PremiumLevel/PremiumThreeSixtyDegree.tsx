@@ -1,27 +1,19 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import {
-  Pressable,
-  StyleSheet,
-  Dimensions,
-  Image,
-  View,
-  Text,
-  ActivityIndicator,
-} from 'react-native'
+import { Pressable, StyleSheet, Dimensions, View, Text, ActivityIndicator } from 'react-native'
 import { WebView } from 'react-native-webview'
 import styled from 'styled-components/native'
 import uuid from 'react-native-uuid'
-
 import LeftArrow from '../../assets/icons/LeftArrow'
 // import ThreeSixtyDegree from '../../assets/icons/360-degree'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import CustomButton from '../Button'
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore/lite'
+import { doc, setDoc } from 'firebase/firestore/lite'
 import { db } from '../../../firebase'
 import { IPremiumData } from '../../constant/types'
 import { userStore } from '../../store/userStore'
 import AuthNavigate from '../../screens/AuthNavigate'
 import { COLORS } from '../../styles/theme'
+import { Audio } from 'expo-av'
 
 interface IPremiumThreeSixtyDegree {
   focus: boolean
@@ -51,6 +43,15 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
 
+  const playSound = async () => {
+    const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
+    await sound.playAsync()
+  }
+
+  const handleImageClick = () => {
+    playSound()
+  }
+
   const handleLayout = () => {
     if (elementRef.current) {
       elementRef.current.measure((x, y, width, height, pageX, pageY) => {
@@ -77,6 +78,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
 
   useEffect(() => {
     handleSetUid()
+    handleImageClick()
   }, [handleSetUid])
 
   const onClose = () => {
@@ -111,8 +113,8 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
           </FlexContent>
           <View
             style={{
-              width: width / 1.1,
-              height: height / 1.6,
+              width: width,
+              height: height / 1.5,
               backgroundColor: 'transparent',
               marginTop: 18,
               position: 'relative',
@@ -170,7 +172,12 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
             text='Buy Now'
             fontFamily='Arvo-Regular'
             fontSize={16}
-            style={{ width: '100%', marginTop: 42 }}
+            style={{
+              width: '100%',
+              paddingHorizontal: 18,
+              position: 'absolute',
+              bottom: 0,
+            }}
             onPress={handleSubmit}
           />
         </View>
@@ -187,10 +194,7 @@ const ThreeSixtyDegreeImage = styled.View`
   margin-top: -20px;
 `
 const FlexContent = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  margin-left: 22px;
 `
 
 const ThreeSixtyDegreeImageWrapper = styled.View`
@@ -226,8 +230,8 @@ export default PremiumThreeSixtyDegree
 
 const styles = StyleSheet.create({
   linearGradient: {
-    padding: 16,
-    height,
+    height: height / 1.2,
+    flex: 1,
   },
   absoluteContainer: {
     position: 'absolute',

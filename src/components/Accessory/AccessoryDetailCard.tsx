@@ -19,6 +19,7 @@ import Animated, {
   FadeOutLeft,
   FadeOutRight,
 } from 'react-native-reanimated'
+import * as Haptics from 'expo-haptics'
 import { Svg, Circle } from 'react-native-svg'
 import CustomButton from '../Button'
 import { IAccessory } from '../../constant/types'
@@ -48,6 +49,7 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
   const currency = userStore((state) => state.currency)
 
   const onSubmit = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
     if (!user) {
       console.log('user not found')
       setFocus(true)
