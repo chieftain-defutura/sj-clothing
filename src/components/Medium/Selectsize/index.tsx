@@ -98,49 +98,81 @@ const SelectSize: React.FC<ISelectSize> = ({
                 {t('Sizes')}
               </Text>
               {isSize.country && (
-                <FlatList
-                  data={sizeData?.filter((f) => f.show === true)}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                    alignItems: 'center',
-                    gap: 38,
-                    paddingVertical: 8,
-                  }}
-                  // columnWrapperStyle={{
-                  //   display: 'flex',
-                  //   flexDirection: 'row',
-                  //   justifyContent: 'space-between',
-                  //   // alignItems: 'flex-start',
-                  //   // gap: 65,
-                  //   paddingVertical: 8,
-                  // }}
-                  // numColumns={4}
-                  renderItem={({ item, index }) => (
-                    <View key={index}>
-                      <Pressable
-                        onPress={() => handleSelect(item.size, item.measurement)}
-                        key={index}
-                      >
-                        <Text
-                          allowFontScaling={false}
-                          style={{
-                            fontSize: 12,
-                            color:
-                              isSize.sizeVarient[0].size === item.size
-                                ? COLORS.textSecondaryClr
-                                : COLORS.iconsNormalClr,
-                          }}
-                        >
-                          {item.size} - {item.measurement} cm
-                        </Text>
-                      </Pressable>
-                    </View>
+                <>
+                  {(sizeData?.length as number) <= 3 ? (
+                    <FlatList
+                      key='fourColumns'
+                      data={sizeData?.filter((f) => f.show === true)}
+                      columnWrapperStyle={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        gap: 65,
+                        paddingVertical: 8,
+                        paddingBottom: 18,
+                      }}
+                      numColumns={3}
+                      renderItem={({ item, index }) => (
+                        <View key={index}>
+                          <Pressable
+                            onPress={() => handleSelect(item.size, item.measurement)}
+                            key={index}
+                          >
+                            <Text
+                              allowFontScaling={false}
+                              style={{
+                                fontSize: 12,
+                                color:
+                                  isSize.sizeVarient[0].size === item.size
+                                    ? COLORS.textSecondaryClr
+                                    : COLORS.iconsNormalClr,
+                              }}
+                            >
+                              {item.size} - {item.measurement} cm
+                            </Text>
+                          </Pressable>
+                        </View>
+                      )}
+                    />
+                  ) : (
+                    <FlatList
+                      data={sizeData?.filter((f) => f.show === true)}
+                      key='horizontal'
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                      contentContainerStyle={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: 38,
+                        paddingVertical: 8,
+                        paddingBottom: 18,
+                      }}
+                      renderItem={({ item, index }) => (
+                        <View key={index}>
+                          <Pressable
+                            onPress={() => handleSelect(item.size, item.measurement)}
+                            key={index}
+                          >
+                            <Text
+                              allowFontScaling={false}
+                              style={{
+                                fontSize: 12,
+                                color:
+                                  isSize.sizeVarient[0].size === item.size
+                                    ? COLORS.textSecondaryClr
+                                    : COLORS.iconsNormalClr,
+                              }}
+                            >
+                              {item.size} - {item.measurement} cm
+                            </Text>
+                          </Pressable>
+                        </View>
+                      )}
+                    />
                   )}
-                />
+                </>
               )}
             </View>
           </Animated.View>
