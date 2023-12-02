@@ -109,6 +109,7 @@ const SelectSize: React.FC<ISelectSize> = ({
                         justifyContent: 'center',
                         gap: 65,
                         paddingVertical: 8,
+                        paddingBottom: 18,
                       }}
                       numColumns={3}
                       renderItem={({ item, index }) => (
@@ -146,6 +147,7 @@ const SelectSize: React.FC<ISelectSize> = ({
                         alignItems: 'center',
                         gap: 38,
                         paddingVertical: 8,
+                        paddingBottom: 18,
                       }}
                       renderItem={({ item, index }) => (
                         <View key={index}>

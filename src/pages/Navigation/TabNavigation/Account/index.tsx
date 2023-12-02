@@ -130,8 +130,8 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   // }, [fetchDataFromFirestore])
 
   const handleCustomerCarePress = () => {
-    const phoneNumber = '7358947141'
-    Linking.openURL(`tel:${phoneNumber}`)
+    const emailAddress = 'sprinklenadar@gmail.com'
+    Linking.openURL(`mailto:${emailAddress}`)
   }
 
   const openSubscriptionModal = () => {
