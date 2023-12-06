@@ -35,6 +35,7 @@ interface INavigation {
   setDone: React.Dispatch<React.SetStateAction<boolean>>
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDesign: React.Dispatch<React.SetStateAction<boolean>>
+  setImageApplied: React.Dispatch<React.SetStateAction<boolean>>
   setImageOrText: React.Dispatch<
     React.SetStateAction<{
       title: string
@@ -67,6 +68,7 @@ const Navigation: React.FC<INavigation> = ({
   setDropDown,
   setImageOrText,
   setDone,
+  setImageApplied,
 }) => {
   const { t } = useTranslation('midlevel')
   const slideX = useAnimatedStyle(() => {
@@ -109,7 +111,9 @@ const Navigation: React.FC<INavigation> = ({
           </Pressable>
           <Pressable
             onPress={() => {
-              setOpenDesign(false), handleDecreaseSteps()
+              setOpenDesign(false)
+              handleDecreaseSteps()
+              setImageApplied(true)
             }}
           >
             <Text

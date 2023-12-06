@@ -75,6 +75,7 @@ const Medium = () => {
   //image&text
   const [isOpenDesign, setOpenDesign] = useState(false)
   const [isDone, setDone] = useState(false)
+  const [imageApplied, setImageApplied] = useState(false)
 
   const [isImageOrText, setImageOrText] = useState({
     title: '',
@@ -101,15 +102,12 @@ const Medium = () => {
 
   const handleGetData = useCallback(() => {
     if (!uid) return
-    console.log('ebterd', uid)
     const q = defaultQuery(
       defualtCollection(dbDefault, 'ModelsMidlevel'),
       defaultWhere('uid', '==', uid),
     )
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      console.log('snapshot', snapshot.size)
       snapshot.docs.forEach((doc) => {
-        console.log(doc.data())
         if (doc.data()['animationFinished']) setAnimationUpdated(doc.data()['animationFinished'])
       })
     })
@@ -124,10 +122,12 @@ const Medium = () => {
   }, [handleGetData])
 
   useEffect(() => {
-    if (isDone) {
+    if (imageApplied) {
       setTempImageOrText(isImageOrText)
     }
-  }, [isDone])
+  }, [imageApplied])
+
+  console.log('TEMP IMAGE', tempIsImageOrText)
 
   const playSound = async () => {
     const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
@@ -211,7 +211,7 @@ const Medium = () => {
       setWarning('') // Set the state to null after 5 seconds
     }, 2000)
   }, [warning])
-  console.log(animationUpdated)
+
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
       try {
@@ -226,6 +226,25 @@ const Medium = () => {
       }
     }
   }, [])
+
+  const handleUpdateUid = useCallback(async () => {
+    // try {
+    //   if (isSteps === 5) {
+    //     const tempUid = uuid.v4().toString()
+    //     const docRef = doc(db, 'ModelsMidlevel', tempUid)
+    //     await setDoc(docRef, {
+    //       uid: tempUid,
+    //       skin: avatar?.skinTone,
+    //       gender: avatar?.gender,
+    //       color: isColor,
+    //       size: isSize.sizeVarient[0].size,
+    //     })
+    //     setUid(tempUid)
+    //   }
+    // } catch (error) {
+    //   console.log(error)
+    // }
+  }, [isSteps])
 
   const handleUpdateColor = useCallback(async () => {
     if (!isColor || !uid) return
@@ -248,21 +267,23 @@ const Medium = () => {
   }, [isSize])
 
   const handleUpdateImageAndText = useCallback(async () => {
-    if (!isImageOrText.designs.originalImage || !uid) return
+    if (!tempIsImageOrText.designs.originalImage || !uid) return
     try {
       const docRef = doc(db, 'ModelsMidlevel', uid)
-      await updateDoc(docRef, { image: isImageOrText.designs.originalImage })
+      await updateDoc(docRef, { image: tempIsImageOrText.designs.originalImage })
     } catch (error) {
       console.log(error)
     }
-  }, [isImageOrText])
+  }, [tempIsImageOrText])
 
   useEffect(() => {
     handleSetUid()
     handleUpdateColor()
     handleUpdateSize()
     handleUpdateImageAndText()
-  }, [handleSetUid, handleUpdateColor, handleUpdateSize, handleUpdateImageAndText])
+    handleUpdateUid()
+  }, [handleSetUid, handleUpdateColor, handleUpdateSize, handleUpdateImageAndText, handleUpdateUid])
+
   useEffect(() => {
     const Filtereddata = data?.find(
       (f) =>
@@ -318,6 +339,8 @@ const Medium = () => {
     getData()
   }, [getData])
 
+  console.log('DONE', imageApplied)
+
   const handleSubmit = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
     if (!FilteredData) return
@@ -363,6 +386,7 @@ const Medium = () => {
             isSelectedStyle={isSelectedStyle}
             handleDecreaseSteps={handleDecreaseSteps}
             handleIncreaseSteps={handleIncreaseSteps}
+            setImageApplied={setImageApplied}
             animationUpdated={animationUpdated}
           />
 
