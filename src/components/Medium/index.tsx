@@ -3,11 +3,18 @@ import { Dimensions, StyleSheet, View } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSharedValue, withSequence, withTiming } from 'react-native-reanimated'
 import { collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
+import {
+  query as defaultQuery,
+  collection as defualtCollection,
+  where as defaultWhere,
+  onSnapshot,
+} from 'firebase/firestore'
+
 import TShirt from './T-Shirt'
 import FinalView from './FinalView'
 import Navigation from './Navigation'
 import SelectSize from './Selectsize'
-import { db } from '../../../firebase'
+import { db, dbDefault } from '../../../firebase'
 import SelectStyle from './SelectStyle'
 import SelectColor from './SelectColor'
 import SelectDesign from './SelectDesign'
@@ -20,6 +27,7 @@ import ForgotMail from '../../screens/Modals/ForgotMail'
 import { IDesigns, IMidlevel } from '../../constant/types'
 import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 import AlertModal from '../../screens/Modals/AlertModal'
+import TempAddMore from './TempAddMore'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Haptics from 'expo-haptics'
 import { Audio } from 'expo-av'
@@ -77,7 +85,48 @@ const Medium = () => {
       originalImage: '',
     },
   })
+  const [tempIsImageOrText, setTempImageOrText] = useState({
+    title: '',
+    position: 'Front',
+    rate: 0,
+    designs: {
+      hashtag: '',
+      image: '',
+      originalImage: '',
+    },
+  })
   const [openCheckout, setOpenCheckout] = useState(false)
+  const [animationUpdated, setAnimationUpdated] = useState(false)
+
+  const handleGetData = useCallback(() => {
+    if (!uid) return
+    console.log('ebterd', uid)
+    const q = defaultQuery(
+      defualtCollection(dbDefault, 'ModelsMidlevel'),
+      defaultWhere('uid', '==', uid),
+    )
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      console.log('snapshot', snapshot.size)
+      snapshot.docs.forEach((doc) => {
+        console.log(doc.data())
+        if (doc.data()['animationFinished']) setAnimationUpdated(doc.data()['animationFinished'])
+      })
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [uid])
+
+  useEffect(() => {
+    handleGetData()
+  }, [handleGetData])
+
+  useEffect(() => {
+    if (isDone) {
+      setTempImageOrText(isImageOrText)
+    }
+  }, [isDone])
 
   const playSound = async () => {
     const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
@@ -161,7 +210,7 @@ const Medium = () => {
       setWarning('') // Set the state to null after 5 seconds
     }, 2000)
   }, [warning])
-
+  console.log(animationUpdated)
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
       try {
@@ -195,6 +244,7 @@ const Medium = () => {
       console.log(error)
     }
   }, [isSize])
+
   const handleUpdateImageAndText = useCallback(async () => {
     if (!isImageOrText.designs.originalImage || !uid) return
     try {
@@ -261,6 +311,7 @@ const Medium = () => {
     }))
     setDesigns(fetchDesign)
   }, [db])
+
   useEffect(() => {
     getData()
   }, [getData])
@@ -361,7 +412,11 @@ const Medium = () => {
             )}
           </View>
 
-          <TShirt uid={uid} steps={isSteps} />
+          {isSteps === 6 ? (
+            <TempAddMore color={isColor} isImageOrText={isImageOrText} />
+          ) : (
+            <TShirt uid={uid} steps={isSteps} />
+          )}
           {isSteps === 5 && FilteredData && (
             <FinalView
               color={isColor}
