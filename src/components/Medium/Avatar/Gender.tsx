@@ -13,8 +13,8 @@ interface IGender {}
 const { width, height } = Dimensions.get('window')
 
 const GenderData = [
-  { gender: 'male', image: require('../../../assets/logo/boyImage.png') },
-  { gender: 'female', image: require('../../../assets/logo/girlImage.png') },
+  { gender: 'male', image: require('../../../assets/images/male.png') },
+  { gender: 'female', image: require('../../../assets/images/female.png') },
 ]
 
 const GenderModel = ({
@@ -78,7 +78,10 @@ const GenderModel = ({
             ref={elementRef}
             onLayout={handleLayout}
           >
-            <Image source={gender.image} style={{ width: width / 1.3, height: height / 4.1 }} />
+            <Image
+              source={gender.image}
+              style={{ width: width / 1.3, height: height / 4.1, objectFit: 'contain' }}
+            />
           </View>
           <Text
             allowFontScaling={false}

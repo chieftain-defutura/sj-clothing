@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import {
   ScrollView,
@@ -19,11 +19,13 @@ import Animated, {
   FadeOutLeft,
   FadeOutRight,
 } from 'react-native-reanimated'
+import * as Haptics from 'expo-haptics'
 import { Svg, Circle } from 'react-native-svg'
 import CustomButton from '../Button'
 import { IAccessory } from '../../constant/types'
 import { userStore } from '../../store/userStore'
 import AuthNavigate from '../../screens/AuthNavigate'
+import { Audio } from 'expo-av'
 
 const { height, width } = Dimensions.get('window')
 
@@ -48,6 +50,7 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
   const currency = userStore((state) => state.currency)
 
   const onSubmit = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
     if (!user) {
       console.log('user not found')
       setFocus(true)
@@ -61,6 +64,20 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
   }
 
   const Description = data.description.split(',')
+
+  const playSound = async () => {
+    const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
+    await sound.playAsync()
+  }
+
+  const handleImageClick = () => {
+    playSound()
+  }
+
+  useEffect(() => {
+    handleImageClick()
+  }, [])
+
   return (
     <View style={{ flex: 1, width: width, zIndex: 6 }}>
       <AuthNavigate focus={focus} onClose={onClose}>

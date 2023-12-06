@@ -168,7 +168,7 @@ const Navigation: React.FC<INavigation> = ({
                   {steps === 3 &&
                     `${t(
                       sizeVarient.size
-                        ? `${sizeVarient.size}-${sizeVarient.measurement}`
+                        ? ` ${country} - ${sizeVarient.size}-${sizeVarient.measurement}`
                         : 'Select Size',
                     )}`}
                   {steps === 4 && `${t(isColor ? isColor : 'Select Color')}`}

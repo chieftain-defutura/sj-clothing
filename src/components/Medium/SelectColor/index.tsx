@@ -56,57 +56,97 @@ const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, se
             >
               {t('Colors')}
             </Text>
-            <FlatList
-              data={data.colors}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                gap: 28,
-                paddingVertical: 18,
-              }}
-              // columnWrapperStyle={{
-              //   display: 'flex',
-              //   flexDirection: 'row',
-              //   justifyContent: 'space-between',
-              //   // alignItems: 'center',
-              //   columnGap: 8,
-              // }}
-              renderItem={({ item, index }) => (
-                <Pressable
-                  onPress={() => {
-                    setColor(item), setDropDown(false)
-                  }}
-                  key={index}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <View
+            {data.colors.length <= 4 ? (
+              <FlatList
+                data={data.colors}
+                columnWrapperStyle={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: 65,
+                  paddingVertical: 8,
+                  paddingBottom: 28,
+                }}
+                numColumns={4}
+                renderItem={({ item, index }) => (
+                  <Pressable
+                    onPress={() => {
+                      setColor(item), setDropDown(false)
+                    }}
+                    key={index}
                     style={{
-                      borderRadius: 50,
-                      borderColor: COLORS.textTertiaryClr,
-                      borderWidth: 1,
-                      padding: 1,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
                     <View
                       style={{
-                        backgroundColor: `${item}`,
-                        borderRadius: 100,
-                        padding: 23,
+                        borderRadius: 50,
+                        borderColor: COLORS.textTertiaryClr,
+                        borderWidth: 1,
+                        padding: 1,
                       }}
-                    ></View>
-                  </View>
-                </Pressable>
-              )}
-            />
+                    >
+                      <View
+                        style={{
+                          backgroundColor: `${item}`,
+                          borderRadius: 100,
+                          padding: 23,
+                        }}
+                      ></View>
+                    </View>
+                  </Pressable>
+                )}
+              />
+            ) : (
+              <FlatList
+                data={data.colors}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: 38,
+                  paddingVertical: 20,
+                  paddingBottom: 28,
+                }}
+                renderItem={({ item, index }) => (
+                  <Pressable
+                    onPress={() => {
+                      setColor(item), setDropDown(false)
+                    }}
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <View
+                      style={{
+                        borderRadius: 50,
+                        borderColor: COLORS.textTertiaryClr,
+                        borderWidth: 1,
+                        padding: 1,
+                      }}
+                    >
+                      <View
+                        style={{
+                          backgroundColor: `${item}`,
+                          borderRadius: 100,
+                          padding: 23,
+                        }}
+                      ></View>
+                    </View>
+                  </Pressable>
+                )}
+              />
+            )}
           </Animated.View>
         </Animated.View>
       )}

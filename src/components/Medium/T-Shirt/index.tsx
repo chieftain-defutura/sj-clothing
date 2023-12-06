@@ -1,6 +1,7 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
 import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native'
+import { Audio } from 'expo-av'
 
 const { height, width } = Dimensions.get('window')
 
@@ -23,6 +24,20 @@ const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
       })
     }
   }
+
+  const playSound = async () => {
+    const { sound } = await Audio.Sound.createAsync(require('../../../assets/video/sound.mp3'))
+    await sound.playAsync()
+  }
+
+  const handleImageClick = () => {
+    playSound()
+  }
+
+  useEffect(() => {
+    handleImageClick()
+  }, [])
+
   return (
     <View
       style={{

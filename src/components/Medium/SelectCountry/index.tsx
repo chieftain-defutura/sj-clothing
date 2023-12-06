@@ -110,52 +110,79 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
             padding: 16,
           }}
         >
-          <FlatList
-            data={country}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-              alignItems: 'center',
-              gap: 38,
-              paddingVertical: 8,
-            }}
-            // numColumns={3}
-            // columnWrapperStyle={{
-            //   display: 'flex',
-            //   flexDirection: 'row',
-            //   justifyContent: 'center',
-            //   alignItems: 'center',
-            //   flexGrow: 1,
-            //   gap: 65,
-            //   paddingVertical: 5,
-            // }}
-            renderItem={({ item, index }) => (
-              <Pressable
-                key={index}
-                onPress={() => handleSelectCountry(item.country)}
-                style={{
-                  paddingVertical: 4,
-                }}
-              >
-                <Text
-                  allowFontScaling={false}
+          {country.length <= 3 ? (
+            <FlatList
+              data={country}
+              columnWrapperStyle={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                gap: 65,
+                paddingVertical: 8,
+              }}
+              numColumns={3}
+              renderItem={({ item, index }) => (
+                <Pressable
+                  key={index}
+                  onPress={() => handleSelectCountry(item.country)}
                   style={{
-                    textAlign: 'left',
-                    fontFamily: 'Gilroy-Medium',
-                    color:
-                      isSize.country === item.country
-                        ? COLORS.textSecondaryClr
-                        : COLORS.iconsNormalClr,
+                    paddingVertical: 4,
                   }}
                 >
-                  {item.country}
-                </Text>
-              </Pressable>
-            )}
-          />
+                  <Text
+                    allowFontScaling={false}
+                    style={{
+                      textAlign: 'left',
+                      fontFamily: 'Gilroy-Medium',
+                      color:
+                        isSize.country === item.country
+                          ? COLORS.textSecondaryClr
+                          : COLORS.iconsNormalClr,
+                    }}
+                  >
+                    {item.country}
+                  </Text>
+                </Pressable>
+              )}
+            />
+          ) : (
+            <FlatList
+              data={country}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 38,
+                paddingVertical: 8,
+              }}
+              renderItem={({ item, index }) => (
+                <Pressable
+                  key={index}
+                  onPress={() => handleSelectCountry(item.country)}
+                  style={{
+                    paddingVertical: 4,
+                  }}
+                >
+                  <Text
+                    allowFontScaling={false}
+                    style={{
+                      textAlign: 'left',
+                      fontFamily: 'Gilroy-Medium',
+                      color:
+                        isSize.country === item.country
+                          ? COLORS.textSecondaryClr
+                          : COLORS.iconsNormalClr,
+                    }}
+                  >
+                    {item.country}
+                  </Text>
+                </Pressable>
+              )}
+            />
+          )}
         </View>
       </Animated.View>
     </LinearGradient>

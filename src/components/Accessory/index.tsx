@@ -6,6 +6,7 @@ import { db } from '../../../firebase'
 import AccessoryCard from './AccessoryCard'
 import AccessoryDetailsCard from './AccessoryDetailCard'
 import AccessoryThreeSixtyDegree from './AccessoryThreeSixtyDegree'
+import * as Haptics from 'expo-haptics'
 import { useNavigation } from '@react-navigation/native'
 import { IAccessory } from '../../constant/types'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -29,7 +30,6 @@ const Accessory = () => {
   const [openDetails, setOpenDetails] = useState(false)
   const user = userStore((state) => state.user)
   const phoneNumber = userStore((state) => state.phoneNo)
-
   const [openCheckout, setOpenCheckout] = useState(false)
   const [login, setLogin] = useState(false)
   const [isLoading, setLoading] = useState(false)
@@ -64,6 +64,8 @@ const Accessory = () => {
   const FilteredData = data?.filter((f) => f.id === productId)
 
   const handleSubmit = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+
     if (!FilteredData) return
 
     if (!user) {

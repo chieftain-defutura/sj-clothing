@@ -5,8 +5,6 @@ import { Pressable } from 'react-native'
 import styled from 'styled-components/native'
 import { StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { PhoneAuthProvider, signInWithCredential } from 'firebase/auth'
-
 import { auth, db } from '../../../firebase'
 import { COLORS } from '../../styles/theme'
 import CustomButton from '../../components/Button'
