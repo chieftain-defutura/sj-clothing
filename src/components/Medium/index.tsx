@@ -248,6 +248,18 @@ const Medium = () => {
   const handleUpdateColor = useCallback(async () => {
     if (!isColor || !uid) return
     try {
+      // let newImage = ''
+
+      // if (tempIsImageOrText.designs.originalImage) {
+      //   designs?.forEach((f) => {
+      //     const spottedImage = f.originalImages.find((f) => f.colorCode === isColor)
+      //     console.log('newImage', spottedImage)
+      //     if (spottedImage) {
+      //       newImage = spottedImage.url
+      //     }
+      //   })
+      // }
+
       const docRef = doc(db, 'ModelsMidlevel', uid)
       await updateDoc(docRef, { color: isColor })
     } catch (error) {

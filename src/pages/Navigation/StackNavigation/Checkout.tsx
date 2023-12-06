@@ -11,7 +11,15 @@ import ChevronLeft from '../../../assets/icons/ChevronLeft'
 import TruckMovingIcon from '../../../assets/icons/TruckMoving'
 import CartCard from '../../../components/CartCard'
 import { query, collection as defaultCollection, where, onSnapshot } from 'firebase/firestore'
-import { collection, doc, getDoc, getDocs, updateDoc, setDoc } from 'firebase/firestore/lite'
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  setDoc,
+  Timestamp,
+} from 'firebase/firestore/lite'
 import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { ICheckout } from '../../../constant/types'
@@ -243,8 +251,8 @@ const Checkout: React.FC<ICheckout> = ({
             status: false,
           },
         },
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
       })
       // payment
       const initSheet = await stripe.initPaymentSheet({

@@ -85,7 +85,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                 gap: 10,
               }}
             >
-              {data.backSide && (
+              {data.frontSide && (
                 <Pressable
                   onPress={() => {
                     setOpenDesign(true),
@@ -133,7 +133,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                   </Text>
                 </Pressable>
               )}
-              {data.frontSide && (
+              {data.backSide && (
                 <Pressable
                   onPress={() => {
                     setOpenDesign(true),
