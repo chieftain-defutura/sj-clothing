@@ -32,9 +32,6 @@ const TempAddMore: React.FC<ITempAddMoreProps> = ({ color, isImageOrText }) => {
   const isMounted = useRef(false)
   const avatar = userStore((state) => state.avatar)
 
-  console.log('TEMPADDMORE')
-  console.log(isImageOrText)
-
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
       try {
