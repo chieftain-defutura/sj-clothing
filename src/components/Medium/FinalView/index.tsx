@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 interface IFinalView {
   style: string
   color: string
+  colorName: string
   isSize: {
     country: string
     sizeVarient: {
@@ -44,13 +45,14 @@ interface IFinalView {
   setFocus: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const { height, width } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 const FinalView: React.FC<IFinalView> = ({
   handleSubmit,
   isSize,
   style,
   color,
+  colorName,
   setFocus,
   focus,
   data,
@@ -64,6 +66,9 @@ const FinalView: React.FC<IFinalView> = ({
   const onClose = () => {
     setFocus(false)
   }
+
+  console.log('color', color)
+  console.log('colorName', colorName)
 
   const Description = data.description.split(',')
 
@@ -310,17 +315,23 @@ const FinalView: React.FC<IFinalView> = ({
               >
                 Color
               </Text>
-              <Text
-                allowFontScaling={false}
-                style={{
-                  color: COLORS.textClr,
-                  fontFamily: 'Arvo-Regular',
-                  fontSize: 18,
-                  backgroundColor: color,
-                  width: 30,
-                  marginTop: 4,
-                }}
-              ></Text>
+              <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    color: COLORS.textClr,
+                    fontFamily: 'Arvo-Regular',
+                    fontSize: 18,
+                    backgroundColor: color,
+                    width: 10,
+                    height: 10,
+                    marginTop: 4,
+                  }}
+                ></Text>
+                <Text style={styles.colorNameText} numberOfLines={1} ellipsizeMode='tail'>
+                  {colorName}
+                </Text>
+              </View>
             </View>
           </View>
           <View style={{ marginTop: 14 }}>
@@ -356,6 +367,14 @@ const styles = StyleSheet.create({
   submitBtn: {
     marginVertical: 1,
     fontFamily: 'Arvo-Regular',
+  },
+  colorNameText: {
+    fontFamily: FONT_FAMILY.GilroySemiBold,
+    fontSize: 12,
+    marginTop: 6,
+    color: COLORS.iconsHighlightClr,
+    textTransform: 'capitalize',
+    overflow: 'hidden',
   },
 })
 

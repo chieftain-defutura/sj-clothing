@@ -9,15 +9,21 @@ import { useTranslation } from 'react-i18next'
 interface ISelectColor {
   isDropDown: boolean
   isColor: string
+  isColorName: string
   data: IMidlevel
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setColor: React.Dispatch<React.SetStateAction<string>>
+  setColorName: React.Dispatch<React.SetStateAction<string>>
 }
 
-const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, setColor }) => {
+const SelectColor: React.FC<ISelectColor> = ({
+  isDropDown,
+  data,
+  setDropDown,
+  setColor,
+  setColorName,
+}) => {
   const { t } = useTranslation('midlevel')
-  console.log('data', data.colors)
-  console.log('fulldata', data)
 
   return (
     <LinearGradient
@@ -74,7 +80,7 @@ const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, se
                 renderItem={({ item, index }) => (
                   <Pressable
                     onPress={() => {
-                      setColor(item.color), setDropDown(false)
+                      setColor(item.color), setDropDown(false), setColorName(item.colorName)
                     }}
                     key={index}
                     style={{
@@ -100,11 +106,11 @@ const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, se
                         }}
                       ></View>
                     </View>
-                    <View>
+                    <Pressable onPress={() => setColorName(item.colorName)}>
                       <Text style={styles.ellipsisText} numberOfLines={1} ellipsizeMode='tail'>
                         {item.colorName}
                       </Text>
-                    </View>
+                    </Pressable>
                   </Pressable>
                 )}
               />
@@ -125,7 +131,7 @@ const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, se
                 renderItem={({ item, index }) => (
                   <Pressable
                     onPress={() => {
-                      setColor(item.color), setDropDown(false)
+                      setColor(item.color), setDropDown(false), setColorName(item.colorName)
                     }}
                     key={index}
                     style={{
@@ -151,11 +157,11 @@ const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, se
                         }}
                       ></View>
                     </View>
-                    <View>
+                    <Pressable onPress={() => setColorName(item.colorName)}>
                       <Text style={styles.ellipsisText} numberOfLines={1} ellipsizeMode='tail'>
                         {item.colorName}
                       </Text>
-                    </View>
+                    </Pressable>
                   </Pressable>
                 )}
               />

@@ -70,6 +70,7 @@ const Medium = () => {
 
   //color
   const [isColor, setColor] = useState('')
+  const [isColorName, setColorName] = useState('')
 
   //image&text
   const [isOpenDesign, setOpenDesign] = useState(false)
@@ -436,6 +437,8 @@ const Medium = () => {
                 isDropDown={isDropDown}
                 setDropDown={setDropDown}
                 setColor={setColor}
+                setColorName={setColorName}
+                isColorName={isColorName}
               />
             )}
             {isSteps === 6 && isDropDown && FilteredData && (
@@ -458,6 +461,7 @@ const Medium = () => {
           {isSteps === 5 && FilteredData && (
             <FinalView
               color={isColor}
+              colorName={isColorName}
               data={FilteredData}
               focus={focus}
               handleSubmit={handleSubmit}

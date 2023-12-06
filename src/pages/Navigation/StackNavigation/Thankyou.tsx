@@ -5,7 +5,7 @@ import WebView from 'react-native-webview'
 import CustomButton from '../../../components/Button'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, StackActions } from '@react-navigation/native'
 import Animated, {
   FadeIn,
   FadeInUp,
@@ -88,7 +88,7 @@ const Thankyou = () => {
           variant='primary'
           text='View Orders'
           fontFamily='Arvo-Regular'
-          onPress={() => navigation.navigate('MyOrders')}
+          onPress={() => navigation.dispatch(StackActions.replace('MyOrders'))}
           fontSize={16}
           style={{
             padding: 16,
