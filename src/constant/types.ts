@@ -110,7 +110,12 @@ export interface IMidlevel {
   frontSide: boolean
   leftSide: boolean
   rightSide: boolean
-  colors: string[]
+  colors: [
+    {
+      color: string
+      colorName: string
+    },
+  ]
   description: string
   gender: string
   normalPrice: string

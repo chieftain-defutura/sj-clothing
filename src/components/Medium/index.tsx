@@ -227,23 +227,22 @@ const Medium = () => {
   }, [])
 
   const handleUpdateUid = useCallback(async () => {
-    try {
-      if (isSteps === 5) {
-        const tempUid = uuid.v4().toString()
-        const docRef = doc(db, 'ModelsMidlevel', tempUid)
-        await setDoc(docRef, {
-          uid: tempUid,
-          skin: avatar?.skinTone,
-          gender: avatar?.gender,
-          color: isColor,
-          size: isSize.sizeVarient[0].size,
-        })
-
-        setUid(tempUid)
-      }
-    } catch (error) {
-      console.log(error)
-    }
+    // try {
+    //   if (isSteps === 5) {
+    //     const tempUid = uuid.v4().toString()
+    //     const docRef = doc(db, 'ModelsMidlevel', tempUid)
+    //     await setDoc(docRef, {
+    //       uid: tempUid,
+    //       skin: avatar?.skinTone,
+    //       gender: avatar?.gender,
+    //       color: isColor,
+    //       size: isSize.sizeVarient[0].size,
+    //     })
+    //     setUid(tempUid)
+    //   }
+    // } catch (error) {
+    //   console.log(error)
+    // }
   }, [isSteps])
 
   const handleUpdateColor = useCallback(async () => {
@@ -387,6 +386,7 @@ const Medium = () => {
             handleDecreaseSteps={handleDecreaseSteps}
             handleIncreaseSteps={handleIncreaseSteps}
             setImageApplied={setImageApplied}
+            animationUpdated={animationUpdated}
           />
 
           <View style={{ zIndex: 5, width: width, position: 'absolute', top: 0 }}>

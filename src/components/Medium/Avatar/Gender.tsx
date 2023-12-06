@@ -69,7 +69,7 @@ const GenderModel = ({
         <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <View
             style={{
-              borderColor: avatar.gender === gender.gender ? COLORS.textSecondaryClr : '#FFF',
+              borderColor: avatar?.gender === gender?.gender ? COLORS.textSecondaryClr : '#FFF',
               borderWidth: 1,
               borderRadius: 30,
               backgroundColor: 'transparent',
@@ -89,7 +89,7 @@ const GenderModel = ({
               styles.buttonText,
               {
                 color:
-                  avatar.gender === gender.gender ? COLORS.textSecondaryClr : COLORS.textRGBAClr,
+                  avatar?.gender === gender.gender ? COLORS.textSecondaryClr : COLORS.textRGBAClr,
               },
             ]}
           >

@@ -45,6 +45,7 @@ const BeforeUser = () => {
       )
     }
   }
+
   return (
     <Animated.View style={[slideX, { flex: 1 }]}>
       {steps === 0 && (
@@ -72,7 +73,7 @@ const BeforeUser = () => {
           >
             {/* <CustomButton style={{ width: 180 }} text='Previous' onPress={() => setSteps(0)} /> */}
             <CustomButton
-              disabled={!avatar.gender}
+              disabled={!avatar?.gender}
               style={{ width: width / 1.3 }}
               text='Next'
               onPress={handleIncreaseSteps}
