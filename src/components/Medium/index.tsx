@@ -20,6 +20,7 @@ import ForgotMail from '../../screens/Modals/ForgotMail'
 import { IDesigns, IMidlevel } from '../../constant/types'
 import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 import AlertModal from '../../screens/Modals/AlertModal'
+import TempAddMore from './TempAddMore'
 
 const { width } = Dimensions.get('window')
 
@@ -74,7 +75,23 @@ const Medium = () => {
       originalImage: '',
     },
   })
+  const [tempIsImageOrText, setTempImageOrText] = useState({
+    title: '',
+    position: 'Front',
+    rate: 0,
+    designs: {
+      hashtag: '',
+      image: '',
+      originalImage: '',
+    },
+  })
   const [openCheckout, setOpenCheckout] = useState(false)
+
+  useEffect(() => {
+    if (isDone) {
+      setTempImageOrText(isImageOrText)
+    }
+  }, [isDone])
 
   const handleDecreaseSteps = () => {
     if (isSteps !== 1) {
@@ -165,6 +182,7 @@ const Medium = () => {
       console.log(error)
     }
   }, [isSize])
+
   const handleUpdateImageAndText = useCallback(async () => {
     if (!isImageOrText.designs.originalImage || !uid) return
     try {
@@ -231,6 +249,7 @@ const Medium = () => {
     }))
     setDesigns(fetchDesign)
   }, [db])
+
   useEffect(() => {
     getData()
   }, [getData])
@@ -330,7 +349,11 @@ const Medium = () => {
             )}
           </View>
 
-          <TShirt uid={uid} steps={isSteps} />
+          {isSteps === 6 ? (
+            <TempAddMore color={isColor} isImageOrText={isImageOrText} />
+          ) : (
+            <TShirt uid={uid} steps={isSteps} />
+          )}
           {isSteps === 5 && FilteredData && (
             <FinalView
               color={isColor}
