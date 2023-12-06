@@ -21,6 +21,7 @@ import uk from './src/utils/locals/uk.json'
 import zh from './src/utils/locals/zh.json'
 import ch from './src/utils/locals/ch.json'
 import la from './src/utils/locals/la.json'
+import cu from './src/utils/locals/cu.json'
 
 import * as Localization from 'expo-localization'
 
@@ -61,6 +62,7 @@ i18n.use(initReactI18next).init({
     uk: uk,
     ch: ch,
     la: la,
+    cu: cu,
   },
 })
 

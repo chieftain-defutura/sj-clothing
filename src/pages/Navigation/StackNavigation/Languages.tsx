@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import styled from 'styled-components/native'
@@ -39,6 +39,29 @@ const LanguagesData = [
   { language: 'Ukrainian', lang: 'uk' },
 ]
 
+const CurrentLanguages = [
+  'English',
+  '中文普通话',
+  'Çin yue',
+  'dansk',
+  'Nederlands',
+  'Français',
+  'Deutsch',
+  'Ελληνικά',
+  'Indonesia',
+  'Italiana',
+  '日本語',
+  '한국인',
+  'Latinus',
+  'Polski',
+  'Português',
+  'Русский',
+  'Española',
+  'தமிழ்',
+  'Türkçe',
+  'українська',
+]
+
 const Languages = () => {
   const { i18n } = useTranslation()
   const { t } = useTranslation('language')
@@ -47,6 +70,7 @@ const Languages = () => {
   const updateLanguage = userStore((state) => state.updateLanguage)
   const confirmDetails = userStore((state) => state.confirmDetails)
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
+  const [selectedLanguage, setSelectedLanguage] = useState('')
   const [isPressed, setIsPressed] = useState(false)
   const navigation = useNavigation()
 
@@ -54,9 +78,11 @@ const Languages = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
   }
   const changeLanguage = async (lng: string) => {
+    console.log('lang', lng)
     await AsyncStorage.setItem('language', lng)
     i18n.changeLanguage(lng as string)
     updateLanguage(lng as string)
+    setSelectedLanguage(lng)
     if (user) {
       await updateDoc(doc(db, 'users', user.uid), {
         language: lng,
@@ -83,8 +109,9 @@ const Languages = () => {
           <View style={{ width: 208, paddingTop: 14 }}>
             <SelectContent onPress={toggleDropdownSizes}>
               <Text allowFontScaling={false} style={styles.selectText}>
-                {LanguagesData.find((f) => f.lang === language)?.language}
+                {selectedLanguage || 'Choose a language'}
               </Text>
+
               <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
                 <Path
                   d='M5 7.5L10 12.5L15 7.5'
@@ -98,17 +125,32 @@ const Languages = () => {
               <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
                 <SelectDropDownList>
                   <ScrollView style={{ height: 240 }}>
-                    {LanguagesData.filter((f) => f.lang !== language).map((f: any, i: number) => (
+                    {/* {LanguagesData.filter((f) => f.lang !== language).map((f: any, i: number) => (
                       <Pressable
                         key={i}
                         onPress={() => [
                           updateLanguage(f.lang),
-                          toggleDropdownSizes(),
                           changeLanguage(f.lang),
+                          toggleDropdownSizes(),
                         ]}
                       >
                         <Text allowFontScaling={false} style={styles.selectListText}>
                           {f.language}
+                        </Text>
+                      </Pressable>
+                    ))} */}
+
+                    {CurrentLanguages.map((f, index) => (
+                      <Pressable
+                        key={index}
+                        onPress={async () => {
+                          setSelectedLanguage(f)
+                          toggleDropdownSizes()
+                          await changeLanguage(f)
+                        }}
+                      >
+                        <Text allowFontScaling={false} style={styles.selectListText}>
+                          {f}
                         </Text>
                       </Pressable>
                     ))}
@@ -181,7 +223,7 @@ const Languages = () => {
                         ]}
                       >
                         <Text allowFontScaling={false} style={styles.selectListText}>
-                          {f.language}
+                          {t(f.language)}
                         </Text>
                       </Pressable>
                     ))}
