@@ -361,6 +361,7 @@ const Medium = () => {
             isSelectedStyle={isSelectedStyle}
             handleDecreaseSteps={handleDecreaseSteps}
             handleIncreaseSteps={handleIncreaseSteps}
+            animationUpdated={animationUpdated}
           />
 
           <View style={{ zIndex: 5, width: width, position: 'absolute', top: 0 }}>

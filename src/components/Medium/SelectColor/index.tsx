@@ -16,6 +16,9 @@ interface ISelectColor {
 
 const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, setColor }) => {
   const { t } = useTranslation('midlevel')
+  console.log('data', data.colors)
+  console.log('fulldata', data)
+
   return (
     <LinearGradient
       colors={dropDownGradient}
@@ -56,22 +59,22 @@ const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, se
             >
               {t('Colors')}
             </Text>
-            {data.colors.length <= 4 ? (
+            {data.colors.length <= 3 ? (
               <FlatList
                 data={data.colors}
                 columnWrapperStyle={{
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'center',
-                  gap: 65,
+                  gap: 40,
                   paddingVertical: 8,
                   paddingBottom: 28,
                 }}
-                numColumns={4}
+                numColumns={3}
                 renderItem={({ item, index }) => (
                   <Pressable
                     onPress={() => {
-                      setColor(item), setDropDown(false)
+                      setColor(item.color), setDropDown(false)
                     }}
                     key={index}
                     style={{
@@ -91,11 +94,16 @@ const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, se
                     >
                       <View
                         style={{
-                          backgroundColor: `${item}`,
+                          backgroundColor: `${item.color}`,
                           borderRadius: 100,
                           padding: 23,
                         }}
                       ></View>
+                    </View>
+                    <View>
+                      <Text style={styles.ellipsisText} numberOfLines={1} ellipsizeMode='tail'>
+                        {item.colorName}
+                      </Text>
                     </View>
                   </Pressable>
                 )}
@@ -117,7 +125,7 @@ const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, se
                 renderItem={({ item, index }) => (
                   <Pressable
                     onPress={() => {
-                      setColor(item), setDropDown(false)
+                      setColor(item.color), setDropDown(false)
                     }}
                     key={index}
                     style={{
@@ -137,11 +145,16 @@ const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, se
                     >
                       <View
                         style={{
-                          backgroundColor: `${item}`,
+                          backgroundColor: `${item.color}`,
                           borderRadius: 100,
                           padding: 23,
                         }}
                       ></View>
+                    </View>
+                    <View>
+                      <Text style={styles.ellipsisText} numberOfLines={1} ellipsizeMode='tail'>
+                        {item.colorName}
+                      </Text>
                     </View>
                   </Pressable>
                 )}
@@ -157,5 +170,11 @@ const SelectColor: React.FC<ISelectColor> = ({ isDropDown, data, setDropDown, se
 export default SelectColor
 
 const styles = StyleSheet.create({
-  selectColorContainer: {},
+  ellipsisText: {
+    width: 50,
+    fontSize: 12,
+    color: '#462D85',
+    marginTop: 6,
+    marginRight: -18,
+  },
 })
