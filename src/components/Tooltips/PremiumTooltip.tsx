@@ -29,8 +29,7 @@ const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose }) => {
         <View style={{ position: 'absolute', bottom: 160 }}>
           <Heading allowFontScaling={false}>Premium</Heading>
           <Paragraph allowFontScaling={false}>
-            Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus , eleifend
-            tellus augue lec.
+            Elevate Your Wardrobe, Explore and purchase premium clothing for a refined look
           </Paragraph>
           <Animated.View
             entering={LightSpeedInLeft.duration(1000).delay(200)}

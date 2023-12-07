@@ -9,7 +9,6 @@ import {
   where as defaultWhere,
   onSnapshot,
 } from 'firebase/firestore'
-
 import TShirt from './T-Shirt'
 import FinalView from './FinalView'
 import Navigation from './Navigation'
@@ -31,6 +30,7 @@ import TempAddMore from './TempAddMore'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Haptics from 'expo-haptics'
 import { Audio } from 'expo-av'
+import MidLevelTooltip from '../Tooltips/MidLevelTooltip'
 
 const { width } = Dimensions.get('window')
 
@@ -99,6 +99,7 @@ const Medium = () => {
   })
   const [openCheckout, setOpenCheckout] = useState(false)
   const [animationUpdated, setAnimationUpdated] = useState(false)
+  const [toolTip, showToolTip] = useState(false)
 
   const handleGetData = useCallback(() => {
     if (!uid) return
@@ -211,6 +212,21 @@ const Medium = () => {
       setWarning('') // Set the state to null after 5 seconds
     }, 2000)
   }, [warning])
+
+  const isShowToolTip = async () => {
+    const data = await AsyncStorage.getItem('showMidLevelToolTip')
+
+    console.log('showMidLevelToolTip', data)
+    if (data !== '0') {
+      AsyncStorage.setItem('showMidLevelToolTip', '0')
+      showToolTip(true)
+    }
+    // await AsyncStorage.removeItem('mail')
+  }
+
+  useEffect(() => {
+    isShowToolTip()
+  }, [isShowToolTip])
 
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
@@ -532,6 +548,12 @@ const Medium = () => {
           type='MidLevel'
         />
       )}
+      <MidLevelTooltip
+        isVisible={toolTip}
+        onClose={() => {
+          showToolTip(false)
+        }}
+      />
     </View>
   )
 }

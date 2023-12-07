@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { FlatList } from 'react-native-gesture-handler'
 import { Pressable, Text, View } from 'react-native'
@@ -7,8 +7,6 @@ import { IMidlevel } from '../../../constant/types'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
 import { useTranslation } from 'react-i18next'
 import { userStore } from '../../../store/userStore'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import MidLevelTooltip from '../../Tooltips/MidLevelTooltip'
 
 interface ISelectStyle {
   isSelectedStyle: string
@@ -24,7 +22,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({
   setSelectedStyle,
 }) => {
   const { t } = useTranslation('midlevel')
-  const [toolTip, showToolTip] = useState(false)
   const avatar = userStore((state) => state.avatar)
   const handleSelect = (title: string) => {
     if (title === 'There is no styles available right now') {
@@ -35,21 +32,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({
       setDropDown(false)
     }
   }
-
-  const isShowToolTip = async () => {
-    const data = await AsyncStorage.getItem('showMidLevelToolTip')
-
-    console.log('showMidLevelToolTip', data)
-    if (data !== '0') {
-      AsyncStorage.setItem('showMidLevelToolTip', '0')
-      showToolTip(true)
-    }
-    // await AsyncStorage.removeItem('mail')
-  }
-
-  useEffect(() => {
-    isShowToolTip()
-  }, [isShowToolTip])
 
   return (
     <LinearGradient
@@ -216,12 +198,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({
           <CloseIcon />
         </Pressable>
       </Animated.View> */}
-      <MidLevelTooltip
-        isVisible={toolTip}
-        onClose={() => {
-          showToolTip(false)
-        }}
-      />
     </LinearGradient>
   )
 }

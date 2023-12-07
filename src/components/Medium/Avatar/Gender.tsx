@@ -6,7 +6,6 @@ import { userStore } from '../../../store/userStore'
 import { updateDoc, doc } from 'firebase/firestore/lite'
 import { useNavigation } from '@react-navigation/native'
 import { db } from '../../../../firebase'
-import LeftArrow from '../../../assets/icons/LeftArrow'
 
 interface IGender {}
 

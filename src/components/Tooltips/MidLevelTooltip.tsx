@@ -29,8 +29,7 @@ const MidLevelTooltip: React.FC<IMidLevelTooltip> = ({ isVisible, onClose }) => 
         <View style={{ position: 'absolute', bottom: 160 }}>
           <Heading allowFontScaling={false}>Mid level</Heading>
           <Paragraph allowFontScaling={false}>
-            Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus , eleifend
-            tellus augue lec.
+            Express your unique style with our customizable clothes.
           </Paragraph>
           <Animated.View
             entering={LightSpeedInLeft.duration(1000).delay(200)}

@@ -29,8 +29,7 @@ const AccountTooltip: React.FC<IAccountTooltip> = ({ isVisible, onClose }) => {
         <View style={{ position: 'absolute', bottom: 160 }}>
           <Heading allowFontScaling={false}>Account</Heading>
           <Paragraph allowFontScaling={false}>
-            Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus , eleifend
-            tellus augue lec.
+            Manage your profile, customize avatars, and track your orders
           </Paragraph>
           <Animated.View
             entering={LightSpeedInLeft.duration(1000).delay(200)}
