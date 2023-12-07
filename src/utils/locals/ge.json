@@ -4,10 +4,10 @@
     "select your gender": "Επιλέξτε το φύλο σας ",
     "male": "Αρσενικός",
     "female": "Θηλυκός",
-    "next": "Επόμενο",
+    "Next": "Επόμενο",
     "select your skintone": "Επιλέξτε τον τόνο του δέρματος σας",
-    "previous": "Προηγούμενος",
-    "done": "Εγινε"
+    "Previous": "Προηγούμενος",
+    "Done": "Εγινε"
   },
   "language": {
     "Choose Your Language": "Επιλέξτε τη γλώσσα σας"
@@ -16,7 +16,7 @@
     "Avatar": "Avatar",
     "My cart": "Καλάθι μου",
     "My orders": "Οι παραγγελίες μου",
-    "Addressbook": "Βιβλίο διευθύνσεων",
+    "Address Book": "Βιβλίο διευθύνσεων",
     "Accessories": "αξεσουάρ",
     "Language": "Γλώσσα",
     "Currency": "Νόμισμα",
@@ -24,6 +24,8 @@
     "About us": "Σχετικά με εμάς",
     "Customer care": "Εξυπηρέτηση πελατών",
     "Log out": "Αποσύνδεση",
+    "Delete Account": "Διαγραφή λογαριασμού",
+    "Terms And Condition": "Οροι και Προϋποθέσεις",
     "Subscribe now": "Εγγραφείτε τώρα",
     "Map": "Χάρτης",
     "Home": "Σπίτι "

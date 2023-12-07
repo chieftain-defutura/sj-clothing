@@ -4,10 +4,10 @@
     "select your gender": "選擇你的性別",
     "male": "男性",
     "female": "女性",
-    "next": "下一個",
+    "Next": "下一個",
     "select your skintone": "選擇您的膚色",
-    "previous": "以前的",
-    "done": "完畢"
+    "Previous": "以前的",
+    "Done": "完畢"
   },
   "language": {
     "Choose Your Language": "選擇你的語言"
@@ -16,7 +16,7 @@
     "Avatar": "阿凡達",
     "My cart": "我的車",
     "My orders": "我的訂單",
-    "Addressbook": "地址簿",
+    "Address Book": "地址簿",
     "Accessories": "配件",
     "Language": "語言",
     "Currency": "貨幣",
@@ -24,7 +24,9 @@
     "About us": "關於我們",
     "Customer care": "客戶關懷",
     "Log out": "登出",
+    "Delete Account": "删除帐户",
     "Subscribe now": "現在訂閱",
+    "Terms And Condition": "附带条约",
     "Map": "地圖",
     "Home": "家 "
   },

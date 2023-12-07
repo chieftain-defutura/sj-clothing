@@ -304,7 +304,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                         <FlexIcon>
                           <DeleteIcon width={24} height={24} />
                           <Text allowFontScaling={false} style={styles.LogoutText}>
-                            Delect Account
+                            {t('Delete Account')}
                           </Text>
                         </FlexIcon>
                       </ProfileUserContent>
@@ -379,7 +379,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                         <FlexIcon>
                           <DeleteIcon width={24} height={24} />
                           <Text allowFontScaling={false} style={styles.LogoutText}>
-                            Delect Account
+                            {t('Delete Account')}
                           </Text>
                         </FlexIcon>
                       </ProfileUserContent>
