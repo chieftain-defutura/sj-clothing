@@ -4,10 +4,10 @@
     "select your gender": "Виберіть свою стать",
     "male": "Чоловік",
     "female": "Жінка",
-    "next": "Далі",
+    "Next": "Далі",
     "select your skintone": "Виберіть свій колір шкіри",
-    "previous": "Попередній",
-    "done": "Готово"
+    "Previous": "Попередній",
+    "Done": "Готово"
   },
   "language": {
     "Choose Your Language": "Виберіть свою мову"
@@ -16,7 +16,7 @@
     "Avatar": "Аватар",
     "My cart": "Мій кошик",
     "My orders": "Мої замовлення",
-    "Addressbook": "Адресна книга",
+    "Address Book": "Адресна книга",
     "Accessories": "Аксесуари",
     "Language": "Мова",
     "Currency": "Валюта",
@@ -24,6 +24,8 @@
     "About us": "Про нас",
     "Customer care": "Обслуговування клієнтів",
     "Log out": "Вийти",
+    "Delete Account": "Видалити аккаунт",
+    "Terms And Condition": "Терміни і умови",
     "Subscribe now": "Підпишись зараз",
     "Map": "Карта",
     "Home": "додому "

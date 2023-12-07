@@ -77,7 +77,7 @@ const AvatarNavigation = () => {
               {/* <CustomButton style={{ width: 180 }} text='Previous' onPress={() => setSteps(0)} /> */}
               <CustomButton
                 style={{ width: width / 1.3 }}
-                text='Next'
+                text={t('Next')}
                 onPress={() => setSteps(1)}
               />
             </View>
@@ -98,12 +98,12 @@ const AvatarNavigation = () => {
             >
               <CustomButton
                 style={{ width: width / 2.4 }}
-                text='Previous'
+                text={t('Previous')}
                 onPress={() => setSteps(0)}
               />
               <CustomButton
                 style={{ width: width / 2.4 }}
-                text='Done'
+                text={t('Done')}
                 onPress={() => navigation.goBack()}
               />
             </View>

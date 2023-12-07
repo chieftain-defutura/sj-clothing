@@ -4,10 +4,10 @@
     "select your gender": "உங்கள் பாலினத்தை தேர்வுசெய்யவும்",
     "male": "ஆண்",
     "female": "பெண்",
-    "next": "அடுத்தது",
+    "Next": "அடுத்தது",
     "select your skintone": "உங்கள் ஸ்கின்டோனைத் தேர்ந்தெடுக்கவும்",
-    "previous": "முந்தைய",
-    "done": "முடிந்தது"
+    "Previous": "முந்தைய",
+    "Done": "முடிந்தது"
   },
   "language": {
     "Choose Your Language": "உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்"
@@ -16,14 +16,16 @@
     "Avatar": "அவதாரம்",
     "My cart": "என் வண்டி",
     "My orders": "என் கட்டளைகள்",
-    "Addressbook": "முகவரி புத்தகம்",
+    "Address Book": "முகவரி புத்தகம்",
     "Accessories": "துணைக்கருவிகள்",
+    "Terms And Condition": "விதிமுறைகள் மற்றும் நிபந்தனைகளின்",
     "Language": "மொழி",
     "Currency": "நாணய",
     "Help & FAQ": "உதவி & அடிக்கடி கேட்கப்படும் கேள்விகள்",
     "About us": "எங்களை பற்றி",
     "Customer care": "வாடிக்கையாளர் சேவை",
     "Log out": "வெளியேறு",
+    "Delete Account": "அழி",
     "Subscribe now": "இப்போது குழுசேர்",
     "Map": "வரைபடம்",
     "Home": "வீடு"

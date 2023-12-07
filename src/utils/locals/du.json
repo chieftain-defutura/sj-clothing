@@ -4,10 +4,10 @@
     "select your gender": "Kies je geslacht",
     "male": "Mannelijk",
     "female": "Vrouwelijk",
-    "next": "Volgende",
+    "Next": "Volgende",
     "select your skintone": "Selecteer uw huidskleur",
-    "previous": "Vorig",
-    "done": "Klaar"
+    "Previous": "Vorig",
+    "Done": "Klaar"
   },
   "language": {
     "Choose Your Language": "Kies je taal"
@@ -16,7 +16,7 @@
     "Avatar": "Avatar",
     "My cart": "Mijn wagen",
     "My orders": "mijn bestellingen",
-    "Addressbook": "Adresboek",
+    "Address Book": "Adresboek",
     "Accessories": "Accessoires",
     "Language": "Taal",
     "Currency": "Munteenheid",
@@ -24,6 +24,8 @@
     "About us": "Over ons",
     "Customer care": "Klantenservice",
     "Log out": "Uitloggen",
+    "Delete Account": "Account verwijderen",
+    "Terms And Condition": "Algemene voorwaarden",
     "Subscribe now": "Abonneer nu",
     "Map": "Kaart",
     "Home": "Thuis "
