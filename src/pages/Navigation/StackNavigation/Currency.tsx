@@ -13,7 +13,6 @@ import { userStore } from '../../../store/userStore'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import CurrencyGrayIcon from '../../../assets/icons/AccountPageIcon/CurrencyGrayIcon'
 import LeftArrow from '../../../assets/icons/LeftArrow'
-import config from '../../../../config'
 
 const CurrencyData = [
   {
@@ -85,7 +84,7 @@ const Currency = () => {
 
   const getCurrency = useCallback(async () => {
     try {
-      const apiKey = config.CURRENCY_APIKEY
+      const apiKey = '0a1c782fc9edf98309831bad'
       const response = await axios.get(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/INR`)
       const data = response.data
       const rates = data.conversion_rates

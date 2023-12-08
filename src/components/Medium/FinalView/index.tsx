@@ -67,9 +67,6 @@ const FinalView: React.FC<IFinalView> = ({
     setFocus(false)
   }
 
-  console.log('color', color)
-  console.log('colorName', colorName)
-
   const Description = data.description.split(',')
 
   return (
@@ -175,11 +172,11 @@ const FinalView: React.FC<IFinalView> = ({
                 style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
               >
                 {isImageOrText.designs.hashtag ? isImageOrText.designs.hashtag : '-'}{' '}
-                {isNaN(isImageOrText.rate)
+                {/* {isNaN(isImageOrText.rate)
                   ? '0 '
                   : isImageOrText.rate !== 0 &&
                     (Number(isImageOrText.rate) * (rate as number)).toFixed(2)}
-                {isImageOrText.rate !== 0 && currency.symbol}
+                {isImageOrText.rate !== 0 && currency.symbol} */}
               </Text>
             </View>
           </View>
@@ -292,6 +289,7 @@ const FinalView: React.FC<IFinalView> = ({
                   fontFamily: 'Arvo-Regular',
                   fontSize: 14,
                   textTransform: 'capitalize',
+                  paddingTop: 7,
                 }}
               >
                 {avatar?.gender}
@@ -315,7 +313,14 @@ const FinalView: React.FC<IFinalView> = ({
               >
                 Color
               </Text>
-              <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 2,
+                }}
+              >
                 <Text
                   allowFontScaling={false}
                   style={{
@@ -370,7 +375,7 @@ const styles = StyleSheet.create({
   },
   colorNameText: {
     fontFamily: FONT_FAMILY.GilroySemiBold,
-    fontSize: 12,
+    fontSize: 14,
     marginTop: 6,
     color: COLORS.iconsHighlightClr,
     textTransform: 'capitalize',

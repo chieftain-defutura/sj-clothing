@@ -9,7 +9,6 @@ import {
   where as defaultWhere,
   onSnapshot,
 } from 'firebase/firestore'
-import TShirt from './T-Shirt'
 import FinalView from './FinalView'
 import Navigation from './Navigation'
 import SelectSize from './Selectsize'
@@ -26,11 +25,14 @@ import ForgotMail from '../../screens/Modals/ForgotMail'
 import { IDesigns, IMidlevel } from '../../constant/types'
 import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 import AlertModal from '../../screens/Modals/AlertModal'
-import TempAddMore from './TempAddMore'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Haptics from 'expo-haptics'
 import { Audio } from 'expo-av'
 import MidLevelTooltip from '../Tooltips/MidLevelTooltip'
+import { MidlevelStore } from '../../store/midlevelStore'
+import FlowOne from './MidlevelWebView/FlowOne'
+import FlowTwo from './MidlevelWebView/FlowTwo'
+import FlowThree from './MidlevelWebView/FlowThree'
 
 const { width } = Dimensions.get('window')
 
@@ -39,13 +41,19 @@ const Medium = () => {
   const slideValue = useSharedValue(0)
   const avatar = userStore((state) => state.avatar)
   const phoneNumber = userStore((state) => state.phoneNo)
+  const midlevelData = MidlevelStore((state) => state.midlevel)
+  const updateMidlevelData = MidlevelStore((state) => state.updateMidlevel)
 
   const user = userStore((state) => state.user)
-  const [isSteps, setSteps] = useState(1)
+  const [isSteps, setSteps] = useState(
+    midlevelData.isSteps === '5' ? Number(midlevelData.isSteps) - 1 : 1,
+  )
   const [isDropDown, setDropDown] = useState(false)
-  const [uid, setUid] = useState<string>('')
+  const [uid, setUid] = useState<string>(midlevelData.isSteps === '5' ? midlevelData.uid : '')
   const [focus, setFocus] = useState(false)
   const [openModal, setOpenModal] = useState(false)
+
+  console.log(uid)
 
   //data
   const [data, setData] = useState<IMidlevel[]>()
@@ -59,44 +67,60 @@ const Medium = () => {
   const [forgotMail, setForgotmail] = useState(false)
 
   //style
-  const [isSelectedStyle, setSelectedStyle] = useState('')
+  const [isSelectedStyle, setSelectedStyle] = useState(
+    midlevelData.isSteps === '5' ? midlevelData.isSelectedStyle : '',
+  )
   const [warning, setWarning] = useState('')
 
   //size
-  const [isSize, setSize] = useState({
-    country: '',
-    sizeVarient: [{ size: '', measurement: '', quantity: '' }],
-  })
+  const [isSize, setSize] = useState(
+    midlevelData.isSteps === '5'
+      ? midlevelData.isSize
+      : {
+          country: '',
+          sizeVarient: [{ size: '', measurement: '', quantity: '' }],
+        },
+  )
 
   //color
-  const [isColor, setColor] = useState('')
-  const [isColorName, setColorName] = useState('')
+  const [isColor, setColor] = useState(midlevelData.isSteps === '5' ? midlevelData.isColor : '')
+  const [isColorName, setColorName] = useState(
+    midlevelData.isSteps === '5' ? midlevelData.isColorName : '',
+  )
 
   //image&text
   const [isOpenDesign, setOpenDesign] = useState(false)
   const [isDone, setDone] = useState(false)
   const [imageApplied, setImageApplied] = useState(false)
 
-  const [isImageOrText, setImageOrText] = useState({
-    title: '',
-    position: 'Front',
-    rate: 0,
-    designs: {
-      hashtag: '',
-      image: '',
-      originalImage: '',
-    },
-  })
-  const [tempIsImageOrText, setTempImageOrText] = useState({
-    title: '',
-    position: 'Front',
-    rate: 0,
-    designs: {
-      hashtag: '',
-      image: '',
-      originalImage: '',
-    },
-  })
+  const [isImageOrText, setImageOrText] = useState(
+    midlevelData.isSteps === '5'
+      ? midlevelData.isImageOrText
+      : {
+          title: '',
+          position: 'Front',
+          rate: 0,
+          designs: {
+            hashtag: '',
+            image: '',
+            originalImage: '',
+          },
+        },
+  )
+  const [tempIsImageOrText, setTempImageOrText] = useState(
+    midlevelData.isSteps === '5'
+      ? midlevelData.tempIsImageOrText
+      : {
+          title: '',
+          position: 'Front',
+          rate: 0,
+          designs: {
+            hashtag: '',
+            image: '',
+            originalImage: '',
+          },
+        },
+  )
   const [openCheckout, setOpenCheckout] = useState(false)
   const [animationUpdated, setAnimationUpdated] = useState(false)
   const [toolTip, showToolTip] = useState(false)
@@ -128,8 +152,6 @@ const Medium = () => {
     }
   }, [imageApplied])
 
-  console.log('TEMP IMAGE', tempIsImageOrText)
-
   const playSound = async () => {
     const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
     await sound.playAsync()
@@ -148,6 +170,9 @@ const Medium = () => {
     if (isSteps === 2) {
       setSelectedStyle('')
     }
+    if (isSteps === 3) {
+      setDropDown(false)
+    }
     slideValue.value = withSequence(
       withTiming(-1, { duration: 400 }), // Slide out
       withTiming(0, { duration: 400 }),
@@ -160,16 +185,39 @@ const Medium = () => {
     }
   }, [isSize.country])
 
-  // useEffect(() => {
-  //   if (isSteps === 5) {
-  //     AsyncStorage.setItem('mid-steps', isSteps.toString())
-  //   }
-  //   if (isSteps !== 5) {
-  //     AsyncStorage.setItem('mid-steps', '')
-  //   }
-  // }, [isSteps])
+  useEffect(() => {
+    if (isSteps === 5) {
+      const data = {
+        isSteps: isSteps.toString(),
+        isSelectedStyle: isSelectedStyle,
+        isSize: isSize,
+        isColor: isColor,
+        isColorName: isColorName,
+        isImageOrText: isImageOrText,
+        tempIsImageOrText: tempIsImageOrText,
+        uid: uid,
+      }
+      AsyncStorage.setItem('mid-steps', JSON.stringify(data))
+      updateMidlevelData(data)
+    }
+    if (isSteps !== 5) {
+      AsyncStorage.removeItem('mid-steps')
+      const data = {
+        isSteps: isSteps.toString(),
+        isSelectedStyle: isSelectedStyle,
+        isSize: isSize,
+        isColor: isColor,
+        isColorName: isColorName,
+        isImageOrText: isImageOrText,
+        tempIsImageOrText: tempIsImageOrText,
+        uid: uid,
+      }
+      updateMidlevelData(data)
+    }
+  }, [isSteps])
 
   const handleIncreaseSteps = () => {
+    console.log('isSteps', isSteps)
     let currentField
     switch (isSteps) {
       case 1:
@@ -196,7 +244,12 @@ const Medium = () => {
     } else {
       // Clear any previous error and move to the next step
       setSteps(isSteps + 1)
-      setDropDown(false)
+
+      if (isSteps === 2) {
+        setDropDown(true)
+      } else {
+        setDropDown(false)
+      }
       setOpenDesign(false)
       setDone(false)
       slideValue.value = withSequence(
@@ -228,6 +281,7 @@ const Medium = () => {
   }, [isShowToolTip])
 
   const handleSetUid = useCallback(async () => {
+    if (midlevelData.uid) return
     if (!isMounted.current) {
       try {
         isMounted.current = true
@@ -242,24 +296,24 @@ const Medium = () => {
     }
   }, [])
 
-  const handleUpdateUid = useCallback(async () => {
-    // try {
-    //   if (isSteps === 5) {
-    //     const tempUid = uuid.v4().toString()
-    //     const docRef = doc(db, 'ModelsMidlevel', tempUid)
-    //     await setDoc(docRef, {
-    //       uid: tempUid,
-    //       skin: avatar?.skinTone,
-    //       gender: avatar?.gender,
-    //       color: isColor,
-    //       size: isSize.sizeVarient[0].size,
-    //     })
-    //     setUid(tempUid)
-    //   }
-    // } catch (error) {
-    //   console.log(error)
-    // }
-  }, [isSteps])
+  // const handleUpdateUid = useCallback(async () => {
+  // try {
+  //   if (isSteps === 5) {
+  //     const tempUid = uuid.v4().toString()
+  //     const docRef = doc(db, 'ModelsMidlevel', tempUid)
+  //     await setDoc(docRef, {
+  //       uid: tempUid,
+  //       skin: avatar?.skinTone,
+  //       gender: avatar?.gender,
+  //       color: isColor,
+  //       size: isSize.sizeVarient[0].size,
+  //     })
+  //     setUid(tempUid)
+  //   }
+  // } catch (error) {
+  //   console.log(error)
+  // }
+  // }, [isSteps])
 
   const handleUpdateColor = useCallback(async () => {
     if (!isColor || !uid) return
@@ -283,15 +337,15 @@ const Medium = () => {
     }
   }, [isColor])
 
-  const handleUpdateSize = useCallback(async () => {
-    if (!isSize.sizeVarient[0].size || !uid) return
-    try {
-      const docRef = doc(db, 'ModelsMidlevel', uid)
-      await updateDoc(docRef, { size: isSize.sizeVarient[0].size })
-    } catch (error) {
-      console.log(error)
-    }
-  }, [isSize])
+  // const handleUpdateSize = useCallback(async () => {
+  //   if (!isSize.sizeVarient[0].size || !uid) return
+  //   try {
+  //     const docRef = doc(db, 'ModelsMidlevel', uid)
+  //     await updateDoc(docRef, { size: isSize.sizeVarient[0].size })
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }, [isSize])
 
   const handleUpdateImageAndText = useCallback(async () => {
     if (!tempIsImageOrText.designs.originalImage || !uid) return
@@ -306,10 +360,10 @@ const Medium = () => {
   useEffect(() => {
     handleSetUid()
     handleUpdateColor()
-    handleUpdateSize()
+    // handleUpdateSize()
     handleUpdateImageAndText()
-    handleUpdateUid()
-  }, [handleSetUid, handleUpdateColor, handleUpdateSize, handleUpdateImageAndText, handleUpdateUid])
+    // handleUpdateUid()
+  }, [handleSetUid, handleUpdateColor, handleUpdateImageAndText])
 
   useEffect(() => {
     const Filtereddata = data?.find(
@@ -366,8 +420,6 @@ const Medium = () => {
     getData()
   }, [getData])
 
-  console.log('DONE', imageApplied)
-
   const handleSubmit = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
     if (!FilteredData) return
@@ -417,7 +469,7 @@ const Medium = () => {
             animationUpdated={animationUpdated}
           />
 
-          <View style={{ zIndex: 5, width: width, position: 'absolute', top: 0 }}>
+          <View style={{ zIndex: 3, width: width, position: 'absolute', top: 0, flex: 1 }}>
             {isSteps === 1 && data && isDropDown && (
               <SelectStyle
                 data={data}
@@ -468,11 +520,14 @@ const Medium = () => {
             )}
           </View>
 
-          {isSteps === 6 ? (
-            <TempAddMore color={isColor} isImageOrText={isImageOrText} />
+          {isSteps === 5 ? (
+            <FlowTwo color={isColor} isImageOrText={isImageOrText} />
+          ) : isSteps === 6 ? (
+            <FlowThree color={isColor} isImageOrText={isImageOrText} />
           ) : (
-            <TShirt uid={uid} steps={isSteps} />
+            <FlowOne uid={uid} steps={isSteps} />
           )}
+
           {isSteps === 5 && FilteredData && (
             <FinalView
               color={isColor}

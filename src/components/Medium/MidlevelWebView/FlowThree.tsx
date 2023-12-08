@@ -9,7 +9,7 @@ import { userStore } from '../../../store/userStore'
 
 const { height, width } = Dimensions.get('window')
 
-interface ITempAddMoreProps {
+interface IFlowThreeProps {
   color: string
   isImageOrText: {
     title: string
@@ -23,7 +23,7 @@ interface ITempAddMoreProps {
   }
 }
 
-const TempAddMore: React.FC<ITempAddMoreProps> = ({ color, isImageOrText }) => {
+const FlowThree: React.FC<IFlowThreeProps> = ({ color, isImageOrText }) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
@@ -80,8 +80,8 @@ const TempAddMore: React.FC<ITempAddMoreProps> = ({ color, isImageOrText }) => {
       style={{
         width: width / 1,
         height: height / 1.3,
-        // flex: 1,
-        zIndex: 1,
+        flex: 1,
+        zIndex: -10,
         backgroundColor: 'transparent',
         position: 'relative',
       }}
@@ -110,7 +110,7 @@ const TempAddMore: React.FC<ITempAddMoreProps> = ({ color, isImageOrText }) => {
   )
 }
 
-export default TempAddMore
+export default FlowThree
 
 const styles = StyleSheet.create({
   absoluteContainer: {
