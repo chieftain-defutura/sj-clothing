@@ -65,14 +65,12 @@ const Checkout: React.FC<ICheckout> = ({
   setOpenCheckout,
 }) => {
   const navigation = useNavigation()
-  const [closedItems, setClosedItems] = useState<number[]>([])
   const [addr, setAddr] = useState<AddressData | null>(null)
   const [cartItems, setCartItems] = useState()
   const [isLoading, setIsLoading] = useState(false)
   // const [orderData, setOrderData] = useState<ICheckout | null>(null)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
   const rate = userStore((state) => state.rate)
-  const avatar = userStore((state) => state.avatar)
 
   const user = userStore((state) => state.user)
   const currency = userStore((state) => state.currency)

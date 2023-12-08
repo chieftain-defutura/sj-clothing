@@ -177,6 +177,7 @@ const Accessory = () => {
                 setSignUp(true), setLogin(false)
               }}
               onClose={() => setLogin(false)}
+              setOpenCheckout={setOpenCheckout}
             />
           )}
 
@@ -186,6 +187,7 @@ const Accessory = () => {
                 setLogin(true), setSignUp(false)
               }}
               onClose={() => setSignUp(false)}
+              setOpenCheckout={setOpenCheckout}
             />
           )}
           {forgotMail && (
