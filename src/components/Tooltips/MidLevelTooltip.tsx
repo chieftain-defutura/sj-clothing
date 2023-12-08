@@ -34,6 +34,11 @@ const MidLevelTooltip: React.FC<IMidLevelTooltip> = ({ isVisible, onClose }) => 
           <Animated.View
             entering={LightSpeedInLeft.duration(1000).delay(200)}
             exiting={LightSpeedOutLeft}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}
           >
             <Pressable onPress={onClose}>
               <LinearGradient
@@ -102,8 +107,9 @@ const styles = StyleSheet.create({
     padding: 16,
     width: 40,
     height: 40,
-    position: 'absolute',
-    left: 100,
-    bottom: -35,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })

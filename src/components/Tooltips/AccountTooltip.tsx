@@ -26,7 +26,7 @@ const AccountTooltip: React.FC<IAccountTooltip> = ({ isVisible, onClose }) => {
             <CloudIcon width={328} height={210} />
           </Animated.View>
         </TooltipContainer>
-        <View style={{ position: 'absolute', bottom: 160 }}>
+        <View style={{ position: 'absolute', bottom: 130 }}>
           <Heading allowFontScaling={false}>Account</Heading>
           <Paragraph allowFontScaling={false}>
             Manage your profile, customize avatars, and track your orders
@@ -34,6 +34,11 @@ const AccountTooltip: React.FC<IAccountTooltip> = ({ isVisible, onClose }) => {
           <Animated.View
             entering={LightSpeedInLeft.duration(1000).delay(200)}
             exiting={LightSpeedOutLeft}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}
           >
             <Pressable onPress={onClose}>
               <LinearGradient
@@ -102,8 +107,9 @@ const styles = StyleSheet.create({
     padding: 16,
     width: 40,
     height: 40,
-    position: 'absolute',
-    left: 100,
-    bottom: -35,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })

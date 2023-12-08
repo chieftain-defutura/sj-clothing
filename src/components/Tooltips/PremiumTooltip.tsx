@@ -111,8 +111,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // position: 'absolute',
-    // left: 90,
-    // bottom: -35,
   },
 })
