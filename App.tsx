@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native'
 import { I18nextProvider } from 'react-i18next'
 import * as SplashScreen from 'expo-splash-screen'
 import { doc, getDoc } from 'firebase/firestore/lite'
-import { User, onAuthStateChanged } from 'firebase/auth'
+import { onAuthStateChanged } from 'firebase/auth'
 import { StripeProvider } from '@stripe/stripe-react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
@@ -15,8 +15,8 @@ import i18n from './i18n'
 import { auth, db } from './firebase'
 import { userStore } from './src/store/userStore'
 import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
-import { Text } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { MidlevelStore } from './src/store/midlevelStore'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -28,10 +28,10 @@ const App: React.FC = () => {
   const rate = userStore((state) => state.rate)
   const currency = userStore((state) => state.currency)
   const language = userStore((state) => state.language)
-  const avatar = userStore((state) => state.avatar)
+  const updateMidlevelData = MidlevelStore((state) => state.updateMidlevel)
   const signupUpdate = userStore((state) => state.signupUpdate)
   const user = userStore((state) => state.user)
-  const updateSteps = userStore((state) => state.midSteps)
+  const steps = MidlevelStore((state) => state.midlevel)
   const updateRate = userStore((state) => state.updateRate)
   const updateUser = userStore((state) => state.updateUser)
   const updateName = userStore((state) => state.updateName)
@@ -122,9 +122,30 @@ const App: React.FC = () => {
     getCurrency()
   }, [getCurrency])
 
-  // useEffect(() => {
-  //   const MidSteps = AsyncStorage.getItem('mid-steps')
-  // })
+  const getMidlevelData = useCallback(async () => {
+    const MidSteps = await AsyncStorage.getItem('mid-steps')
+    const parseData = JSON.parse(MidSteps as string)
+
+    if (!parseData) return
+
+    if (parseData.isSteps === '5') {
+      updateMidlevelData({
+        isColor: parseData.isColor,
+        isColorName: parseData.isColorName,
+        isImageOrText: parseData.isImageOrText,
+        isSelectedStyle: parseData.isSelectedStyle,
+        isSize: parseData.isSize,
+        isSteps: parseData.isSteps,
+        tempIsImageOrText: parseData.tempIsImageOrText,
+        uid: parseData.uid,
+      })
+    }
+  }, [])
+  useEffect(() => {
+    getMidlevelData()
+  }, [getMidlevelData])
+
+  console.log('steps.isSteps', steps.isSteps)
 
   const [fontsLoaded] = useFonts({
     'Arvo-Regular': require('./src/assets/fonts/timesbold.ttf'), //font-weight 400

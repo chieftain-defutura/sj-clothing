@@ -10,7 +10,6 @@ import Premium from './Premium'
 import Account from './Account'
 import { useSharedValue } from 'react-native-reanimated'
 import * as NavigationBar from 'expo-navigation-bar'
-import Medium from '../../../components/Medium'
 import { userStore } from '../../../store/userStore'
 import TabHomeIcon from '../../../assets/icons/TabHomeIcon'
 
@@ -26,20 +25,20 @@ const TabNavigationRoutes: React.FC = () => {
   }
   return (
     <Tab.Navigator
-      initialRouteName='Home'
+      initialRouteName='MidLevel'
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: 'rgba(145, 177, 225, 0.8)',
+          backgroundColor: 'rgba(145, 177, 225, 0.9)',
           paddingVertical: 16,
           borderTopWidth: 0,
           height: 62,
           elevation: 0,
           display: confirmDetails ? 'flex' : 'none',
         },
-        unmountOnBlur: false,
+        unmountOnBlur: true,
       }}
     >
-      {/* <Tab.Screen
+      <Tab.Screen
         name='Post'
         options={{
           tabBarLabel: '',
@@ -60,7 +59,7 @@ const TabNavigationRoutes: React.FC = () => {
           headerShown: false,
         }}
         component={Post}
-      /> */}
+      />
       <Tab.Screen
         name='MidLevel'
         options={{

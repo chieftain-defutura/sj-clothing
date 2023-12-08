@@ -13,7 +13,6 @@ const Premium: React.FC = () => {
   const isShowToolTip = async () => {
     const data = await AsyncStorage.getItem('showPremiumTooltip')
 
-    console.log('showPremiumTooltip', data)
     if (data !== '1') {
       AsyncStorage.setItem('showPremiumTooltip', '1')
       showToolTip(true)

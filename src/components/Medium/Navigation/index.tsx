@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View, Dimensions } from 'react-native'
 import React from 'react'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import Animated, {
@@ -12,6 +12,8 @@ import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import { COLORS } from '../../../styles/theme'
 import { useTranslation } from 'react-i18next'
+
+const { width } = Dimensions.get('window')
 
 interface INavigation {
   steps: number
@@ -77,7 +79,19 @@ const Navigation: React.FC<INavigation> = ({
     }
   })
   return (
-    <Animated.View style={[slideX, { opacity: dropDown ? 0 : 1 }]}>
+    <Animated.View
+      style={[
+        slideX,
+        {
+          opacity: dropDown ? 0 : 1,
+          position: 'absolute',
+          top: 0,
+          zIndex: 1000,
+          width: width,
+          flex: 1,
+        },
+      ]}
+    >
       {isOpenDesign && (
         <View
           style={[

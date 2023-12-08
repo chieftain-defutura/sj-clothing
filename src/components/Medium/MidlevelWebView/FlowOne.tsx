@@ -4,12 +4,12 @@ import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native'
 
 const { height, width } = Dimensions.get('window')
 
-interface ITShirtProps {
+interface IFlowOneProps {
   uid: string
   steps: number
 }
 
-const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
+const FlowOne: React.FC<IFlowOneProps> = ({ uid, steps }) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
@@ -28,9 +28,9 @@ const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
     <View
       style={{
         width: width / 1,
-        height: steps === 5 ? height / 2.2 : height / 1.3,
-        // flex: 1,
-        zIndex: 1,
+        height: steps === 5 ? height / 1 : height / 1.3,
+        flex: steps === 5 ? 5 : 1,
+        zIndex: -1,
         backgroundColor: 'transparent',
         position: 'relative',
       }}
@@ -60,8 +60,7 @@ const TShirt: React.FC<ITShirtProps> = ({ uid, steps }) => {
   )
 }
 
-export default TShirt
-
+export default FlowOne
 const styles = StyleSheet.create({
   absoluteContainer: {
     position: 'absolute',

@@ -73,7 +73,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const isShowToolTip = async () => {
     const data = await AsyncStorage.getItem('showAccountTooltip')
 
-    console.log('showAccountTooltip', data)
     if (data !== '2') {
       AsyncStorage.setItem('showAccountTooltip', '2')
       showToolTip(true)
