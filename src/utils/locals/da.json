@@ -4,10 +4,10 @@
     "select your gender": "Vælg dit køn",
     "male": "Han",
     "female": "Kvinde",
-    "next": "Næste",
+    "Next": "Næste",
     "select your skintone": "Vælg din hudtone",
-    "previous": "Tidligere",
-    "done": "Færdig"
+    "Previous": "Tidligere",
+    "Done": "Færdig"
   },
   "language": {
     "Choose Your Language": "Vælg dit sprog"
@@ -16,7 +16,7 @@
     "Avatar": "Avatar",
     "My cart": "Min kurv",
     "My orders": "Mine Ordrer",
-    "Addressbook": "Adressebog",
+    "Address Book": "Adressebog",
     "Accessories": "tilbehør",
     "Language": "Sprog",
     "Currency": "betalingsmiddel",
@@ -24,6 +24,8 @@
     "About us": "Om os",
     "Customer care": "Kundeservice",
     "Log out": "Log ud",
+    "Delete Account": "Slet konto",
+    "Terms And Condition": "Regler og vilkår",
     "Subscribe now": "Tilmeld nu",
     "Map": "Kort",
     "Home": "Hjem "

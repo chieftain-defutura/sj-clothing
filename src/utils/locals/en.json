@@ -4,10 +4,10 @@
     "select your gender": "Select Your Gender",
     "male": "Male",
     "female": "Female",
-    "next": "Next",
+    "Next": "Next",
     "select your skintone": "Select Your Skintone",
-    "previous": "Previous",
-    "done": "Done"
+    "Previous": "Previous",
+    "Done": "Done"
   },
   "language": {
     "Choose Your Language": "Choose Your Language"
@@ -16,7 +16,7 @@
     "Avatar": "Avatar",
     "My cart": "My Cart",
     "My orders": "My Orders",
-    "Addressbook": "Addressbook",
+    "Address Book": "Address Book",
     "Accessories": "Accessories",
     "Language": "Language",
     "Currency": "Currency",

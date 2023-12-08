@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import styled from 'styled-components/native'
@@ -16,27 +16,27 @@ import { db } from '../../../../firebase'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 
 const LanguagesData = [
-  { language: 'Chinese Mandarian', lang: 'ch' },
-  { language: 'Chinese yue', lang: 'zh' },
-  { language: 'Danish', lang: 'da' },
-  { language: 'Dutch', lang: 'du' },
-  { language: 'English', lang: 'en' },
-  { language: 'French', lang: 'fr' },
-  { language: 'German', lang: 'de' },
-  { language: 'Greek', lang: 'ge' },
-  { language: 'Indonesia', lang: 'In' },
-  { language: 'Italian', lang: 'it' },
-  { language: 'Japanese', lang: 'ja' },
-  { language: 'Korean', lang: 'ko' },
-  { language: 'Latin', lang: 'la' },
-  { language: 'Polish', lang: 'po' },
-  { language: 'Portuguese', lang: 'por' },
-  { language: 'Russian', lang: 'ru' },
-  { language: 'Spanish', lang: 'es' },
-  { language: 'Standard Arabic', lang: 'ar' },
-  { language: 'Tamil', lang: 'ta' },
-  { language: 'Turkish', lang: 'tu' },
-  { language: 'Ukrainian', lang: 'uk' },
+  { language: 'Chinese Mandarian', lang: 'ch', text: '中文普通话' },
+  { language: 'Chinese yue', lang: 'zh', text: 'Çin yue' },
+  { language: 'Danish', lang: 'da', text: 'dansk' },
+  { language: 'Dutch', lang: 'du', text: 'Nederlands' },
+  { language: 'English', lang: 'en', text: 'English' },
+  { language: 'French', lang: 'fr', text: 'Français' },
+  { language: 'German', lang: 'de', text: 'Deutsch' },
+  { language: 'Greek', lang: 'ge', text: 'Ελληνικά' },
+  { language: 'Indonesia', lang: 'In', text: 'Indonesia' },
+  { language: 'Italian', lang: 'it', text: 'Italiana' },
+  { language: 'Japanese', lang: 'ja', text: '日本語' },
+  { language: 'Korean', lang: 'ko', text: '한국인' },
+  { language: 'Latin', lang: 'la', text: 'Latinus' },
+  { language: 'Polish', lang: 'po', text: 'Polski' },
+  { language: 'Portuguese', lang: 'por', text: 'Português' },
+  { language: 'Russian', lang: 'ru', text: 'Русский' },
+  { language: 'Spanish', lang: 'es', text: 'Española' },
+  // { language: 'Standard Arabic', lang: 'ar' },
+  { language: 'Tamil', lang: 'ta', text: 'தமிழ்' },
+  { language: 'Turkish', lang: 'tu', text: 'Türkçe' },
+  { language: 'Ukrainian', lang: 'uk', text: 'українська' },
 ]
 
 const Languages = () => {
@@ -54,6 +54,7 @@ const Languages = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
   }
   const changeLanguage = async (lng: string) => {
+    console.log('lang', lng)
     await AsyncStorage.setItem('language', lng)
     i18n.changeLanguage(lng as string)
     updateLanguage(lng as string)
@@ -83,8 +84,9 @@ const Languages = () => {
           <View style={{ width: 208, paddingTop: 14 }}>
             <SelectContent onPress={toggleDropdownSizes}>
               <Text allowFontScaling={false} style={styles.selectText}>
-                {LanguagesData.find((f) => f.lang === language)?.language}
+                {LanguagesData.find((f) => f.lang === language)?.text}
               </Text>
+
               <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
                 <Path
                   d='M5 7.5L10 12.5L15 7.5'
@@ -108,7 +110,7 @@ const Languages = () => {
                         ]}
                       >
                         <Text allowFontScaling={false} style={styles.selectListText}>
-                          {f.language}
+                          {f.text}
                         </Text>
                       </Pressable>
                     ))}
@@ -156,7 +158,7 @@ const Languages = () => {
             <SelectContent onPress={toggleDropdownSizes}>
               <Text allowFontScaling={false} style={styles.selectText}>
                 {' '}
-                {LanguagesData.find((f) => f.lang === language)?.language}
+                {LanguagesData.find((f) => f.lang === language)?.text}
               </Text>
               <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
                 <Path
@@ -181,7 +183,7 @@ const Languages = () => {
                         ]}
                       >
                         <Text allowFontScaling={false} style={styles.selectListText}>
-                          {f.language}
+                          {f.text}
                         </Text>
                       </Pressable>
                     ))}

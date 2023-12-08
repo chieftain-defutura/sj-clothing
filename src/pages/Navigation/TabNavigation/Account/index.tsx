@@ -35,6 +35,7 @@ import DelectAccount from '../../../../screens/Modals/DelectAccount'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import DeleteIcon from '../../../../assets/icons/AccountPageIcon/DeleteIcon'
 import { generalStore } from '../../../../store/generalStore'
+import AccountTooltip from '../../../../components/Tooltips/AccountTooltip'
 
 interface IAccount {
   navigation: any
@@ -70,11 +71,11 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   // } = userStore()
 
   const isShowToolTip = async () => {
-    const data = await AsyncStorage.getItem('showToolTip')
+    const data = await AsyncStorage.getItem('showAccountTooltip')
 
-    console.log('tooltip', data)
-    if (data !== '0') {
-      AsyncStorage.setItem('showToolTip', '0')
+    console.log('showAccountTooltip', data)
+    if (data !== '2') {
+      AsyncStorage.setItem('showAccountTooltip', '2')
       showToolTip(true)
     }
     // await AsyncStorage.removeItem('mail')
@@ -303,7 +304,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                         <FlexIcon>
                           <DeleteIcon width={24} height={24} />
                           <Text allowFontScaling={false} style={styles.LogoutText}>
-                            Delect Account
+                            {t('Delete Account')}
                           </Text>
                         </FlexIcon>
                       </ProfileUserContent>
@@ -378,7 +379,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                         <FlexIcon>
                           <DeleteIcon width={24} height={24} />
                           <Text allowFontScaling={false} style={styles.LogoutText}>
-                            Delect Account
+                            {t('Delete Account')}
                           </Text>
                         </FlexIcon>
                       </ProfileUserContent>
@@ -441,12 +442,19 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
 
       {isDelectAccount && <DelectAccount closeModal={() => setIsDelectAccount(false)} />}
 
-      <Tooltip
+      <AccountTooltip
         isVisible={toolTip}
         onClose={() => {
           showToolTip(false)
         }}
       />
+
+      {/* <Tooltip
+        isVisible={toolTip}
+        onClose={() => {
+          showToolTip(false)
+        }}
+      /> */}
       {/* </AuthNavigate> */}
     </LinearGradient>
   )

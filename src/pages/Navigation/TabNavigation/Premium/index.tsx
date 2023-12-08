@@ -1,17 +1,41 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import PremiumLevel from '../../../../components/PremiumLevel'
 import { gradientOpacityColors } from '../../../../styles/theme'
+import PremiumTooltip from '../../../../components/Tooltips/PremiumTooltip'
 
 const Premium: React.FC = () => {
   const [openDetails, setOpenDetails] = useState(false)
+  const [toolTip, showToolTip] = useState(false)
+
+  const isShowToolTip = async () => {
+    const data = await AsyncStorage.getItem('showPremiumTooltip')
+
+    console.log('showPremiumTooltip', data)
+    if (data !== '1') {
+      AsyncStorage.setItem('showPremiumTooltip', '1')
+      showToolTip(true)
+    }
+    // await AsyncStorage.removeItem('mail')
+  }
+
+  useEffect(() => {
+    isShowToolTip()
+  }, [])
+
   return (
     <LinearGradient colors={gradientOpacityColors}>
       <PremiumWrapper scrollEnabled={openDetails ? false : true}>
         <PremiumLevel openDetails={openDetails} setOpenDetails={setOpenDetails} />
       </PremiumWrapper>
+      <PremiumTooltip
+        isVisible={toolTip}
+        onClose={() => {
+          showToolTip(false)
+        }}
+      />
     </LinearGradient>
   )
 }

@@ -4,10 +4,10 @@
     "select your gender": "性別を選んでください",
     "male": "男",
     "female": "女性",
-    "next": "次",
+    "Next": "次",
     "select your skintone": "肌の色を選択してください",
-    "previous": "前の",
-    "done": "終わり"
+    "Previous": "前の",
+    "Done": "終わり"
   },
   "language": {
     "Choose Your Language": "言語を選んでください"
@@ -16,7 +16,7 @@
     "Avatar": "アバター",
     "My cart": "私のカート",
     "My orders": "私の注文",
-    "Addressbook": "住所録",
+    "Address Book": "住所録",
     "Accessories": "アクセサリー",
     "Language": "言語",
     "Currency": "通貨",
@@ -24,6 +24,8 @@
     "About us": "私たちについて",
     "Customer care": "カスタマーケア",
     "Log out": "ログアウト",
+    "Delete Account": "アカウントを削除する",
+    "Terms And Condition": "利用規約",
     "Subscribe now": "今すぐ購読する",
     "Map": "地図",
     "Home": "家"

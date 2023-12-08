@@ -4,10 +4,10 @@
     "select your gender": "Selecione o seu sexo",
     "male": "Macho",
     "female": "Fêmea",
-    "next": "Próximo",
+    "Next": "Próximo",
     "select your skintone": "Selecione seu tom de pele",
-    "previous": "Anterior",
-    "done": "Feito"
+    "Previous": "Anterior",
+    "Done": "Feito"
   },
   "language": {
     "Choose Your Language": "Escolha seu idioma"
@@ -16,7 +16,7 @@
     "Avatar": "avatar",
     "My cart": "Meu carrinho",
     "My orders": "minhas ordens",
-    "Addressbook": "Livro de endereços",
+    "Address Book": "Livro de endereços",
     "Accessories": "Acessórios",
     "Language": "Linguagem",
     "Currency": "Moeda",
@@ -24,6 +24,8 @@
     "About us": "Sobre nós",
     "Customer care": "Servico de atendimento ao Consumidor",
     "Log out": "Sair",
+    "Delete Account": "Deletar conta",
+    "Terms And Condition": "Termos e Condições",
     "Subscribe now": "Inscreva-se agora",
     "Map": "Mapa",
     "Home": "Lar"

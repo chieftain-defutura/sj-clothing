@@ -4,10 +4,10 @@
     "select your gender": "Выбери свой пол",
     "male": "Мужской",
     "female": "Женский",
-    "next": "Следующий",
+    "Next": "Следующий",
     "select your skintone": "Выберите свой скинтон",
-    "previous": "Предыдущий",
-    "done": "Сделанный"
+    "Previous": "Предыдущий",
+    "Done": "Сделанный"
   },
   "language": {
     "Choose Your Language": "Выберите ваш язык"
@@ -16,7 +16,7 @@
     "Avatar": "Аватар",
     "My cart": "Моя тележка",
     "My orders": "мои заказы",
-    "Addressbook": "Адресная книга",
+    "Address Book": "Адресная книга",
     "Accessories": "Аксессуары",
     "Language": "Язык",
     "Currency": "Валюта",
@@ -24,6 +24,8 @@
     "About us": "О нас",
     "Customer care": "Обслуживание клиентов",
     "Log out": "Выйти",
+    "Delete Account": "Удалить аккаунт",
+    "Terms And Condition": "Сроки и условия",
     "Subscribe now": "Подпишись сейчас",
     "Map": "карта",
     "Home": "Дом"

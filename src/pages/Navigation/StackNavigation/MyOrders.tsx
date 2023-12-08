@@ -24,6 +24,7 @@ import { IOrder, IRatings } from '../../../constant/types'
 import TrackOrder from './TrackOrder'
 import Rating from '../../../components/Rating'
 import Loader from '../../../components/Loading'
+import { StackActions, useNavigation } from '@react-navigation/native'
 
 const { height } = Dimensions.get('window')
 
@@ -39,7 +40,7 @@ const StartIcons = [
   { startActive: StarActive, startInActive: StarInActive },
 ]
 
-const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
+const MyOrders: React.FC<IMyOrders> = ({}) => {
   const { t } = useTranslation('account')
   const [orderId, setOrderId] = useState('')
   const user = userStore((state) => state.user)
@@ -47,6 +48,8 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
   const [openReview, setOpenReview] = useState(false)
   const [orderData, setOrderData] = useState<IOrder[]>([])
   const [openTrackOrder, setOpenTrackOrder] = useState(false)
+  const navigation = useNavigation()
+
   const getData = useCallback(async () => {
     try {
       setLoading(true)
@@ -108,7 +111,7 @@ const MyOrders: React.FC<IMyOrders> = ({ navigation }) => {
                 <View>
                   <GoBackArrowContent
                     onPress={() => {
-                      navigation.goBack()
+                      navigation.navigate('Account')
                     }}
                   >
                     <LeftArrow width={24} height={24} />

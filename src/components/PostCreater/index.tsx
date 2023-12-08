@@ -279,7 +279,7 @@
 //   flex: 1;
 // `
 
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { gradientOpacityColors } from '../../styles/theme'
@@ -289,7 +289,6 @@ import { userStore } from '../../store/userStore'
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../../../firebase'
 import { IMidlevel } from '../../constant/types'
-import SelectStyle from '../Medium/SelectStyle'
 
 const PostCreation = () => {
   const isMounted = useRef(false)

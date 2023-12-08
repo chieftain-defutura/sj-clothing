@@ -32,6 +32,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
       setDropDown(false)
     }
   }
+
   return (
     <LinearGradient
       colors={dropDownGradient}

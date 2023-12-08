@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions, View, Text } from 'react-native'
+import { StyleSheet, Dimensions, View, Text, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, gradientOpacityColors } from '../../../styles/theme'
@@ -15,6 +15,7 @@ const { width } = Dimensions.get('window')
 const AvatarNavigation = () => {
   const navigation = useNavigation()
   const [steps, setSteps] = useState(0)
+  const [isPressed, setIsPressed] = useState(false)
   const { t } = useTranslation('avatar')
 
   return (
@@ -32,7 +33,7 @@ const AvatarNavigation = () => {
               flex: 1,
             }}
           >
-            <View style={{ position: 'absolute', left: 10, top: 12 }}>
+            {/* <View style={{ position: 'absolute', left: 0, top: -1 }}>
               <GoBackArrowContent
                 onPress={() => {
                   navigation.goBack()
@@ -40,6 +41,27 @@ const AvatarNavigation = () => {
               >
                 <LeftArrow width={24} height={24} />
               </GoBackArrowContent>
+            </View> */}
+            <View style={{ position: 'absolute', left: 24, top: 27, zIndex: 1000 }}>
+              <Pressable
+                onPress={() => {
+                  navigation.goBack()
+                }}
+                onPressIn={() => setIsPressed(true)}
+                onPressOut={() => setIsPressed(false)}
+              >
+                {() => (
+                  <IconHoverClr
+                    style={{
+                      backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
+                    }}
+                  >
+                    <IconHoverPressable>
+                      <LeftArrow width={24} height={24} />
+                    </IconHoverPressable>
+                  </IconHoverClr>
+                )}
+              </Pressable>
             </View>
             <Gender />
             <View
@@ -55,7 +77,7 @@ const AvatarNavigation = () => {
               {/* <CustomButton style={{ width: 180 }} text='Previous' onPress={() => setSteps(0)} /> */}
               <CustomButton
                 style={{ width: width / 1.3 }}
-                text='Next'
+                text={t('Next')}
                 onPress={() => setSteps(1)}
               />
             </View>
@@ -76,12 +98,12 @@ const AvatarNavigation = () => {
             >
               <CustomButton
                 style={{ width: width / 2.4 }}
-                text='Previous'
+                text={t('Previous')}
                 onPress={() => setSteps(0)}
               />
               <CustomButton
                 style={{ width: width / 2.4 }}
-                text='Done'
+                text={t('Done')}
                 onPress={() => navigation.goBack()}
               />
             </View>
@@ -109,5 +131,17 @@ const GoBackArrowContent = styled.Pressable`
   flex-direction: row;
   align-items: center;
   gap: 12px;
-  padding: 16px;
+  padding: 30px;
+`
+const IconHoverClr = styled.View`
+  border-radius: 20px;
+  width: 32px;
+  height: 32px;
+`
+const IconHoverPressable = styled.View`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 2px;
+  margin-top: 2px;
 `

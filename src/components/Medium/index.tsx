@@ -3,11 +3,17 @@ import { Dimensions, StyleSheet, View } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSharedValue, withSequence, withTiming } from 'react-native-reanimated'
 import { collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
+import {
+  query as defaultQuery,
+  collection as defualtCollection,
+  where as defaultWhere,
+  onSnapshot,
+} from 'firebase/firestore'
 import TShirt from './T-Shirt'
 import FinalView from './FinalView'
 import Navigation from './Navigation'
 import SelectSize from './Selectsize'
-import { db } from '../../../firebase'
+import { db, dbDefault } from '../../../firebase'
 import SelectStyle from './SelectStyle'
 import SelectColor from './SelectColor'
 import SelectDesign from './SelectDesign'
@@ -20,9 +26,11 @@ import ForgotMail from '../../screens/Modals/ForgotMail'
 import { IDesigns, IMidlevel } from '../../constant/types'
 import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 import AlertModal from '../../screens/Modals/AlertModal'
+import TempAddMore from './TempAddMore'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Haptics from 'expo-haptics'
 import { Audio } from 'expo-av'
+import MidLevelTooltip from '../Tooltips/MidLevelTooltip'
 
 const { width } = Dimensions.get('window')
 
@@ -62,10 +70,12 @@ const Medium = () => {
 
   //color
   const [isColor, setColor] = useState('')
+  const [isColorName, setColorName] = useState('')
 
   //image&text
   const [isOpenDesign, setOpenDesign] = useState(false)
   const [isDone, setDone] = useState(false)
+  const [imageApplied, setImageApplied] = useState(false)
 
   const [isImageOrText, setImageOrText] = useState({
     title: '',
@@ -77,7 +87,48 @@ const Medium = () => {
       originalImage: '',
     },
   })
+  const [tempIsImageOrText, setTempImageOrText] = useState({
+    title: '',
+    position: 'Front',
+    rate: 0,
+    designs: {
+      hashtag: '',
+      image: '',
+      originalImage: '',
+    },
+  })
   const [openCheckout, setOpenCheckout] = useState(false)
+  const [animationUpdated, setAnimationUpdated] = useState(false)
+  const [toolTip, showToolTip] = useState(false)
+
+  const handleGetData = useCallback(() => {
+    if (!uid) return
+    const q = defaultQuery(
+      defualtCollection(dbDefault, 'ModelsMidlevel'),
+      defaultWhere('uid', '==', uid),
+    )
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        if (doc.data()['animationFinished']) setAnimationUpdated(doc.data()['animationFinished'])
+      })
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [uid])
+
+  useEffect(() => {
+    handleGetData()
+  }, [handleGetData])
+
+  useEffect(() => {
+    if (imageApplied) {
+      setTempImageOrText(isImageOrText)
+    }
+  }, [imageApplied])
+
+  console.log('TEMP IMAGE', tempIsImageOrText)
 
   const playSound = async () => {
     const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
@@ -162,6 +213,21 @@ const Medium = () => {
     }, 2000)
   }, [warning])
 
+  const isShowToolTip = async () => {
+    const data = await AsyncStorage.getItem('showMidLevelToolTip')
+
+    console.log('showMidLevelToolTip', data)
+    if (data !== '0') {
+      AsyncStorage.setItem('showMidLevelToolTip', '0')
+      showToolTip(true)
+    }
+    // await AsyncStorage.removeItem('mail')
+  }
+
+  useEffect(() => {
+    isShowToolTip()
+  }, [isShowToolTip])
+
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
       try {
@@ -177,15 +243,47 @@ const Medium = () => {
     }
   }, [])
 
+  const handleUpdateUid = useCallback(async () => {
+    // try {
+    //   if (isSteps === 5) {
+    //     const tempUid = uuid.v4().toString()
+    //     const docRef = doc(db, 'ModelsMidlevel', tempUid)
+    //     await setDoc(docRef, {
+    //       uid: tempUid,
+    //       skin: avatar?.skinTone,
+    //       gender: avatar?.gender,
+    //       color: isColor,
+    //       size: isSize.sizeVarient[0].size,
+    //     })
+    //     setUid(tempUid)
+    //   }
+    // } catch (error) {
+    //   console.log(error)
+    // }
+  }, [isSteps])
+
   const handleUpdateColor = useCallback(async () => {
     if (!isColor || !uid) return
     try {
+      // let newImage = ''
+
+      // if (tempIsImageOrText.designs.originalImage) {
+      //   designs?.forEach((f) => {
+      //     const spottedImage = f.originalImages.find((f) => f.colorCode === isColor)
+      //     console.log('newImage', spottedImage)
+      //     if (spottedImage) {
+      //       newImage = spottedImage.url
+      //     }
+      //   })
+      // }
+
       const docRef = doc(db, 'ModelsMidlevel', uid)
       await updateDoc(docRef, { color: isColor })
     } catch (error) {
       console.log(error)
     }
   }, [isColor])
+
   const handleUpdateSize = useCallback(async () => {
     if (!isSize.sizeVarient[0].size || !uid) return
     try {
@@ -195,22 +293,25 @@ const Medium = () => {
       console.log(error)
     }
   }, [isSize])
+
   const handleUpdateImageAndText = useCallback(async () => {
-    if (!isImageOrText.designs.originalImage || !uid) return
+    if (!tempIsImageOrText.designs.originalImage || !uid) return
     try {
       const docRef = doc(db, 'ModelsMidlevel', uid)
-      await updateDoc(docRef, { image: isImageOrText.designs.originalImage })
+      await updateDoc(docRef, { image: tempIsImageOrText.designs.originalImage })
     } catch (error) {
       console.log(error)
     }
-  }, [isImageOrText])
+  }, [tempIsImageOrText])
 
   useEffect(() => {
     handleSetUid()
     handleUpdateColor()
     handleUpdateSize()
     handleUpdateImageAndText()
-  }, [handleSetUid, handleUpdateColor, handleUpdateSize, handleUpdateImageAndText])
+    handleUpdateUid()
+  }, [handleSetUid, handleUpdateColor, handleUpdateSize, handleUpdateImageAndText, handleUpdateUid])
+
   useEffect(() => {
     const Filtereddata = data?.find(
       (f) =>
@@ -261,9 +362,12 @@ const Medium = () => {
     }))
     setDesigns(fetchDesign)
   }, [db])
+
   useEffect(() => {
     getData()
   }, [getData])
+
+  console.log('DONE', imageApplied)
 
   const handleSubmit = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
@@ -310,6 +414,8 @@ const Medium = () => {
             isSelectedStyle={isSelectedStyle}
             handleDecreaseSteps={handleDecreaseSteps}
             handleIncreaseSteps={handleIncreaseSteps}
+            setImageApplied={setImageApplied}
+            animationUpdated={animationUpdated}
           />
 
           <View style={{ zIndex: 5, width: width, position: 'absolute', top: 0 }}>
@@ -347,6 +453,8 @@ const Medium = () => {
                 isDropDown={isDropDown}
                 setDropDown={setDropDown}
                 setColor={setColor}
+                setColorName={setColorName}
+                isColorName={isColorName}
               />
             )}
             {isSteps === 6 && isDropDown && FilteredData && (
@@ -361,10 +469,15 @@ const Medium = () => {
             )}
           </View>
 
-          <TShirt uid={uid} steps={isSteps} />
+          {isSteps === 6 ? (
+            <TempAddMore color={isColor} isImageOrText={isImageOrText} />
+          ) : (
+            <TShirt uid={uid} steps={isSteps} />
+          )}
           {isSteps === 5 && FilteredData && (
             <FinalView
               color={isColor}
+              colorName={isColorName}
               data={FilteredData}
               focus={focus}
               handleSubmit={handleSubmit}
@@ -435,6 +548,12 @@ const Medium = () => {
           type='MidLevel'
         />
       )}
+      <MidLevelTooltip
+        isVisible={toolTip}
+        onClose={() => {
+          showToolTip(false)
+        }}
+      />
     </View>
   )
 }

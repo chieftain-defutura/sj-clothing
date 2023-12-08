@@ -19,6 +19,7 @@ interface INavigation {
   isOpenDesign: boolean
   warning: string
   dropDown: boolean
+  animationUpdated: boolean
   isDone: boolean
   isSelectedStyle: string
   country: string
@@ -34,6 +35,7 @@ interface INavigation {
   setDone: React.Dispatch<React.SetStateAction<boolean>>
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDesign: React.Dispatch<React.SetStateAction<boolean>>
+  setImageApplied: React.Dispatch<React.SetStateAction<boolean>>
   setImageOrText: React.Dispatch<
     React.SetStateAction<{
       title: string
@@ -59,12 +61,14 @@ const Navigation: React.FC<INavigation> = ({
   isColor,
   isSelectedStyle,
   sizeVarient,
+  animationUpdated,
   setOpenDesign,
   handleIncreaseSteps,
   handleDecreaseSteps,
   setDropDown,
   setImageOrText,
   setDone,
+  setImageApplied,
 }) => {
   const { t } = useTranslation('midlevel')
   const slideX = useAnimatedStyle(() => {
@@ -107,7 +111,9 @@ const Navigation: React.FC<INavigation> = ({
           </Pressable>
           <Pressable
             onPress={() => {
-              setOpenDesign(false), handleDecreaseSteps()
+              setOpenDesign(false)
+              handleDecreaseSteps()
+              setImageApplied(true)
             }}
           >
             <Text
@@ -153,7 +159,13 @@ const Navigation: React.FC<INavigation> = ({
             >
               <Pressable
                 onPress={() => (steps !== 5 ? setDropDown(true) : handleIncreaseSteps())}
-                style={styles.Dropdown}
+                style={[
+                  styles.Dropdown,
+                  {
+                    opacity: !animationUpdated ? 0.5 : 1,
+                  },
+                ]}
+                disabled={!animationUpdated}
               >
                 <Text
                   allowFontScaling={false}
@@ -237,7 +249,11 @@ const Navigation: React.FC<INavigation> = ({
             </View>
           )}
           {steps !== 5 && steps !== 6 && (
-            <Pressable onPress={handleIncreaseSteps}>
+            <Pressable
+              onPress={handleIncreaseSteps}
+              disabled={!animationUpdated}
+              style={{ opacity: !animationUpdated ? 0.5 : 1 }}
+            >
               <View>
                 <ArrowCircleRight width={24} height={24} />
               </View>
