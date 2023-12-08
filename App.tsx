@@ -176,7 +176,7 @@ const App: React.FC = () => {
           <SafeAreaView style={{ flex: 0, backgroundColor: 'rgba(191, 148, 228, 0.8)' }} />
           <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(145, 177, 225, 0.85)' }}>
             <NavigationContainer>
-              <StatusBar animated={true} backgroundColor='rgba(191, 148, 228, 0.1)' style='dark' />
+              <StatusBar animated={true} backgroundColor='rgba(199, 148, 228, 0.0)' style='dark' />
               <StackNavigationRoutes />
             </NavigationContainer>
           </SafeAreaView>
