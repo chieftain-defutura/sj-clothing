@@ -17,11 +17,13 @@ import { userStore } from './src/store/userStore'
 import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
 import { Text } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import config from './config'
 
 SplashScreen.preventAutoHideAsync()
 
-const PUBLISHABLE_KEY =
-  'pk_test_51O6p0wSGEesR2xZcTMeDvXgwTJgLfsOMehC1tZcDo7bphTUPo65HjeJJUcKIRYTqA115nRZi3CbzYH2GsuY69Htf00ewXq6Z7m'
+// const PUBLISHABLE_KEY =
+//   'pk_test_51O6p0wSGEesR2xZcTMeDvXgwTJgLfsOMehC1tZcDo7bphTUPo65HjeJJUcKIRYTqA115nRZi3CbzYH2GsuY69Htf00ewXq6Z7m'
+
 const App: React.FC = () => {
   const loadedRef = useRef(false)
   const [loading, setLoading] = useState(true)
@@ -147,7 +149,7 @@ const App: React.FC = () => {
   return (
     <Fragment>
       <StripeProvider
-        publishableKey={PUBLISHABLE_KEY}
+        publishableKey={config.PUBLISHABLE_KEY}
         urlScheme={getAppUrlScheme()}
         merchantIdentifier='merchant.com.sjclothing'
       >

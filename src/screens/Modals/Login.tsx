@@ -152,12 +152,14 @@ const LoginModal: React.FC<LoginModalProps> = ({
                     placeholderTextColor={COLORS.SecondaryTwo}
                     autoCorrect={false}
                     allowFontScaling={false}
+                    style={{ width: 240 }}
                   />
                   <Pressable
                     onPress={(event) => {
                       togglePasswordVisibility()
                       event.stopPropagation()
                     }}
+                    style={{ marginLeft: 5 }}
                   >
                     {showPassword ? (
                       <EyeIcon width={14} height={14} />

@@ -29,7 +29,6 @@ import { IOrder } from '../../../../constant/types'
 import LoginModal from '../../../../screens/Modals/Login'
 import SignupModal from '../../../../screens/Modals/Signup'
 import ForgotMail from '../../../../screens/Modals/ForgotMail'
-import Tooltip from '../../../../screens/Modals/TooltipModel'
 import LogOut from '../../../../screens/Modals/LogOut'
 import DelectAccount from '../../../../screens/Modals/DelectAccount'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -448,14 +447,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
           showToolTip(false)
         }}
       />
-
-      {/* <Tooltip
-        isVisible={toolTip}
-        onClose={() => {
-          showToolTip(false)
-        }}
-      /> */}
-      {/* </AuthNavigate> */}
     </LinearGradient>
   )
 }

@@ -23,7 +23,7 @@ const Premium: React.FC = () => {
 
   useEffect(() => {
     isShowToolTip()
-  }, [])
+  }, [isShowToolTip])
 
   return (
     <LinearGradient colors={gradientOpacityColors}>

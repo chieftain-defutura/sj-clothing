@@ -1,0 +1,7 @@
+import { API_URL, PUBLISHABLE_KEY, CURRENCY_APIKEY } from '@env'
+
+export default {
+  API_URL,
+  PUBLISHABLE_KEY,
+  CURRENCY_APIKEY,
+}

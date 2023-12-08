@@ -26,7 +26,7 @@ const AccountTooltip: React.FC<IAccountTooltip> = ({ isVisible, onClose }) => {
             <CloudIcon width={328} height={210} />
           </Animated.View>
         </TooltipContainer>
-        <View style={{ position: 'absolute', bottom: 130 }}>
+        <View style={{ position: 'absolute', bottom: 130, zIndex: 10000 }}>
           <Heading allowFontScaling={false}>Account</Heading>
           <Paragraph allowFontScaling={false}>
             Manage your profile, customize avatars, and track your orders

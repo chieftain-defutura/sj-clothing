@@ -29,6 +29,7 @@
     "expo-checkbox": "~2.4.0",
     "expo-dev-client": "~2.4.12",
     "expo-font": "^11.4.0",
+    "expo-haptics": "~12.4.0",
     "expo-image-picker": "~14.3.2",
     "expo-linear-gradient": "^12.3.0",
     "expo-linking": "~5.0.2",
@@ -50,6 +51,7 @@
     "react-native": "0.72.6",
     "react-native-animatable": "^1.3.3",
     "react-native-country-codes-picker": "^2.3.4",
+    "react-native-dotenv": "^3.4.9",
     "react-native-dropdown-select-list": "^2.0.5",
     "react-native-gesture-handler": "~2.12.0",
     "react-native-localize": "^3.0.2",
@@ -76,8 +78,7 @@
     "react-navigation-shared-element": "^3.1.3",
     "styled-components": "^6.0.7",
     "yup": "^1.2.0",
-    "zustand": "^4.4.1",
-    "expo-haptics": "~12.4.0"
+    "zustand": "^4.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

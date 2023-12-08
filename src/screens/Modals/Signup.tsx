@@ -250,7 +250,6 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                         placeholderTextColor={COLORS.SecondaryTwo}
                         autoCorrect={false}
                         allowFontScaling={false}
-                        style={{ width: 240 }}
                       />
                       {/* <Pressable
                           style={{ opacity: verificationCode ? 0 : 1 }}
@@ -276,8 +275,9 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
                         placeholderTextColor={COLORS.SecondaryTwo}
                         autoCorrect={false}
                         allowFontScaling={false}
+                        style={{ width: 240 }}
                       />
-                      <Pressable onPress={togglePasswordVisibility}>
+                      <Pressable onPress={togglePasswordVisibility} style={{ marginLeft: 5 }}>
                         {showPassword ? (
                           <EyeIcon width={14} height={14} />
                         ) : (
@@ -472,7 +472,7 @@ const InputBorder = styled.View`
   border-radius: 5px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-direction: row;
   padding-vertical: 8px;
   padding-horizontal: 16px;
