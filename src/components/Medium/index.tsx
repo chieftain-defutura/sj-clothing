@@ -508,6 +508,7 @@ const Medium = () => {
                 setSignUp(true), setLogin(false)
               }}
               onClose={() => setLogin(false)}
+              setOpenCheckout={setOpenCheckout}
             />
           )}
 
@@ -517,6 +518,7 @@ const Medium = () => {
                 setLogin(true), setSignUp(false)
               }}
               onClose={() => setSignUp(false)}
+              setOpenCheckout={setOpenCheckout}
             />
           )}
           {forgotMail && (

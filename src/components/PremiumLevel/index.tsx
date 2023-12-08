@@ -222,6 +222,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
                 setSignUp(true), setLogin(false)
               }}
               onClose={() => setLogin(false)}
+              setOpenCheckout={setOpenCheckout}
             />
           )}
 
@@ -231,6 +232,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
                 setLogin(true), setSignUp(false)
               }}
               onClose={() => setSignUp(false)}
+              setOpenCheckout={setOpenCheckout}
             />
           )}
           {forgotMail && (

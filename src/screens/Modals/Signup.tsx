@@ -33,6 +33,7 @@ interface SignupModalProps {
   isVisible?: boolean
   onClose?: () => void
   onLoginClick?: () => void
+  setOpenCheckout?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const initialValues = { name: '', email: '', password: '' }
@@ -58,7 +59,12 @@ const ValidationSchema = Yup.object({
 const OTPValidationSchema = Yup.object({
   otp: Yup.string().required('Please enter your OTP'),
 })
-const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginClick }) => {
+const SignupModal: React.FC<SignupModalProps> = ({
+  isVisible,
+  onClose,
+  onLoginClick,
+  setOpenCheckout,
+}) => {
   const navigation = useNavigation()
   const rate = userStore((state) => state.rate)
   const user = userStore((store) => store.user)
@@ -405,7 +411,11 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose, onLoginCl
         />
       )} */}
       {user && !user.phoneNumber && !isCreated && (
-        <PhoneVerification setIsCreated={setIsCreated} closeModal={onClose} />
+        <PhoneVerification
+          setIsCreated={setIsCreated}
+          closeModal={onClose}
+          setOpenCheckout={setOpenCheckout}
+        />
       )}
 
       {user && user.phoneNumber && isCreated && (

@@ -16,6 +16,7 @@ import { userStore } from '../../store/userStore'
 interface IPhoneVerification {
   setIsCreated: React.Dispatch<React.SetStateAction<boolean>>
   closeModal?: () => void
+  setOpenCheckout?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const initialValues = { phoneNumber: '', verifyCode: '' }
@@ -32,7 +33,11 @@ const ValidationSchema = Yup.object({
     .required('Please enter your phone number'),
 })
 
-const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeModal }) => {
+const PhoneVerification: React.FC<IPhoneVerification> = ({
+  setIsCreated,
+  closeModal,
+  setOpenCheckout,
+}) => {
   const user = userStore((state) => state.user)
   const updatePhoneNo = userStore((state) => state.updatePhoneNo)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -69,6 +74,7 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ setIsCreated, closeMo
       setIsCreated(true)
       closeModal?.()
       setLoading(false)
+      setOpenCheckout?.(true)
       // if (values.verifyCode !== verificationId) {
       //   setErrorMessage('Invalid Verification Code')
       // }

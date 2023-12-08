@@ -23,6 +23,7 @@ interface LoginModalProps {
   onClose?: () => void
   onSignClick?: () => void
   onForgotClick?: () => void
+  setOpenCheckout?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const initialValues = { email: '', password: '' }
@@ -46,6 +47,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
   onClose,
   onSignClick,
   onForgotClick,
+  setOpenCheckout,
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -86,6 +88,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
       await signInWithEmailAndPassword(auth, values.email, values.password)
       console.log('User logged in successfully')
       onClose?.()
+      setOpenCheckout?.(true)
     } catch (error) {
       console.log(error)
       if (error instanceof FirebaseError) {
