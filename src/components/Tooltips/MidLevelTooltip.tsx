@@ -26,7 +26,7 @@ const MidLevelTooltip: React.FC<IMidLevelTooltip> = ({ isVisible, onClose }) => 
             <CloudIcon width={328} height={210} />
           </Animated.View>
         </TooltipContainer>
-        <View style={{ position: 'absolute', bottom: 160 }}>
+        <View style={{ position: 'absolute', bottom: 130 }}>
           <Heading allowFontScaling={false}>Mid level</Heading>
           <Paragraph allowFontScaling={false}>
             Express your unique style with our customizable clothes.
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     position: 'absolute',
-    left: 90,
+    left: 100,
     bottom: -35,
   },
 })
