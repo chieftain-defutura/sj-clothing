@@ -56,6 +56,10 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [login, setLogin] = useState(false)
   const [signUp, setSignUp] = useState(false)
   const [forgotMail, setForgotmail] = useState(false)
+  const [isPressed, setIsPressed] = useState<number | null>(null)
+  const [loginPressed, setLoginPressed] = useState(false)
+  const [customerCarePressed, setCustomerCarePressed] = useState(false)
+  const [deleteAccountPressed, setDeleteAccountPressed] = useState(false)
   // const isFocused = useIsFocused()
   const [logOut, setLogOut] = useState(false)
   const [isDelectAccount, setIsDelectAccount] = useState(false)
@@ -72,7 +76,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const isShowToolTip = async () => {
     const data = await AsyncStorage.getItem('showAccountTooltip')
 
-    console.log('showAccountTooltip', data)
     if (data !== '2') {
       AsyncStorage.setItem('showAccountTooltip', '2')
       showToolTip(true)
@@ -256,7 +259,16 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
             <Animated.View entering={FadeInDown.duration(800).delay(200)} exiting={FadeOutDown}>
               {AccountData.filter((f) => f.name !== AccessoryName).map((f, index) => {
                 return (
-                  <Pressable key={index} onPress={() => navigation.navigate(f.navigation)}>
+                  <Pressable
+                    key={index}
+                    onPress={() => navigation.navigate(f.navigation)}
+                    onPressIn={() => setIsPressed(index)}
+                    onPressOut={() => setIsPressed(null)}
+                    style={{
+                      backgroundColor:
+                        isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                    }}
+                  >
                     <ProfileUserContent>
                       <FlexIcon>
                         <f.leftIcon width={20} height={20} />
@@ -274,7 +286,14 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                   </Pressable>
                 )
               })}
-              <Pressable onPress={handleCustomerCarePress}>
+              <Pressable
+                onPress={handleCustomerCarePress}
+                onPressIn={() => setCustomerCarePressed(true)}
+                onPressOut={() => setCustomerCarePressed(false)}
+                style={{
+                  backgroundColor: customerCarePressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                }}
+              >
                 <ProfileUserContent>
                   <FlexIcon>
                     <CustomerCare width={20} height={20} />
@@ -288,7 +307,14 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
               {user ? (
                 <View>
                   <LogoutPressable>
-                    <Pressable onPress={handleLogout}>
+                    <Pressable
+                      onPress={handleLogout}
+                      onPressIn={() => setLoginPressed(true)}
+                      onPressOut={() => setLoginPressed(false)}
+                      style={{
+                        backgroundColor: loginPressed ? 'rgba(255, 54, 54, 0.1)' : 'transparent',
+                      }}
+                    >
                       <ProfileUserContent>
                         <FlexIcon>
                           <LogoutIcon width={24} height={24} />
@@ -298,7 +324,16 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                         </FlexIcon>
                       </ProfileUserContent>
                     </Pressable>
-                    <Pressable onPress={handleDelectAccount}>
+                    <Pressable
+                      onPress={handleDelectAccount}
+                      onPressIn={() => setDeleteAccountPressed(true)}
+                      onPressOut={() => setDeleteAccountPressed(false)}
+                      style={{
+                        backgroundColor: deleteAccountPressed
+                          ? 'rgba(255, 54, 54, 0.1)'
+                          : 'transparent',
+                      }}
+                    >
                       <ProfileUserContent>
                         <FlexIcon>
                           <DeleteIcon width={24} height={24} />
@@ -311,7 +346,14 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                   </LogoutPressable>
                 </View>
               ) : (
-                <LogoutPressable onPress={() => setLogin(true)}>
+                <LogoutPressable
+                  onPress={() => setLogin(true)}
+                  onPressIn={() => setLoginPressed(true)}
+                  onPressOut={() => setLoginPressed(false)}
+                  style={{
+                    backgroundColor: loginPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                  }}
+                >
                   <ProfileUserContent>
                     <FlexIcon>
                       <Text
@@ -363,7 +405,14 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
               {user ? (
                 <View>
                   <LogoutPressable>
-                    <Pressable onPress={handleLogout}>
+                    <Pressable
+                      onPress={handleLogout}
+                      onPressIn={() => setLoginPressed(true)}
+                      onPressOut={() => setLoginPressed(false)}
+                      style={{
+                        backgroundColor: loginPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                      }}
+                    >
                       <ProfileUserContent>
                         <FlexIcon>
                           <LogoutIcon width={24} height={24} />
@@ -373,7 +422,16 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                         </FlexIcon>
                       </ProfileUserContent>
                     </Pressable>
-                    <Pressable onPress={handleDelectAccount}>
+                    <Pressable
+                      onPress={handleDelectAccount}
+                      onPressIn={() => setDeleteAccountPressed(true)}
+                      onPressOut={() => setDeleteAccountPressed(false)}
+                      style={{
+                        backgroundColor: deleteAccountPressed
+                          ? 'rgba(255, 54, 54, 0.1)'
+                          : 'transparent',
+                      }}
+                    >
                       <ProfileUserContent>
                         <FlexIcon>
                           <DeleteIcon width={24} height={24} />
@@ -386,7 +444,14 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                   </LogoutPressable>
                 </View>
               ) : (
-                <LogoutPressable onPress={() => setLogin(true)}>
+                <LogoutPressable
+                  onPress={() => setLogin(true)}
+                  onPressIn={() => setLoginPressed(true)}
+                  onPressOut={() => setLoginPressed(false)}
+                  style={{
+                    backgroundColor: loginPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                  }}
+                >
                   <ProfileUserContent>
                     <FlexIcon>
                       <Text
@@ -468,6 +533,7 @@ const UserWrapper = styled.View`
   border-width: 1px;
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
+  border-top-width: 0;
 `
 
 const LogoutPressable = styled.Pressable`
@@ -555,6 +621,7 @@ const styles = StyleSheet.create({
     color: COLORS.iconsHighlightClr,
     textAlign: 'center',
     marginTop: 8,
+    marginBottom: 10,
   },
   UserText: {
     fontFamily: 'Gilroy-Medium',

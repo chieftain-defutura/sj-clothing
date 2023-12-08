@@ -42,7 +42,7 @@ const AvatarNavigation = () => {
                 <LeftArrow width={24} height={24} />
               </GoBackArrowContent>
             </View> */}
-            <View style={{ position: 'absolute', left: 24, top: 27, zIndex: 1000 }}>
+            <View style={{ position: 'absolute', left: 18, top: 16, zIndex: 1000 }}>
               <Pressable
                 onPress={() => {
                   navigation.goBack()
@@ -57,7 +57,7 @@ const AvatarNavigation = () => {
                     }}
                   >
                     <IconHoverPressable>
-                      <LeftArrow width={24} height={24} />
+                      <LeftArrow width={24} height={24} style={{ marginBottom: -44 }} />
                     </IconHoverPressable>
                   </IconHoverClr>
                 )}
@@ -134,9 +134,9 @@ const GoBackArrowContent = styled.Pressable`
   padding: 30px;
 `
 const IconHoverClr = styled.View`
-  border-radius: 20px;
-  width: 32px;
-  height: 32px;
+  border-radius: 100px;
+  width: 50px;
+  height: 50px;
 `
 const IconHoverPressable = styled.View`
   display: flex;

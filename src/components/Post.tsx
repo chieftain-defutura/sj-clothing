@@ -88,7 +88,11 @@ const PostCard: React.FC<PostCardProps> = ({ props: componentNameProps, onPress 
     return (
       <ImageContent style={{ width: width, overflow: 'hidden' }}>
         <TouchableOpacity onPress={handleClick}>
-          <TShirtImg source={require('../assets/images/t-shirt.png')} resizeMode='cover' />
+          <TShirtImg
+            source={require('../assets/images/t-shirt.png')}
+            resizeMode='cover'
+            alt='post'
+          />
         </TouchableOpacity>
         <CardContent>
           <Pressable onPress={onLikePressed}>

@@ -14,7 +14,7 @@ const CartCard: React.FC<ICheckout> = ({ price, offerPrice, productName, product
       <View>
         <CartPageContainer>
           <View>
-            <TShirtImage source={{ uri: productImage }} />
+            <TShirtImage source={{ uri: productImage }} alt={productName} />
           </View>
           <View>
             <ProductWrapper>

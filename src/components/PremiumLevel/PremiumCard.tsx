@@ -40,7 +40,7 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
         marginBottom: 18,
       }}
     >
-      <View style={{ marginTop: 10 }}>
+      <View>
         <View>
           <Pressable
             onPress={() => {
@@ -68,7 +68,13 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
           <View style={{ alignItems: 'center', marginTop: 14 }}>
             <ProductText
               allowFontScaling={false}
-              style={{ width: width / 2.3, textAlign: 'center' }}
+              numberOfLines={1}
+              ellipsizeMode='tail'
+              style={{
+                width: width / 2.3,
+                textAlign: 'center',
+                paddingHorizontal: 4,
+              }}
             >
               {data.productName}
             </ProductText>

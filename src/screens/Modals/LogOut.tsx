@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Modal, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { auth } from '../../../firebase'
 import { COLORS } from '../../styles/theme'
 import { userStore } from '../../store/userStore'
 import CustomButton from '../../components/Button'
-import CloseIcon from '../../assets/icons/Close'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import AlertIcon from '../../assets/icons/Alert'
+import styled from 'styled-components/native'
 
 interface ILogOut {
   closeModal?: () => void
@@ -45,24 +45,10 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
     <Modal animationType='fade' transparent={true}>
       <View style={styles.VerificationContainer}>
         <View style={styles.VerificationWrapper}>
-          {/* <Pressable
-            onPress={closeModal}
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              paddingBottom: 10,
-            }}
-          >
-            <CloseIcon width={24} height={24} />
-          </Pressable> */}
           <AlertIcon width={130} height={130} />
           <Text allowFontScaling={false} style={styles.header}>
             Are You Leaving ?
           </Text>
-          {/* <Text allowFontScaling={false} style={styles.description}>
-            Hi {user?.displayName}, Are you sure, you want to logout?
-          </Text> */}
           {errorMessage && (
             <Text
               allowFontScaling={false}
@@ -74,12 +60,21 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
           <View
             style={{ display: 'flex', flexDirection: 'row', gap: 10, justifyContent: 'center' }}
           >
-            <CustomButton
+            {/* <CustomButton
               text='No'
               disabled={isSendVerifyMail}
               onPress={closeModal}
               style={{ width: 100 }}
-            />
+            /> */}
+            <TouchableOpacity
+              onPress={closeModal}
+              style={{ borderRadius: 50, borderColor: '#462D85', borderWidth: 2 }}
+            >
+              <StyledView>
+                <Text style={styles.btnText}>No</Text>
+              </StyledView>
+            </TouchableOpacity>
+
             <CustomButton
               text='Yes'
               disabled={isSendVerifyMail}
@@ -92,6 +87,15 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
     </Modal>
   )
 }
+
+const StyledView = styled.View`
+  padding: 13px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  width: 90px;
+`
 
 export default LogOut
 
@@ -125,5 +129,9 @@ const styles = StyleSheet.create({
     color: `${COLORS.textRGBAClr}`,
     textAlign: 'center',
     paddingVertical: 15,
+  },
+  btnText: {
+    fontSize: 14,
+    color: '#462d85',
   },
 })

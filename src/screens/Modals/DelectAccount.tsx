@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Modal, StyleSheet, Text, View } from 'react-native'
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { COLORS } from '../../styles/theme'
 import { userStore } from '../../store/userStore'
 import CustomButton from '../../components/Button'
@@ -7,6 +7,7 @@ import AlertIcon from '../../assets/icons/Alert'
 import { useNavigation } from '@react-navigation/native'
 import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth'
 import { doc, deleteDoc } from 'firebase/firestore/lite'
+import styled from 'styled-components/native'
 import { db } from '../../../firebase'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -77,12 +78,20 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
           <View
             style={{ display: 'flex', flexDirection: 'row', gap: 10, justifyContent: 'center' }}
           >
-            <CustomButton
+            {/* <CustomButton
               text='No'
               disabled={isSendVerifyMail}
               onPress={closeModal}
               style={{ width: 100 }}
-            />
+            /> */}
+            <TouchableOpacity
+              onPress={closeModal}
+              style={{ borderRadius: 50, borderColor: '#462D85', borderWidth: 2 }}
+            >
+              <StyledView>
+                <Text style={styles.btnText}>No</Text>
+              </StyledView>
+            </TouchableOpacity>
             <CustomButton
               text='Yes'
               disabled={isSendVerifyMail}
@@ -95,6 +104,15 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
     </Modal>
   )
 }
+
+const StyledView = styled.View`
+  padding: 13px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  width: 90px;
+`
 
 export default DelectAccount
 
@@ -122,6 +140,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 28,
     lineHeight: 32,
+  },
+  btnText: {
+    fontSize: 14,
+    color: '#462d85',
   },
   description: {
     fontSize: 15,

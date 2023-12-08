@@ -73,6 +73,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   const [openImage, setOpenImage] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
+  const [sharePressed, setSharePressed] = useState(false)
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
   const [isSizeSelected, setIsSizeSelected] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
@@ -174,8 +175,23 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                   </IconHoverClr>
                 )}
               </Pressable>
-              <Pressable onPress={share}>
-                <ShareArrow width={24} height={24} />
+              <Pressable
+                onPress={share}
+                onPressIn={() => setSharePressed(true)}
+                onPressOut={() => setSharePressed(false)}
+                style={{ marginTop: 3 }}
+              >
+                {() => (
+                  <IconHoverClr
+                    style={{
+                      backgroundColor: sharePressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
+                    }}
+                  >
+                    <IconHoverPressable>
+                      <ShareArrow width={24} height={24} />
+                    </IconHoverPressable>
+                  </IconHoverClr>
+                )}
               </Pressable>
             </FlexContent>
 
@@ -547,13 +563,13 @@ const IconHoverPressable = styled.View`
   align-items: center;
   justify-content: center;
   margin-right: 2px;
-  margin-top: 2px;
+  margin-top: 10px;
 `
 
 const IconHoverClr = styled.View`
-  border-radius: 20px;
-  width: 32px;
-  height: 32px;
+  border-radius: 100px;
+  width: 50px;
+  height: 50px;
 `
 
 const Btns = styled.View`

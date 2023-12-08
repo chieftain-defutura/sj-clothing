@@ -184,7 +184,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
                         height: height / 4,
                         marginLeft: 22,
                         marginBottom: 16,
-                        marginTop: 18,
+                        marginTop: 10,
                       }}
                     >
                       <View
@@ -197,14 +197,12 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
                       >
                         <View
                           style={{
-                            width: width / 2.6,
-                            marginBottom: 8,
-                            position: 'absolute',
-                            top: 85,
-                            right: 20,
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
                           }}
                         >
-                          <ProductText allowFontScaling={false}> {premiumText}</ProductText>
+                          <ProductText allowFontScaling={false}>{premiumText}</ProductText>
                         </View>
                       </View>
                     </BlurView>
@@ -269,7 +267,7 @@ const ProductText = styled.Text`
   font-family: ${FONT_FAMILY.ArvoRegular};
   color: ${COLORS.iconsHighlightClr};
   text-align: center;
-  margin-left: 39px;
+  margin-top: -10px;
 `
 
 export default PremiumLevel

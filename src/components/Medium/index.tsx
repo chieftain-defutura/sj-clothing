@@ -216,7 +216,6 @@ const Medium = () => {
   const isShowToolTip = async () => {
     const data = await AsyncStorage.getItem('showMidLevelToolTip')
 
-    console.log('showMidLevelToolTip', data)
     if (data !== '0') {
       AsyncStorage.setItem('showMidLevelToolTip', '0')
       showToolTip(true)
@@ -508,7 +507,6 @@ const Medium = () => {
                 setSignUp(true), setLogin(false)
               }}
               onClose={() => setLogin(false)}
-              setOpenCheckout={setOpenCheckout}
             />
           )}
 
@@ -518,7 +516,6 @@ const Medium = () => {
                 setLogin(true), setSignUp(false)
               }}
               onClose={() => setSignUp(false)}
-              setOpenCheckout={setOpenCheckout}
             />
           )}
           {forgotMail && (

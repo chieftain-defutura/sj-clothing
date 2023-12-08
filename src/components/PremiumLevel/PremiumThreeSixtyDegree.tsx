@@ -105,7 +105,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
                   style={{ backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent' }}
                 >
                   <IconHoverPressable>
-                    <LeftArrow width={24} height={24} />
+                    <LeftArrow width={24} height={24} style={{ marginTop: 10 }} />
                   </IconHoverPressable>
                 </IconHoverClr>
               )}
@@ -213,9 +213,9 @@ const IconHoverPressable = styled.View`
 `
 
 const IconHoverClr = styled.View`
-  border-radius: 20px;
-  width: 32px;
-  height: 32px;
+  border-radius: 100px;
+  width: 50px;
+  height: 50px;
 `
 
 const SelectStyle360Degree = styled.View`

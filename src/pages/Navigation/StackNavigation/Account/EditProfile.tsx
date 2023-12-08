@@ -49,6 +49,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   const [url, setUrl] = useState<string | null>(null)
   const updateName = userStore((name) => name.updateName)
   const [image, setImage] = React.useState<string | null>(null)
+  const [isPressed, setIsPressed] = useState(false)
   const updateProfile = userStore((state) => state.updateProfile)
 
   const onSubmit = async (values: { fullName: string }) => {
@@ -118,8 +119,19 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
             onPress={() => {
               navigation.goBack()
             }}
+            onPressIn={() => setIsPressed(true)}
+            onPressOut={() => setIsPressed(false)}
+            // style={{ marginTop: -10 }}
           >
-            <LeftArrow width={24} height={24} />
+            {() => (
+              <IconHoverClr
+                style={{ backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent' }}
+              >
+                <IconHoverPressable>
+                  <LeftArrow width={24} height={24} />
+                </IconHoverPressable>
+              </IconHoverClr>
+            )}
           </Pressable>
           <Pressable
             onPress={() => {
@@ -146,7 +158,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
           <ChangeProfileText allowFontScaling={false}>Change profile picture</ChangeProfileText>
         </NotUserContent>
       </UserWrapper>
-      <View style={{ padding: 16 }}>
+      <View style={{ padding: 20, marginHorizontal: 8, marginTop: 8 }}>
         <Label allowFontScaling={false}>Full name</Label>
         <Input
           placeholder='John David'
@@ -168,11 +180,20 @@ const UserWrapper = styled.View`
   border-width: 1px;
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
+  border-top-width: 0;
 `
 const NotUserContent = styled.Pressable`
   align-items: center;
   justify-content: center;
   flex: 1;
+`
+
+const IconHoverPressable = styled.View`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 2px;
+  margin-top: 10px;
 `
 
 const ErrorText = styled.Text`
@@ -204,6 +225,11 @@ const Label = styled.Text`
   color: ${COLORS.iconsHighlightClr};
   font-size: 14px;
   margin-bottom: 8px;
+`
+const IconHoverClr = styled.View`
+  border-radius: 100px;
+  width: 50px;
+  height: 50px;
 `
 
 const LocationText = styled.Text`
