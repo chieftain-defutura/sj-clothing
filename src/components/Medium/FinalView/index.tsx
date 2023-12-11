@@ -328,9 +328,9 @@ const FinalView: React.FC<IFinalView> = ({
                     fontFamily: 'Arvo-Regular',
                     fontSize: 18,
                     backgroundColor: color,
-                    width: 10,
-                    height: 10,
-                    marginTop: 4,
+                    width: 11,
+                    height: 11,
+                    marginTop: 6,
                   }}
                 ></Text>
                 <Text style={styles.colorNameText} numberOfLines={1} ellipsizeMode='tail'>

@@ -132,6 +132,7 @@ const ReelsComponent: React.FC<ReelsComponentProps> = ({ reelsData }) => {
                         <Image
                           source={{ uri: imageUrl }}
                           style={[styles.adImage, { height: reelsHeight }]}
+                          alt='post-img'
                         />
                         <LinearGradient
                           start={{ x: 0, y: 0 }}

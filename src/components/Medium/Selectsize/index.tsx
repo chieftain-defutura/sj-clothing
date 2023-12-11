@@ -42,6 +42,7 @@ const SelectSize: React.FC<ISelectSize> = ({
 }) => {
   const avatar = userStore((state) => state.avatar)
   const { t } = useTranslation('midlevel')
+  const [isPressed, setIsPressed] = useState<number | null>(null)
   const [sizeData, setSizeData] = useState<
     | {
         measurement: string
@@ -116,12 +117,18 @@ const SelectSize: React.FC<ISelectSize> = ({
                         <View key={index}>
                           <Pressable
                             onPress={() => handleSelect(item.size, item.measurement)}
-                            key={index}
+                            onPressIn={() => setIsPressed(index)}
+                            onPressOut={() => setIsPressed(null)}
+                            style={{
+                              backgroundColor:
+                                isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                            }}
                           >
                             <Text
                               allowFontScaling={false}
                               style={{
                                 fontSize: 12,
+                                padding: 4,
                                 color:
                                   isSize.sizeVarient[0].size === item.size
                                     ? COLORS.textSecondaryClr
@@ -153,12 +160,18 @@ const SelectSize: React.FC<ISelectSize> = ({
                         <View key={index}>
                           <Pressable
                             onPress={() => handleSelect(item.size, item.measurement)}
-                            key={index}
+                            onPressIn={() => setIsPressed(index)}
+                            onPressOut={() => setIsPressed(null)}
+                            style={{
+                              backgroundColor:
+                                isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                            }}
                           >
                             <Text
                               allowFontScaling={false}
                               style={{
                                 fontSize: 12,
+                                padding: 4,
                                 color:
                                   isSize.sizeVarient[0].size === item.size
                                     ? COLORS.textSecondaryClr

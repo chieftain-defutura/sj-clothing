@@ -113,7 +113,11 @@ const UploadDesign: React.FC<IUploadDesign> = ({ setDone, setImageOrText, isImag
               justifyContent: 'space-between',
             }}
           >
-            <Image source={{ uri: isImageOrText.image }} style={{ width: 200, height: 200 }} />
+            <Image
+              source={{ uri: isImageOrText.image }}
+              style={{ width: 200, height: 200 }}
+              alt='upload-design-img'
+            />
             <CustomButton
               text='ReSelect'
               style={{ width: 130 }}

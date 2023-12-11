@@ -151,6 +151,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
                 resizeMode: 'cover',
                 borderRadius: 100,
               }}
+              alt='edit-profile-img'
             />
           ) : (
             <NotUserIcon width={128} height={128} />

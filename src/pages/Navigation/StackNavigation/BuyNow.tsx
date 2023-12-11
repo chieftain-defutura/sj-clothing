@@ -86,7 +86,7 @@ const BuyNow: React.FC<IBuyNow> = ({ navigation }) => {
         </Pressable>
       </View>
       <View style={styles.TShirt}>
-        <Image source={require('../../../assets/images/plain-shirt.png')} />
+        <Image source={require('../../../assets/images/plain-shirt.png')} alt='buynow-img' />
       </View>
       {/* <View style={styles.threesixtyDegree}>
         <ThreeSixtyDegree width={40} height={40} />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Pressable, View } from 'react-native'
+import { Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components/native'
 import ShoppingCart from '../assets/icons/ShoppingCart'

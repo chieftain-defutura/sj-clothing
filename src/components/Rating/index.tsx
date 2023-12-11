@@ -125,7 +125,7 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
       <CartPageContainer style={{ paddingHorizontal: 16 }}>
         <CartPageData>
           <View>
-            <TShirtImage source={{ uri: orderData?.productImage }} />
+            <TShirtImage source={{ uri: orderData?.productImage }} alt={orderData?.productName} />
           </View>
           <View>
             <ProductWrapper>

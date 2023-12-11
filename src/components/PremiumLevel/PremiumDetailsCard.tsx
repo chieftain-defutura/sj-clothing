@@ -218,6 +218,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                         borderRadius: 6,
                         marginLeft: 26,
                       }}
+                      alt={data.productName}
                     />
                   </TouchableOpacity>
                 </Animated.View>
@@ -337,7 +338,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                       <ImageWrapper onPress={() => setOpenImage(false)}>
                         <Image
                           source={require('../../assets/images/fabric.jpg')}
-                          alt=''
+                          alt={data.productName}
                           style={{ width: 400, height: 300 }}
                         />
                       </ImageWrapper>

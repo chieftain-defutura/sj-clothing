@@ -36,6 +36,7 @@ const AboutUs: React.FC<IAboutUs> = ({ navigation }) => {
               <Image
                 source={require('../../../../assets/images/AccountImage/aboutusImg.png')}
                 style={{ width: width - 32, height: 218, resizeMode: 'cover', borderRadius: 10 }}
+                alt='aboutus-img'
               />
             </View>
             <View style={{ padding: 16 }}>

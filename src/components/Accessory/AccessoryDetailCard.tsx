@@ -122,6 +122,7 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                         borderRadius: 6,
                         marginVertical: 12,
                       }}
+                      alt={data.productName}
                     />
                   </TouchableOpacity>
                 </Animated.View>

@@ -187,6 +187,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                       borderBottomLeftRadius: 50,
                       borderBottomRightRadius: 50,
                     }}
+                    alt='profile-img'
                   />
                 ) : user && profile ? (
                   <Image
@@ -197,6 +198,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                       borderBottomLeftRadius: 50,
                       borderBottomRightRadius: 50,
                     }}
+                    alt='profile-img'
                   />
                 ) : (
                   <NotUserIcon width={128} height={128} />
