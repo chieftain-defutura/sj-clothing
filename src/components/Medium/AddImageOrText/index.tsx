@@ -50,7 +50,10 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
   return (
     <LinearGradient
       colors={dropDownGradient}
-      style={{ borderBottomRightRadius: 50, borderBottomLeftRadius: 50 }}
+      style={{
+        borderBottomRightRadius: 50,
+        borderBottomLeftRadius: 50,
+      }}
     >
       {isDropDown && (
         <Animated.View>

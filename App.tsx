@@ -174,8 +174,8 @@ const App: React.FC = () => {
         merchantIdentifier='merchant.com.sjclothing'
       >
         <I18nextProvider i18n={i18n}>
-          <SafeAreaView style={{ flex: 0, backgroundColor: 'rgba(191, 148, 228, 0.8)' }} />
-          <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(145, 177, 225, 0.85)' }}>
+          <SafeAreaView style={{ flex: 0, backgroundColor: 'rgba(191, 148, 228, 0.86)' }} />
+          <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(145, 177, 225, 0.9)' }}>
             <NavigationContainer>
               <StatusBar animated={true} backgroundColor='rgba(199, 148, 228, 0.0)' style='dark' />
               <StackNavigationRoutes />
