@@ -57,7 +57,7 @@ const TrackOrder: React.FC<ITrackOrder> = ({ orderId, setOpenTrackOrder }) => {
                 <CartText allowFontScaling={false}>Track order</CartText>
               </GoBackArrowContent>
               <TShirtImageWrapper>
-                <TShirtImage source={{ uri: orderData.productImage }} />
+                <TShirtImage source={{ uri: orderData.productImage }} alt={orderData.productName} />
                 {/* <ThreeSixtyDegreeImage>
               <ThreeSixtyDegree width={40} height={40} />
             </ThreeSixtyDegreeImage> */}

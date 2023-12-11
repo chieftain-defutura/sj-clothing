@@ -94,7 +94,10 @@ const PostDetails: React.FC<IPostDetails> = ({ navigation }) => {
               </Pressable>
             </FlexContent>
             <TShirtImageWrapper>
-              <TShirtImage source={require('../../../../../assets/images/t-shirt.png')} />
+              <TShirtImage
+                source={require('../../../../../assets/images/t-shirt.png')}
+                alt='post-details-img'
+              />
               {/* <ThreeSixtyDegreeImage>
                 <ThreeSixtyDegree width={40} height={40} />
               </ThreeSixtyDegreeImage> */}

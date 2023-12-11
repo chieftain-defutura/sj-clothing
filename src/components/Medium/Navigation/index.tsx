@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet, Text, View, Dimensions } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
+import { Pressable, StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import Animated, {
   BounceIn,
@@ -73,11 +73,18 @@ const Navigation: React.FC<INavigation> = ({
   setImageApplied,
 }) => {
   const { t } = useTranslation('midlevel')
+  const [isPressed, setIsPressed] = useState(false)
+  const [arrowPressed, setArrowPressed] = useState(false)
+  const [arrowLeft, setArrowLeft] = useState(false)
+  const [addImagePressed, setAddImagePressed] = useState(false)
+  const [addTextPressed, setAddTextPressed] = useState(false)
+
   const slideX = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: slideValue.value * 400 }], // Slide 400 units (assuming a screen width of 400)
     }
   })
+
   return (
     <Animated.View
       style={[
@@ -153,8 +160,15 @@ const Navigation: React.FC<INavigation> = ({
           ]}
         >
           <Pressable
-            style={{ opacity: steps === 1 ? 0 : 1 }}
             onPress={() => steps !== 1 && handleDecreaseSteps()}
+            onPressIn={() => setArrowLeft(true)}
+            onPressOut={() => setArrowLeft(false)}
+            style={{
+              opacity: steps === 1 ? 0 : 1,
+              backgroundColor: arrowLeft ? 'rgba(70, 45, 133, 0.2)' : 'transparent',
+              borderRadius: 20,
+              padding: 6,
+            }}
           >
             <Animated.View>
               <ArrowCircleLeft width={24} height={24} />
@@ -173,10 +187,14 @@ const Navigation: React.FC<INavigation> = ({
             >
               <Pressable
                 onPress={() => (steps !== 5 ? setDropDown(true) : handleIncreaseSteps())}
+                onPressIn={() => setIsPressed(true)}
+                onPressOut={() => setIsPressed(false)}
                 style={[
                   styles.Dropdown,
+
                   {
                     opacity: !animationUpdated ? 0.5 : 1,
+                    backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                   },
                 ]}
                 disabled={!animationUpdated}
@@ -225,6 +243,8 @@ const Navigation: React.FC<INavigation> = ({
           {steps === 6 && (
             <View style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
               <Pressable
+                onPressIn={() => setAddImagePressed(true)}
+                onPressOut={() => setAddImagePressed(false)}
                 onPress={() => {
                   setDropDown(true),
                     setDropDown(true),
@@ -233,7 +253,12 @@ const Navigation: React.FC<INavigation> = ({
                       title: 'design-images',
                     }))
                 }}
-                style={styles.Dropdown}
+                style={[
+                  styles.Dropdown,
+                  {
+                    backgroundColor: addImagePressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                  },
+                ]}
               >
                 <Text
                   allowFontScaling={false}
@@ -243,6 +268,8 @@ const Navigation: React.FC<INavigation> = ({
                 </Text>
               </Pressable>
               <Pressable
+                onPressIn={() => setAddTextPressed(true)}
+                onPressOut={() => setAddTextPressed(false)}
                 onPress={() => {
                   setDropDown(true),
                     setDropDown(true),
@@ -251,7 +278,12 @@ const Navigation: React.FC<INavigation> = ({
                       title: 'text-images',
                     }))
                 }}
-                style={styles.Dropdown}
+                style={[
+                  styles.Dropdown,
+                  {
+                    backgroundColor: addTextPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                  },
+                ]}
               >
                 <Text
                   allowFontScaling={false}
@@ -265,8 +297,15 @@ const Navigation: React.FC<INavigation> = ({
           {steps !== 5 && steps !== 6 && (
             <Pressable
               onPress={handleIncreaseSteps}
+              onPressIn={() => setArrowPressed(true)}
+              onPressOut={() => setArrowPressed(false)}
               disabled={!animationUpdated}
-              style={{ opacity: !animationUpdated ? 0.5 : 1 }}
+              style={{
+                opacity: !animationUpdated ? 0.5 : 1,
+                backgroundColor: arrowPressed ? 'rgba(70, 45, 133, 0.2)' : 'transparent',
+                borderRadius: 20,
+                padding: 6,
+              }}
             >
               <View>
                 <ArrowCircleRight width={24} height={24} />

@@ -59,6 +59,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                     <Image
                       style={styles.diamond}
                       source={require('../../assets/images/diamond.png')}
+                      alt='diamond-img'
                     />
                   </View>
                   <View>

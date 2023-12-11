@@ -110,6 +110,7 @@ const AccessoryThreeSixtyDegree: React.FC<IAccessoryThreeSixtyDegree> = ({
                   height: height * 0.65,
                   marginTop: 40,
                 }}
+                alt={data.productName}
               />
             </ThreeSixtyDegreeImage>
             {/* <SelectStyle360Degree>

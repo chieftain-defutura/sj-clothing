@@ -80,6 +80,7 @@ const GenderModel = ({
             <Image
               source={gender.image}
               style={{ width: width / 1.3, height: height / 4.1, objectFit: 'contain' }}
+              alt='gender'
             />
           </View>
           <Text

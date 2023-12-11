@@ -192,7 +192,7 @@ const OrderCard: React.FC<IOrderCard> = ({
           }}
         >
           <View>
-            <TShirtImage source={{ uri: data.productImage }} />
+            <TShirtImage source={{ uri: data.productImage }} alt={data.productName} />
           </View>
           <View>
             <ProductWrapper>

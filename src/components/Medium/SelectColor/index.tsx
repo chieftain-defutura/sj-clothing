@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 import { LinearGradient } from 'expo-linear-gradient'
 import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native'
@@ -24,6 +24,7 @@ const SelectColor: React.FC<ISelectColor> = ({
   setColorName,
 }) => {
   const { t } = useTranslation('midlevel')
+  const [isPressed, setIsPressed] = useState<number | null>(null)
 
   return (
     <LinearGradient
@@ -72,22 +73,27 @@ const SelectColor: React.FC<ISelectColor> = ({
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'center',
-                  gap: 40,
+                  gap: 10,
                   paddingVertical: 8,
                   paddingBottom: 28,
                 }}
                 numColumns={3}
                 renderItem={({ item, index }) => (
                   <Pressable
+                    key={index}
                     onPress={() => {
                       setColor(item.color), setDropDown(false), setColorName(item.colorName)
                     }}
-                    key={index}
+                    onPressIn={() => setIsPressed(index)}
+                    onPressOut={() => setIsPressed(null)}
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'center',
                       alignItems: 'center',
+                      backgroundColor:
+                        isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                      padding: 8,
                     }}
                   >
                     <View
@@ -106,7 +112,10 @@ const SelectColor: React.FC<ISelectColor> = ({
                         }}
                       ></View>
                     </View>
-                    <Pressable onPress={() => setColorName(item.colorName)}>
+                    <Pressable
+                      onPress={() => setColorName(item.colorName)}
+                      style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}
+                    >
                       <Text style={styles.ellipsisText} numberOfLines={1} ellipsizeMode='tail'>
                         {item.colorName}
                       </Text>
@@ -130,15 +139,20 @@ const SelectColor: React.FC<ISelectColor> = ({
                 }}
                 renderItem={({ item, index }) => (
                   <Pressable
+                    key={index}
                     onPress={() => {
                       setColor(item.color), setDropDown(false), setColorName(item.colorName)
                     }}
-                    key={index}
+                    onPressIn={() => setIsPressed(index)}
+                    onPressOut={() => setIsPressed(null)}
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'center',
                       alignItems: 'center',
+                      backgroundColor:
+                        isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                      padding: 8,
                     }}
                   >
                     <View
@@ -157,11 +171,9 @@ const SelectColor: React.FC<ISelectColor> = ({
                         }}
                       ></View>
                     </View>
-                    <Pressable onPress={() => setColorName(item.colorName)}>
-                      <Text style={styles.ellipsisText} numberOfLines={1} ellipsizeMode='tail'>
-                        {item.colorName}
-                      </Text>
-                    </Pressable>
+                    <Text style={styles.ellipsisText} numberOfLines={1} ellipsizeMode='tail'>
+                      {item.colorName}
+                    </Text>
                   </Pressable>
                 )}
               />
@@ -177,10 +189,10 @@ export default SelectColor
 
 const styles = StyleSheet.create({
   ellipsisText: {
-    width: 50,
-    fontSize: 12,
-    color: '#462D85',
+    fontSize: 13,
+    color: COLORS.textClr,
     marginTop: 6,
-    marginRight: -18,
+    textTransform: 'capitalize',
+    fontFamily: 'Gilroy-Medium',
   },
 })
