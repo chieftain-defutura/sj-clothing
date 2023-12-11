@@ -193,11 +193,11 @@ const Navigation: React.FC<INavigation> = ({
                   styles.Dropdown,
 
                   {
-                    opacity: !animationUpdated ? 0.5 : 1,
+                    // opacity: !animationUpdated ? 0.5 : 1,
                     backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                   },
                 ]}
-                disabled={!animationUpdated}
+                // disabled={!animationUpdated}
               >
                 <Text
                   allowFontScaling={false}
@@ -299,9 +299,8 @@ const Navigation: React.FC<INavigation> = ({
               onPress={handleIncreaseSteps}
               onPressIn={() => setArrowPressed(true)}
               onPressOut={() => setArrowPressed(false)}
-              disabled={!animationUpdated}
+              // disabled={!animationUpdated}
               style={{
-                opacity: !animationUpdated ? 0.5 : 1,
                 backgroundColor: arrowPressed ? 'rgba(70, 45, 133, 0.2)' : 'transparent',
                 borderRadius: 20,
                 padding: 6,
@@ -310,6 +309,9 @@ const Navigation: React.FC<INavigation> = ({
               <View>
                 <ArrowCircleRight width={24} height={24} />
               </View>
+              {/* {!animationUpdated && (
+                <Text style={{ color: 'red' }}>Please wait till avatar loads</Text>
+              )} */}
             </Pressable>
           )}
         </View>
