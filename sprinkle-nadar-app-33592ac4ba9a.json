@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "sprinkle-nadar-app",
+  "private_key_id": "33592ac4ba9a7fe7029c280f0354eb7cb6bfd78a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCaH9e9YEDK/F6h\ncHLPJMUmBhn8pibOwR3OWnHRA5FD6jJD7aRqNzQ9hzF/Jk3sXO9iObndHJP9+9li\ngVbW7Q2m21zPd4qUpK0z7hM1k1lZHNMZIyc62uKNyUADfr6JR0rlp5jnfv0EUnsQ\nPWA0g3VG8Xh2IM8U+W5xu5NABo5SWMvOeJkn4y8oHixzRvyFM8QwHl8NRWAS+jeU\nl4YkVBwDVW9kMhrZvskeKWI9f/ZbzGWPNgfZFKgcYyCuA1GLSRT2g3XC+CyZ0ldf\n+hjK45rc6S+fz2T3JSM8kAJHVZi0p0ifyCcemDviEZ/79kasLQWCvsOT7ESw3lc2\ngQC3g2svAgMBAAECggEAP7GhKvY4UKrzQKyEBe8gOpKS8sKHjzJn6vudxc8/nV2P\n4Fq5c9vUjwjr/6wI0AGoPGO22BYTYwdN01O4W6Ij3i0RsfupHbzgh3GAJsf6SMWM\nx/qrH7uNnSLqfYdHntwDq90TZ7gnQD4F9bQnqgwZz3PDYK42ZmieqAno1LDg6E59\nvfwl+SdSOMgsqQH+sQP8Ml8jFa7xS4oPaKRxGxJF9OaJN22ytOm6D/xQywN11CvQ\n2uRxjTY9klDDn5i5H6hBQhSCrOy9I9zKehcm0INSRoEuYJiGtaL+E1GOaykOHSuf\njBE2hOjXU/QIZ+VlI8d6KHvxZkSNEVQLsw3Knx5HgQKBgQDOgF+EJU/EhyV8tS+v\nyopBcM68fYhy6KCMV1qezKDdEcemkmglpnlM7q4FuT/RPmhfcTIgyCgVE7hzvvev\nDrf2phexmsvchOCjzyKr0hFdcTE850tXfE68mIQj+WcSBuDtfMUOuAwWDEWV3eVP\nqdoay/Wy+fsUO7fKOLMSU4eFsQKBgQC/EW+DIiIvwqLPaitXSXoDFY7f4PgHy/yh\n81ylaNVNKtQp2tXY5R4ZOZePHEZ9ItHPO1ebIaMpgXEwRsHm1yR8jFSVJcv1L1qY\n6+gD1Ir7lEq/2g/pgPJEtHVpqLbl5ZnsqfFWufVnYyFoQsLX2Axi1NK52SOhwFc8\n9bMInvTW3wKBgCr86GVvCwMDi1dBtLKovE1ROYhdrakWKk3s5W2HdblvuRtBATNN\nS5UrXsjMPq/FiR7NRr0yTb3NhCl8SL2Fl+BdxTLw4Z1/f/A576LLMVg9dx2RnMqS\nkyWJroB6q+1Bx1NJFRCyWbnBRj8jmVgTKNdJPFXM2mrk36bWVNjs0JqRAoGAPFrn\nnMbFgcy73UUuV65QKnU+4p2P+/aF4Sqc02tgJbYnuujzsEX/0fwNUhmecpzzJcEb\nFVf00IGhHZzcV20Si31QoqSD3vmMZs3uRnd3R606R4w8hohC/0z54dx3mfuDOe0c\n3UZ0rKn1vZeJMOGAWB/eSPK8fLXjWNBMM6bytIUCgYEAye45AHBtZ/QYjbs7A+d3\nEElcOJaiqG5xBnctrgkDiPJld6j86NWMhCF6HYK2GUWjsb4De8+vjXKW0Klirjzb\nBa2ePCZ12pF9G+1fJQcz0BRjkGp9rIxKlgFgLi3t87MTM3SrUJBFbFBGLmBLC1wk\nFHeKmplazma7z5syYi9FUR8=\n-----END PRIVATE KEY-----\n",
+  "client_email": "sprinkle-nadar-play-console@sprinkle-nadar-app.iam.gserviceaccount.com",
+  "client_id": "106021464981149299217",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sprinkle-nadar-play-console%40sprinkle-nadar-app.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

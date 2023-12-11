@@ -6,6 +6,7 @@ import uuid from 'react-native-uuid'
 
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
+import { IDesigns } from '../../../constant/types'
 
 const { height, width } = Dimensions.get('window')
 
@@ -21,9 +22,10 @@ interface IFlowThreeProps {
       originalImage: string
     }
   }
+  designs: IDesigns[] | undefined
 }
 
-const FlowThree: React.FC<IFlowThreeProps> = ({ color, isImageOrText }) => {
+const FlowThree: React.FC<IFlowThreeProps> = ({ color, isImageOrText, designs }) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
@@ -38,19 +40,25 @@ const FlowThree: React.FC<IFlowThreeProps> = ({ color, isImageOrText }) => {
         isMounted.current = true
         const tempUid = uuid.v4().toString()
         const docRef = doc(db, 'ModelsMidlevel', tempUid)
-        await setDoc(docRef, {
-          uid: tempUid,
-          skin: avatar?.skinTone,
-          gender: avatar?.gender,
-          color,
-        })
+        const docObj: any = { uid: tempUid, skin: avatar?.skinTone, gender: avatar?.gender, color }
+
+        if (isImageOrText.designs.originalImage) {
+          designs?.forEach((f) => {
+            const spottedImage = f.originalImages.find((f) => f.colorCode === color)
+            if (spottedImage) {
+              docObj.image = spottedImage.url
+            }
+          })
+        }
+
+        await setDoc(docRef, docObj)
 
         setUid(tempUid)
       } catch (error) {
         console.log(error)
       }
     }
-  }, [color])
+  }, [color, isImageOrText])
 
   const handleUpdateImageAndText = useCallback(async () => {
     if (!isImageOrText.designs.originalImage || !uid) return

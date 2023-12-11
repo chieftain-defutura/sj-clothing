@@ -6,6 +6,7 @@ import uuid from 'react-native-uuid'
 
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
+import { IDesigns } from '../../../constant/types'
 
 const { height, width } = Dimensions.get('window')
 
@@ -21,9 +22,10 @@ interface IFlowTwoProps {
       originalImage: string
     }
   }
+  designs: IDesigns[] | undefined
 }
 
-const FlowTwo: React.FC<IFlowTwoProps> = ({ color, isImageOrText }) => {
+const FlowTwo: React.FC<IFlowTwoProps> = ({ color, isImageOrText, designs }) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
@@ -33,39 +35,37 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({ color, isImageOrText }) => {
   const avatar = userStore((state) => state.avatar)
 
   const handleSetUid = useCallback(async () => {
-    if (!isMounted.current) {
-      try {
-        isMounted.current = true
-        const tempUid = uuid.v4().toString()
-        const docRef = doc(db, 'ModelsMidlevel', tempUid)
-        await setDoc(docRef, {
-          uid: tempUid,
-          skin: avatar?.skinTone,
-          gender: avatar?.gender,
-          color,
-        })
-
-        setUid(tempUid)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }, [color])
-
-  const handleUpdateImageAndText = useCallback(async () => {
-    if (!isImageOrText.designs.originalImage || !uid) return
+    // if (!isMounted.current) {
     try {
-      const docRef = doc(db, 'ModelsMidlevel', uid)
-      await updateDoc(docRef, { image: isImageOrText.designs.originalImage })
+      isMounted.current = true
+      const tempUid = uuid.v4().toString()
+      const docRef = doc(db, 'ModelsMidlevel', tempUid)
+
+      const docObj: any = { uid: tempUid, skin: avatar?.skinTone, gender: avatar?.gender, color }
+
+      if (isImageOrText.designs.originalImage) {
+        designs?.forEach((f) => {
+          const spottedImage = f.originalImages.find((f) => f.colorCode === color)
+          if (spottedImage) {
+            docObj.image = spottedImage.url
+          }
+        })
+      }
+
+      console.log(tempUid)
+      console.log(docObj)
+      await setDoc(docRef, docObj)
+
+      setUid(tempUid)
     } catch (error) {
       console.log(error)
     }
-  }, [isImageOrText])
+    // }
+  }, [color, isImageOrText])
 
   useEffect(() => {
     handleSetUid()
-    handleUpdateImageAndText()
-  }, [handleSetUid, handleUpdateImageAndText])
+  }, [handleSetUid])
 
   const handleLayout = () => {
     if (elementRef.current) {
@@ -93,7 +93,7 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({ color, isImageOrText }) => {
           <ActivityIndicator size='large' color={'#8C73CB'} />
         </View>
       )}
-      {uid && pageY && elementHeight && (
+      {Boolean(uid) && Boolean(pageY) && Boolean(elementHeight) && (
         <WebView
           style={{
             backgroundColor: 'transparent',

@@ -53,8 +53,6 @@ const Medium = () => {
   const [focus, setFocus] = useState(false)
   const [openModal, setOpenModal] = useState(false)
 
-  console.log(uid)
-
   //data
   const [data, setData] = useState<IMidlevel[]>()
   const [designs, setDesigns] = useState<IDesigns[]>()
@@ -258,6 +256,7 @@ const Medium = () => {
       )
     }
   }
+
   useEffect(() => {
     handleImageClick()
 
@@ -347,23 +346,22 @@ const Medium = () => {
   //   }
   // }, [isSize])
 
-  const handleUpdateImageAndText = useCallback(async () => {
-    if (!tempIsImageOrText.designs.originalImage || !uid) return
-    try {
-      const docRef = doc(db, 'ModelsMidlevel', uid)
-      await updateDoc(docRef, { image: tempIsImageOrText.designs.originalImage })
-    } catch (error) {
-      console.log(error)
-    }
-  }, [tempIsImageOrText])
+  // const handleUpdateImageAndText = useCallback(async () => {
+  //   if (!tempIsImageOrText.designs.originalImage || !uid) return
+  //   try {
+  //     const docRef = doc(db, 'ModelsMidlevel', uid)
+  //     await updateDoc(docRef, { image: tempIsImageOrText.designs.originalImage })
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }, [tempIsImageOrText])
 
   useEffect(() => {
     handleSetUid()
     handleUpdateColor()
     // handleUpdateSize()
-    handleUpdateImageAndText()
     // handleUpdateUid()
-  }, [handleSetUid, handleUpdateColor, handleUpdateImageAndText])
+  }, [handleSetUid, handleUpdateColor])
 
   useEffect(() => {
     const Filtereddata = data?.find(
@@ -521,9 +519,9 @@ const Medium = () => {
           </View>
 
           {isSteps === 5 ? (
-            <FlowTwo color={isColor} isImageOrText={isImageOrText} />
+            <FlowTwo color={isColor} isImageOrText={tempIsImageOrText} designs={designs} />
           ) : isSteps === 6 ? (
-            <FlowThree color={isColor} isImageOrText={isImageOrText} />
+            <FlowThree color={isColor} isImageOrText={isImageOrText} designs={designs} />
           ) : (
             <FlowOne uid={uid} steps={isSteps} />
           )}
