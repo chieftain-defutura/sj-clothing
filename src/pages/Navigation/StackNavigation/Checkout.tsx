@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, Pressable, StyleSheet, Alert } from 'react-native'
+import { View, Pressable, StyleSheet, Alert, TouchableHighlight, Dimensions } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
 import { PlatformPay, usePlatformPay, useStripe } from '@stripe/stripe-react-native'
@@ -26,6 +26,8 @@ import { ICheckout } from '../../../constant/types'
 import GiftIcon from '../../../assets/icons/GiftIcon'
 import GiftOptions from './GiftOptions'
 import { useNavigation } from '@react-navigation/native'
+
+const { width } = Dimensions.get('window')
 
 interface IDeliveryfees {
   Continents: string
@@ -395,28 +397,38 @@ const Checkout: React.FC<ICheckout> = ({
                 </HomeFlexContent>
 
                 <PhonepeWrapper
-                  onPressIn={() => setGiftOptionPressed(true)}
-                  onPressOut={() => setGiftOptionPressed(false)}
+                  activeOpacity={0.6}
+                  underlayColor='rgba(70, 45, 133, 0.1)'
+                  onPress={() => setOpengift(true)}
                   style={{
                     paddingHorizontal: 36,
                     paddingVertical: 17,
-                    backgroundColor: giftOptionPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                   }}
                 >
-                  <GiftContent onPress={() => setOpengift(true)}>
-                    <LinearGradient
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 0 }}
-                      colors={['#462D85', '#DB00FF']}
-                      style={styles.gradientColor}
-                    >
-                      <GiftIcon width={16} height={16} />
-                    </LinearGradient>
-                    <GiftText allowFontScaling={false}>Gift options available</GiftText>
-                  </GiftContent>
-                  <Pressable onPress={() => setOpengift(true)}>
-                    <ChevronLeft width={16} height={16} />
-                  </Pressable>
+                  <View
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      width: width / 1.2,
+                    }}
+                  >
+                    <GiftContent>
+                      <LinearGradient
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        colors={['#462D85', '#DB00FF']}
+                        style={styles.gradientColor}
+                      >
+                        <GiftIcon width={16} height={16} />
+                      </LinearGradient>
+                      <GiftText allowFontScaling={false}>Gift options available</GiftText>
+                    </GiftContent>
+                    <View style={{ marginRight: 10 }}>
+                      <ChevronLeft width={16} height={16} />
+                    </View>
+                  </View>
                 </PhonepeWrapper>
 
                 {/* <PhonepeWrapper style={{ borderTopWidth: 0 }}>
@@ -592,7 +604,7 @@ const HomeText = styled.Text`
   margin-bottom: 8px;
 `
 
-const PhonepeWrapper = styled.Pressable`
+const PhonepeWrapper = styled.TouchableHighlight`
   border-bottom-color: ${COLORS.strokeClr};
   border-bottom-width: 1px;
   border-top-color: ${COLORS.strokeClr};
@@ -616,7 +628,7 @@ const GiftWrapper = styled.View`
   padding-vertical: 16px;
 `
 
-const GiftContent = styled.Pressable`
+const GiftContent = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;

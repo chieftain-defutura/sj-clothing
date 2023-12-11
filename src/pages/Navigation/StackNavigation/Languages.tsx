@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.ArvoRegular,
     color: COLORS.textTertiaryClr,
     paddingHorizontal: 12,
-    paddingVertical: 7,
+    paddingVertical: 8,
   },
 })
 
@@ -283,5 +283,5 @@ const SelectListText = styled.Text`
   font-family: ${FONT_FAMILY.ArvoRegular};
   color: ${COLORS.textTertiaryClr};
   padding-horizontal: 12px;
-  padding-vertical: 7px;
+  padding-vertical: 10px;
 `
