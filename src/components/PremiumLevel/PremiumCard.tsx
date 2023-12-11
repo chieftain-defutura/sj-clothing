@@ -60,6 +60,7 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
                       uri: data.productImage,
                     }}
                     style={{ width: width / 2.6, height: height / 4, resizeMode: 'cover' }}
+                    alt={data.productName}
                   />
                 </ImageContainer>
               </SharedElement>

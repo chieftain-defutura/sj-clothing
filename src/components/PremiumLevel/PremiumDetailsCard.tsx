@@ -218,6 +218,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                         borderRadius: 6,
                         marginLeft: 26,
                       }}
+                      alt={data.productName}
                     />
                   </TouchableOpacity>
                 </Animated.View>
@@ -240,11 +241,17 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'flex-start',
-                        width: width / 4,
                       }}
                     >
                       <ProductText allowFontScaling={false}>product</ProductText>
-                      <ProductName allowFontScaling={false}>{data.productName}</ProductName>
+                      <ProductName
+                        style={{ width: width / 4 }}
+                        allowFontScaling={false}
+                        numberOfLines={3}
+                        ellipsizeMode='tail'
+                      >
+                        {data.productName}
+                      </ProductName>
                     </View>
 
                     <View
@@ -337,7 +344,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                       <ImageWrapper onPress={() => setOpenImage(false)}>
                         <Image
                           source={require('../../assets/images/fabric.jpg')}
-                          alt=''
+                          alt={data.productName}
                           style={{ width: 400, height: 300 }}
                         />
                       </ImageWrapper>

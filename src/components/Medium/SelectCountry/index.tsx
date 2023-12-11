@@ -40,7 +40,7 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
 }) => {
   const { t } = useTranslation('midlevel')
   const avatar = userStore((state) => state.avatar)
-
+  const [isPressed, setIsPressed] = useState<number | null>(null)
   const [country, setCountry] = useState<
     {
       country: string
@@ -89,9 +89,6 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
             flexDirection: 'row',
             justifyContent: 'center',
             gap: 24,
-            // borderBottomColor: COLORS.borderClr,
-            // borderBottomWidth: 1,
-            // paddingBottom: 25,
             paddingTop: 15,
           }}
         >
@@ -125,8 +122,11 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
                 <Pressable
                   key={index}
                   onPress={() => handleSelectCountry(item.country)}
+                  onPressIn={() => setIsPressed(index)}
+                  onPressOut={() => setIsPressed(null)}
                   style={{
-                    paddingVertical: 4,
+                    padding: 4,
+                    backgroundColor: isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                   }}
                 >
                   <Text
@@ -162,8 +162,11 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
                 <Pressable
                   key={index}
                   onPress={() => handleSelectCountry(item.country)}
+                  onPressIn={() => setIsPressed(index)}
+                  onPressOut={() => setIsPressed(null)}
                   style={{
-                    paddingVertical: 4,
+                    padding: 4,
+                    backgroundColor: isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                   }}
                 >
                   <Text

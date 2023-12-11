@@ -114,6 +114,7 @@ const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
                     <Image
                       style={{ width: 50, height: 72, objectFit: 'contain' }}
                       source={require('../../../assets/images/front-design.png')}
+                      alt='post-add-img'
                     />
                   </View>
 
@@ -154,6 +155,7 @@ const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
                     <Image
                       style={{ width: 50, height: 72, objectFit: 'contain' }}
                       source={require('../../../assets/images/front-design.png')}
+                      alt='post-add-img'
                     />
                   </View>
 
@@ -195,6 +197,7 @@ const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
                     <Image
                       style={{ width: 50, height: 72, objectFit: 'contain' }}
                       source={require('../../../assets/images/left-arm-design.png')}
+                      alt='post-add-img'
                     />
                   </View>
 
@@ -236,6 +239,7 @@ const PostAddImageOrText: React.FC<IPostAddImageOrText> = ({
                     <Image
                       style={{ width: 50, height: 72, objectFit: 'contain' }}
                       source={require('../../../assets/images/left-arm.png')}
+                      alt='post-add-img'
                     />
                   </View>
 

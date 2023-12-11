@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, Pressable, StyleSheet, Alert } from 'react-native'
+import { View, Pressable, StyleSheet, Alert, TouchableHighlight, Dimensions } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
 import { PlatformPay, usePlatformPay, useStripe } from '@stripe/stripe-react-native'
@@ -26,6 +26,8 @@ import { ICheckout } from '../../../constant/types'
 import GiftIcon from '../../../assets/icons/GiftIcon'
 import GiftOptions from './GiftOptions'
 import { useNavigation } from '@react-navigation/native'
+
+const { width } = Dimensions.get('window')
 
 interface IDeliveryfees {
   Continents: string
@@ -68,10 +70,10 @@ const Checkout: React.FC<ICheckout> = ({
   const [addr, setAddr] = useState<AddressData | null>(null)
   const [cartItems, setCartItems] = useState()
   const [isLoading, setIsLoading] = useState(false)
-  // const [orderData, setOrderData] = useState<ICheckout | null>(null)
+  const [addressPressed, setAddressPressed] = useState(false)
+  const [giftOptionPressed, setGiftOptionPressed] = useState(false)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
   const rate = userStore((state) => state.rate)
-
   const user = userStore((state) => state.user)
   const currency = userStore((state) => state.currency)
   const [openGift, setOpengift] = useState(false)
@@ -367,46 +369,66 @@ const Checkout: React.FC<ICheckout> = ({
               />
 
               <CartPageContent>
-                <HomeFlexContent onPress={() => navigation.navigate('Location')}>
+                <HomeFlexContent
+                  onPressIn={() => setAddressPressed(true)}
+                  onPressOut={() => setAddressPressed(false)}
+                  onPress={() => navigation.navigate('Location')}
+                  style={{
+                    paddingHorizontal: 36,
+                    paddingVertical: 6,
+                    backgroundColor: addressPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                  }}
+                >
                   {addr ? (
-                    <Pressable>
-                      <View>
-                        <HomeText allowFontScaling={false}>{addr.saveAddressAs}</HomeText>
-                        <HomeDescription allowFontScaling={false}>
-                          {addr.name}, {addr.phoneNo}, {addr.floor}, {addr.addressOne},{' '}
-                          {addr.addressTwo}, {addr.city}, {addr.state}, {addr.country},{' '}
-                          {addr.pinCode}.
-                        </HomeDescription>
-                      </View>
-                    </Pressable>
+                    <View>
+                      <HomeText allowFontScaling={false}>{addr.saveAddressAs}</HomeText>
+                      <HomeDescription allowFontScaling={false}>
+                        {addr.name}, {addr.phoneNo}, {addr.floor}, {addr.addressOne},{' '}
+                        {addr.addressTwo}, {addr.city}, {addr.state}, {addr.country}, {addr.pinCode}
+                        .
+                      </HomeDescription>
+                    </View>
                   ) : (
                     <View style={{ paddingVertical: 12 }}>
-                      <Pressable>
-                        <HomeText allowFontScaling={false}>Please add a address first</HomeText>
-                      </Pressable>
+                      <HomeText allowFontScaling={false}>Please add a address first</HomeText>
                     </View>
                   )}
-                  <Pressable>
-                    <ChevronLeft width={16} height={16} />
-                  </Pressable>
+                  <ChevronLeft width={16} height={16} />
                 </HomeFlexContent>
 
-                <PhonepeWrapper>
-                  <GiftContent onPress={() => setOpengift(true)}>
-                    <LinearGradient
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 0 }}
-                      colors={['#462D85', '#DB00FF']}
-                      style={styles.gradientColor}
-                    >
-                      <GiftIcon width={16} height={16} />
-                    </LinearGradient>
-                    <GiftText allowFontScaling={false}>Gift options available</GiftText>
-                  </GiftContent>
-
-                  <Pressable>
-                    <ChevronLeft width={16} height={16} />
-                  </Pressable>
+                <PhonepeWrapper
+                  activeOpacity={0.6}
+                  underlayColor='rgba(70, 45, 133, 0.1)'
+                  onPress={() => setOpengift(true)}
+                  style={{
+                    paddingHorizontal: 36,
+                    paddingVertical: 17,
+                  }}
+                >
+                  <View
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      width: width / 1.2,
+                    }}
+                  >
+                    <GiftContent>
+                      <LinearGradient
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        colors={['#462D85', '#DB00FF']}
+                        style={styles.gradientColor}
+                      >
+                        <GiftIcon width={16} height={16} />
+                      </LinearGradient>
+                      <GiftText allowFontScaling={false}>Gift options available</GiftText>
+                    </GiftContent>
+                    <View style={{ marginRight: 4 }}>
+                      <ChevronLeft width={16} height={16} />
+                    </View>
+                  </View>
                 </PhonepeWrapper>
 
                 {/* <PhonepeWrapper style={{ borderTopWidth: 0 }}>
@@ -420,7 +442,7 @@ const Checkout: React.FC<ICheckout> = ({
                   </Pressable>
                 </PhonepeWrapper> */}
 
-                <Content>
+                <Content style={{ paddingHorizontal: 36, paddingVertical: 22 }}>
                   <DeliveryWrapper>
                     <DeliveryContent>
                       <Pressable>
@@ -437,7 +459,7 @@ const Checkout: React.FC<ICheckout> = ({
                     </INRText>
                   </DeliveryWrapper>
                 </Content>
-                <TotalContent>
+                <TotalContent style={{ paddingHorizontal: 36 }}>
                   <TotalText allowFontScaling={false}>Total</TotalText>
                   <TotalValue allowFontScaling={false}>
                     {offerPrice
@@ -582,7 +604,7 @@ const HomeText = styled.Text`
   margin-bottom: 8px;
 `
 
-const PhonepeWrapper = styled.Pressable`
+const PhonepeWrapper = styled.TouchableHighlight`
   border-bottom-color: ${COLORS.strokeClr};
   border-bottom-width: 1px;
   border-top-color: ${COLORS.strokeClr};
@@ -606,7 +628,7 @@ const GiftWrapper = styled.View`
   padding-vertical: 16px;
 `
 
-const GiftContent = styled.TouchableOpacity`
+const GiftContent = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -629,7 +651,7 @@ const HomeDescription = styled.Text`
   width: 100%;
 `
 
-const GoBackArrowContent = styled.Pressable`
+const GoBackArrowContent = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -645,8 +667,8 @@ const CartText = styled.Text`
 `
 
 const CartPageContent = styled.View`
-  padding-vertical: 16px;
-  padding-horizontal: 36px;
+  /* padding-vertical: 16px; */
+  /* padding-horizontal: 36px; */
 `
 
 const styles = StyleSheet.create({

@@ -319,7 +319,7 @@ const SignupModal: React.FC<SignupModalProps> = ({
                   </View>
                   <CustomButton
                     variant='primary'
-                    text={isLoading ? 'sending...' : 'Send OTP'}
+                    text={isLoading ? 'Sending...' : 'Send OTP'}
                     onPress={() => handleSubmit()}
                     fontFamily='Arvo-Regular'
                     disabled={!isChecked || isLoading}

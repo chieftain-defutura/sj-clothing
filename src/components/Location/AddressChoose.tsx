@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native'
+import { View, StyleSheet, Pressable, Dimensions } from 'react-native'
 import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components/native'
 import { RadioButton } from 'react-native-paper'

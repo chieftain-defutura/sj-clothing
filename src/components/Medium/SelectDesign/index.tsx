@@ -1,4 +1,13 @@
-import { FlatList, Pressable, StyleSheet, Text, View, Image, Dimensions } from 'react-native'
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native'
 import React from 'react'
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
@@ -87,9 +96,9 @@ const SelectDesign: React.FC<ISelectDesign> = ({
             {t('Select Design')}
           </Text>
         </View>
-        <Pressable onPress={() => setOpenDesign(false)}>
+        <TouchableOpacity onPress={() => setOpenDesign(false)}>
           <CloseIcon width={20} height={20} />
-        </Pressable>
+        </TouchableOpacity>
       </View>
 
       <View style={{ display: 'flex', flexDirection: 'row', gap: 3, alignItems: 'center' }}>
@@ -219,6 +228,7 @@ const SelectDesign: React.FC<ISelectDesign> = ({
                 <Image
                   style={{ width: 100, height: 100, objectFit: 'cover' }}
                   source={{ uri: item.Images }}
+                  alt='select-img'
                 />
               </Pressable>
             </View>

@@ -79,7 +79,7 @@ const MyPosts: React.FC<IMyPosts> = ({ navigation }) => {
                     key={subIndex}
                     style={{ width: halfWidth, height: 174, marginRight: 4 }}
                   >
-                    <TShirtImage source={item.image} />
+                    <TShirtImage source={item.image} alt='my-post-img' />
                   </GiftImage>
                 ))}
               </CardPairContainer>

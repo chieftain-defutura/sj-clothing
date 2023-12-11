@@ -136,7 +136,7 @@ const Currency = () => {
           }}
         >
           <Text allowFontScaling={false} style={styles.title}>
-            Choose your Currency
+            Choose Your Currency
           </Text>
           <CurrencyGrayIcon width={190} height={190} />
           <View style={{ width: 238, paddingTop: 14 }}>
@@ -210,32 +210,41 @@ const Currency = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding: 25,
           }}
         >
-          <GoBackArrowContent
-            onPress={() => {
-              navigation.goBack()
+          <View
+            style={{
+              display: 'flex',
+              alignSelf: 'flex-start',
+              flexDirection: 'row',
+              marginTop: 10,
+              marginLeft: 26,
+              gap: 8,
             }}
-            onPressIn={() => setIsPressed(true)}
-            onPressOut={() => setIsPressed(false)}
           >
-            {() => (
-              <IconHoverClr
-                style={{
-                  backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
-                }}
-              >
-                <IconHoverPressable>
-                  <LeftArrow width={24} height={24} style={{ marginBottom: -44 }} />
-                </IconHoverPressable>
-              </IconHoverClr>
-            )}
-            {/* <LeftArrow width={24} height={24} /> */}
-          </GoBackArrowContent>
-          <Text allowFontScaling={false} style={styles.title}>
-            Choose your Currency
-          </Text>
+            <GoBackArrowContent
+              onPress={() => {
+                navigation.goBack()
+              }}
+              onPressIn={() => setIsPressed(true)}
+              onPressOut={() => setIsPressed(false)}
+            >
+              {() => (
+                <IconHoverClr
+                  style={{
+                    backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
+                  }}
+                >
+                  <IconHoverPressable>
+                    <LeftArrow width={24} height={24} style={{ marginBottom: -44 }} />
+                  </IconHoverPressable>
+                </IconHoverClr>
+              )}
+            </GoBackArrowContent>
+            <Text allowFontScaling={false} style={[styles.title, { fontSize: 28 }]}>
+              Choose Your Currency
+            </Text>
+          </View>
           <CurrencyGrayIcon width={190} height={190} />
           <View style={{ width: 238, paddingTop: 14 }}>
             <SelectContent onPress={toggleDropdownSizes}>

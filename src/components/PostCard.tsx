@@ -139,6 +139,7 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
                         width: width - 16,
                         resizeMode: 'cover',
                       }}
+                      alt='postCard-reels-img'
                     />
                     <LinearGradient
                       start={{ x: 0, y: 0 }}

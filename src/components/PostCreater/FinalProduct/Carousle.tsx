@@ -46,12 +46,13 @@ const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo }) => {
       activeDotStyle={{ backgroundColor: COLORS.textSecondaryClr, width: 12, height: 4 }}
     >
       <View style={styles.slide1}>
-        <Image source={require('../../../assets/images/plain-shirt.png')} />
+        <Image source={require('../../../assets/images/plain-shirt.png')} alt='carousle-img' />
       </View>
       <View style={styles.slide2}>
         <Image
           style={{ objectFit: 'cover', width: 400, height: 400 }}
           source={require('../../../assets/images/monkey-nft.png')}
+          alt='carousle-img'
         />
       </View>
       <View style={styles.slide3}>

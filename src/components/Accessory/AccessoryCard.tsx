@@ -45,6 +45,7 @@ const AccessIAccessoryCard: React.FC<IAccessoryCard> = ({ data, setOpenCard, set
                       uri: data.productImage,
                     }}
                     style={{ width: width / 2.6, height: height / 4, resizeMode: 'contain' }}
+                    alt={data.productName}
                   />
                 </ImageContainer>
               </SharedElement>

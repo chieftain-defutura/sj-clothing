@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { FlatList } from 'react-native-gesture-handler'
 import { Pressable, Text, View } from 'react-native'
@@ -22,6 +22,7 @@ const SelectStyle: React.FC<ISelectStyle> = ({
   setSelectedStyle,
 }) => {
   const { t } = useTranslation('midlevel')
+  const [isPressed, setIsPressed] = useState<number | null>(null)
   const avatar = userStore((state) => state.avatar)
   const handleSelect = (title: string) => {
     if (title === 'There is no styles available right now') {
@@ -89,8 +90,11 @@ const SelectStyle: React.FC<ISelectStyle> = ({
                 <Pressable
                   key={index}
                   onPress={() => handleSelect(item.styles)}
+                  onPressIn={() => setIsPressed(index)}
+                  onPressOut={() => setIsPressed(null)}
                   style={{
-                    paddingVertical: 4,
+                    padding: 4,
+                    backgroundColor: isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                   }}
                 >
                   {item.styles ? (
@@ -139,8 +143,11 @@ const SelectStyle: React.FC<ISelectStyle> = ({
                 <Pressable
                   key={index}
                   onPress={() => handleSelect(item.styles)}
+                  onPressIn={() => setIsPressed(index)}
+                  onPressOut={() => setIsPressed(null)}
                   style={{
-                    paddingVertical: 4,
+                    padding: 4,
+                    backgroundColor: isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                   }}
                 >
                   {item.styles ? (

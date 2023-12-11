@@ -36,6 +36,7 @@ const AboutUs: React.FC<IAboutUs> = ({ navigation }) => {
               <Image
                 source={require('../../../../assets/images/AccountImage/aboutusImg.png')}
                 style={{ width: width - 32, height: 218, resizeMode: 'cover', borderRadius: 10 }}
+                alt='aboutus-img'
               />
             </View>
             <View style={{ padding: 16 }}>
@@ -69,8 +70,9 @@ const AboutUs: React.FC<IAboutUs> = ({ navigation }) => {
 
 const ScrollViewContent = styled.ScrollView`
   height: 100%;
+  padding-horizontal: 6px;
 `
-const GoBackArrowContent = styled.Pressable`
+const GoBackArrowContent = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -91,7 +93,6 @@ const Paragraph = styled.Text`
   color: ${COLORS.SecondaryTwo};
   font-size: 12px;
   line-height: 18px;
-  text-align: justify;
 `
 
 export default AboutUs

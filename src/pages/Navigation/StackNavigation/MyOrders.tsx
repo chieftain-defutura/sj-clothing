@@ -192,7 +192,7 @@ const OrderCard: React.FC<IOrderCard> = ({
           }}
         >
           <View>
-            <TShirtImage source={{ uri: data.productImage }} />
+            <TShirtImage source={{ uri: data.productImage }} alt={data.productName} />
           </View>
           <View>
             <ProductWrapper>
@@ -234,7 +234,7 @@ const ScrollViewContent = styled.ScrollView`
   height: 100%;
 `
 
-const GoBackArrowContent = styled.Pressable`
+const GoBackArrowContent = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;

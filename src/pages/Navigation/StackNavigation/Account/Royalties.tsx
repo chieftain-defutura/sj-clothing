@@ -50,7 +50,7 @@ const Royalties: React.FC<IRoyalties> = ({ navigation }) => {
               {RoyaltiesData.map((f, index) => (
                 <FlexBox key={index}>
                   <View>
-                    <TShirtImg source={f.image} />
+                    <TShirtImg source={f.image} alt={f.product} />
                   </View>
                   <View>
                     <View>

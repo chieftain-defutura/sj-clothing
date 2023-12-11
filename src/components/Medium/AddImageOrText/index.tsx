@@ -1,9 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LinearGradient } from 'expo-linear-gradient'
-import { StyleSheet, Text, View, Pressable } from 'react-native'
+import { Text, View, Pressable } from 'react-native'
 import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
-
 import { IMidlevel } from '../../../constant/types'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
 
@@ -43,10 +42,18 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
   setImageOrText,
 }) => {
   const { t } = useTranslation('midlevel')
+  const [isPressed, setIsPressed] = useState(false)
+  const [backedPressed, setBackedPressed] = useState(false)
+  const [rightPressed, setRightPressed] = useState(false)
+  const [leftPressed, setLeftPressed] = useState(false)
+
   return (
     <LinearGradient
       colors={dropDownGradient}
-      style={{ borderBottomRightRadius: 50, borderBottomLeftRadius: 50 }}
+      style={{
+        borderBottomRightRadius: 50,
+        borderBottomLeftRadius: 50,
+      }}
     >
       {isDropDown && (
         <Animated.View>
@@ -64,7 +71,6 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
               allowFontScaling={false}
               style={{
                 textAlign: 'center',
-
                 paddingTop: 20,
                 color: COLORS.textClr,
                 fontSize: 14,
@@ -87,6 +93,8 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
             >
               {data.frontSide && (
                 <Pressable
+                  onPressIn={() => setIsPressed(true)}
+                  onPressOut={() => setIsPressed(false)}
                   onPress={() => {
                     setOpenDesign(true),
                       setDropDown(false),
@@ -100,6 +108,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                     flexDirection: 'column',
                     alignItems: 'center',
                     gap: 4,
+                    paddingBottom: 12,
                   }}
                 >
                   {/* <View
@@ -126,7 +135,8 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                           ? COLORS.textSecondaryClr
                           : COLORS.iconsNormalClr,
                       fontFamily: 'Gilroy-Medium',
-                      paddingBottom: 12,
+                      padding: 4,
+                      backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                     }}
                   >
                     Front
@@ -135,6 +145,8 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
               )}
               {data.backSide && (
                 <Pressable
+                  onPressIn={() => setBackedPressed(true)}
+                  onPressOut={() => setBackedPressed(false)}
                   onPress={() => {
                     setOpenDesign(true),
                       setDropDown(false),
@@ -148,6 +160,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                     flexDirection: 'column',
                     alignItems: 'center',
                     gap: 4,
+                    paddingBottom: 12,
                   }}
                 >
                   {/* <View
@@ -173,7 +186,8 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                           ? COLORS.textSecondaryClr
                           : COLORS.iconsNormalClr,
                       fontFamily: 'Gilroy-Medium',
-                      paddingBottom: 12,
+                      backgroundColor: backedPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                      padding: 4,
                     }}
                   >
                     Back
@@ -182,6 +196,8 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
               )}
               {data.rightSide && (
                 <Pressable
+                  onPressIn={() => setRightPressed(true)}
+                  onPressOut={() => setRightPressed(false)}
                   onPress={() => {
                     setOpenDesign(true),
                       setDropDown(false),
@@ -195,6 +211,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                     flexDirection: 'column',
                     alignItems: 'center',
                     gap: 4,
+                    paddingBottom: 12,
                   }}
                 >
                   {/* <View
@@ -221,7 +238,8 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                           ? COLORS.textSecondaryClr
                           : COLORS.iconsNormalClr,
                       fontFamily: 'Gilroy-Medium',
-                      paddingBottom: 12,
+                      padding: 4,
+                      backgroundColor: rightPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                     }}
                   >
                     Right arm
@@ -230,6 +248,8 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
               )}
               {data.leftSide && (
                 <Pressable
+                  onPressIn={() => setLeftPressed(true)}
+                  onPressOut={() => setLeftPressed(false)}
                   onPress={() => {
                     setOpenDesign(true),
                       setDropDown(false),
@@ -243,6 +263,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                     flexDirection: 'column',
                     alignItems: 'center',
                     gap: 4,
+                    paddingBottom: 12,
                   }}
                 >
                   {/* <View
@@ -269,7 +290,8 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                           ? COLORS.textSecondaryClr
                           : COLORS.iconsNormalClr,
                       fontFamily: 'Gilroy-Medium',
-                      paddingBottom: 12,
+                      padding: 4,
+                      backgroundColor: leftPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                     }}
                   >
                     Left arm
@@ -285,7 +307,3 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
 }
 
 export default AddImageOrText
-
-const styles = StyleSheet.create({
-  AddImageOrTextContainer: {},
-})

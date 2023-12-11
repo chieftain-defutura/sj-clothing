@@ -187,6 +187,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                       borderBottomLeftRadius: 50,
                       borderBottomRightRadius: 50,
                     }}
+                    alt='profile-img'
                   />
                 ) : user && profile ? (
                   <Image
@@ -197,15 +198,13 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                       borderBottomLeftRadius: 50,
                       borderBottomRightRadius: 50,
                     }}
+                    alt='profile-img'
                   />
                 ) : (
                   <NotUserIcon width={128} height={128} />
                 )}
               </NotUserContent>
-              <EditContent
-                onPress={() => handleLogin()}
-                // onPress={() => navigation.navigate('EditProfile')}
-              >
+              <EditContent onPress={() => handleLogin()}>
                 <LinearGradient
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
@@ -621,6 +620,7 @@ const styles = StyleSheet.create({
     color: COLORS.iconsHighlightClr,
     textAlign: 'center',
     marginTop: 8,
+    textTransform: 'capitalize',
     marginBottom: 10,
   },
   UserText: {
