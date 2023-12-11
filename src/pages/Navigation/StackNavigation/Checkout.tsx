@@ -68,10 +68,10 @@ const Checkout: React.FC<ICheckout> = ({
   const [addr, setAddr] = useState<AddressData | null>(null)
   const [cartItems, setCartItems] = useState()
   const [isLoading, setIsLoading] = useState(false)
-  // const [orderData, setOrderData] = useState<ICheckout | null>(null)
+  const [addressPressed, setAddressPressed] = useState(false)
+  const [giftOptionPressed, setGiftOptionPressed] = useState(false)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
   const rate = userStore((state) => state.rate)
-
   const user = userStore((state) => state.user)
   const currency = userStore((state) => state.currency)
   const [openGift, setOpengift] = useState(false)
@@ -367,31 +367,42 @@ const Checkout: React.FC<ICheckout> = ({
               />
 
               <CartPageContent>
-                <HomeFlexContent onPress={() => navigation.navigate('Location')}>
+                <HomeFlexContent
+                  onPressIn={() => setAddressPressed(true)}
+                  onPressOut={() => setAddressPressed(false)}
+                  onPress={() => navigation.navigate('Location')}
+                  style={{
+                    paddingHorizontal: 36,
+                    paddingVertical: 6,
+                    backgroundColor: addressPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                  }}
+                >
                   {addr ? (
-                    <Pressable>
-                      <View>
-                        <HomeText allowFontScaling={false}>{addr.saveAddressAs}</HomeText>
-                        <HomeDescription allowFontScaling={false}>
-                          {addr.name}, {addr.phoneNo}, {addr.floor}, {addr.addressOne},{' '}
-                          {addr.addressTwo}, {addr.city}, {addr.state}, {addr.country},{' '}
-                          {addr.pinCode}.
-                        </HomeDescription>
-                      </View>
-                    </Pressable>
+                    <View>
+                      <HomeText allowFontScaling={false}>{addr.saveAddressAs}</HomeText>
+                      <HomeDescription allowFontScaling={false}>
+                        {addr.name}, {addr.phoneNo}, {addr.floor}, {addr.addressOne},{' '}
+                        {addr.addressTwo}, {addr.city}, {addr.state}, {addr.country}, {addr.pinCode}
+                        .
+                      </HomeDescription>
+                    </View>
                   ) : (
                     <View style={{ paddingVertical: 12 }}>
-                      <Pressable>
-                        <HomeText allowFontScaling={false}>Please add a address first</HomeText>
-                      </Pressable>
+                      <HomeText allowFontScaling={false}>Please add a address first</HomeText>
                     </View>
                   )}
-                  <Pressable>
-                    <ChevronLeft width={16} height={16} />
-                  </Pressable>
+                  <ChevronLeft width={16} height={16} />
                 </HomeFlexContent>
 
-                <PhonepeWrapper>
+                <PhonepeWrapper
+                  onPressIn={() => setGiftOptionPressed(true)}
+                  onPressOut={() => setGiftOptionPressed(false)}
+                  style={{
+                    paddingHorizontal: 36,
+                    paddingVertical: 17,
+                    backgroundColor: giftOptionPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                  }}
+                >
                   <GiftContent onPress={() => setOpengift(true)}>
                     <LinearGradient
                       start={{ x: 0, y: 0 }}
@@ -403,8 +414,7 @@ const Checkout: React.FC<ICheckout> = ({
                     </LinearGradient>
                     <GiftText allowFontScaling={false}>Gift options available</GiftText>
                   </GiftContent>
-
-                  <Pressable>
+                  <Pressable onPress={() => setOpengift(true)}>
                     <ChevronLeft width={16} height={16} />
                   </Pressable>
                 </PhonepeWrapper>
@@ -420,7 +430,7 @@ const Checkout: React.FC<ICheckout> = ({
                   </Pressable>
                 </PhonepeWrapper> */}
 
-                <Content>
+                <Content style={{ paddingHorizontal: 36, paddingVertical: 22 }}>
                   <DeliveryWrapper>
                     <DeliveryContent>
                       <Pressable>
@@ -437,7 +447,7 @@ const Checkout: React.FC<ICheckout> = ({
                     </INRText>
                   </DeliveryWrapper>
                 </Content>
-                <TotalContent>
+                <TotalContent style={{ paddingHorizontal: 36 }}>
                   <TotalText allowFontScaling={false}>Total</TotalText>
                   <TotalValue allowFontScaling={false}>
                     {offerPrice
@@ -606,7 +616,7 @@ const GiftWrapper = styled.View`
   padding-vertical: 16px;
 `
 
-const GiftContent = styled.TouchableOpacity`
+const GiftContent = styled.Pressable`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -629,7 +639,7 @@ const HomeDescription = styled.Text`
   width: 100%;
 `
 
-const GoBackArrowContent = styled.Pressable`
+const GoBackArrowContent = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -645,8 +655,8 @@ const CartText = styled.Text`
 `
 
 const CartPageContent = styled.View`
-  padding-vertical: 16px;
-  padding-horizontal: 36px;
+  /* padding-vertical: 16px; */
+  /* padding-horizontal: 36px; */
 `
 
 const styles = StyleSheet.create({

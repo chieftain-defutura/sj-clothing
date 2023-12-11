@@ -70,8 +70,9 @@ const AboutUs: React.FC<IAboutUs> = ({ navigation }) => {
 
 const ScrollViewContent = styled.ScrollView`
   height: 100%;
+  padding-horizontal: 6px;
 `
-const GoBackArrowContent = styled.Pressable`
+const GoBackArrowContent = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -92,7 +93,6 @@ const Paragraph = styled.Text`
   color: ${COLORS.SecondaryTwo};
   font-size: 12px;
   line-height: 18px;
-  text-align: justify;
 `
 
 export default AboutUs

@@ -196,7 +196,7 @@ const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSear
   )
 }
 
-const GoBackArrowContent = styled.Pressable`
+const GoBackArrowContent = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;

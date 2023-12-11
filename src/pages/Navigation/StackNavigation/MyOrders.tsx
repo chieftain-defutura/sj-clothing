@@ -234,7 +234,7 @@ const ScrollViewContent = styled.ScrollView`
   height: 100%;
 `
 
-const GoBackArrowContent = styled.Pressable`
+const GoBackArrowContent = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;

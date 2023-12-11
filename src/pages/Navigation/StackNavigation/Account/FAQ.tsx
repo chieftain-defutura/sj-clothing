@@ -73,8 +73,9 @@ const FAQ: React.FC<IFAQ> = ({ navigation }) => {
 
 const ScrollViewContent = styled.ScrollView`
   height: 100%;
+  padding-horizontal: 6px;
 `
-const GoBackArrowContent = styled.Pressable`
+const GoBackArrowContent = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;

@@ -128,31 +128,41 @@ const Languages = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding: 25,
           }}
         >
-          <GoBackArrowContent
-            onPress={() => {
-              navigation.goBack()
+          <View
+            style={{
+              display: 'flex',
+              alignSelf: 'flex-start',
+              flexDirection: 'row',
+              marginTop: 10,
+              marginLeft: 26,
+              gap: 8,
             }}
-            onPressIn={() => setIsPressed(true)}
-            onPressOut={() => setIsPressed(false)}
           >
-            {() => (
-              <IconHoverClr
-                style={{
-                  backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
-                }}
-              >
-                <IconHoverPressable>
-                  <LeftArrow width={24} height={24} style={{ marginBottom: -44 }} />
-                </IconHoverPressable>
-              </IconHoverClr>
-            )}
-          </GoBackArrowContent>
-          <Text allowFontScaling={false} style={styles.title}>
-            {t('Choose Your Language')}
-          </Text>
+            <GoBackArrowContent
+              onPress={() => {
+                navigation.goBack()
+              }}
+              onPressIn={() => setIsPressed(true)}
+              onPressOut={() => setIsPressed(false)}
+            >
+              {() => (
+                <IconHoverClr
+                  style={{
+                    backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
+                  }}
+                >
+                  <IconHoverPressable>
+                    <LeftArrow width={24} height={24} style={{ marginBottom: -44 }} />
+                  </IconHoverPressable>
+                </IconHoverClr>
+              )}
+            </GoBackArrowContent>
+            <Text allowFontScaling={false} style={[styles.title, { fontSize: 28 }]}>
+              {t('Choose Your Language')}
+            </Text>
+          </View>
           <LanguageGrayIcon width={190} height={190} />
           <View style={{ width: 208, paddingTop: 14 }}>
             <SelectContent onPress={toggleDropdownSizes}>

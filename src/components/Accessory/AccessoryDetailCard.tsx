@@ -149,7 +149,14 @@ const AccessoryDetailsCard: React.FC<IAccessoryDetailsCard> = ({
                       }}
                     >
                       <ProductText allowFontScaling={false}>product</ProductText>
-                      <ProductName allowFontScaling={false}>{data.productName}</ProductName>
+                      <ProductName
+                        style={{ width: width / 4 }}
+                        allowFontScaling={false}
+                        numberOfLines={3}
+                        ellipsizeMode='tail'
+                      >
+                        {data.productName}
+                      </ProductName>
                     </View>
 
                     <View

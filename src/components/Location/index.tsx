@@ -261,7 +261,7 @@ const BtnText = styled.Text`
   color: #db00ff;
 `
 
-const GoBackArrowContent = styled.Pressable`
+const GoBackArrowContent = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;

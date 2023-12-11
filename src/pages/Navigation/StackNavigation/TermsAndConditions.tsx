@@ -166,12 +166,14 @@ const HeadingText = styled.Text`
   font-family: ${FONT_FAMILY.GilroySemiBold};
   padding: 10px 0;
 `
-const GoBackArrowContent = styled.Pressable`
+const GoBackArrowContent = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 8px;
   padding-top: 16px;
+  padding-bottom: 6px;
+  margin-left: 10px;
 `
 
 const CartText = styled.Text`
