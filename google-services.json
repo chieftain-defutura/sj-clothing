@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "529299213781",
+    "project_id": "sj-clothing-app-e38ad",
+    "storage_bucket": "sj-clothing-app-e38ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:529299213781:android:5353d2a06961b23c61c15c",
+        "android_client_info": {
+          "package_name": "com.dewallstreet.sprinklenadar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwojXVYSyAL-8tGsz4xqL37AoR9ely24s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,8 +2,9 @@ import { useFonts } from 'expo-font'
 import Constants from 'expo-constants'
 import * as Linking from 'expo-linking'
 import { StatusBar } from 'expo-status-bar'
-import { SafeAreaView } from 'react-native'
+import { Button, Platform, SafeAreaView } from 'react-native'
 import { I18nextProvider } from 'react-i18next'
+import * as Device from 'expo-device'
 import * as SplashScreen from 'expo-splash-screen'
 import { doc, getDoc } from 'firebase/firestore/lite'
 import { onAuthStateChanged } from 'firebase/auth'
@@ -17,7 +18,69 @@ import { userStore } from './src/store/userStore'
 import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { MidlevelStore } from './src/store/midlevelStore'
+import * as Notifications from 'expo-notifications'
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+})
+
+async function sendPushNotification(expoPushToken: any) {
+  const message = {
+    to: expoPushToken,
+    sound: 'default',
+    title: 'Some title',
+    body: 'Hello world!',
+  }
+
+  await fetch('https://exp.host/--/api/v2/push/send', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Accept-encoding': 'gzip, deflate',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(message),
+  })
+}
+
+async function registerForPushNotificationsAsync() {
+  let token
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      sound: 'mySoundFile.wav',
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    })
+  }
+
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync()
+    let finalStatus = existingStatus
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync()
+      finalStatus = status
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!')
+      return
+    }
+    token = await Notifications.getExpoPushTokenAsync({
+      projectId: Constants?.expoConfig?.extra?.eas.projectId,
+    })
+    console.log(token)
+  } else {
+    alert('Must use physical device for Push Notifications')
+  }
+
+  return token?.data
+}
 SplashScreen.preventAutoHideAsync()
 
 const PUBLISHABLE_KEY =
@@ -43,6 +106,31 @@ const App: React.FC = () => {
   const updateLanguage = userStore((state) => state.updateLanguage)
   const updateProfile = userStore((state) => state.updateProfile)
   const updateConfirmDetails = userStore((state) => state.updateConfirmDetails)
+
+  const [expoPushToken, setExpoPushToken] = useState('')
+  const [notification, setNotification] = useState<Notifications.Notification>()
+  const notificationListener = useRef<Notifications.Subscription>()
+  const responseListener = useRef<Notifications.Subscription>()
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => setExpoPushToken(token as string))
+    notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
+      setNotification(notification)
+    })
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log(response)
+    })
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current as Notifications.Subscription,
+      )
+      Notifications.removeNotificationSubscription(
+        responseListener.current as Notifications.Subscription,
+      )
+    }
+  }, [])
 
   const fetchDataFromFirestore = useCallback(async () => {
     try {
@@ -146,8 +234,6 @@ const App: React.FC = () => {
     getMidlevelData()
   }, [getMidlevelData])
 
-  console.log('steps.isSteps', steps.isSteps)
-
   const [fontsLoaded] = useFonts({
     'Arvo-Regular': require('./src/assets/fonts/timesbold.ttf'), //font-weight 400
     'Gilroy-Medium': require('./src/assets/fonts/times.ttf'), //font-weight 500
@@ -174,11 +260,17 @@ const App: React.FC = () => {
         merchantIdentifier='merchant.com.sjclothing'
       >
         <I18nextProvider i18n={i18n}>
-          <SafeAreaView style={{ flex: 0, backgroundColor: 'rgba(191, 148, 228, 0.8)' }} />
-          <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(145, 177, 225, 0.85)' }}>
+          <SafeAreaView style={{ flex: 0, backgroundColor: 'rgba(191, 148, 228, 0.86)' }} />
+          <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(145, 177, 225, 0.9)' }}>
             <NavigationContainer>
               <StatusBar animated={true} backgroundColor='rgba(199, 148, 228, 0.0)' style='dark' />
               <StackNavigationRoutes />
+              <Button
+                title='Press to Send Notification'
+                onPress={async () => {
+                  await sendPushNotification(expoPushToken)
+                }}
+              />
             </NavigationContainer>
           </SafeAreaView>
         </I18nextProvider>
