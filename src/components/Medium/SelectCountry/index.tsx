@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Text, View, TouchableHighlight } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
@@ -31,16 +31,9 @@ interface ISelectedCountry {
   handleIncreaseSteps: () => void
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
 }
-const SelectCountry: React.FC<ISelectedCountry> = ({
-  setSize,
-  isSize,
-  data,
-  handleIncreaseSteps,
-  setDropDown,
-}) => {
+const SelectCountry: React.FC<ISelectedCountry> = ({ setSize, isSize, data, setDropDown }) => {
   const { t } = useTranslation('midlevel')
   const avatar = userStore((state) => state.avatar)
-  const [isPressed, setIsPressed] = useState<number | null>(null)
   const [country, setCountry] = useState<
     {
       country: string
@@ -119,30 +112,31 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
               }}
               numColumns={3}
               renderItem={({ item, index }) => (
-                <Pressable
+                <TouchableHighlight
                   key={index}
                   onPress={() => handleSelectCountry(item.country)}
-                  onPressIn={() => setIsPressed(index)}
-                  onPressOut={() => setIsPressed(null)}
+                  activeOpacity={0.6}
+                  underlayColor='rgba(70, 45, 133, 0.2)'
                   style={{
                     padding: 4,
-                    backgroundColor: isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                   }}
                 >
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      textAlign: 'left',
-                      fontFamily: 'Gilroy-Medium',
-                      color:
-                        isSize.country === item.country
-                          ? COLORS.textSecondaryClr
-                          : COLORS.iconsNormalClr,
-                    }}
-                  >
-                    {item.country}
-                  </Text>
-                </Pressable>
+                  <View>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        textAlign: 'left',
+                        fontFamily: 'Gilroy-Medium',
+                        color:
+                          isSize.country === item.country
+                            ? COLORS.textSecondaryClr
+                            : COLORS.iconsNormalClr,
+                      }}
+                    >
+                      {item.country}
+                    </Text>
+                  </View>
+                </TouchableHighlight>
               )}
             />
           ) : (
@@ -159,30 +153,31 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
                 paddingVertical: 8,
               }}
               renderItem={({ item, index }) => (
-                <Pressable
+                <TouchableHighlight
                   key={index}
                   onPress={() => handleSelectCountry(item.country)}
-                  onPressIn={() => setIsPressed(index)}
-                  onPressOut={() => setIsPressed(null)}
+                  activeOpacity={0.6}
+                  underlayColor='rgba(70, 45, 133, 0.2)'
                   style={{
                     padding: 4,
-                    backgroundColor: isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                   }}
                 >
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      textAlign: 'left',
-                      fontFamily: 'Gilroy-Medium',
-                      color:
-                        isSize.country === item.country
-                          ? COLORS.textSecondaryClr
-                          : COLORS.iconsNormalClr,
-                    }}
-                  >
-                    {item.country}
-                  </Text>
-                </Pressable>
+                  <View>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        textAlign: 'left',
+                        fontFamily: 'Gilroy-Medium',
+                        color:
+                          isSize.country === item.country
+                            ? COLORS.textSecondaryClr
+                            : COLORS.iconsNormalClr,
+                      }}
+                    >
+                      {item.country}
+                    </Text>
+                  </View>
+                </TouchableHighlight>
               )}
             />
           )}
@@ -193,5 +188,3 @@ const SelectCountry: React.FC<ISelectedCountry> = ({
 }
 
 export default SelectCountry
-
-const styles = StyleSheet.create({})

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Pressable, StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native'
+import { Pressable, StyleSheet, Text, View, Dimensions, TouchableHighlight } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import Animated, {
   BounceIn,
@@ -74,10 +74,6 @@ const Navigation: React.FC<INavigation> = ({
 }) => {
   const { t } = useTranslation('midlevel')
   const [isPressed, setIsPressed] = useState(false)
-  const [arrowPressed, setArrowPressed] = useState(false)
-  const [arrowLeft, setArrowLeft] = useState(false)
-  const [addImagePressed, setAddImagePressed] = useState(false)
-  const [addTextPressed, setAddTextPressed] = useState(false)
 
   const slideX = useAnimatedStyle(() => {
     return {
@@ -130,20 +126,29 @@ const Navigation: React.FC<INavigation> = ({
               <LeftArrow width={24} height={24} />
             </Animated.View>
           </Pressable>
-          <Pressable
+          <TouchableHighlight
             onPress={() => {
               setOpenDesign(false)
               handleDecreaseSteps()
               setImageApplied(true)
             }}
+            activeOpacity={0.6}
+            underlayColor='rgba(70, 45, 133, 0.2)'
           >
-            <Text
-              allowFontScaling={false}
-              style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Regular' }}
-            >
-              {t('Done')}
-            </Text>
-          </Pressable>
+            <View>
+              <Text
+                allowFontScaling={false}
+                style={{
+                  color: COLORS.textClr,
+                  fontFamily: 'Gilroy-Regular',
+                  padding: 4,
+                  borderRadius: 20,
+                }}
+              >
+                {t('Done')}
+              </Text>
+            </View>
+          </TouchableHighlight>
         </View>
       )}
 
@@ -159,13 +164,12 @@ const Navigation: React.FC<INavigation> = ({
             },
           ]}
         >
-          <Pressable
+          <TouchableHighlight
             onPress={() => steps !== 1 && handleDecreaseSteps()}
-            onPressIn={() => setArrowLeft(true)}
-            onPressOut={() => setArrowLeft(false)}
+            activeOpacity={0.6}
+            underlayColor='rgba(70, 45, 133, 0.2)'
             style={{
               opacity: steps === 1 ? 0 : 1,
-              backgroundColor: arrowLeft ? 'rgba(70, 45, 133, 0.2)' : 'transparent',
               borderRadius: 20,
               padding: 6,
             }}
@@ -173,7 +177,7 @@ const Navigation: React.FC<INavigation> = ({
             <Animated.View>
               <ArrowCircleLeft width={24} height={24} />
             </Animated.View>
-          </Pressable>
+          </TouchableHighlight>
           {steps !== 6 && (
             <View
               style={{
@@ -193,11 +197,11 @@ const Navigation: React.FC<INavigation> = ({
                   styles.Dropdown,
 
                   {
-                    // opacity: !animationUpdated ? 0.5 : 1,
+                    opacity: !animationUpdated ? 0.5 : 1,
                     backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                   },
                 ]}
-                // disabled={!animationUpdated}
+                disabled={!animationUpdated}
               >
                 <Text
                   allowFontScaling={false}
@@ -238,13 +242,16 @@ const Navigation: React.FC<INavigation> = ({
                   {t(warning)}
                 </Text>
               )}
+              {!animationUpdated && (
+                <Text style={{ color: 'red', fontFamily: 'Gilroy-Medium', paddingTop: 3 }}>
+                  Please wait till avatar loads
+                </Text>
+              )}
             </View>
           )}
           {steps === 6 && (
             <View style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
-              <Pressable
-                onPressIn={() => setAddImagePressed(true)}
-                onPressOut={() => setAddImagePressed(false)}
+              <TouchableHighlight
                 onPress={() => {
                   setDropDown(true),
                     setDropDown(true),
@@ -253,23 +260,20 @@ const Navigation: React.FC<INavigation> = ({
                       title: 'design-images',
                     }))
                 }}
-                style={[
-                  styles.Dropdown,
-                  {
-                    backgroundColor: addImagePressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                  },
-                ]}
+                activeOpacity={0.6}
+                underlayColor='rgba(70, 45, 133, 0.2)'
+                style={styles.Dropdown}
               >
-                <Text
-                  allowFontScaling={false}
-                  style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}
-                >
-                  {t('Add Image')}
-                </Text>
-              </Pressable>
-              <Pressable
-                onPressIn={() => setAddTextPressed(true)}
-                onPressOut={() => setAddTextPressed(false)}
+                <View>
+                  <Text
+                    allowFontScaling={false}
+                    style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}
+                  >
+                    {t('Add Image')}
+                  </Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight
                 onPress={() => {
                   setDropDown(true),
                     setDropDown(true),
@@ -278,30 +282,29 @@ const Navigation: React.FC<INavigation> = ({
                       title: 'text-images',
                     }))
                 }}
-                style={[
-                  styles.Dropdown,
-                  {
-                    backgroundColor: addTextPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                  },
-                ]}
+                activeOpacity={0.6}
+                underlayColor='rgba(70, 45, 133, 0.2)'
+                style={styles.Dropdown}
               >
-                <Text
-                  allowFontScaling={false}
-                  style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}
-                >
-                  {t('Add Text')}
-                </Text>
-              </Pressable>
+                <View>
+                  <Text
+                    allowFontScaling={false}
+                    style={{ color: COLORS.textClr, fontFamily: 'Gilroy-Medium' }}
+                  >
+                    {t('Add Text')}
+                  </Text>
+                </View>
+              </TouchableHighlight>
             </View>
           )}
           {steps !== 5 && steps !== 6 && (
-            <Pressable
+            <TouchableHighlight
               onPress={handleIncreaseSteps}
-              onPressIn={() => setArrowPressed(true)}
-              onPressOut={() => setArrowPressed(false)}
-              // disabled={!animationUpdated}
+              activeOpacity={0.6}
+              underlayColor='rgba(70, 45, 133, 0.2)'
+              disabled={!animationUpdated}
               style={{
-                backgroundColor: arrowPressed ? 'rgba(70, 45, 133, 0.2)' : 'transparent',
+                opacity: !animationUpdated ? 0.5 : 1,
                 borderRadius: 20,
                 padding: 6,
               }}
@@ -309,10 +312,7 @@ const Navigation: React.FC<INavigation> = ({
               <View>
                 <ArrowCircleRight width={24} height={24} />
               </View>
-              {/* {!animationUpdated && (
-                <Text style={{ color: 'red' }}>Please wait till avatar loads</Text>
-              )} */}
-            </Pressable>
+            </TouchableHighlight>
           )}
         </View>
       )}

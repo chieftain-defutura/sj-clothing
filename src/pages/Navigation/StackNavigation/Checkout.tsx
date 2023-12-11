@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, Pressable, StyleSheet, Alert, TouchableHighlight, Dimensions } from 'react-native'
+import { View, Pressable, StyleSheet, Alert, Dimensions } from 'react-native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
 import { PlatformPay, usePlatformPay, useStripe } from '@stripe/stripe-react-native'

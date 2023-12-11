@@ -226,20 +226,15 @@ const Currency = () => {
               onPress={() => {
                 navigation.goBack()
               }}
-              onPressIn={() => setIsPressed(true)}
-              onPressOut={() => setIsPressed(false)}
+              activeOpacity={0.6}
+              underlayColor='rgba(70, 45, 133, 0.2)'
+              style={{ borderRadius: 100 }}
             >
-              {() => (
-                <IconHoverClr
-                  style={{
-                    backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
-                  }}
-                >
-                  <IconHoverPressable>
-                    <LeftArrow width={24} height={24} style={{ marginBottom: -44 }} />
-                  </IconHoverPressable>
-                </IconHoverClr>
-              )}
+              <IconHoverClr>
+                <IconHoverPressable>
+                  <LeftArrow width={24} height={24} style={{ marginBottom: -44 }} />
+                </IconHoverPressable>
+              </IconHoverClr>
             </GoBackArrowContent>
             <Text allowFontScaling={false} style={[styles.title, { fontSize: 28 }]}>
               Choose Your Currency
@@ -349,7 +344,7 @@ const SelectContent = styled.Pressable`
   justify-content: space-between;
 `
 
-const GoBackArrowContent = styled.Pressable`
+const GoBackArrowContent = styled.TouchableHighlight`
   display: flex;
   flex-direction: row;
   align-self: flex-start;
@@ -364,7 +359,6 @@ const IconHoverPressable = styled.View`
 `
 
 const IconHoverClr = styled.View`
-  border-radius: 100px;
   width: 50px;
   height: 50px;
 `
