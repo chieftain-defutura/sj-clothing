@@ -425,7 +425,7 @@ const Checkout: React.FC<ICheckout> = ({
                       </LinearGradient>
                       <GiftText allowFontScaling={false}>Gift options available</GiftText>
                     </GiftContent>
-                    <View style={{ marginRight: 10 }}>
+                    <View style={{ marginRight: 4 }}>
                       <ChevronLeft width={16} height={16} />
                     </View>
                   </View>
