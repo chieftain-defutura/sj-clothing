@@ -26,6 +26,7 @@ import { ICheckout } from '../../../constant/types'
 import GiftIcon from '../../../assets/icons/GiftIcon'
 import GiftOptions from './GiftOptions'
 import { useNavigation } from '@react-navigation/native'
+import { API_URL } from '../../../utils/config'
 
 const { width } = Dimensions.get('window')
 
@@ -33,8 +34,6 @@ interface IDeliveryfees {
   Continents: string
   DeliveryFees: number
 }
-
-const API_URL = 'https://sj-clothing-backend.cyclic.app'
 
 interface AddressData {
   name: string
