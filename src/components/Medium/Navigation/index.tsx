@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Pressable, StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native'
+import { Pressable, StyleSheet, Text, View, Dimensions } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import Animated, {
   BounceIn,
