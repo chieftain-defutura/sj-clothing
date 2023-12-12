@@ -23,9 +23,10 @@ interface IFlowTwoProps {
     }
   }
   designs: IDesigns[] | undefined
+  imageApplied: boolean
 }
 
-const FlowTwo: React.FC<IFlowTwoProps> = ({ color, isImageOrText, designs }) => {
+const FlowTwo: React.FC<IFlowTwoProps> = ({ color, isImageOrText, designs, imageApplied }) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
@@ -43,15 +44,29 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({ color, isImageOrText, designs }) => 
 
       const docObj: any = { uid: tempUid, skin: avatar?.skinTone, gender: avatar?.gender, color }
 
-      if (isImageOrText.designs.originalImage) {
-        designs?.forEach((f) => {
-          const spottedImage = f.originalImages.find((f) => f.colorCode === color)
-          if (spottedImage) {
-            docObj.image = spottedImage.url
-          }
-        })
+      if (imageApplied && isImageOrText.designs.originalImage) {
+        if (designs) {
+          designs?.forEach((f) => {
+            const spottedImage = f.originalImages.find((f) => f.colorCode === color)
+            if (spottedImage) {
+              docObj.image = spottedImage.url
+            }
+          })
+        } else {
+          docObj.image = isImageOrText.designs.originalImage
+        }
+      } else if (isImageOrText.designs.originalImage) {
+        if (designs) {
+          designs?.forEach((f) => {
+            const spottedImage = f.originalImages.find((f) => f.colorCode === color)
+            if (spottedImage) {
+              docObj.image = spottedImage.url
+            }
+          })
+        } else {
+          docObj.image = isImageOrText.designs.originalImage
+        }
       }
-
       console.log(tempUid)
       console.log(docObj)
       await setDoc(docRef, docObj)
@@ -61,7 +76,7 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({ color, isImageOrText, designs }) => 
       console.log(error)
     }
     // }
-  }, [color, isImageOrText])
+  }, [color, isImageOrText, designs])
 
   useEffect(() => {
     handleSetUid()
@@ -103,7 +118,11 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({ color, isImageOrText, designs }) => 
             uri: `https://sj-threejs-development.netlify.app/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
           }}
           scrollEnabled={false}
-          onLoad={() => setWebviewLoading(false)}
+          onLoad={() => {
+            setTimeout(() => {
+              setWebviewLoading(false)
+            }, 1000)
+          }}
         />
       )}
     </View>
