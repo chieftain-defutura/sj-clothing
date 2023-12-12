@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Dimensions, Pressable, Alert } from 'react-native'
+import { View, Dimensions, Alert, TouchableHighlight } from 'react-native'
 import styled from 'styled-components/native'
 import * as ImagePicker from 'expo-image-picker'
 import { useFormik } from 'formik'
@@ -46,10 +46,9 @@ const validationSchema = yup.object({
 
 const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   const user = userStore((state) => state.user)
-  const [url, setUrl] = useState<string | null>(null)
+  const [url, setUrl] = useState('')
   const updateName = userStore((name) => name.updateName)
   const [image, setImage] = React.useState<string | null>(null)
-  const [isPressed, setIsPressed] = useState(false)
   const updateProfile = userStore((state) => state.updateProfile)
 
   const onSubmit = async (values: { fullName: string }) => {
@@ -94,6 +93,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
       await task // Wait for the upload to complete
 
       const url = await getDownloadURL(imageRef)
+
       setUrl(url)
       console.log('Image uploaded to the bucket!')
     } catch (error) {
@@ -103,9 +103,10 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
       throw error
     }
   }
+
   const formik = useFormik({
     initialValues: {
-      fullName: '',
+      fullName: user?.displayName ? user.displayName : '',
     },
     validationSchema: validationSchema,
     onSubmit: onSubmit,
@@ -115,31 +116,31 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
     <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
       <UserWrapper style={{ width: width, height: height / 2.5 }}>
         <FlexContent>
-          <Pressable
+          <TouchableHighlight
             onPress={() => {
               navigation.goBack()
             }}
-            onPressIn={() => setIsPressed(true)}
-            onPressOut={() => setIsPressed(false)}
-            // style={{ marginTop: -10 }}
+            activeOpacity={0.6}
+            underlayColor='rgba(70, 45, 133, 0.1)'
+            style={{ borderRadius: 100 }}
           >
-            {() => (
-              <IconHoverClr
-                style={{ backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent' }}
-              >
-                <IconHoverPressable>
-                  <LeftArrow width={24} height={24} />
-                </IconHoverPressable>
-              </IconHoverClr>
-            )}
-          </Pressable>
-          <Pressable
+            <IconHoverClr>
+              <IconHoverPressable>
+                <LeftArrow width={24} height={24} style={{ marginTop: -10 }} />
+              </IconHoverPressable>
+            </IconHoverClr>
+          </TouchableHighlight>
+          <TouchableHighlight
             onPress={() => {
               formik.handleSubmit()
             }}
+            activeOpacity={0.6}
+            underlayColor='rgba(70, 45, 133, 0.1)'
           >
-            <LocationText allowFontScaling={false}>Done</LocationText>
-          </Pressable>
+            <View>
+              <LocationText allowFontScaling={false}>Done</LocationText>
+            </View>
+          </TouchableHighlight>
         </FlexContent>
         <NotUserContent onPress={pickImage}>
           {image ? (
@@ -183,7 +184,7 @@ const UserWrapper = styled.View`
   border-bottom-right-radius: 50px;
   border-top-width: 0;
 `
-const NotUserContent = styled.Pressable`
+const NotUserContent = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   flex: 1;
@@ -195,6 +196,7 @@ const IconHoverPressable = styled.View`
   justify-content: center;
   margin-right: 2px;
   margin-top: 10px;
+  padding: 10px;
 `
 
 const ErrorText = styled.Text`
@@ -227,16 +229,14 @@ const Label = styled.Text`
   font-size: 14px;
   margin-bottom: 8px;
 `
-const IconHoverClr = styled.View`
-  border-radius: 100px;
-  width: 50px;
-  height: 50px;
-`
+const IconHoverClr = styled.View``
 
 const LocationText = styled.Text`
   font-size: 14px;
   font-family: ${FONT_FAMILY.GilroyMedium};
   color: ${COLORS.iconsHighlightClr};
+  padding-top: 8px;
+  padding-horizontal: 8px;
 `
 
 export default EditProfile

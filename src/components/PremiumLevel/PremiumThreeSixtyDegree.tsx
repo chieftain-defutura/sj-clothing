@@ -1,10 +1,16 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Pressable, StyleSheet, Dimensions, View, Text, ActivityIndicator } from 'react-native'
+import {
+  StyleSheet,
+  Dimensions,
+  View,
+  Text,
+  ActivityIndicator,
+  TouchableHighlight,
+} from 'react-native'
 import { WebView } from 'react-native-webview'
 import styled from 'styled-components/native'
 import uuid from 'react-native-uuid'
 import LeftArrow from '../../assets/icons/LeftArrow'
-// import ThreeSixtyDegree from '../../assets/icons/360-degree'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import CustomButton from '../Button'
 import { doc, setDoc } from 'firebase/firestore/lite'
@@ -34,7 +40,6 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   focus,
   errorMessage,
 }) => {
-  const [isPressed, setIsPressed] = useState(false)
   const [webviewLoading, setWebviewLoading] = useState(true)
   const isMounted = useRef(false)
   const avatar = userStore((state) => state.avatar)
@@ -93,23 +98,20 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
       <AuthNavigate focus={focus} onClose={onClose}>
         <View style={styles.linearGradient}>
           <FlexContent>
-            <Pressable
+            <TouchableHighlight
               onPress={() => {
                 setOpenDetails(false)
               }}
-              onPressIn={() => setIsPressed(true)}
-              onPressOut={() => setIsPressed(false)}
+              activeOpacity={0.6}
+              underlayColor='rgba(70, 45, 133, 0.2)'
+              style={{ borderRadius: 100, width: 50, height: 50 }}
             >
-              {() => (
-                <IconHoverClr
-                  style={{ backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent' }}
-                >
-                  <IconHoverPressable>
-                    <LeftArrow width={24} height={24} style={{ marginTop: 10 }} />
-                  </IconHoverPressable>
-                </IconHoverClr>
-              )}
-            </Pressable>
+              <View>
+                <IconHoverPressable>
+                  <LeftArrow width={24} height={24} style={{ marginTop: 10 }} />
+                </IconHoverPressable>
+              </View>
+            </TouchableHighlight>
           </FlexContent>
           <View
             style={{
@@ -141,19 +143,6 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               />
             )}
           </View>
-          {/* <ThreeSixtyDegreeImageWrapper>
-            <ThreeSixtyDegreeImage>
-              <Image
-                source={{ uri: data.productImage }}
-                style={{
-                  resizeMode: 'contain',
-                  width: width * 0.9,
-                  height: height * 0.55,
-                  marginTop: 30,
-                }}
-              />
-            </ThreeSixtyDegreeImage>
-           </ThreeSixtyDegreeImageWrapper> */}
           {errorMessage && (
             <Text
               allowFontScaling={false}
@@ -186,22 +175,8 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   )
 }
 
-const ThreeSixtyDegreeImage = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-top: -20px;
-`
 const FlexContent = styled.View`
   margin-left: 22px;
-`
-
-const ThreeSixtyDegreeImageWrapper = styled.View`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `
 
 const IconHoverPressable = styled.View`
@@ -210,20 +185,6 @@ const IconHoverPressable = styled.View`
   justify-content: center;
   margin-right: 2px;
   margin-top: 2px;
-`
-
-const IconHoverClr = styled.View`
-  border-radius: 100px;
-  width: 50px;
-  height: 50px;
-`
-
-const SelectStyle360Degree = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
 `
 
 export default PremiumThreeSixtyDegree

@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Text, View, Pressable } from 'react-native'
+import { Text, View, TouchableHighlight } from 'react-native'
 import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 import { IMidlevel } from '../../../constant/types'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
@@ -42,10 +42,6 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
   setImageOrText,
 }) => {
   const { t } = useTranslation('midlevel')
-  const [isPressed, setIsPressed] = useState(false)
-  const [backedPressed, setBackedPressed] = useState(false)
-  const [rightPressed, setRightPressed] = useState(false)
-  const [leftPressed, setLeftPressed] = useState(false)
 
   return (
     <LinearGradient
@@ -92,9 +88,9 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
               }}
             >
               {data.frontSide && (
-                <Pressable
-                  onPressIn={() => setIsPressed(true)}
-                  onPressOut={() => setIsPressed(false)}
+                <TouchableHighlight
+                  activeOpacity={0.6}
+                  underlayColor='rgba(70, 45, 133, 0.2)'
                   onPress={() => {
                     setOpenDesign(true),
                       setDropDown(false),
@@ -103,50 +99,35 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                         position: 'Front',
                       }))
                   }}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 4,
-                    paddingBottom: 12,
-                  }}
                 >
-                  {/* <View
+                  <View
                     style={{
-                      backgroundColor: COLORS.BoxBackgoundClr,
-                      padding: 16,
-                      borderRadius: 10,
-                      borderColor:
-                        isImageOrText.position === 'Front' ? COLORS.textSecondaryClr : '',
-                      borderWidth: isImageOrText.position === 'Front' ? 1 : 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 4,
                     }}
                   >
-                    <Image
-                      style={{ width: 50, height: 72, objectFit: 'contain' }}
-                      source={require('../../../assets/images/front-design.png')}
-                    />
-                  </View> */}
-
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      color:
-                        isImageOrText.position === 'Front'
-                          ? COLORS.textSecondaryClr
-                          : COLORS.iconsNormalClr,
-                      fontFamily: 'Gilroy-Medium',
-                      padding: 4,
-                      backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                    }}
-                  >
-                    Front
-                  </Text>
-                </Pressable>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        color:
+                          isImageOrText.position === 'Front'
+                            ? COLORS.textSecondaryClr
+                            : COLORS.iconsNormalClr,
+                        fontFamily: 'Gilroy-Medium',
+                        padding: 4,
+                      }}
+                    >
+                      Front
+                    </Text>
+                  </View>
+                </TouchableHighlight>
               )}
               {data.backSide && (
-                <Pressable
-                  onPressIn={() => setBackedPressed(true)}
-                  onPressOut={() => setBackedPressed(false)}
+                <TouchableHighlight
+                  activeOpacity={0.6}
+                  underlayColor='rgba(70, 45, 133, 0.2)'
                   onPress={() => {
                     setOpenDesign(true),
                       setDropDown(false),
@@ -155,49 +136,33 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                         position: 'Back',
                       }))
                   }}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 4,
-                    paddingBottom: 12,
-                  }}
                 >
-                  {/* <View
+                  <View
                     style={{
-                      backgroundColor: COLORS.BoxBackgoundClr,
-                      padding: 16,
-                      borderRadius: 10,
-                      borderColor: isImageOrText.position === 'Back' ? COLORS.textSecondaryClr : '',
-                      borderWidth: isImageOrText.position === 'Back' ? 1 : 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 4,
                     }}
                   >
-                    <Image
-                      style={{ width: 50, height: 72, objectFit: 'contain' }}
-                      source={require('../../../assets/images/front-design.png')}
-                    />
-                  </View> */}
-
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      color:
-                        isImageOrText.position === 'Back'
-                          ? COLORS.textSecondaryClr
-                          : COLORS.iconsNormalClr,
-                      fontFamily: 'Gilroy-Medium',
-                      backgroundColor: backedPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                      padding: 4,
-                    }}
-                  >
-                    Back
-                  </Text>
-                </Pressable>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        color:
+                          isImageOrText.position === 'Back'
+                            ? COLORS.textSecondaryClr
+                            : COLORS.iconsNormalClr,
+                        fontFamily: 'Gilroy-Medium',
+                        padding: 4,
+                      }}
+                    >
+                      Back
+                    </Text>
+                  </View>
+                </TouchableHighlight>
               )}
               {data.rightSide && (
-                <Pressable
-                  onPressIn={() => setRightPressed(true)}
-                  onPressOut={() => setRightPressed(false)}
+                <TouchableHighlight
                   onPress={() => {
                     setOpenDesign(true),
                       setDropDown(false),
@@ -206,50 +171,35 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                         position: 'Right arm',
                       }))
                   }}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 4,
-                    paddingBottom: 12,
-                  }}
+                  activeOpacity={0.6}
+                  underlayColor='rgba(70, 45, 133, 0.2)'
                 >
-                  {/* <View
+                  <View
                     style={{
-                      backgroundColor: COLORS.BoxBackgoundClr,
-                      padding: 16,
-                      borderRadius: 10,
-                      borderColor:
-                        isImageOrText.position === 'Right arm' ? COLORS.textSecondaryClr : '',
-                      borderWidth: isImageOrText.position === 'Right arm' ? 1 : 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 4,
                     }}
                   >
-                    <Image
-                      style={{ width: 50, height: 72, objectFit: 'contain' }}
-                      source={require('../../../assets/images/left-arm-design.png')}
-                    />
-                  </View> */}
-
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      color:
-                        isImageOrText.position === 'Right arm'
-                          ? COLORS.textSecondaryClr
-                          : COLORS.iconsNormalClr,
-                      fontFamily: 'Gilroy-Medium',
-                      padding: 4,
-                      backgroundColor: rightPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                    }}
-                  >
-                    Right arm
-                  </Text>
-                </Pressable>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        color:
+                          isImageOrText.position === 'Right arm'
+                            ? COLORS.textSecondaryClr
+                            : COLORS.iconsNormalClr,
+                        fontFamily: 'Gilroy-Medium',
+                        padding: 4,
+                      }}
+                    >
+                      Right arm
+                    </Text>
+                  </View>
+                </TouchableHighlight>
               )}
               {data.leftSide && (
-                <Pressable
-                  onPressIn={() => setLeftPressed(true)}
-                  onPressOut={() => setLeftPressed(false)}
+                <TouchableHighlight
                   onPress={() => {
                     setOpenDesign(true),
                       setDropDown(false),
@@ -258,45 +208,32 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
                         position: 'Left arm',
                       }))
                   }}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 4,
-                    paddingBottom: 12,
-                  }}
+                  activeOpacity={0.6}
+                  underlayColor='rgba(70, 45, 133, 0.2)'
                 >
-                  {/* <View
+                  <View
                     style={{
-                      backgroundColor: COLORS.BoxBackgoundClr,
-                      padding: 16,
-                      borderRadius: 10,
-                      borderColor:
-                        isImageOrText.position === 'Left arm' ? COLORS.textSecondaryClr : '',
-                      borderWidth: isImageOrText.position === 'Left arm' ? 1 : 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 4,
                     }}
                   >
-                    <Image
-                      style={{ width: 50, height: 72, objectFit: 'contain' }}
-                      source={require('../../../assets/images/left-arm.png')}
-                    />
-                  </View> */}
-
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      color:
-                        isImageOrText.position === 'Left arm'
-                          ? COLORS.textSecondaryClr
-                          : COLORS.iconsNormalClr,
-                      fontFamily: 'Gilroy-Medium',
-                      padding: 4,
-                      backgroundColor: leftPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                    }}
-                  >
-                    Left arm
-                  </Text>
-                </Pressable>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        color:
+                          isImageOrText.position === 'Left arm'
+                            ? COLORS.textSecondaryClr
+                            : COLORS.iconsNormalClr,
+                        fontFamily: 'Gilroy-Medium',
+                        padding: 4,
+                      }}
+                    >
+                      Left arm
+                    </Text>
+                  </View>
+                </TouchableHighlight>
               )}
             </View>
           </Animated.View>

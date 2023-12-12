@@ -8,6 +8,7 @@ import {
   View,
   Pressable,
   TouchableOpacity,
+  TouchableHighlight,
   Share,
   Modal,
 } from 'react-native'
@@ -72,8 +73,6 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
 }) => {
   const [openImage, setOpenImage] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
-  const [isPressed, setIsPressed] = useState(false)
-  const [sharePressed, setSharePressed] = useState(false)
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
   const [isSizeSelected, setIsSizeSelected] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
@@ -158,41 +157,30 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
         <ScrollView>
           <View style={styles.linearGradient}>
             <FlexContent>
-              <Pressable
+              <TouchableHighlight
                 onPress={handleBack}
-                onPressIn={() => setIsPressed(true)}
-                onPressOut={() => setIsPressed(false)}
+                activeOpacity={0.6}
+                underlayColor='rgba(70, 45, 133, 0.2)'
+                style={{ borderRadius: 100 }}
               >
-                {() => (
-                  <IconHoverClr
-                    style={{
-                      backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
-                    }}
-                  >
-                    <IconHoverPressable>
-                      <LeftArrow width={24} height={24} />
-                    </IconHoverPressable>
-                  </IconHoverClr>
-                )}
-              </Pressable>
-              <Pressable
+                <IconHoverClr>
+                  <IconHoverPressable>
+                    <LeftArrow width={24} height={24} />
+                  </IconHoverPressable>
+                </IconHoverClr>
+              </TouchableHighlight>
+              <TouchableHighlight
                 onPress={share}
-                onPressIn={() => setSharePressed(true)}
-                onPressOut={() => setSharePressed(false)}
-                style={{ marginTop: 3 }}
+                activeOpacity={0.6}
+                underlayColor='rgba(70, 45, 133, 0.2)'
+                style={{ marginTop: 3, borderRadius: 100 }}
               >
-                {() => (
-                  <IconHoverClr
-                    style={{
-                      backgroundColor: sharePressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
-                    }}
-                  >
-                    <IconHoverPressable>
-                      <ShareArrow width={24} height={24} />
-                    </IconHoverPressable>
-                  </IconHoverClr>
-                )}
-              </Pressable>
+                <IconHoverClr>
+                  <IconHoverPressable>
+                    <ShareArrow width={24} height={24} />
+                  </IconHoverPressable>
+                </IconHoverClr>
+              </TouchableHighlight>
             </FlexContent>
 
             <PremiumDetailsWrapper>
@@ -574,7 +562,6 @@ const IconHoverPressable = styled.View`
 `
 
 const IconHoverClr = styled.View`
-  border-radius: 100px;
   width: 50px;
   height: 50px;
 `

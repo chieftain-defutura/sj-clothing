@@ -47,7 +47,6 @@ const Languages = () => {
   const updateLanguage = userStore((state) => state.updateLanguage)
   const confirmDetails = userStore((state) => state.confirmDetails)
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
-  const [isPressed, setIsPressed] = useState(false)
   const navigation = useNavigation()
 
   const toggleDropdownSizes = () => {
@@ -144,20 +143,15 @@ const Languages = () => {
               onPress={() => {
                 navigation.goBack()
               }}
-              onPressIn={() => setIsPressed(true)}
-              onPressOut={() => setIsPressed(false)}
+              activeOpacity={0.6}
+              underlayColor='rgba(70, 45, 133, 0.2)'
+              style={{ borderRadius: 100 }}
             >
-              {() => (
-                <IconHoverClr
-                  style={{
-                    backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
-                  }}
-                >
-                  <IconHoverPressable>
-                    <LeftArrow width={24} height={24} style={{ marginBottom: -44 }} />
-                  </IconHoverPressable>
-                </IconHoverClr>
-              )}
+              <IconHoverClr>
+                <IconHoverPressable>
+                  <LeftArrow width={24} height={24} style={{ marginBottom: -44 }} />
+                </IconHoverPressable>
+              </IconHoverClr>
             </GoBackArrowContent>
             <Text allowFontScaling={false} style={[styles.title, { fontSize: 28 }]}>
               {t('Choose Your Language')}
@@ -208,6 +202,45 @@ const Languages = () => {
   )
 }
 
+const SelectContent = styled.Pressable`
+  border-color: ${COLORS.textSecondaryClr};
+  border-width: 1px;
+  padding: 12px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+`
+
+const GoBackArrowContent = styled.TouchableHighlight`
+  display: flex;
+  flex-direction: row;
+  align-self: flex-start;
+  margin-left: -8px;
+`
+const IconHoverPressable = styled.View`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 2px;
+  margin-top: 2px;
+`
+
+const IconHoverClr = styled.View`
+  width: 50px;
+  height: 50px;
+`
+
+const SelectDropDownList = styled.View`
+  border-color: ${COLORS.dropDownClr};
+  border-width: 1px;
+  border-radius: 5px;
+  margin-top: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+`
+
 export default Languages
 
 const styles = StyleSheet.create({
@@ -232,56 +265,3 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
 })
-
-const SelectContent = styled.Pressable`
-  border-color: ${COLORS.textSecondaryClr};
-  border-width: 1px;
-  padding: 12px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-`
-
-const GoBackArrowContent = styled.Pressable`
-  display: flex;
-  flex-direction: row;
-  align-self: flex-start;
-  margin-left: -8px;
-`
-const IconHoverPressable = styled.View`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 2px;
-  margin-top: 2px;
-`
-
-const IconHoverClr = styled.View`
-  border-radius: 100px;
-  width: 50px;
-  height: 50px;
-`
-
-const SelectDropDownList = styled.View`
-  border-color: ${COLORS.dropDownClr};
-  border-width: 1px;
-  border-radius: 5px;
-  margin-top: 8px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-`
-
-const SelectText = styled.Text`
-  font-size: 14px;
-  font-family: ${FONT_FAMILY.ArvoRegular};
-  color: ${COLORS.textSecondaryClr};
-`
-const SelectListText = styled.Text`
-  font-size: 14px;
-  font-family: ${FONT_FAMILY.ArvoRegular};
-  color: ${COLORS.textTertiaryClr};
-  padding-horizontal: 12px;
-  padding-vertical: 10px;
-`

@@ -9,6 +9,7 @@ import {
   Linking,
   Image,
   View,
+  TouchableHighlight,
 } from 'react-native'
 import { db } from '../../../../../firebase'
 import { COLORS, gradientOpacityColors } from '../../../../styles/theme'
@@ -56,22 +57,8 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [login, setLogin] = useState(false)
   const [signUp, setSignUp] = useState(false)
   const [forgotMail, setForgotmail] = useState(false)
-  const [isPressed, setIsPressed] = useState<number | null>(null)
-  const [loginPressed, setLoginPressed] = useState(false)
-  const [customerCarePressed, setCustomerCarePressed] = useState(false)
-  const [deleteAccountPressed, setDeleteAccountPressed] = useState(false)
-  // const isFocused = useIsFocused()
   const [logOut, setLogOut] = useState(false)
   const [isDelectAccount, setIsDelectAccount] = useState(false)
-  // const {
-  //   updateUser,
-  //   updateProfile,
-  //   profile,
-  //   updateAvatar,
-  //   updateAddress,
-  //   updatePhoneNo,
-  //   updateName,
-  // } = userStore()
 
   const isShowToolTip = async () => {
     const data = await AsyncStorage.getItem('showAccountTooltip')
@@ -80,7 +67,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
       AsyncStorage.setItem('showAccountTooltip', '2')
       showToolTip(true)
     }
-    // await AsyncStorage.removeItem('mail')
   }
   useEffect(() => {
     isShowToolTip()
@@ -97,52 +83,13 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
     if (user && phoneNumber) {
       navigation.navigate('EditProfile')
     }
-    // if (user && user.emailVerified && !user.phoneNumber) {
-    //   setSignUp(true)
-    // }
-    // if (user && user.emailVerified && user.phoneNumber) {
-    //   navigation.navigate('EditProfile')
-    // }
   }
-
-  // const fetchDataFromFirestore = useCallback(async () => {
-  //   try {
-  //     if (!user) return
-  //     const q = doc(db, 'users', user.uid)
-  //     const querySnapshot = await getDoc(q)
-
-  //     const fetchData = querySnapshot.data()
-  //     updateProfile(fetchData?.profile)
-  //     updateName(fetchData?.name)
-  //     updateAddress(fetchData?.address)
-  //     updateAvatar(fetchData?.avatar)
-  //     updatePhoneNo(fetchData?.phoneNo)
-  //   } catch (error) {
-  //     console.error('Error fetching data from Firestore:', error)
-  //   }
-  // }, [user, profile])
-
-  // useEffect(() => {
-  //   fetchDataFromFirestore()
-  //   if (route.params) {
-  //     if (route.params.profileImg) {
-  //       setImage(profile)
-  //     } else {
-  //       setImage(profile)
-  //     }
-  //   } else {
-  //     setImage(profile)
-  //   }
-  // }, [fetchDataFromFirestore])
 
   const handleCustomerCarePress = () => {
     const emailAddress = 'sprinklenadar@gmail.com'
     Linking.openURL(`mailto:${emailAddress}`)
   }
 
-  const openSubscriptionModal = () => {
-    setSubscriptionModal(true)
-  }
   const closeSubscriptionModal = () => {
     setSubscriptionModal(false)
   }
@@ -172,26 +119,16 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
 
   return (
     <LinearGradient colors={gradientOpacityColors}>
-      {/* <AuthNavigate focus={focus} onClose={onClose}> */}
       <ScrollView>
         <AccountWrapper>
           <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
             <UserWrapper style={{ width: width, height: height / 2.5 }}>
               <NotUserContent>
-                {route.params?.profileImg ? (
+                {profile ? (
                   <Image
-                    source={{ uri: route.params.profileImg }}
-                    style={{
-                      width: width,
-                      height: height / 2.5,
-                      borderBottomLeftRadius: 50,
-                      borderBottomRightRadius: 50,
+                    source={{
+                      uri: profile ? (profile as string) : (route.params.profileImg as string),
                     }}
-                    alt='profile-img'
-                  />
-                ) : user && profile ? (
-                  <Image
-                    source={{ uri: profile as string }}
                     style={{
                       width: width,
                       height: height / 2.5,
@@ -226,47 +163,21 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
               </Text>
             )}
 
-            {/* <View style={{ padding: 16 }}>
-                <CustomButton
-                  text={t('Subscribe now')}
-                  fontFamily='Arvo-Regular'
-                  fontSize={16}
-                  onPress={openSubscriptionModal}
-                />
-              </View> */}
-
             <SubscriptionModal
               isVisible={isSubscriptionModal}
               onClose={closeSubscriptionModal}
               navigation={navigation}
             />
-
-            {/* <FlexContent>
-              {Data.map((viewItem, viewIndex) => (
-                <View key={viewIndex}>
-                  <PostText>{viewItem.postName}</PostText>
-                  <ViewText>
-                    {viewItem.postView}
-                    {viewItem.view}
-                    {viewItem.inr}
-                  </ViewText>
-                </View>
-              ))}
-            </FlexContent> */}
           </Animated.View>
           {!Accessory ? (
             <Animated.View entering={FadeInDown.duration(800).delay(200)} exiting={FadeOutDown}>
               {AccountData.filter((f) => f.name !== AccessoryName).map((f, index) => {
                 return (
-                  <Pressable
+                  <TouchableHighlight
                     key={index}
                     onPress={() => navigation.navigate(f.navigation)}
-                    onPressIn={() => setIsPressed(index)}
-                    onPressOut={() => setIsPressed(null)}
-                    style={{
-                      backgroundColor:
-                        isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                    }}
+                    activeOpacity={0.6}
+                    underlayColor='rgba(70, 45, 133, 0.1)'
                   >
                     <ProfileUserContent>
                       <FlexIcon>
@@ -282,16 +193,13 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                         </Text>
                       )}
                     </ProfileUserContent>
-                  </Pressable>
+                  </TouchableHighlight>
                 )
               })}
-              <Pressable
+              <TouchableHighlight
                 onPress={handleCustomerCarePress}
-                onPressIn={() => setCustomerCarePressed(true)}
-                onPressOut={() => setCustomerCarePressed(false)}
-                style={{
-                  backgroundColor: customerCarePressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                }}
+                activeOpacity={0.6}
+                underlayColor='rgba(70, 45, 133, 0.1)'
               >
                 <ProfileUserContent>
                   <FlexIcon>
@@ -301,57 +209,44 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                     </Text>
                   </FlexIcon>
                 </ProfileUserContent>
-              </Pressable>
+              </TouchableHighlight>
 
               {user ? (
                 <View>
-                  <LogoutPressable>
-                    <Pressable
-                      onPress={handleLogout}
-                      onPressIn={() => setLoginPressed(true)}
-                      onPressOut={() => setLoginPressed(false)}
-                      style={{
-                        backgroundColor: loginPressed ? 'rgba(255, 54, 54, 0.1)' : 'transparent',
-                      }}
-                    >
-                      <ProfileUserContent>
-                        <FlexIcon>
-                          <LogoutIcon width={24} height={24} />
-                          <Text allowFontScaling={false} style={styles.LogoutText}>
-                            {t('Log out')}
-                          </Text>
-                        </FlexIcon>
-                      </ProfileUserContent>
-                    </Pressable>
-                    <Pressable
-                      onPress={handleDelectAccount}
-                      onPressIn={() => setDeleteAccountPressed(true)}
-                      onPressOut={() => setDeleteAccountPressed(false)}
-                      style={{
-                        backgroundColor: deleteAccountPressed
-                          ? 'rgba(255, 54, 54, 0.1)'
-                          : 'transparent',
-                      }}
-                    >
-                      <ProfileUserContent>
-                        <FlexIcon>
-                          <DeleteIcon width={24} height={24} />
-                          <Text allowFontScaling={false} style={styles.LogoutText}>
-                            {t('Delete Account')}
-                          </Text>
-                        </FlexIcon>
-                      </ProfileUserContent>
-                    </Pressable>
-                  </LogoutPressable>
+                  <TouchableHighlight
+                    onPress={handleLogout}
+                    activeOpacity={0.6}
+                    underlayColor='rgba(255, 54, 54, 0.1)'
+                  >
+                    <ProfileUserContent>
+                      <FlexIcon>
+                        <LogoutIcon width={24} height={24} />
+                        <Text allowFontScaling={false} style={styles.LogoutText}>
+                          {t('Log out')}
+                        </Text>
+                      </FlexIcon>
+                    </ProfileUserContent>
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    onPress={handleDelectAccount}
+                    activeOpacity={0.6}
+                    underlayColor='rgba(255, 54, 54, 0.1)'
+                  >
+                    <ProfileUserContent>
+                      <FlexIcon>
+                        <DeleteIcon width={24} height={24} />
+                        <Text allowFontScaling={false} style={styles.LogoutText}>
+                          {t('Delete Account')}
+                        </Text>
+                      </FlexIcon>
+                    </ProfileUserContent>
+                  </TouchableHighlight>
                 </View>
               ) : (
                 <LogoutPressable
                   onPress={() => setLogin(true)}
-                  onPressIn={() => setLoginPressed(true)}
-                  onPressOut={() => setLoginPressed(false)}
-                  style={{
-                    backgroundColor: loginPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                  }}
+                  activeOpacity={0.6}
+                  underlayColor='rgba(70, 45, 133, 0.1)'
                 >
                   <ProfileUserContent>
                     <FlexIcon>
@@ -403,15 +298,8 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
 
               {user ? (
                 <View>
-                  <LogoutPressable>
-                    <Pressable
-                      onPress={handleLogout}
-                      onPressIn={() => setLoginPressed(true)}
-                      onPressOut={() => setLoginPressed(false)}
-                      style={{
-                        backgroundColor: loginPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                      }}
-                    >
+                  <LogoutPressable activeOpacity={0.6} underlayColor='rgba(255, 54, 54, 0.1)'>
+                    <Pressable onPress={handleLogout}>
                       <ProfileUserContent>
                         <FlexIcon>
                           <LogoutIcon width={24} height={24} />
@@ -421,15 +309,10 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                         </FlexIcon>
                       </ProfileUserContent>
                     </Pressable>
-                    <Pressable
+                    <TouchableHighlight
                       onPress={handleDelectAccount}
-                      onPressIn={() => setDeleteAccountPressed(true)}
-                      onPressOut={() => setDeleteAccountPressed(false)}
-                      style={{
-                        backgroundColor: deleteAccountPressed
-                          ? 'rgba(255, 54, 54, 0.1)'
-                          : 'transparent',
-                      }}
+                      activeOpacity={0.6}
+                      underlayColor='rgba(255, 54, 54, 0.1)'
                     >
                       <ProfileUserContent>
                         <FlexIcon>
@@ -439,17 +322,14 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                           </Text>
                         </FlexIcon>
                       </ProfileUserContent>
-                    </Pressable>
+                    </TouchableHighlight>
                   </LogoutPressable>
                 </View>
               ) : (
                 <LogoutPressable
                   onPress={() => setLogin(true)}
-                  onPressIn={() => setLoginPressed(true)}
-                  onPressOut={() => setLoginPressed(false)}
-                  style={{
-                    backgroundColor: loginPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                  }}
+                  activeOpacity={0.6}
+                  underlayColor='rgba(70, 45, 133, 0.1)'
                 >
                   <ProfileUserContent>
                     <FlexIcon>
@@ -488,7 +368,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
           }}
           onClose={() => {
             setSignUp(false)
-            // showToolTip(true)
           }}
         />
       )}
@@ -518,13 +397,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
 const AccountWrapper = styled.View`
   flex: 1;
 `
-const FlexContent = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-vertical: 16px;
-  padding-horizontal: 24px;
-`
 
 const UserWrapper = styled.View`
   position: relative;
@@ -535,7 +407,7 @@ const UserWrapper = styled.View`
   border-top-width: 0;
 `
 
-const LogoutPressable = styled.Pressable`
+const LogoutPressable = styled.TouchableHighlight`
   margin-bottom: 42px;
 `
 
@@ -565,38 +437,6 @@ const FlexIcon = styled.View`
   flex-direction: row;
   align-items: center;
   gap: 8px;
-`
-
-const UserText = styled.Text`
-  font-family: Gilroy-Medium;
-  color: ${COLORS.iconsHighlightClr};
-  font-size: 14px;
-`
-
-const PostText = styled.Text`
-  text-align: center;
-  font-size: 12px;
-  font-family: Gilroy-Medium;
-  color: ${COLORS.SecondaryTwo};
-  text-transform: uppercase;
-  margin-bottom: 4px;
-`
-
-const ViewText = styled.Text`
-  text-align: center;
-  font-size: 14px;
-  font-family: Montserrat-SemiBold;
-  color: ${COLORS.iconsHighlightClr};
-`
-
-const ProfileImage = styled.Image`
-  width: 100%;
-  overflow: hidden;
-  object-fit: fill;
-`
-
-const AccountText = styled.Text`
-  font-size: 28px;
 `
 
 export default Account
