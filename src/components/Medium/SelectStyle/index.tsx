@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { FlatList } from 'react-native-gesture-handler'
-import { Pressable, Text, View } from 'react-native'
+import { Text, View, TouchableHighlight } from 'react-native'
 import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 import { IMidlevel } from '../../../constant/types'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
@@ -22,7 +22,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({
   setSelectedStyle,
 }) => {
   const { t } = useTranslation('midlevel')
-  const [isPressed, setIsPressed] = useState<number | null>(null)
   const avatar = userStore((state) => state.avatar)
   const handleSelect = (title: string) => {
     if (title === 'There is no styles available right now') {
@@ -52,9 +51,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({
             flexDirection: 'row',
             justifyContent: 'center',
             gap: 24,
-            // borderBottomColor: COLORS.borderClr,
-            // borderBottomWidth: 1,
-            // paddingBottom: 25,
             paddingTop: 15,
           }}
         >
@@ -87,43 +83,44 @@ const SelectStyle: React.FC<ISelectStyle> = ({
               }}
               numColumns={3}
               renderItem={({ item, index }) => (
-                <Pressable
+                <TouchableHighlight
                   key={index}
                   onPress={() => handleSelect(item.styles)}
-                  onPressIn={() => setIsPressed(index)}
-                  onPressOut={() => setIsPressed(null)}
+                  activeOpacity={0.6}
+                  underlayColor='rgba(70, 45, 133, 0.2)'
                   style={{
                     padding: 4,
-                    backgroundColor: isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                   }}
                 >
-                  {item.styles ? (
-                    <Text
-                      allowFontScaling={false}
-                      style={{
-                        textAlign: 'left',
-                        fontFamily: 'Gilroy-Medium',
-                        color:
-                          isSelectedStyle === item.styles
-                            ? COLORS.textSecondaryClr
-                            : COLORS.iconsNormalClr,
-                      }}
-                    >
-                      {item.styles}
-                    </Text>
-                  ) : (
-                    <Text
-                      allowFontScaling={false}
-                      style={{
-                        textAlign: 'left',
-                        fontFamily: 'Gilroy-Medium',
-                        color: COLORS.textSecondaryClr,
-                      }}
-                    >
-                      There is no styles available right now
-                    </Text>
-                  )}
-                </Pressable>
+                  <View>
+                    {item.styles ? (
+                      <Text
+                        allowFontScaling={false}
+                        style={{
+                          textAlign: 'left',
+                          fontFamily: 'Gilroy-Medium',
+                          color:
+                            isSelectedStyle === item.styles
+                              ? COLORS.textSecondaryClr
+                              : COLORS.iconsNormalClr,
+                        }}
+                      >
+                        {item.styles}
+                      </Text>
+                    ) : (
+                      <Text
+                        allowFontScaling={false}
+                        style={{
+                          textAlign: 'left',
+                          fontFamily: 'Gilroy-Medium',
+                          color: COLORS.textSecondaryClr,
+                        }}
+                      >
+                        There is no styles available right now
+                      </Text>
+                    )}
+                  </View>
+                </TouchableHighlight>
               )}
             />
           ) : (
@@ -140,14 +137,13 @@ const SelectStyle: React.FC<ISelectStyle> = ({
                 paddingVertical: 8,
               }}
               renderItem={({ item, index }) => (
-                <Pressable
+                <TouchableHighlight
                   key={index}
                   onPress={() => handleSelect(item.styles)}
-                  onPressIn={() => setIsPressed(index)}
-                  onPressOut={() => setIsPressed(null)}
+                  activeOpacity={0.6}
+                  underlayColor='rgba(70, 45, 133, 0.2)'
                   style={{
                     padding: 4,
-                    backgroundColor: isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                   }}
                 >
                   {item.styles ? (
@@ -176,35 +172,12 @@ const SelectStyle: React.FC<ISelectStyle> = ({
                       There is no styles available right now
                     </Text>
                   )}
-                </Pressable>
+                </TouchableHighlight>
               )}
             />
           )}
         </View>
       </Animated.View>
-      {/* <Animated.View
-        entering={BounceInUp.duration(800)}
-        exiting={BounceOutUp.duration(700)}
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          paddingVertical: 10,
-        }}
-      >
-        <Pressable
-          onPress={() => setDropDown(false)}
-          style={{
-            backgroundColor: COLORS.iconsNormalClr,
-            width: 42,
-            height: 42,
-            borderRadius: 50,
-            padding: 10,
-          }}
-        >
-          <CloseIcon />
-        </Pressable>
-      </Animated.View> */}
     </LinearGradient>
   )
 }

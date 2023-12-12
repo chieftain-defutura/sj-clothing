@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native'
+import { Text, View, FlatList, TouchableHighlight } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
 import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
@@ -32,17 +32,9 @@ interface ISelectSize {
   >
 }
 
-const SelectSize: React.FC<ISelectSize> = ({
-  isDropDown,
-  isSize,
-  data,
-  setDropDown,
-  setSize,
-  handleIncreaseSteps,
-}) => {
+const SelectSize: React.FC<ISelectSize> = ({ isDropDown, isSize, data, setDropDown, setSize }) => {
   const avatar = userStore((state) => state.avatar)
   const { t } = useTranslation('midlevel')
-  const [isPressed, setIsPressed] = useState<number | null>(null)
   const [sizeData, setSizeData] = useState<
     | {
         measurement: string
@@ -63,7 +55,6 @@ const SelectSize: React.FC<ISelectSize> = ({
 
   const handleSelect = (size: string, measurement: string) => {
     setSize({ ...isSize, sizeVarient: [{ size: size, measurement: measurement, quantity: '1' }] })
-    // handleIncreaseSteps()
     setDropDown(false)
   }
 
@@ -115,29 +106,27 @@ const SelectSize: React.FC<ISelectSize> = ({
                       numColumns={3}
                       renderItem={({ item, index }) => (
                         <View key={index}>
-                          <Pressable
+                          <TouchableHighlight
                             onPress={() => handleSelect(item.size, item.measurement)}
-                            onPressIn={() => setIsPressed(index)}
-                            onPressOut={() => setIsPressed(null)}
-                            style={{
-                              backgroundColor:
-                                isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                            }}
+                            activeOpacity={0.6}
+                            underlayColor='rgba(70, 45, 133, 0.2)'
                           >
-                            <Text
-                              allowFontScaling={false}
-                              style={{
-                                fontSize: 12,
-                                padding: 4,
-                                color:
-                                  isSize.sizeVarient[0].size === item.size
-                                    ? COLORS.textSecondaryClr
-                                    : COLORS.iconsNormalClr,
-                              }}
-                            >
-                              {item.size} - {item.measurement} cm
-                            </Text>
-                          </Pressable>
+                            <View>
+                              <Text
+                                allowFontScaling={false}
+                                style={{
+                                  fontSize: 12,
+                                  padding: 4,
+                                  color:
+                                    isSize.sizeVarient[0].size === item.size
+                                      ? COLORS.textSecondaryClr
+                                      : COLORS.iconsNormalClr,
+                                }}
+                              >
+                                {item.size} - {item.measurement} cm
+                              </Text>
+                            </View>
+                          </TouchableHighlight>
                         </View>
                       )}
                     />
@@ -158,29 +147,27 @@ const SelectSize: React.FC<ISelectSize> = ({
                       }}
                       renderItem={({ item, index }) => (
                         <View key={index}>
-                          <Pressable
+                          <TouchableHighlight
                             onPress={() => handleSelect(item.size, item.measurement)}
-                            onPressIn={() => setIsPressed(index)}
-                            onPressOut={() => setIsPressed(null)}
-                            style={{
-                              backgroundColor:
-                                isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                            }}
+                            activeOpacity={0.6}
+                            underlayColor='rgba(70, 45, 133, 0.2)'
                           >
-                            <Text
-                              allowFontScaling={false}
-                              style={{
-                                fontSize: 12,
-                                padding: 4,
-                                color:
-                                  isSize.sizeVarient[0].size === item.size
-                                    ? COLORS.textSecondaryClr
-                                    : COLORS.iconsNormalClr,
-                              }}
-                            >
-                              {item.size} - {item.measurement} cm
-                            </Text>
-                          </Pressable>
+                            <View>
+                              <Text
+                                allowFontScaling={false}
+                                style={{
+                                  fontSize: 12,
+                                  padding: 4,
+                                  color:
+                                    isSize.sizeVarient[0].size === item.size
+                                      ? COLORS.textSecondaryClr
+                                      : COLORS.iconsNormalClr,
+                                }}
+                              >
+                                {item.size} - {item.measurement} cm
+                              </Text>
+                            </View>
+                          </TouchableHighlight>
                         </View>
                       )}
                     />
@@ -196,7 +183,3 @@ const SelectSize: React.FC<ISelectSize> = ({
 }
 
 export default SelectSize
-
-const styles = StyleSheet.create({
-  selectSizeContainer: {},
-})

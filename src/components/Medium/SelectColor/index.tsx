@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 import { LinearGradient } from 'expo-linear-gradient'
-import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableHighlight } from 'react-native'
 import { IMidlevel } from '../../../constant/types'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
 import { useTranslation } from 'react-i18next'
@@ -24,7 +24,6 @@ const SelectColor: React.FC<ISelectColor> = ({
   setColorName,
 }) => {
   const { t } = useTranslation('midlevel')
-  const [isPressed, setIsPressed] = useState<number | null>(null)
 
   return (
     <LinearGradient
@@ -79,48 +78,45 @@ const SelectColor: React.FC<ISelectColor> = ({
                 }}
                 numColumns={3}
                 renderItem={({ item, index }) => (
-                  <Pressable
+                  <TouchableHighlight
                     key={index}
                     onPress={() => {
                       setColor(item.color), setDropDown(false), setColorName(item.colorName)
                     }}
-                    onPressIn={() => setIsPressed(index)}
-                    onPressOut={() => setIsPressed(null)}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      backgroundColor:
-                        isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                      padding: 8,
-                    }}
+                    activeOpacity={0.6}
+                    underlayColor='rgba(70, 45, 133, 0.2)'
                   >
                     <View
                       style={{
-                        borderRadius: 50,
-                        borderColor: COLORS.textTertiaryClr,
-                        borderWidth: 1,
-                        padding: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: 8,
                       }}
                     >
                       <View
                         style={{
-                          backgroundColor: `${item.color}`,
-                          borderRadius: 100,
-                          padding: 23,
+                          borderRadius: 50,
+                          borderColor: COLORS.textTertiaryClr,
+                          borderWidth: 1,
+                          padding: 1,
                         }}
-                      ></View>
-                    </View>
-                    <Pressable
-                      onPress={() => setColorName(item.colorName)}
-                      style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}
-                    >
+                      >
+                        <View
+                          style={{
+                            backgroundColor: `${item.color}`,
+                            borderRadius: 100,
+                            padding: 23,
+                          }}
+                        ></View>
+                      </View>
+
                       <Text style={styles.ellipsisText} numberOfLines={1} ellipsizeMode='tail'>
                         {item.colorName}
                       </Text>
-                    </Pressable>
-                  </Pressable>
+                    </View>
+                  </TouchableHighlight>
                 )}
               />
             ) : (
@@ -138,43 +134,44 @@ const SelectColor: React.FC<ISelectColor> = ({
                   paddingBottom: 28,
                 }}
                 renderItem={({ item, index }) => (
-                  <Pressable
+                  <TouchableHighlight
                     key={index}
                     onPress={() => {
                       setColor(item.color), setDropDown(false), setColorName(item.colorName)
                     }}
-                    onPressIn={() => setIsPressed(index)}
-                    onPressOut={() => setIsPressed(null)}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      backgroundColor:
-                        isPressed === index ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
-                      padding: 8,
-                    }}
+                    activeOpacity={0.6}
+                    underlayColor='rgba(70, 45, 133, 0.2)'
                   >
                     <View
                       style={{
-                        borderRadius: 50,
-                        borderColor: COLORS.textTertiaryClr,
-                        borderWidth: 1,
-                        padding: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: 8,
                       }}
                     >
                       <View
                         style={{
-                          backgroundColor: `${item.color}`,
-                          borderRadius: 100,
-                          padding: 23,
+                          borderRadius: 50,
+                          borderColor: COLORS.textTertiaryClr,
+                          borderWidth: 1,
+                          padding: 1,
                         }}
-                      ></View>
+                      >
+                        <View
+                          style={{
+                            backgroundColor: `${item.color}`,
+                            borderRadius: 100,
+                            padding: 23,
+                          }}
+                        ></View>
+                      </View>
+                      <Text style={styles.ellipsisText} numberOfLines={1} ellipsizeMode='tail'>
+                        {item.colorName}
+                      </Text>
                     </View>
-                    <Text style={styles.ellipsisText} numberOfLines={1} ellipsizeMode='tail'>
-                      {item.colorName}
-                    </Text>
-                  </Pressable>
+                  </TouchableHighlight>
                 )}
               />
             )}
