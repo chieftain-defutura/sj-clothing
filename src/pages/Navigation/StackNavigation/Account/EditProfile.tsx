@@ -13,6 +13,7 @@ import { doc, updateDoc } from 'firebase/firestore/lite'
 import { db, storage } from '../../../../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { LinearGradient } from 'expo-linear-gradient'
+import CustomButton from '../../../../components/Button'
 
 const { width, height } = Dimensions.get('window')
 
@@ -47,20 +48,29 @@ const validationSchema = yup.object({
 const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   const user = userStore((state) => state.user)
   const [url, setUrl] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const updateName = userStore((name) => name.updateName)
   const [image, setImage] = React.useState<string | null>(null)
   const updateProfile = userStore((state) => state.updateProfile)
 
   const onSubmit = async (values: { fullName: string }) => {
-    if (user) {
-      updateName(user?.displayName)
-      updateProfile(url)
-      await updateDoc(doc(db, 'users', user.uid), {
-        name: values.fullName,
-        profile: url,
-      })
-    } else console.log('error')
-    navigation.navigate('Account', { dName: values.fullName, profileImg: image })
+    try {
+      setIsLoading(true)
+      if (user) {
+        updateName(user?.displayName)
+        updateProfile(url)
+        await updateDoc(doc(db, 'users', user.uid), {
+          name: values.fullName,
+          profile: url,
+        })
+      } else console.log('error')
+      navigation.navigate('Account', { dName: values.fullName, profileImg: image })
+      setIsLoading(false)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const pickImage = async () => {
@@ -130,15 +140,18 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
               </IconHoverPressable>
             </IconHoverClr>
           </TouchableHighlight>
-          <TouchableHighlight
-            onPress={() => {
-              formik.handleSubmit()
-            }}
-            activeOpacity={0.6}
-            underlayColor='rgba(70, 45, 133, 0.1)'
-          >
+          <TouchableHighlight activeOpacity={0.6} underlayColor='rgba(70, 45, 133, 0.1)'>
             <View>
-              <LocationText allowFontScaling={false}>Done</LocationText>
+              <CustomButton
+                style={{ padding: 2 }}
+                fontSize={11}
+                text={isLoading ? 'Saving' : 'Done'}
+                disabled={isLoading}
+                onPress={() => {
+                  formik.handleSubmit()
+                }}
+              />
+              {/* <LocationText allowFontScaling={false}>Done</LocationText> */}
             </View>
           </TouchableHighlight>
         </FlexContent>
