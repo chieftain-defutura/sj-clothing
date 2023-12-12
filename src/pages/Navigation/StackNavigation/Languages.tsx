@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
@@ -14,6 +14,8 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { doc, updateDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import LeftArrow from '../../../assets/icons/LeftArrow'
+
+const { width } = Dimensions.get('window')
 
 const LanguagesData = [
   { language: 'Chinese Mandarian', lang: 'ch', text: '中文普通话' },
@@ -153,7 +155,10 @@ const Languages = () => {
                 </IconHoverPressable>
               </IconHoverClr>
             </GoBackArrowContent>
-            <Text allowFontScaling={false} style={[styles.title, { fontSize: 28 }]}>
+            <Text
+              allowFontScaling={false}
+              style={[styles.title, { fontSize: 28, width: width / 1.3 }]}
+            >
               {t('Choose Your Language')}
             </Text>
           </View>
@@ -248,7 +253,6 @@ const styles = StyleSheet.create({
     fontSize: 36,
     color: COLORS.textClr,
     fontFamily: FONT_FAMILY.ArvoRegular,
-    textAlign: 'center',
     paddingBottom: 24,
     marginTop: 8,
   },
