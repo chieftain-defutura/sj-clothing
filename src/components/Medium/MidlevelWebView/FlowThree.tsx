@@ -101,7 +101,7 @@ const FlowThree: React.FC<IFlowThreeProps> = ({ color, isImageOrText, designs })
           <ActivityIndicator size='large' color={'#8C73CB'} />
         </View>
       )}
-      {uid && pageY && elementHeight && (
+      {Boolean(uid) && Boolean(pageY) && Boolean(elementHeight) && (
         <WebView
           style={{
             backgroundColor: 'transparent',
@@ -111,7 +111,11 @@ const FlowThree: React.FC<IFlowThreeProps> = ({ color, isImageOrText, designs })
             uri: `https://sj-threejs-development.netlify.app/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
           }}
           scrollEnabled={false}
-          onLoad={() => setWebviewLoading(false)}
+          onLoad={() => {
+            setTimeout(() => {
+              setWebviewLoading(false)
+            }, 1000)
+          }}
         />
       )}
     </View>

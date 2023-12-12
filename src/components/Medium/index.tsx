@@ -105,20 +105,16 @@ const Medium = () => {
           },
         },
   )
-  const [tempIsImageOrText, setTempImageOrText] = useState(
-    midlevelData.isSteps === '5'
-      ? midlevelData.tempIsImageOrText
-      : {
-          title: '',
-          position: 'Front',
-          rate: 0,
-          designs: {
-            hashtag: '',
-            image: '',
-            originalImage: '',
-          },
-        },
-  )
+  const [tempIsImageOrText, setTempImageOrText] = useState({
+    title: '',
+    position: 'Front',
+    rate: 0,
+    designs: {
+      hashtag: '',
+      image: '',
+      originalImage: '',
+    },
+  })
   const [openCheckout, setOpenCheckout] = useState(false)
   const [animationUpdated, setAnimationUpdated] = useState(false)
   const [toolTip, showToolTip] = useState(false)
@@ -213,6 +209,14 @@ const Medium = () => {
       updateMidlevelData(data)
     }
   }, [isSteps])
+
+  useEffect(() => {
+    if (midlevelData.isSteps === '5') {
+      if (midlevelData.isImageOrText.designs.originalImage) {
+        setTempImageOrText(midlevelData.isImageOrText)
+      }
+    }
+  }, [midlevelData])
 
   const handleIncreaseSteps = () => {
     console.log('isSteps', isSteps)
@@ -317,18 +321,6 @@ const Medium = () => {
   const handleUpdateColor = useCallback(async () => {
     if (!isColor || !uid) return
     try {
-      // let newImage = ''
-
-      // if (tempIsImageOrText.designs.originalImage) {
-      //   designs?.forEach((f) => {
-      //     const spottedImage = f.originalImages.find((f) => f.colorCode === isColor)
-      //     console.log('newImage', spottedImage)
-      //     if (spottedImage) {
-      //       newImage = spottedImage.url
-      //     }
-      //   })
-      // }
-
       const docRef = doc(db, 'ModelsMidlevel', uid)
       await updateDoc(docRef, { color: isColor })
     } catch (error) {
@@ -336,31 +328,9 @@ const Medium = () => {
     }
   }, [isColor])
 
-  // const handleUpdateSize = useCallback(async () => {
-  //   if (!isSize.sizeVarient[0].size || !uid) return
-  //   try {
-  //     const docRef = doc(db, 'ModelsMidlevel', uid)
-  //     await updateDoc(docRef, { size: isSize.sizeVarient[0].size })
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }, [isSize])
-
-  // const handleUpdateImageAndText = useCallback(async () => {
-  //   if (!tempIsImageOrText.designs.originalImage || !uid) return
-  //   try {
-  //     const docRef = doc(db, 'ModelsMidlevel', uid)
-  //     await updateDoc(docRef, { image: tempIsImageOrText.designs.originalImage })
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }, [tempIsImageOrText])
-
   useEffect(() => {
     handleSetUid()
     handleUpdateColor()
-    // handleUpdateSize()
-    // handleUpdateUid()
   }, [handleSetUid, handleUpdateColor])
 
   useEffect(() => {
@@ -519,7 +489,12 @@ const Medium = () => {
           </View>
 
           {isSteps === 5 ? (
-            <FlowTwo color={isColor} isImageOrText={tempIsImageOrText} designs={designs} />
+            <FlowTwo
+              color={isColor}
+              isImageOrText={tempIsImageOrText}
+              designs={designs}
+              imageApplied={imageApplied}
+            />
           ) : isSteps === 6 ? (
             <FlowThree color={isColor} isImageOrText={isImageOrText} designs={designs} />
           ) : (
