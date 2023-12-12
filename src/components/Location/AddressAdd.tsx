@@ -8,8 +8,7 @@ import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { StyleSheet, View, ScrollView, Keyboard, Pressable } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import { SlideInDown, SlideOutDown, useSharedValue } from 'react-native-reanimated'
-import Animated from 'react-native-reanimated'
+import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
 import { doc, updateDoc, getDoc } from 'firebase/firestore/lite'
 import { userStore } from '../../store/userStore'
 import { db } from '../../../firebase'
@@ -43,7 +42,6 @@ const validationSchema = yup.object({
 })
 
 const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, onText }) => {
-  const height = useSharedValue(0)
   const scrollRed = useRef<ScrollView>(null)
   const [keyboardStatus, setKeyboardStatus] = React.useState('')
   const [Addr, setAddr] = useState<string | null>(null)
@@ -151,7 +149,6 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
 
   const onSubmit = async () => {
     try {
-      console.log(1)
       setIsLoading(true)
 
       const addressArray = [
@@ -287,8 +284,6 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
     console.log('Keyboard did hide')
     setPadding(0)
   }
-
-  console.log(formik.errors)
 
   return (
     <Animated.View

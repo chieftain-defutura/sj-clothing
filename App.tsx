@@ -10,18 +10,15 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { StripeProvider } from '@stripe/stripe-react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
-
 import i18n from './i18n'
 import { auth, db } from './firebase'
 import { userStore } from './src/store/userStore'
 import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { MidlevelStore } from './src/store/midlevelStore'
+import { PUBLISHABLE_KEY } from './src/utils/config'
 
 SplashScreen.preventAutoHideAsync()
-
-const PUBLISHABLE_KEY =
-  'pk_test_51O6p0wSGEesR2xZcTMeDvXgwTJgLfsOMehC1tZcDo7bphTUPo65HjeJJUcKIRYTqA115nRZi3CbzYH2GsuY69Htf00ewXq6Z7m'
 
 const App: React.FC = () => {
   const loadedRef = useRef(false)
