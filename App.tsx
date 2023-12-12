@@ -2,7 +2,7 @@ import { useFonts } from 'expo-font'
 import Constants from 'expo-constants'
 import * as Linking from 'expo-linking'
 import { StatusBar } from 'expo-status-bar'
-import { Button, Platform, SafeAreaView } from 'react-native'
+import { Alert, Button, Platform, SafeAreaView } from 'react-native'
 import { I18nextProvider } from 'react-i18next'
 import * as Device from 'expo-device'
 import * as SplashScreen from 'expo-splash-screen'
@@ -51,10 +51,50 @@ async function sendPushNotification(expoPushToken: any) {
   }
 }
 
+// async function registerForPushNotificationsAsync() {
+//   try {
+//     let token
+//     console.log('toen', token)
+
+//     if (Platform.OS === 'android') {
+//       await Notifications.setNotificationChannelAsync('default', {
+//         name: 'default',
+//         importance: Notifications.AndroidImportance.MAX,
+//         sound: 'mySoundFile.wav',
+//         vibrationPattern: [0, 250, 250, 250],
+//       })
+//     }
+
+//     if (Device.isDevice) {
+//       const { status: existingStatus } = await Notifications.getPermissionsAsync()
+//       let finalStatus = existingStatus
+//       console.log('existingStatus', existingStatus)
+//       if (existingStatus !== 'granted') {
+//         const { status } = await Notifications.requestPermissionsAsync()
+//         finalStatus = status
+//       }
+//       console.log('finalStatus', finalStatus)
+//       if (finalStatus !== 'granted') {
+//         alert('Failed to get push token for push notification!')
+//         return
+//       }
+//       token = await Notifications.getExpoPushTokenAsync({
+//         projectId: Constants?.expoConfig?.extra?.eas.projectId,
+//       })
+//       console.log(token)
+//     } else {
+//       alert('Must use physical device for Push Notifications')
+//     }
+
+//     return token?.data
+//   } catch (error) {
+//     console.log('error', error)
+//   }
+// }
+
 async function registerForPushNotificationsAsync() {
   try {
     let token
-
     if (Platform.OS === 'android') {
       await Notifications.setNotificationChannelAsync('default', {
         name: 'default',
@@ -68,24 +108,59 @@ async function registerForPushNotificationsAsync() {
       const { status: existingStatus } = await Notifications.getPermissionsAsync()
       let finalStatus = existingStatus
       if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync()
-        finalStatus = status
+        try {
+          console.log('final1', finalStatus)
+          const { status } = await Notifications.requestPermissionsAsync({
+            ios: {
+              allowAlert: true,
+              allowBadge: true,
+              allowSound: true,
+              allowAnnouncements: true,
+            },
+          })
+          console.log('status', status)
+          finalStatus = status
+        } catch (error) {
+          console.log('error', error)
+        }
       }
+
+      console.log('final2', finalStatus)
+
       if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!')
-        return
+        console.log('final3', finalStatus)
+        // The user denied permission. You can show an alert and guide them to settings.
+        Alert.alert(
+          'Enable Push Notifications',
+          'Push notifications are important for timely updates. Please enable them in your device settings.',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
+              text: 'Open Settings',
+              onPress: () => Linking.openSettings(),
+            },
+          ],
+        )
+
+        return null // or handle as needed in your app
       }
+
       token = await Notifications.getExpoPushTokenAsync({
         projectId: Constants?.expoConfig?.extra?.eas.projectId,
       })
-      console.log(token)
+
+      console.log('Token:', token)
     } else {
-      alert('Must use physical device for Push Notifications')
+      alert('Must use a physical device for Push Notifications')
     }
 
     return token?.data
   } catch (error) {
-    console.log('error', error)
+    console.log('Error:', error)
+    return null // or handle as needed in your app
   }
 }
 SplashScreen.preventAutoHideAsync()

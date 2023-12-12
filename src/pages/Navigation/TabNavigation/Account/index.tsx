@@ -117,6 +117,8 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
     getData()
   }, [getData])
 
+  console.log('profile', profile)
+
   return (
     <LinearGradient colors={gradientOpacityColors}>
       <ScrollView>
@@ -124,7 +126,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
           <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
             <UserWrapper style={{ width: width, height: height / 2.5 }}>
               <NotUserContent>
-                {route.params?.profileImg ? (
+                {/* {route.params?.profileImg ? (
                   <Image
                     source={{ uri: route.params.profileImg }}
                     style={{
@@ -136,6 +138,20 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                     alt='profile-img'
                   />
                 ) : user && profile ? (
+                  <Image
+                    source={{ uri: profile as string }}
+                    style={{
+                      width: width,
+                      height: height / 2.5,
+                      borderBottomLeftRadius: 50,
+                      borderBottomRightRadius: 50,
+                    }}
+                    alt='profile-img'
+                  />
+                ) : (
+                  <NotUserIcon width={128} height={128} />
+                )} */}
+                {profile ? (
                   <Image
                     source={{ uri: profile as string }}
                     style={{

@@ -7,21 +7,14 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "notification": {
-      "icon": "./assets/icon.png",
-      "color": "#311b92",
-      "androidMode": "default",
-      "androidCollapsedTitle": "Updates from Colab.notes",
-      "iosDisplayInForeground": true
-    },
+
     "splash": {
       "image": "./assets/iPhone.png",
       "resizeMode": "cover"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
+      "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
       "bundleIdentifier": "com.dewallstreet.sprinkle",
       "config": {
@@ -70,6 +63,13 @@
         {
           "merchantIdentifier": "merchant.com.sjclothing",
           "enableGooglePay": true
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#0EB983"
         }
       ]
     ],
