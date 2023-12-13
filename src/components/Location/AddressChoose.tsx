@@ -1,4 +1,4 @@
-import { View, StyleSheet, Pressable, Dimensions, Platform } from 'react-native'
+import { View, StyleSheet, Pressable, Dimensions, Platform, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import styled from 'styled-components/native'
 import { RadioButton } from 'react-native-paper'
@@ -119,44 +119,55 @@ const AddressChoose: React.FC = () => {
       <View style={{ marginTop: 26, marginLeft: 8 }}>
         <Header allowFontScaling={false}>Choose Address</Header>
 
-        <RadioButton.Group
+        {/* <RadioButton.Group
           onValueChange={(newValue) => {
             updateData(newValue)
             setChecked(newValue)
           }}
           value={checked as string}
-        >
-          {data?.length ? (
-            <ScrollView style={{ height: 500 }} showsVerticalScrollIndicator={false}>
-              {data.map((f, index) => (
-                <View key={index} style={styles.radioBtn}>
-                  <View>
-                    <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
-                    <View style={styles.radioBtnIOS}></View>
-                  </View>
+        > */}
+        {data?.length ? (
+          <ScrollView style={{ height: 500 }} showsVerticalScrollIndicator={false}>
+            {data.map((f, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.radioBtn}
+                onPress={() => {
+                  setChecked(index.toString())
+                  updateData(index.toString())
+                }}
+              >
+                <View>
+                  <RadioButton
+                    status={checked === index.toString() ? 'checked' : 'unchecked'}
+                    value={index.toString()}
+                    color={COLORS.textSecondaryClr}
+                  />
+                  <View style={styles.radioBtnIOS}></View>
+                </View>
 
-                  <View style={{ display: 'flex', flexDirection: 'column' }}>
-                    <View style={styles.RadioTitle}>
-                      <HomeIcon width={16} height={16} color={'black'} />
-                      <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
-                    </View>
-                    <DescriptionText allowFontScaling={false}>
-                      {f.name}, {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city},{' '}
-                      {f.state}, {f.country}, {f.pinCode}.
-                    </DescriptionText>
+                <View style={{ display: 'flex', flexDirection: 'column' }}>
+                  <View style={styles.RadioTitle}>
+                    <HomeIcon width={16} height={16} color={'black'} />
+                    <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
                   </View>
-                  {/* <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
+                  <DescriptionText allowFontScaling={false}>
+                    {f.name}, {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city},{' '}
+                    {f.state}, {f.country}, {f.pinCode}.
+                  </DescriptionText>
+                </View>
+                {/* <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
                       <Text allowFontScaling={false} style={styles.editText}>Edit</Text>
                    </Pressable> */}
-                </View>
-              ))}
-            </ScrollView>
-          ) : (
-            <View style={{ marginTop: 40 }}>
-              <ProductText allowFontScaling={false}>No Address</ProductText>
-            </View>
-          )}
-        </RadioButton.Group>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        ) : (
+          <View style={{ marginTop: 40 }}>
+            <ProductText allowFontScaling={false}>No Address</ProductText>
+          </View>
+        )}
+        {/* </RadioButton.Group> */}
       </View>
       {/* <FlexContent>
         <Pressable onPress={(e) => onAddPress(e, onText)}>
