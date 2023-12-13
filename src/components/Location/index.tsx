@@ -1,11 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  KeyboardAvoidingView,
-  FlatList,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native'
+import { StyleSheet, View, KeyboardAvoidingView, FlatList, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MapView from 'react-native-maps'
 import styled from 'styled-components/native'
@@ -32,8 +25,6 @@ interface Suggestion {
   place_id: number
 }
 
-const { width } = Dimensions.get('window')
-
 const Locations: React.FC<IAddressBook> = ({ navigation }) => {
   const [showDisplay, setDisplay] = useState(0)
   const [location, setLocation] = useState<any>()
@@ -42,7 +33,6 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
   const [suggestions, setSuggestions] = React.useState<Suggestion[] | null>([])
   const user = userStore((state) => state.user)
   const phoneNumber = userStore((state) => state.phoneNo)
-
   const [login, setLogin] = useState(false)
   const [signUp, setSignUp] = useState(false)
   const [forgotMail, setForgotmail] = useState(false)
@@ -280,12 +270,14 @@ const CartText = styled.Text`
 `
 
 const InputBox = styled.TextInput`
-  width: 90%;
+  width: 100%;
   border-radius: 20px;
   background-color: white;
   color: black;
   font-size: 14px;
-  margin-vertical: 8px;
+  margin-vertical: 12px;
+  padding-right: 16px;
+  padding-vertical: 4x;
 `
 const HeaderStyle = styled.Text`
   font-size: 14px;
@@ -344,6 +336,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     color: '#462D85',
     fontSize: 14,
-    marginVertical: 8,
+    marginVertical: 10,
   },
 })

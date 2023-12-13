@@ -42,7 +42,7 @@ const FlowOne: React.FC<IFlowOneProps> = ({ uid, steps }) => {
           <ActivityIndicator size='large' color={'#8C73CB'} />
         </View>
       )}
-      {pageY && elementHeight && (
+      {Boolean(pageY) && Boolean(elementHeight) && (
         <WebView
           style={{
             backgroundColor: 'transparent',
@@ -52,7 +52,11 @@ const FlowOne: React.FC<IFlowOneProps> = ({ uid, steps }) => {
             uri: `https://sj-threejs-development.netlify.app/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
           }}
           scrollEnabled={false}
-          onLoad={() => setWebviewLoading(false)}
+          onLoad={() =>
+            setTimeout(() => {
+              setWebviewLoading(false), 1000
+            })
+          }
           onHttpError={(value) => console.log('HTTP ERROR', value)}
         />
       )}

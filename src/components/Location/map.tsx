@@ -3,14 +3,12 @@ import React, { useState } from 'react'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import CustomButton from '../../components/Button'
 import styled from 'styled-components/native'
-import { Pressable } from 'react-native'
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+// import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { COLORS } from '../../styles/theme'
 import CurrentLocationIcon from '../../assets/icons/CurrentLocationIcon'
 import LeftArrow from '../../assets/icons/LeftArrow'
-import CloseIcon from '../../assets/icons/Close'
+// import CloseIcon from '../../assets/icons/Close'
 import axios from 'axios'
-import { useTranslation } from 'react-i18next'
 import * as Location from 'expo-location'
 import AddressAdd from './AddressAdd'
 
@@ -24,9 +22,8 @@ interface IAddressBook {
 const { width } = Dimensions.get('window')
 
 const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSearchChange }) => {
-  const { t } = useTranslation('account')
-  const height = useSharedValue('0%')
-  const displayAddressSelection = useSharedValue('none')
+  // const height = useSharedValue('0%')
+  // const displayAddressSelection = useSharedValue('none')
   const [location, setLocation] = useState<any>()
   const [locText, setLocText] = useState<any>()
   const mapRef = React.useRef<MapView>(null)
@@ -74,20 +71,21 @@ const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSear
     }
   }
 
-  const editAnimationStyle = useAnimatedStyle(() => ({
-    height: height.value as any,
-    display: displayAddressSelection.value as any,
-  }))
+  // const editAnimationStyle = useAnimatedStyle(() => ({
+  //   height: height.value as any,
+  //   display: displayAddressSelection.value as any,
+  // }))
 
   const handlePress = () => {
     setIsOpen(true)
   }
 
-  const handleClose = () => {
-    setDisplay(1)
-    height.value = withTiming('0%', { duration: 300 })
-    setTimeout(() => (displayAddressSelection.value = 'none'), 300)
-  }
+  // const handleClose = () => {
+  //   setDisplay(1)
+  //   height.value = withTiming('0%', { duration: 300 })
+  //   setTimeout(() => (displayAddressSelection.value = 'none'), 300)
+  // }
+
   const moveMapToMarker = (marker: any) => {
     if (mapRef.current) {
       mapRef.current.animateToRegion({
@@ -170,13 +168,13 @@ const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSear
               style={{ width: width / 1.1 }}
             />
           </SelectAddressBtn>
-          <Animated.View style={[styles.parent, editAnimationStyle]}>
+          {/* <Animated.View style={[styles.parent, editAnimationStyle]}>
             <View style={styles.cancelContainer}>
               <Pressable onPress={handleClose}>
                 <CloseIcon width={24} height={24} />
               </Pressable>
             </View>
-          </Animated.View>
+          </Animated.View> */}
         </KeyboardAvoidingView>
       )}
 

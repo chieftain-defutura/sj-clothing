@@ -7,12 +7,13 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-
     "splash": {
       "image": "./assets/iPhone.png",
       "resizeMode": "cover"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
@@ -75,7 +76,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "3b4401be-ba84-4cac-98af-ce5c1ac09609"
+        "projectId": "78d85b5a-8351-42b5-a5a6-6937fb28159c"
       }
     }
   }

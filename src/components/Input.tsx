@@ -85,15 +85,15 @@ const InputContainer = styled.View`
   justify-content: space-between;
   gap: 4px;
   border-radius: 6px;
-  padding-vertical: 10px;
-  padding-horizontal: 16px;
 `
 
 const StyledTextInput = styled.TextInput`
   font-size: 14px;
   color: ${COLORS.iconsHighlightClr};
   font-family: ${FONT_FAMILY.GilroyMedium};
-  width: 80%;
+  padding-vertical: 12px;
+  padding-horizontal: 16px;
+  width: 100%;
 `
 
 export default Input

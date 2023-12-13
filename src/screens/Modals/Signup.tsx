@@ -181,6 +181,8 @@ const SignupModal: React.FC<SignupModalProps> = ({
         await updateProfile(user, { displayName: name })
         await AsyncStorage.setItem('mail', email)
         await AsyncStorage.setItem('password', password)
+        const expotokens = await AsyncStorage.getItem('expotokens')
+        const parseExpoTokens = JSON.parse(expotokens as string)
         const userDocRef = doc(db, 'users', user.uid)
 
         await setDoc(userDocRef, {
@@ -195,6 +197,7 @@ const SignupModal: React.FC<SignupModalProps> = ({
           language: language,
           rate: rate,
           confirmDetails: confirmDetails,
+          tokens: [parseExpoTokens],
         })
 
         updateUser(user)

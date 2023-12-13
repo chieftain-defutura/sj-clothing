@@ -16,7 +16,7 @@ import EyeIcon from '../../assets/icons/EyeIcon'
 import CustomButton from '../../components/Button'
 import EyeHideIcon from '../../assets/icons/EyeIconHide'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { collection, getDocs, query, where } from 'firebase/firestore/lite'
+import { collection, doc, getDocs, query, updateDoc, where, getDoc } from 'firebase/firestore/lite'
 
 interface LoginModalProps {
   isVisible?: boolean
@@ -85,12 +85,31 @@ const LoginModal: React.FC<LoginModalProps> = ({
         return
       }
 
-      await signInWithEmailAndPassword(auth, values.email, values.password)
+      const { user } = await signInWithEmailAndPassword(auth, values.email, values.password)
+
+      const userDocRef = doc(db, 'users', user.uid)
+      const userDoc = await getDoc(userDocRef)
+      const userData = userDoc.data()
+      console.log(userData)
+
+      if (!userData) return
+      for (let pushToken of userData.tokens) {
+        const expotokens = await AsyncStorage.getItem('expotokens')
+        const parseExpoTokens = [JSON.parse(expotokens as string)]
+        if (
+          pushToken.expoAndroidToken !== parseExpoTokens[0].expoAndroidToken ||
+          pushToken.expoIosToken !== parseExpoTokens[0].expoIosToken
+        ) {
+          userData.tokens.push(...parseExpoTokens)
+          await updateDoc(userDocRef, userData)
+        }
+      }
+
       console.log('User logged in successfully')
       onClose?.()
       setOpenCheckout?.(true)
     } catch (error) {
-      console.log(error)
+      console.log('error', error)
       if (error instanceof FirebaseError) {
         if (error.code === 'auth/invalid-email') {
           setErrorMessage('invalid email')
