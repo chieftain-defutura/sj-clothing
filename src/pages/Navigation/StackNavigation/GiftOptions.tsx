@@ -208,7 +208,7 @@ const TShirtImage = styled.Image`
   flex-shrink: 0;
 `
 
-const GoBackArrowContent = styled.Pressable`
+const GoBackArrowContent = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;

@@ -127,9 +127,11 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
 
   const share = async () => {
     try {
-      const result = await Share.share({
-        message: ` Product-name: ${data.productName}, \n Product-Image: ${data.productImage}, \n Product-description: ${data.description}`,
-      })
+      const currencySymbol = currency ? currency.symbol : '₹'
+      const message = `Product-name: ${data.productName}, \n Product-Image: ${data.productImage}, \n Product-description: ${data.description}, \n Product-price: ${data.normalPrice}${currencySymbol}`
+
+      const result = await Share.share({ message })
+
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
           console.log('shared with active type', result.activityType)
@@ -139,8 +141,9 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
       } else if (result.action === Share.dismissedAction) {
         console.log('dismissed')
       }
+      console.log('Shared succeeded')
     } catch (error) {
-      console.log(error)
+      console.error('Error sharing:', error)
     }
   }
 
