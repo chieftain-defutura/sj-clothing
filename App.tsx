@@ -171,10 +171,10 @@ async function registerForPushNotificationsAsync() {
       await AsyncStorage.setItem(
         'expotokens',
         JSON.stringify({
-          expoAndroidToken: expoAndroidToken,
-          fcmToken: fcmToken,
-          apnToken: apnToken,
-          expoIosToken: expoIosToken,
+          expoAndroidToken: expoAndroidToken ? expoAndroidToken : null,
+          fcmToken: fcmToken ? fcmToken : null,
+          apnToken: apnToken ? apnToken : null,
+          expoIosToken: expoIosToken ? expoIosToken : null,
         }),
       )
       const expotokens = await AsyncStorage.getItem('expotokens')
