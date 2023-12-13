@@ -1,4 +1,11 @@
-import { StyleSheet, View, KeyboardAvoidingView, FlatList, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MapView from 'react-native-maps'
 import styled from 'styled-components/native'
@@ -24,6 +31,8 @@ interface Suggestion {
   display_name: string
   place_id: number
 }
+
+const { width } = Dimensions.get('window')
 
 const Locations: React.FC<IAddressBook> = ({ navigation }) => {
   const [showDisplay, setDisplay] = useState(0)
@@ -138,14 +147,14 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
             </GoBackArrowContent>
             <View style={{ padding: 20, display: 'flex', alignItems: 'flex-start', gap: 20 }}>
               <View style={styles.searchInputBox}>
-                <Search width={16} height={16} />
+                <Search width={16} height={16} style={{ marginLeft: 16 }} />
                 <InputBox
                   placeholder='Search for area, street name'
                   onChangeText={(text) => handleSearchText(text)}
                   value={onText || ''}
-                  style={styles.inputBox}
                   placeholderTextColor={COLORS.SecondaryTwo}
                   allowFontScaling={false}
+                  style={{ width: width / 1.3 }}
                 />
               </View>
               <View
@@ -270,14 +279,12 @@ const CartText = styled.Text`
 `
 
 const InputBox = styled.TextInput`
-  width: 100%;
   border-radius: 20px;
-  background-color: white;
-  color: black;
+  background-color: transparent;
   font-size: 14px;
-  margin-vertical: 12px;
-  padding-right: 16px;
-  padding-vertical: 4x;
+  color: #462d85;
+  padding-horizontal: 4px;
+  padding-vertical: 12px;
 `
 const HeaderStyle = styled.Text`
   font-size: 14px;
@@ -324,18 +331,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 2,
+
     marginVertical: 8,
     gap: 8,
     position: 'relative',
     top: 30,
-  },
-  inputBox: {
-    borderRadius: 20,
-    backgroundColor: 'transparent',
-    color: '#462D85',
-    fontSize: 14,
-    marginVertical: 10,
   },
 })

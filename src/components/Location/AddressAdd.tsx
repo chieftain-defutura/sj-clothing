@@ -6,7 +6,7 @@ import { COLORS } from '../../styles/theme'
 import Input from '../Input'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { StyleSheet, View, ScrollView, Keyboard, Pressable } from 'react-native'
+import { StyleSheet, View, ScrollView, Keyboard, Pressable, Dimensions } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
 import { doc, updateDoc, getDoc } from 'firebase/firestore/lite'
@@ -26,6 +26,8 @@ interface IAddAddress {
   onText: string | null
   setOnSearchChange: React.Dispatch<React.SetStateAction<string | null>>
 }
+
+const { width } = Dimensions.get('window')
 
 const validationSchema = yup.object({
   fullAddress: yup.string(),
@@ -470,11 +472,12 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                     show={show}
                   />
                   <Input
-                    placeholder='phone No'
+                    placeholder='Phone No'
                     value={formik.values.phoneNo}
                     onChangeText={formik.handleChange('phoneNo')}
                     onBlur={formik.handleBlur('phoneNo')}
                     keyboardType='numeric'
+                    style={{ width: width / 1.4 }}
                   />
                 </View>
                 {(formik.values.phoneNo === undefined || formik.values.phoneNo.length === 0) &&
