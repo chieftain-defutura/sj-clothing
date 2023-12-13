@@ -1,5 +1,5 @@
 import uuid from 'react-native-uuid'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { Dimensions, View, Animated, Easing } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSharedValue, withSequence, withTiming } from 'react-native-reanimated'
 import { collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
@@ -118,6 +118,36 @@ const Medium = () => {
   const [openCheckout, setOpenCheckout] = useState(false)
   const [animationUpdated, setAnimationUpdated] = useState(false)
   const [toolTip, showToolTip] = useState(false)
+  const shakeAnimation = useRef(new Animated.Value(0)).current
+
+  const shake = () => {
+    Animated.sequence([
+      Animated.timing(shakeAnimation, {
+        toValue: 10,
+        duration: 50,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shakeAnimation, {
+        toValue: -10,
+        duration: 50,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shakeAnimation, {
+        toValue: 10,
+        duration: 50,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shakeAnimation, {
+        toValue: 0,
+        duration: 50,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+    ]).start()
+  }
 
   const handleGetData = useCallback(() => {
     if (!uid) return
@@ -127,7 +157,9 @@ const Medium = () => {
     )
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docs.forEach((doc) => {
-        if (doc.data()['animationFinished']) setAnimationUpdated(doc.data()['animationFinished'])
+        if (doc.data()['animationFinished']) {
+          setAnimationUpdated(doc.data()['animationFinished']), playSound()
+        }
       })
     })
 
@@ -141,18 +173,18 @@ const Medium = () => {
   }, [handleGetData])
 
   useEffect(() => {
-    if (imageApplied) {
+    if (!imageApplied) {
       setTempImageOrText(isImageOrText)
     }
   }, [imageApplied])
 
   const playSound = async () => {
-    const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
-    await sound.playAsync()
-  }
-
-  const handleImageClick = () => {
-    playSound()
+    try {
+      const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
+      await sound.playAsync()
+    } catch (error) {
+      console.log('sound error:', error)
+    }
   }
 
   const handleDecreaseSteps = () => {
@@ -238,6 +270,7 @@ const Medium = () => {
         currentField = 'any'
     }
     console.log('currentField', currentField)
+    shake()
 
     if (currentField === '') {
       // setError('Please fill in the current field before proceeding.');
@@ -262,8 +295,6 @@ const Medium = () => {
   }
 
   useEffect(() => {
-    handleImageClick()
-
     setTimeout(() => {
       setWarning('') // Set the state to null after 5 seconds
     }, 2000)
@@ -435,6 +466,8 @@ const Medium = () => {
             handleIncreaseSteps={handleIncreaseSteps}
             setImageApplied={setImageApplied}
             animationUpdated={animationUpdated}
+            shake={shake}
+            shakeAnimation={shakeAnimation}
           />
 
           <View style={{ zIndex: 3, width: width, position: 'absolute', top: 0, flex: 1 }}>
@@ -586,5 +619,3 @@ const Medium = () => {
 }
 
 export default Medium
-
-const styles = StyleSheet.create({})

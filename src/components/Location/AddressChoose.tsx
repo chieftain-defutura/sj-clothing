@@ -1,5 +1,5 @@
-import { View, StyleSheet, Pressable, Dimensions } from 'react-native'
-import React, { useState, useEffect, useCallback } from 'react'
+import { View, StyleSheet, Pressable, Dimensions, Platform } from 'react-native'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import styled from 'styled-components/native'
 import { RadioButton } from 'react-native-paper'
 import { userStore } from '../../store/userStore'
@@ -25,13 +25,14 @@ interface AddressData {
   saveAddressAs: string
 }
 
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 const AddressChoose: React.FC = () => {
   const user = userStore((state) => state.user)
   const [data, setData] = useState<AddressData[] | null>([])
   const [checked, setChecked] = React.useState<string | null>(null)
   const [isLoading, setLoading] = useState(false)
+  const checkefRef = useRef(null)
 
   const updateData = async (index: string) => {
     try {
@@ -129,9 +130,11 @@ const AddressChoose: React.FC = () => {
             <ScrollView style={{ height: 500 }} showsVerticalScrollIndicator={false}>
               {data.map((f, index) => (
                 <View key={index} style={styles.radioBtn}>
-                  <Pressable>
+                  <View>
                     <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
-                  </Pressable>
+                    <View style={styles.radioBtnIOS}></View>
+                  </View>
+
                   <View style={{ display: 'flex', flexDirection: 'column' }}>
                     <View style={styles.RadioTitle}>
                       <HomeIcon width={16} height={16} color={'black'} />
@@ -268,6 +271,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 8,
+  },
+
+  radioBtnIOS: {
+    ...Platform.select({
+      ios: {
+        borderWidth: 1.5,
+        borderColor: 'rgba(0,0,0,0.3)',
+        borderRadius: 200,
+        width: width / 14,
+        height: height / 30,
+        marginTop: -32,
+        marginLeft: 4,
+      },
+    }),
   },
 })
 

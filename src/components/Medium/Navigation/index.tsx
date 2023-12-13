@@ -12,6 +12,7 @@ import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import { COLORS } from '../../../styles/theme'
 import { useTranslation } from 'react-i18next'
+import TextAnimation from './TextAnimation'
 
 const { width } = Dimensions.get('window')
 
@@ -31,9 +32,10 @@ interface INavigation {
     quantity: string
   }
   isColor: string
-
+  shakeAnimation: any
   handleIncreaseSteps: () => void
   handleDecreaseSteps: () => void
+  shake: () => void
   setDone: React.Dispatch<React.SetStateAction<boolean>>
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDesign: React.Dispatch<React.SetStateAction<boolean>>
@@ -64,8 +66,10 @@ const Navigation: React.FC<INavigation> = ({
   isSelectedStyle,
   sizeVarient,
   animationUpdated,
+  shakeAnimation,
   setOpenDesign,
   handleIncreaseSteps,
+  shake,
   handleDecreaseSteps,
   setDropDown,
   setImageOrText,
@@ -159,7 +163,6 @@ const Navigation: React.FC<INavigation> = ({
             {
               justifyContent: steps === 6 ? 'flex-start' : 'space-between',
               alignItems: warning ? 'flex-start' : 'center',
-
               gap: steps === 6 ? 70 : 0,
             },
           ]}
@@ -230,7 +233,7 @@ const Navigation: React.FC<INavigation> = ({
 
                 {/* {steps !== 5 && <DropDownArrowIcon />} */}
               </Pressable>
-              {warning && (
+              {warning && animationUpdated && (
                 <Text
                   allowFontScaling={false}
                   style={{
@@ -243,9 +246,20 @@ const Navigation: React.FC<INavigation> = ({
                 </Text>
               )}
               {!animationUpdated && (
-                <Text style={{ color: 'red', fontFamily: 'Gilroy-Medium', paddingTop: 3 }}>
-                  Please wait till avatar loads
-                </Text>
+                // <Text
+                //   style={{
+                //     color: 'red',
+                //     fontFamily: 'Gilroy-Medium',
+                //     paddingTop: 3,
+                //     position: 'absolute',
+                //     top: 40,
+                //     left: -15,
+                //     width: width / 2,
+                //   }}
+                // >
+                //   Please wait till avatar loads
+                // </Text>
+                <TextAnimation shake={shake} shakeAnimation={shakeAnimation} />
               )}
             </View>
           )}
@@ -302,9 +316,9 @@ const Navigation: React.FC<INavigation> = ({
               onPress={handleIncreaseSteps}
               activeOpacity={0.6}
               underlayColor='rgba(70, 45, 133, 0.2)'
-              disabled={!animationUpdated}
+              // disabled={!animationUpdated}
               style={{
-                opacity: !animationUpdated ? 0.5 : 1,
+                // opacity: !animationUpdated ? 0.5 : 1,
                 borderRadius: 20,
                 padding: 6,
               }}
