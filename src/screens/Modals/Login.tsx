@@ -2,7 +2,7 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, Modal, StyleSheet, Pressable, Alert } from 'react-native'
+import { View, Modal, StyleSheet, Pressable, Platform } from 'react-native'
 import {
   AuthErrorCodes,
   fetchSignInMethodsForEmail,
@@ -156,6 +156,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
                     placeholderTextColor={COLORS.SecondaryTwo}
                     autoCorrect={false}
                     allowFontScaling={false}
+                    style={styles.input}
                   />
                 </InputBorder>
                 {touched.email && errors.email && (
@@ -174,7 +175,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
                     placeholderTextColor={COLORS.SecondaryTwo}
                     autoCorrect={false}
                     allowFontScaling={false}
-                    style={{ width: 240 }}
+                    style={[{ width: 240 }, styles.input]}
                   />
                   <Pressable
                     onPress={(event) => {
@@ -272,7 +273,7 @@ const InputBorder = styled.View`
   border-radius: 5px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-direction: row;
   padding-vertical: 8px;
   padding-horizontal: 16px;
@@ -321,5 +322,12 @@ const styles = StyleSheet.create({
   submitBtn: {
     marginBottom: 16,
     fontFamily: 'Montserrat-Medium',
+  },
+  input: {
+    ...Platform.select({
+      ios: {
+        paddingVertical: 4,
+      },
+    }),
   },
 })

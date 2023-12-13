@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Modal, StyleSheet, Pressable } from 'react-native'
+import { View, Modal, StyleSheet, Pressable, Platform } from 'react-native'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 import styled from 'styled-components/native'
 import { Formik } from 'formik'
@@ -66,6 +66,7 @@ const ForgotMail: React.FC<ForgotMailProps> = ({ isVisible, onClose, onLoginClic
                     placeholderTextColor={COLORS.SecondaryTwo}
                     autoCorrect={false}
                     allowFontScaling={false}
+                    style={styles.input}
                   />
                 </InputBorder>
                 {errorMessage && (
@@ -158,23 +159,17 @@ const ErrorText = styled.Text`
   color: ${COLORS.errorClr};
 `
 
-const AccountView = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 8px;
-`
-
-const LoginLink = styled.Text`
-  color: ${COLORS.textSecondaryClr};
-  font-size: 14px;
-  font-family: Gilroy-Medium;
-`
-
 export default ForgotMail
 
 const styles = StyleSheet.create({
   submitBtn: {
     marginVertical: 16,
+  },
+  input: {
+    ...Platform.select({
+      ios: {
+        paddingVertical: 4,
+      },
+    }),
   },
 })

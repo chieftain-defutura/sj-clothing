@@ -13,8 +13,7 @@ import React, { useEffect, useState } from 'react'
 import { doc, setDoc } from 'firebase/firestore/lite'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { View, Modal, StyleSheet, Pressable, TouchableOpacity, Text } from 'react-native'
-
+import { View, Modal, StyleSheet, Pressable, TouchableOpacity, Text, Platform } from 'react-native'
 import { COLORS } from '../../styles/theme'
 import { auth, db } from '../../../firebase'
 import CloseIcon from '../../assets/icons/Close'
@@ -22,7 +21,6 @@ import EyeIcon from '../../assets/icons/EyeIcon'
 import { userStore } from '../../store/userStore'
 import CustomButton from '../../components/Button'
 import PhoneVerification from './PhoneVerification'
-import EmailVerification from './EmailVerification'
 import GreenTick from '../../assets/icons/GreenTick'
 import EyeHideIcon from '../../assets/icons/EyeIconHide'
 import axios from 'axios'
@@ -241,6 +239,7 @@ const SignupModal: React.FC<SignupModalProps> = ({
                         placeholderTextColor={COLORS.SecondaryTwo}
                         autoCorrect={false}
                         allowFontScaling={false}
+                        style={styles.input}
                       />
                     </InputBorder>
                     {touched.name && errors.name && (
@@ -258,6 +257,7 @@ const SignupModal: React.FC<SignupModalProps> = ({
                         placeholderTextColor={COLORS.SecondaryTwo}
                         autoCorrect={false}
                         allowFontScaling={false}
+                        style={styles.input}
                       />
                       {/* <Pressable
                           style={{ opacity: verificationCode ? 0 : 1 }}
@@ -283,7 +283,7 @@ const SignupModal: React.FC<SignupModalProps> = ({
                         placeholderTextColor={COLORS.SecondaryTwo}
                         autoCorrect={false}
                         allowFontScaling={false}
-                        style={{ width: 240 }}
+                        style={[{ width: 240 }, styles.input]}
                       />
                       <Pressable onPress={togglePasswordVisibility} style={{ marginLeft: 5 }}>
                         {showPassword ? (
@@ -536,5 +536,12 @@ export default SignupModal
 const styles = StyleSheet.create({
   submitBtn: {
     marginVertical: 16,
+  },
+  input: {
+    ...Platform.select({
+      ios: {
+        paddingVertical: 4,
+      },
+    }),
   },
 })

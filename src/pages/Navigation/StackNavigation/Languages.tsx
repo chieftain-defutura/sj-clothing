@@ -157,7 +157,7 @@ const Languages = () => {
             </GoBackArrowContent>
             <Text
               allowFontScaling={false}
-              style={[styles.title, { fontSize: 28, width: width / 1.3 }]}
+              style={[styles.title, { fontSize: 28, width: width / 1.3, textAlign: 'center' }]}
             >
               {t('Choose Your Language')}
             </Text>
@@ -255,6 +255,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.ArvoRegular,
     paddingBottom: 24,
     marginTop: 8,
+    textAlign: 'center',
   },
   selectText: {
     fontSize: 14,

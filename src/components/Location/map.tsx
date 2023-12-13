@@ -226,7 +226,7 @@ const UseCurrentLocationText = styled.Text`
   color: ${COLORS.textSecondaryClr};
 `
 
-const CurrentLocationWrapper = styled.Pressable`
+const CurrentLocationWrapper = styled.TouchableOpacity`
   position: absolute;
   bottom: 120px;
 `

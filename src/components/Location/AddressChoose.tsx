@@ -1,5 +1,5 @@
-import { View, StyleSheet, Pressable, Dimensions } from 'react-native'
-import React, { useState, useEffect, useCallback } from 'react'
+import { View, StyleSheet, Pressable, Dimensions, Platform, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import styled from 'styled-components/native'
 import { RadioButton } from 'react-native-paper'
 import { userStore } from '../../store/userStore'
@@ -25,13 +25,14 @@ interface AddressData {
   saveAddressAs: string
 }
 
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 const AddressChoose: React.FC = () => {
   const user = userStore((state) => state.user)
   const [data, setData] = useState<AddressData[] | null>([])
   const [checked, setChecked] = React.useState<string | null>(null)
   const [isLoading, setLoading] = useState(false)
+  const checkefRef = useRef(null)
 
   const updateData = async (index: string) => {
     try {
@@ -118,42 +119,55 @@ const AddressChoose: React.FC = () => {
       <View style={{ marginTop: 26, marginLeft: 8 }}>
         <Header allowFontScaling={false}>Choose Address</Header>
 
-        <RadioButton.Group
+        {/* <RadioButton.Group
           onValueChange={(newValue) => {
             updateData(newValue)
             setChecked(newValue)
           }}
           value={checked as string}
-        >
-          {data?.length ? (
-            <ScrollView style={{ height: 500 }} showsVerticalScrollIndicator={false}>
-              {data.map((f, index) => (
-                <View key={index} style={styles.radioBtn}>
-                  <Pressable>
-                    <RadioButton value={index.toString()} color={COLORS.textSecondaryClr} />
-                  </Pressable>
-                  <View style={{ display: 'flex', flexDirection: 'column' }}>
-                    <View style={styles.RadioTitle}>
-                      <HomeIcon width={16} height={16} color={'black'} />
-                      <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
-                    </View>
-                    <DescriptionText allowFontScaling={false}>
-                      {f.name}, {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city},{' '}
-                      {f.state}, {f.country}, {f.pinCode}.
-                    </DescriptionText>
+        > */}
+        {data?.length ? (
+          <ScrollView style={{ height: 500 }} showsVerticalScrollIndicator={false}>
+            {data.map((f, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.radioBtn}
+                onPress={() => {
+                  setChecked(index.toString())
+                  updateData(index.toString())
+                }}
+              >
+                <View>
+                  <RadioButton
+                    status={checked === index.toString() ? 'checked' : 'unchecked'}
+                    value={index.toString()}
+                    color={COLORS.textSecondaryClr}
+                  />
+                  <View style={styles.radioBtnIOS}></View>
+                </View>
+
+                <View style={{ display: 'flex', flexDirection: 'column' }}>
+                  <View style={styles.RadioTitle}>
+                    <HomeIcon width={16} height={16} color={'black'} />
+                    <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
                   </View>
-                  {/* <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
+                  <DescriptionText allowFontScaling={false}>
+                    {f.name}, {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city},{' '}
+                    {f.state}, {f.country}, {f.pinCode}.
+                  </DescriptionText>
+                </View>
+                {/* <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
                       <Text allowFontScaling={false} style={styles.editText}>Edit</Text>
                    </Pressable> */}
-                </View>
-              ))}
-            </ScrollView>
-          ) : (
-            <View style={{ marginTop: 40 }}>
-              <ProductText allowFontScaling={false}>No Address</ProductText>
-            </View>
-          )}
-        </RadioButton.Group>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        ) : (
+          <View style={{ marginTop: 40 }}>
+            <ProductText allowFontScaling={false}>No Address</ProductText>
+          </View>
+        )}
+        {/* </RadioButton.Group> */}
       </View>
       {/* <FlexContent>
         <Pressable onPress={(e) => onAddPress(e, onText)}>
@@ -268,6 +282,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 8,
+  },
+
+  radioBtnIOS: {
+    ...Platform.select({
+      ios: {
+        borderWidth: 1.5,
+        borderColor: 'rgba(0,0,0,0.3)',
+        borderRadius: 200,
+        width: width / 14,
+        height: height / 30,
+        marginTop: -32,
+        marginLeft: 4,
+      },
+    }),
   },
 })
 

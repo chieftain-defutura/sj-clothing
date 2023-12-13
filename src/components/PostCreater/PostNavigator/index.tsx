@@ -226,7 +226,6 @@ const PostNavigator: React.FC<IPostNavigation> = ({
         {
           justifyContent: steps === 6 ? 'flex-start' : 'space-between',
           alignItems: warning ? 'flex-start' : 'center',
-
           gap: steps === 6 ? 70 : 0,
         },
       ]}
