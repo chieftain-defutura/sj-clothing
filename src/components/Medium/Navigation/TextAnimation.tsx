@@ -1,5 +1,5 @@
-import React, { useRef } from 'react'
-import { Text, View, Animated, Easing, Dimensions } from 'react-native'
+import React from 'react'
+import { Text, View, Animated, Dimensions } from 'react-native'
 
 const { width } = Dimensions.get('window')
 
@@ -9,37 +9,6 @@ interface ITextAnimation {
 }
 
 const TextAnimation: React.FC<ITextAnimation> = ({ shake, shakeAnimation }) => {
-  //   const shakeAnimation = useRef(new Animated.Value(0)).current
-
-  //   const shake = () => {
-  //     Animated.sequence([
-  //       Animated.timing(shakeAnimation, {
-  //         toValue: 10,
-  //         duration: 50,
-  //         easing: Easing.linear,
-  //         useNativeDriver: true,
-  //       }),
-  //       Animated.timing(shakeAnimation, {
-  //         toValue: -10,
-  //         duration: 50,
-  //         easing: Easing.linear,
-  //         useNativeDriver: true,
-  //       }),
-  //       Animated.timing(shakeAnimation, {
-  //         toValue: 10,
-  //         duration: 50,
-  //         easing: Easing.linear,
-  //         useNativeDriver: true,
-  //       }),
-  //       Animated.timing(shakeAnimation, {
-  //         toValue: 0,
-  //         duration: 50,
-  //         easing: Easing.linear,
-  //         useNativeDriver: true,
-  //       }),
-  //     ]).start()
-  //   }
-
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Animated.View
@@ -57,6 +26,7 @@ const TextAnimation: React.FC<ITextAnimation> = ({ shake, shakeAnimation }) => {
             top: 2,
             left: -75,
             width: width / 2,
+            zIndex: 1000,
           }}
         >
           Please wait till avatar loads

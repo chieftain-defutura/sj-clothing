@@ -245,22 +245,7 @@ const Navigation: React.FC<INavigation> = ({
                   {t(warning)}
                 </Text>
               )}
-              {!animationUpdated && (
-                // <Text
-                //   style={{
-                //     color: 'red',
-                //     fontFamily: 'Gilroy-Medium',
-                //     paddingTop: 3,
-                //     position: 'absolute',
-                //     top: 40,
-                //     left: -15,
-                //     width: width / 2,
-                //   }}
-                // >
-                //   Please wait till avatar loads
-                // </Text>
-                <TextAnimation shake={shake} shakeAnimation={shakeAnimation} />
-              )}
+              {!animationUpdated && <TextAnimation shake={shake} shakeAnimation={shakeAnimation} />}
             </View>
           )}
           {steps === 6 && (

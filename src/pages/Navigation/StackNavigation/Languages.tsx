@@ -255,6 +255,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.ArvoRegular,
     paddingBottom: 24,
     marginTop: 8,
+    textAlign: 'center',
   },
   selectText: {
     fontSize: 14,

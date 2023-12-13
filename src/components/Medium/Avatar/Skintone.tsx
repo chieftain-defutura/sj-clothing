@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ActivityIndicator,
+  Platform,
 } from 'react-native'
 
 import { COLORS } from '../../../styles/theme'
@@ -226,6 +227,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Arvo-Regular',
     textTransform: 'uppercase',
+    ...Platform.select({
+      ios: {
+        marginBottom: -40,
+      },
+    }),
   },
   SkintoneButtonWrapper: {
     display: 'flex',
