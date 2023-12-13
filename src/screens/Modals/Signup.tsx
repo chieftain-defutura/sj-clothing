@@ -285,13 +285,16 @@ const SignupModal: React.FC<SignupModalProps> = ({
                         allowFontScaling={false}
                         style={[{ width: 240 }, styles.input]}
                       />
-                      <Pressable onPress={togglePasswordVisibility} style={{ marginLeft: 5 }}>
+                      <TouchableOpacity
+                        onPress={togglePasswordVisibility}
+                        style={{ paddingRight: 15 }}
+                      >
                         {showPassword ? (
                           <EyeIcon width={14} height={14} />
                         ) : (
                           <EyeHideIcon width={14} height={14} />
                         )}
-                      </Pressable>
+                      </TouchableOpacity>
                     </InputBorder>
                     {touched.password && errors.password && (
                       <ErrorText allowFontScaling={false}>{errors.password}</ErrorText>
@@ -395,6 +398,7 @@ const SignupModal: React.FC<SignupModalProps> = ({
                     }}
                     fontFamily='Arvo-Regular'
                     fontSize={14}
+                    disabled={isLoading}
                     buttonStyle={[styles.submitBtn]}
                   />
                 </SignUpContainer>
@@ -486,8 +490,6 @@ const InputBorder = styled.View`
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  padding-vertical: 8px;
-  padding-horizontal: 16px;
 `
 
 const VerifyText = styled.Text`
@@ -500,6 +502,8 @@ const InputStyle = styled.TextInput`
   font-family: Gilroy-Medium;
   width: 100%;
   font-size: 12px;
+  padding-vertical: 8px;
+  padding-horizontal: 16px;
 `
 
 const ErrorText = styled.Text`

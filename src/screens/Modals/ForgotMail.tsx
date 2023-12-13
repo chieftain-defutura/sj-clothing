@@ -144,14 +144,14 @@ const InputBorder = styled.View`
   align-items: center;
   justify-content: space-around;
   flex-direction: row;
-  padding-vertical: 8px;
-  padding-horizontal: 16px;
 `
 
 const InputStyle = styled.TextInput`
   font-family: Gilroy-Medium;
   width: 100%;
   font-size: 12px;
+  padding-vertical: 8px;
+  padding-horizontal: 16px;
 `
 
 const ErrorText = styled.Text`
