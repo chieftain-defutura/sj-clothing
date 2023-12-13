@@ -1,51 +1,5 @@
 import { create } from 'zustand'
 
-// Define the store state shape
-export interface IPostCreationData {
-  style?: {
-    title: string | null
-  }
-  color?: string | null
-  image?: {
-    title: string | null
-    design: {
-      name: string | null
-      image: any
-    }
-  }
-  text?: {
-    title: string | null
-    design: {
-      font: string | null
-      color: any
-    }
-  }
-  productandcaption?: {
-    product: string | null
-    caption: string | null
-  }
-  setStyle?: (style?: { title: string | null }) => void
-  setColor?: (color?: string | null) => void
-  setImage?: (image?: {
-    title: string | null
-    design: {
-      name: string | null
-      image: any
-    }
-  }) => void
-  setText?: (text?: {
-    title: string | null
-    design: {
-      font: string | null
-      color: any
-    }
-  }) => void
-  setproductandcaption?: (productandcaption?: {
-    product: string | null
-    caption: string | null
-  }) => void
-}
-
 type State = {
   style?: {
     title: string | null

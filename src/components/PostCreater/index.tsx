@@ -286,7 +286,7 @@ import { gradientOpacityColors } from '../../styles/theme'
 import PostNavigator from './PostNavigator'
 import { useSharedValue, withSequence, withTiming } from 'react-native-reanimated'
 import { userStore } from '../../store/userStore'
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs } from 'firebase/firestore/lite'
 import { db } from '../../../firebase'
 import { IMidlevel } from '../../constant/types'
 

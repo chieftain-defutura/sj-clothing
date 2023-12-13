@@ -2,8 +2,9 @@ import { useFonts } from 'expo-font'
 import Constants from 'expo-constants'
 import * as Linking from 'expo-linking'
 import { StatusBar } from 'expo-status-bar'
-import { SafeAreaView } from 'react-native'
+import { Alert, Button, Platform, SafeAreaView } from 'react-native'
 import { I18nextProvider } from 'react-i18next'
+import * as Device from 'expo-device'
 import * as SplashScreen from 'expo-splash-screen'
 import { doc, getDoc } from 'firebase/firestore/lite'
 import { onAuthStateChanged } from 'firebase/auth'
@@ -11,7 +12,7 @@ import { StripeProvider } from '@stripe/stripe-react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import registerNNPushToken from 'native-notify'
+// import registerNNPushToken from 'native-notify'
 
 import i18n from './i18n'
 import { auth, db } from './firebase'
@@ -19,11 +20,179 @@ import { userStore } from './src/store/userStore'
 import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
 import { MidlevelStore } from './src/store/midlevelStore'
 import { PUBLISHABLE_KEY } from './src/utils/config'
+import * as Notifications from 'expo-notifications'
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+})
+
+async function sendPushNotification(expoPushToken: any) {
+  try {
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title: 'Some title',
+      body: 'Hello world!',
+    }
+
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    })
+    Alert.alert(JSON.stringify(message))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+// async function registerForPushNotificationsAsync() {
+//   try {
+//     let token
+//     console.log('toen', token)
+
+//     if (Platform.OS === 'android') {
+//       await Notifications.setNotificationChannelAsync('default', {
+//         name: 'default',
+//         importance: Notifications.AndroidImportance.MAX,
+//         sound: 'mySoundFile.wav',
+//         vibrationPattern: [0, 250, 250, 250],
+//       })
+//     }
+
+//     if (Device.isDevice) {
+//       const { status: existingStatus } = await Notifications.getPermissionsAsync()
+//       let finalStatus = existingStatus
+//       console.log('existingStatus', existingStatus)
+//       if (existingStatus !== 'granted') {
+//         const { status } = await Notifications.requestPermissionsAsync()
+//         finalStatus = status
+//       }
+//       console.log('finalStatus', finalStatus)
+//       if (finalStatus !== 'granted') {
+//         alert('Failed to get push token for push notification!')
+//         return
+//       }
+//       token = await Notifications.getExpoPushTokenAsync({
+//         projectId: Constants?.expoConfig?.extra?.eas.projectId,
+//       })
+//       console.log(token)
+//     } else {
+//       alert('Must use physical device for Push Notifications')
+//     }
+
+//     return token?.data
+//   } catch (error) {
+//     console.log('error', error)
+//   }
+// }
+
+async function registerForPushNotificationsAsync() {
+  try {
+    let expoAndroidToken, fcmToken, expoIosToken, apnToken, token
+
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        sound: 'mySoundFile.wav',
+        vibrationPattern: [0, 250, 250, 250],
+      })
+    }
+
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync()
+      let finalStatus = existingStatus
+      if (existingStatus !== 'granted') {
+        try {
+          console.log('final1', finalStatus)
+          const { status } = await Notifications.requestPermissionsAsync({
+            ios: {
+              allowAlert: true,
+              allowBadge: true,
+              allowSound: true,
+              allowAnnouncements: true,
+            },
+          })
+          console.log('status', status)
+          finalStatus = status
+        } catch (error) {
+          console.log('error', error)
+        }
+      }
+
+      console.log('final2', finalStatus)
+
+      if (finalStatus !== 'granted') {
+        console.log('final3', finalStatus)
+        // The user denied permission. You can show an alert and guide them to settings.
+        Alert.alert(
+          'Enable Push Notifications',
+          'Push notifications are important for timely updates. Please enable them in your device settings.',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
+              text: 'Open Settings',
+              onPress: () => Linking.openSettings(),
+            },
+          ],
+        )
+
+        return null // or handle as needed in your app
+      }
+
+      token = await Notifications.getExpoPushTokenAsync({
+        projectId: Constants?.expoConfig?.extra?.eas.projectId,
+      })
+      if (Platform.OS === 'android') {
+        expoAndroidToken = (await Notifications.getExpoPushTokenAsync()).data
+        fcmToken = (await Notifications.getDevicePushTokenAsync()).data
+      } else if (Platform.OS === 'ios') {
+        expoIosToken = (await Notifications.getExpoPushTokenAsync()).data
+        apnToken = (await Notifications.getDevicePushTokenAsync()).data
+      }
+      console.log('Token:', token)
+      console.log('expoAndroidToken:', expoAndroidToken)
+      console.log('fcmToken:', fcmToken)
+      console.log('apnToken:', apnToken)
+      console.log('expoIosToken:', expoIosToken)
+
+      await AsyncStorage.setItem(
+        'expotokens',
+        JSON.stringify({
+          expoAndroidToken: expoAndroidToken,
+          fcmToken: fcmToken,
+          apnToken: apnToken,
+          expoIosToken: expoIosToken,
+        }),
+      )
+      const expotokens = await AsyncStorage.getItem('expotokens')
+      console.log(expotokens)
+    } else {
+      alert('Must use a physical device for Push Notifications')
+    }
+
+    return token?.data
+  } catch (error) {
+    console.log('Error:', error)
+    return null // or handle as needed in your app
+  }
+}
 SplashScreen.preventAutoHideAsync()
 
 const App: React.FC = () => {
-  registerNNPushToken(16667, 'j70J2eZN1ihIxJy6PrGNbz')
+  // registerNNPushToken(16667, 'j70J2eZN1ihIxJy6PrGNbz')
 
   const loadedRef = useRef(false)
   const [loading, setLoading] = useState(true)
@@ -44,6 +213,31 @@ const App: React.FC = () => {
   const updateLanguage = userStore((state) => state.updateLanguage)
   const updateProfile = userStore((state) => state.updateProfile)
   const updateConfirmDetails = userStore((state) => state.updateConfirmDetails)
+
+  const [expoPushToken, setExpoPushToken] = useState('')
+  const [notification, setNotification] = useState<Notifications.Notification>()
+  const notificationListener = useRef<Notifications.Subscription>()
+  const responseListener = useRef<Notifications.Subscription>()
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => setExpoPushToken(token as string))
+    notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
+      setNotification(notification)
+    })
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log(response)
+    })
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current as Notifications.Subscription,
+      )
+      Notifications.removeNotificationSubscription(
+        responseListener.current as Notifications.Subscription,
+      )
+    }
+  }, [])
 
   const fetchDataFromFirestore = useCallback(async () => {
     try {
@@ -147,8 +341,6 @@ const App: React.FC = () => {
     getMidlevelData()
   }, [getMidlevelData])
 
-  console.log('steps.isSteps', steps.isSteps)
-
   const [fontsLoaded] = useFonts({
     'Arvo-Regular': require('./src/assets/fonts/timesbold.ttf'), //font-weight 400
     'Gilroy-Medium': require('./src/assets/fonts/times.ttf'), //font-weight 500
@@ -180,6 +372,10 @@ const App: React.FC = () => {
             <NavigationContainer>
               <StatusBar animated={true} backgroundColor='rgba(199, 148, 228, 0.0)' style='dark' />
               <StackNavigationRoutes />
+              <Button
+                title='opn notification'
+                onPress={() => sendPushNotification(expoPushToken)}
+              />
             </NavigationContainer>
           </SafeAreaView>
         </I18nextProvider>

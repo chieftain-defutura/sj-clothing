@@ -124,11 +124,20 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
           <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
             <UserWrapper style={{ width: width, height: height / 2.5 }}>
               <NotUserContent>
-                {profile ? (
+                {route.params?.profileImg ? (
                   <Image
-                    source={{
-                      uri: profile ? (profile as string) : (route.params.profileImg as string),
+                    source={{ uri: route.params.profileImg }}
+                    style={{
+                      width: width,
+                      height: height / 2.5,
+                      borderBottomLeftRadius: 50,
+                      borderBottomRightRadius: 50,
                     }}
+                    alt='profile-img'
+                  />
+                ) : user && profile ? (
+                  <Image
+                    source={{ uri: profile as string }}
                     style={{
                       width: width,
                       height: height / 2.5,

@@ -11,7 +11,6 @@ import { FirebaseError } from 'firebase/app'
 import styled from 'styled-components/native'
 import React, { useEffect, useState } from 'react'
 import { doc, setDoc } from 'firebase/firestore/lite'
-import { sendEmailVerification } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { View, Modal, StyleSheet, Pressable, TouchableOpacity, Text } from 'react-native'
@@ -182,6 +181,8 @@ const SignupModal: React.FC<SignupModalProps> = ({
         await updateProfile(user, { displayName: name })
         await AsyncStorage.setItem('mail', email)
         await AsyncStorage.setItem('password', password)
+        const expotokens = await AsyncStorage.getItem('expotokens')
+        const parseExpoTokens = JSON.parse(expotokens as string)
         const userDocRef = doc(db, 'users', user.uid)
 
         await setDoc(userDocRef, {
@@ -196,6 +197,7 @@ const SignupModal: React.FC<SignupModalProps> = ({
           language: language,
           rate: rate,
           confirmDetails: confirmDetails,
+          tokens: [parseExpoTokens],
         })
 
         updateUser(user)
