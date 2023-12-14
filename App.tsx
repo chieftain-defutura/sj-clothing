@@ -12,7 +12,6 @@ import { StripeProvider } from '@stripe/stripe-react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-// import registerNNPushToken from 'native-notify'
 
 import i18n from './i18n'
 import { auth, db } from './firebase'
@@ -29,30 +28,6 @@ Notifications.setNotificationHandler({
     shouldSetBadge: true,
   }),
 })
-
-async function sendPushNotification(expoPushToken: any) {
-  try {
-    const message = {
-      to: expoPushToken,
-      sound: 'default',
-      title: 'Some title',
-      body: 'Hello world!',
-    }
-
-    await fetch('https://exp.host/--/api/v2/push/send', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Accept-encoding': 'gzip, deflate',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message),
-    })
-    Alert.alert(JSON.stringify(message))
-  } catch (error) {
-    console.log(error)
-  }
-}
 
 // async function registerForPushNotificationsAsync() {
 //   try {
@@ -192,8 +167,6 @@ async function registerForPushNotificationsAsync() {
 SplashScreen.preventAutoHideAsync()
 
 const App: React.FC = () => {
-  // registerNNPushToken(16667, 'j70J2eZN1ihIxJy6PrGNbz')
-
   const loadedRef = useRef(false)
   const [loading, setLoading] = useState(true)
   const rate = userStore((state) => state.rate)
@@ -372,10 +345,6 @@ const App: React.FC = () => {
             <NavigationContainer>
               <StatusBar animated={true} backgroundColor='rgba(199, 148, 228, 0.0)' style='dark' />
               <StackNavigationRoutes />
-              <Button
-                title='opn notification'
-                onPress={() => sendPushNotification(expoPushToken)}
-              />
             </NavigationContainer>
           </SafeAreaView>
         </I18nextProvider>
