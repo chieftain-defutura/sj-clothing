@@ -190,20 +190,22 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                     activeOpacity={0.6}
                     underlayColor='rgba(70, 45, 133, 0.1)'
                   >
-                    <ProfileUserContent>
-                      <FlexIcon>
-                        <f.leftIcon width={20} height={20} />
-                        <Text allowFontScaling={false} style={styles.UserText}>
-                          {t(f.name)}
-                        </Text>
-                      </FlexIcon>
-                      {f.rightIcon && <f.rightIcon width={20} height={20} />}
-                      {f.rightText && (
-                        <Text allowFontScaling={false} style={styles.RightText}>
-                          {f.name === 'My orders' ? `${orderData.length} items` : f.rightText}
-                        </Text>
-                      )}
-                    </ProfileUserContent>
+                    <View>
+                      <ProfileUserContent>
+                        <FlexIcon>
+                          <f.leftIcon width={20} height={20} />
+                          <Text allowFontScaling={false} style={styles.UserText}>
+                            {t(f.name)}
+                          </Text>
+                        </FlexIcon>
+                        {f.rightIcon && <f.rightIcon width={20} height={20} />}
+                        {f.rightText && (
+                          <Text allowFontScaling={false} style={styles.RightText}>
+                            {f.name === 'My orders' ? `${orderData.length} items` : f.rightText}
+                          </Text>
+                        )}
+                      </ProfileUserContent>
+                    </View>
                   </TouchableHighlight>
                 )
               })}
@@ -212,14 +214,16 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                 activeOpacity={0.6}
                 underlayColor='rgba(70, 45, 133, 0.1)'
               >
-                <ProfileUserContent>
-                  <FlexIcon>
-                    <CustomerCare width={20} height={20} />
-                    <Text allowFontScaling={false} style={styles.UserText}>
-                      {t('Customer care')}
-                    </Text>
-                  </FlexIcon>
-                </ProfileUserContent>
+                <View>
+                  <ProfileUserContent>
+                    <FlexIcon>
+                      <CustomerCare width={20} height={20} />
+                      <Text allowFontScaling={false} style={styles.UserText}>
+                        {t('Customer care')}
+                      </Text>
+                    </FlexIcon>
+                  </ProfileUserContent>
+                </View>
               </TouchableHighlight>
 
               {user ? (
@@ -229,28 +233,32 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                     activeOpacity={0.6}
                     underlayColor='rgba(255, 54, 54, 0.1)'
                   >
-                    <ProfileUserContent>
-                      <FlexIcon>
-                        <LogoutIcon width={24} height={24} />
-                        <Text allowFontScaling={false} style={styles.LogoutText}>
-                          {t('Log out')}
-                        </Text>
-                      </FlexIcon>
-                    </ProfileUserContent>
+                    <View>
+                      <ProfileUserContent>
+                        <FlexIcon>
+                          <LogoutIcon width={24} height={24} />
+                          <Text allowFontScaling={false} style={styles.LogoutText}>
+                            {t('Log out')}
+                          </Text>
+                        </FlexIcon>
+                      </ProfileUserContent>
+                    </View>
                   </TouchableHighlight>
                   <TouchableHighlight
                     onPress={handleDelectAccount}
                     activeOpacity={0.6}
                     underlayColor='rgba(255, 54, 54, 0.1)'
                   >
-                    <ProfileUserContent>
-                      <FlexIcon>
-                        <DeleteIcon width={24} height={24} />
-                        <Text allowFontScaling={false} style={styles.LogoutText}>
-                          {t('Delete Account')}
-                        </Text>
-                      </FlexIcon>
-                    </ProfileUserContent>
+                    <View>
+                      <ProfileUserContent>
+                        <FlexIcon>
+                          <DeleteIcon width={24} height={24} />
+                          <Text allowFontScaling={false} style={styles.LogoutText}>
+                            {t('Delete Account')}
+                          </Text>
+                        </FlexIcon>
+                      </ProfileUserContent>
+                    </View>
                   </TouchableHighlight>
                 </View>
               ) : (
@@ -325,14 +333,16 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                       activeOpacity={0.6}
                       underlayColor='rgba(255, 54, 54, 0.1)'
                     >
-                      <ProfileUserContent>
-                        <FlexIcon>
-                          <DeleteIcon width={24} height={24} />
-                          <Text allowFontScaling={false} style={styles.LogoutText}>
-                            {t('Delete Account')}
-                          </Text>
-                        </FlexIcon>
-                      </ProfileUserContent>
+                      <View>
+                        <ProfileUserContent>
+                          <FlexIcon>
+                            <DeleteIcon width={24} height={24} />
+                            <Text allowFontScaling={false} style={styles.LogoutText}>
+                              {t('Delete Account')}
+                            </Text>
+                          </FlexIcon>
+                        </ProfileUserContent>
+                      </View>
                     </TouchableHighlight>
                   </LogoutPressable>
                 </View>
