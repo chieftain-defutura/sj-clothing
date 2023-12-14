@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { View, Dimensions, Alert, TouchableHighlight } from 'react-native'
 import styled from 'styled-components/native'
 import * as ImagePicker from 'expo-image-picker'
@@ -10,10 +10,13 @@ import LeftArrow from '../../../../assets/icons/LeftArrow'
 import Input from '../../../../components/Input'
 import { userStore } from '../../../../store/userStore'
 import { doc, updateDoc } from 'firebase/firestore/lite'
-import { db, storage } from '../../../../../firebase'
+import { db, dbDefault, storage } from '../../../../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { LinearGradient } from 'expo-linear-gradient'
 import CustomButton from '../../../../components/Button'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
+import { updateProfile as updateProfileDb } from 'firebase/auth'
 
 const { width, height } = Dimensions.get('window')
 
@@ -50,8 +53,10 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   const [url, setUrl] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const updateName = userStore((name) => name.updateName)
-  const [image, setImage] = React.useState<string | null>(null)
+  const profile = userStore((state) => state.profile)
+  const [image, setImage] = React.useState<string | null>(profile)
   const updateProfile = userStore((state) => state.updateProfile)
+  console.log('urlggfgu', url)
 
   const onSubmit = async (values: { fullName: string }) => {
     try {
@@ -59,6 +64,9 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
       if (user) {
         updateName(user?.displayName)
         updateProfile(url)
+        await updateProfileDb(user, { displayName: values.fullName, photoURL: url })
+        console.log('urlll', url)
+
         await updateDoc(doc(db, 'users', user.uid), {
           name: values.fullName,
           profile: url,
@@ -103,16 +111,36 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
       await task // Wait for the upload to complete
 
       const url = await getDownloadURL(imageRef)
+      console.log('urrl', url)
 
       setUrl(url)
       console.log('Image uploaded to the bucket!')
     } catch (error) {
       console.error('Error uploading image:', error)
       Alert.alert('Error', 'Failed to upload image')
-      // You can also throw the error to handle it elsewhere if needed
       throw error
     }
   }
+
+  // const handleGetData = useCallback(async () => {
+  //   const email = await AsyncStorage.getItem('mail')
+  //   console.log('email', email)
+
+  //   const q = query(collection(dbDefault, 'users'), where('email', '==', email))
+  //   const unsubscribe = onSnapshot(q, (snapshot) => {
+  //     snapshot.docs.forEach((doc) => {
+  //       console.log(doc.data())
+  //     })
+  //   })
+
+  //   return () => {
+  //     unsubscribe()
+  //   }
+  // }, [])
+
+  // useEffect(() => {
+  //   handleGetData()
+  // }, [handleGetData])
 
   const formik = useFormik({
     initialValues: {

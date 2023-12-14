@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
   input: {
     ...Platform.select({
       ios: {
-        paddingVertical: 4,
+        paddingVertical: 12,
       },
     }),
   },

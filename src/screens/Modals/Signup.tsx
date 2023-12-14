@@ -182,7 +182,6 @@ const SignupModal: React.FC<SignupModalProps> = ({
         const expotokens = await AsyncStorage.getItem('expotokens')
         const parseExpoTokens = JSON.parse(expotokens as string)
         const userDocRef = doc(db, 'users', user.uid)
-
         await setDoc(userDocRef, {
           name: user.displayName,
           email: user.email,
@@ -371,7 +370,7 @@ const SignupModal: React.FC<SignupModalProps> = ({
                         placeholderTextColor={COLORS.SecondaryTwo}
                         autoCorrect={false}
                         allowFontScaling={false}
-                        style={{ width: 200 }}
+                        style={[{ width: 200 }, styles.input]}
                       />
                       <View style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
                         <Pressable
@@ -496,6 +495,7 @@ const VerifyText = styled.Text`
   font-size: 12px;
   color: ${COLORS.textSecondaryClr};
   font-family: Gilroy-Regular;
+  padding-right: 12px;
 `
 
 const InputStyle = styled.TextInput`
@@ -544,7 +544,7 @@ const styles = StyleSheet.create({
   input: {
     ...Platform.select({
       ios: {
-        paddingVertical: 4,
+        paddingVertical: 12,
       },
     }),
   },
