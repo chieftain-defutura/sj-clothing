@@ -20,6 +20,7 @@ import StackNavigationRoutes from './src/pages/Navigation/StackNavigation'
 import { MidlevelStore } from './src/store/midlevelStore'
 import { PUBLISHABLE_KEY } from './src/utils/config'
 import * as Notifications from 'expo-notifications'
+import { generalStore } from './src/store/generalStore'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -166,6 +167,9 @@ const App: React.FC = () => {
   const rate = userStore((state) => state.rate)
   const currency = userStore((state) => state.currency)
   const language = userStore((state) => state.language)
+  const updateAccessory = generalStore((state) => state.updateAccessory)
+  const updatePremiumText = generalStore((state) => state.updatePremiumText)
+
   const updateMidlevelData = MidlevelStore((state) => state.updateMidlevel)
   const signupUpdate = userStore((state) => state.signupUpdate)
   const user = userStore((state) => state.user)
@@ -307,6 +311,21 @@ const App: React.FC = () => {
   useEffect(() => {
     getMidlevelData()
   }, [getMidlevelData])
+
+  const getGeneralSettings = useCallback(async () => {
+    try {
+      const q = doc(db, 'Settings', 'GeneralSettings')
+      const querySnapshot = await getDoc(q)
+      const fetchData = querySnapshot.data()
+      updatePremiumText(fetchData?.premiumComingSoonText)
+      updateAccessory(fetchData?.showAccessoryPage)
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
+  useEffect(() => {
+    getGeneralSettings()
+  }, [getGeneralSettings])
 
   const [fontsLoaded] = useFonts({
     'Arvo-Regular': require('./src/assets/fonts/timesbold.ttf'), //font-weight 400
