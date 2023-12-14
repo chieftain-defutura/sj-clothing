@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { View, Dimensions, Alert, TouchableHighlight } from 'react-native'
+import { View, Dimensions, Alert, TouchableHighlight, Image } from 'react-native'
 import styled from 'styled-components/native'
 import * as ImagePicker from 'expo-image-picker'
 import { useFormik } from 'formik'
@@ -187,6 +187,17 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
           {image ? (
             <ProfileImage
               source={{ uri: image }}
+              style={{
+                width: 128,
+                height: 128,
+                resizeMode: 'cover',
+                borderRadius: 100,
+              }}
+              alt='edit-profile-img'
+            />
+          ) : user?.photoURL ? (
+            <ProfileImage
+              source={{ uri: user.photoURL }}
               style={{
                 width: 128,
                 height: 128,
