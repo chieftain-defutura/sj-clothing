@@ -12,7 +12,6 @@ import { StripeProvider } from '@stripe/stripe-react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-// import registerNNPushToken from 'native-notify'
 
 import i18n from './i18n'
 import { auth, db } from './firebase'
@@ -29,30 +28,6 @@ Notifications.setNotificationHandler({
     shouldSetBadge: true,
   }),
 })
-
-async function sendPushNotification(expoPushToken: any) {
-  try {
-    const message = {
-      to: expoPushToken,
-      sound: 'default',
-      title: 'Some title',
-      body: 'Hello world!',
-    }
-
-    await fetch('https://exp.host/--/api/v2/push/send', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Accept-encoding': 'gzip, deflate',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message),
-    })
-    Alert.alert(JSON.stringify(message))
-  } catch (error) {
-    console.log(error)
-  }
-}
 
 // async function registerForPushNotificationsAsync() {
 //   try {
@@ -113,7 +88,6 @@ async function registerForPushNotificationsAsync() {
       let finalStatus = existingStatus
       if (existingStatus !== 'granted') {
         try {
-          console.log('final1', finalStatus)
           const { status } = await Notifications.requestPermissionsAsync({
             ios: {
               allowAlert: true,
@@ -122,17 +96,13 @@ async function registerForPushNotificationsAsync() {
               allowAnnouncements: true,
             },
           })
-          console.log('status', status)
           finalStatus = status
         } catch (error) {
           console.log('error', error)
         }
       }
 
-      console.log('final2', finalStatus)
-
       if (finalStatus !== 'granted') {
-        console.log('final3', finalStatus)
         // The user denied permission. You can show an alert and guide them to settings.
         Alert.alert(
           'Enable Push Notifications',
@@ -162,11 +132,11 @@ async function registerForPushNotificationsAsync() {
         expoIosToken = (await Notifications.getExpoPushTokenAsync()).data
         apnToken = (await Notifications.getDevicePushTokenAsync()).data
       }
-      console.log('Token:', token)
-      console.log('expoAndroidToken:', expoAndroidToken)
-      console.log('fcmToken:', fcmToken)
-      console.log('apnToken:', apnToken)
-      console.log('expoIosToken:', expoIosToken)
+      // console.log('Token:', token)
+      // console.log('expoAndroidToken:', expoAndroidToken)
+      // console.log('fcmToken:', fcmToken)
+      // console.log('apnToken:', apnToken)
+      // console.log('expoIosToken:', expoIosToken)
 
       await AsyncStorage.setItem(
         'expotokens',
@@ -178,7 +148,6 @@ async function registerForPushNotificationsAsync() {
         }),
       )
       const expotokens = await AsyncStorage.getItem('expotokens')
-      console.log(expotokens)
     } else {
       alert('Must use a physical device for Push Notifications')
     }
@@ -192,8 +161,6 @@ async function registerForPushNotificationsAsync() {
 SplashScreen.preventAutoHideAsync()
 
 const App: React.FC = () => {
-  // registerNNPushToken(16667, 'j70J2eZN1ihIxJy6PrGNbz')
-
   const loadedRef = useRef(false)
   const [loading, setLoading] = useState(true)
   const rate = userStore((state) => state.rate)
@@ -372,10 +339,6 @@ const App: React.FC = () => {
             <NavigationContainer>
               <StatusBar animated={true} backgroundColor='rgba(199, 148, 228, 0.0)' style='dark' />
               <StackNavigationRoutes />
-              <Button
-                title='opn notification'
-                onPress={() => sendPushNotification(expoPushToken)}
-              />
             </NavigationContainer>
           </SafeAreaView>
         </I18nextProvider>
