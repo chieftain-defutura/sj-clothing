@@ -2,12 +2,8 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, Modal, StyleSheet, Pressable, Platform } from 'react-native'
-import {
-  AuthErrorCodes,
-  fetchSignInMethodsForEmail,
-  signInWithEmailAndPassword,
-} from 'firebase/auth'
+import { View, Modal, StyleSheet, Pressable, Platform, TouchableOpacity } from 'react-native'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from '../../../firebase'
 import { COLORS } from '../../styles/theme'
 import { FirebaseError } from 'firebase/app'
@@ -178,19 +174,19 @@ const LoginModal: React.FC<LoginModalProps> = ({
                     allowFontScaling={false}
                     style={[{ width: 240 }, styles.input]}
                   />
-                  <Pressable
+                  <TouchableOpacity
                     onPress={(event) => {
                       togglePasswordVisibility()
                       event.stopPropagation()
                     }}
-                    style={{ marginLeft: 5 }}
+                    style={{ paddingRight: 15 }}
                   >
                     {showPassword ? (
                       <EyeIcon width={14} height={14} />
                     ) : (
                       <EyeHideIcon width={14} height={14} />
                     )}
-                  </Pressable>
+                  </TouchableOpacity>
                 </InputBorder>
                 {touched.password && errors.password && (
                   <ErrorText allowFontScaling={false}>{errors.password}</ErrorText>
@@ -276,14 +272,14 @@ const InputBorder = styled.View`
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  padding-vertical: 8px;
-  padding-horizontal: 16px;
 `
 
 const InputStyle = styled.TextInput`
   font-family: Gilroy-Medium;
   width: 100%;
   font-size: 12px;
+  padding-vertical: 8px;
+  padding-horizontal: 16px;
 `
 
 const ErrorText = styled.Text`
@@ -327,7 +323,7 @@ const styles = StyleSheet.create({
   input: {
     ...Platform.select({
       ios: {
-        paddingVertical: 4,
+        paddingVertical: 12,
       },
     }),
   },

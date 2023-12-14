@@ -182,7 +182,6 @@ const SignupModal: React.FC<SignupModalProps> = ({
         const expotokens = await AsyncStorage.getItem('expotokens')
         const parseExpoTokens = JSON.parse(expotokens as string)
         const userDocRef = doc(db, 'users', user.uid)
-
         await setDoc(userDocRef, {
           name: user.displayName,
           email: user.email,
@@ -285,13 +284,16 @@ const SignupModal: React.FC<SignupModalProps> = ({
                         allowFontScaling={false}
                         style={[{ width: 240 }, styles.input]}
                       />
-                      <Pressable onPress={togglePasswordVisibility} style={{ marginLeft: 5 }}>
+                      <TouchableOpacity
+                        onPress={togglePasswordVisibility}
+                        style={{ paddingRight: 15 }}
+                      >
                         {showPassword ? (
                           <EyeIcon width={14} height={14} />
                         ) : (
                           <EyeHideIcon width={14} height={14} />
                         )}
-                      </Pressable>
+                      </TouchableOpacity>
                     </InputBorder>
                     {touched.password && errors.password && (
                       <ErrorText allowFontScaling={false}>{errors.password}</ErrorText>
@@ -368,7 +370,7 @@ const SignupModal: React.FC<SignupModalProps> = ({
                         placeholderTextColor={COLORS.SecondaryTwo}
                         autoCorrect={false}
                         allowFontScaling={false}
-                        style={{ width: 200 }}
+                        style={[{ width: 200 }, styles.input]}
                       />
                       <View style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
                         <Pressable
@@ -395,6 +397,7 @@ const SignupModal: React.FC<SignupModalProps> = ({
                     }}
                     fontFamily='Arvo-Regular'
                     fontSize={14}
+                    disabled={isLoading}
                     buttonStyle={[styles.submitBtn]}
                   />
                 </SignUpContainer>
@@ -486,20 +489,21 @@ const InputBorder = styled.View`
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  padding-vertical: 8px;
-  padding-horizontal: 16px;
 `
 
 const VerifyText = styled.Text`
   font-size: 12px;
   color: ${COLORS.textSecondaryClr};
   font-family: Gilroy-Regular;
+  padding-right: 12px;
 `
 
 const InputStyle = styled.TextInput`
   font-family: Gilroy-Medium;
   width: 100%;
   font-size: 12px;
+  padding-vertical: 8px;
+  padding-horizontal: 16px;
 `
 
 const ErrorText = styled.Text`
@@ -540,7 +544,7 @@ const styles = StyleSheet.create({
   input: {
     ...Platform.select({
       ios: {
-        paddingVertical: 4,
+        paddingVertical: 12,
       },
     }),
   },
