@@ -120,6 +120,8 @@ const Medium = () => {
   const [toolTip, showToolTip] = useState(false)
   const shakeAnimation = useRef(new Animated.Value(0)).current
 
+  console.log('ahhmbnbs', isSteps)
+
   const shake = () => {
     Animated.sequence([
       Animated.timing(shakeAnimation, {
@@ -251,7 +253,6 @@ const Medium = () => {
   }, [midlevelData])
 
   const handleIncreaseSteps = () => {
-    console.log('isSteps', isSteps)
     let currentField
     switch (isSteps) {
       case 1:
@@ -269,7 +270,6 @@ const Medium = () => {
       default:
         currentField = 'any'
     }
-    console.log('currentField', currentField)
     shake()
 
     if (currentField === '') {

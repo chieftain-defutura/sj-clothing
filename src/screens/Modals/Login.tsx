@@ -102,6 +102,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
         ) {
           userData.tokens.push(...parseExpoTokens)
           await updateDoc(userDocRef, userData)
+          onClose?.()
         }
       }
 

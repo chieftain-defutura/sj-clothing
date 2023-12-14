@@ -27,6 +27,7 @@ import GiftIcon from '../../../assets/icons/GiftIcon'
 import GiftOptions from './GiftOptions'
 import { useNavigation } from '@react-navigation/native'
 import { API_URL } from '../../../utils/config'
+import { MidlevelStore } from '../../../store/midlevelStore'
 
 const { width } = Dimensions.get('window')
 
@@ -75,6 +76,7 @@ const Checkout: React.FC<ICheckout> = ({
   const rate = userStore((state) => state.rate)
   const user = userStore((state) => state.user)
   const currency = userStore((state) => state.currency)
+  const updateMidlevel = MidlevelStore((state) => state.updateMidlevel)
   const [openGift, setOpengift] = useState(false)
   const [giftOptions, setGiftOptions] = useState({ giftMessage: '', from: '' })
   const stripe = useStripe()
@@ -290,6 +292,43 @@ const Checkout: React.FC<ICheckout> = ({
         console.error(presentSheet.error)
         return Alert.alert(presentSheet.error.message)
       }
+      updateMidlevel({
+        isSteps: '',
+        isSelectedStyle: '',
+        isSize: {
+          country: '',
+          sizeVarient: [
+            {
+              size: '',
+              measurement: '',
+              quantity: '',
+            },
+          ],
+        },
+        isColor: '',
+        isColorName: '',
+        isImageOrText: {
+          title: '',
+          position: '',
+          rate: 0,
+          designs: {
+            hashtag: '',
+            image: '',
+            originalImage: '',
+          },
+        },
+        tempIsImageOrText: {
+          title: '',
+          position: '',
+          rate: 0,
+          designs: {
+            hashtag: '',
+            image: '',
+            originalImage: '',
+          },
+        },
+        uid: '',
+      })
       navigation.navigate('Thankyou')
       // Alert.alert('Payment successfully! Thank you.')
     } catch (err) {
