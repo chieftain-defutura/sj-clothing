@@ -77,7 +77,6 @@ const LogoContent = styled.View`
 const TShirtImg = styled.Image`
   height: 100%;
   width: 190px;
-  height: 55px;
   object-fit: contain;
   margin-left: -20px;
   margin-top: 10px;

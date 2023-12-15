@@ -45,6 +45,7 @@ const StackNavigationRoutes: React.FC = () => {
         headerShadowVisible: false,
         headerLeftLabelVisible: false,
         headerBackTitleVisible: false,
+        headerShown: logoVideo ? true : false,
         headerLeft: () => null,
       }}
     >

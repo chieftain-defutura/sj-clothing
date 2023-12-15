@@ -92,19 +92,19 @@ const LoginModal: React.FC<LoginModalProps> = ({
       for (let pushToken of userData.tokens) {
         const expotokens = await AsyncStorage.getItem('expotokens')
         const parseExpoTokens = [JSON.parse(expotokens as string)]
+        onClose?.()
+        setOpenCheckout?.(true)
         if (
           pushToken.expoAndroidToken !== parseExpoTokens[0].expoAndroidToken ||
           pushToken.expoIosToken !== parseExpoTokens[0].expoIosToken
         ) {
           userData.tokens.push(...parseExpoTokens)
           await updateDoc(userDocRef, userData)
-          onClose?.()
         }
+        onClose?.()
       }
 
       console.log('User logged in successfully')
-      onClose?.()
-      setOpenCheckout?.(true)
     } catch (error) {
       console.log('error', error)
       if (error instanceof FirebaseError) {

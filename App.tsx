@@ -104,20 +104,20 @@ async function registerForPushNotificationsAsync() {
 
       if (finalStatus !== 'granted') {
         // The user denied permission. You can show an alert and guide them to settings.
-        Alert.alert(
-          'Enable Push Notifications',
-          'Push notifications are important for timely updates. Please enable them in your device settings.',
-          [
-            {
-              text: 'Cancel',
-              style: 'cancel',
-            },
-            {
-              text: 'Open Settings',
-              onPress: () => Linking.openSettings(),
-            },
-          ],
-        )
+        // Alert.alert(
+        //   'Enable Push Notifications',
+        //   'Push notifications are important for timely updates. Please enable them in your device settings.',
+        //   [
+        //     {
+        //       text: 'Cancel',
+        //       style: 'cancel',
+        //     },
+        //     {
+        //       text: 'Open Settings',
+        //       onPress: () => Linking.openSettings(),
+        //     },
+        //   ],
+        // )
 
         return null // or handle as needed in your app
       }

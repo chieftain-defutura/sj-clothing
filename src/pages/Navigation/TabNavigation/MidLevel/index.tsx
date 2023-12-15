@@ -28,11 +28,11 @@ const MidLevel: React.FC = () => {
     <Animated.View style={{ flex: 1 }}>
       <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
         {!logoVideo ? (
-          <View>
+          <View style={{ flex: 1 }}>
             <Video
               source={require('../../../../assets/video/sj-logo.mp4')}
               shouldPlay
-              style={{ width: width, height: height }}
+              style={{ width: width, height: height * 1.04 }}
               isLooping
               resizeMode={ResizeMode.COVER}
               useNativeControls
