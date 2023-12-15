@@ -64,8 +64,11 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   const updateProfile = userStore((state) => state.updateProfile)
   const [editProfileDisable, setEditProfileDisable] = useState(false)
   console.log('urlggfgu', url)
+  console.log(image)
 
   const onSubmit = async (values: { fullName: string }) => {
+    console.log('sgjah', url)
+    console.log('imahe', image)
     try {
       setIsLoading(true)
       if (user) {
@@ -88,6 +91,13 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
     }
   }
 
+  const removeProfile = () => {
+    setEditProfileDisable(false)
+    setUrl('')
+    setImage('')
+    setEditProfileDisable(true)
+  }
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -104,6 +114,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
 
   const uploadImage = async (uri: string) => {
     try {
+      setEditProfileDisable(false)
       const blob = await uriToBlob(uri)
 
       const imageRef = ref(storage, user?.uid)
@@ -164,7 +175,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
               <CustomButton
                 style={{ padding: 2 }}
                 fontSize={11}
-                text={isLoading ? 'Saving' : 'Done'}
+                text={!editProfileDisable ? 'Loading...' : isLoading ? 'Saving' : 'Done'}
                 disabled={!editProfileDisable || isLoading}
                 onPress={() => {
                   formik.handleSubmit()
@@ -187,17 +198,6 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
                 }}
                 alt='edit-profile-img'
               />
-            ) : user?.photoURL ? (
-              <ProfileImage
-                source={{ uri: user.photoURL }}
-                style={{
-                  width: 128,
-                  height: 128,
-                  resizeMode: 'cover',
-                  borderRadius: 100,
-                }}
-                alt='edit-profile-img'
-              />
             ) : (
               <NotUserIcon width={128} height={128} />
             )}
@@ -212,14 +212,20 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
             <TouchableHighlight
               activeOpacity={0.6}
               underlayColor='rgba(70, 45, 133, 0.1)'
-              onPress={pickImage}
+              onPress={image ? removeProfile : pickImage}
             >
               <View>
-                <ChangeProfileText allowFontScaling={false}>Remove profile</ChangeProfileText>
+                {image ? (
+                  <ChangeProfileText allowFontScaling={false}>Remove profile</ChangeProfileText>
+                ) : (
+                  <ChangeProfileText allowFontScaling={false}>
+                    Choose profile picture
+                  </ChangeProfileText>
+                )}
               </View>
             </TouchableHighlight>
           </View>
-          <View style={{ position: 'absolute', bottom: 80, right: 130 }}>
+          <View style={{ position: 'absolute', bottom: 80, right: image ? 110 : 130 }}>
             <TouchableOpacity onPress={pickImage}>
               <LinearGradient
                 start={{ x: 0, y: 0 }}
