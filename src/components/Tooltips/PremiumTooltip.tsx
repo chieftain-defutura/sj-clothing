@@ -1,32 +1,22 @@
 import React from 'react'
-import { Modal, Pressable, View, StyleSheet } from 'react-native'
+import { Modal, View, StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
-import Animated, {
-  LightSpeedInLeft,
-  LightSpeedOutLeft,
-  ZoomIn,
-  ZoomOut,
-} from 'react-native-reanimated'
-import CloudIcon from '../../assets/icons/PostPageIcon/CloudIcon'
-import TooltipCloseIcon from '../../assets/icons/MidlevelIcon/close'
+import Animated, { LightSpeedInLeft, LightSpeedOutLeft } from 'react-native-reanimated'
+import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
 
 interface IPremiumTooltip {
   isVisible?: boolean
   onClose?: () => void
+  navigation: any
 }
 
-const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose }) => {
+const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose, navigation }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
-        <TooltipContainer>
-          <Animated.View entering={ZoomIn.duration(600).delay(200)} exiting={ZoomOut}>
-            <CloudIcon width={328} height={210} />
-          </Animated.View>
-        </TooltipContainer>
-        <View style={{ position: 'absolute', bottom: 130 }}>
+        <Content>
           <Heading allowFontScaling={false}>Premium</Heading>
           <Paragraph allowFontScaling={false}>
             Elevate Your Wardrobe, Explore and purchase premium clothing for a refined look
@@ -37,10 +27,10 @@ const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose }) => {
             style={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'center',
+              justifyContent: 'flex-end',
             }}
           >
-            <Pressable onPress={onClose}>
+            <TouchableOpacity onPress={onClose}>
               <LinearGradient
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
@@ -55,12 +45,12 @@ const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose }) => {
                     justifyContent: 'center',
                   }}
                 >
-                  <TooltipCloseIcon width={16} height={16} style={{ marginTop: -3 }} />
+                  <RightIcon width={20} height={20} />
                 </View>
               </LinearGradient>
-            </Pressable>
+            </TouchableOpacity>
           </Animated.View>
-        </View>
+        </Content>
       </TooltipWrapper>
     </Modal>
   )
@@ -73,19 +63,18 @@ const TooltipWrapper = styled.View`
   background-color: ${COLORS.backgroundBlurClrTooltip};
   position: relative;
 `
-const TooltipContainer = styled.View`
-  padding: 20px;
-  width: 328px;
+const Content = styled.View`
+  padding: 16px;
   position: absolute;
-  bottom: 81px;
-  right: 55px;
+  bottom: 80px;
+  background: white;
+  border-radius: 20px;
 `
 const Heading = styled.Text`
   font-size: 16px;
   color: ${COLORS.iconsHighlightClr};
   font-family: ${FONT_FAMILY.ArvoRegular};
   margin-bottom: 8px;
-  text-align: center;
 `
 const Paragraph = styled.Text`
   font-size: 14px;
@@ -93,9 +82,8 @@ const Paragraph = styled.Text`
   font-family: ${FONT_FAMILY.GilroyRegular};
   line-height: 18px;
   letter-spacing: -0.28px;
-  margin-bottom: 16px;
-  text-align: center;
   width: 250px;
+  margin-bottom: 8px;
 `
 
 export default PremiumTooltip

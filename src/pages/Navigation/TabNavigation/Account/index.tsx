@@ -137,9 +137,9 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                     }}
                     alt='profile-img'
                   />
-                ) : user && profile ? (
+                ) : user && user.photoURL ? (
                   <Image
-                    source={{ uri: profile as string }}
+                    source={{ uri: user.photoURL as string }}
                     style={{
                       width: width,
                       height: height / 2.5,
