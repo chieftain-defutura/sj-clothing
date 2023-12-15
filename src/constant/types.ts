@@ -79,6 +79,7 @@ export interface IPremiumData {
   offerPrice: string
   productImage: string
   productName: string
+  fabricImage: string
   sizes: {
     country: string
     gender: string

@@ -334,7 +334,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                     <Modal animationType='fade' transparent={true}>
                       <ImageWrapper onPress={() => setOpenImage(false)}>
                         <Image
-                          source={require('../../assets/images/fabric.jpg')}
+                          source={{ uri: data.fabricImage }}
                           alt={data.productName}
                           style={{ width: 400, height: 300 }}
                         />

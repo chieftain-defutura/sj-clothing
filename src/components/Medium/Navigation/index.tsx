@@ -36,6 +36,7 @@ interface INavigation {
   handleIncreaseSteps: () => void
   handleDecreaseSteps: () => void
   shake: () => void
+
   setDone: React.Dispatch<React.SetStateAction<boolean>>
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDesign: React.Dispatch<React.SetStateAction<boolean>>
@@ -67,6 +68,7 @@ const Navigation: React.FC<INavigation> = ({
   sizeVarient,
   animationUpdated,
   shakeAnimation,
+
   setOpenDesign,
   handleIncreaseSteps,
   shake,
