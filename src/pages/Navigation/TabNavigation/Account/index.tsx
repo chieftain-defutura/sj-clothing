@@ -317,7 +317,11 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
 
               {user ? (
                 <View>
-                  <LogoutPressable activeOpacity={0.6} underlayColor='rgba(255, 54, 54, 0.1)'>
+                  <LogoutPressable
+                    activeOpacity={0.6}
+                    underlayColor='rgba(255, 54, 54, 0.1)'
+                    style={{ marginBottom: 0 }}
+                  >
                     <Pressable onPress={handleLogout}>
                       <ProfileUserContent>
                         <FlexIcon>
@@ -328,23 +332,23 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                         </FlexIcon>
                       </ProfileUserContent>
                     </Pressable>
-                    <TouchableHighlight
-                      onPress={handleDelectAccount}
-                      activeOpacity={0.6}
-                      underlayColor='rgba(255, 54, 54, 0.1)'
-                    >
-                      <View>
-                        <ProfileUserContent>
-                          <FlexIcon>
-                            <DeleteIcon width={24} height={24} />
-                            <Text allowFontScaling={false} style={styles.LogoutText}>
-                              {t('Delete Account')}
-                            </Text>
-                          </FlexIcon>
-                        </ProfileUserContent>
-                      </View>
-                    </TouchableHighlight>
                   </LogoutPressable>
+                  <TouchableHighlight
+                    onPress={handleDelectAccount}
+                    activeOpacity={0.6}
+                    underlayColor='rgba(255, 54, 54, 0.1)'
+                  >
+                    <View>
+                      <ProfileUserContent>
+                        <FlexIcon>
+                          <DeleteIcon width={24} height={24} />
+                          <Text allowFontScaling={false} style={styles.LogoutText}>
+                            {t('Delete Account')}
+                          </Text>
+                        </FlexIcon>
+                      </ProfileUserContent>
+                    </View>
+                  </TouchableHighlight>
                 </View>
               ) : (
                 <LogoutPressable
