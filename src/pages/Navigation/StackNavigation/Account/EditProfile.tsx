@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { View, Dimensions, Alert, TouchableHighlight, Image } from 'react-native'
+import React, { useState } from 'react'
+import { View, Dimensions, Alert, TouchableHighlight } from 'react-native'
 import styled from 'styled-components/native'
 import * as ImagePicker from 'expo-image-picker'
 import { useFormik } from 'formik'
@@ -10,12 +10,10 @@ import LeftArrow from '../../../../assets/icons/LeftArrow'
 import Input from '../../../../components/Input'
 import { userStore } from '../../../../store/userStore'
 import { doc, updateDoc } from 'firebase/firestore/lite'
-import { db, dbDefault, storage } from '../../../../../firebase'
+import { db, storage } from '../../../../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { LinearGradient } from 'expo-linear-gradient'
 import CustomButton from '../../../../components/Button'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { updateProfile as updateProfileDb } from 'firebase/auth'
 
 const { width, height } = Dimensions.get('window')
@@ -56,6 +54,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   const profile = userStore((state) => state.profile)
   const [image, setImage] = React.useState<string | null>(profile)
   const updateProfile = userStore((state) => state.updateProfile)
+  const [editProfileDisable, setEditProfileDisable] = useState(false)
   console.log('urlggfgu', url)
 
   const onSubmit = async (values: { fullName: string }) => {
@@ -112,35 +111,19 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
 
       const url = await getDownloadURL(imageRef)
       console.log('urrl', url)
-
       setUrl(url)
+      console.log('1', editProfileDisable)
+
       console.log('Image uploaded to the bucket!')
+
+      setEditProfileDisable(true)
+      console.log('2', editProfileDisable)
     } catch (error) {
       console.error('Error uploading image:', error)
       Alert.alert('Error', 'Failed to upload image')
       throw error
     }
   }
-
-  // const handleGetData = useCallback(async () => {
-  //   const email = await AsyncStorage.getItem('mail')
-  //   console.log('email', email)
-
-  //   const q = query(collection(dbDefault, 'users'), where('email', '==', email))
-  //   const unsubscribe = onSnapshot(q, (snapshot) => {
-  //     snapshot.docs.forEach((doc) => {
-  //       console.log(doc.data())
-  //     })
-  //   })
-
-  //   return () => {
-  //     unsubscribe()
-  //   }
-  // }, [])
-
-  // useEffect(() => {
-  //   handleGetData()
-  // }, [handleGetData])
 
   const formik = useFormik({
     initialValues: {
@@ -174,7 +157,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
                 style={{ padding: 2 }}
                 fontSize={11}
                 text={isLoading ? 'Saving' : 'Done'}
-                disabled={isLoading}
+                disabled={!editProfileDisable || isLoading}
                 onPress={() => {
                   formik.handleSubmit()
                 }}
@@ -209,7 +192,11 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
           ) : (
             <NotUserIcon width={128} height={128} />
           )}
-          <ChangeProfileText allowFontScaling={false}>Change profile picture</ChangeProfileText>
+          {user?.photoURL ? (
+            <ChangeProfileText allowFontScaling={false}>Change profile picture</ChangeProfileText>
+          ) : (
+            <ChangeProfileText allowFontScaling={false}>Choose profile picture</ChangeProfileText>
+          )}
         </NotUserContent>
       </UserWrapper>
       <View style={{ padding: 20, marginHorizontal: 8, marginTop: 8 }}>
