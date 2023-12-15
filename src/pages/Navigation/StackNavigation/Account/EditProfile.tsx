@@ -1,5 +1,12 @@
 import React, { useState } from 'react'
-import { View, Dimensions, Alert, TouchableHighlight } from 'react-native'
+import {
+  View,
+  Dimensions,
+  Alert,
+  TouchableHighlight,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native'
 import styled from 'styled-components/native'
 import * as ImagePicker from 'expo-image-picker'
 import { useFormik } from 'formik'
@@ -15,6 +22,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { LinearGradient } from 'expo-linear-gradient'
 import CustomButton from '../../../../components/Button'
 import { updateProfile as updateProfileDb } from 'firebase/auth'
+import CameraIcon from '../../../../assets/icons/AccountPageIcon/Camera'
 
 const { width, height } = Dimensions.get('window')
 
@@ -166,37 +174,72 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
             </View>
           </TouchableHighlight>
         </FlexContent>
-        <NotUserContent onPress={pickImage}>
-          {image ? (
-            <ProfileImage
-              source={{ uri: image }}
-              style={{
-                width: 128,
-                height: 128,
-                resizeMode: 'cover',
-                borderRadius: 100,
-              }}
-              alt='edit-profile-img'
-            />
-          ) : user?.photoURL ? (
-            <ProfileImage
-              source={{ uri: user.photoURL }}
-              style={{
-                width: 128,
-                height: 128,
-                resizeMode: 'cover',
-                borderRadius: 100,
-              }}
-              alt='edit-profile-img'
-            />
-          ) : (
-            <NotUserIcon width={128} height={128} />
-          )}
-          {user?.photoURL ? (
-            <ChangeProfileText allowFontScaling={false}>Change profile picture</ChangeProfileText>
-          ) : (
-            <ChangeProfileText allowFontScaling={false}>Choose profile picture</ChangeProfileText>
-          )}
+        <NotUserContent>
+          <View>
+            {image ? (
+              <ProfileImage
+                source={{ uri: image }}
+                style={{
+                  width: 170,
+                  height: 170,
+                  resizeMode: 'cover',
+                  borderRadius: 100,
+                }}
+                alt='edit-profile-img'
+              />
+            ) : user?.photoURL ? (
+              <ProfileImage
+                source={{ uri: user.photoURL }}
+                style={{
+                  width: 128,
+                  height: 128,
+                  resizeMode: 'cover',
+                  borderRadius: 100,
+                }}
+                alt='edit-profile-img'
+              />
+            ) : (
+              <NotUserIcon width={128} height={128} />
+            )}
+
+            {/* {user?.photoURL ? (
+              <ChangeProfileText allowFontScaling={false}>Change profile picture</ChangeProfileText>
+            ) : (
+              <ChangeProfileText allowFontScaling={false}>Choose profile picture</ChangeProfileText>
+            )} */}
+          </View>
+          <View style={{ marginTop: 12 }}>
+            <TouchableHighlight
+              activeOpacity={0.6}
+              underlayColor='rgba(70, 45, 133, 0.1)'
+              onPress={pickImage}
+            >
+              <View>
+                <ChangeProfileText allowFontScaling={false}>Remove profile</ChangeProfileText>
+              </View>
+            </TouchableHighlight>
+          </View>
+          <View style={{ position: 'absolute', bottom: 80, right: 130 }}>
+            <TouchableOpacity onPress={pickImage}>
+              <LinearGradient
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                colors={['#462D85', '#DB00FF']}
+                style={styles.plusIconGradientColor}
+              >
+                <View
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <CameraIcon width={20} height={20} />
+                </View>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
         </NotUserContent>
       </UserWrapper>
       <View style={{ padding: 20, marginHorizontal: 8, marginTop: 8 }}>
@@ -223,7 +266,7 @@ const UserWrapper = styled.View`
   border-bottom-right-radius: 50px;
   border-top-width: 0;
 `
-const NotUserContent = styled.TouchableOpacity`
+const NotUserContent = styled.View`
   align-items: center;
   justify-content: center;
   flex: 1;
@@ -247,7 +290,8 @@ const ChangeProfileText = styled.Text`
   font-size: 12px;
   font-family: ${FONT_FAMILY.GilroySemiBold};
   color: ${COLORS.textSecondaryClr};
-  margin-top: 8px;
+  padding: 4px;
+  text-align: center;
 `
 const FlexContent = styled.View`
   display: flex;
@@ -279,3 +323,17 @@ const LocationText = styled.Text`
 `
 
 export default EditProfile
+
+const styles = StyleSheet.create({
+  plusIconGradientColor: {
+    backgroundColor: '#462d85',
+    borderRadius: 70,
+    padding: 16,
+    width: 40,
+    height: 40,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+})

@@ -33,6 +33,7 @@ import { MidlevelStore } from '../../store/midlevelStore'
 import FlowOne from './MidlevelWebView/FlowOne'
 import FlowTwo from './MidlevelWebView/FlowTwo'
 import FlowThree from './MidlevelWebView/FlowThree'
+import { useNavigation } from '@react-navigation/native'
 
 const { width } = Dimensions.get('window')
 
@@ -118,6 +119,7 @@ const Medium = () => {
   const [openCheckout, setOpenCheckout] = useState(false)
   const [animationUpdated, setAnimationUpdated] = useState(false)
   const [toolTip, showToolTip] = useState(false)
+  const navigation = useNavigation()
   const shakeAnimation = useRef(new Animated.Value(0)).current
 
   const shake = () => {
@@ -619,6 +621,7 @@ const Medium = () => {
         onClose={() => {
           showToolTip(false)
         }}
+        navigation={navigation}
       />
     </View>
   )
