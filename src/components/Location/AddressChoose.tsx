@@ -142,6 +142,10 @@ const AddressChoose: React.FC = () => {
                     status={checked === index.toString() ? 'checked' : 'unchecked'}
                     value={index.toString()}
                     color={COLORS.textSecondaryClr}
+                    onPress={() => {
+                      setChecked(index.toString())
+                      updateData(index.toString())
+                    }}
                   />
                   <View style={styles.radioBtnIOS}></View>
                 </View>

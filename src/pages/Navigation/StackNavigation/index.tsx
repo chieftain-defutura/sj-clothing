@@ -28,15 +28,19 @@ import AvatarNavigation from './Avatar'
 import TermsAndConditions from './TermsAndConditions'
 import Thankyou from './Thankyou'
 import Locations from '../../../components/Location'
+import { generalStore } from '../../../store/generalStore'
 
 const Stack = createStackNavigator()
 
 const StackNavigationRoutes: React.FC = () => {
+  const logoVideo = generalStore((state) => state.logoVideo)
   return (
     <Stack.Navigator
       screenOptions={{
         headerTitleAlign: 'center',
-        headerStyle: { backgroundColor: 'rgba(194, 148, 228, 0.85)' },
+        headerStyle: {
+          backgroundColor: logoVideo ? 'rgba(194, 148, 228, 0.85)' : 'rgba(195, 148, 228, 1)',
+        },
         headerTitle: HeaderLeft,
         headerShadowVisible: false,
         headerLeftLabelVisible: false,
