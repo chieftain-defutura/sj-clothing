@@ -96,7 +96,6 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({ color, isImageOrText, designs, image
         width: width / 1,
         height: height / 1.3,
         flex: 5,
-        zIndex: -10,
         backgroundColor: 'transparent',
         position: 'relative',
       }}

@@ -91,11 +91,7 @@ const Navigation: React.FC<INavigation> = ({
         slideX,
         {
           opacity: dropDown ? 0 : 1,
-          position: 'absolute',
-          top: 0,
-          zIndex: 1000,
-          width: width,
-          flex: 1,
+          zIndex: 100,
         },
       ]}
     >
@@ -162,7 +158,7 @@ const Navigation: React.FC<INavigation> = ({
             styles.Navigator,
             {
               justifyContent: steps === 6 ? 'flex-start' : 'space-between',
-              alignItems: warning ? 'flex-start' : 'center',
+              alignItems: 'center',
               gap: steps === 6 ? 70 : 0,
             },
           ]}
@@ -240,6 +236,10 @@ const Navigation: React.FC<INavigation> = ({
                     color: COLORS.textSecondaryClr,
                     fontFamily: 'Gilroy-Medium',
                     paddingTop: 3,
+                    position: 'absolute',
+                    top: 40,
+                    width: width,
+                    textAlign: 'center',
                   }}
                 >
                   {t(warning)}

@@ -89,7 +89,6 @@ const FlowThree: React.FC<IFlowThreeProps> = ({ color, isImageOrText, designs })
         width: width / 1,
         height: height / 1.3,
         flex: 1,
-        zIndex: -10,
         backgroundColor: 'transparent',
         position: 'relative',
       }}

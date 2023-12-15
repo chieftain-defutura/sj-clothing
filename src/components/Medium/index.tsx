@@ -120,8 +120,6 @@ const Medium = () => {
   const [toolTip, showToolTip] = useState(false)
   const shakeAnimation = useRef(new Animated.Value(0)).current
 
-  console.log('ahhmbnbs', isSteps)
-
   const shake = () => {
     Animated.sequence([
       Animated.timing(shakeAnimation, {
@@ -195,9 +193,9 @@ const Medium = () => {
       setDropDown(false)
       setOpenDesign(false)
     }
-    if (isSteps === 2) {
-      setSelectedStyle('')
-    }
+    // if (isSteps === 2) {
+    //   setSelectedStyle('')
+    // }
     if (isSteps === 3) {
       setDropDown(false)
     }
@@ -444,7 +442,7 @@ const Medium = () => {
             flexDirection: 'column',
             position: 'relative',
             justifyContent: 'space-between',
-            zIndex: 10,
+            zIndex: 1,
           }}
         >
           <Navigation
@@ -470,7 +468,7 @@ const Medium = () => {
             shakeAnimation={shakeAnimation}
           />
 
-          <View style={{ zIndex: 3, width: width, position: 'absolute', top: 0, flex: 1 }}>
+          <View style={{ zIndex: 100, width: width, position: 'absolute', top: 0, flex: 1 }}>
             {isSteps === 1 && data && isDropDown && (
               <SelectStyle
                 data={data}
@@ -521,19 +519,27 @@ const Medium = () => {
             )}
           </View>
 
-          {isSteps === 5 ? (
-            <FlowTwo
-              color={isColor}
-              isImageOrText={tempIsImageOrText}
-              designs={designs}
-              imageApplied={imageApplied}
-            />
-          ) : isSteps === 6 ? (
-            <FlowThree color={isColor} isImageOrText={isImageOrText} designs={designs} />
-          ) : (
-            <FlowOne uid={uid} steps={isSteps} />
-          )}
-
+          <View
+            style={{
+              flex: isSteps === 5 ? 9 : 1,
+              zIndex: -100,
+              position: isSteps === 5 ? 'relative' : 'absolute',
+              bottom: 0,
+            }}
+          >
+            {isSteps === 5 ? (
+              <FlowTwo
+                color={isColor}
+                isImageOrText={tempIsImageOrText}
+                designs={designs}
+                imageApplied={imageApplied}
+              />
+            ) : isSteps === 6 ? (
+              <FlowThree color={isColor} isImageOrText={isImageOrText} designs={designs} />
+            ) : (
+              <FlowOne uid={uid} steps={isSteps} />
+            )}
+          </View>
           {isSteps === 5 && FilteredData && (
             <FinalView
               color={isColor}
