@@ -1,10 +1,12 @@
 import React from 'react'
-import { Modal, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Modal, View, StyleSheet, TouchableOpacity, Dimensions, Platform } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import TooltipTopArrowIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
+
+const { width } = Dimensions.get('window')
 
 interface ISelectStyleTooltip {
   isVisible?: boolean
@@ -15,9 +17,11 @@ const SelectStyleTooltip: React.FC<ISelectStyleTooltip> = ({ isVisible, onClose 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
-        <Content>
-          <Heading allowFontScaling={false}>Select Style</Heading>
-          <Paragraph allowFontScaling={false}>
+        <Content style={[{ width: width / 1.2 }, styles.container]}>
+          <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+            Select Style
+          </Heading>
+          <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
             Manage your profile, customize avatars, and track your orders
           </Paragraph>
 
@@ -49,7 +53,7 @@ const SelectStyleTooltip: React.FC<ISelectStyleTooltip> = ({ isVisible, onClose 
             </TouchableOpacity>
           </View>
         </Content>
-        <View style={{ position: 'absolute', top: 208, left: 210 }}>
+        <View style={[{ position: 'absolute', top: 185, left: 180 }, styles.icon]}>
           <TooltipTopArrowIcon width={26} height={46} />
         </View>
       </TooltipWrapper>
@@ -65,9 +69,10 @@ const TooltipWrapper = styled.View`
   position: relative;
 `
 const Content = styled.View`
-  padding: 16px;
+  padding-vertical: 16px;
+  padding-horizontal: 24px;
   position: absolute;
-  top: 220px;
+  top: 200px;
   background: white;
   border-radius: 20px;
   z-index: 10000;
@@ -84,7 +89,7 @@ const Paragraph = styled.Text`
   font-family: ${FONT_FAMILY.GilroyRegular};
   line-height: 18px;
   letter-spacing: -0.28px;
-  width: 250px;
+  width: 320px;
   margin-bottom: 8px;
 `
 
@@ -101,5 +106,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  container: {
+    ...Platform.select({
+      ios: {
+        top: 230,
+      },
+    }),
+  },
+  icon: {
+    ...Platform.select({
+      ios: {
+        top: 215,
+      },
+    }),
   },
 })

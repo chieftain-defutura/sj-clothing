@@ -35,7 +35,7 @@ const MidLevel: React.FC = () => {
               style={{ width: width, height: height * 1.04 }}
               isLooping
               resizeMode={ResizeMode.COVER}
-              useNativeControls
+              useNativeControls={false}
             />
           </View>
         ) : confirmDetails ? (

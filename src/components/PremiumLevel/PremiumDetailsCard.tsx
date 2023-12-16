@@ -34,6 +34,8 @@ import AuthNavigate from '../../screens/AuthNavigate'
 import ShareArrow from '../../assets/icons/ShareArrow'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import PremiumDetailsTooltip from '../Tooltips/Premium/PremiumDetailsTooltip'
 // import { Audio } from 'expo-av'
 
 const { height, width } = Dimensions.get('window')
@@ -82,6 +84,23 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   const user = userStore((state) => state.user)
   const rate = userStore((state) => state.rate)
   const currency = userStore((state) => state.currency)
+  const [toolTip, showToolTip] = useState(false)
+
+  const isShowToolTip = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showPremiumDetailsTooltip')
+
+      if (data !== '12') {
+        AsyncStorage.setItem('showPremiumDetailsTooltip', '12')
+        showToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowToolTip()
+  }, [isShowToolTip])
 
   // const playSound = async () => {
   //   const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
@@ -484,6 +503,12 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
           </View>
         </ScrollView>
       </AuthNavigate>
+      <PremiumDetailsTooltip
+        isVisible={toolTip}
+        onClose={() => {
+          showToolTip(false)
+        }}
+      />
     </View>
   )
 }

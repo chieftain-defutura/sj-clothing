@@ -6,20 +6,20 @@ import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import TooltipTopArrowIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
 
-interface ISelectCountryTooltip {
+interface ISelectColorTooltip {
   isVisible?: boolean
   onClose?: () => void
 }
 
 const { width } = Dimensions.get('window')
 
-const SelectCountryTooltip: React.FC<ISelectCountryTooltip> = ({ isVisible, onClose }) => {
+const SelectColorTooltip: React.FC<ISelectColorTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
         <Content style={[{ width: width / 1.2 }, styles.container]}>
           <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-            Select Country
+            Select Color
           </Heading>
           <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
             Manage your profile, customize avatars, and track your orders
@@ -53,7 +53,7 @@ const SelectCountryTooltip: React.FC<ISelectCountryTooltip> = ({ isVisible, onCl
             </TouchableOpacity>
           </View>
         </Content>
-        <View style={[{ position: 'absolute', top: 185, left: 180 }, styles.icon]}>
+        <View style={[{ position: 'absolute', top: 230, left: 180 }, styles.icon]}>
           <TooltipTopArrowIcon width={26} height={46} />
         </View>
       </TooltipWrapper>
@@ -72,7 +72,7 @@ const Content = styled.View`
   padding-vertical: 16px;
   padding-horizontal: 24px;
   position: absolute;
-  top: 200px;
+  top: 245px;
   background: white;
   border-radius: 20px;
   z-index: 10000;
@@ -93,7 +93,7 @@ const Paragraph = styled.Text`
   margin-bottom: 8px;
 `
 
-export default SelectCountryTooltip
+export default SelectColorTooltip
 
 const styles = StyleSheet.create({
   plusIconGradientColor: {
@@ -110,14 +110,14 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: {
-        top: 230,
+        top: 270,
       },
     }),
   },
   icon: {
     ...Platform.select({
       ios: {
-        top: 215,
+        top: 255,
       },
     }),
   },

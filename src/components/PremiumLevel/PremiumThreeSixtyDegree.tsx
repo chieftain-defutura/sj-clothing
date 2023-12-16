@@ -6,6 +6,7 @@ import {
   Text,
   ActivityIndicator,
   TouchableHighlight,
+  Platform,
 } from 'react-native'
 import { WebView } from 'react-native-webview'
 import styled from 'styled-components/native'
@@ -116,7 +117,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
           <View
             style={{
               width: width,
-              height: height / 1.5,
+              height: height / 1.6,
               backgroundColor: 'transparent',
               marginTop: 18,
               position: 'relative',
@@ -165,7 +166,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               width: '100%',
               paddingHorizontal: 18,
               position: 'absolute',
-              bottom: 0,
+              bottom: 25,
             }}
             onPress={handleSubmit}
           />
