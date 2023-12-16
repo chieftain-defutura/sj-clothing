@@ -1,25 +1,32 @@
 import React, { useState } from 'react'
-import { Pressable } from 'react-native'
+import { Pressable, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components/native'
 import ShoppingCart from '../assets/icons/ShoppingCart'
 // import NotificationInActive from '../assets/icons/NotificationInActive'
 // import NotificationActive from '../assets/icons/NotificationActive'
 import { COLORS } from '../styles/theme'
+import { generalStore } from '../store/generalStore'
 
 export const HeaderLeft = () => {
   const navigation = useNavigation()
-
+  const logoVideo = generalStore((state) => state.logoVideo)
   return (
-    <LogoContent>
-      <Pressable onPress={() => navigation.navigate('Stack')}>
-        <TShirtImg source={require('../assets/logo/logo-img-1.png')} />
-      </Pressable>
-      {/* <View>
+    <>
+      {logoVideo ? (
+        <LogoContent>
+          <Pressable onPress={() => navigation.navigate('Stack')}>
+            <TShirtImg source={require('../assets/logo/logo-img-1.png')} />
+          </Pressable>
+          {/* <View>
         <LogoText>SPRINKLE</LogoText>
         <NadarText>NADAR</NadarText>
       </View> */}
-    </LogoContent>
+        </LogoContent>
+      ) : (
+        <View></View>
+      )}
+    </>
   )
 }
 
@@ -70,7 +77,6 @@ const LogoContent = styled.View`
 const TShirtImg = styled.Image`
   height: 100%;
   width: 190px;
-  height: 55px;
   object-fit: contain;
   margin-left: -20px;
   margin-top: 10px;

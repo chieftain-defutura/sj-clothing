@@ -225,7 +225,9 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
               </View>
             </TouchableHighlight>
           </View>
-          <View style={{ position: 'absolute', bottom: 80, right: image ? 110 : 130 }}>
+          <View
+            style={{ position: 'absolute', bottom: image ? 90 : 100, right: image ? 120 : 140 }}
+          >
             <TouchableOpacity onPress={pickImage}>
               <LinearGradient
                 start={{ x: 0, y: 0 }}

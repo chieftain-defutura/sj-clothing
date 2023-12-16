@@ -12,13 +12,14 @@ import { useSharedValue } from 'react-native-reanimated'
 import * as NavigationBar from 'expo-navigation-bar'
 import { userStore } from '../../../store/userStore'
 import TabHomeIcon from '../../../assets/icons/TabHomeIcon'
+import { generalStore } from '../../../store/generalStore'
 
 const Tab = createBottomTabNavigator()
 
 const TabNavigationRoutes: React.FC = () => {
   const opacityValue = useSharedValue(2)
   const confirmDetails = userStore((state) => state.confirmDetails)
-
+  const logoVideo = generalStore((state) => state.logoVideo)
   if (Platform.OS === 'android') {
     NavigationBar.setPositionAsync('relative')
     NavigationBar.setBackgroundColorAsync('rgba(145, 177, 225, 0.85)')
@@ -33,7 +34,7 @@ const TabNavigationRoutes: React.FC = () => {
           borderTopWidth: 0,
           height: 62,
           elevation: 0,
-          display: confirmDetails ? 'flex' : 'none',
+          display: logoVideo && confirmDetails ? 'flex' : 'none',
         },
         unmountOnBlur: true,
       }}
