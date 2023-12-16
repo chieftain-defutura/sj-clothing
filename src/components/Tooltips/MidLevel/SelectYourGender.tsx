@@ -2,21 +2,21 @@ import React from 'react'
 import { Modal, View, StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { COLORS, FONT_FAMILY } from '../../styles/theme'
-import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
-import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
+import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
+import TooltipIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
+import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 
-interface IMidLevelTooltip {
+interface ISelectYourGender {
   isVisible?: boolean
   onClose?: () => void
 }
 
-const MidLevelTooltip: React.FC<IMidLevelTooltip> = ({ isVisible, onClose }) => {
+const SelectYourGender: React.FC<ISelectYourGender> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
         <Content>
-          <Heading allowFontScaling={false}>Mid level</Heading>
+          <Heading allowFontScaling={false}>Select Your Gender</Heading>
           <Paragraph allowFontScaling={false}>
             Express your unique style with our customizable clothes.
           </Paragraph>
@@ -49,7 +49,7 @@ const MidLevelTooltip: React.FC<IMidLevelTooltip> = ({ isVisible, onClose }) => 
             </TouchableOpacity>
           </View>
         </Content>
-        <View style={{ position: 'absolute', bottom: 88, left: 95 }}>
+        <View style={{ position: 'absolute', bottom: 118, left: 95 }}>
           <TooltipIcon width={26} height={46} />
         </View>
       </TooltipWrapper>
@@ -67,7 +67,7 @@ const TooltipWrapper = styled.View`
 const Content = styled.View`
   padding: 16px;
   position: absolute;
-  bottom: 100px;
+  bottom: 130px;
   background: white;
   border-radius: 20px;
   z-index: 10000;
@@ -88,7 +88,7 @@ const Paragraph = styled.Text`
   margin-bottom: 8px;
 `
 
-export default MidLevelTooltip
+export default SelectYourGender
 
 const styles = StyleSheet.create({
   plusIconGradientColor: {

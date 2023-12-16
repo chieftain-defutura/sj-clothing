@@ -3,16 +3,15 @@ import { Modal, View, StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
-import Animated, { LightSpeedInLeft, LightSpeedOutLeft } from 'react-native-reanimated'
 import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
+import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
 
 interface IPremiumTooltip {
   isVisible?: boolean
   onClose?: () => void
-  navigation: any
 }
 
-const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose, navigation }) => {
+const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
@@ -21,9 +20,7 @@ const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose, navigat
           <Paragraph allowFontScaling={false}>
             Elevate Your Wardrobe, Explore and purchase premium clothing for a refined look
           </Paragraph>
-          <Animated.View
-            entering={LightSpeedInLeft.duration(1000).delay(200)}
-            exiting={LightSpeedOutLeft}
+          <View
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -49,8 +46,11 @@ const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose, navigat
                 </View>
               </LinearGradient>
             </TouchableOpacity>
-          </Animated.View>
+          </View>
         </Content>
+        <View style={{ position: 'absolute', bottom: 85, left: 200 }}>
+          <TooltipIcon width={26} height={46} />
+        </View>
       </TooltipWrapper>
     </Modal>
   )
@@ -66,9 +66,10 @@ const TooltipWrapper = styled.View`
 const Content = styled.View`
   padding: 16px;
   position: absolute;
-  bottom: 80px;
+  bottom: 100px;
   background: white;
   border-radius: 20px;
+  z-index: 10000;
 `
 const Heading = styled.Text`
   font-size: 16px;

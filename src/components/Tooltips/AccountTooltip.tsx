@@ -3,9 +3,8 @@ import { Modal, View, StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
-import Animated, { LightSpeedInLeft, LightSpeedOutLeft } from 'react-native-reanimated'
-import TooltipCloseIcon from '../../assets/icons/MidlevelIcon/close'
 import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
+import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
 
 interface IAccountTooltip {
   isVisible?: boolean
@@ -21,9 +20,8 @@ const AccountTooltip: React.FC<IAccountTooltip> = ({ isVisible, onClose }) => {
           <Paragraph allowFontScaling={false}>
             Manage your profile, customize avatars, and track your orders
           </Paragraph>
-          <Animated.View
-            entering={LightSpeedInLeft.duration(1000).delay(200)}
-            exiting={LightSpeedOutLeft}
+
+          <View
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -49,8 +47,11 @@ const AccountTooltip: React.FC<IAccountTooltip> = ({ isVisible, onClose }) => {
                 </View>
               </LinearGradient>
             </TouchableOpacity>
-          </Animated.View>
+          </View>
         </Content>
+        <View style={{ position: 'absolute', bottom: 89, right: 100 }}>
+          <TooltipIcon width={26} height={46} />
+        </View>
       </TooltipWrapper>
     </Modal>
   )
@@ -66,9 +67,10 @@ const TooltipWrapper = styled.View`
 const Content = styled.View`
   padding: 16px;
   position: absolute;
-  bottom: 80px;
+  bottom: 100px;
   background: white;
   border-radius: 20px;
+  z-index: 10000;
 `
 const Heading = styled.Text`
   font-size: 16px;

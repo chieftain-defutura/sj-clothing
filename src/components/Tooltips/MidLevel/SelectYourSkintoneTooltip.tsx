@@ -2,23 +2,26 @@ import React from 'react'
 import { Modal, View, StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { COLORS, FONT_FAMILY } from '../../styles/theme'
-import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
-import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
+import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
+import TooltipIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
+import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 
-interface IMidLevelTooltip {
+interface ISelectYourSkintoneTooltip {
   isVisible?: boolean
   onClose?: () => void
 }
 
-const MidLevelTooltip: React.FC<IMidLevelTooltip> = ({ isVisible, onClose }) => {
+const SelectYourSkintoneTooltip: React.FC<ISelectYourSkintoneTooltip> = ({
+  isVisible,
+  onClose,
+}) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
         <Content>
-          <Heading allowFontScaling={false}>Mid level</Heading>
+          <Heading allowFontScaling={false}>Select Your Skintone</Heading>
           <Paragraph allowFontScaling={false}>
-            Express your unique style with our customizable clothes.
+            Elevate Your Wardrobe, Explore and purchase premium clothing for a refined look
           </Paragraph>
 
           <View
@@ -49,7 +52,7 @@ const MidLevelTooltip: React.FC<IMidLevelTooltip> = ({ isVisible, onClose }) => 
             </TouchableOpacity>
           </View>
         </Content>
-        <View style={{ position: 'absolute', bottom: 88, left: 95 }}>
+        <View style={{ position: 'absolute', bottom: 85, left: 200 }}>
           <TooltipIcon width={26} height={46} />
         </View>
       </TooltipWrapper>
@@ -88,7 +91,7 @@ const Paragraph = styled.Text`
   margin-bottom: 8px;
 `
 
-export default MidLevelTooltip
+export default SelectYourSkintoneTooltip
 
 const styles = StyleSheet.create({
   plusIconGradientColor: {

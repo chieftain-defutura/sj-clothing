@@ -34,7 +34,7 @@ import AuthNavigate from '../../screens/AuthNavigate'
 import ShareArrow from '../../assets/icons/ShareArrow'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
-import { Audio } from 'expo-av'
+// import { Audio } from 'expo-av'
 
 const { height, width } = Dimensions.get('window')
 
@@ -83,18 +83,18 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
   const rate = userStore((state) => state.rate)
   const currency = userStore((state) => state.currency)
 
-  const playSound = async () => {
-    const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
-    await sound.playAsync()
-  }
+  // const playSound = async () => {
+  //   const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
+  //   await sound.playAsync()
+  // }
 
-  const handleImageClick = () => {
-    playSound()
-  }
+  // const handleImageClick = () => {
+  //   playSound()
+  // }
 
-  useEffect(() => {
-    handleImageClick()
-  }, [])
+  // useEffect(() => {
+  //   handleImageClick()
+  // }, [])
 
   const onSubmit = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)

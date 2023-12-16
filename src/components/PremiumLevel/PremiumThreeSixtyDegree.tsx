@@ -19,7 +19,7 @@ import { IPremiumData } from '../../constant/types'
 import { userStore } from '../../store/userStore'
 import AuthNavigate from '../../screens/AuthNavigate'
 import { COLORS } from '../../styles/theme'
-import { Audio } from 'expo-av'
+// import { Audio } from 'expo-av'
 
 interface IPremiumThreeSixtyDegree {
   focus: boolean
@@ -48,14 +48,14 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
 
-  const playSound = async () => {
-    const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
-    await sound.playAsync()
-  }
+  // const playSound = async () => {
+  //   const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
+  //   await sound.playAsync()
+  // }
 
-  const handleImageClick = () => {
-    playSound()
-  }
+  // const handleImageClick = () => {
+  //   playSound()
+  // }
 
   const handleLayout = () => {
     if (elementRef.current) {
@@ -83,7 +83,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
 
   useEffect(() => {
     handleSetUid()
-    handleImageClick()
+    // handleImageClick()
   }, [handleSetUid])
 
   const onClose = () => {

@@ -5,21 +5,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import PremiumLevel from '../../../../components/PremiumLevel'
 import { gradientOpacityColors } from '../../../../styles/theme'
 import PremiumTooltip from '../../../../components/Tooltips/PremiumTooltip'
-import { useNavigation } from '@react-navigation/native'
 
 const Premium: React.FC = () => {
   const [openDetails, setOpenDetails] = useState(false)
   const [toolTip, showToolTip] = useState(false)
-  const navigation = useNavigation()
 
   const isShowToolTip = async () => {
-    const data = await AsyncStorage.getItem('showPremiumTooltip')
+    try {
+      const data = await AsyncStorage.getItem('showPremiumTooltip')
 
-    if (data !== '1') {
-      AsyncStorage.setItem('showPremiumTooltip', '1')
-      showToolTip(true)
+      if (data !== '1') {
+        AsyncStorage.setItem('showPremiumTooltip', '1')
+        showToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
     }
-    // await AsyncStorage.removeItem('mail')
   }
 
   useEffect(() => {
@@ -36,7 +37,6 @@ const Premium: React.FC = () => {
         onClose={() => {
           showToolTip(false)
         }}
-        navigation={navigation}
       />
     </LinearGradient>
   )

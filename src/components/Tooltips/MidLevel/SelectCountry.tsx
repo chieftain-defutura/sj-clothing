@@ -2,23 +2,23 @@ import React from 'react'
 import { Modal, View, StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { COLORS, FONT_FAMILY } from '../../styles/theme'
-import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
-import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
+import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
+import { COLORS, FONT_FAMILY } from '../../../styles/theme'
+import TooltipTopArrowIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
 
-interface IMidLevelTooltip {
+interface ISelectCountryTooltip {
   isVisible?: boolean
   onClose?: () => void
 }
 
-const MidLevelTooltip: React.FC<IMidLevelTooltip> = ({ isVisible, onClose }) => {
+const SelectCountryTooltip: React.FC<ISelectCountryTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
         <Content>
-          <Heading allowFontScaling={false}>Mid level</Heading>
+          <Heading allowFontScaling={false}>Select Country</Heading>
           <Paragraph allowFontScaling={false}>
-            Express your unique style with our customizable clothes.
+            Manage your profile, customize avatars, and track your orders
           </Paragraph>
 
           <View
@@ -49,8 +49,8 @@ const MidLevelTooltip: React.FC<IMidLevelTooltip> = ({ isVisible, onClose }) => 
             </TouchableOpacity>
           </View>
         </Content>
-        <View style={{ position: 'absolute', bottom: 88, left: 95 }}>
-          <TooltipIcon width={26} height={46} />
+        <View style={{ position: 'absolute', top: 208, left: 210 }}>
+          <TooltipTopArrowIcon width={26} height={46} />
         </View>
       </TooltipWrapper>
     </Modal>
@@ -67,7 +67,7 @@ const TooltipWrapper = styled.View`
 const Content = styled.View`
   padding: 16px;
   position: absolute;
-  bottom: 100px;
+  top: 220px;
   background: white;
   border-radius: 20px;
   z-index: 10000;
@@ -88,7 +88,7 @@ const Paragraph = styled.Text`
   margin-bottom: 8px;
 `
 
-export default MidLevelTooltip
+export default SelectCountryTooltip
 
 const styles = StyleSheet.create({
   plusIconGradientColor: {
