@@ -19,7 +19,7 @@ const FinalViewTooltip: React.FC<IFinalViewTooltip> = ({ isVisible, onClose }) =
       <TooltipWrapper>
         <Content style={[{ width: width / 1.2 }, styles.container]}>
           <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-            Add Image and Add Text
+            Add More Design
           </Heading>
           <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
             Manage your profile, customize avatars, and track your orders

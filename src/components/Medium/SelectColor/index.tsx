@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 import { LinearGradient } from 'expo-linear-gradient'
 import { StyleSheet, Text, View, FlatList, TouchableHighlight } from 'react-native'
 import { IMidlevel } from '../../../constant/types'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
 import { useTranslation } from 'react-i18next'
-import SelectColorTooltip from '../../Tooltips/MidLevel/SelectColor'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface ISelectColor {
   isDropDown: boolean
@@ -26,23 +24,6 @@ const SelectColor: React.FC<ISelectColor> = ({
   setColorName,
 }) => {
   const { t } = useTranslation('midlevel')
-  const [toolTip, showToolTip] = useState(false)
-
-  const isShowToolTip = async () => {
-    try {
-      const data = await AsyncStorage.getItem('showSelectColorTooltip')
-
-      if (data !== '8') {
-        AsyncStorage.setItem('showSelectColorTooltip', '8')
-        showToolTip(true)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  useEffect(() => {
-    isShowToolTip()
-  }, [isShowToolTip])
 
   return (
     <LinearGradient
@@ -197,12 +178,6 @@ const SelectColor: React.FC<ISelectColor> = ({
           </Animated.View>
         </Animated.View>
       )}
-      <SelectColorTooltip
-        isVisible={toolTip}
-        onClose={() => {
-          showToolTip(false)
-        }}
-      />
     </LinearGradient>
   )
 }

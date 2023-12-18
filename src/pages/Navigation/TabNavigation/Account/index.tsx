@@ -36,6 +36,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import DeleteIcon from '../../../../assets/icons/AccountPageIcon/DeleteIcon'
 import { generalStore } from '../../../../store/generalStore'
 import AccountTooltip from '../../../../components/Tooltips/AccountTooltip'
+import EditProfileTooltip from '../../../../components/Tooltips/Account/EditProfileTooltip'
 
 interface IAccount {
   navigation: any
@@ -59,8 +60,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [forgotMail, setForgotmail] = useState(false)
   const [logOut, setLogOut] = useState(false)
   const [isDelectAccount, setIsDelectAccount] = useState(false)
-  console.log('user?.photoURL', user?.photoURL)
-  console.log('route.params?.profileImg ', route.params?.profileImg)
+  const [editProfileToolTip, setEditProfileToolTip] = useState(false)
 
   const isShowToolTip = async () => {
     try {
@@ -77,6 +77,22 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   useEffect(() => {
     isShowToolTip()
   }, [isShowToolTip])
+
+  const isShowToolTipEditProfile = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showEditProfileTooltip')
+
+      if (data !== '17') {
+        AsyncStorage.setItem('showEditProfileTooltip', '17')
+        setEditProfileToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowToolTipEditProfile()
+  }, [isShowToolTipEditProfile])
 
   const handleLogin = () => {
     if (!user) {
@@ -167,6 +183,12 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                 </LinearGradient>
               </EditContent>
             </UserWrapper>
+            <EditProfileTooltip
+              isVisible={editProfileToolTip}
+              onClose={() => {
+                setEditProfileToolTip(false)
+              }}
+            />
 
             {route.params?.dName ? (
               <Text allowFontScaling={false} style={styles.ProfileName}>

@@ -53,7 +53,7 @@ const SelectStyleTooltip: React.FC<ISelectStyleTooltip> = ({ isVisible, onClose 
             </TouchableOpacity>
           </View>
         </Content>
-        <View style={[{ position: 'absolute', top: 185, left: 180 }, styles.icon]}>
+        <View style={[{ position: 'absolute', top: 159, left: 180 }, styles.icon]}>
           <TooltipTopArrowIcon width={26} height={46} />
         </View>
       </TooltipWrapper>
@@ -72,7 +72,7 @@ const Content = styled.View`
   padding-vertical: 16px;
   padding-horizontal: 24px;
   position: absolute;
-  top: 200px;
+  top: 170px;
   background: white;
   border-radius: 20px;
   z-index: 10000;

@@ -33,6 +33,7 @@ import { MidlevelStore } from '../../store/midlevelStore'
 import FlowOne from './MidlevelWebView/FlowOne'
 import FlowTwo from './MidlevelWebView/FlowTwo'
 import FlowThree from './MidlevelWebView/FlowThree'
+import AddImageAddTextTooltip from '../Tooltips/MidLevel/AddImageAddTextTooltip'
 
 const { width } = Dimensions.get('window')
 
@@ -120,6 +121,8 @@ const Medium = () => {
   const [colorAnimationUpdated, setColorAnimationUpdated] = useState(false)
 
   const [toolTip, showToolTip] = useState(false)
+  const [addImageAndAddTextToolTip, setAddImageAndAddTextToolTip] = useState(false)
+
   const shakeAnimation = useRef(new Animated.Value(0)).current
 
   const shake = () => {
@@ -171,6 +174,7 @@ const Medium = () => {
     }
   }, [uid])
 
+  console.log('colorAnimationUpdated', colorAnimationUpdated)
   useEffect(() => {
     handleGetData()
   }, [handleGetData])
@@ -187,6 +191,8 @@ const Medium = () => {
           setColorAnimationUpdated(doc.data()['colorAnimationFinished'])
           playSound()
         }
+
+        console.log('doc.data()[colorAnimationFinished]', doc.data()['colorAnimationFinished'])
       })
     })
 
@@ -341,6 +347,22 @@ const Medium = () => {
   useEffect(() => {
     isShowToolTip()
   }, [isShowToolTip])
+
+  const isShowToolTipAddImageAndAddText = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showAddImageAndAddTextTooltip')
+
+      if (data !== '15') {
+        AsyncStorage.setItem('showAddImageAndAddTextTooltip', '15')
+        setAddImageAndAddTextToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowToolTipAddImageAndAddText()
+  }, [isShowToolTipAddImageAndAddText])
 
   const handleSetUid = useCallback(async () => {
     if (midlevelData.uid) return
@@ -548,6 +570,14 @@ const Medium = () => {
                 setOpenDesign={setOpenDesign}
               />
             )}
+            {isSteps === 6 && (
+              <AddImageAddTextTooltip
+                isVisible={addImageAndAddTextToolTip}
+                onClose={() => {
+                  setAddImageAndAddTextToolTip(false)
+                }}
+              />
+            )}
           </View>
 
           <View
@@ -605,6 +635,7 @@ const Medium = () => {
                 setSignUp(true), setLogin(false)
               }}
               onClose={() => setLogin(false)}
+              setOpenCheckout={setOpenCheckout}
             />
           )}
 
@@ -614,6 +645,7 @@ const Medium = () => {
                 setLogin(true), setSignUp(false)
               }}
               onClose={() => setSignUp(false)}
+              setOpenCheckout={setOpenCheckout}
             />
           )}
           {forgotMail && (

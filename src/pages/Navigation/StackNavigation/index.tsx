@@ -41,6 +41,7 @@ const StackNavigationRoutes: React.FC = () => {
         headerStyle: {
           backgroundColor: logoVideo ? 'rgba(194, 148, 228, 0.83)' : 'rgba(195, 148, 228, 1)',
         },
+
         headerTitle: HeaderLeft,
         headerShadowVisible: false,
         headerLeftLabelVisible: false,

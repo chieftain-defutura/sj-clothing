@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { doc, updateDoc } from 'firebase/firestore/lite'
 import { ScrollView } from 'react-native-gesture-handler'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useCallback, useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
@@ -14,6 +15,7 @@ import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/them
 import CurrencyGrayIcon from '../../../assets/icons/AccountPageIcon/CurrencyGrayIcon'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { CURRENCY_API_KEY } from '../../../utils/config'
+import CurrencyTooltip from '../../../components/Tooltips/CurrencyTooltip'
 
 const CurrencyData = [
   {
@@ -76,8 +78,24 @@ const Currency = () => {
   const confirmDetails = userStore((state) => state.confirmDetails)
   const updateCurrency = userStore((state) => state.updateCurrency)
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
-  const [isPressed, setIsPressed] = useState(false)
+  const [toolTip, showToolTip] = useState(false)
   const navigation = useNavigation()
+
+  const isShowToolTip = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showCurrencyTooltip')
+
+      if (data !== '14') {
+        AsyncStorage.setItem('showCurrencyTooltip', '14')
+        showToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowToolTip()
+  }, [isShowToolTip])
 
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
@@ -202,6 +220,12 @@ const Currency = () => {
               </Animated.View>
             )}
           </View>
+          <CurrencyTooltip
+            isVisible={toolTip}
+            onClose={() => {
+              showToolTip(false)
+            }}
+          />
         </View>
       ) : (
         <LinearGradient

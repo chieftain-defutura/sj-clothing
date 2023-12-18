@@ -7,8 +7,6 @@ import { IMidlevel } from '../../../constant/types'
 import { userStore } from '../../../store/userStore'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useTranslation } from 'react-i18next'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import SelectCountryTooltip from '../../Tooltips/MidLevel/SelectCountry'
 
 interface ISelectedCountry {
   isSize: {
@@ -36,7 +34,6 @@ interface ISelectedCountry {
 const SelectCountry: React.FC<ISelectedCountry> = ({ setSize, isSize, data, setDropDown }) => {
   const { t } = useTranslation('midlevel')
   const avatar = userStore((state) => state.avatar)
-  const [toolTip, showToolTip] = useState(false)
   const [country, setCountry] = useState<
     {
       country: string
@@ -49,22 +46,6 @@ const SelectCountry: React.FC<ISelectedCountry> = ({ setSize, isSize, data, setD
       }[]
     }[]
   >([])
-
-  const isShowToolTip = async () => {
-    try {
-      const data = await AsyncStorage.getItem('showSelectCountryTooltip')
-
-      if (data !== '6') {
-        AsyncStorage.setItem('showSelectCountryTooltip', '6')
-        showToolTip(true)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  useEffect(() => {
-    isShowToolTip()
-  }, [isShowToolTip])
 
   useEffect(() => {
     const filteredData = data.sizes
@@ -202,12 +183,6 @@ const SelectCountry: React.FC<ISelectedCountry> = ({ setSize, isSize, data, setD
           )}
         </View>
       </Animated.View>
-      <SelectCountryTooltip
-        isVisible={toolTip}
-        onClose={() => {
-          showToolTip(false)
-        }}
-      />
     </LinearGradient>
   )
 }
