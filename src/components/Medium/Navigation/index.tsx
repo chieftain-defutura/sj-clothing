@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, Text, View, Dimensions, TouchableHighlight } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import Animated, {
@@ -13,6 +13,12 @@ import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import { COLORS } from '../../../styles/theme'
 import { useTranslation } from 'react-i18next'
 import TextAnimation from './TextAnimation'
+import SelectStyleTooltip from '../../Tooltips/MidLevel/SelectStyle'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import SelectCountryTooltip from '../../Tooltips/MidLevel/SelectCountry'
+import SelectSizeTooltip from '../../Tooltips/MidLevel/SelectSize'
+import SelectColorTooltip from '../../Tooltips/MidLevel/SelectColor'
+import FinalViewTooltip from '../../Tooltips/MidLevel/FinalViewTooltip'
 
 const { width } = Dimensions.get('window')
 
@@ -80,6 +86,74 @@ const Navigation: React.FC<INavigation> = ({
 }) => {
   const { t } = useTranslation('midlevel')
   const [isPressed, setIsPressed] = useState(false)
+  const [toolTip, showToolTip] = useState(false)
+  const [toolTipCountry, setTooltipCountry] = useState(false)
+  const [toolTipSize, setTooltipSize] = useState(false)
+  const [toolTipColor, setToolTipColor] = useState(false)
+
+  const isShowToolTip = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showSelectStyleTooltip')
+
+      if (data !== '5') {
+        AsyncStorage.setItem('showSelectStyleTooltip', '5')
+        showToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowToolTip()
+  }, [isShowToolTip])
+
+  const isShowToolTipCountry = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showSelectCountryTooltip')
+
+      if (data !== '6') {
+        AsyncStorage.setItem('showSelectCountryTooltip', '6')
+        setTooltipCountry(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowToolTipCountry()
+  }, [isShowToolTipCountry])
+
+  const isShowToolTipSize = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showSelectSizeTooltip')
+
+      if (data !== '7') {
+        AsyncStorage.setItem('showSelectSizeTooltip', '7')
+        setTooltipSize(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowToolTipSize()
+  }, [isShowToolTipSize])
+
+  const isShowToolTipColor = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showSelectSizeTooltip')
+
+      if (data !== '7') {
+        AsyncStorage.setItem('showSelectSizeTooltip', '7')
+        setToolTipColor(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowToolTipColor()
+  }, [isShowToolTipColor])
 
   const slideX = useAnimatedStyle(() => {
     return {
@@ -228,6 +302,38 @@ const Navigation: React.FC<INavigation> = ({
                 {steps === 3 && !sizeVarient.size && <DropDownArrowIcon />}
 
                 {steps === 4 && !isColor && <DropDownArrowIcon />}
+                {steps === 1 && !isSelectedStyle && (
+                  <SelectStyleTooltip
+                    isVisible={toolTip}
+                    onClose={() => {
+                      showToolTip(false)
+                    }}
+                  />
+                )}
+                {steps === 2 && !country && (
+                  <SelectCountryTooltip
+                    isVisible={toolTipCountry}
+                    onClose={() => {
+                      setTooltipCountry(false)
+                    }}
+                  />
+                )}
+                {steps === 3 && !sizeVarient.size && (
+                  <SelectSizeTooltip
+                    isVisible={toolTipSize}
+                    onClose={() => {
+                      setTooltipSize(false)
+                    }}
+                  />
+                )}
+                {steps === 4 && !isColor && (
+                  <SelectColorTooltip
+                    isVisible={toolTipColor}
+                    onClose={() => {
+                      setToolTipColor(false)
+                    }}
+                  />
+                )}
 
                 {/* {steps !== 5 && <DropDownArrowIcon />} */}
               </Pressable>

@@ -1,25 +1,25 @@
 import React from 'react'
-import { Modal, View, StyleSheet, TouchableOpacity, Dimensions, Platform } from 'react-native'
+import { Modal, View, StyleSheet, TouchableOpacity, Platform, Dimensions } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
-import { COLORS, FONT_FAMILY } from '../../../styles/theme'
-import TooltipTopArrowIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
+import { COLORS, FONT_FAMILY } from '../../styles/theme'
+import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
+import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
 
-interface ISelectCountryTooltip {
+interface ICurrencyTooltip {
   isVisible?: boolean
   onClose?: () => void
 }
 
 const { width } = Dimensions.get('window')
 
-const SelectCountryTooltip: React.FC<ISelectCountryTooltip> = ({ isVisible, onClose }) => {
+const CurrencyTooltip: React.FC<ICurrencyTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
         <Content style={[{ width: width / 1.2 }, styles.container]}>
           <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-            Select Country
+            Currency
           </Heading>
           <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
             Manage your profile, customize avatars, and track your orders
@@ -53,8 +53,8 @@ const SelectCountryTooltip: React.FC<ISelectCountryTooltip> = ({ isVisible, onCl
             </TouchableOpacity>
           </View>
         </Content>
-        <View style={[{ position: 'absolute', top: 150, left: 180 }, styles.icon]}>
-          <TooltipTopArrowIcon width={26} height={46} />
+        <View style={[{ position: 'absolute', bottom: 89, right: 100 }, styles.icon]}>
+          <TooltipIcon width={26} height={46} />
         </View>
       </TooltipWrapper>
     </Modal>
@@ -72,7 +72,7 @@ const Content = styled.View`
   padding-vertical: 16px;
   padding-horizontal: 24px;
   position: absolute;
-  top: 163px;
+  bottom: 100px;
   background: white;
   border-radius: 20px;
   z-index: 10000;
@@ -93,7 +93,7 @@ const Paragraph = styled.Text`
   margin-bottom: 8px;
 `
 
-export default SelectCountryTooltip
+export default CurrencyTooltip
 
 const styles = StyleSheet.create({
   plusIconGradientColor: {
@@ -110,14 +110,14 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: {
-        top: 230,
+        bottom: 120,
       },
     }),
   },
   icon: {
     ...Platform.select({
       ios: {
-        top: 215,
+        bottom: 105,
       },
     }),
   },

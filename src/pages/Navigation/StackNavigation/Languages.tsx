@@ -1,19 +1,20 @@
 import { Pressable, StyleSheet, Text, View, Dimensions } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import styled from 'styled-components/native'
 import LanguageGrayIcon from '../../../assets/icons/AccountPageIcon/LanguageGrayIcon'
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
 import Svg, { Path } from 'react-native-svg'
 import { useTranslation } from 'react-i18next'
 import { userStore } from '../../../store/userStore'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { doc, updateDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import LeftArrow from '../../../assets/icons/LeftArrow'
+import LanguageTooltip from '../../../components/Tooltips/LanguageTooltip'
 
 const { width } = Dimensions.get('window')
 
@@ -50,6 +51,23 @@ const Languages = () => {
   const confirmDetails = userStore((state) => state.confirmDetails)
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
   const navigation = useNavigation()
+  const [toolTip, showToolTip] = useState(false)
+
+  const isShowToolTip = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showLanguageTooltip')
+
+      if (data !== '13') {
+        AsyncStorage.setItem('showLanguageTooltip', '13')
+        showToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowToolTip()
+  }, [isShowToolTip])
 
   const toggleDropdownSizes = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
@@ -120,6 +138,12 @@ const Languages = () => {
               </Animated.View>
             )}
           </View>
+          <LanguageTooltip
+            isVisible={toolTip}
+            onClose={() => {
+              showToolTip(false)
+            }}
+          />
         </View>
       ) : (
         <LinearGradient

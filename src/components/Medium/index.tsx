@@ -33,6 +33,7 @@ import { MidlevelStore } from '../../store/midlevelStore'
 import FlowOne from './MidlevelWebView/FlowOne'
 import FlowTwo from './MidlevelWebView/FlowTwo'
 import FlowThree from './MidlevelWebView/FlowThree'
+import AddImageAddTextTooltip from '../Tooltips/MidLevel/AddImageAddTextTooltip'
 
 const { width } = Dimensions.get('window')
 
@@ -118,6 +119,8 @@ const Medium = () => {
   const [openCheckout, setOpenCheckout] = useState(false)
   const [animationUpdated, setAnimationUpdated] = useState(false)
   const [toolTip, showToolTip] = useState(false)
+  const [addImageAndAddTextToolTip, setAddImageAndAddTextToolTip] = useState(false)
+
   const shakeAnimation = useRef(new Animated.Value(0)).current
 
   const shake = () => {
@@ -314,6 +317,22 @@ const Medium = () => {
   useEffect(() => {
     isShowToolTip()
   }, [isShowToolTip])
+
+  const isShowToolTipAddImageAndAddText = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showAddImageAndAddTextTooltip')
+
+      if (data !== '15') {
+        AsyncStorage.setItem('showAddImageAndAddTextTooltip', '15')
+        setAddImageAndAddTextToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowToolTipAddImageAndAddText()
+  }, [isShowToolTipAddImageAndAddText])
 
   const handleSetUid = useCallback(async () => {
     if (midlevelData.uid) return
@@ -518,6 +537,14 @@ const Medium = () => {
                 isImageOrText={isImageOrText}
                 setImageOrText={setImageOrText}
                 setOpenDesign={setOpenDesign}
+              />
+            )}
+            {isSteps === 6 && (
+              <AddImageAddTextTooltip
+                isVisible={addImageAndAddTextToolTip}
+                onClose={() => {
+                  setAddImageAndAddTextToolTip(false)
+                }}
               />
             )}
           </View>

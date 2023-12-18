@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { FlatList } from 'react-native-gesture-handler'
 import { Text, View, TouchableHighlight } from 'react-native'
 import Animated, { FlipInXDown, FlipOutXDown } from 'react-native-reanimated'
 import { IMidlevel } from '../../../constant/types'
 import { COLORS, dropDownGradient } from '../../../styles/theme'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useTranslation } from 'react-i18next'
 import { userStore } from '../../../store/userStore'
-import SelectStyleTooltip from '../../Tooltips/MidLevel/SelectStyle'
 
 interface ISelectStyle {
   isSelectedStyle: string
@@ -25,23 +23,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({
 }) => {
   const { t } = useTranslation('midlevel')
   const avatar = userStore((state) => state.avatar)
-  const [toolTip, showToolTip] = useState(false)
-
-  const isShowToolTip = async () => {
-    try {
-      const data = await AsyncStorage.getItem('showSelectStyleTooltip')
-
-      if (data !== '5') {
-        AsyncStorage.setItem('showSelectStyleTooltip', '5')
-        showToolTip(true)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  useEffect(() => {
-    isShowToolTip()
-  }, [isShowToolTip])
 
   const handleSelect = (title: string) => {
     if (title === 'There is no styles available right now') {
@@ -198,12 +179,6 @@ const SelectStyle: React.FC<ISelectStyle> = ({
           )}
         </View>
       </Animated.View>
-      <SelectStyleTooltip
-        isVisible={toolTip}
-        onClose={() => {
-          showToolTip(false)
-        }}
-      />
     </LinearGradient>
   )
 }
