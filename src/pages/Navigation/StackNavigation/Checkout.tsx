@@ -9,6 +9,7 @@ import LeftArrow from '../../../assets/icons/LeftArrow'
 import { LinearGradient } from 'expo-linear-gradient'
 import ChevronLeft from '../../../assets/icons/ChevronLeft'
 import TruckMovingIcon from '../../../assets/icons/TruckMoving'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import CartCard from '../../../components/CartCard'
 import { query, collection as defaultCollection, where, onSnapshot } from 'firebase/firestore'
 import {
@@ -28,6 +29,7 @@ import GiftOptions from './GiftOptions'
 import { useNavigation } from '@react-navigation/native'
 import { API_URL } from '../../../utils/config'
 import { MidlevelStore } from '../../../store/midlevelStore'
+import CheckoutTooltip from '../../../components/Tooltips/CheckoutTooltip'
 
 const { width } = Dimensions.get('window')
 
@@ -82,6 +84,7 @@ const Checkout: React.FC<ICheckout> = ({
   const stripe = useStripe()
   const { isPlatformPaySupported } = usePlatformPay()
   const [isPaySupported, setIsPaySupported] = useState(false)
+  const [toolTip, showToolTip] = useState(false)
 
   const setup = useCallback(async () => {
     if (!(await isPlatformPaySupported())) {
@@ -139,6 +142,22 @@ const Checkout: React.FC<ICheckout> = ({
   useEffect(() => {
     fetchData()
   }, [fetchData])
+
+  const isShowToolTip = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showCheckoutTooltip')
+
+      if (data !== '18') {
+        AsyncStorage.setItem('showCheckoutTooltip', '18')
+        showToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowToolTip()
+  }, [isShowToolTip])
 
   const addressOne = addr?.addressOne
   const addressTwo = addr?.addressTwo
@@ -541,6 +560,12 @@ const Checkout: React.FC<ICheckout> = ({
           setOpengift={setOpengift}
         />
       )}
+      <CheckoutTooltip
+        isVisible={toolTip}
+        onClose={() => {
+          showToolTip(false)
+        }}
+      />
     </View>
   )
 }
