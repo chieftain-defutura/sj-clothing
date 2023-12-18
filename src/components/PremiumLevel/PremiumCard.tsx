@@ -115,8 +115,8 @@ const ProductText = styled.Text`
 
 const PriceText = styled.Text`
   color: ${COLORS.premiumTextClr};
-  font-size: 12px;
-  font-family: ${FONT_FAMILY.GilroyMedium};
+  font-size: 14px;
+  font-family: ${FONT_FAMILY.GilroySemiBold};
 `
 
 export default PremiumCard

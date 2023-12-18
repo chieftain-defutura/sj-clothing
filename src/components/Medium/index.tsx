@@ -117,6 +117,8 @@ const Medium = () => {
   })
   const [openCheckout, setOpenCheckout] = useState(false)
   const [animationUpdated, setAnimationUpdated] = useState(false)
+  const [colorAnimationUpdated, setColorAnimationUpdated] = useState(false)
+
   const [toolTip, showToolTip] = useState(false)
   const shakeAnimation = useRef(new Animated.Value(0)).current
 
@@ -158,7 +160,8 @@ const Medium = () => {
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docs.forEach((doc) => {
         if (doc.data()['animationFinished']) {
-          setAnimationUpdated(doc.data()['animationFinished']), playSound()
+          setAnimationUpdated(doc.data()['animationFinished'])
+          playSound()
         }
       })
     })
@@ -171,6 +174,30 @@ const Medium = () => {
   useEffect(() => {
     handleGetData()
   }, [handleGetData])
+
+  const handleGetColorAnimation = useCallback(() => {
+    if (!uid) return
+    const q = defaultQuery(
+      defualtCollection(dbDefault, 'ModelsMidlevel'),
+      defaultWhere('uid', '==', uid),
+    )
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        if (doc.data()['colorAnimationFinished']) {
+          setColorAnimationUpdated(doc.data()['colorAnimationFinished'])
+          playSound()
+        }
+      })
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [uid])
+
+  useEffect(() => {
+    handleGetColorAnimation()
+  }, [handleGetColorAnimation])
 
   useEffect(() => {
     if (!imageApplied) {
@@ -467,6 +494,7 @@ const Medium = () => {
             handleIncreaseSteps={handleIncreaseSteps}
             setImageApplied={setImageApplied}
             animationUpdated={animationUpdated}
+            colorAnimationUpdate={colorAnimationUpdated}
             shake={shake}
             shakeAnimation={shakeAnimation}
           />

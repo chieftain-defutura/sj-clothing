@@ -31,6 +31,7 @@ interface INavigation {
     measurement: string
     quantity: string
   }
+  colorAnimationUpdate: boolean
   isColor: string
   shakeAnimation: any
   handleIncreaseSteps: () => void
@@ -68,7 +69,7 @@ const Navigation: React.FC<INavigation> = ({
   sizeVarient,
   animationUpdated,
   shakeAnimation,
-
+  colorAnimationUpdate,
   setOpenDesign,
   handleIncreaseSteps,
   shake,
@@ -80,7 +81,7 @@ const Navigation: React.FC<INavigation> = ({
 }) => {
   const { t } = useTranslation('midlevel')
   const [isPressed, setIsPressed] = useState(false)
-
+  console.log('jhja', colorAnimationUpdate)
   const slideX = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: slideValue.value * 400 }], // Slide 400 units (assuming a screen width of 400)
@@ -303,9 +304,9 @@ const Navigation: React.FC<INavigation> = ({
               onPress={handleIncreaseSteps}
               activeOpacity={0.6}
               underlayColor='rgba(70, 45, 133, 0.2)'
-              // disabled={!animationUpdated}
+              disabled={!colorAnimationUpdate && steps === 4}
               style={{
-                // opacity: !animationUpdated ? 0.5 : 1,
+                opacity: !colorAnimationUpdate && steps === 4 ? 0.5 : 1,
                 borderRadius: 20,
                 padding: 6,
               }}

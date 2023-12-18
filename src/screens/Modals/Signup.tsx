@@ -123,9 +123,9 @@ const SignupModal: React.FC<SignupModalProps> = ({
 
       const verificationCode = generateVerificationCode()
       const templateParams = {
-        service_id: 'service_uczg2oi',
-        template_id: 'template_973exzj',
-        user_id: '8Y8laF-lQk4iqwByh',
+        service_id: 'service_n32ytbw',
+        template_id: 'template_y5cz23c',
+        user_id: 'K-e_VO9kSsyCRevPa',
         template_params: {
           to_email: values.email,
           subject: 'verification code',
@@ -133,12 +133,13 @@ const SignupModal: React.FC<SignupModalProps> = ({
           to_name: name,
           from_name: 'SprinkleNadar',
         },
-        accessToken: '_6XzsH_Ji2J5RtsmYgBH-',
+        accessToken: '6QdtVkNQ_KdK672G8cg_l',
       }
       const { data } = await axios.post(
         'https://api.emailjs.com/api/v1.0/email/send',
         templateParams,
       )
+
       setEmail(values.email)
       setName(values.name)
       setPassword(values.password)

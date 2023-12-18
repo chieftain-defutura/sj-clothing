@@ -18,6 +18,7 @@ import { IOrder, IRatings } from '../../constant/types'
 import { db, dbDefault } from '../../../firebase'
 import CustomButton from '../Button'
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated'
+import axios from 'axios'
 
 const StartIcons = [
   { startActive: StarActive, startInActive: StarInActive },
@@ -86,6 +87,26 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
       setIsLoading(true)
       if (!user) return
       const ratingDocRef = doc(db, 'Ratings', orderId)
+      const templateParams = {
+        service_id: 'service_n32ytbw',
+        template_id: 'template_7168usd',
+        user_id: 'K-e_VO9kSsyCRevPa',
+        template_params: {
+          to_email: 'sprinklenadar@gmail.com',
+          subject: 'Product Rating',
+          message: `userName:${user.displayName}
+          productName:${orderData?.productName}
+          rating:${stars}
+          description: ${review}`,
+          to_name: 'Sprinkle Nadar',
+          from_name: user.displayName,
+        },
+        accessToken: '6QdtVkNQ_KdK672G8cg_l',
+      }
+      const { data } = await axios.post(
+        'https://api.emailjs.com/api/v1.0/email/send',
+        templateParams,
+      )
 
       if (!ratings) {
         await setDoc(ratingDocRef, {

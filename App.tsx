@@ -183,7 +183,7 @@ const App: React.FC = () => {
   const updateLanguage = userStore((state) => state.updateLanguage)
   const updateProfile = userStore((state) => state.updateProfile)
   const updateConfirmDetails = userStore((state) => state.updateConfirmDetails)
-
+  const logoVideo = generalStore((state) => state.logoVideo)
   const [expoPushToken, setExpoPushToken] = useState('')
   const [notification, setNotification] = useState<Notifications.Notification>()
   const notificationListener = useRef<Notifications.Subscription>()
@@ -352,8 +352,18 @@ const App: React.FC = () => {
         merchantIdentifier='merchant.com.sjclothing'
       >
         <I18nextProvider i18n={i18n}>
-          <SafeAreaView style={{ flex: 0, backgroundColor: 'rgba(191, 148, 228, 0.86)' }} />
-          <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(145, 177, 225, 0.9)' }}>
+          <SafeAreaView
+            style={{
+              flex: 0,
+              backgroundColor: !logoVideo ? 'rgba(191, 148, 228, 1)' : 'rgba(191, 148, 228, 0.86)',
+            }}
+          />
+          <SafeAreaView
+            style={{
+              flex: 1,
+              backgroundColor: !logoVideo ? 'rgba(145, 177, 225,.7 )' : 'rgba(145, 177, 225, 0.9)',
+            }}
+          >
             <NavigationContainer>
               <StatusBar animated={true} backgroundColor='rgba(199, 148, 228, 0.0)' style='dark' />
               <StackNavigationRoutes />

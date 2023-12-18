@@ -62,7 +62,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   const profile = userStore((state) => state.profile)
   const [image, setImage] = React.useState<string | null>(profile)
   const updateProfile = userStore((state) => state.updateProfile)
-  const [editProfileDisable, setEditProfileDisable] = useState(false)
+  const [editProfileDisable, setEditProfileDisable] = useState(true)
   console.log('urlggfgu', url)
   console.log(image)
 
@@ -186,7 +186,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
           </TouchableHighlight>
         </FlexContent>
         <NotUserContent>
-          <View>
+          <View style={{ position: 'relative' }}>
             {image ? (
               <ProfileImage
                 source={{ uri: image }}
@@ -202,11 +202,27 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
               <NotUserIcon width={128} height={128} />
             )}
 
-            {/* {user?.photoURL ? (
-              <ChangeProfileText allowFontScaling={false}>Change profile picture</ChangeProfileText>
-            ) : (
-              <ChangeProfileText allowFontScaling={false}>Choose profile picture</ChangeProfileText>
-            )} */}
+            <View style={{ position: 'absolute', bottom: image ? 10 : 5, right: image ? -5 : -15 }}>
+              <TouchableOpacity onPress={pickImage}>
+                <LinearGradient
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  colors={['#462D85', '#DB00FF']}
+                  style={styles.plusIconGradientColor}
+                >
+                  <View
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <CameraIcon width={20} height={20} />
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={{ marginTop: 12 }}>
             <TouchableHighlight
@@ -224,29 +240,6 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
                 )}
               </View>
             </TouchableHighlight>
-          </View>
-          <View
-            style={{ position: 'absolute', bottom: image ? 90 : 100, right: image ? 120 : 140 }}
-          >
-            <TouchableOpacity onPress={pickImage}>
-              <LinearGradient
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                colors={['#462D85', '#DB00FF']}
-                style={styles.plusIconGradientColor}
-              >
-                <View
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <CameraIcon width={20} height={20} />
-                </View>
-              </LinearGradient>
-            </TouchableOpacity>
           </View>
         </NotUserContent>
       </UserWrapper>
@@ -267,7 +260,6 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
 }
 
 const UserWrapper = styled.View`
-  position: relative;
   border-color: ${COLORS.strokeClr};
   border-width: 1px;
   border-bottom-left-radius: 50px;

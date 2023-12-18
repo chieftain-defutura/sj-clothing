@@ -59,6 +59,8 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [forgotMail, setForgotmail] = useState(false)
   const [logOut, setLogOut] = useState(false)
   const [isDelectAccount, setIsDelectAccount] = useState(false)
+  console.log('user?.photoURL', user?.photoURL)
+  console.log('route.params?.profileImg ', route.params?.profileImg)
 
   const isShowToolTip = async () => {
     try {

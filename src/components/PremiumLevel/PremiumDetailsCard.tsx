@@ -631,8 +631,8 @@ const DetailsParaText = styled.Text`
 `
 
 const ProductText = styled.Text`
-  font-size: 12px;
-  font-family: ${FONT_FAMILY.MontserratRegular};
+  font-size: 14px;
+  font-family: ${FONT_FAMILY.MontserratSemiBold};
   color: ${COLORS.SecondaryTwo};
 `
 
