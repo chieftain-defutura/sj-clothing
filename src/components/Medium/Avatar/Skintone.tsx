@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { doc, setDoc, updateDoc } from 'firebase/firestore/lite'
 import Animated, { FadeInUp, FadeOut } from 'react-native-reanimated'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
   StyleSheet,
   Text,
@@ -23,6 +24,7 @@ import {
 import { COLORS } from '../../../styles/theme'
 import { userStore } from '../../../store/userStore'
 import { db, dbDefault } from '../../../../firebase'
+import SelectYourSkintoneTooltip from '../../Tooltips/MidLevel/SelectYourSkintoneTooltip'
 
 const { height, width } = Dimensions.get('window')
 
@@ -41,6 +43,23 @@ const Skintone: React.FC<ISkintone> = ({}) => {
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const [data, setData] = useState<{ uid: string; animationFinished?: boolean } | null>(null)
   const [webviewLoading, setWebviewLoading] = useState(true)
+  const [toolTip, showToolTip] = useState(false)
+
+  const isShowToolTip = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showSkinToneTooltip')
+
+      if (data !== '11') {
+        AsyncStorage.setItem('showSkinToneTooltip', '11')
+        showToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowToolTip()
+  }, [isShowToolTip])
 
   const handleGetData = useCallback(() => {
     if (!uid) return
@@ -204,6 +223,12 @@ const Skintone: React.FC<ISkintone> = ({}) => {
           />
         </View> */}
       </View>
+      <SelectYourSkintoneTooltip
+        isVisible={toolTip}
+        onClose={() => {
+          showToolTip(false)
+        }}
+      />
     </View>
   )
 }

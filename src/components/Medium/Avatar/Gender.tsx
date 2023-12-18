@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image } from 'react-native'
-import React, { useRef, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import React, { useEffect, useRef, useState } from 'react'
 import { COLORS } from '../../../styles/theme'
 import { useTranslation } from 'react-i18next'
 import { userStore } from '../../../store/userStore'
 import { updateDoc, doc } from 'firebase/firestore/lite'
-import { useNavigation } from '@react-navigation/native'
 import { db } from '../../../../firebase'
+import SelectYourGender from '../../Tooltips/MidLevel/SelectYourGender'
 
 interface IGender {}
 
@@ -30,7 +31,25 @@ const GenderModel = ({
   const updateAvatar = userStore((state) => state.updateAvatar)
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
+  const [toolTip, showToolTip] = useState(false)
   const elementRef = useRef<View | null>(null)
+
+  const isShowToolTip = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showSelectYourGender')
+
+      if (data !== '4') {
+        AsyncStorage.setItem('showSelectYourGender', '4')
+        showToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    isShowToolTip()
+  }, [isShowToolTip])
 
   const handleLayout = () => {
     if (elementRef.current) {
@@ -97,13 +116,18 @@ const GenderModel = ({
           </Text>
         </View>
       </TouchableOpacity>
+      <SelectYourGender
+        isVisible={toolTip}
+        onClose={() => {
+          showToolTip(false)
+        }}
+      />
     </View>
   )
 }
 
 const Gender: React.FC<IGender> = ({}) => {
   const { t } = useTranslation('avatar')
-  const navigation = useNavigation()
 
   return (
     <View style={styles.genderContainer}>

@@ -1,29 +1,31 @@
 import React from 'react'
-import { Modal, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Modal, View, StyleSheet, TouchableOpacity, Platform, Dimensions } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
-import Animated, { LightSpeedInLeft, LightSpeedOutLeft } from 'react-native-reanimated'
-import TooltipCloseIcon from '../../assets/icons/MidlevelIcon/close'
 import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
+import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
 
 interface IAccountTooltip {
   isVisible?: boolean
   onClose?: () => void
 }
 
+const { width } = Dimensions.get('window')
+
 const AccountTooltip: React.FC<IAccountTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
-        <Content>
-          <Heading allowFontScaling={false}>Account</Heading>
-          <Paragraph allowFontScaling={false}>
+        <Content style={[{ width: width / 1.2 }, styles.container]}>
+          <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+            Account
+          </Heading>
+          <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
             Manage your profile, customize avatars, and track your orders
           </Paragraph>
-          <Animated.View
-            entering={LightSpeedInLeft.duration(1000).delay(200)}
-            exiting={LightSpeedOutLeft}
+
+          <View
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -49,8 +51,11 @@ const AccountTooltip: React.FC<IAccountTooltip> = ({ isVisible, onClose }) => {
                 </View>
               </LinearGradient>
             </TouchableOpacity>
-          </Animated.View>
+          </View>
         </Content>
+        <View style={[{ position: 'absolute', bottom: 89, right: 55 }, styles.icon]}>
+          <TooltipIcon width={26} height={46} />
+        </View>
       </TooltipWrapper>
     </Modal>
   )
@@ -64,11 +69,13 @@ const TooltipWrapper = styled.View`
   position: relative;
 `
 const Content = styled.View`
-  padding: 16px;
+  padding-vertical: 16px;
+  padding-horizontal: 24px;
   position: absolute;
-  bottom: 80px;
+  bottom: 100px;
   background: white;
   border-radius: 20px;
+  z-index: 10000;
 `
 const Heading = styled.Text`
   font-size: 16px;
@@ -82,7 +89,7 @@ const Paragraph = styled.Text`
   font-family: ${FONT_FAMILY.GilroyRegular};
   line-height: 18px;
   letter-spacing: -0.28px;
-  width: 250px;
+  width: 320px;
   margin-bottom: 8px;
 `
 
@@ -99,5 +106,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  container: {
+    ...Platform.select({
+      ios: {
+        bottom: 120,
+      },
+    }),
+  },
+  icon: {
+    ...Platform.select({
+      ios: {
+        bottom: 105,
+      },
+    }),
   },
 })

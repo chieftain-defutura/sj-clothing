@@ -39,7 +39,7 @@ const StackNavigationRoutes: React.FC = () => {
       screenOptions={{
         headerTitleAlign: 'center',
         headerStyle: {
-          backgroundColor: logoVideo ? 'rgba(194, 148, 228, 0.85)' : 'rgba(195, 148, 228, 1)',
+          backgroundColor: logoVideo ? 'rgba(194, 148, 228, 0.83)' : 'rgba(195, 148, 228, 1)',
         },
         headerTitle: HeaderLeft,
         headerShadowVisible: false,

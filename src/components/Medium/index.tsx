@@ -33,7 +33,6 @@ import { MidlevelStore } from '../../store/midlevelStore'
 import FlowOne from './MidlevelWebView/FlowOne'
 import FlowTwo from './MidlevelWebView/FlowTwo'
 import FlowThree from './MidlevelWebView/FlowThree'
-import { useNavigation } from '@react-navigation/native'
 
 const { width } = Dimensions.get('window')
 
@@ -119,7 +118,6 @@ const Medium = () => {
   const [openCheckout, setOpenCheckout] = useState(false)
   const [animationUpdated, setAnimationUpdated] = useState(false)
   const [toolTip, showToolTip] = useState(false)
-  const navigation = useNavigation()
   const shakeAnimation = useRef(new Animated.Value(0)).current
 
   const shake = () => {
@@ -301,13 +299,16 @@ const Medium = () => {
   }, [warning])
 
   const isShowToolTip = async () => {
-    const data = await AsyncStorage.getItem('showMidLevelToolTip')
+    try {
+      const data = await AsyncStorage.getItem('showMidLevelToolTip')
 
-    if (data !== '0') {
-      AsyncStorage.setItem('showMidLevelToolTip', '0')
-      showToolTip(true)
+      if (data !== '0') {
+        AsyncStorage.setItem('showMidLevelToolTip', '0')
+        showToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
     }
-    // await AsyncStorage.removeItem('mail')
   }
 
   useEffect(() => {
@@ -621,7 +622,6 @@ const Medium = () => {
         onClose={() => {
           showToolTip(false)
         }}
-        navigation={navigation}
       />
     </View>
   )

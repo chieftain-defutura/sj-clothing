@@ -1,29 +1,33 @@
 import React from 'react'
-import { Modal, View, StyleSheet, TouchableOpacity, Platform, Dimensions } from 'react-native'
+import { Modal, View, StyleSheet, TouchableOpacity, Dimensions, Platform } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { COLORS, FONT_FAMILY } from '../../styles/theme'
-import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
-import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
+import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
+import TooltipIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
+import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 
-interface IPremiumTooltip {
+interface ISelectYourSkintoneTooltip {
   isVisible?: boolean
   onClose?: () => void
 }
 
 const { width } = Dimensions.get('window')
 
-const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose }) => {
+const SelectYourSkintoneTooltip: React.FC<ISelectYourSkintoneTooltip> = ({
+  isVisible,
+  onClose,
+}) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
         <Content style={[{ width: width / 1.2 }, styles.container]}>
           <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-            Premium
+            Select Your Skintone
           </Heading>
           <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
             Elevate Your Wardrobe, Explore and purchase premium clothing for a refined look
           </Paragraph>
+
           <View
             style={{
               display: 'flex',
@@ -52,7 +56,7 @@ const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose }) => {
             </TouchableOpacity>
           </View>
         </Content>
-        <View style={[{ position: 'absolute', bottom: 65, left: 180 }, styles.icon]}>
+        <View style={[{ position: 'absolute', bottom: 85, right: 80 }, styles.icon]}>
           <TooltipIcon width={26} height={46} />
         </View>
       </TooltipWrapper>
@@ -71,7 +75,7 @@ const Content = styled.View`
   padding-vertical: 16px;
   padding-horizontal: 24px;
   position: absolute;
-  bottom: 80px;
+  bottom: 100px;
   background: white;
   border-radius: 20px;
   z-index: 10000;
@@ -92,7 +96,7 @@ const Paragraph = styled.Text`
   margin-bottom: 8px;
 `
 
-export default PremiumTooltip
+export default SelectYourSkintoneTooltip
 
 const styles = StyleSheet.create({
   plusIconGradientColor: {
@@ -109,14 +113,14 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: {
-        bottom: 120,
+        bottom: 140,
       },
     }),
   },
   icon: {
     ...Platform.select({
       ios: {
-        bottom: 105,
+        bottom: 125,
       },
     }),
   },

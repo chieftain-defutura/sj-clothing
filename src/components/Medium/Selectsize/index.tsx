@@ -6,6 +6,8 @@ import { IMidlevel } from '../../../constant/types'
 import { userStore } from '../../../store/userStore'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useTranslation } from 'react-i18next'
+import SelectSizeTooltip from '../../Tooltips/MidLevel/SelectSize'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface ISelectSize {
   isDropDown: boolean
@@ -35,6 +37,7 @@ interface ISelectSize {
 const SelectSize: React.FC<ISelectSize> = ({ isDropDown, isSize, data, setDropDown, setSize }) => {
   const avatar = userStore((state) => state.avatar)
   const { t } = useTranslation('midlevel')
+  const [toolTip, showToolTip] = useState(false)
   const [sizeData, setSizeData] = useState<
     | {
         measurement: string
@@ -52,6 +55,22 @@ const SelectSize: React.FC<ISelectSize> = ({ isDropDown, isSize, data, setDropDo
     )?.sizeVarients
     setSizeData(sizesData)
   }, [])
+
+  const isShowToolTip = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showSelectSizeTooltip')
+
+      if (data !== '7') {
+        AsyncStorage.setItem('showSelectSizeTooltip', '7')
+        showToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowToolTip()
+  }, [isShowToolTip])
 
   const handleSelect = (size: string, measurement: string) => {
     setSize({ ...isSize, sizeVarient: [{ size: size, measurement: measurement, quantity: '1' }] })
@@ -178,6 +197,12 @@ const SelectSize: React.FC<ISelectSize> = ({ isDropDown, isSize, data, setDropDo
           </Animated.View>
         </Animated.View>
       )}
+      <SelectSizeTooltip
+        isVisible={toolTip}
+        onClose={() => {
+          showToolTip(false)
+        }}
+      />
     </LinearGradient>
   )
 }

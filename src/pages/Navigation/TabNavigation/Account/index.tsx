@@ -61,13 +61,15 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [isDelectAccount, setIsDelectAccount] = useState(false)
 
   const isShowToolTip = async () => {
-    const data = await AsyncStorage.getItem('showAccountTooltip')
+    try {
+      const data = await AsyncStorage.getItem('showAccountTooltip')
 
-    console.log('accountProfile', profile)
-
-    if (data !== '2') {
-      AsyncStorage.setItem('showAccountTooltip', '2')
-      showToolTip(true)
+      if (data !== '2') {
+        AsyncStorage.setItem('showAccountTooltip', '2')
+        showToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
   useEffect(() => {

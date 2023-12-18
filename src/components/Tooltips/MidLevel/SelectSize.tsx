@@ -1,29 +1,30 @@
 import React from 'react'
-import { Modal, View, StyleSheet, TouchableOpacity, Platform, Dimensions } from 'react-native'
+import { Modal, View, StyleSheet, TouchableOpacity, Dimensions, Platform } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { COLORS, FONT_FAMILY } from '../../styles/theme'
-import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
-import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
+import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
+import { COLORS, FONT_FAMILY } from '../../../styles/theme'
+import TooltipTopArrowIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
 
-interface IPremiumTooltip {
+interface ISelectSizeTooltip {
   isVisible?: boolean
   onClose?: () => void
 }
 
 const { width } = Dimensions.get('window')
 
-const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose }) => {
+const SelectSizeTooltip: React.FC<ISelectSizeTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
         <Content style={[{ width: width / 1.2 }, styles.container]}>
           <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-            Premium
+            Select Size
           </Heading>
           <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-            Elevate Your Wardrobe, Explore and purchase premium clothing for a refined look
+            Manage your profile, customize avatars, and track your orders
           </Paragraph>
+
           <View
             style={{
               display: 'flex',
@@ -52,8 +53,8 @@ const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose }) => {
             </TouchableOpacity>
           </View>
         </Content>
-        <View style={[{ position: 'absolute', bottom: 65, left: 180 }, styles.icon]}>
-          <TooltipIcon width={26} height={46} />
+        <View style={[{ position: 'absolute', top: 185, left: 180 }, styles.icon]}>
+          <TooltipTopArrowIcon width={26} height={46} />
         </View>
       </TooltipWrapper>
     </Modal>
@@ -71,7 +72,7 @@ const Content = styled.View`
   padding-vertical: 16px;
   padding-horizontal: 24px;
   position: absolute;
-  bottom: 80px;
+  top: 200px;
   background: white;
   border-radius: 20px;
   z-index: 10000;
@@ -92,7 +93,7 @@ const Paragraph = styled.Text`
   margin-bottom: 8px;
 `
 
-export default PremiumTooltip
+export default SelectSizeTooltip
 
 const styles = StyleSheet.create({
   plusIconGradientColor: {
@@ -109,14 +110,14 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: {
-        bottom: 120,
+        top: 230,
       },
     }),
   },
   icon: {
     ...Platform.select({
       ios: {
-        bottom: 105,
+        top: 215,
       },
     }),
   },

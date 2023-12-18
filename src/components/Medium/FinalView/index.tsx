@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, Dimensions, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import CustomButton from '../../Button'
 import styled from 'styled-components/native'
@@ -7,6 +7,8 @@ import { Svg, Circle } from 'react-native-svg'
 import { IMidlevel } from '../../../constant/types'
 import { userStore } from '../../../store/userStore'
 import { useTranslation } from 'react-i18next'
+import FinalViewTooltip from '../../Tooltips/MidLevel/FinalViewTooltip'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface IFinalView {
   style: string
@@ -62,6 +64,23 @@ const FinalView: React.FC<IFinalView> = ({
   const avatar = userStore((state) => state.avatar)
   const currency = userStore((state) => state.currency)
   const rate = userStore((state) => state.rate)
+  const [toolTip, showToolTip] = useState(false)
+
+  const isShowToolTip = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showFinalView')
+
+      if (data !== '9') {
+        AsyncStorage.setItem('showFinalView', '9')
+        showToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowToolTip()
+  }, [isShowToolTip])
 
   const onClose = () => {
     setFocus(false)
@@ -356,6 +375,12 @@ const FinalView: React.FC<IFinalView> = ({
             ))}
           </View>
         </View>
+        <FinalViewTooltip
+          isVisible={toolTip}
+          onClose={() => {
+            showToolTip(false)
+          }}
+        />
       </ScrollView>
     </>
   )
