@@ -61,6 +61,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [logOut, setLogOut] = useState(false)
   const [isDelectAccount, setIsDelectAccount] = useState(false)
   const [editProfileToolTip, setEditProfileToolTip] = useState(false)
+  const [showTooltip, setShowTooltip] = useState(1)
 
   const isShowToolTip = async () => {
     try {
@@ -93,6 +94,11 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   useEffect(() => {
     isShowToolTipEditProfile()
   }, [isShowToolTipEditProfile])
+
+  const handleShowTooltip = () => {
+    showToolTip(false)
+    setShowTooltip(2)
+  }
 
   const handleLogin = () => {
     if (!user) {
@@ -183,12 +189,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                 </LinearGradient>
               </EditContent>
             </UserWrapper>
-            <EditProfileTooltip
-              isVisible={editProfileToolTip}
-              onClose={() => {
-                setEditProfileToolTip(false)
-              }}
-            />
 
             {route.params?.dName ? (
               <Text allowFontScaling={false} style={styles.ProfileName}>
@@ -435,12 +435,16 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
 
       {isDelectAccount && <DelectAccount closeModal={() => setIsDelectAccount(false)} />}
 
-      <AccountTooltip
-        isVisible={toolTip}
-        onClose={() => {
-          showToolTip(false)
-        }}
-      />
+      {showTooltip === 2 && (
+        <EditProfileTooltip
+          isVisible={editProfileToolTip}
+          onClose={() => {
+            setEditProfileToolTip(false)
+          }}
+        />
+      )}
+
+      {showTooltip === 1 && <AccountTooltip isVisible={toolTip} onClose={handleShowTooltip} />}
     </LinearGradient>
   )
 }
