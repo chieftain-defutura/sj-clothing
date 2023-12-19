@@ -53,7 +53,7 @@ const LanguageTooltip: React.FC<ILanguageTooltip> = ({ isVisible, onClose }) => 
             </TouchableOpacity>
           </View>
         </Content>
-        <View style={[{ position: 'absolute', bottom: 89, right: 55 }, styles.icon]}>
+        <View style={[{ position: 'absolute', bottom: 89, right: 100 }, styles.icon]}>
           <TooltipIcon width={26} height={46} />
         </View>
       </TooltipWrapper>
