@@ -17,43 +17,47 @@ const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
-        <Content style={[{ width: width / 1.2 }, styles.container]}>
-          <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-            Premium
-          </Heading>
-          <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-            Elevate Your Wardrobe, Explore and purchase premium clothing for a refined look
-          </Paragraph>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-            }}
-          >
-            <TouchableOpacity onPress={onClose}>
-              <LinearGradient
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                colors={['#462D85', '#DB00FF']}
-                style={styles.plusIconGradientColor}
+        <View style={{ position: 'absolute', bottom: 80 }}>
+          <View style={{ position: 'relative' }}>
+            <Content style={[{ width: width / 1.2 }, styles.container]}>
+              <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+                Premium
+              </Heading>
+              <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+                Elevate Your Wardrobe, Explore and purchase premium clothing for a refined look
+              </Paragraph>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                }}
               >
-                <View
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <RightIcon width={20} height={20} />
-                </View>
-              </LinearGradient>
-            </TouchableOpacity>
+                <TouchableOpacity onPress={onClose}>
+                  <LinearGradient
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={['#462D85', '#DB00FF']}
+                    style={styles.plusIconGradientColor}
+                  >
+                    <View
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <RightIcon width={20} height={20} />
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+            </Content>
+            <View style={[{ position: 'absolute', bottom: -12, left: 20 }, styles.icon]}>
+              <TooltipIcon width={26} height={46} />
+            </View>
           </View>
-        </Content>
-        <View style={[{ position: 'absolute', bottom: 65, left: 180 }, styles.icon]}>
-          <TooltipIcon width={26} height={46} />
         </View>
       </TooltipWrapper>
     </Modal>
@@ -70,11 +74,8 @@ const TooltipWrapper = styled.View`
 const Content = styled.View`
   padding-vertical: 16px;
   padding-horizontal: 24px;
-  position: absolute;
-  bottom: 80px;
   background: white;
   border-radius: 20px;
-  z-index: 10000;
 `
 const Heading = styled.Text`
   font-size: 16px;
@@ -109,14 +110,15 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: {
-        bottom: 120,
+        bottom: 30,
       },
     }),
   },
   icon: {
     ...Platform.select({
       ios: {
-        bottom: 105,
+        bottom: 14,
+        left: 300,
       },
     }),
   },

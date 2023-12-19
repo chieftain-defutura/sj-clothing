@@ -260,6 +260,11 @@ const styles = StyleSheet.create({
     width: width / 1.2,
     gap: 8,
     marginVertical: 8,
+    ...Platform.select({
+      ios: {
+        gap: 16,
+      },
+    }),
   },
   editText: {
     color: '#DB00FF',
@@ -293,9 +298,9 @@ const styles = StyleSheet.create({
       ios: {
         borderWidth: 1.5,
         borderColor: 'rgba(0,0,0,0.3)',
-        borderRadius: 200,
-        width: width / 14,
-        height: height / 30,
+        borderRadius: 300,
+        width: 30,
+        height: 30,
         marginTop: -32,
         marginLeft: 4,
       },
