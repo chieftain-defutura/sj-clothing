@@ -1,5 +1,5 @@
 import uuid from 'react-native-uuid'
-import { Dimensions, View, Animated, Easing } from 'react-native'
+import { Dimensions, View, Animated, Easing, Button } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSharedValue, withSequence, withTiming } from 'react-native-reanimated'
 import { collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
@@ -329,6 +329,15 @@ const Medium = () => {
     }, 2000)
   }, [warning])
 
+  const clearAsyncStorage = async () => {
+    try {
+      await AsyncStorage.clear()
+      console.log('AsyncStorage cleared successfully.')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const isShowToolTip = async () => {
     try {
       const data = await AsyncStorage.getItem('showMidLevelToolTip')
@@ -641,6 +650,7 @@ const Medium = () => {
           showToolTip(false)
         }}
       />
+      <Button title='clearAsyncStorage' onPress={clearAsyncStorage}></Button>
     </View>
   )
 }

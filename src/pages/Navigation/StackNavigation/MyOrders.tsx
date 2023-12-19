@@ -24,9 +24,9 @@ import { IOrder, IRatings } from '../../../constant/types'
 import TrackOrder from './TrackOrder'
 import Rating from '../../../components/Rating'
 import Loader from '../../../components/Loading'
-import { StackActions, useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 
-const { height } = Dimensions.get('window')
+const { height, width } = Dimensions.get('window')
 
 interface IMyOrders {
   navigation: any
@@ -190,6 +190,7 @@ const OrderCard: React.FC<IOrderCard> = ({
           onPress={() => {
             setOpenTrackOrder(true), setOrderId(data.id)
           }}
+          style={{ width: width / 1.2 }}
         >
           <View>
             <TShirtImage source={{ uri: data.productImage }} alt={data.productName} />
@@ -301,7 +302,6 @@ const CartPageData = styled.Pressable`
   flex-direction: row;
   gap: 16px;
   padding-vertical: 12px;
-  width: 350px;
 `
 
 const CartPageContent = styled.View`

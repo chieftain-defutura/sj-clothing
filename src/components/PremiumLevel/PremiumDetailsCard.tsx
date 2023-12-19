@@ -226,7 +226,6 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                         height: height * 0.45,
                         resizeMode: 'contain',
                         borderRadius: 6,
-                        marginLeft: 26,
                       }}
                       alt={data.productName}
                     />
@@ -494,7 +493,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                   text='Buy Now'
                   fontFamily='Arvo-Regular'
                   fontSize={13}
-                  style={{ width: 170 }}
+                  style={{ width: width / 2.5 }}
                   onPress={onSubmit}
                   disabled={!isSizeSelected}
                 />

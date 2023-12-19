@@ -17,44 +17,46 @@ const CurrencyTooltip: React.FC<ICurrencyTooltip> = ({ isVisible, onClose }) => 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
-        <Content style={[{ width: width / 1.2 }, styles.container]}>
-          <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-            Currency
-          </Heading>
-          <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-            Manage your profile, customize avatars, and track your orders
-          </Paragraph>
+        <View>
+          <Content style={[{ width: width / 1.2 }, styles.container]}>
+            <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+              Currency
+            </Heading>
+            <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+              Manage your profile, customize avatars, and track your orders
+            </Paragraph>
 
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-            }}
-          >
-            <TouchableOpacity onPress={onClose}>
-              <LinearGradient
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                colors={['#462D85', '#DB00FF']}
-                style={styles.plusIconGradientColor}
-              >
-                <View
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                  }}
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <TouchableOpacity onPress={onClose}>
+                <LinearGradient
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  colors={['#462D85', '#DB00FF']}
+                  style={styles.plusIconGradientColor}
                 >
-                  <RightIcon width={20} height={20} />
-                </View>
-              </LinearGradient>
-            </TouchableOpacity>
+                  <View
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <RightIcon width={20} height={20} />
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          </Content>
+          <View style={[{ position: 'absolute', bottom: 89, right: 100 }, styles.icon]}>
+            <TooltipIcon width={26} height={46} />
           </View>
-        </Content>
-        <View style={[{ position: 'absolute', bottom: 89, right: 100 }, styles.icon]}>
-          <TooltipIcon width={26} height={46} />
         </View>
       </TooltipWrapper>
     </Modal>

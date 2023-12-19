@@ -113,6 +113,7 @@ const Checkout: React.FC<ICheckout> = ({
       if (userData) {
         setCartItems(userData.CartProduct)
         await updateDoc(userDocRef, userData)
+        console.log('success')
       }
     } catch (error) {
       console.error('Error fetching data:', error)
@@ -180,14 +181,7 @@ const Checkout: React.FC<ICheckout> = ({
 
       const fixedAmount = Number((Number(amount) * (rate as number)).toFixed(2))
 
-      const responses = await fetch(`http://localhost:3001/test`, {
-        method: 'POST',
-        // headers: {
-        //   'Content-Type': 'application/json',
-        // },
-      })
-      console.log(responses)
-      const response = await fetch(`http://localhost:3001/create-payment-intent`, {
+      const response = await fetch(`${API_URL}/create-payment-intent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -210,10 +204,8 @@ const Checkout: React.FC<ICheckout> = ({
       })
 
       const data = await response.json()
-      console.log('data', data)
 
       if (!response.ok) {
-        console.log('1')
         return Alert.alert(data.message)
       }
 
@@ -359,7 +351,7 @@ const Checkout: React.FC<ICheckout> = ({
       navigation.navigate('Thankyou')
       // Alert.alert('Payment successfully! Thank you.')
     } catch (err) {
-      console.error('err', err)
+      console.error(err)
       Alert.alert('failed!')
     } finally {
       setIsLoading(false)
@@ -371,6 +363,8 @@ const Checkout: React.FC<ICheckout> = ({
     const q = query(defaultCollection(dbDefault, 'users'), where('email', '==', user.email))
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docs.forEach((doc) => {
+        console.log(doc.data())
+
         const addressData = doc
           .data()
           ?.address.find((f: { isSelected: boolean }) => f.isSelected === true)
@@ -386,6 +380,7 @@ const Checkout: React.FC<ICheckout> = ({
   useEffect(() => {
     handleGetData()
   }, [handleGetData])
+  console.log('addr', addr)
 
   const getDeliveryFees = useCallback(async () => {
     try {
