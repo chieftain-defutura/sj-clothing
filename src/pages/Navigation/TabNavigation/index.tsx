@@ -43,7 +43,7 @@ const TabNavigationRoutes: React.FC = () => {
         name='Post'
         options={{
           tabBarLabel: '',
-          tabBarIcon: ({ focused, color }) =>
+          tabBarIcon: ({ focused }) =>
             focused ? (
               <View
                 style={{

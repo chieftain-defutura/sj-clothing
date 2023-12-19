@@ -70,7 +70,7 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation, setGiftOptions, setOpe
       <TouchableWithoutFeedback style={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
         <GiftContent>
           {imgVisible && (
-            <View style={{ paddingBottom: 50 }}>
+            <View>
               <GoBackArrowContent
                 onPress={() => {
                   setOpengift(false)
@@ -111,7 +111,9 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation, setGiftOptions, setOpe
                     </View>
                   </View>
                   <InputStyleContent>
-                    <GiftMessageText allowFontScaling={false}>From</GiftMessageText>
+                    <GiftMessageText style={{ paddingBottom: 8 }} allowFontScaling={false}>
+                      From
+                    </GiftMessageText>
                     <InputStyle
                       value={values.from}
                       onChangeText={handleChange('from')}
@@ -153,6 +155,7 @@ const GiftMessageWrapper = styled.View`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding-horizontal: 12px;
 `
 
 const InputStyleContent = styled.View`
@@ -160,7 +163,7 @@ const InputStyleContent = styled.View`
 `
 
 const InputStyle = styled.TextInput`
-  border-color: ${COLORS.strokeClr};
+  border-color: ${COLORS.dropDownClr};
   border-width: 1px;
   border-radius: 5px;
   padding-vertical: 12px;
@@ -179,7 +182,7 @@ const ErrorText = styled.Text`
 
 const TextArea = styled.TextInput`
   border-width: 1px;
-  border-color: ${COLORS.strokeClr};
+  border-color: ${COLORS.dropDownClr};
   border-radius: 5px;
   margin-top: 8px;
   padding-horizontal: 16px;
