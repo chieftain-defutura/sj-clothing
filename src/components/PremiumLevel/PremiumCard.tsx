@@ -32,60 +32,55 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
   return (
     <View
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: width / 2.2,
+        width: width / 1,
         height: height / 3.1,
-        marginLeft: 12,
-        marginBottom: 18,
+        marginVertical: 18,
       }}
     >
       <View>
-        <View>
-          <Pressable
-            onPress={() => {
-              setOpenCard(true),
-                setProductId(data.id),
-                setSize((prevState) => ({
-                  ...prevState,
-                  country: '',
-                }))
+        <Pressable
+          onPress={() => {
+            setOpenCard(true),
+              setProductId(data.id),
+              setSize((prevState) => ({
+                ...prevState,
+                country: '',
+              }))
+          }}
+        >
+          <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>
+            <SharedElement id={`test${data.productImage}`}>
+              <ImageContainer>
+                <Image
+                  source={{
+                    uri: data.productImage,
+                  }}
+                  style={{ width: width / 2.6, height: height / 4, resizeMode: 'cover' }}
+                  alt={data.productName}
+                />
+              </ImageContainer>
+            </SharedElement>
+          </Animated.View>
+        </Pressable>
+        <View style={{ alignItems: 'center', marginTop: 14 }}>
+          <ProductText
+            allowFontScaling={false}
+            numberOfLines={1}
+            ellipsizeMode='tail'
+            style={{
+              width: width / 2.3,
+              textAlign: 'center',
+              paddingHorizontal: 4,
             }}
           >
-            <Animated.View entering={FadeInLeft.duration(800).delay(200)} exiting={FadeOutLeft}>
-              <SharedElement id={`test${data.productImage}`}>
-                <ImageContainer>
-                  <Image
-                    source={{
-                      uri: data.productImage,
-                    }}
-                    style={{ width: width / 2.6, height: height / 4, resizeMode: 'cover' }}
-                    alt={data.productName}
-                  />
-                </ImageContainer>
-              </SharedElement>
-            </Animated.View>
-          </Pressable>
-          <View style={{ alignItems: 'center', marginTop: 14 }}>
-            <ProductText
-              allowFontScaling={false}
-              numberOfLines={1}
-              ellipsizeMode='tail'
-              style={{
-                width: width / 2.3,
-                textAlign: 'center',
-                paddingHorizontal: 4,
-              }}
-            >
-              {data.productName}
-            </ProductText>
-            <FlexContent>
-              <PriceText allowFontScaling={false}>
-                {rate ? (Number(data.normalPrice) * (rate as number)).toFixed(2) : data.normalPrice}
-              </PriceText>
-              <PriceText allowFontScaling={false}>{currency ? currency.symbol : '₹'}</PriceText>
-            </FlexContent>
-          </View>
+            {data.productName}
+          </ProductText>
+          <FlexContent>
+            <PriceText allowFontScaling={false}>
+              {rate ? (Number(data.normalPrice) * (rate as number)).toFixed(2) : data.normalPrice}
+            </PriceText>
+            <PriceText allowFontScaling={false}>{currency ? currency.symbol : '₹'}</PriceText>
+          </FlexContent>
         </View>
       </View>
     </View>

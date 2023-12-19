@@ -136,7 +136,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
           ) : (
             <View>
               {openCard && (
-                <View>
+                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                   {FilteredData?.map((item, index) => (
                     <PremiumDetailsCard
                       key={index}
@@ -153,17 +153,23 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
               <View
                 style={{
                   display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'center',
                   flexDirection: 'row',
-                  width: width / 1.6,
-                  columnGap: 150,
+                  justifyContent: 'center',
+                  flexWrap: 'wrap',
                 }}
               >
                 {data
                   .filter((f) => f.id !== productId)
                   .map((item, index) => (
-                    <View key={index} style={{ flex: 1 }}>
+                    <View
+                      key={index}
+                      style={{
+                        width: width / 2,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                      }}
+                    >
                       <PremiumCard
                         data={item}
                         setSize={setSize}
