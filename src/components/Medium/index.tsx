@@ -226,9 +226,7 @@ const Medium = () => {
       setDropDown(false)
       setOpenDesign(false)
     }
-    // if (isSteps === 2) {
-    //   setSelectedStyle('')
-    // }
+
     if (isSteps === 3) {
       setDropDown(false)
     }
@@ -380,25 +378,6 @@ const Medium = () => {
     }
   }, [])
 
-  // const handleUpdateUid = useCallback(async () => {
-  // try {
-  //   if (isSteps === 5) {
-  //     const tempUid = uuid.v4().toString()
-  //     const docRef = doc(db, 'ModelsMidlevel', tempUid)
-  //     await setDoc(docRef, {
-  //       uid: tempUid,
-  //       skin: avatar?.skinTone,
-  //       gender: avatar?.gender,
-  //       color: isColor,
-  //       size: isSize.sizeVarient[0].size,
-  //     })
-  //     setUid(tempUid)
-  //   }
-  // } catch (error) {
-  //   console.log(error)
-  // }
-  // }, [isSteps])
-
   const handleUpdateColor = useCallback(async () => {
     if (!isColor || !uid) return
     try {
@@ -421,27 +400,6 @@ const Medium = () => {
         f.gender.toLowerCase() === avatar.gender?.toLowerCase(),
     )
     setFilteredData(Filtereddata)
-    // if (
-    //   Filtereddata?.gender.toLowerCase() !== avatar?.gender?.toLowerCase() &&
-    //   isSelectedStyle !== ''
-    // ) {
-    //   // Alert.alert(`Alert ${avatar?.gender}`, 'Not Available', [
-    //   //   {
-    //   //     text: 'Cancel',
-    //   //     onPress: () => {
-    //   //       setSteps(1)
-    //   //     },
-    //   //     style: 'cancel',
-    //   //   },
-    //   //   {
-    //   //     text: 'OK',
-    //   //     onPress: () => {
-    //   //       setSteps(1)
-    //   //     },
-    //   //   },
-    //   // ])
-    //   setOpenModal(true)
-    // }
   }, [isSelectedStyle, data, avatar])
 
   useEffect(() => {
