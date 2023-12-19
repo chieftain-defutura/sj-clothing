@@ -132,11 +132,11 @@ async function registerForPushNotificationsAsync() {
         expoIosToken = (await Notifications.getExpoPushTokenAsync()).data
         apnToken = (await Notifications.getDevicePushTokenAsync()).data
       }
-      // console.log('Token:', token)
-      // console.log('expoAndroidToken:', expoAndroidToken)
-      // console.log('fcmToken:', fcmToken)
-      // console.log('apnToken:', apnToken)
-      // console.log('expoIosToken:', expoIosToken)
+      console.log('Token:', token)
+      console.log('expoAndroidToken:', expoAndroidToken)
+      console.log('fcmToken:', fcmToken)
+      console.log('apnToken:', apnToken)
+      console.log('expoIosToken:', expoIosToken)
 
       await AsyncStorage.setItem(
         'expotokens',
@@ -148,6 +148,7 @@ async function registerForPushNotificationsAsync() {
         }),
       )
       const expotokens = await AsyncStorage.getItem('expotokens')
+      console.log(expotokens)
     } else {
       alert('Must use a physical device for Push Notifications')
     }
@@ -268,6 +269,8 @@ const App: React.FC = () => {
       updateLanguage(language)
       i18n.changeLanguage(language as string)
     }
+    const expotokens = await AsyncStorage.getItem('expotokens')
+    console.log('expotokens', expotokens)
   }, [])
 
   useEffect(() => {

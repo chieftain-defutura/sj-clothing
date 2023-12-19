@@ -182,6 +182,7 @@ const SignupModal: React.FC<SignupModalProps> = ({
         await AsyncStorage.setItem('password', password)
         const expotokens = await AsyncStorage.getItem('expotokens')
         const parseExpoTokens = JSON.parse(expotokens as string)
+
         const userDocRef = doc(db, 'users', user.uid)
         await setDoc(userDocRef, {
           name: user.displayName,
@@ -193,6 +194,7 @@ const SignupModal: React.FC<SignupModalProps> = ({
           termsAndConditions: false,
           currency: currency,
           language: language,
+
           rate: rate,
           confirmDetails: confirmDetails,
           tokens: [parseExpoTokens],
