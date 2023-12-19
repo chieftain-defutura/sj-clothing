@@ -33,9 +33,11 @@ const PremiumCard: React.FC<IPremiumCard> = ({ data, setOpenCard, setProductId, 
     <View
       style={{
         display: 'flex',
-        flexDirection: 'column',
-        width: width / 2.2,
-        height: height / 3.1,
+        flexDirection: 'row',
+        // width: width / 2.2,
+        // height: height / 3.1,
+        justifyContent: 'center',
+        flexWrap: 'wrap',
         marginLeft: 12,
         marginBottom: 18,
       }}
