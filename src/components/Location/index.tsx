@@ -23,6 +23,7 @@ import SignupModal from '../../screens/Modals/Signup'
 import LoginModal from '../../screens/Modals/Login'
 import { userStore } from '../../store/userStore'
 import AddressChoose from './AddressChoose'
+import CloseGrayIcon from '../../assets/icons/CloseGrayIcon'
 
 interface IAddressBook {
   navigation: any
@@ -45,6 +46,7 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
   const [login, setLogin] = useState(false)
   const [signUp, setSignUp] = useState(false)
   const [forgotMail, setForgotmail] = useState(false)
+  const [searchText, setSearchText] = useState<string>('')
 
   async function reverseGeocode(latitude: number, longitude: number) {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
@@ -120,6 +122,11 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
     }
   }
 
+  const clearSearch = () => {
+    setOnSearchChange('')
+    setSuggestions(null)
+  }
+
   const handleAddAddress = () => {
     if (!user) {
       setLogin(true)
@@ -154,9 +161,13 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
                   value={onText || ''}
                   placeholderTextColor={COLORS.SecondaryTwo}
                   allowFontScaling={false}
-                  style={{ width: width / 1.3 }}
+                  style={{ width: width / 1.4 }}
                 />
+                <TouchableOpacity onPress={clearSearch} style={{ position: 'absolute', right: 10 }}>
+                  <CloseGrayIcon width={20} height={20} />
+                </TouchableOpacity>
               </View>
+
               <View
                 style={{
                   position: 'absolute',
@@ -331,7 +342,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-
     marginVertical: 8,
     gap: 8,
     position: 'relative',

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Pressable } from 'react-native'
+import { View, Pressable, ViewStyle, Dimensions } from 'react-native'
 import styled from 'styled-components/native'
 import { COLORS } from '../styles/theme'
 
@@ -10,7 +10,12 @@ interface SearchBarProps {
   onChangeText?: (text: string) => void
   onClear?: () => void
   value?: string
+  placeholderTextColor?: string
+  allowFontScaling?: boolean
+  style?: ViewStyle
 }
+
+const { width } = Dimensions.get('window')
 
 const SearchBar: React.FC<SearchBarProps> = ({
   leftIcon,
@@ -19,6 +24,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onChangeText,
   onClear,
   value,
+  placeholderTextColor,
+  allowFontScaling,
+  style,
 }) => {
   const handleClearPress = () => {
     if (onClear) {
@@ -27,13 +35,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
   }
 
   return (
-    <SearchContainer>
+    <SearchContainer style={{ width: width / 1.3 }}>
       {leftIcon && <LeftIcon>{leftIcon}</LeftIcon>}
       <InputText
-        allowFontScaling={false}
+        allowFontScaling={allowFontScaling !== undefined ? allowFontScaling : false}
         placeholder={placeholder}
         onChangeText={onChangeText}
         value={value}
+        placeholderTextColor={placeholderTextColor}
+        style={style}
       />
       <Pressable onPress={handleClearPress}>{rightIcon && <View>{rightIcon}</View>}</Pressable>
     </SearchContainer>
