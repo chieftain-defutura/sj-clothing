@@ -3,7 +3,6 @@ import { Modal, View, StyleSheet, TouchableOpacity, Platform, Dimensions } from 
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
-import TooltipIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 
 interface IPremiumDetailsTooltip {
@@ -53,9 +52,6 @@ const PremiumDetailsTooltip: React.FC<IPremiumDetailsTooltip> = ({ isVisible, on
             </TouchableOpacity>
           </View>
         </Content>
-        {/* <View style={[{ position: 'absolute', top: 190, right: 200 }, styles.icon]}>
-          <TooltipIcon width={26} height={46} />
-        </View> */}
       </TooltipWrapper>
     </Modal>
   )

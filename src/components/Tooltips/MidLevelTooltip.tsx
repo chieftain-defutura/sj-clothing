@@ -56,7 +56,9 @@ const MidLevelTooltip: React.FC<IMidLevelTooltip> = ({ isVisible, onClose }) => 
               </View>
             </Content>
           </View>
-          <View style={[{ position: 'absolute', bottom: 65, left: 58 }, styles.icon]}>
+          <View
+            style={[{ position: 'absolute', bottom: -14, left: 20, zIndex: -1000 }, styles.icon]}
+          >
             <TooltipIcon width={26} height={46} />
           </View>
         </View>
@@ -111,14 +113,14 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: {
-        bottom: 120,
+        bottom: 30,
       },
     }),
   },
   icon: {
     ...Platform.select({
       ios: {
-        bottom: 105,
+        bottom: 17,
       },
     }),
   },

@@ -17,7 +17,7 @@ const LanguageTooltip: React.FC<ILanguageTooltip> = ({ isVisible, onClose }) => 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
-        <View style={{ position: 'absolute', bottom: 80 }}>
+        <View style={{ position: 'absolute', bottom: 120 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
               <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
@@ -56,7 +56,9 @@ const LanguageTooltip: React.FC<ILanguageTooltip> = ({ isVisible, onClose }) => 
               </View>
             </Content>
           </View>
-          <View style={[{ position: 'absolute', bottom: 89, right: 55 }, styles.icon]}>
+          <View
+            style={[{ position: 'absolute', bottom: -15, right: 55, zIndex: -1000 }, styles.icon]}
+          >
             <TooltipIcon width={26} height={46} />
           </View>
         </View>
@@ -111,14 +113,14 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: {
-        bottom: 120,
+        bottom: 30,
       },
     }),
   },
   icon: {
     ...Platform.select({
       ios: {
-        bottom: 105,
+        bottom: 14,
       },
     }),
   },

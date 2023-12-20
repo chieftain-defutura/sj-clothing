@@ -4,8 +4,6 @@ import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
-import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
-import TooltipTopArrowIcon from '../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
 
 interface ICheckoutTooltip {
   isVisible?: boolean
@@ -54,9 +52,6 @@ const CheckoutTooltip: React.FC<ICheckoutTooltip> = ({ isVisible, onClose }) => 
             </TouchableOpacity>
           </View>
         </Content>
-        {/* <View style={[{ position: 'absolute', bottom: 206, right: 200 }, styles.icon]}>
-          <TooltipTopArrowIcon width={26} height={46} />
-        </View> */}
       </TooltipWrapper>
     </Modal>
   )
