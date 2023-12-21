@@ -174,7 +174,6 @@ const Medium = () => {
     }
   }, [uid])
 
-  console.log('colorAnimationUpdated', colorAnimationUpdated)
   useEffect(() => {
     handleGetData()
   }, [handleGetData])
@@ -552,6 +551,7 @@ const Medium = () => {
                 isImageOrText={tempIsImageOrText}
                 designs={designs}
                 imageApplied={imageApplied}
+                setAnimationUpdated={setAnimationUpdated}
               />
             ) : isSteps === 6 ? (
               <FlowThree color={isColor} isImageOrText={isImageOrText} designs={designs} />

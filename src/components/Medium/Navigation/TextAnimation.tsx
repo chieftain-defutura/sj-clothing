@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Children } from 'react'
 import { Text, View, Animated, Dimensions } from 'react-native'
 import InfoIcon from '../../../assets/icons/MidlevelIcon/infoIcon'
 
@@ -7,9 +7,10 @@ const { width } = Dimensions.get('window')
 interface ITextAnimation {
   shake: () => void
   shakeAnimation: any
+  children: React.ReactNode
 }
 
-const TextAnimation: React.FC<ITextAnimation> = ({ shake, shakeAnimation }) => {
+const TextAnimation: React.FC<ITextAnimation> = ({ shake, shakeAnimation, children }) => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Animated.View
@@ -38,7 +39,7 @@ const TextAnimation: React.FC<ITextAnimation> = ({ shake, shakeAnimation }) => {
                 fontSize: 18,
               }}
             >
-              Please wait till avatar loads
+              {children}
             </Text>
           </View>
         </View>

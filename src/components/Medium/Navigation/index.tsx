@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableHighlight,
   Platform,
+  TouchableOpacity,
 } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import Animated, {
@@ -99,6 +100,8 @@ const Navigation: React.FC<INavigation> = ({
   const [toolTipCountry, setTooltipCountry] = useState(false)
   const [toolTipSize, setTooltipSize] = useState(false)
   const [toolTipColor, setToolTipColor] = useState(false)
+
+  console.log('animationUpdated', animationUpdated)
 
   const isShowToolTip = async () => {
     try {
@@ -283,7 +286,6 @@ const Navigation: React.FC<INavigation> = ({
 
                   {
                     opacity: !animationUpdated ? 0.5 : 1,
-                    // backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
                     backgroundColor: steps === 4 ? isColor : 'transparent',
                   },
                 ]}
@@ -306,7 +308,13 @@ const Navigation: React.FC<INavigation> = ({
                         : 'Select Size',
                     )}`}
                   {steps === 4 && `${t(isColor ? isColor : 'Select Color')}`}
-                  {steps === 5 && `${t('Add more')}`}
+                  {steps === 5 && (
+                    <TouchableOpacity disabled={!animationUpdated}>
+                      <Text
+                        style={{ opacity: !animationUpdated ? 0.8 : 1, color: '#462D85' }}
+                      >{`${t('Add more')}`}</Text>
+                    </TouchableOpacity>
+                  )}
                 </Text>
                 {steps === 1 && !isSelectedStyle && <DropDownArrowIcon />}
                 {steps === 2 && !country && <DropDownArrowIcon />}
@@ -367,11 +375,15 @@ const Navigation: React.FC<INavigation> = ({
 
               <View style={[{ position: 'absolute', top: 660, left: 80 }, styles.errorText]}>
                 {!animationUpdated && (
-                  <TextAnimation shake={shake} shakeAnimation={shakeAnimation} />
+                  <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+                    Please wait till avatar loads
+                  </TextAnimation>
                 )}
-                {steps === 4 && isColor && !colorAnimationUpdate && (
-                  <TextAnimation shake={shake} shakeAnimation={shakeAnimation} />
-                )}
+                {/* {steps === 4 && isColor && !colorAnimationUpdate && (
+                  <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+                    Please wait till avatar loads
+                  </TextAnimation>
+                )} */}
               </View>
             </View>
           )}

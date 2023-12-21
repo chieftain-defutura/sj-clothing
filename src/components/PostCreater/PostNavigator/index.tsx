@@ -356,10 +356,16 @@ const PostNavigation: React.FC<IPostNavigation> = ({
                   {t(warning)}
                 </Text>
               )}
-              {!animationUpdated && <TextAnimation shake={shake} shakeAnimation={shakeAnimation} />}
-              {steps === 4 && color && !colorAnimationUpdate && (
-                <TextAnimation shake={shake} shakeAnimation={shakeAnimation} />
+              {!animationUpdated && (
+                <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+                  Please wait till avatar loads
+                </TextAnimation>
               )}
+              {/* {steps === 4 && color && !colorAnimationUpdate && (
+                <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+                  Please wait till avatar loads
+                </TextAnimation>
+              )} */}
             </View>
           )}
           {steps === 6 && (
