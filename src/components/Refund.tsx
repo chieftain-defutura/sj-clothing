@@ -9,6 +9,7 @@ import {
   Pressable,
   Image,
   Platform,
+  Alert,
 } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import styled from 'styled-components/native'
@@ -17,10 +18,12 @@ import CustomButton from './Button'
 import DownArrow from '../assets/icons/DownArrow'
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
 import * as ImagePicker from 'expo-image-picker'
-import { collection, getDocs } from 'firebase/firestore/lite'
 import { Formik } from 'formik'
-import { db } from '../../firebase'
 import { IReturns } from '../constant/types'
+import { db, storage } from '../../firebase'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import { Timestamp, collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
+import { userStore } from '../store/userStore'
 
 const { width, height } = Dimensions.get('window')
 
@@ -30,24 +33,43 @@ interface IRefund {
   closeModal?: () => void
 }
 
+export function uriToBlob(uri: string): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+
+    xhr.onload = function () {
+      resolve(xhr.response)
+    }
+
+    xhr.onerror = function () {
+      reject(new Error('uriToBlob failed'))
+    }
+
+    xhr.responseType = 'blob'
+
+    xhr.open('GET', uri, true)
+
+    xhr.send(null)
+  })
+}
+
+const dropdownItems = ['Issue on Size', 'Damage replacement']
+
 const RefundModal: React.FC<IRefund> = ({ closeModal }) => {
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
+  const [Issue, setIssue] = useState<string | null>(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
-  const [data, setData] = useState<IReturns[]>()
-  const [dropdownItems, setDropdownItems] = useState<string[]>([
-    'Issue on Size',
-    'Damage replacement',
-  ])
-
-  console.log('data', data)
+  const user = userStore((state) => state.user)
+  const [editProfileDisable, setEditProfileDisable] = useState(true)
+  const [url, setUrl] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prevState) => !prevState)
   }
 
   const handleSelect = (item: string) => {
-    setSelectedCountry(item)
+    setIssue(item)
     setIsDropdownOpen(false)
   }
 
@@ -68,30 +90,65 @@ const RefundModal: React.FC<IRefund> = ({ closeModal }) => {
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri)
+      uploadImage(result.assets[0].uri)
     }
   }
 
-  const handleSubmit = (values: typeof initialValues) => {
-    console.log('values', values)
+  const uploadImage = async (uri: string) => {
+    try {
+      setIsLoading(true)
+      setEditProfileDisable(false)
+      const blob = await uriToBlob(uri)
+
+      const imageRef = ref(storage, user?.uid)
+      const task = uploadBytesResumable(imageRef, blob)
+
+      task.on('state_changed', (taskSnapshot) => {
+        console.log(
+          `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+        )
+      })
+
+      await task // Wait for the upload to complete
+
+      const url = await getDownloadURL(imageRef)
+      console.log('urrl', url)
+      setUrl(url)
+      setIsLoading(false)
+
+      console.log('1', editProfileDisable)
+
+      console.log('Image uploaded to the bucket!')
+
+      setEditProfileDisable(true)
+      console.log('2', editProfileDisable)
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      Alert.alert('Error', 'Failed to upload image')
+      throw error
+    }
   }
 
-  // const getData = useCallback(async () => {
-  //   try {
-  //     const ProductRef = await getDocs(collection(db, 'Returns'))
-  //     const fetchProduct = ProductRef.docs.map((doc) => ({
-  //       id: doc.id,
-  //       ...(doc.data() as any),
-  //     }))
-  //     setData(data)
-  //     console.log('fetchProduct', fetchProduct)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }, [db])
-
-  // useEffect(() => {
-  //   getData()
-  // }, [getData])
+  const handleSubmit = async (values: typeof initialValues) => {
+    try {
+      console.log('values', values)
+      if (!user) return
+      const docRef = doc(db, 'Returns', user?.uid)
+      await setDoc(docRef, {
+        createdAt: Timestamp.now(),
+        updateAt: Timestamp.now(),
+        description: values.description,
+        issues: Issue,
+        Image: url,
+        status: 'pending',
+      })
+    } catch (e) {
+      console.log('error', e)
+    } finally {
+      closeModal?.()
+      setIsLoading(false)
+    }
+  }
 
   return (
     <Modal animationType='fade' transparent={true}>
@@ -102,9 +159,7 @@ const RefundModal: React.FC<IRefund> = ({ closeModal }) => {
           <DropDownContainer>
             <View style={{ width: width / 1.4 }}>
               <SelectContent onPress={toggleDropdown}>
-                <SelectText allowFontScaling={false}>
-                  {selectedCountry || 'Select an Issue'}
-                </SelectText>
+                <SelectText allowFontScaling={false}>{Issue || 'Select an Issue'}</SelectText>
                 <Animatable.View
                   animation={isDropdownOpen ? 'rotate' : ''}
                   duration={500}
@@ -199,9 +254,10 @@ const RefundModal: React.FC<IRefund> = ({ closeModal }) => {
                     </StyledView>
                   </TouchableOpacity>
                   <CustomButton
-                    text='Refund'
+                    text={isLoading ? 'Loading...' : 'Refund'}
                     onPress={handleSubmit}
                     style={{ width: selectedImage ? width / 3 : width / 3 }}
+                    disabled={isLoading}
                   />
                 </View>
               </View>
