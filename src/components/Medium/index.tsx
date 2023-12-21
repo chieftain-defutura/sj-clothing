@@ -174,7 +174,6 @@ const Medium = () => {
     }
   }, [uid])
 
-  console.log('colorAnimationUpdated', colorAnimationUpdated)
   useEffect(() => {
     handleGetData()
   }, [handleGetData])
@@ -328,15 +327,6 @@ const Medium = () => {
       setWarning('') // Set the state to null after 5 seconds
     }, 2000)
   }, [warning])
-
-  const clearAsyncStorage = async () => {
-    try {
-      await AsyncStorage.clear()
-      console.log('AsyncStorage cleared successfully.')
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   const isShowToolTip = async () => {
     try {
@@ -561,6 +551,7 @@ const Medium = () => {
                 isImageOrText={tempIsImageOrText}
                 designs={designs}
                 imageApplied={imageApplied}
+                setAnimationUpdated={setAnimationUpdated}
               />
             ) : isSteps === 6 ? (
               <FlowThree color={isColor} isImageOrText={isImageOrText} designs={designs} />
@@ -650,7 +641,6 @@ const Medium = () => {
           showToolTip(false)
         }}
       />
-      <Button title='clearAsyncStorage' onPress={clearAsyncStorage}></Button>
     </View>
   )
 }

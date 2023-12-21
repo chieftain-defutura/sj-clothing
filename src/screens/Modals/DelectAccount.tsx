@@ -4,8 +4,7 @@ import { COLORS } from '../../styles/theme'
 import { userStore } from '../../store/userStore'
 import CustomButton from '../../components/Button'
 import AlertIcon from '../../assets/icons/Alert'
-import { useNavigation } from '@react-navigation/native'
-import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth'
+import { getAuth, deleteUser } from 'firebase/auth'
 import { doc, deleteDoc } from 'firebase/firestore/lite'
 import styled from 'styled-components/native'
 import { db } from '../../../firebase'
@@ -20,7 +19,6 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
   const user = userStore((store) => store.user)
   const updateUser = userStore((store) => store.updateUser)
   const [isSendVerifyMail, setSendVerifyMail] = useState(false)
-  const navigation = useNavigation()
 
   const handleDelete = async () => {
     try {

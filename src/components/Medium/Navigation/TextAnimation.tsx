@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { Children } from 'react'
 import { Text, View, Animated, Dimensions } from 'react-native'
+import InfoIcon from '../../../assets/icons/MidlevelIcon/infoIcon'
 
 const { width } = Dimensions.get('window')
 
 interface ITextAnimation {
   shake: () => void
   shakeAnimation: any
+  children: React.ReactNode
 }
 
-const TextAnimation: React.FC<ITextAnimation> = ({ shake, shakeAnimation }) => {
+const TextAnimation: React.FC<ITextAnimation> = ({ shake, shakeAnimation, children }) => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Animated.View
@@ -16,21 +18,31 @@ const TextAnimation: React.FC<ITextAnimation> = ({ shake, shakeAnimation }) => {
           transform: [{ translateX: shakeAnimation }],
         }}
       >
-        <Text
-          onPress={shake}
+        <View
           style={{
-            color: 'red',
-            fontFamily: 'Gilroy-Medium',
-            paddingTop: 3,
-            position: 'absolute',
-            top: 2,
-            left: -75,
-            width: width / 2,
-            zIndex: 1000,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 6,
           }}
         >
-          Please wait till avatar loads
-        </Text>
+          <InfoIcon width={24} height={24} style={{ marginTop: 4 }} />
+          <View>
+            <Text
+              onPress={shake}
+              style={{
+                color: 'red',
+                fontFamily: 'Gilroy-Medium',
+                paddingTop: 3,
+                width: width / 1,
+                fontSize: 18,
+              }}
+            >
+              {children}
+            </Text>
+          </View>
+        </View>
       </Animated.View>
     </View>
   )

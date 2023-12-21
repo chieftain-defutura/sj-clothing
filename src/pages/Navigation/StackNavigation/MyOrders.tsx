@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
-import { View, Pressable, Dimensions } from 'react-native'
+import { View, Pressable, Dimensions, TouchableOpacity } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
-import ChevronLeft from '../../../assets/icons/ChevronLeft'
 import { query, collection, where, onSnapshot } from 'firebase/firestore'
 import { LinearGradient } from 'expo-linear-gradient'
 import StarActive from '../../../assets/icons/PostPageIcon/StarActive'
@@ -25,6 +24,7 @@ import TrackOrder from './TrackOrder'
 import Rating from '../../../components/Rating'
 import Loader from '../../../components/Loading'
 import { useNavigation } from '@react-navigation/native'
+import RefundModal from '../../../components/Refund'
 
 const { height, width } = Dimensions.get('window')
 
@@ -48,6 +48,7 @@ const MyOrders: React.FC<IMyOrders> = ({}) => {
   const [openReview, setOpenReview] = useState(false)
   const [orderData, setOrderData] = useState<IOrder[]>([])
   const [openTrackOrder, setOpenTrackOrder] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
   const navigation = useNavigation()
 
   const getData = useCallback(async () => {
@@ -163,6 +164,7 @@ const OrderCard: React.FC<IOrderCard> = ({
   setOpenReview,
 }) => {
   const [ratings, setRatings] = useState<IRatings>()
+  const [openModal, setOpenModal] = useState(false)
 
   const handleGetData = useCallback(() => {
     if (!data.id) return
@@ -182,6 +184,10 @@ const OrderCard: React.FC<IOrderCard> = ({
   useEffect(() => {
     handleGetData()
   }, [handleGetData])
+
+  const handleRefundOpen = () => {
+    setOpenModal(true)
+  }
 
   return (
     <View>
@@ -224,6 +230,28 @@ const OrderCard: React.FC<IOrderCard> = ({
                 <ChevronLeft width={16} height={16} />
               </Pressable> */}
             </ProductWrapper>
+            <TouchableOpacity
+              onPress={handleRefundOpen}
+              style={{
+                borderColor: COLORS.textSecondaryClr,
+                borderWidth: 1,
+                width: width / 6.5,
+                marginTop: 12,
+                borderRadius: 4,
+              }}
+            >
+              <View
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingVertical: 4,
+                }}
+              >
+                <StatusText allowFontScaling={false}>Refund</StatusText>
+              </View>
+            </TouchableOpacity>
+            {openModal && <RefundModal closeModal={() => setOpenModal(false)} />}
           </View>
         </CartPageData>
       </CartPageContainer>
@@ -247,7 +275,6 @@ const StatusText = styled.Text`
   font-size: 12px;
   font-family: ${FONT_FAMILY.GilroyMedium};
   color: ${COLORS.textSecondaryClr};
-  margin-top: 8px;
 `
 
 const ProductText = styled.Text`

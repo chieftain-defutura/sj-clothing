@@ -111,14 +111,15 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: {
-        top: 230,
+        top: 30,
       },
     }),
   },
   icon: {
     ...Platform.select({
       ios: {
-        top: 215,
+        top: 18,
+        left: 160,
       },
     }),
   },

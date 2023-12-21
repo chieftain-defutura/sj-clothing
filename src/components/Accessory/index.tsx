@@ -1,4 +1,4 @@
-import { View, Dimensions, Text } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { collection, getDocs } from 'firebase/firestore/lite'
 import styled from 'styled-components/native'

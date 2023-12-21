@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Pressable, StyleSheet, Text, View, Dimensions, TouchableHighlight } from 'react-native'
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  TouchableHighlight,
+  Platform,
+  TouchableOpacity,
+} from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import Animated, {
   BounceIn,
@@ -91,6 +100,8 @@ const Navigation: React.FC<INavigation> = ({
   const [toolTipCountry, setTooltipCountry] = useState(false)
   const [toolTipSize, setTooltipSize] = useState(false)
   const [toolTipColor, setToolTipColor] = useState(false)
+
+  console.log('animationUpdated', animationUpdated)
 
   const isShowToolTip = async () => {
     try {
@@ -257,12 +268,13 @@ const Navigation: React.FC<INavigation> = ({
           {steps !== 6 && (
             <View
               style={{
+                flex: 1,
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 2,
-                alignItems: 'center',
+                alignItems: steps === 5 ? 'flex-end' : 'center',
                 borderRadius: 50,
-                backgroundColor: steps === 4 ? isColor : 'transparent',
+                position: 'relative',
               }}
             >
               <Pressable
@@ -274,7 +286,7 @@ const Navigation: React.FC<INavigation> = ({
 
                   {
                     opacity: !animationUpdated ? 0.5 : 1,
-                    backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.1)' : 'transparent',
+                    backgroundColor: steps === 4 ? isColor : 'transparent',
                   },
                 ]}
                 disabled={!animationUpdated}
@@ -296,7 +308,13 @@ const Navigation: React.FC<INavigation> = ({
                         : 'Select Size',
                     )}`}
                   {steps === 4 && `${t(isColor ? isColor : 'Select Color')}`}
-                  {steps === 5 && `${t('Add more')}`}
+                  {steps === 5 && (
+                    <TouchableOpacity disabled={!animationUpdated}>
+                      <Text
+                        style={{ opacity: !animationUpdated ? 0.8 : 1, color: '#462D85' }}
+                      >{`${t('Add more')}`}</Text>
+                    </TouchableOpacity>
+                  )}
                 </Text>
                 {steps === 1 && !isSelectedStyle && <DropDownArrowIcon />}
                 {steps === 2 && !country && <DropDownArrowIcon />}
@@ -354,10 +372,19 @@ const Navigation: React.FC<INavigation> = ({
                   {t(warning)}
                 </Text>
               )}
-              {!animationUpdated && <TextAnimation shake={shake} shakeAnimation={shakeAnimation} />}
-              {steps === 4 && isColor && !colorAnimationUpdate && (
-                <TextAnimation shake={shake} shakeAnimation={shakeAnimation} />
-              )}
+
+              <View style={[{ position: 'absolute', top: 560, left: 70 }, styles.errorText]}>
+                {!animationUpdated && (
+                  <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+                    Please wait till avatar loads
+                  </TextAnimation>
+                )}
+                {/* {steps === 4 && isColor && !colorAnimationUpdate && (
+                  <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+                    Please wait till avatar loads
+                  </TextAnimation>
+                )} */}
+              </View>
             </View>
           )}
           {steps === 6 && (
@@ -449,5 +476,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     alignItems: 'center',
+  },
+  errorText: {
+    ...Platform.select({
+      ios: {
+        position: 'absolute',
+        top: 550,
+        left: 50,
+      },
+    }),
   },
 })

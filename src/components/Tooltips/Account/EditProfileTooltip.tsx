@@ -56,9 +56,7 @@ const EditProfileTooltip: React.FC<IEditProfileTooltip> = ({ isVisible, onClose 
               </View>
             </Content>
           </View>
-          <View
-            style={[{ position: 'absolute', top: -14, right: 100, zIndex: -1000 }, styles.icon]}
-          >
+          <View style={[{ position: 'absolute', top: -14, right: 20, zIndex: -1000 }, styles.icon]}>
             <TooltipTopArrowIcon width={26} height={46} />
           </View>
         </View>
@@ -113,14 +111,14 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: {
-        top: 230,
+        top: 40,
       },
     }),
   },
   icon: {
     ...Platform.select({
       ios: {
-        top: 215,
+        top: 26,
       },
     }),
   },

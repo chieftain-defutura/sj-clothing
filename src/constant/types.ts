@@ -70,6 +70,25 @@ export interface ICheckout {
   setOpenCheckout: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+export interface IReturns {
+  completed: {
+    createdAt: string
+    description: string
+    status: boolean
+  }
+  initiated: {
+    createdAt: string
+    description: string
+    status: boolean
+  }
+  createdAt: string
+  description: string
+  images: string
+  issues: string
+  status: string
+  updatedAt: string
+}
+
 export interface IPremiumData {
   description: string
   gender: string

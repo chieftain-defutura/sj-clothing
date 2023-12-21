@@ -337,7 +337,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                         <WatchVideoText allowFontScaling={false}>Watch video</WatchVideoText>
                       </WatchVideoBorder>
                       <WatchVideoBorder onPress={() => setOpenImage(true)}>
-                        <WatchVideoText allowFontScaling={false}>View Image</WatchVideoText>
+                        <WatchVideoText allowFontScaling={false}>Fabric Image</WatchVideoText>
                       </WatchVideoBorder>
                     </View>
                   </View>
