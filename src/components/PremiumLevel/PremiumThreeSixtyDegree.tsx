@@ -20,6 +20,7 @@ import { IPremiumData } from '../../constant/types'
 import { userStore } from '../../store/userStore'
 import AuthNavigate from '../../screens/AuthNavigate'
 import { COLORS } from '../../styles/theme'
+import InfoIcon from '../../assets/icons/MidlevelIcon/infoIcon'
 // import { Audio } from 'expo-av'
 
 interface IPremiumThreeSixtyDegree {
@@ -145,18 +146,34 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
             )}
           </View>
           {errorMessage && (
-            <Text
-              allowFontScaling={false}
+            <View
               style={{
-                textAlign: 'center',
-                marginBottom: -20,
-                marginTop: 10,
-                color: COLORS.textSecondaryClr,
-                fontFamily: 'Gilroy-Medium',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                position: 'absolute',
+                bottom: 90,
+                left: 90,
+                zIndex: 1000,
               }}
             >
-              {errorMessage}
-            </Text>
+              <InfoIcon width={24} height={24} style={{ marginTop: 4 }} />
+              <Text
+                allowFontScaling={false}
+                style={{
+                  color: 'red',
+                  fontFamily: 'Gilroy-Medium',
+                  paddingTop: 3,
+                  // width: width / 1,
+                  fontSize: 18,
+                  textAlign: 'center',
+                }}
+              >
+                {errorMessage}
+              </Text>
+            </View>
           )}
           <CustomButton
             text='Buy Now'

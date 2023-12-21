@@ -39,37 +39,47 @@ const CartCard: React.FC<ICheckout> = ({ price, offerPrice, productName, product
                       </ProductStyle> */}
             {/* </ProductSizes> */}
 
-            <View>
+            {offerPrice ? (
+              <View>
+                <View>
+                  <ProductText allowFontScaling={false}>price</ProductText>
+                </View>
+                <View style={{ display: 'flex', flexDirection: 'row', gap: 6 }}>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <OldPriceText allowFontScaling={false}>
+                      {(Number(price) * (rate as number)).toFixed(2)}
+                    </OldPriceText>
+                    <OldPriceText allowFontScaling={false}> {currency.symbol}</OldPriceText>
+                  </View>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <ProductName allowFontScaling={false}>
+                      {(Number(offerPrice) * (rate as number)).toFixed(2)}
+                    </ProductName>
+                    <ProductName allowFontScaling={false}>{currency.symbol}</ProductName>
+                  </View>
+                </View>
+              </View>
+            ) : (
               <View>
                 <ProductText allowFontScaling={false}>price</ProductText>
+                <ProductName allowFontScaling={false}>
+                  {rate ? (Number(price) * (rate as number)).toFixed(2) : price}
+                  {currency ? currency.symbol : '₹'}
+                </ProductName>
               </View>
-              <View style={{ display: 'flex', flexDirection: 'row', gap: 6 }}>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}
-                >
-                  <OldPriceText allowFontScaling={false}>
-                    {(Number(price) * (rate as number)).toFixed(2)}
-                  </OldPriceText>
-                  <OldPriceText allowFontScaling={false}> {currency.symbol}</OldPriceText>
-                </View>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}
-                >
-                  <ProductName allowFontScaling={false}>
-                    {(Number(offerPrice) * (rate as number)).toFixed(2)}
-                  </ProductName>
-                  <ProductName allowFontScaling={false}>{currency.symbol}</ProductName>
-                </View>
-              </View>
-            </View>
+            )}
             {/* </ProductSizes> */}
           </View>
         </CartPageContainer>

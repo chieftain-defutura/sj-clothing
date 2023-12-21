@@ -98,7 +98,9 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
       } else {
         setFocus(true)
         setErrorMessage('')
+
         setOpenCheckout(true)
+
         setOpenDetails(false)
       }
     }
