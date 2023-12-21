@@ -54,7 +54,9 @@ const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose }) => {
                 </TouchableOpacity>
               </View>
             </Content>
-            <View style={[{ position: 'absolute', bottom: -12, left: 20 }, styles.icon]}>
+            <View
+              style={[{ position: 'absolute', bottom: -14, left: 160, zIndex: -1000 }, styles.icon]}
+            >
               <TooltipIcon width={26} height={46} />
             </View>
           </View>
@@ -117,8 +119,8 @@ const styles = StyleSheet.create({
   icon: {
     ...Platform.select({
       ios: {
-        bottom: 14,
-        left: 300,
+        bottom: 17,
+        left: 150,
       },
     }),
   },

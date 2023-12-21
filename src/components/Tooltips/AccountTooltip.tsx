@@ -57,7 +57,7 @@ const AccountTooltip: React.FC<IAccountTooltip> = ({ isVisible, onClose }) => {
             </Content>
           </View>
           <View
-            style={[{ position: 'absolute', bottom: 89, right: 55, zIndex: -100 }, styles.icon]}
+            style={[{ position: 'absolute', bottom: -14, right: 20, zIndex: -1000 }, styles.icon]}
           >
             <TooltipIcon width={26} height={46} />
           </View>
@@ -113,14 +113,14 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: {
-        bottom: 120,
+        bottom: 30,
       },
     }),
   },
   icon: {
     ...Platform.select({
       ios: {
-        bottom: 105,
+        bottom: 17,
       },
     }),
   },
