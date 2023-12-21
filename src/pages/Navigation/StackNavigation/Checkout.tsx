@@ -311,43 +311,46 @@ const Checkout: React.FC<ICheckout> = ({
         console.error(presentSheet.error)
         return Alert.alert(presentSheet.error.message)
       }
-      updateMidlevel({
-        isSteps: '',
-        isSelectedStyle: '',
-        isSize: {
-          country: '',
-          sizeVarient: [
-            {
-              size: '',
-              measurement: '',
-              quantity: '',
+      {
+        style &&
+          updateMidlevel({
+            isSteps: '',
+            isSelectedStyle: '',
+            isSize: {
+              country: '',
+              sizeVarient: [
+                {
+                  size: '',
+                  measurement: '',
+                  quantity: '',
+                },
+              ],
             },
-          ],
-        },
-        isColor: '',
-        isColorName: '',
-        isImageOrText: {
-          title: '',
-          position: '',
-          rate: 0,
-          designs: {
-            hashtag: '',
-            image: '',
-            originalImage: '',
-          },
-        },
-        tempIsImageOrText: {
-          title: '',
-          position: '',
-          rate: 0,
-          designs: {
-            hashtag: '',
-            image: '',
-            originalImage: '',
-          },
-        },
-        uid: '',
-      })
+            isColor: '',
+            isColorName: '',
+            isImageOrText: {
+              title: '',
+              position: '',
+              rate: 0,
+              designs: {
+                hashtag: '',
+                image: '',
+                originalImage: '',
+              },
+            },
+            tempIsImageOrText: {
+              title: '',
+              position: '',
+              rate: 0,
+              designs: {
+                hashtag: '',
+                image: '',
+                originalImage: '',
+              },
+            },
+            uid: '',
+          })
+      }
       navigation.navigate('Thankyou')
       // Alert.alert('Payment successfully! Thank you.')
     } catch (err) {

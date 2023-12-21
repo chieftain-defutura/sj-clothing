@@ -68,6 +68,11 @@ const CurrencyData = [
     currency: 'USD',
     abrive: 'Dollor(US)',
   },
+  {
+    symbol: '₹',
+    currency: 'INR',
+    abrive: 'Rupees',
+  },
 ]
 
 const Currency = () => {
