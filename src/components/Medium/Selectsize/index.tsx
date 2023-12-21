@@ -91,7 +91,7 @@ const SelectSize: React.FC<ISelectSize> = ({ isDropDown, isSize, data, setDropDo
               </Text>
               {isSize.country && (
                 <>
-                  {(sizeData?.length as number) <= 3 ? (
+                  {(sizeData?.filter((f) => f.show === true)?.length as number) <= 3 ? (
                     <FlatList
                       key='fourColumns'
                       data={sizeData?.filter((f) => f.show === true)}
@@ -101,7 +101,6 @@ const SelectSize: React.FC<ISelectSize> = ({ isDropDown, isSize, data, setDropDo
                         justifyContent: 'center',
                         gap: 65,
                         paddingVertical: 8,
-                        paddingBottom: 18,
                       }}
                       numColumns={3}
                       renderItem={({ item, index }) => (

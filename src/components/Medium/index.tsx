@@ -329,15 +329,6 @@ const Medium = () => {
     }, 2000)
   }, [warning])
 
-  const clearAsyncStorage = async () => {
-    try {
-      await AsyncStorage.clear()
-      console.log('AsyncStorage cleared successfully.')
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   const isShowToolTip = async () => {
     try {
       const data = await AsyncStorage.getItem('showMidLevelToolTip')
@@ -650,7 +641,6 @@ const Medium = () => {
           showToolTip(false)
         }}
       />
-      <Button title='clearAsyncStorage' onPress={clearAsyncStorage}></Button>
     </View>
   )
 }

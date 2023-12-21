@@ -17,8 +17,8 @@ const AddImageAddTextTooltip: React.FC<IAddImageAddTextTooltip> = ({ isVisible, 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
-        <View>
-          <View>
+        <View style={{ position: 'absolute', top: 150 }}>
+          <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
               <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
                 Add Image and Add Text
@@ -56,7 +56,7 @@ const AddImageAddTextTooltip: React.FC<IAddImageAddTextTooltip> = ({ isVisible, 
               </View>
             </Content>
           </View>
-          <View style={[{ position: 'absolute', top: 135, right: 200 }, styles.icon]}>
+          <View style={[{ position: 'absolute', top: -14, left: 170, zIndex: -1000 }, styles.icon]}>
             <TooltipTopArrowIcon width={26} height={46} />
           </View>
         </View>
@@ -75,11 +75,8 @@ const TooltipWrapper = styled.View`
 const Content = styled.View`
   padding-vertical: 16px;
   padding-horizontal: 24px;
-  position: absolute;
-  top: 150px;
   background: white;
   border-radius: 20px;
-  z-index: 10000;
 `
 const Heading = styled.Text`
   font-size: 16px;
@@ -114,14 +111,14 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: {
-        top: 180,
+        top: 24,
       },
     }),
   },
   icon: {
     ...Platform.select({
       ios: {
-        top: 165,
+        top: 10,
       },
     }),
   },

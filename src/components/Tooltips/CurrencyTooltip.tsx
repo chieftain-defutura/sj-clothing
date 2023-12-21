@@ -17,7 +17,7 @@ const CurrencyTooltip: React.FC<ICurrencyTooltip> = ({ isVisible, onClose }) => 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
-        <View style={{ position: 'absolute', bottom: 120 }}>
+        <View style={{ position: 'absolute', bottom: 100 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
               <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
