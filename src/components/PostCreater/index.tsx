@@ -512,7 +512,7 @@ const PostCreation = () => {
       snapshot.docs.forEach((doc) => {
         if (doc.data()['colorAnimationFinished']) {
           setColorAnimationUpdated(doc.data()['colorAnimationFinished'])
-          playSound()
+          // playSound()
         }
 
         console.log('doc.data()[colorAnimationFinished]', doc.data()['colorAnimationFinished'])

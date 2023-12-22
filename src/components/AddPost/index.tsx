@@ -1,5 +1,5 @@
 import uuid from 'react-native-uuid'
-import { Dimensions, View, Animated, Easing, Button } from 'react-native'
+import { Dimensions, View, Animated, Easing } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSharedValue, withSequence, withTiming } from 'react-native-reanimated'
 import { collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
@@ -37,7 +37,7 @@ import AddImageAddTextTooltip from '../Tooltips/MidLevel/AddImageAddTextTooltip'
 
 const { width } = Dimensions.get('window')
 
-const Medium = () => {
+const AddPost = () => {
   const isMounted = useRef(false)
   const slideValue = useSharedValue(0)
   const avatar = userStore((state) => state.avatar)
@@ -645,4 +645,4 @@ const Medium = () => {
   )
 }
 
-export default Medium
+export default AddPost
