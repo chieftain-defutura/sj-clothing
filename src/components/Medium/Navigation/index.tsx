@@ -256,10 +256,11 @@ const Navigation: React.FC<INavigation> = ({
             activeOpacity={0.6}
             underlayColor='rgba(70, 45, 133, 0.2)'
             style={{
-              opacity: steps === 1 ? 0 : 1,
+              opacity: steps === 1 ? 0 : !animationUpdated ? 0.5 : 1,
               borderRadius: 20,
               padding: 6,
             }}
+            disabled={!animationUpdated}
           >
             <Animated.View>
               <ArrowCircleLeft width={24} height={24} />
@@ -368,11 +369,16 @@ const Navigation: React.FC<INavigation> = ({
               )}
 
               <View style={[{ position: 'absolute', top: 560, left: 70 }, styles.errorText]}>
-                {!animationUpdated && (
-                  <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
-                    Please wait till avatar loads
-                  </TextAnimation>
+                {steps === 1 && isSelectedStyle && (
+                  <View>
+                    {!animationUpdated && (
+                      <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+                        Please wait till avatar loads
+                      </TextAnimation>
+                    )}
+                  </View>
                 )}
+
                 {/* {steps === 4 && isColor && !colorAnimationUpdate && (
                   <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
                     Please wait till avatar loads
@@ -394,7 +400,8 @@ const Navigation: React.FC<INavigation> = ({
                 }}
                 activeOpacity={0.6}
                 underlayColor='rgba(70, 45, 133, 0.2)'
-                style={styles.Dropdown}
+                style={[styles.Dropdown, { opacity: !animationUpdated ? 0.5 : 1 }]}
+                disabled={!animationUpdated}
               >
                 <View>
                   <Text
@@ -416,7 +423,8 @@ const Navigation: React.FC<INavigation> = ({
                 }}
                 activeOpacity={0.6}
                 underlayColor='rgba(70, 45, 133, 0.2)'
-                style={styles.Dropdown}
+                style={[styles.Dropdown, { opacity: !animationUpdated ? 0.5 : 1 }]}
+                disabled={!animationUpdated}
               >
                 <View>
                   <Text
