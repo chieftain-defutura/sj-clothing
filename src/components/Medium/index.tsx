@@ -164,7 +164,11 @@ const Medium = () => {
       snapshot.docs.forEach((doc) => {
         if (doc.data()['animationFinished']) {
           setAnimationUpdated(doc.data()['animationFinished'])
-          playSound()
+          console.log('FLOW1', doc.data()['animationFinished'])
+          if (!isMounted.current) {
+            isMounted.current = true
+            playSound()
+          }
         }
       })
     })
@@ -188,7 +192,6 @@ const Medium = () => {
       snapshot.docs.forEach((doc) => {
         if (doc.data()['colorAnimationFinished']) {
           setColorAnimationUpdated(doc.data()['colorAnimationFinished'])
-          playSound()
         }
 
         console.log('doc.data()[colorAnimationFinished]', doc.data()['colorAnimationFinished'])
@@ -361,22 +364,6 @@ const Medium = () => {
     isShowToolTipAddImageAndAddText()
   }, [isShowToolTipAddImageAndAddText])
 
-  const handleSetUid = useCallback(async () => {
-    if (midlevelData.uid) return
-    if (!isMounted.current) {
-      try {
-        isMounted.current = true
-        const tempUid = uuid.v4().toString()
-        const docRef = doc(db, 'ModelsMidlevel', tempUid)
-        await setDoc(docRef, { uid: tempUid, skin: avatar?.skinTone, gender: avatar?.gender })
-
-        setUid(tempUid)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }, [])
-
   const handleUpdateColor = useCallback(async () => {
     if (!isColor || !uid) return
     try {
@@ -388,9 +375,8 @@ const Medium = () => {
   }, [isColor])
 
   useEffect(() => {
-    handleSetUid()
     handleUpdateColor()
-  }, [handleSetUid, handleUpdateColor])
+  }, [handleUpdateColor])
 
   useEffect(() => {
     const Filtereddata = data?.find(
@@ -554,9 +540,20 @@ const Medium = () => {
                 setAnimationUpdated={setAnimationUpdated}
               />
             ) : isSteps === 6 ? (
-              <FlowThree color={isColor} isImageOrText={isImageOrText} designs={designs} />
+              <FlowThree
+                color={isColor}
+                isImageOrText={isImageOrText}
+                designs={designs}
+                setAnimationUpdated={setAnimationUpdated}
+              />
             ) : (
-              <FlowOne uid={uid} steps={isSteps} />
+              <FlowOne
+                uid={uid}
+                steps={isSteps}
+                setUid={setUid}
+                color={isColor}
+                setAnimationUpdated={setAnimationUpdated}
+              />
             )}
           </View>
           {isSteps === 5 && FilteredData && (

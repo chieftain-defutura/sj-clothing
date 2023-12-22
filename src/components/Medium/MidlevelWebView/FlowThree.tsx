@@ -3,8 +3,14 @@ import { WebView } from 'react-native-webview'
 import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native'
 import { doc, setDoc, updateDoc } from 'firebase/firestore/lite'
 import uuid from 'react-native-uuid'
+import {
+  query as defaultQuery,
+  collection as defualtCollection,
+  where as defaultWhere,
+  onSnapshot,
+} from 'firebase/firestore'
 
-import { db } from '../../../../firebase'
+import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { IDesigns } from '../../../constant/types'
 
@@ -23,9 +29,15 @@ interface IFlowThreeProps {
     }
   }
   designs: IDesigns[] | undefined
+  setAnimationUpdated: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const FlowThree: React.FC<IFlowThreeProps> = ({ color, isImageOrText, designs }) => {
+const FlowThree: React.FC<IFlowThreeProps> = ({
+  color,
+  isImageOrText,
+  designs,
+  setAnimationUpdated,
+}) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
@@ -33,6 +45,33 @@ const FlowThree: React.FC<IFlowThreeProps> = ({ color, isImageOrText, designs })
   const [uid, setUid] = useState<string>('')
   const isMounted = useRef(false)
   const avatar = userStore((state) => state.avatar)
+
+  useEffect(() => {
+    setAnimationUpdated(false)
+  }, [])
+
+  const handleGetData = useCallback(() => {
+    if (!uid) return
+    const q = defaultQuery(
+      defualtCollection(dbDefault, 'ModelsMidlevel'),
+      defaultWhere('uid', '==', uid),
+    )
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        if (doc.data()['animationFinished']) {
+          setAnimationUpdated(doc.data()['animationFinished'])
+        }
+      })
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [uid])
+
+  useEffect(() => {
+    handleGetData()
+  }, [handleGetData])
 
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
