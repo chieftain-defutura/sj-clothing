@@ -86,6 +86,8 @@ const Checkout: React.FC<ICheckout> = ({
   const [isPaySupported, setIsPaySupported] = useState(false)
   const [toolTip, showToolTip] = useState(false)
 
+  console.log(offerPrice)
+
   const setup = useCallback(async () => {
     if (!(await isPlatformPaySupported())) {
       // Alert.alert(

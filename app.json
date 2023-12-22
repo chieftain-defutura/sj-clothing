@@ -7,11 +7,20 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "notification": {
+      "icon": "./assets/notificationIcon.png",
+      "color": "#311b92",
+      "androidMode": "default",
+      "androidCollapsedTitle": "Sprinkle Nadar",
+      "iosDisplayInForeground": true
+    },
     "splash": {
       "image": "./assets/iPhone.png",
       "resizeMode": "cover"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
@@ -21,6 +30,7 @@
       }
     },
     "android": {
+      "useNextNotificationsApi": true,
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -68,10 +78,18 @@
         "expo-notifications",
         {
           "icon": "./assets/notificationIcon.png",
-          "color": "#0EB983"
+          "color": "#CA2C92",
+          "sounds": [],
+          "androidMode": "default",
+          "androidCollapsedTitle": "Sprinkle Nadar",
+          "iosDisplayInForeground": true
         }
       ]
     ],
-    "extra": {}
+    "extra": {
+      "eas": {
+        "projectId": "78d85b5a-8351-42b5-a5a6-6937fb28159c"
+      }
+    }
   }
 }
