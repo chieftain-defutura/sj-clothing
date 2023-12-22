@@ -369,7 +369,7 @@ const Navigation: React.FC<INavigation> = ({
               )}
 
               <View style={[{ position: 'absolute', top: 560, left: 70 }, styles.errorText]}>
-                {steps === 1 && isSelectedStyle && (
+                {steps === 1 && (
                   <View>
                     {!animationUpdated && (
                       <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
