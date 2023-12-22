@@ -48,7 +48,6 @@ const MyOrders: React.FC<IMyOrders> = ({}) => {
   const [openReview, setOpenReview] = useState(false)
   const [orderData, setOrderData] = useState<IOrder[]>([])
   const [openTrackOrder, setOpenTrackOrder] = useState(false)
-  const [openModal, setOpenModal] = useState(false)
   const navigation = useNavigation()
 
   const getData = useCallback(async () => {
