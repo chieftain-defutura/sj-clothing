@@ -164,7 +164,7 @@ const Medium = () => {
       snapshot.docs.forEach((doc) => {
         if (doc.data()['animationFinished']) {
           setAnimationUpdated(doc.data()['animationFinished'])
-          playSound()
+          playSound(0.2)
         }
       })
     })
@@ -210,9 +210,19 @@ const Medium = () => {
     }
   }, [imageApplied])
 
-  const playSound = async () => {
+  // const playSound = async () => {
+  //   try {
+  //     const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
+  //     await sound.playAsync()
+  //   } catch (error) {
+  //     console.log('sound error:', error)
+  //   }
+  // }
+
+  const playSound = async (volume: any) => {
     try {
       const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
+      await sound.setVolumeAsync(volume) // Set volume between 0 (silent) and 1 (full volume)
       await sound.playAsync()
     } catch (error) {
       console.log('sound error:', error)

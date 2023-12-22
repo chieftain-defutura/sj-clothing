@@ -27,6 +27,7 @@ import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 import AlertModal from '../../screens/Modals/AlertModal'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Haptics from 'expo-haptics'
+import { LinearGradient } from 'expo-linear-gradient'
 import { Audio } from 'expo-av'
 import MidLevelTooltip from '../Tooltips/MidLevelTooltip'
 import { MidlevelStore } from '../../store/midlevelStore'
@@ -34,6 +35,8 @@ import FlowOne from './MidlevelWebView/FlowOne'
 import FlowTwo from './MidlevelWebView/FlowTwo'
 import FlowThree from './MidlevelWebView/FlowThree'
 import AddImageAddTextTooltip from '../Tooltips/MidLevel/AddImageAddTextTooltip'
+import { gradientOpacityColors } from '../../styles/theme'
+import FinalProduct from './FinalProduct'
 
 const { width } = Dimensions.get('window')
 
@@ -124,6 +127,10 @@ const AddPost = () => {
   const [addImageAndAddTextToolTip, setAddImageAndAddTextToolTip] = useState(false)
 
   const shakeAnimation = useRef(new Animated.Value(0)).current
+
+  //FinalProduct
+
+  const [isGiftVideo, setGiftVideo] = useState<any>(null)
 
   const shake = () => {
     Animated.sequence([
@@ -443,204 +450,212 @@ const AddPost = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      {!openCheckout && (
-        <View
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            position: 'relative',
-            justifyContent: 'space-between',
-            zIndex: 1,
-          }}
-        >
-          <Navigation
-            warning={warning}
-            setImageOrText={setImageOrText}
-            steps={isSteps}
-            isDone={isDone}
-            isColor={isColor}
-            setDone={setDone}
-            dropDown={isDropDown}
-            slideValue={slideValue}
-            country={isSize.country}
-            setDropDown={setDropDown}
-            isOpenDesign={isOpenDesign}
-            setOpenDesign={setOpenDesign}
-            sizeVarient={isSize.sizeVarient[0]}
-            isSelectedStyle={isSelectedStyle}
-            handleDecreaseSteps={handleDecreaseSteps}
-            handleIncreaseSteps={handleIncreaseSteps}
-            setImageApplied={setImageApplied}
-            animationUpdated={animationUpdated}
-            colorAnimationUpdate={colorAnimationUpdated}
-            shake={shake}
-            shakeAnimation={shakeAnimation}
-          />
-
-          <View style={{ zIndex: 100, width: width, position: 'absolute', top: 0, flex: 1 }}>
-            {isSteps === 1 && data && isDropDown && (
-              <SelectStyle
-                data={data}
-                setDropDown={setDropDown}
-                isSelectedStyle={isSelectedStyle}
-                setSelectedStyle={setSelectedStyle}
-              />
-            )}
-            {isSteps === 2 && isDropDown && FilteredData && (
-              <SelectCountry
-                data={FilteredData}
-                isSize={isSize}
-                setSize={setSize}
-                handleIncreaseSteps={handleIncreaseSteps}
-                setDropDown={setDropDown}
-              />
-            )}
-            {isSteps === 3 && isDropDown && FilteredData && (
-              <SelectSize
-                data={FilteredData}
-                isDropDown={isDropDown}
-                isSize={isSize}
-                setSize={setSize}
-                handleIncreaseSteps={handleIncreaseSteps}
-                setDropDown={setDropDown}
-              />
-            )}
-            {isSteps === 4 && isDropDown && FilteredData && (
-              <SelectColor
-                data={FilteredData}
-                isColor={isColor}
-                isDropDown={isDropDown}
-                setDropDown={setDropDown}
-                setColor={setColor}
-                setColorName={setColorName}
-                isColorName={isColorName}
-              />
-            )}
-            {isSteps === 6 && isDropDown && FilteredData && (
-              <AddImageOrText
-                data={FilteredData}
-                isDropDown={isDropDown}
-                setDropDown={setDropDown}
-                isImageOrText={isImageOrText}
-                setImageOrText={setImageOrText}
-                setOpenDesign={setOpenDesign}
-              />
-            )}
-            {isSteps === 6 && (
-              <AddImageAddTextTooltip
-                isVisible={addImageAndAddTextToolTip}
-                onClose={() => {
-                  setAddImageAndAddTextToolTip(false)
-                }}
-              />
-            )}
-          </View>
-
+      <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+        {!openCheckout && (
           <View
             style={{
-              flex: isSteps === 5 ? 9 : 1,
-              zIndex: -100,
-              position: isSteps === 5 ? 'relative' : 'absolute',
-              bottom: 0,
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              justifyContent: 'space-between',
+              zIndex: 1,
             }}
           >
-            {isSteps === 5 ? (
-              <FlowTwo
-                color={isColor}
-                isImageOrText={tempIsImageOrText}
-                designs={designs}
-                imageApplied={imageApplied}
-                setAnimationUpdated={setAnimationUpdated}
-              />
-            ) : isSteps === 6 ? (
-              <FlowThree color={isColor} isImageOrText={isImageOrText} designs={designs} />
-            ) : (
-              <FlowOne uid={uid} steps={isSteps} />
-            )}
-          </View>
-          {isSteps === 5 && FilteredData && (
-            <FinalView
-              color={isColor}
-              colorName={isColorName}
-              data={FilteredData}
-              focus={focus}
-              handleSubmit={handleSubmit}
-              isSize={isSize}
-              setFocus={setFocus}
-              setSize={setSize}
-              style={isSelectedStyle}
-              isImageOrText={isImageOrText}
-            />
-          )}
-          {isSteps === 6 && Design && isOpenDesign && !isDone && (
-            <SelectDesign
-              color={isColor}
-              isImageOrText={isImageOrText}
-              designs={Design}
-              setOpenDesign={setOpenDesign}
-              isDone={isDone}
-              setDone={setDone}
+            <Navigation
+              warning={warning}
               setImageOrText={setImageOrText}
+              steps={isSteps}
+              isDone={isDone}
+              isColor={isColor}
+              setDone={setDone}
+              dropDown={isDropDown}
+              slideValue={slideValue}
+              country={isSize.country}
+              setDropDown={setDropDown}
+              isOpenDesign={isOpenDesign}
+              setOpenDesign={setOpenDesign}
+              sizeVarient={isSize.sizeVarient[0]}
+              isSelectedStyle={isSelectedStyle}
+              handleDecreaseSteps={handleDecreaseSteps}
+              handleIncreaseSteps={handleIncreaseSteps}
+              setImageApplied={setImageApplied}
+              animationUpdated={animationUpdated}
+              colorAnimationUpdate={colorAnimationUpdated}
+              shake={shake}
+              shakeAnimation={shakeAnimation}
             />
-          )}
-          {login && (
-            <LoginModal
-              onForgotClick={() => {
-                setForgotmail(true), setLogin(false)
-              }}
-              onSignClick={() => {
-                setSignUp(true), setLogin(false)
-              }}
-              onClose={() => setLogin(false)}
-              setOpenCheckout={setOpenCheckout}
-            />
-          )}
 
-          {signUp && (
-            <SignupModal
-              onLoginClick={() => {
-                setLogin(true), setSignUp(false)
+            <View style={{ zIndex: 100, width: width, position: 'absolute', top: 0, flex: 1 }}>
+              {isSteps === 1 && data && isDropDown && (
+                <SelectStyle
+                  data={data}
+                  setDropDown={setDropDown}
+                  isSelectedStyle={isSelectedStyle}
+                  setSelectedStyle={setSelectedStyle}
+                />
+              )}
+              {isSteps === 2 && isDropDown && FilteredData && (
+                <SelectCountry
+                  data={FilteredData}
+                  isSize={isSize}
+                  setSize={setSize}
+                  handleIncreaseSteps={handleIncreaseSteps}
+                  setDropDown={setDropDown}
+                />
+              )}
+              {isSteps === 3 && isDropDown && FilteredData && (
+                <SelectSize
+                  data={FilteredData}
+                  isDropDown={isDropDown}
+                  isSize={isSize}
+                  setSize={setSize}
+                  handleIncreaseSteps={handleIncreaseSteps}
+                  setDropDown={setDropDown}
+                />
+              )}
+              {isSteps === 4 && isDropDown && FilteredData && (
+                <SelectColor
+                  data={FilteredData}
+                  isColor={isColor}
+                  isDropDown={isDropDown}
+                  setDropDown={setDropDown}
+                  setColor={setColor}
+                  setColorName={setColorName}
+                  isColorName={isColorName}
+                />
+              )}
+              {isSteps === 6 && isDropDown && FilteredData && (
+                <AddImageOrText
+                  data={FilteredData}
+                  isDropDown={isDropDown}
+                  setDropDown={setDropDown}
+                  isImageOrText={isImageOrText}
+                  setImageOrText={setImageOrText}
+                  setOpenDesign={setOpenDesign}
+                />
+              )}
+              {isSteps === 6 && (
+                <AddImageAddTextTooltip
+                  isVisible={addImageAndAddTextToolTip}
+                  onClose={() => {
+                    setAddImageAndAddTextToolTip(false)
+                  }}
+                />
+              )}
+            </View>
+
+            <View
+              style={{
+                flex: isSteps === 5 ? 9 : 1,
+                zIndex: -100,
+                position: isSteps === 5 ? 'relative' : 'absolute',
+                bottom: 0,
               }}
-              onClose={() => setSignUp(false)}
-              setOpenCheckout={setOpenCheckout}
-            />
-          )}
-          {forgotMail && (
-            <ForgotMail
-              onLoginClick={() => {
-                setLogin(true), setForgotmail(false)
-              }}
-              onClose={() => setForgotmail(false)}
-            />
-          )}
-          {openModal && <AlertModal />}
-        </View>
-      )}
-      {openCheckout && FilteredData && (
-        // <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
-        <Checkout
-          setOpenCheckout={setOpenCheckout}
-          color={isColor}
-          textAndImage={isImageOrText}
-          description={FilteredData?.description}
-          gender={avatar.gender as string}
-          offerPrice={FilteredData?.offerPrice}
-          price={FilteredData?.normalPrice}
-          productImage={FilteredData?.productImage}
-          productName={FilteredData?.productName}
-          size={{ country: isSize.country, sizeVarient: isSize.sizeVarient[0] }}
-          style={isSelectedStyle}
-          id={FilteredData?.id}
-          type='MidLevel'
+            >
+              {isSteps === 5 ? (
+                <FlowTwo
+                  color={isColor}
+                  isImageOrText={tempIsImageOrText}
+                  designs={designs}
+                  imageApplied={imageApplied}
+                  setAnimationUpdated={setAnimationUpdated}
+                />
+              ) : isSteps === 6 ? (
+                <FlowThree color={isColor} isImageOrText={isImageOrText} designs={designs} />
+              ) : (
+                <FlowOne uid={uid} steps={isSteps} />
+              )}
+            </View>
+            {isSteps === 5 && FilteredData && (
+              // <FinalView
+              //   color={isColor}
+              //   colorName={isColorName}
+              //   data={FilteredData}
+              //   focus={focus}
+              //   handleSubmit={handleSubmit}
+              //   isSize={isSize}
+              //   setFocus={setFocus}
+              //   setSize={setSize}
+              //   style={isSelectedStyle}
+              //   isImageOrText={isImageOrText}
+              // />
+              <FinalProduct
+                isGiftVideo={isGiftVideo}
+                setGiftVideo={setGiftVideo}
+                Data={FilteredData.description}
+                handleSubmit={handleSubmit}
+              />
+            )}
+            {isSteps === 6 && Design && isOpenDesign && !isDone && (
+              <SelectDesign
+                color={isColor}
+                isImageOrText={isImageOrText}
+                designs={Design}
+                setOpenDesign={setOpenDesign}
+                isDone={isDone}
+                setDone={setDone}
+                setImageOrText={setImageOrText}
+              />
+            )}
+            {login && (
+              <LoginModal
+                onForgotClick={() => {
+                  setForgotmail(true), setLogin(false)
+                }}
+                onSignClick={() => {
+                  setSignUp(true), setLogin(false)
+                }}
+                onClose={() => setLogin(false)}
+                setOpenCheckout={setOpenCheckout}
+              />
+            )}
+
+            {signUp && (
+              <SignupModal
+                onLoginClick={() => {
+                  setLogin(true), setSignUp(false)
+                }}
+                onClose={() => setSignUp(false)}
+                setOpenCheckout={setOpenCheckout}
+              />
+            )}
+            {forgotMail && (
+              <ForgotMail
+                onLoginClick={() => {
+                  setLogin(true), setForgotmail(false)
+                }}
+                onClose={() => setForgotmail(false)}
+              />
+            )}
+            {openModal && <AlertModal />}
+          </View>
+        )}
+        {openCheckout && FilteredData && (
+          // <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+          <Checkout
+            setOpenCheckout={setOpenCheckout}
+            color={isColor}
+            textAndImage={isImageOrText}
+            description={FilteredData?.description}
+            gender={avatar.gender as string}
+            offerPrice={FilteredData?.offerPrice}
+            price={FilteredData?.normalPrice}
+            productImage={FilteredData?.productImage}
+            productName={FilteredData?.productName}
+            size={{ country: isSize.country, sizeVarient: isSize.sizeVarient[0] }}
+            style={isSelectedStyle}
+            id={FilteredData?.id}
+            type='MidLevel'
+          />
+        )}
+        <MidLevelTooltip
+          isVisible={toolTip}
+          onClose={() => {
+            showToolTip(false)
+          }}
         />
-      )}
-      <MidLevelTooltip
-        isVisible={toolTip}
-        onClose={() => {
-          showToolTip(false)
-        }}
-      />
+      </LinearGradient>
     </View>
   )
 }

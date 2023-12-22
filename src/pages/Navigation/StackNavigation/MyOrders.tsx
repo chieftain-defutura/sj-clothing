@@ -229,6 +229,24 @@ const OrderCard: React.FC<IOrderCard> = ({
                 <ChevronLeft width={16} height={16} />
               </Pressable> */}
             </ProductWrapper>
+            <Pressable
+              onPress={() => {
+                setOpenReview(true), setOrderId(data.id)
+              }}
+            >
+              <StarContainer>
+                {StartIcons.map((star, index) => (
+                  <View key={index}>
+                    {index < Number(ratings?.ratings) ? (
+                      <star.startActive width={24} height={24} />
+                    ) : (
+                      <star.startInActive width={24} height={24} />
+                    )}
+                  </View>
+                ))}
+              </StarContainer>
+              <StatusText allowFontScaling={false}>Write a review</StatusText>
+            </Pressable>
             <TouchableOpacity
               onPress={handleRefundOpen}
               style={{

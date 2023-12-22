@@ -92,13 +92,11 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
         template_id: 'template_7168usd',
         user_id: 'K-e_VO9kSsyCRevPa',
         template_params: {
-          to_email: 'sprinklenadar@gmail.com',
-          subject: 'Product Rating',
-          message: `userName:${user.displayName}
-          productName:${orderData?.productName}
-          rating:${stars}
-          description: ${review}`,
-          to_name: 'Sprinkle Nadar',
+          customerName: `${user.displayName}`,
+          productName: `${orderData?.productName}`,
+          ratings: `${stars}`,
+          description: `${review}`,
+          orderId: orderId,
           from_name: user.displayName,
         },
         accessToken: '6QdtVkNQ_KdK672G8cg_l',

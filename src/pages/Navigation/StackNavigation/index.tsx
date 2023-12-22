@@ -29,6 +29,7 @@ import TermsAndConditions from './TermsAndConditions'
 import Thankyou from './Thankyou'
 import Locations from '../../../components/Location'
 import { generalStore } from '../../../store/generalStore'
+import AddPost from '../../../components/AddPost'
 
 const Stack = createStackNavigator()
 
@@ -68,6 +69,11 @@ const StackNavigationRoutes: React.FC = () => {
       <Stack.Screen
         name='PostCreation'
         component={PostCreation}
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+      />
+      <Stack.Screen
+        name='AddPost'
+        component={AddPost}
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
       />
       <Stack.Screen

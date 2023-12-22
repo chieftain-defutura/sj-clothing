@@ -28,7 +28,7 @@ const FlowOne: React.FC<IFlowOneProps> = ({ uid, steps }) => {
     <View
       style={{
         width: width / 1,
-        height: steps === 5 ? height / 1 : height / 1.3,
+        height: steps === 5 ? height / 1 : height / 1.2,
         flex: steps === 5 ? 5 : 1,
         zIndex: -100,
         backgroundColor: 'transparent',

@@ -27,7 +27,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import SelectCountryTooltip from '../../Tooltips/MidLevel/SelectCountry'
 import SelectSizeTooltip from '../../Tooltips/MidLevel/SelectSize'
 import SelectColorTooltip from '../../Tooltips/MidLevel/SelectColor'
-import FinalViewTooltip from '../../Tooltips/MidLevel/FinalViewTooltip'
 
 const { width } = Dimensions.get('window')
 
@@ -173,6 +172,26 @@ const Navigation: React.FC<INavigation> = ({
     }
   })
 
+  const handleIncrease = () => {
+    let currentField
+    switch (steps) {
+      case 1:
+        currentField = isSelectedStyle
+        break
+      case 2:
+        currentField = country
+        break
+      case 3:
+        currentField = sizeVarient
+        break
+      case 4:
+        currentField = isColor
+        break
+      default:
+        currentField = 'any'
+    }
+  }
+
   return (
     <Animated.View
       style={[
@@ -300,6 +319,7 @@ const Navigation: React.FC<INavigation> = ({
                   }}
                 >
                   {steps === 1 && `${t(isSelectedStyle ? isSelectedStyle : 'Select Style')}`}
+
                   {steps === 2 && `${t(country ? country : 'Select Country')}`}
                   {steps === 3 &&
                     `${t(
@@ -435,6 +455,7 @@ const Navigation: React.FC<INavigation> = ({
               </TouchableHighlight>
             </View>
           )}
+
           {steps !== 5 && steps !== 6 && (
             <TouchableHighlight
               onPress={handleIncreaseSteps}
