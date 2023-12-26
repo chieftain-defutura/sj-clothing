@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore'
+
 interface Reel {
   id: string
   text: string
@@ -231,4 +233,15 @@ export interface IRatings {
   orderId: string
   ratings: string
   review: string
+}
+
+export interface IRefund {
+  id: string
+  createdAt: Timestamp
+  updateAt: Timestamp
+  description: string
+  issues: string
+  Image: string
+  status: 'pending'
+  orderId: string
 }
