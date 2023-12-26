@@ -18,9 +18,7 @@
       "image": "./assets/iPhone.png",
       "resizeMode": "cover"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
@@ -30,7 +28,6 @@
       }
     },
     "android": {
-      "useNextNotificationsApi": true,
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -78,11 +75,7 @@
         "expo-notifications",
         {
           "icon": "./assets/notificationIcon.png",
-          "color": "#CA2C92",
-          "sounds": [],
-          "androidMode": "default",
-          "androidCollapsedTitle": "Sprinkle Nadar",
-          "iosDisplayInForeground": true
+          "color": "#CA2C92"
         }
       ]
     ],
