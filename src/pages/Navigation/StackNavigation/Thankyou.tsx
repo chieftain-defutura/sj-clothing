@@ -59,18 +59,28 @@ const Thankyou = () => {
   return (
     <LinearGradient style={{ flex: 1 }} colors={gradientOpacityColors}>
       <View style={{ flex: 1 }}>
-        <Animated.View entering={StretchInX.duration(1000)} exiting={StretchOutX}>
+        <Animated.View
+          entering={StretchInX.duration(1000)}
+          exiting={StretchOutX}
+          style={{ height: 70 }}
+        >
           <Text allowFontScaling={false} style={styles.title}>
             Thank You
           </Text>
         </Animated.View>
-        <View style={{ flex: 1, position: 'relative' }} ref={elementRef} onLayout={handleLayout}>
+        <View
+          style={{
+            height: height - 70,
+          }}
+          ref={elementRef}
+          onLayout={handleLayout}
+        >
           {webviewLoading && (
             <View style={styles.absoluteContainer}>
               <ActivityIndicator size='large' color={'#8C73CB'} />
             </View>
           )}
-          {uid && pageY && elementHeight && (
+          {Boolean(uid) && Boolean(pageY) && Boolean(elementHeight) && (
             <WebView
               style={{
                 backgroundColor: 'transparent',
@@ -92,7 +102,9 @@ const Thankyou = () => {
           fontSize={16}
           style={{
             padding: 16,
-            backgroundColor: 'rgba(145, 177, 225, 0.8)',
+            position: 'absolute',
+            bottom: 0,
+            width: '100%',
           }}
         />
       </View>
