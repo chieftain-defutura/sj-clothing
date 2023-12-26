@@ -10,7 +10,7 @@ import Checkbox from 'expo-checkbox'
 import { FirebaseError } from 'firebase/app'
 import styled from 'styled-components/native'
 import React, { useEffect, useState } from 'react'
-import { doc, setDoc } from 'firebase/firestore/lite'
+import { collection, doc, getDocs, setDoc } from 'firebase/firestore/lite'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { View, Modal, StyleSheet, Pressable, TouchableOpacity, Text, Platform } from 'react-native'
@@ -42,8 +42,25 @@ const ValidationSchema = Yup.object({
   email: Yup.string()
     .transform((originalValue) => originalValue.toLowerCase().trim())
     .email('Enter a valid email')
-    .required('Please enter your email address'),
+    .test('Unique Email', 'Email already in use', async function (value) {
+      const ProductRef = await getDocs(collection(db, 'users'))
+      const fetchProduct = ProductRef.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as any),
+      }))
 
+      const isEmailUnique = !fetchProduct.some((user) => user.email === value)
+
+      if (!isEmailUnique) {
+        throw this.createError({
+          path: this.path,
+          message: 'Email is already in use. Please choose a different email.',
+        })
+      }
+
+      return true
+    })
+    .required('Please enter your email address'),
   password: Yup.string()
     .min(8)
     .required('Please enter your password')
@@ -148,17 +165,17 @@ const SignupModal: React.FC<SignupModalProps> = ({
       console.log(data)
       setIsLoading(false)
     } catch (error) {
-      console.log('error', Object.values(error as any))
-      setVerificationCode('')
-      setErrorMessage('Invalid email')
-      setIsLoading(false)
       if (error instanceof FirebaseError) {
         if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
-          setErrorMessage('Email is a lready in use. Please choose a different email.')
+          setErrorMessage('Email is already in use. Please choose a different email.')
         }
       } else {
         setErrorMessage('An error occurred while signing up. Please try again.')
       }
+      console.log('error', Object.values(error as any))
+      setVerificationCode('')
+      setErrorMessage('Invalid email')
+      setIsLoading(false)
     } finally {
       setIsLoading(false)
     }

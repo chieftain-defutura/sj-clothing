@@ -11,6 +11,8 @@ import CountryCode from '../../components/CountryCode'
 import CloseIcon from '../../assets/icons/Close'
 import { doc, updateDoc } from 'firebase/firestore/lite'
 import { userStore } from '../../store/userStore'
+import axios from 'axios'
+import { API_URL } from '../../utils/config'
 
 interface IPhoneVerification {
   setIsCreated: React.Dispatch<React.SetStateAction<boolean>>
@@ -58,25 +60,18 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({
     try {
       if (!user) return
       setLoading(true)
-      // if (values.verifyCode === verificationId) {
-      //   await updateDoc(doc(db, 'users', user.uid), {
-      //     phoneNo: values.phoneNumber,
-      //   })
-      //   updatePhoneNo(Number(countryCode + values.phoneNumber))
-      //   setIsCreated(true)
-      //   closeModal?.()
-      // }
-      await updateDoc(doc(db, 'users', user.uid), {
-        phoneNo: values.phoneNumber,
-      })
-      updatePhoneNo(Number(countryCode + values.phoneNumber))
-      setIsCreated(true)
-      closeModal?.()
-      setLoading(false)
-      setOpenCheckout?.(true)
-      // if (values.verifyCode !== verificationId) {
-      //   setErrorMessage('Invalid Verification Code')
-      // }
+      if (values.verifyCode === verificationId) {
+        await updateDoc(doc(db, 'users', user.uid), {
+          phoneNo: values.phoneNumber,
+        })
+        updatePhoneNo(Number(countryCode + values.phoneNumber))
+        setIsCreated(true)
+        closeModal?.()
+      }
+
+      if (values.verifyCode !== verificationId) {
+        setErrorMessage('Invalid Verification Code')
+      }
     } catch (error) {
       console.log('verification error', error)
       setErrorMessage('Invalid Verification Code')
@@ -85,16 +80,27 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({
       setLoading(false)
     }
   }
+
   const generateVerificationCode = () => {
     const codeLength = 6
     const minDigit = Math.pow(10, codeLength - 1)
     const maxDigit = Math.pow(10, codeLength) - 1
     return Math.floor(Math.random() * (maxDigit - minDigit + 1)) + minDigit
   }
-  // const handleSendCode = () => {
-  //   const verificationCode = generateVerificationCode()
-  //   setVerificationId(verificationCode.toString())
-  // }
+
+  const handleSendCode = async (phoneNumber: string) => {
+    try {
+      const verificationCode = generateVerificationCode()
+      setVerificationId(verificationCode.toString())
+      const response = await axios.post(`${API_URL}/send-otp`, {
+        phoneNumber: countryCode + phoneNumber,
+        otp: verificationCode,
+      })
+      console.log('response', response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <SignUpWrapper>
@@ -132,18 +138,18 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({
                     allowFontScaling={false}
                   />
                 </View>
-                {/* <Pressable
+                <Pressable
                   style={{ opacity: verificationId ? 0 : 1 }}
-                  onPress={() => handleSendCode()}
+                  onPress={() => handleSendCode(values.phoneNumber)}
                 >
                   <VerifyText allowFontScaling={false}>Send</VerifyText>
-                </Pressable> */}
+                </Pressable>
               </InputBorder>
               {touched.phoneNumber && errors.phoneNumber && (
                 <ErrorText allowFontScaling={false}>{errors.phoneNumber}</ErrorText>
               )}
             </View>
-            {/* <View>
+            <View>
               <LabelText allowFontScaling={false}>Verify OTP</LabelText>
               <InputBorder>
                 <InputStyle
@@ -157,7 +163,7 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({
                 />
                 <Pressable
                   style={{ opacity: verificationId ? 1 : 0 }}
-                  onPress={() => handleSendCode()}
+                  onPress={() => handleSendCode(values.phoneNumber)}
                 >
                   <VerifyText>Resend</VerifyText>
                 </Pressable>
@@ -167,7 +173,7 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({
               )}
             </View>
 
-            {errorMessage && <ErrorText allowFontScaling={false}>{errorMessage}</ErrorText>} */}
+            {errorMessage && <ErrorText allowFontScaling={false}>{errorMessage}</ErrorText>}
 
             <CustomButton
               variant='primary'
