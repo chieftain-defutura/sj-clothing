@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 import { Formik } from 'formik'
-import { Pressable } from 'react-native'
+import { Pressable, Text } from 'react-native'
 import styled from 'styled-components/native'
 import { StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
@@ -13,19 +13,16 @@ import { doc, updateDoc } from 'firebase/firestore/lite'
 import { userStore } from '../../store/userStore'
 import axios from 'axios'
 import { API_URL } from '../../utils/config'
+import GreenTick from '../../assets/icons/GreenTick'
 
 interface IPhoneVerification {
-  setIsCreated: React.Dispatch<React.SetStateAction<boolean>>
   closeModal?: () => void
   setOpenCheckout?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const initialValues = { phoneNumber: '', verifyCode: '' }
-
+const initialValues = { phoneNumber: '' }
+const OTPInitialValues = { otp: '' }
 const ValidationSchema = Yup.object({
-  // verifyCode: Yup.string().required('Enter your OTP'),
-  verifyCode: Yup.string(),
-
   phoneNumber: Yup.string()
     .matches(
       /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/,
@@ -33,14 +30,15 @@ const ValidationSchema = Yup.object({
     )
     .required('Please enter your phone number'),
 })
+const OTPValidationSchema = Yup.object({
+  otp: Yup.string().required('Please enter your OTP'),
+})
 
-const PhoneVerification: React.FC<IPhoneVerification> = ({
-  setIsCreated,
-  closeModal,
-  setOpenCheckout,
-}) => {
+const PhoneVerification: React.FC<IPhoneVerification> = ({ closeModal, setOpenCheckout }) => {
   const user = userStore((state) => state.user)
   const updatePhoneNo = userStore((state) => state.updatePhoneNo)
+  const [isCreated, setIsCreated] = useState(false)
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [verificationId, setVerificationId] = useState<string | null>(null)
   const [countryCode, setCountryCode] = useState('+91')
@@ -56,20 +54,31 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({
     }
   }, [errorMessage])
 
+  useEffect(() => {
+    if (isCreated) {
+      const timer = setTimeout(() => {
+        setIsCreated(false)
+        closeModal?.()
+      }, 3500)
+
+      return () => clearTimeout(timer)
+    }
+  }, [isCreated])
+
   const handleSubmit = async (values: any) => {
     try {
       if (!user) return
       setLoading(true)
-      if (values.verifyCode === verificationId) {
+      if (values.otp === verificationId) {
         await updateDoc(doc(db, 'users', user.uid), {
           phoneNo: values.phoneNumber,
         })
         updatePhoneNo(Number(countryCode + values.phoneNumber))
         setIsCreated(true)
-        closeModal?.()
+        setOpenCheckout?.(true)
       }
 
-      if (values.verifyCode !== verificationId) {
+      if (values.otp !== verificationId) {
         setErrorMessage('Invalid Verification Code')
       }
     } catch (error) {
@@ -88,107 +97,157 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({
     return Math.floor(Math.random() * (maxDigit - minDigit + 1)) + minDigit
   }
 
-  const handleSendCode = async (phoneNumber: string) => {
+  const handleSendCode = async (values: any) => {
     try {
       const verificationCode = generateVerificationCode()
       setVerificationId(verificationCode.toString())
       const response = await axios.post(`${API_URL}/send-otp`, {
-        phoneNumber: countryCode + phoneNumber,
+        phoneNumber: countryCode + values.phoneNumber,
         otp: verificationCode,
       })
+      setPhoneNumber(values.phoneNumber)
       console.log('response', response)
     } catch (error) {
       console.log(error)
     }
   }
 
+  console.log(isCreated)
   return (
     <SignUpWrapper>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={ValidationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
-          <SignUpContainer>
-            <SignUpHead>
-              <SignUpHeading allowFontScaling={false}>Phone Verification</SignUpHeading>
-              <Pressable onPress={closeModal}>
-                <CloseIcon width={24} height={24} />
-              </Pressable>
-            </SignUpHead>
+      {!isCreated ? (
+        <>
+          {!verificationId ? (
+            <Formik
+              initialValues={initialValues}
+              validationSchema={ValidationSchema}
+              onSubmit={handleSendCode}
+            >
+              {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
+                <SignUpContainer>
+                  <SignUpHead>
+                    <SignUpHeading allowFontScaling={false}>Phone Verification</SignUpHeading>
+                    <Pressable onPress={closeModal}>
+                      <CloseIcon width={24} height={24} />
+                    </Pressable>
+                  </SignUpHead>
 
-            <View>
-              <LabelText allowFontScaling={false}>Phone Number</LabelText>
-              <InputBorder style={{ paddingVertical: 0, paddingLeft: 20 }}>
-                <View style={{ display: 'flex', flexDirection: 'row' }}>
-                  <CountryCode
-                    countryCode={countryCode}
-                    setCountryCode={setCountryCode}
-                    setShow={setShow}
-                    show={show}
-                  />
-                  <InputStyle
-                    placeholder='Enter your phone number'
-                    value={values.phoneNumber}
-                    onChangeText={handleChange('phoneNumber')}
-                    onBlur={handleBlur('phoneNumber')}
-                    placeholderTextColor={COLORS.SecondaryTwo}
-                    autoCorrect={false}
-                    allowFontScaling={false}
-                  />
-                </View>
-                <Pressable
+                  <View>
+                    <LabelText allowFontScaling={false}>Phone Number</LabelText>
+                    <InputBorder style={{ paddingVertical: 0 }}>
+                      <View style={{ display: 'flex', flexDirection: 'row' }}>
+                        <CountryCode
+                          countryCode={countryCode}
+                          setCountryCode={setCountryCode}
+                          setShow={setShow}
+                          show={show}
+                        />
+                        <InputStyle
+                          placeholder='Enter your phone number'
+                          value={values.phoneNumber}
+                          onChangeText={handleChange('phoneNumber')}
+                          onBlur={handleBlur('phoneNumber')}
+                          placeholderTextColor={COLORS.SecondaryTwo}
+                          autoCorrect={false}
+                          allowFontScaling={false}
+                        />
+                      </View>
+                      {/* <Pressable
                   style={{ opacity: verificationId ? 0 : 1 }}
                   onPress={() => handleSendCode(values.phoneNumber)}
                 >
                   <VerifyText allowFontScaling={false}>Send</VerifyText>
-                </Pressable>
-              </InputBorder>
-              {touched.phoneNumber && errors.phoneNumber && (
-                <ErrorText allowFontScaling={false}>{errors.phoneNumber}</ErrorText>
-              )}
-            </View>
-            <View>
-              <LabelText allowFontScaling={false}>Verify OTP</LabelText>
-              <InputBorder>
-                <InputStyle
-                  placeholder='Enter your verifyCode'
-                  value={values.verifyCode}
-                  onChangeText={handleChange('verifyCode')}
-                  onBlur={handleBlur('verifyCode')}
-                  placeholderTextColor={COLORS.SecondaryTwo}
-                  autoCorrect={false}
-                  allowFontScaling={false}
-                />
-                <Pressable
-                  style={{ opacity: verificationId ? 1 : 0 }}
-                  onPress={() => handleSendCode(values.phoneNumber)}
-                >
-                  <VerifyText>Resend</VerifyText>
-                </Pressable>
-              </InputBorder>
-              {touched.verifyCode && errors.verifyCode && (
-                <ErrorText allowFontScaling={false}>{errors.verifyCode}</ErrorText>
-              )}
-            </View>
+                </Pressable> */}
+                    </InputBorder>
+                    {touched.phoneNumber && errors.phoneNumber && (
+                      <ErrorText allowFontScaling={false}>{errors.phoneNumber}</ErrorText>
+                    )}
+                  </View>
 
-            {errorMessage && <ErrorText allowFontScaling={false}>{errorMessage}</ErrorText>}
+                  {errorMessage && <ErrorText allowFontScaling={false}>{errorMessage}</ErrorText>}
 
-            <CustomButton
-              variant='primary'
-              onPress={() => {
-                handleSubmit()
-              }}
-              disabled={isLoading}
-              text={isLoading ? 'Verifing...' : 'Verify'}
-              fontFamily='Arvo-Regular'
-              fontSize={14}
-              buttonStyle={[styles.submitBtn]}
-            />
-          </SignUpContainer>
-        )}
-      </Formik>
+                  <CustomButton
+                    variant='primary'
+                    onPress={() => {
+                      handleSubmit()
+                    }}
+                    disabled={isLoading}
+                    text={isLoading ? 'Sending...' : 'Send OTP'}
+                    fontFamily='Arvo-Regular'
+                    fontSize={14}
+                    buttonStyle={[styles.submitBtn]}
+                  />
+                </SignUpContainer>
+              )}
+            </Formik>
+          ) : (
+            <Formik
+              initialValues={OTPInitialValues}
+              validationSchema={OTPValidationSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
+                <SignUpContainer>
+                  <SignUpHead>
+                    <SignUpHeading allowFontScaling={false}>Phone Verification</SignUpHeading>
+                    <Pressable onPress={closeModal}>
+                      <CloseIcon width={24} height={24} />
+                    </Pressable>
+                  </SignUpHead>
+
+                  <View>
+                    <LabelText allowFontScaling={false}>Verify OTP</LabelText>
+                    <InputBorder>
+                      <InputStyle
+                        placeholder='Enter your otp'
+                        value={values.otp}
+                        onChangeText={handleChange('otp')}
+                        onBlur={handleBlur('otp')}
+                        placeholderTextColor={COLORS.SecondaryTwo}
+                        autoCorrect={false}
+                        allowFontScaling={false}
+                      />
+                      <Pressable
+                        style={{ opacity: verificationId ? 1 : 0 }}
+                        onPress={() => handleSendCode(phoneNumber)}
+                      >
+                        <VerifyText>Resend</VerifyText>
+                      </Pressable>
+                    </InputBorder>
+                    {touched.otp && errors.otp && (
+                      <ErrorText allowFontScaling={false}>{errors.otp}</ErrorText>
+                    )}
+                  </View>
+
+                  {errorMessage && <ErrorText allowFontScaling={false}>{errorMessage}</ErrorText>}
+
+                  <CustomButton
+                    variant='primary'
+                    onPress={() => {
+                      handleSubmit()
+                    }}
+                    disabled={isLoading}
+                    text={isLoading ? 'Verifing...' : 'Verify'}
+                    fontFamily='Arvo-Regular'
+                    fontSize={14}
+                    buttonStyle={[styles.submitBtn]}
+                  />
+                </SignUpContainer>
+              )}
+            </Formik>
+          )}
+        </>
+      ) : (
+        <CreatedAccount>
+          <GreenTick width={100} height={100} />
+          <Text
+            allowFontScaling={false}
+            style={{ fontSize: 20, color: COLORS.textRGBAClr, fontFamily: 'Gilroy-Medium' }}
+          >
+            Account Created
+          </Text>
+        </CreatedAccount>
+      )}
     </SignUpWrapper>
   )
 }

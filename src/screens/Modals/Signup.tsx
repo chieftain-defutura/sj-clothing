@@ -83,7 +83,6 @@ const SignupModal: React.FC<SignupModalProps> = ({
   const rate = userStore((state) => state.rate)
   const user = userStore((store) => store.user)
   const [isChecked, setChecked] = useState(false)
-  const [isCreated, setIsCreated] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [verificationCode, setVerificationCode] = useState('')
   const [isVerify, setVerify] = useState(false)
@@ -100,7 +99,6 @@ const SignupModal: React.FC<SignupModalProps> = ({
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const confirmDetails = userStore((state) => state.confirmDetails)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [showVerificationModal, setShowVerificationModal] = useState(false)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -115,17 +113,6 @@ const SignupModal: React.FC<SignupModalProps> = ({
       return () => clearTimeout(timer)
     }
   }, [errorMessage])
-
-  useEffect(() => {
-    if (isCreated) {
-      const timer = setTimeout(() => {
-        setIsCreated(false)
-        onClose?.()
-      }, 3500)
-
-      return () => clearTimeout(timer)
-    }
-  }, [isCreated])
 
   const generateVerificationCode = () => {
     const codeLength = 6
@@ -435,26 +422,8 @@ const SignupModal: React.FC<SignupModalProps> = ({
           closeModal={onClose}
         />
       )} */}
-      {user && !user.phoneNumber && !isCreated && (
-        <PhoneVerification
-          setIsCreated={setIsCreated}
-          closeModal={onClose}
-          setOpenCheckout={setOpenCheckout}
-        />
-      )}
-
-      {user && user.phoneNumber && isCreated && (
-        <SignUpWrapper>
-          <CreatedAccount>
-            <GreenTick width={100} height={100} />
-            <Text
-              allowFontScaling={false}
-              style={{ fontSize: 20, color: COLORS.textRGBAClr, fontFamily: 'Gilroy-Medium' }}
-            >
-              Account Created
-            </Text>
-          </CreatedAccount>
-        </SignUpWrapper>
+      {user && !user.phoneNumber && (
+        <PhoneVerification closeModal={onClose} setOpenCheckout={setOpenCheckout} />
       )}
     </Modal>
   )
