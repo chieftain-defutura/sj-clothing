@@ -120,8 +120,8 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({
 
             <View>
               <LabelText allowFontScaling={false}>Phone Number</LabelText>
-              <InputBorder>
-                <View style={{ display: 'flex', flexDirection: 'row', paddingLeft: 10 }}>
+              <InputBorder style={{ paddingVertical: 0, paddingLeft: 20 }}>
+                <View style={{ display: 'flex', flexDirection: 'row' }}>
                   <CountryCode
                     countryCode={countryCode}
                     setCountryCode={setCountryCode}
