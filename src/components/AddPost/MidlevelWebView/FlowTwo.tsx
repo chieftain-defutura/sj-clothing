@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
 import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native'
-import { doc, setDoc, updateDoc } from 'firebase/firestore/lite'
+import { doc, setDoc } from 'firebase/firestore/lite'
 import uuid from 'react-native-uuid'
 import {
   query as defaultQuery,
@@ -16,7 +16,8 @@ import { IDesigns } from '../../../constant/types'
 
 const { height, width } = Dimensions.get('window')
 
-interface IFlowThreeProps {
+interface IFlowTwoProps {
+  setAnimationUpdated: React.Dispatch<React.SetStateAction<boolean>>
   color: string
   isImageOrText: {
     title: string
@@ -29,13 +30,14 @@ interface IFlowThreeProps {
     }
   }
   designs: IDesigns[] | undefined
-  setAnimationUpdated: React.Dispatch<React.SetStateAction<boolean>>
+  imageApplied: boolean
 }
 
-const FlowThree: React.FC<IFlowThreeProps> = ({
+const FlowTwo: React.FC<IFlowTwoProps> = ({
   color,
   isImageOrText,
   designs,
+  imageApplied,
   setAnimationUpdated,
 }) => {
   const [pageY, setPageY] = useState<number | null>(null)
@@ -45,10 +47,6 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
   const [uid, setUid] = useState<string>('')
   const isMounted = useRef(false)
   const avatar = userStore((state) => state.avatar)
-
-  useEffect(() => {
-    setAnimationUpdated(false)
-  }, [])
 
   const handleGetData = useCallback(() => {
     if (!uid) return
@@ -60,6 +58,7 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
       snapshot.docs.forEach((doc) => {
         if (doc.data()['animationFinished']) {
           setAnimationUpdated(doc.data()['animationFinished'])
+          // playSound()
         }
       })
     })
@@ -74,45 +73,51 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
   }, [handleGetData])
 
   const handleSetUid = useCallback(async () => {
-    if (!isMounted.current) {
-      try {
-        isMounted.current = true
-        const tempUid = uuid.v4().toString()
-        const docRef = doc(db, 'ModelsMidlevel', tempUid)
-        const docObj: any = { uid: tempUid, skin: avatar?.skinTone, gender: avatar?.gender, color }
+    // if (!isMounted.current) {
+    try {
+      isMounted.current = true
+      const tempUid = uuid.v4().toString()
+      const docRef = doc(db, 'ModelsMidlevel', tempUid)
 
-        if (isImageOrText.designs.originalImage) {
+      const docObj: any = { uid: tempUid, skin: avatar?.skinTone, gender: avatar?.gender, color }
+
+      if (imageApplied && isImageOrText.designs.originalImage) {
+        if (designs) {
           designs?.forEach((f) => {
             const spottedImage = f.originalImages.find((f) => f.colorCode === color)
             if (spottedImage) {
               docObj.image = spottedImage.url
             }
           })
+        } else {
+          docObj.image = isImageOrText.designs.originalImage
         }
-
-        await setDoc(docRef, docObj)
-
-        setUid(tempUid)
-      } catch (error) {
-        console.log(error)
+      } else if (isImageOrText.designs.originalImage) {
+        if (designs) {
+          designs?.forEach((f) => {
+            const spottedImage = f.originalImages.find((f) => f.colorCode === color)
+            if (spottedImage) {
+              docObj.image = spottedImage.url
+            }
+          })
+        } else {
+          docObj.image = isImageOrText.designs.originalImage
+        }
       }
-    }
-  }, [color, isImageOrText])
+      console.log(tempUid)
+      console.log(docObj)
+      await setDoc(docRef, docObj)
 
-  const handleUpdateImageAndText = useCallback(async () => {
-    if (!isImageOrText.designs.originalImage || !uid) return
-    try {
-      const docRef = doc(db, 'ModelsMidlevel', uid)
-      await updateDoc(docRef, { image: isImageOrText.designs.originalImage })
+      setUid(tempUid)
     } catch (error) {
       console.log(error)
     }
-  }, [isImageOrText])
+    // }
+  }, [color, isImageOrText, designs])
 
   useEffect(() => {
     handleSetUid()
-    handleUpdateImageAndText()
-  }, [handleSetUid, handleUpdateImageAndText])
+  }, [handleSetUid])
 
   const handleLayout = () => {
     if (elementRef.current) {
@@ -127,7 +132,7 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
       style={{
         width: width / 1,
         height: height / 1.3,
-        flex: 1,
+        flex: 5,
         backgroundColor: 'transparent',
         position: 'relative',
       }}
@@ -160,7 +165,7 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
   )
 }
 
-export default FlowThree
+export default FlowTwo
 
 const styles = StyleSheet.create({
   absoluteContainer: {

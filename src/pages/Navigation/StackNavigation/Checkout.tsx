@@ -229,6 +229,7 @@ const Checkout: React.FC<ICheckout> = ({
         price: price,
         offerPrice: offerPrice,
         productId: id,
+        address: address,
         totalamount: `${
           offerPrice
             ? (

@@ -1,53 +1,19 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
 import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native'
-import uuid from 'react-native-uuid'
-import { doc, setDoc } from 'firebase/firestore/lite'
-import { db } from '../../../../firebase'
-import { userStore } from '../../../store/userStore'
 
 const { height, width } = Dimensions.get('window')
 
 interface IFlowOneProps {
   uid: string
   steps: number
-  setUid: React.Dispatch<React.SetStateAction<string>>
-  color: string
-  setAnimationUpdated: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const FlowOne: React.FC<IFlowOneProps> = ({ uid, steps, setUid, color, setAnimationUpdated }) => {
+const FlowOne: React.FC<IFlowOneProps> = ({ uid, steps }) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
   const [webviewLoading, setWebviewLoading] = useState(true)
-  const isMounted = useRef(false)
-  const avatar = userStore((state) => state.avatar)
-
-  const handleSetUid = useCallback(async () => {
-    if (!isMounted.current) {
-      try {
-        isMounted.current = true
-        setAnimationUpdated(false)
-        const tempUid = uuid.v4().toString()
-        const docRef = doc(db, 'ModelsMidlevel', tempUid)
-        const docData: any = { uid: tempUid, skin: avatar?.skinTone, gender: avatar?.gender }
-        if (color) {
-          docData.color = color
-          // docData.colorAnimationFinished = true
-        }
-        await setDoc(docRef, docData)
-
-        setUid(tempUid)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    handleSetUid()
-  }, [handleSetUid])
 
   const handleLayout = () => {
     if (elementRef.current) {
@@ -62,7 +28,7 @@ const FlowOne: React.FC<IFlowOneProps> = ({ uid, steps, setUid, color, setAnimat
     <View
       style={{
         width: width / 1,
-        height: steps === 5 ? height / 1 : height / 1.3,
+        height: steps === 5 ? height / 1 : height / 1.2,
         flex: steps === 5 ? 5 : 1,
         zIndex: -100,
         backgroundColor: 'transparent',

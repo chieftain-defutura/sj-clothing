@@ -27,7 +27,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import SelectCountryTooltip from '../../Tooltips/MidLevel/SelectCountry'
 import SelectSizeTooltip from '../../Tooltips/MidLevel/SelectSize'
 import SelectColorTooltip from '../../Tooltips/MidLevel/SelectColor'
-import FinalViewTooltip from '../../Tooltips/MidLevel/FinalViewTooltip'
 
 const { width } = Dimensions.get('window')
 
@@ -173,6 +172,26 @@ const Navigation: React.FC<INavigation> = ({
     }
   })
 
+  const handleIncrease = () => {
+    let currentField
+    switch (steps) {
+      case 1:
+        currentField = isSelectedStyle
+        break
+      case 2:
+        currentField = country
+        break
+      case 3:
+        currentField = sizeVarient
+        break
+      case 4:
+        currentField = isColor
+        break
+      default:
+        currentField = 'any'
+    }
+  }
+
   return (
     <Animated.View
       style={[
@@ -256,11 +275,10 @@ const Navigation: React.FC<INavigation> = ({
             activeOpacity={0.6}
             underlayColor='rgba(70, 45, 133, 0.2)'
             style={{
-              opacity: steps === 1 ? 0 : !animationUpdated ? 0.5 : 1,
+              opacity: steps === 1 ? 0 : 1,
               borderRadius: 20,
               padding: 6,
             }}
-            disabled={!animationUpdated}
           >
             <Animated.View>
               <ArrowCircleLeft width={24} height={24} />
@@ -301,6 +319,7 @@ const Navigation: React.FC<INavigation> = ({
                   }}
                 >
                   {steps === 1 && `${t(isSelectedStyle ? isSelectedStyle : 'Select Style')}`}
+
                   {steps === 2 && `${t(country ? country : 'Select Country')}`}
                   {steps === 3 &&
                     `${t(
@@ -309,7 +328,13 @@ const Navigation: React.FC<INavigation> = ({
                         : 'Select Size',
                     )}`}
                   {steps === 4 && `${t(isColor ? isColor : 'Select Color')}`}
-                  {steps === 5 && `${t('Add more')}`}
+                  {steps === 5 && (
+                    <TouchableOpacity disabled={!animationUpdated}>
+                      <Text
+                        style={{ opacity: !animationUpdated ? 0.8 : 1, color: '#462D85' }}
+                      >{`${t('Add more')}`}</Text>
+                    </TouchableOpacity>
+                  )}
                 </Text>
                 {steps === 1 && !isSelectedStyle && <DropDownArrowIcon />}
                 {steps === 2 && !country && <DropDownArrowIcon />}
@@ -369,16 +394,11 @@ const Navigation: React.FC<INavigation> = ({
               )}
 
               <View style={[{ position: 'absolute', top: 560, left: 70 }, styles.errorText]}>
-                {steps === 1 && (
-                  <View>
-                    {!animationUpdated && (
-                      <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
-                        Please wait till avatar loads
-                      </TextAnimation>
-                    )}
-                  </View>
+                {!animationUpdated && (
+                  <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+                    Please wait till avatar loads
+                  </TextAnimation>
                 )}
-
                 {/* {steps === 4 && isColor && !colorAnimationUpdate && (
                   <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
                     Please wait till avatar loads
@@ -400,8 +420,7 @@ const Navigation: React.FC<INavigation> = ({
                 }}
                 activeOpacity={0.6}
                 underlayColor='rgba(70, 45, 133, 0.2)'
-                style={[styles.Dropdown, { opacity: !animationUpdated ? 0.5 : 1 }]}
-                disabled={!animationUpdated}
+                style={styles.Dropdown}
               >
                 <View>
                   <Text
@@ -423,8 +442,7 @@ const Navigation: React.FC<INavigation> = ({
                 }}
                 activeOpacity={0.6}
                 underlayColor='rgba(70, 45, 133, 0.2)'
-                style={[styles.Dropdown, { opacity: !animationUpdated ? 0.5 : 1 }]}
-                disabled={!animationUpdated}
+                style={styles.Dropdown}
               >
                 <View>
                   <Text
@@ -437,6 +455,7 @@ const Navigation: React.FC<INavigation> = ({
               </TouchableHighlight>
             </View>
           )}
+
           {steps !== 5 && steps !== 6 && (
             <TouchableHighlight
               onPress={handleIncreaseSteps}

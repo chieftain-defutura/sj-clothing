@@ -1,5 +1,5 @@
 import uuid from 'react-native-uuid'
-import { Dimensions, View, Animated, Easing, Button } from 'react-native'
+import { Dimensions, View, Animated, Easing } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSharedValue, withSequence, withTiming } from 'react-native-reanimated'
 import { collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
@@ -27,6 +27,7 @@ import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 import AlertModal from '../../screens/Modals/AlertModal'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Haptics from 'expo-haptics'
+import { LinearGradient } from 'expo-linear-gradient'
 import { Audio } from 'expo-av'
 import MidLevelTooltip from '../Tooltips/MidLevelTooltip'
 import { MidlevelStore } from '../../store/midlevelStore'
@@ -34,10 +35,12 @@ import FlowOne from './MidlevelWebView/FlowOne'
 import FlowTwo from './MidlevelWebView/FlowTwo'
 import FlowThree from './MidlevelWebView/FlowThree'
 import AddImageAddTextTooltip from '../Tooltips/MidLevel/AddImageAddTextTooltip'
+import { gradientOpacityColors } from '../../styles/theme'
+import FinalProduct from './FinalProduct'
 
 const { width } = Dimensions.get('window')
 
-const Medium = () => {
+const AddPost = () => {
   const isMounted = useRef(false)
   const slideValue = useSharedValue(0)
   const avatar = userStore((state) => state.avatar)
@@ -125,6 +128,10 @@ const Medium = () => {
 
   const shakeAnimation = useRef(new Animated.Value(0)).current
 
+  //FinalProduct
+
+  const [isGiftVideo, setGiftVideo] = useState<any>(null)
+
   const shake = () => {
     Animated.sequence([
       Animated.timing(shakeAnimation, {
@@ -164,11 +171,7 @@ const Medium = () => {
       snapshot.docs.forEach((doc) => {
         if (doc.data()['animationFinished']) {
           setAnimationUpdated(doc.data()['animationFinished'])
-          console.log('FLOW1', doc.data()['animationFinished'])
-          if (!isMounted.current) {
-            isMounted.current = true
-            playSound(0.2)
-          }
+          playSound()
         }
       })
     })
@@ -192,6 +195,7 @@ const Medium = () => {
       snapshot.docs.forEach((doc) => {
         if (doc.data()['colorAnimationFinished']) {
           setColorAnimationUpdated(doc.data()['colorAnimationFinished'])
+          // playSound()
         }
 
         console.log('doc.data()[colorAnimationFinished]', doc.data()['colorAnimationFinished'])
@@ -213,19 +217,9 @@ const Medium = () => {
     }
   }, [imageApplied])
 
-  // const playSound = async () => {
-  //   try {
-  //     const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
-  //     await sound.playAsync()
-  //   } catch (error) {
-  //     console.log('sound error:', error)
-  //   }
-  // }
-
-  const playSound = async (volume: any) => {
+  const playSound = async () => {
     try {
       const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
-      await sound.setVolumeAsync(volume) // Set volume between 0 (silent) and 1 (full volume)
       await sound.playAsync()
     } catch (error) {
       console.log('sound error:', error)
@@ -374,6 +368,22 @@ const Medium = () => {
     isShowToolTipAddImageAndAddText()
   }, [isShowToolTipAddImageAndAddText])
 
+  const handleSetUid = useCallback(async () => {
+    if (midlevelData.uid) return
+    if (!isMounted.current) {
+      try {
+        isMounted.current = true
+        const tempUid = uuid.v4().toString()
+        const docRef = doc(db, 'ModelsMidlevel', tempUid)
+        await setDoc(docRef, { uid: tempUid, skin: avatar?.skinTone, gender: avatar?.gender })
+
+        setUid(tempUid)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }, [])
+
   const handleUpdateColor = useCallback(async () => {
     if (!isColor || !uid) return
     try {
@@ -385,8 +395,9 @@ const Medium = () => {
   }, [isColor])
 
   useEffect(() => {
+    handleSetUid()
     handleUpdateColor()
-  }, [handleUpdateColor])
+  }, [handleSetUid, handleUpdateColor])
 
   useEffect(() => {
     const Filtereddata = data?.find(
@@ -439,217 +450,214 @@ const Medium = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      {!openCheckout && (
-        <View
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            position: 'relative',
-            justifyContent: 'space-between',
-            zIndex: 1,
-          }}
-        >
-          <Navigation
-            warning={warning}
-            setImageOrText={setImageOrText}
-            steps={isSteps}
-            isDone={isDone}
-            isColor={isColor}
-            setDone={setDone}
-            dropDown={isDropDown}
-            slideValue={slideValue}
-            country={isSize.country}
-            setDropDown={setDropDown}
-            isOpenDesign={isOpenDesign}
-            setOpenDesign={setOpenDesign}
-            sizeVarient={isSize.sizeVarient[0]}
-            isSelectedStyle={isSelectedStyle}
-            handleDecreaseSteps={handleDecreaseSteps}
-            handleIncreaseSteps={handleIncreaseSteps}
-            setImageApplied={setImageApplied}
-            animationUpdated={animationUpdated}
-            colorAnimationUpdate={colorAnimationUpdated}
-            shake={shake}
-            shakeAnimation={shakeAnimation}
-          />
-
-          <View style={{ zIndex: 100, width: width, position: 'absolute', top: 0, flex: 1 }}>
-            {isSteps === 1 && data && isDropDown && (
-              <SelectStyle
-                data={data}
-                setDropDown={setDropDown}
-                isSelectedStyle={isSelectedStyle}
-                setSelectedStyle={setSelectedStyle}
-              />
-            )}
-            {isSteps === 2 && isDropDown && FilteredData && (
-              <SelectCountry
-                data={FilteredData}
-                isSize={isSize}
-                setSize={setSize}
-                handleIncreaseSteps={handleIncreaseSteps}
-                setDropDown={setDropDown}
-              />
-            )}
-            {isSteps === 3 && isDropDown && FilteredData && (
-              <SelectSize
-                data={FilteredData}
-                isDropDown={isDropDown}
-                isSize={isSize}
-                setSize={setSize}
-                handleIncreaseSteps={handleIncreaseSteps}
-                setDropDown={setDropDown}
-              />
-            )}
-            {isSteps === 4 && isDropDown && FilteredData && (
-              <SelectColor
-                data={FilteredData}
-                isColor={isColor}
-                isDropDown={isDropDown}
-                setDropDown={setDropDown}
-                setColor={setColor}
-                setColorName={setColorName}
-                isColorName={isColorName}
-              />
-            )}
-            {isSteps === 6 && isDropDown && FilteredData && (
-              <AddImageOrText
-                data={FilteredData}
-                isDropDown={isDropDown}
-                setDropDown={setDropDown}
-                isImageOrText={isImageOrText}
-                setImageOrText={setImageOrText}
-                setOpenDesign={setOpenDesign}
-              />
-            )}
-            {isSteps === 6 && (
-              <AddImageAddTextTooltip
-                isVisible={addImageAndAddTextToolTip}
-                onClose={() => {
-                  setAddImageAndAddTextToolTip(false)
-                }}
-              />
-            )}
-          </View>
-
+      <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+        {!openCheckout && (
           <View
             style={{
-              flex: isSteps === 5 ? 9 : 1,
-              zIndex: -100,
-              position: isSteps === 5 ? 'relative' : 'absolute',
-              bottom: 0,
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              justifyContent: 'space-between',
+              zIndex: 1,
             }}
           >
-            {isSteps === 5 ? (
-              <FlowTwo
-                color={isColor}
-                isImageOrText={tempIsImageOrText}
-                designs={designs}
-                imageApplied={imageApplied}
-                setAnimationUpdated={setAnimationUpdated}
-              />
-            ) : isSteps === 6 ? (
-              <FlowThree
-                color={isColor}
-                isImageOrText={isImageOrText}
-                designs={designs}
-                setAnimationUpdated={setAnimationUpdated}
-              />
-            ) : (
-              <FlowOne
-                uid={uid}
-                steps={isSteps}
-                setUid={setUid}
-                color={isColor}
-                setAnimationUpdated={setAnimationUpdated}
+            <Navigation
+              warning={warning}
+              setImageOrText={setImageOrText}
+              steps={isSteps}
+              isDone={isDone}
+              isColor={isColor}
+              setDone={setDone}
+              dropDown={isDropDown}
+              slideValue={slideValue}
+              country={isSize.country}
+              setDropDown={setDropDown}
+              isOpenDesign={isOpenDesign}
+              setOpenDesign={setOpenDesign}
+              sizeVarient={isSize.sizeVarient[0]}
+              isSelectedStyle={isSelectedStyle}
+              handleDecreaseSteps={handleDecreaseSteps}
+              handleIncreaseSteps={handleIncreaseSteps}
+              setImageApplied={setImageApplied}
+              animationUpdated={animationUpdated}
+              colorAnimationUpdate={colorAnimationUpdated}
+              shake={shake}
+              shakeAnimation={shakeAnimation}
+            />
+
+            <View style={{ zIndex: 100, width: width, position: 'absolute', top: 0, flex: 1 }}>
+              {isSteps === 1 && data && isDropDown && (
+                <SelectStyle
+                  data={data}
+                  setDropDown={setDropDown}
+                  isSelectedStyle={isSelectedStyle}
+                  setSelectedStyle={setSelectedStyle}
+                />
+              )}
+              {isSteps === 2 && isDropDown && FilteredData && (
+                <SelectCountry
+                  data={FilteredData}
+                  isSize={isSize}
+                  setSize={setSize}
+                  handleIncreaseSteps={handleIncreaseSteps}
+                  setDropDown={setDropDown}
+                />
+              )}
+              {isSteps === 3 && isDropDown && FilteredData && (
+                <SelectSize
+                  data={FilteredData}
+                  isDropDown={isDropDown}
+                  isSize={isSize}
+                  setSize={setSize}
+                  handleIncreaseSteps={handleIncreaseSteps}
+                  setDropDown={setDropDown}
+                />
+              )}
+              {isSteps === 4 && isDropDown && FilteredData && (
+                <SelectColor
+                  data={FilteredData}
+                  isColor={isColor}
+                  isDropDown={isDropDown}
+                  setDropDown={setDropDown}
+                  setColor={setColor}
+                  setColorName={setColorName}
+                  isColorName={isColorName}
+                />
+              )}
+              {isSteps === 6 && isDropDown && FilteredData && (
+                <AddImageOrText
+                  data={FilteredData}
+                  isDropDown={isDropDown}
+                  setDropDown={setDropDown}
+                  isImageOrText={isImageOrText}
+                  setImageOrText={setImageOrText}
+                  setOpenDesign={setOpenDesign}
+                />
+              )}
+              {isSteps === 6 && (
+                <AddImageAddTextTooltip
+                  isVisible={addImageAndAddTextToolTip}
+                  onClose={() => {
+                    setAddImageAndAddTextToolTip(false)
+                  }}
+                />
+              )}
+            </View>
+
+            <View
+              style={{
+                flex: isSteps === 5 ? 9 : 1,
+                zIndex: -100,
+                position: isSteps === 5 ? 'relative' : 'absolute',
+                bottom: 0,
+              }}
+            >
+              {isSteps === 5 ? (
+                <FlowTwo
+                  color={isColor}
+                  isImageOrText={tempIsImageOrText}
+                  designs={designs}
+                  imageApplied={imageApplied}
+                  setAnimationUpdated={setAnimationUpdated}
+                />
+              ) : isSteps === 6 ? (
+                <FlowThree color={isColor} isImageOrText={isImageOrText} designs={designs} />
+              ) : (
+                <FlowOne uid={uid} steps={isSteps} />
+              )}
+            </View>
+            {isSteps === 5 && FilteredData && (
+              // <FinalView
+              //   color={isColor}
+              //   colorName={isColorName}
+              //   data={FilteredData}
+              //   focus={focus}
+              //   handleSubmit={handleSubmit}
+              //   isSize={isSize}
+              //   setFocus={setFocus}
+              //   setSize={setSize}
+              //   style={isSelectedStyle}
+              //   isImageOrText={isImageOrText}
+              // />
+              <FinalProduct
+                isGiftVideo={isGiftVideo}
+                setGiftVideo={setGiftVideo}
+                Data={FilteredData.description}
+                handleSubmit={handleSubmit}
               />
             )}
-          </View>
-          {isSteps === 5 && FilteredData && (
-            <FinalView
-              color={isColor}
-              colorName={isColorName}
-              data={FilteredData}
-              focus={focus}
-              handleSubmit={handleSubmit}
-              isSize={isSize}
-              setFocus={setFocus}
-              setSize={setSize}
-              style={isSelectedStyle}
-              isImageOrText={isImageOrText}
-            />
-          )}
-          {isSteps === 6 && Design && isOpenDesign && !isDone && (
-            <SelectDesign
-              color={isColor}
-              isImageOrText={isImageOrText}
-              designs={Design}
-              setOpenDesign={setOpenDesign}
-              isDone={isDone}
-              setDone={setDone}
-              setImageOrText={setImageOrText}
-            />
-          )}
-          {login && (
-            <LoginModal
-              onForgotClick={() => {
-                setForgotmail(true), setLogin(false)
-              }}
-              onSignClick={() => {
-                setSignUp(true), setLogin(false)
-              }}
-              onClose={() => setLogin(false)}
-              setOpenCheckout={setOpenCheckout}
-            />
-          )}
+            {isSteps === 6 && Design && isOpenDesign && !isDone && (
+              <SelectDesign
+                color={isColor}
+                isImageOrText={isImageOrText}
+                designs={Design}
+                setOpenDesign={setOpenDesign}
+                isDone={isDone}
+                setDone={setDone}
+                setImageOrText={setImageOrText}
+              />
+            )}
+            {login && (
+              <LoginModal
+                onForgotClick={() => {
+                  setForgotmail(true), setLogin(false)
+                }}
+                onSignClick={() => {
+                  setSignUp(true), setLogin(false)
+                }}
+                onClose={() => setLogin(false)}
+                setOpenCheckout={setOpenCheckout}
+              />
+            )}
 
-          {signUp && (
-            <SignupModal
-              onLoginClick={() => {
-                setLogin(true), setSignUp(false)
-              }}
-              onClose={() => setSignUp(false)}
-              setOpenCheckout={setOpenCheckout}
-            />
-          )}
-          {forgotMail && (
-            <ForgotMail
-              onLoginClick={() => {
-                setLogin(true), setForgotmail(false)
-              }}
-              onClose={() => setForgotmail(false)}
-            />
-          )}
-          {openModal && <AlertModal />}
-        </View>
-      )}
-      {openCheckout && FilteredData && (
-        // <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
-        <Checkout
-          setOpenCheckout={setOpenCheckout}
-          color={isColor}
-          textAndImage={isImageOrText}
-          description={FilteredData?.description}
-          gender={avatar.gender as string}
-          offerPrice={FilteredData?.offerPrice}
-          price={FilteredData?.normalPrice}
-          productImage={FilteredData?.productImage}
-          productName={FilteredData?.productName}
-          size={{ country: isSize.country, sizeVarient: isSize.sizeVarient[0] }}
-          style={isSelectedStyle}
-          id={FilteredData?.id}
-          type='MidLevel'
+            {signUp && (
+              <SignupModal
+                onLoginClick={() => {
+                  setLogin(true), setSignUp(false)
+                }}
+                onClose={() => setSignUp(false)}
+                setOpenCheckout={setOpenCheckout}
+              />
+            )}
+            {forgotMail && (
+              <ForgotMail
+                onLoginClick={() => {
+                  setLogin(true), setForgotmail(false)
+                }}
+                onClose={() => setForgotmail(false)}
+              />
+            )}
+            {openModal && <AlertModal />}
+          </View>
+        )}
+        {openCheckout && FilteredData && (
+          // <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+          <Checkout
+            setOpenCheckout={setOpenCheckout}
+            color={isColor}
+            textAndImage={isImageOrText}
+            description={FilteredData?.description}
+            gender={avatar.gender as string}
+            offerPrice={FilteredData?.offerPrice}
+            price={FilteredData?.normalPrice}
+            productImage={FilteredData?.productImage}
+            productName={FilteredData?.productName}
+            size={{ country: isSize.country, sizeVarient: isSize.sizeVarient[0] }}
+            style={isSelectedStyle}
+            id={FilteredData?.id}
+            type='MidLevel'
+          />
+        )}
+        <MidLevelTooltip
+          isVisible={toolTip}
+          onClose={() => {
+            showToolTip(false)
+          }}
         />
-      )}
-      <MidLevelTooltip
-        isVisible={toolTip}
-        onClose={() => {
-          showToolTip(false)
-        }}
-      />
+      </LinearGradient>
     </View>
   )
 }
 
-export default Medium
+export default AddPost

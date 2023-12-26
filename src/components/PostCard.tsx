@@ -29,6 +29,8 @@ import Animated, {
   LightSpeedInRight,
   LightSpeedOutRight,
 } from 'react-native-reanimated'
+import AuthNavigate from '../screens/AuthNavigate'
+import { userStore } from '../store/userStore'
 
 const { width, height } = Dimensions.get('window')
 
@@ -44,8 +46,10 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
   const [isFireActive, setIsFireActive] = useState(false)
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [isHeartActive, setIsHeartActive] = useState(false)
+  const [focus, setFocus] = useState(false)
   const tabHeight = 120
   const reelsHeight = height - tabHeight
+  const user = userStore((state) => state.user)
 
   const handleIconPress = (iconName: string) => {
     setActiveIcon(iconName)
@@ -55,6 +59,18 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
       setIsFireActive((prev) => !prev)
     } else if (iconName === 'heart') {
       setIsHeartActive((prev) => !prev)
+    }
+  }
+
+  const onClose = () => {
+    setFocus(false)
+  }
+
+  const onSubmit = async () => {
+    if (!user) {
+      console.log('user not found')
+      await setFocus(true)
+      setSubscriptionModal(true)
     }
   }
 
@@ -111,151 +127,158 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
 
   return (
     <LinearGradient colors={gradientColors} style={{ borderRadius: 10 }}>
-      <PostCardWrapper>
-        <SwiperFlatList
-          data={reelsData}
-          vertical
-          renderAll={true}
-          renderItem={({ item }) => (
-            <View
-              key={item.id}
-              style={{ height: reelsHeight - 12, flex: 1, borderRadius: 10, position: 'relative' }}
-            >
-              <SwiperFlatList
-                data={item.images}
-                horizontal
-                index={currentIndex}
-                onChangeIndex={({ index }) => setCurrentIndex(index)}
-                showPagination={false}
-                renderItem={({ item: image }) => (
-                  // <LinearGradient colors={gradientColors} style={{ borderRadius: 10 }}>
-                  <TouchableOpacity
-                    style={styles.container}
-                    onPress={() => navigation.navigate('PostDetails')}
-                  >
-                    <Image
-                      source={image}
-                      style={{
-                        height: reelsHeight - 150,
-                        width: width - 16,
-                        resizeMode: 'cover',
-                      }}
-                      alt='postCard-reels-img'
-                    />
-                    <LinearGradient
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 0, y: 1 }}
-                      colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.38)']}
-                      style={styles.linearGradient}
-                    ></LinearGradient>
-                  </TouchableOpacity>
-                  // </LinearGradient>
-                )}
-              />
-              <SliderCountContent>
-                <SliderNumber>
-                  {currentIndex + 1}/{item.images.length}
-                </SliderNumber>
-              </SliderCountContent>
-
-              <CardContent>
-                <IconPressable>
-                  <ContentView
-                    onPress={() => handleIconPress('like')}
-                    onPressIn={handlePressIn}
-                    onPressOut={handlePressOut}
-                    style={dynamicLikeIconStyle}
-                  >
-                    {activeIcon === 'like' ? (
-                      isLiked ? (
-                        <IsLikeIcon width={20} height={20} />
-                      ) : (
-                        <IsLikeIcon width={20} height={20} />
-                      )
-                    ) : (
-                      <Like width={20} height={20} />
-                    )}
-                  </ContentView>
-                  <LikeText>1k</LikeText>
-                </IconPressable>
-
-                <IconPressable>
-                  <ContentView
-                    onPress={() => handleIconPress('fire')}
-                    onPressIn={handlePressIn}
-                    onPressOut={handlePressOut}
-                    style={dynamicFireIconStyle}
-                  >
-                    {activeIcon === 'fire' ? (
-                      isFireActive ? (
-                        <IsFireIcon width={20} height={20} />
-                      ) : (
-                        <IsFireIcon width={20} height={20} />
-                      )
-                    ) : (
-                      <Fire width={20} height={20} />
-                    )}
-                  </ContentView>
-                  <LikeText>1.2k</LikeText>
-                </IconPressable>
-                <IconPressable>
-                  <ContentView
-                    onPress={() => handleIconPress('heart')}
-                    onPressIn={handlePressIn}
-                    onPressOut={handlePressOut}
-                    style={dynamicHeartIconStyle}
-                  >
-                    {activeIcon === 'heart' ? (
-                      isHeartActive ? (
-                        <IsHeartIcon width={20} height={20} />
-                      ) : (
-                        <IsHeartIcon width={20} height={20} />
-                      )
-                    ) : (
-                      <Heart width={20} height={20} />
-                    )}
-                  </ContentView>
-                  <LikeText>1.5k</LikeText>
-                </IconPressable>
-              </CardContent>
-              <Animated.View
-                entering={LightSpeedInRight.duration(1000).delay(200)}
-                exiting={LightSpeedOutRight}
+      <AuthNavigate focus={focus} onClose={onClose}>
+        <PostCardWrapper>
+          <SwiperFlatList
+            data={reelsData}
+            vertical
+            renderAll={true}
+            renderItem={({ item }) => (
+              <View
+                key={item.id}
+                style={{
+                  height: reelsHeight - 12,
+                  flex: 1,
+                  borderRadius: 10,
+                  position: 'relative',
+                }}
               >
-                <PostCardContent>
-                  <FlexContent>
-                    <TextHead>{item.text}</TextHead>
-                    <Pressable onPress={share}>
-                      <SaveIcon width={24} height={24} />
-                    </Pressable>
-                  </FlexContent>
-                  <Content>
-                    <PostCardText>{item.title}</PostCardText>
-                    <PostDescription>{item.description}</PostDescription>
-                  </Content>
-                </PostCardContent>
-              </Animated.View>
-            </View>
-          )}
-        />
-        <Animated.View entering={FlipInEasyY.duration(800).delay(200)} exiting={FlipOutEasyY}>
-          <PlusIconStyle onPress={openSubscriptionModal}>
-            <LinearGradient
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              colors={['#462D85', '#DB00FF']}
-              style={styles.plusIconGradientColor}
-            >
-              <HomePlusIcon width={20} height={20} />
-            </LinearGradient>
-          </PlusIconStyle>
-        </Animated.View>
-        <SubscriptionModal
-          isVisible={isSubscriptionModal}
-          onClose={closeSubscriptionModal}
-          navigation={navigation}
-        />
-      </PostCardWrapper>
+                <SwiperFlatList
+                  data={item.images}
+                  horizontal
+                  index={currentIndex}
+                  onChangeIndex={({ index }) => setCurrentIndex(index)}
+                  showPagination={false}
+                  renderItem={({ item: image }) => (
+                    // <LinearGradient colors={gradientColors} style={{ borderRadius: 10 }}>
+                    <TouchableOpacity
+                      style={styles.container}
+                      onPress={() => navigation.navigate('PostDetails')}
+                    >
+                      <Image
+                        source={image}
+                        style={{
+                          height: reelsHeight - 150,
+                          width: width - 16,
+                          resizeMode: 'cover',
+                        }}
+                        alt='postCard-reels-img'
+                      />
+                      <LinearGradient
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 0, y: 1 }}
+                        colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.38)']}
+                        style={styles.linearGradient}
+                      ></LinearGradient>
+                    </TouchableOpacity>
+                    // </LinearGradient>
+                  )}
+                />
+                <SliderCountContent>
+                  <SliderNumber>
+                    {currentIndex + 1}/{item.images.length}
+                  </SliderNumber>
+                </SliderCountContent>
+
+                <CardContent>
+                  <IconPressable>
+                    <ContentView
+                      onPress={() => handleIconPress('like')}
+                      onPressIn={handlePressIn}
+                      onPressOut={handlePressOut}
+                      style={dynamicLikeIconStyle}
+                    >
+                      {activeIcon === 'like' ? (
+                        isLiked ? (
+                          <IsLikeIcon width={20} height={20} />
+                        ) : (
+                          <IsLikeIcon width={20} height={20} />
+                        )
+                      ) : (
+                        <Like width={20} height={20} />
+                      )}
+                    </ContentView>
+                    <LikeText>1k</LikeText>
+                  </IconPressable>
+
+                  <IconPressable>
+                    <ContentView
+                      onPress={() => handleIconPress('fire')}
+                      onPressIn={handlePressIn}
+                      onPressOut={handlePressOut}
+                      style={dynamicFireIconStyle}
+                    >
+                      {activeIcon === 'fire' ? (
+                        isFireActive ? (
+                          <IsFireIcon width={20} height={20} />
+                        ) : (
+                          <IsFireIcon width={20} height={20} />
+                        )
+                      ) : (
+                        <Fire width={20} height={20} />
+                      )}
+                    </ContentView>
+                    <LikeText>1.2k</LikeText>
+                  </IconPressable>
+                  <IconPressable>
+                    <ContentView
+                      onPress={() => handleIconPress('heart')}
+                      onPressIn={handlePressIn}
+                      onPressOut={handlePressOut}
+                      style={dynamicHeartIconStyle}
+                    >
+                      {activeIcon === 'heart' ? (
+                        isHeartActive ? (
+                          <IsHeartIcon width={20} height={20} />
+                        ) : (
+                          <IsHeartIcon width={20} height={20} />
+                        )
+                      ) : (
+                        <Heart width={20} height={20} />
+                      )}
+                    </ContentView>
+                    <LikeText>1.5k</LikeText>
+                  </IconPressable>
+                </CardContent>
+                <Animated.View
+                  entering={LightSpeedInRight.duration(1000).delay(200)}
+                  exiting={LightSpeedOutRight}
+                >
+                  <PostCardContent>
+                    <FlexContent>
+                      <TextHead>{item.text}</TextHead>
+                      <Pressable onPress={share}>
+                        <SaveIcon width={24} height={24} />
+                      </Pressable>
+                    </FlexContent>
+                    <Content>
+                      <PostCardText>{item.title}</PostCardText>
+                      <PostDescription>{item.description}</PostDescription>
+                    </Content>
+                  </PostCardContent>
+                </Animated.View>
+              </View>
+            )}
+          />
+          <Animated.View entering={FlipInEasyY.duration(800).delay(200)} exiting={FlipOutEasyY}>
+            <PlusIconStyle onPress={onSubmit}>
+              <LinearGradient
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                colors={['#462D85', '#DB00FF']}
+                style={styles.plusIconGradientColor}
+              >
+                <HomePlusIcon width={20} height={20} />
+              </LinearGradient>
+            </PlusIconStyle>
+          </Animated.View>
+          <SubscriptionModal
+            isVisible={isSubscriptionModal}
+            onClose={closeSubscriptionModal}
+            navigation={navigation}
+          />
+        </PostCardWrapper>
+      </AuthNavigate>
     </LinearGradient>
   )
 }

@@ -258,7 +258,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                 variant='primary'
                 text='Pay now'
                 onPress={() => {
-                  navigation.navigate('PostCreation'), onClose()
+                  navigation.navigate('AddPost'), onClose()
                 }}
                 fontFamily='Arvo-Regular'
                 buttonStyle={[styles.submitBtn]}

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Modal,
   TouchableOpacity,
@@ -19,10 +19,9 @@ import DownArrow from '../assets/icons/DownArrow'
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
 import * as ImagePicker from 'expo-image-picker'
 import { Formik } from 'formik'
-import { IReturns } from '../constant/types'
 import { db, storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
-import { Timestamp, collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
+import { Timestamp, doc, setDoc } from 'firebase/firestore/lite'
 import { userStore } from '../store/userStore'
 
 const { width, height } = Dimensions.get('window')
@@ -141,6 +140,7 @@ const RefundModal: React.FC<IRefund> = ({ closeModal }) => {
         issues: Issue,
         Image: url,
         status: 'pending',
+        orderId: '',
       })
     } catch (e) {
       console.log('error', e)

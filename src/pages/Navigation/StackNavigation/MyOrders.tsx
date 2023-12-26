@@ -48,7 +48,6 @@ const MyOrders: React.FC<IMyOrders> = ({}) => {
   const [openReview, setOpenReview] = useState(false)
   const [orderData, setOrderData] = useState<IOrder[]>([])
   const [openTrackOrder, setOpenTrackOrder] = useState(false)
-  const [openModal, setOpenModal] = useState(false)
   const navigation = useNavigation()
 
   const getData = useCallback(async () => {
@@ -230,6 +229,24 @@ const OrderCard: React.FC<IOrderCard> = ({
                 <ChevronLeft width={16} height={16} />
               </Pressable> */}
             </ProductWrapper>
+            <Pressable
+              onPress={() => {
+                setOpenReview(true), setOrderId(data.id)
+              }}
+            >
+              <StarContainer>
+                {StartIcons.map((star, index) => (
+                  <View key={index}>
+                    {index < Number(ratings?.ratings) ? (
+                      <star.startActive width={24} height={24} />
+                    ) : (
+                      <star.startInActive width={24} height={24} />
+                    )}
+                  </View>
+                ))}
+              </StarContainer>
+              <StatusText allowFontScaling={false}>Write a review</StatusText>
+            </Pressable>
             <TouchableOpacity
               onPress={handleRefundOpen}
               style={{

@@ -19,7 +19,6 @@ import { db } from '../../../firebase'
 import { IPremiumData } from '../../constant/types'
 import { userStore } from '../../store/userStore'
 import AuthNavigate from '../../screens/AuthNavigate'
-import { COLORS } from '../../styles/theme'
 import InfoIcon from '../../assets/icons/MidlevelIcon/infoIcon'
 // import { Audio } from 'expo-av'
 
