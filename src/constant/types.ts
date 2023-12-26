@@ -244,4 +244,21 @@ export interface IRefund {
   Image: string
   status: 'pending'
   orderId: string
+  refundStatus: {
+    orderReturned: {
+      createdAt: Timestamp
+      description: string
+      status: boolean
+    }
+    paymentInitiated: {
+      createdAt: Timestamp
+      description: string
+      status: boolean
+    }
+    paymenyCompleted: {
+      createdAt: Timestamp
+      description: string
+      status: boolean
+    }
+  }
 }

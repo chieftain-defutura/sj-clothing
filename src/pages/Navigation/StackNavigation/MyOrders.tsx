@@ -296,6 +296,7 @@ const OrderCard: React.FC<IOrderCard> = ({
                   borderWidth: 1,
                   marginTop: 12,
                   borderRadius: 4,
+                  width: width / 6.2,
                 }}
               >
                 <View
