@@ -113,7 +113,7 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({
       console.log(error)
     }
     // }
-  }, [color, isImageOrText, designs])
+  }, [color, imageApplied, isImageOrText, designs])
 
   useEffect(() => {
     handleSetUid()
