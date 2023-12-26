@@ -100,6 +100,7 @@ const Navigation: React.FC<INavigation> = ({
   const [toolTipCountry, setTooltipCountry] = useState(false)
   const [toolTipSize, setTooltipSize] = useState(false)
   const [toolTipColor, setToolTipColor] = useState(false)
+  const [saving, setSaving] = useState(false)
 
   console.log('animationUpdated', animationUpdated)
 
@@ -215,10 +216,14 @@ const Navigation: React.FC<INavigation> = ({
             </Animated.View>
           </Pressable>
           <TouchableHighlight
+            disabled={saving}
             onPress={() => {
-              setOpenDesign(false)
-              handleDecreaseSteps()
               setImageApplied(true)
+              setSaving(true)
+              setTimeout(() => {
+                setOpenDesign(false)
+                handleDecreaseSteps()
+              }, 2000)
             }}
             activeOpacity={0.6}
             underlayColor='rgba(70, 45, 133, 0.2)'
@@ -233,7 +238,7 @@ const Navigation: React.FC<INavigation> = ({
                   borderRadius: 20,
                 }}
               >
-                {t('Done')}
+                {saving ? 'Saving...' : t('Done')}
               </Text>
             </View>
           </TouchableHighlight>

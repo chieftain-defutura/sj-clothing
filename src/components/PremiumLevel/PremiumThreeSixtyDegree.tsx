@@ -97,7 +97,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
       exiting={SlideOutRight.duration(500).delay(200)}
     >
       <AuthNavigate focus={focus} onClose={onClose}>
-        <View style={styles.linearGradient}>
+        <View style={[styles.linearGradient]}>
           <FlexContent>
             <TouchableHighlight
               onPress={() => {
@@ -116,11 +116,12 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
           </FlexContent>
           <View
             style={{
-              width: width,
-              height: height / 1.6,
+              // width: width,
+              // height: height / 1.6,
               backgroundColor: 'transparent',
               marginTop: 18,
               position: 'relative',
+              flex: 1,
             }}
             onLayout={(event) => handleLayout()}
             ref={elementRef}
@@ -181,8 +182,10 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
             style={{
               width: '100%',
               paddingHorizontal: 18,
-              position: 'absolute',
-              bottom: 25,
+              paddingTop: 10,
+              marginBottom: Platform.OS === 'ios' ? 62 : 0,
+              // position: 'absolute',
+              // bottom: 25,
             }}
             onPress={handleSubmit}
           />
@@ -193,7 +196,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
 }
 
 const FlexContent = styled.View`
-  margin-left: 22px;
+  margin-left: 0px;
 `
 
 const IconHoverPressable = styled.View`

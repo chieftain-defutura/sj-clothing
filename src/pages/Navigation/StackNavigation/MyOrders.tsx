@@ -4,7 +4,7 @@ import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { View, Pressable, Dimensions, TouchableOpacity } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
-import { query, collection, where, onSnapshot } from 'firebase/firestore'
+import { query, collection, where, onSnapshot, Timestamp } from 'firebase/firestore'
 import { LinearGradient } from 'expo-linear-gradient'
 import StarActive from '../../../assets/icons/PostPageIcon/StarActive'
 import StarInActive from '../../../assets/icons/PostPageIcon/StarInActive'
@@ -19,12 +19,13 @@ import {
 } from 'firebase/firestore/lite'
 import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
-import { IOrder, IRatings } from '../../../constant/types'
+import { IOrder, IRatings, IRefund } from '../../../constant/types'
 import TrackOrder from './TrackOrder'
 import Rating from '../../../components/Rating'
 import Loader from '../../../components/Loading'
 import { useNavigation } from '@react-navigation/native'
 import RefundModal from '../../../components/Refund'
+import RefundViewDetails from '../../../components/RefundViewDetails'
 
 const { height, width } = Dimensions.get('window')
 
@@ -163,7 +164,9 @@ const OrderCard: React.FC<IOrderCard> = ({
   setOpenReview,
 }) => {
   const [ratings, setRatings] = useState<IRatings>()
+  const [refundData, setRefundData] = useState<IRefund | null>(null)
   const [openModal, setOpenModal] = useState(false)
+  const [openRefundDetails, setOpenRefundDetails] = useState(false)
 
   const handleGetData = useCallback(() => {
     if (!data.id) return
@@ -180,9 +183,25 @@ const OrderCard: React.FC<IOrderCard> = ({
     }
   }, [data.id])
 
+  const handleGetRefundQuery = useCallback(() => {
+    if (!data.id) return
+    const q = query(collection(dbDefault, 'Returns'), where('orderId', '==', data.id))
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        console.log(doc.data())
+        setRefundData({ id: doc.id, ...doc.data() } as any)
+      })
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [data.id])
+
   useEffect(() => {
     handleGetData()
-  }, [handleGetData])
+    handleGetRefundQuery()
+  }, [handleGetData, handleGetRefundQuery])
 
   const handleRefundOpen = () => {
     setOpenModal(true)
@@ -247,28 +266,57 @@ const OrderCard: React.FC<IOrderCard> = ({
               </StarContainer>
               <StatusText allowFontScaling={false}>Write a review</StatusText>
             </Pressable>
-            <TouchableOpacity
-              onPress={handleRefundOpen}
-              style={{
-                borderColor: COLORS.textSecondaryClr,
-                borderWidth: 1,
-                width: width / 6.5,
-                marginTop: 12,
-                borderRadius: 4,
-              }}
-            >
-              <View
+            {refundData && (
+              <TouchableOpacity
+                onPress={() => setOpenRefundDetails(true)}
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingVertical: 4,
+                  borderColor: COLORS.textSecondaryClr,
+                  borderWidth: 1,
+                  marginTop: 12,
+                  borderRadius: 4,
                 }}
               >
-                <StatusText allowFontScaling={false}>Refund</StatusText>
-              </View>
-            </TouchableOpacity>
-            {openModal && <RefundModal closeModal={() => setOpenModal(false)} />}
+                <View
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingVertical: 4,
+                  }}
+                >
+                  <StatusText allowFontScaling={false}>View Refund Details</StatusText>
+                </View>
+              </TouchableOpacity>
+            )}
+            {!refundData && data.orderStatus.delivery.status && (
+              <TouchableOpacity
+                onPress={handleRefundOpen}
+                style={{
+                  borderColor: COLORS.textSecondaryClr,
+                  borderWidth: 1,
+                  marginTop: 12,
+                  borderRadius: 4,
+                }}
+              >
+                <View
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingVertical: 4,
+                  }}
+                >
+                  <StatusText allowFontScaling={false}>Refund</StatusText>
+                </View>
+              </TouchableOpacity>
+            )}
+            {openModal && <RefundModal orderId={data.id} closeModal={() => setOpenModal(false)} />}
+            {openRefundDetails && (
+              <RefundViewDetails
+                closeModal={() => setOpenRefundDetails(false)}
+                refundData={refundData}
+              />
+            )}
           </View>
         </CartPageData>
       </CartPageContainer>

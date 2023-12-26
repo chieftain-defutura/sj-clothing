@@ -30,6 +30,7 @@ const initialValues = { description: '' }
 
 interface IRefund {
   closeModal?: () => void
+  orderId: string
 }
 
 export function uriToBlob(uri: string): Promise<Blob> {
@@ -54,7 +55,7 @@ export function uriToBlob(uri: string): Promise<Blob> {
 
 const dropdownItems = ['Issue on Size', 'Damage replacement']
 
-const RefundModal: React.FC<IRefund> = ({ closeModal }) => {
+const RefundModal: React.FC<IRefund> = ({ closeModal, orderId }) => {
   const [Issue, setIssue] = useState<string | null>(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
@@ -140,7 +141,7 @@ const RefundModal: React.FC<IRefund> = ({ closeModal }) => {
         issues: Issue,
         Image: url,
         status: 'pending',
-        orderId: '',
+        orderId: orderId,
       })
     } catch (e) {
       console.log('error', e)
