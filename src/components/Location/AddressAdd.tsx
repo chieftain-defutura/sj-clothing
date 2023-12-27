@@ -2,13 +2,13 @@ import styled from 'styled-components/native'
 import axios from 'axios'
 import TickIcon from '../../assets/icons/TickIcon'
 import CustomButton from '../Button'
-import { COLORS } from '../../styles/theme'
+import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import Input from '../Input'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { StyleSheet, View, ScrollView, Keyboard, Pressable, Dimensions } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
+import Animated, { FadeInUp, FadeOutUp, SlideInDown, SlideOutDown } from 'react-native-reanimated'
 import { doc, updateDoc, getDoc } from 'firebase/firestore/lite'
 import { userStore } from '../../store/userStore'
 import { db } from '../../../firebase'
@@ -18,6 +18,8 @@ import ChevronLeft from '../../assets/icons/ChevronLeft'
 import CountryCode from '../CountryCode'
 import { useNavigation } from '@react-navigation/native'
 import LeftArrow from '../../assets/icons/LeftArrow'
+import * as Animatable from 'react-native-animatable'
+import DownArrow from '../../assets/icons/DownArrow'
 
 interface IAddAddress {
   location: string
@@ -26,6 +28,8 @@ interface IAddAddress {
   onText: string | null
   setOnSearchChange: React.Dispatch<React.SetStateAction<string | null>>
 }
+
+const dropdownItems = ['Home', 'Work', 'Others']
 
 const { width } = Dimensions.get('window')
 
@@ -53,6 +57,9 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
   const [padding, setPadding] = useState(0)
   const navigation = useNavigation()
   const user = userStore((state) => state.user)
+  const [selectYourOther, setSelectYourOther] = useState<string | null>(null)
+  const [showOthersOption, setShowOthersOption] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
   const [address, setAddress] = useState({
     addressOne: '',
     addressTwo: '',
@@ -287,6 +294,20 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
     setPadding(0)
   }
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prevState) => !prevState)
+  }
+
+  const handleSelect = (item: string) => {
+    setSelectYourOther(item)
+    if (item === 'Others') {
+      setShowOthersOption(true)
+    } else {
+      setShowOthersOption(false)
+    }
+    setIsDropdownOpen(false)
+  }
+
   return (
     <Animated.View
       entering={SlideInDown}
@@ -487,6 +508,48 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
               </View>
 
               <View>
+                <DropDownContainer>
+                  <View style={{ width: width - 51 }}>
+                    <SelectContent onPress={toggleDropdown}>
+                      <SelectText allowFontScaling={false}>
+                        {selectYourOther || 'Home / Work / Others'}
+                      </SelectText>
+                      <Animatable.View
+                        animation={isDropdownOpen ? 'rotate' : ''}
+                        duration={500}
+                        easing='ease-out'
+                      >
+                        <DownArrow width={16} height={16} />
+                      </Animatable.View>
+                    </SelectContent>
+                    {isDropdownOpen && (
+                      <Animated.View
+                        entering={FadeInUp.duration(800).delay(200)}
+                        exiting={FadeOutUp}
+                      >
+                        <SelectDropDownList>
+                          {dropdownItems.map((item, index) => (
+                            <Pressable key={index} onPress={() => handleSelect(item)}>
+                              <SelectListText allowFontScaling={false}>{item}</SelectListText>
+                            </Pressable>
+                          ))}
+                        </SelectDropDownList>
+                      </Animated.View>
+                    )}
+                  </View>
+                </DropDownContainer>
+                <View style={{ marginVertical: 20 }}>
+                  {showOthersOption && (
+                    <Input
+                      placeholder='Save as '
+                      value={formik.values.saveAddressAs}
+                      onChangeText={formik.handleChange('saveAddressAs')}
+                      onBlur={formik.handleBlur('saveAddressAs')}
+                      onSubmitEditing={Keyboard.dismiss}
+                    />
+                  )}
+                </View>
+                {/* 
                 <Input
                   placeholder='Save as (Home)'
                   value={formik.values.saveAddressAs}
@@ -498,9 +561,6 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
                   formik.values.saveAddressAs.length === 0) &&
                   formik.touched.saveAddressAs && (
                     <ErrorText allowFontScaling={false}>*Please enter saveAddressAs</ErrorText>
-                  )}
-                {/* {formik.errors.saveAddressAs && (
-                    <ErrorText>{formik.errors.saveAddressAs}</ErrorText>
                   )} */}
               </View>
 
@@ -536,6 +596,39 @@ const DescriptionText = styled.Text`
   width: 225px;
 `
 
+const SelectContent = styled.Pressable`
+  border-color: ${COLORS.dropDownClr};
+  border-width: 1px;
+  padding: 15px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+`
+
+const SelectText = styled.Text`
+  font-size: 14px;
+  color: ${COLORS.iconsHighlightClr};
+  font-family: ${FONT_FAMILY.GilroyMedium};
+`
+
+const SelectDropDownList = styled.View`
+  border-color: ${COLORS.dropDownClr};
+  border-width: 1px;
+  border-radius: 5px;
+  margin-top: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+`
+const SelectListText = styled.Text`
+  font-size: 14px;
+  color: ${COLORS.iconsHighlightClr};
+  font-family: ${FONT_FAMILY.GilroyMedium};
+  padding-horizontal: 12px;
+  padding-vertical: 7px;
+`
+
 const ErrorText = styled.Text`
   font-size: 12px;
   color: ${COLORS.errorClr};
@@ -553,6 +646,14 @@ const CartText = styled.Text`
   font-family: Arvo-Regular;
   font-size: 20px;
   letter-spacing: -0.4px;
+`
+
+const DropDownContainer = styled.View`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 8px;
 `
 
 export default AddressAdd

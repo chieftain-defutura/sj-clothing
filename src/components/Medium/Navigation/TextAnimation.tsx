@@ -27,7 +27,7 @@ const TextAnimation: React.FC<ITextAnimation> = ({ shake, shakeAnimation, childr
             gap: 6,
           }}
         >
-          <InfoIcon width={24} height={24} style={{ marginTop: 4 }} />
+          <InfoIcon width={23} height={23} style={{ marginTop: 4 }} />
           <View>
             <Text
               onPress={shake}

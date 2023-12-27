@@ -1,21 +1,8 @@
-import React, { useState } from 'react'
-import {
-  Modal,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  Text,
-  Dimensions,
-  Pressable,
-  Image,
-  Platform,
-  Alert,
-} from 'react-native'
-import * as Animatable from 'react-native-animatable'
+import React from 'react'
+import { Modal, View, StyleSheet, Dimensions, Pressable, Platform } from 'react-native'
 import { RadioButton } from 'react-native-paper'
 import styled from 'styled-components/native'
-import { COLORS, FONT_FAMILY } from '../styles/theme'
-
+import { COLORS } from '../styles/theme'
 import { IRefund } from '../constant/types'
 import CloseIcon from '../assets/icons/Close'
 import moment from 'moment'

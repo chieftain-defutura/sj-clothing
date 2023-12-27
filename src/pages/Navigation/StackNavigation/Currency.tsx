@@ -16,6 +16,7 @@ import CurrencyGrayIcon from '../../../assets/icons/AccountPageIcon/CurrencyGray
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { CURRENCY_API_KEY } from '../../../utils/config'
 import CurrencyTooltip from '../../../components/Tooltips/CurrencyTooltip'
+import { tooltipDisableStore } from '../../../store/TooltipDisable'
 
 const CurrencyData = [
   {
@@ -85,14 +86,19 @@ const Currency = () => {
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
   const [toolTip, showToolTip] = useState(false)
   const navigation = useNavigation()
+  const updateDisable = tooltipDisableStore((state) => state.updateDisable)
 
   const isShowToolTip = async () => {
     try {
       const data = await AsyncStorage.getItem('showCurrencyTooltip')
 
       if (data !== '14') {
-        AsyncStorage.setItem('showCurrencyTooltip', '14')
-        showToolTip(true)
+        updateDisable(false)
+        setTimeout(() => {
+          AsyncStorage.setItem('showCurrencyTooltip', '14')
+          updateDisable(true)
+          showToolTip(true)
+        }, 1000)
       }
     } catch (error) {
       console.log(error)

@@ -16,7 +16,7 @@ export const generalStore = create<State & Action>((set) => ({
   Accessory: false,
   logoVideo: false,
   AccessoryName: 'Accessories',
-  premiumText: 'comming soon',
+  premiumText: 'coming soon',
   updateAccessory: (Accessory) => set(() => ({ Accessory })),
   updatePremiumText: (premiumText) => set(() => ({ premiumText })),
   updateLogoVideo: (logoVideo) => set(() => ({ logoVideo })),

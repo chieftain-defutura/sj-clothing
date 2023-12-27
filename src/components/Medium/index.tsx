@@ -182,6 +182,15 @@ const Medium = () => {
     handleGetData()
   }, [handleGetData])
 
+  const clearToolTipFromStorage = async () => {
+    try {
+      await AsyncStorage.removeItem('showLanguageTooltip')
+      console.log('Tooltip value cleared from AsyncStorage')
+    } catch (error) {
+      console.error('Error clearing tooltip value:', error)
+    }
+  }
+
   const handleGetColorAnimation = useCallback(() => {
     if (!uid) return
     const q = defaultQuery(
@@ -563,6 +572,9 @@ const Medium = () => {
                 setUid={setUid}
                 color={isColor}
                 setAnimationUpdated={setAnimationUpdated}
+                animationUpdated={animationUpdated}
+                shake={shake}
+                shakeAnimation={shakeAnimation}
               />
             )}
           </View>

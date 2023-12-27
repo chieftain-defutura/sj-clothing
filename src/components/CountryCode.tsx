@@ -19,7 +19,7 @@ const CountryCode: React.FC<ICountryCode> = ({ countryCode, setCountryCode, setS
           borderWidth: 1,
           borderRadius: 6,
           paddingHorizontal: 14,
-          paddingVertical: 13,
+          paddingVertical: 16,
           marginRight: 8,
         }}
       >
