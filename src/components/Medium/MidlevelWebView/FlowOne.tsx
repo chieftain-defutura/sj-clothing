@@ -108,7 +108,7 @@ const FlowOne: React.FC<IFlowOneProps> = ({
         />
       )}
       {steps === 1 && (
-        <View style={{ position: 'absolute', bottom: 40, left: 100 }}>
+        <View style={{ position: 'absolute', bottom: 40, left: 110 }}>
           {!animationUpdated && (
             <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
               Please wait till avatar load

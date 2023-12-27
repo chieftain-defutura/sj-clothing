@@ -92,16 +92,16 @@ const RefundViewDetails: React.FC<IRefundViewDetails> = ({ closeModal, refundDat
                 <RadioButton.Android
                   value='option1'
                   status={
-                    refundData?.refundStatus?.paymenyCompleted?.status ? 'checked' : 'unchecked'
+                    refundData?.refundStatus?.paymentCompleted?.status ? 'checked' : 'unchecked'
                   }
                   color={COLORS.textSecondaryClr}
                 />
-                <OrderPlacedText allowFontScaling={false}>Paymeny Completed</OrderPlacedText>
+                <OrderPlacedText allowFontScaling={false}>Payment Completed</OrderPlacedText>
               </View>
               <View>
                 <DateTextText allowFontScaling={false}>
-                  {refundData?.refundStatus?.paymenyCompleted?.createdAt
-                    ? moment(refundData?.refundStatus?.paymenyCompleted?.createdAt.toDate()).format(
+                  {refundData?.refundStatus?.paymentCompleted?.createdAt
+                    ? moment(refundData?.refundStatus?.paymentCompleted?.createdAt.toDate()).format(
                         'DD-MM-YYYY',
                       )
                     : ''}

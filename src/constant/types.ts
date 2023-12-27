@@ -255,7 +255,7 @@ export interface IRefund {
       description: string
       status: boolean
     }
-    paymenyCompleted: {
+    paymentCompleted: {
       createdAt: Timestamp
       description: string
       status: boolean

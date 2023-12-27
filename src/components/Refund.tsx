@@ -153,7 +153,7 @@ const RefundModal: React.FC<IRefund> = ({ closeModal, orderId }) => {
             description: '',
             status: false,
           },
-          paymenyCompleted: {
+          paymentCompleted: {
             createdAt: null,
             description: '',
             status: false,
