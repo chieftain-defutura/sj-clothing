@@ -142,6 +142,23 @@ const RefundModal: React.FC<IRefund> = ({ closeModal, orderId }) => {
         Image: url,
         status: 'pending',
         orderId: orderId,
+        refundStatus: {
+          orderReturned: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          paymentInitiated: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+          paymenyCompleted: {
+            createdAt: null,
+            description: '',
+            status: false,
+          },
+        },
       })
     } catch (e) {
       console.log('error', e)

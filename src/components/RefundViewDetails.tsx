@@ -12,24 +12,116 @@ import {
   Alert,
 } from 'react-native'
 import * as Animatable from 'react-native-animatable'
+import { RadioButton } from 'react-native-paper'
 import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../styles/theme'
 
 import { IRefund } from '../constant/types'
+import CloseIcon from '../assets/icons/Close'
+import moment from 'moment'
 
-const { width, height } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 interface IRefundViewDetails {
   closeModal?: () => void
   refundData: IRefund
 }
 
-const RefundViewDetails: React.FC<IRefundViewDetails> = ({ closeModal }) => {
+const RefundViewDetails: React.FC<IRefundViewDetails> = ({ closeModal, refundData }) => {
   return (
     <Modal animationType='fade' transparent={true}>
       <RefundWrapper>
         <RefundContainer style={{ width: width / 1.2 }}>
-          <RefundHeading>Refund Details</RefundHeading>
+          <RefundHead>
+            <RefundHeading allowFontScaling={false}>Refund Status</RefundHeading>
+            <Pressable onPress={closeModal}>
+              <CloseIcon width={24} height={24} />
+            </Pressable>
+          </RefundHead>
+          <RefundTrackWrapper>
+            <RefundGroupContent>
+              <View style={[styles.radioBtn, { alignItems: 'center' }]}>
+                <RadioButton.Android
+                  value='option1'
+                  status={refundData?.refundStatus?.orderReturned?.status ? 'checked' : 'unchecked'}
+                  color={COLORS.textSecondaryClr}
+                />
+                <OrderPlacedText allowFontScaling={false}>Order Returned</OrderPlacedText>
+              </View>
+              <View>
+                <DateTextText allowFontScaling={false}>
+                  {refundData?.refundStatus?.orderReturned?.createdAt
+                    ? moment(refundData?.refundStatus?.orderReturned?.createdAt.toDate()).format(
+                        'DD-MM-YYYY',
+                      )
+                    : ''}
+                </DateTextText>
+              </View>
+            </RefundGroupContent>
+            <View
+              style={[
+                styles.borderRight,
+                {
+                  borderColor: refundData?.refundStatus?.orderReturned?.status
+                    ? COLORS.textSecondaryClr
+                    : 'grey',
+                },
+              ]}
+            ></View>
+
+            <RefundGroupContent>
+              <View style={[styles.radioBtn, { alignItems: 'center' }]}>
+                <RadioButton.Android
+                  value='option1'
+                  status={
+                    refundData?.refundStatus?.paymentInitiated?.status ? 'checked' : 'unchecked'
+                  }
+                  color={COLORS.textSecondaryClr}
+                />
+                <OrderPlacedText allowFontScaling={false}>Payment Initiated</OrderPlacedText>
+              </View>
+              <View>
+                <DateTextText allowFontScaling={false}>
+                  {refundData?.refundStatus?.paymentInitiated?.createdAt
+                    ? moment(refundData?.refundStatus?.paymentInitiated?.createdAt.toDate()).format(
+                        'DD-MM-YYYY',
+                      )
+                    : ''}
+                </DateTextText>
+              </View>
+            </RefundGroupContent>
+            <View
+              style={[
+                styles.borderRight,
+                {
+                  borderColor: refundData?.refundStatus?.paymentInitiated?.status
+                    ? COLORS.textSecondaryClr
+                    : 'grey',
+                },
+              ]}
+            ></View>
+            <RefundGroupContent style={{ marginBottom: 6 }}>
+              <View style={[styles.radioBtn, { alignItems: 'center' }]}>
+                <RadioButton.Android
+                  value='option1'
+                  status={
+                    refundData?.refundStatus?.paymenyCompleted?.status ? 'checked' : 'unchecked'
+                  }
+                  color={COLORS.textSecondaryClr}
+                />
+                <OrderPlacedText allowFontScaling={false}>Paymeny Completed</OrderPlacedText>
+              </View>
+              <View>
+                <DateTextText allowFontScaling={false}>
+                  {refundData?.refundStatus?.paymenyCompleted?.createdAt
+                    ? moment(refundData?.refundStatus?.paymenyCompleted?.createdAt.toDate()).format(
+                        'DD-MM-YYYY',
+                      )
+                    : ''}
+                </DateTextText>
+              </View>
+            </RefundGroupContent>
+          </RefundTrackWrapper>
         </RefundContainer>
       </RefundWrapper>
     </Modal>
@@ -38,101 +130,62 @@ const RefundViewDetails: React.FC<IRefundViewDetails> = ({ closeModal }) => {
 
 const RefundWrapper = styled.View`
   flex: 1;
-  display: flex;
   align-items: center;
   justify-content: center;
   background: ${COLORS.backgroundBlurClr};
 `
-const InputBorder = styled.View`
-  border-color: ${COLORS.strokeClr};
-  border-width: 1px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-`
 
-const InputStyle = styled.TextInput`
-  font-family: Gilroy-Medium;
-  width: 100%;
-  font-size: 12px;
-  padding-vertical: 8px;
-  padding-horizontal: 16px;
-`
-
-const SelectDropDownList = styled.View`
-  border-color: ${COLORS.dropDownClr};
-  border-width: 1px;
-  border-radius: 5px;
-  margin-top: 8px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-`
-const SelectListText = styled.Text`
-  font-size: 14px;
-  font-family: ${FONT_FAMILY.ArvoRegular};
-  color: ${COLORS.iconsHighlightClr};
-  padding-horizontal: 12px;
-  padding-vertical: 7px;
-`
-
-const RefundContainer = styled.View`
+const RefundHead = styled.View`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-`
-const DropDownContainer = styled.View`
-  display: flex;
-  align-items: flex-start;
   flex-direction: row;
   justify-content: space-between;
-  padding-horizontal: 16px;
-  gap: 8px;
-`
-
-const SelectContent = styled.Pressable`
-  border-color: ${COLORS.dropDownClr};
-  border-width: 1px;
-  padding: 15px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-`
-
-const SelectText = styled.Text`
-  font-size: 14px;
-  font-family: ${FONT_FAMILY.ArvoRegular};
-  color: ${COLORS.iconsHighlightClr};
+  padding-bottom: 20px;
+  padding-top: 8px;
+  padding-left: 8px;
 `
 
 const RefundHeading = styled.Text`
-  font-size: 22px;
-  font-family: Gilroy-SemiBold;
+  font-size: 20px;
+  letter-spacing: -0.4px;
+  font-family: Arvo-Regular;
   color: ${COLORS.textClr};
-  padding-bottom: 18px;
 `
 
-const LabelText = styled.Text`
-  font-size: 14px;
-  letter-spacing: -0.28px;
-  color: ${COLORS.textClr};
-  font-family: Gilroy-Medium;
-  margin-top: 16px;
-  margin-bottom: 8px;
-`
+const RefundTrackWrapper = styled.View``
 
-const StyledView = styled.View`
-  padding: 13px;
+const RefundGroupContent = styled.View`
   display: flex;
-  justify-content: center;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+`
+const FlexOrder = styled.View`
+  margin-bottom: 25px;
+`
+
+const OrderPlacedFlexContent = styled.View`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+`
+
+const DateTextText = styled.Text`
+  font-size: 14px;
+  color: ${COLORS.SecondaryTwo};
+  font-family: Gilroy-Regular;
+`
+
+const OrderPlacedText = styled.Text`
+  font-size: 16px;
+  color: ${COLORS.iconsHighlightClr};
+  font-family: Montserrat-SemiBold;
+`
+
+const RefundContainer = styled.View`
+  background-color: ${COLORS.iconsNormalClr};
+  padding: 20px;
+  border-radius: 10px;
 `
 
 export default RefundViewDetails
@@ -152,5 +205,17 @@ const styles = StyleSheet.create({
   uploadText: {
     fontSize: 16,
     color: COLORS.SecondaryTwo,
+  },
+  radioBtn: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  borderRight: {
+    borderLeftWidth: 1,
+    borderColor: 'grey',
+    height: 22,
+    marginLeft: 16,
   },
 })
