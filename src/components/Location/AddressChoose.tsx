@@ -11,6 +11,8 @@ import { db } from '../../../firebase'
 import Loader from '../Loading'
 import { Text } from 'react-native'
 import AddressAdd from './AddressAdd'
+import DeleteIcon from '../../assets/icons/AccountPageIcon/DeleteIcon'
+import EditIcon from '../../assets/icons/AccountPageIcon/EditIcon'
 
 interface AddressData {
   name: string
@@ -155,7 +157,10 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
         {data?.length ? (
           <ScrollView style={{ height: 500 }} showsVerticalScrollIndicator={false}>
             {data.map((f, index) => (
-              <View key={index} style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
+              <View
+                key={index}
+                style={{ display: 'flex', flexDirection: 'row', gap: 10, alignItems: 'center' }}
+              >
                 <TouchableOpacity
                   style={styles.radioBtn}
                   onPress={() => {
@@ -188,7 +193,13 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
                   </View>
                 </TouchableOpacity>
                 <Pressable onPress={() => DeleteAddress(index)}>
-                  <Text allowFontScaling={false}>close</Text>
+                  <DeleteIcon
+                    width={24}
+                    height={24}
+                    fill='#DB00FF'
+                    stroke='#DB00FF'
+                    strokeWidth={0.9}
+                  />
                 </Pressable>
                 <Pressable
                   style={styles.editStyle}
@@ -196,9 +207,16 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
                     setOpenEdit(true), setDataToEdit(f)
                   }}
                 >
-                  <Text allowFontScaling={false} style={styles.editText}>
+                  <EditIcon
+                    width={24}
+                    height={24}
+                    fill='#DB00FF'
+                    stroke='#DB00FF'
+                    strokeWidth={0}
+                  />
+                  {/* <Text allowFontScaling={false} style={styles.editText}>
                     Edit
-                  </Text>
+                  </Text> */}
                 </Pressable>
               </View>
             ))}

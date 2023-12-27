@@ -179,7 +179,7 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
                   gap: 20,
                 }}
               >
-                <View style={styles.searchInputBox}>
+                {/* <View style={styles.searchInputBox}>
                   <Search width={16} height={16} style={{ marginLeft: 16 }} />
                   <InputBox
                     placeholder='Search for area, street name'
@@ -230,7 +230,7 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
                     scrollEnabled={true}
                     horizontal={false}
                   />
-                </View>
+                </View> */}
                 <Pressable onPress={handleAddAddress}>
                   <AddAddressBtn>
                     <Plus width={16} height={16} />
@@ -319,20 +319,6 @@ const CartText = styled.Text`
   font-family: Arvo-Regular;
   font-size: 20px;
   letter-spacing: -0.4px;
-`
-
-const InputBox = styled.TextInput`
-  border-radius: 20px;
-  background-color: transparent;
-  font-size: 14px;
-  color: #462d85;
-  padding-horizontal: 4px;
-  padding-vertical: 12px;
-`
-const HeaderStyle = styled.Text`
-  font-size: 14px;
-  font-family: Gilroy-Medium;
-  color: ${COLORS.iconsHighlightClr};
 `
 
 export default Locations

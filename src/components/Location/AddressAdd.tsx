@@ -57,7 +57,7 @@ const validationSchema = yup.object({
   country: yup.string().required('*Please enter your country'),
   floor: yup.string().required('*Please enter your floor'),
   phoneNo: yup.string().required('*Please enter your phoneNo no'),
-  saveAddressAs: yup.string().required('*Please enter save address'),
+  saveAddressAs: yup.string(),
 })
 
 const AddressAdd: React.FC<IAddAddress> = ({
@@ -191,7 +191,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
           country: formik.values.country,
           floor: formik.values.floor,
           phoneNo: countryCode + formik.values.phoneNo,
-          saveAddressAs: formik.values.saveAddressAs,
+          saveAddressAs: selectYourOther ? selectYourOther : formik.values.saveAddressAs,
           isSelected: false,
         },
       ]
@@ -205,7 +205,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
         country: formik.values.country,
         floor: formik.values.floor,
         phoneNo: countryCode + formik.values.phoneNo,
-        saveAddressAs: formik.values.saveAddressAs,
+        saveAddressAs: selectYourOther ? selectYourOther : formik.values.saveAddressAs,
         isSelected: false,
       }
 
@@ -223,13 +223,11 @@ const AddressAdd: React.FC<IAddAddress> = ({
         userData.address.push(newAddress)
         setDisplay?.(0)
       } else {
-        // Editing an existing address
         const indexToUpdate = userData.address.findIndex(
           (address: { name: string }) => address.name === EditAddress.name,
         )
 
         if (indexToUpdate !== -1) {
-          // Replace the existing address with the updated one
           userData.address[indexToUpdate] = newAddress
           setOpenEdit?.(false)
         } else {
@@ -374,6 +372,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
     setSelectYourOther(item)
     if (item === 'Others') {
       setShowOthersOption(true)
+      setSelectYourOther('')
     } else {
       setShowOthersOption(false)
     }
@@ -621,19 +620,6 @@ const AddressAdd: React.FC<IAddAddress> = ({
                     />
                   )}
                 </View>
-                {/* 
-                <Input
-                  placeholder='Save as (Home)'
-                  value={formik.values.saveAddressAs}
-                  onChangeText={formik.handleChange('saveAddressAs')}
-                  onBlur={formik.handleBlur('saveAddressAs')}
-                  onSubmitEditing={Keyboard.dismiss}
-                />
-                {(formik.values.saveAddressAs === undefined ||
-                  formik.values.saveAddressAs.length === 0) &&
-                  formik.touched.saveAddressAs && (
-                    <ErrorText allowFontScaling={false}>*Please enter saveAddressAs</ErrorText>
-                  )} */}
               </View>
 
               <CustomButton
