@@ -13,6 +13,8 @@ import CustomButton from '../../components/Button'
 import EyeHideIcon from '../../assets/icons/EyeIconHide'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { collection, doc, getDocs, query, updateDoc, where, getDoc } from 'firebase/firestore/lite'
+import { userStore } from '../../store/userStore'
+import PhoneVerification from './PhoneVerification'
 
 interface LoginModalProps {
   isVisible?: boolean
@@ -45,6 +47,9 @@ const LoginModal: React.FC<LoginModalProps> = ({
   onForgotClick,
   setOpenCheckout,
 }) => {
+  const user = userStore((store) => store.user)
+  const phoneNumber = userStore((store) => store.phoneNo)
+
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -89,11 +94,19 @@ const LoginModal: React.FC<LoginModalProps> = ({
       console.log(userData)
 
       if (!userData) return
+
       for (let pushToken of userData.tokens) {
         const expotokens = await AsyncStorage.getItem('expotokens')
         const parseExpoTokens = [JSON.parse(expotokens as string)]
-        onClose?.()
-        setOpenCheckout?.(true)
+
+        if (phoneNumber) {
+          onClose?.()
+          setOpenCheckout?.(true)
+        }
+        if (userData.tokens[0] === null) {
+          // userData.tokens.push(...parseExpoTokens)
+          await updateDoc(userDocRef, userData)
+        }
         if (
           pushToken.expoAndroidToken !== parseExpoTokens[0].expoAndroidToken ||
           pushToken.expoIosToken !== parseExpoTokens[0].expoIosToken
@@ -101,7 +114,6 @@ const LoginModal: React.FC<LoginModalProps> = ({
           userData.tokens.push(...parseExpoTokens)
           await updateDoc(userDocRef, userData)
         }
-        onClose?.()
       }
 
       console.log('User logged in successfully')
@@ -124,106 +136,113 @@ const LoginModal: React.FC<LoginModalProps> = ({
       setIsLoading(false)
     }
   }
+  console.log(phoneNumber)
+  console.log(isVisible)
 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
-      <LoginWrapper>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={ValidationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
-            <LoginContainer>
-              <LoginHead>
-                <LoginHeading allowFontScaling={false}>Log in</LoginHeading>
-                <Pressable onPress={onClose}>
-                  <CloseIcon width={24} height={24} />
+      {!user && (
+        <LoginWrapper>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={ValidationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ values, errors, touched, handleChange, handleSubmit, handleBlur }) => (
+              <LoginContainer>
+                <LoginHead>
+                  <LoginHeading allowFontScaling={false}>Log in</LoginHeading>
+                  <Pressable onPress={onClose}>
+                    <CloseIcon width={24} height={24} />
+                  </Pressable>
+                </LoginHead>
+
+                <View>
+                  <LabelText allowFontScaling={false}>E-mail</LabelText>
+                  <InputBorder>
+                    <InputStyle
+                      placeholder='Enter your e-mail'
+                      value={values.email}
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      placeholderTextColor={COLORS.SecondaryTwo}
+                      autoCorrect={false}
+                      allowFontScaling={false}
+                      style={styles.input}
+                    />
+                  </InputBorder>
+                  {touched.email && errors.email && (
+                    <ErrorText allowFontScaling={false}>{errors.email}</ErrorText>
+                  )}
+                </View>
+                <View>
+                  <LabelText allowFontScaling={false}>Password</LabelText>
+                  <InputBorder>
+                    <InputStyle
+                      secureTextEntry={!showPassword}
+                      placeholder='Enter password'
+                      value={values.password}
+                      onChangeText={handleChange('password')}
+                      onBlur={() => handleBlur('password')}
+                      placeholderTextColor={COLORS.SecondaryTwo}
+                      autoCorrect={false}
+                      allowFontScaling={false}
+                      style={[{ width: 240 }, styles.input]}
+                    />
+                    <TouchableOpacity
+                      onPress={(event) => {
+                        togglePasswordVisibility()
+                        event.stopPropagation()
+                      }}
+                      style={{ paddingRight: 15 }}
+                    >
+                      {showPassword ? (
+                        <EyeIcon width={14} height={14} />
+                      ) : (
+                        <EyeHideIcon width={14} height={14} />
+                      )}
+                    </TouchableOpacity>
+                  </InputBorder>
+                  {touched.password && errors.password && (
+                    <ErrorText allowFontScaling={false}>{errors.password}</ErrorText>
+                  )}
+                </View>
+                <Pressable onPress={onForgotClick}>
+                  <ForgotPasswordText allowFontScaling={false}>Forgot Password?</ForgotPasswordText>
                 </Pressable>
-              </LoginHead>
 
-              <View>
-                <LabelText allowFontScaling={false}>E-mail</LabelText>
-                <InputBorder>
-                  <InputStyle
-                    placeholder='Enter your e-mail'
-                    value={values.email}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    placeholderTextColor={COLORS.SecondaryTwo}
-                    autoCorrect={false}
-                    allowFontScaling={false}
-                    style={styles.input}
-                  />
-                </InputBorder>
-                {touched.email && errors.email && (
-                  <ErrorText allowFontScaling={false}>{errors.email}</ErrorText>
+                {errorMessage && (
+                  <ErrorText allowFontScaling={false} style={{ marginBottom: 12 }}>
+                    {errorMessage}
+                  </ErrorText>
                 )}
-              </View>
-              <View>
-                <LabelText allowFontScaling={false}>Password</LabelText>
-                <InputBorder>
-                  <InputStyle
-                    secureTextEntry={!showPassword}
-                    placeholder='Enter password'
-                    value={values.password}
-                    onChangeText={handleChange('password')}
-                    onBlur={() => handleBlur('password')}
-                    placeholderTextColor={COLORS.SecondaryTwo}
-                    autoCorrect={false}
-                    allowFontScaling={false}
-                    style={[{ width: 240 }, styles.input]}
-                  />
-                  <TouchableOpacity
-                    onPress={(event) => {
-                      togglePasswordVisibility()
-                      event.stopPropagation()
-                    }}
-                    style={{ paddingRight: 15 }}
-                  >
-                    {showPassword ? (
-                      <EyeIcon width={14} height={14} />
-                    ) : (
-                      <EyeHideIcon width={14} height={14} />
-                    )}
-                  </TouchableOpacity>
-                </InputBorder>
-                {touched.password && errors.password && (
-                  <ErrorText allowFontScaling={false}>{errors.password}</ErrorText>
-                )}
-              </View>
-              <Pressable onPress={onForgotClick}>
-                <ForgotPasswordText allowFontScaling={false}>Forgot Password?</ForgotPasswordText>
-              </Pressable>
 
-              {errorMessage && (
-                <ErrorText allowFontScaling={false} style={{ marginBottom: 12 }}>
-                  {errorMessage}
-                </ErrorText>
-              )}
+                <CustomButton
+                  variant='primary'
+                  text={isLoading ? 'Logging in...' : 'Login'}
+                  onPress={() => {
+                    handleSubmit()
+                  }}
+                  disabled={isLoading}
+                  fontFamily='Arvo-Regular'
+                  fontSize={14}
+                  buttonStyle={[styles.submitBtn]}
+                />
 
-              <CustomButton
-                variant='primary'
-                text={isLoading ? 'Logging in...' : 'Login'}
-                onPress={() => {
-                  handleSubmit()
-                }}
-                disabled={isLoading}
-                fontFamily='Arvo-Regular'
-                fontSize={14}
-                buttonStyle={[styles.submitBtn]}
-              />
-
-              <AccountView>
-                <AccountViewText allowFontScaling={false}>Don’t have an account?</AccountViewText>
-                <Pressable onPress={() => onSignClick?.()}>
-                  <SignUpLink allowFontScaling={false}>Create Account</SignUpLink>
-                </Pressable>
-              </AccountView>
-            </LoginContainer>
-          )}
-        </Formik>
-      </LoginWrapper>
+                <AccountView>
+                  <AccountViewText allowFontScaling={false}>Don’t have an account?</AccountViewText>
+                  <Pressable onPress={() => onSignClick?.()}>
+                    <SignUpLink allowFontScaling={false}>Create Account</SignUpLink>
+                  </Pressable>
+                </AccountView>
+              </LoginContainer>
+            )}
+          </Formik>
+        </LoginWrapper>
+      )}
+      {user && !phoneNumber && (
+        <PhoneVerification closeModal={onClose} setOpenCheckout={setOpenCheckout} />
+      )}
     </Modal>
   )
 }

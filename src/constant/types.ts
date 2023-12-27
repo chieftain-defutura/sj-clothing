@@ -95,6 +95,7 @@ export interface IPremiumData {
   description: string
   gender: string
   productVideo: string
+  index: number
   id: string
   normalPrice: string
   offerPrice: string

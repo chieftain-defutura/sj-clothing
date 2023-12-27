@@ -75,7 +75,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
     setOpenCard(false), setOpenDetails(false), setProductId('')
   }
 
-  const FilteredData = data?.filter((f) => f.id === productId)
+  const FilteredData = data?.sort((a, b) => a.index - b.index).filter((f) => f.id === productId)
   useEffect(() => {
     setTimeout(() => {
       setErrorMessage('') // Set the state to null after 5 seconds

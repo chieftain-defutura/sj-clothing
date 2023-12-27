@@ -42,24 +42,6 @@ const ValidationSchema = Yup.object({
   email: Yup.string()
     .transform((originalValue) => originalValue.toLowerCase().trim())
     .email('Enter a valid email')
-    .test('Unique Email', 'Email already in use', async function (value) {
-      const ProductRef = await getDocs(collection(db, 'users'))
-      const fetchProduct = ProductRef.docs.map((doc) => ({
-        id: doc.id,
-        ...(doc.data() as any),
-      }))
-
-      const isEmailUnique = !fetchProduct.some((user) => user.email === value)
-
-      if (!isEmailUnique) {
-        throw this.createError({
-          path: this.path,
-          message: 'Email is already in use. Please choose a different email.',
-        })
-      }
-
-      return true
-    })
     .required('Please enter your email address'),
   password: Yup.string()
     .min(8)
@@ -104,15 +86,15 @@ const SignupModal: React.FC<SignupModalProps> = ({
     setShowPassword(!showPassword)
   }
 
-  useEffect(() => {
-    if (errorMessage) {
-      const timer = setTimeout(() => {
-        setErrorMessage(null)
-      }, 1000)
+  // useEffect(() => {
+  //   if (errorMessage) {
+  //     const timer = setTimeout(() => {
+  //       setErrorMessage(null)
+  //     }, 1000)
 
-      return () => clearTimeout(timer)
-    }
-  }, [errorMessage])
+  //     return () => clearTimeout(timer)
+  //   }
+  // }, [errorMessage])
 
   const generateVerificationCode = () => {
     const codeLength = 6
@@ -124,32 +106,43 @@ const SignupModal: React.FC<SignupModalProps> = ({
   const handleVerify = async (values: typeof initialValues) => {
     try {
       setIsLoading(true)
+      const ProductRef = await getDocs(collection(db, 'users'))
+      const fetchProduct = ProductRef.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as any),
+      }))
 
-      const verificationCode = generateVerificationCode()
-      const templateParams = {
-        service_id: 'service_n32ytbw',
-        template_id: 'template_y5cz23c',
-        user_id: 'K-e_VO9kSsyCRevPa',
-        template_params: {
-          to_email: values.email,
-          subject: 'verification code',
-          message: `${verificationCode}`,
-          to_name: name,
-          from_name: 'SprinkleNadar',
-        },
-        accessToken: '6QdtVkNQ_KdK672G8cg_l',
+      const isEmailUnique = !fetchProduct.some((user) => user.email === values.email)
+      console.log('isEmailUnique', isEmailUnique)
+      if (!isEmailUnique) {
+        setErrorMessage('Email is already in use. Please choose a different email.')
+      } else {
+        const verificationCode = generateVerificationCode()
+        const templateParams = {
+          service_id: 'service_n32ytbw',
+          template_id: 'template_y5cz23c',
+          user_id: 'K-e_VO9kSsyCRevPa',
+          template_params: {
+            to_email: values.email,
+            subject: 'verification code',
+            message: `${verificationCode}`,
+            to_name: name,
+            from_name: 'SprinkleNadar',
+          },
+          accessToken: '6QdtVkNQ_KdK672G8cg_l',
+        }
+        const { data } = await axios.post(
+          'https://api.emailjs.com/api/v1.0/email/send',
+          templateParams,
+        )
+
+        setEmail(values.email)
+        setName(values.name)
+        setPassword(values.password)
+        setVerificationCode(verificationCode.toString())
+        setErrorMessage(' ')
       }
-      const { data } = await axios.post(
-        'https://api.emailjs.com/api/v1.0/email/send',
-        templateParams,
-      )
 
-      setEmail(values.email)
-      setName(values.name)
-      setPassword(values.password)
-      setVerificationCode(verificationCode.toString())
-
-      console.log(data)
       setIsLoading(false)
     } catch (error) {
       if (error instanceof FirebaseError) {

@@ -23,6 +23,7 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
       const data = await AsyncStorage.getItem('mail')
       await AsyncStorage.removeItem('mail')
       closeModal?.()
+
       if (!data) {
         updateUser(null)
       }

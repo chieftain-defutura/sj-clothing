@@ -227,7 +227,9 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                         {f.rightIcon && <f.rightIcon width={20} height={20} />}
                         {f.rightText && (
                           <Text allowFontScaling={false} style={styles.RightText}>
-                            {f.name === 'My orders' ? `${orderData.length} items` : f.rightText}
+                            {user && f.name === 'My orders'
+                              ? `${orderData.length} items`
+                              : f.rightText}
                           </Text>
                         )}
                       </ProfileUserContent>

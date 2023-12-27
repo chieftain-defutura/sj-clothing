@@ -199,7 +199,7 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ closeModal, setOpenCh
                     <LabelText allowFontScaling={false}>Verify OTP</LabelText>
                     <InputBorder>
                       <InputStyle
-                        placeholder='Enter your otp'
+                        placeholder='Enter Your OTP'
                         value={values.otp}
                         onChangeText={handleChange('otp')}
                         onBlur={handleBlur('otp')}
