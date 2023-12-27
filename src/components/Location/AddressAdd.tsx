@@ -20,11 +20,24 @@ import { useNavigation } from '@react-navigation/native'
 import LeftArrow from '../../assets/icons/LeftArrow'
 
 interface IAddAddress {
-  location: string
-  saveAddress: (data: any) => void
-  setDisplay: React.Dispatch<React.SetStateAction<number>>
-  onText: string | null
-  setOnSearchChange: React.Dispatch<React.SetStateAction<string | null>>
+  location?: string
+  saveAddress?: (data: any) => void
+  setDisplay?: React.Dispatch<React.SetStateAction<number>>
+  onText?: string | null
+  setOnSearchChange?: React.Dispatch<React.SetStateAction<string | null>>
+  setOpenEdit?: React.Dispatch<React.SetStateAction<boolean>>
+  EditAddress?: {
+    name: string
+    addressOne: string
+    addressTwo: string
+    city: string
+    state: string
+    pinCode: string
+    country: string
+    floor: string
+    phoneNo: string
+    saveAddressAs: string
+  }
 }
 
 const { width } = Dimensions.get('window')
@@ -43,7 +56,14 @@ const validationSchema = yup.object({
   saveAddressAs: yup.string().required('*Please enter save address'),
 })
 
-const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, onText }) => {
+const AddressAdd: React.FC<IAddAddress> = ({
+  location,
+  saveAddress,
+  setDisplay,
+  onText,
+  EditAddress,
+  setOpenEdit,
+}) => {
   const scrollRed = useRef<ScrollView>(null)
   const [keyboardStatus, setKeyboardStatus] = React.useState('')
   const [Addr, setAddr] = useState<string | null>(null)
@@ -168,8 +188,21 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
           isSelected: false,
         },
       ]
+      const newAddress = {
+        name: formik.values.name,
+        addressOne: formik.values.addressOne,
+        addressTwo: formik.values.addressTwo,
+        city: formik.values.city,
+        state: formik.values.state,
+        pinCode: formik.values.pinCode,
+        country: formik.values.country,
+        floor: formik.values.floor,
+        phoneNo: countryCode + formik.values.phoneNo,
+        saveAddressAs: formik.values.saveAddressAs,
+        isSelected: false,
+      }
 
-      saveAddress(addressArray)
+      saveAddress?.(addressArray)
 
       if (!user) return
       const userDocRef = doc(db, 'users', user.uid)
@@ -178,9 +211,28 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
 
       if (!userData) return
 
-      userData.address.push(...addressArray)
+      if (!EditAddress?.name) {
+        // Adding a new address
+        userData.address.push(newAddress)
+        setDisplay?.(0)
+      } else {
+        // Editing an existing address
+        const indexToUpdate = userData.address.findIndex(
+          (address: { name: string }) => address.name === EditAddress.name,
+        )
+
+        if (indexToUpdate !== -1) {
+          // Replace the existing address with the updated one
+          userData.address[indexToUpdate] = newAddress
+          setOpenEdit?.(false)
+        } else {
+          console.log('Address not found for editing')
+          return
+        }
+      }
+
+      // Update the user document in Firestore
       await updateDoc(userDocRef, userData)
-      setDisplay(0)
     } catch (error) {
       console.error('Error:', error)
     } finally {
@@ -251,16 +303,36 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
   const formik = useFormik({
     initialValues: {
       fullAddress: location ? location : '',
-      name: '',
-      addressOne: !onText ? addressOne : onText.split(',')[0],
-      addressTwo: !onText ? addressTwo : onText.split(',')[1],
-      city: !onText ? city : onText.split(',').reverse()[3],
-      state: !onText ? state : onText.split(',').reverse()[2],
-      pinCode: !onText ? pinCode : onText.split(',').reverse()[1],
-      country: !onText ? country : onText.split(',').reverse()[0],
-      floor: '',
-      phoneNo: '',
-      saveAddressAs: '',
+      name: EditAddress?.name ? EditAddress.name : '',
+      addressOne: EditAddress?.name
+        ? EditAddress.addressOne
+        : !onText
+        ? addressOne
+        : onText.split(',')[0],
+      addressTwo: EditAddress?.name
+        ? EditAddress.addressTwo
+        : !onText
+        ? addressTwo
+        : onText.split(',')[1],
+      city: EditAddress?.name ? EditAddress.city : !onText ? city : onText.split(',').reverse()[3],
+      state: EditAddress?.name
+        ? EditAddress.state
+        : !onText
+        ? state
+        : onText.split(',').reverse()[2],
+      pinCode: EditAddress?.name
+        ? EditAddress.pinCode
+        : !onText
+        ? pinCode
+        : onText.split(',').reverse()[1],
+      country: EditAddress?.name
+        ? EditAddress.country
+        : !onText
+        ? country
+        : onText.split(',').reverse()[0],
+      floor: EditAddress?.name ? EditAddress.floor : '',
+      phoneNo: EditAddress?.name ? EditAddress.phoneNo : '',
+      saveAddressAs: EditAddress?.name ? EditAddress.saveAddressAs : '',
     },
     validationSchema: validationSchema,
     onSubmit: onSubmit,
@@ -507,7 +579,15 @@ const AddressAdd: React.FC<IAddAddress> = ({ location, saveAddress, setDisplay, 
               <CustomButton
                 variant='primary'
                 style={{ marginBottom: 20 }}
-                text={isLoading ? 'Saving Address...' : 'Save Address'}
+                text={
+                  isLoading
+                    ? EditAddress?.name
+                      ? 'Editing Address'
+                      : 'Saving Address...'
+                    : EditAddress?.name
+                    ? 'Edit Address'
+                    : 'Save Address'
+                }
                 leftIcon={<TickIcon width={16} height={16} />}
                 onPress={() => {
                   formik.handleSubmit()

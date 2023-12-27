@@ -47,7 +47,7 @@ export const AccountData = [
   {
     leftIcon: ShoppingBag,
     name: 'My orders',
-    rightText: '2 items',
+    rightText: '0 items',
     navigation: 'MyOrders',
   },
   // {

@@ -9,6 +9,8 @@ import HomeIcon from '../../assets/icons/HomeIcon'
 import { ScrollView } from 'react-native-gesture-handler'
 import { db } from '../../../firebase'
 import Loader from '../Loading'
+import { Text } from 'react-native'
+import AddressAdd from './AddressAdd'
 
 interface AddressData {
   name: string
@@ -25,14 +27,38 @@ interface AddressData {
   saveAddressAs: string
 }
 
+interface IAddAddress {
+  setOpenEdit: React.Dispatch<React.SetStateAction<boolean>>
+  setDataToEdit: React.Dispatch<React.SetStateAction<AddressData | undefined>>
+}
+
 const { width, height } = Dimensions.get('window')
 
-const AddressChoose: React.FC = () => {
+const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) => {
   const user = userStore((state) => state.user)
   const [data, setData] = useState<AddressData[] | null>([])
   const [checked, setChecked] = React.useState<string | null>(null)
   const [isLoading, setLoading] = useState(false)
+
   const checkefRef = useRef(null)
+
+  const DeleteAddress = async (indexToRemove: number) => {
+    if (!user) return
+    const userDocRef = doc(db, 'users', user.uid)
+    const userDoc = await getDoc(userDocRef)
+    if (userDoc.exists()) {
+      const userData = userDoc.data()
+      if (!userData) return
+
+      const updatedAddresses = userData.address.filter(
+        (_: any, index: any) => index !== indexToRemove,
+      )
+      setData(updatedAddresses)
+      await updateDoc(userDocRef, { address: updatedAddresses })
+    } else {
+      console.log('User document not found')
+    }
+  }
 
   const updateData = async (index: string) => {
     try {
@@ -129,41 +155,52 @@ const AddressChoose: React.FC = () => {
         {data?.length ? (
           <ScrollView style={{ height: 500 }} showsVerticalScrollIndicator={false}>
             {data.map((f, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.radioBtn}
-                onPress={() => {
-                  setChecked(index.toString())
-                  updateData(index.toString())
-                }}
-              >
-                <View>
-                  <RadioButton
-                    status={checked === index.toString() ? 'checked' : 'unchecked'}
-                    value={index.toString()}
-                    color={COLORS.textSecondaryClr}
-                    onPress={() => {
-                      setChecked(index.toString())
-                      updateData(index.toString())
-                    }}
-                  />
-                  <View style={styles.radioBtnIOS}></View>
-                </View>
-
-                <View style={{ display: 'flex', flexDirection: 'column' }}>
-                  <View style={styles.RadioTitle}>
-                    <HomeIcon width={16} height={16} color={'black'} />
-                    <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
+              <View key={index} style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
+                <TouchableOpacity
+                  style={styles.radioBtn}
+                  onPress={() => {
+                    setChecked(index.toString())
+                    updateData(index.toString())
+                  }}
+                >
+                  <View>
+                    <RadioButton
+                      status={checked === index.toString() ? 'checked' : 'unchecked'}
+                      value={index.toString()}
+                      color={COLORS.textSecondaryClr}
+                      onPress={() => {
+                        setChecked(index.toString())
+                        updateData(index.toString())
+                      }}
+                    />
+                    <View style={styles.radioBtnIOS}></View>
                   </View>
-                  <DescriptionText allowFontScaling={false}>
-                    {f.name}, {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city},{' '}
-                    {f.state}, {f.country}, {f.pinCode}.
-                  </DescriptionText>
-                </View>
-                {/* <Pressable style={styles.editStyle} onPress={(e) => onEditPress(e, f)}>
-                      <Text allowFontScaling={false} style={styles.editText}>Edit</Text>
-                   </Pressable> */}
-              </TouchableOpacity>
+
+                  <View style={{ display: 'flex', flexDirection: 'column' }}>
+                    <View style={styles.RadioTitle}>
+                      <HomeIcon width={16} height={16} color={'black'} />
+                      <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
+                    </View>
+                    <DescriptionText allowFontScaling={false}>
+                      {f.name}, {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city},{' '}
+                      {f.state}, {f.country}, {f.pinCode}.
+                    </DescriptionText>
+                  </View>
+                </TouchableOpacity>
+                <Pressable onPress={() => DeleteAddress(index)}>
+                  <Text allowFontScaling={false}>close</Text>
+                </Pressable>
+                <Pressable
+                  style={styles.editStyle}
+                  onPress={(e) => {
+                    setOpenEdit(true), setDataToEdit(f)
+                  }}
+                >
+                  <Text allowFontScaling={false} style={styles.editText}>
+                    Edit
+                  </Text>
+                </Pressable>
+              </View>
             ))}
           </ScrollView>
         ) : (
@@ -173,23 +210,6 @@ const AddressChoose: React.FC = () => {
         )}
         {/* </RadioButton.Group> */}
       </View>
-      {/* <FlexContent>
-        <Pressable onPress={(e) => onAddPress(e, onText)}>
-          <AddAddressBtn>
-            <Plus width={16} height={16} />
-            <BtnText>Add new Address</BtnText>
-          </AddAddressBtn>
-        </Pressable>
-        <View style={{ width: 175 }}>
-          <CustomButton
-            variant='primary'
-            text='Deliver here'
-            leftIcon={<TickIcon width={16} height={16} />}
-            disabled={data?.length === 0 ? true : false}
-            onPress={() => navigation.navigate('Checkout')}
-          />
-        </View>
-      </FlexContent> */}
     </View>
   )
 }
@@ -257,7 +277,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     display: 'flex',
     flexDirection: 'row',
-    width: width / 1.2,
+    width: width / 1.5,
     gap: 8,
     marginVertical: 8,
     ...Platform.select({

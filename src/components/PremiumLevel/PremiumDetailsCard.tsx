@@ -404,7 +404,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                     <SelectText allowFontScaling={false}>
                       {isSize.sizeVarient.size
                         ? `${isSize.sizeVarient.size}-${isSize.sizeVarient.measurement}`
-                        : 'Select a Sizes'}
+                        : 'Select Size'}
                     </SelectText>
                     <Animatable.View
                       animation={isDropdownSizesOpen ? 'rotate' : ''}

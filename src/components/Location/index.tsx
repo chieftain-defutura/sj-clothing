@@ -24,6 +24,7 @@ import LoginModal from '../../screens/Modals/Login'
 import { userStore } from '../../store/userStore'
 import AddressChoose from './AddressChoose'
 import CloseGrayIcon from '../../assets/icons/CloseGrayIcon'
+import AddressAdd from './AddressAdd'
 
 interface IAddressBook {
   navigation: any
@@ -31,6 +32,20 @@ interface IAddressBook {
 interface Suggestion {
   display_name: string
   place_id: number
+}
+interface AddressData {
+  name: string
+  addressOne: string
+  addressTwo: string
+  city: string
+  state: string
+  pinCode: string
+  country: string
+  floor: string
+  fullAddress: string
+  isSelected: boolean
+  phoneNo: string
+  saveAddressAs: string
 }
 
 const { width } = Dimensions.get('window')
@@ -47,7 +62,8 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
   const [signUp, setSignUp] = useState(false)
   const [forgotMail, setForgotmail] = useState(false)
   const [searchText, setSearchText] = useState<string>('')
-
+  const [openEdit, setOpenEdit] = useState(false)
+  const [dataToEdit, setDataToEdit] = useState<AddressData>()
   async function reverseGeocode(latitude: number, longitude: number) {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
 
@@ -139,88 +155,104 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
       setDisplay(1)
     }
   }
+
   return (
     <LinearGradient colors={gradientOpacityColors} style={{ flex: 1, position: 'relative' }}>
-      <KeyboardAvoidingView style={[styles.container]} contentContainerStyle={{ height: 900 }}>
-        {showDisplay === 0 && (
-          <>
-            <GoBackArrowContent
-              onPress={() => {
-                navigation.goBack()
-              }}
-            >
-              <LeftArrow width={24} height={24} />
-              <CartText allowFontScaling={false}>Address Book</CartText>
-            </GoBackArrowContent>
-            <View style={{ padding: 20, display: 'flex', alignItems: 'flex-start', gap: 20 }}>
-              <View style={styles.searchInputBox}>
-                <Search width={16} height={16} style={{ marginLeft: 16 }} />
-                <InputBox
-                  placeholder='Search for area, street name'
-                  onChangeText={(text) => handleSearchText(text)}
-                  value={onText || ''}
-                  placeholderTextColor={COLORS.SecondaryTwo}
-                  allowFontScaling={false}
-                  style={{ width: width / 1.4 }}
-                />
-                <TouchableOpacity onPress={clearSearch} style={{ position: 'absolute', right: 10 }}>
-                  <CloseGrayIcon width={20} height={20} />
-                </TouchableOpacity>
-              </View>
-
-              <View
-                style={{
-                  position: 'absolute',
-                  zIndex: 100000,
-                  top: 120,
-                  backgroundColor: 'white',
-                  left: 20,
-                  height: 240,
-                  borderRadius: 4,
+      {!openEdit && (
+        <KeyboardAvoidingView style={[styles.container]} contentContainerStyle={{ height: 900 }}>
+          {showDisplay === 0 && (
+            <>
+              <GoBackArrowContent
+                onPress={() => {
+                  navigation.goBack()
                 }}
               >
-                <FlatList
-                  data={suggestions}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setOnSearchChange(item.display_name)
-                        setSuggestions(null)
-                      }}
-                      style={{
-                        borderBottomColor: '#E5CEF5',
-                        borderBottomWidth: 1,
-                        paddingHorizontal: 12,
-                        paddingVertical: 12,
-                      }}
-                    >
-                      <HeaderStyle allowFontScaling={false}>{item.display_name}</HeaderStyle>
-                    </TouchableOpacity>
-                  )}
-                  keyExtractor={(item) => item.place_id.toString()}
-                  scrollEnabled={true}
-                  horizontal={false}
-                />
+                <LeftArrow width={24} height={24} />
+                <CartText allowFontScaling={false}>Address Book</CartText>
+              </GoBackArrowContent>
+              <View
+                style={{
+                  paddingHorizontal: 20,
+                  paddingVertical: 50,
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: 20,
+                }}
+              >
+                <View style={styles.searchInputBox}>
+                  <Search width={16} height={16} style={{ marginLeft: 16 }} />
+                  <InputBox
+                    placeholder='Search for area, street name'
+                    onChangeText={(text) => handleSearchText(text)}
+                    value={onText || ''}
+                    placeholderTextColor={COLORS.SecondaryTwo}
+                    allowFontScaling={false}
+                    style={{ width: width / 1.4 }}
+                  />
+                  <TouchableOpacity
+                    onPress={clearSearch}
+                    style={{ position: 'absolute', right: 10 }}
+                  >
+                    <CloseGrayIcon width={20} height={20} />
+                  </TouchableOpacity>
+                </View>
+
+                <View
+                  style={{
+                    position: 'absolute',
+                    zIndex: 100000,
+                    top: 120,
+                    backgroundColor: 'white',
+                    left: 20,
+                    height: 240,
+                    borderRadius: 4,
+                  }}
+                >
+                  <FlatList
+                    data={suggestions}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity
+                        onPress={() => {
+                          setOnSearchChange(item.display_name)
+                          setSuggestions(null)
+                        }}
+                        style={{
+                          borderBottomColor: '#E5CEF5',
+                          borderBottomWidth: 1,
+                          paddingHorizontal: 12,
+                          paddingVertical: 12,
+                        }}
+                      >
+                        <HeaderStyle allowFontScaling={false}>{item.display_name}</HeaderStyle>
+                      </TouchableOpacity>
+                    )}
+                    keyExtractor={(item) => item.place_id.toString()}
+                    scrollEnabled={true}
+                    horizontal={false}
+                  />
+                </View>
+                <Pressable onPress={handleAddAddress}>
+                  <AddAddressBtn>
+                    <Plus width={16} height={16} />
+                    <BtnText allowFontScaling={false}>Add new Address</BtnText>
+                  </AddAddressBtn>
+                </Pressable>
+                <AddressChoose setDataToEdit={setDataToEdit} setOpenEdit={setOpenEdit} />
               </View>
-              <Pressable onPress={handleAddAddress}>
-                <AddAddressBtn>
-                  <Plus width={16} height={16} />
-                  <BtnText allowFontScaling={false}>Add new Address</BtnText>
-                </AddAddressBtn>
-              </Pressable>
-              <AddressChoose />
-            </View>
-          </>
-        )}
-        {showDisplay === 1 && (
-          <Map
-            navigation={navigation}
-            setDisplay={setDisplay}
-            onText={onText}
-            setOnSearchChange={setOnSearchChange}
-          />
-        )}
-      </KeyboardAvoidingView>
+            </>
+          )}
+          {showDisplay === 1 && (
+            <Map
+              navigation={navigation}
+              setDisplay={setDisplay}
+              onText={onText}
+              setOnSearchChange={setOnSearchChange}
+            />
+          )}
+        </KeyboardAvoidingView>
+      )}
+      {openEdit && <AddressAdd EditAddress={dataToEdit} setOpenEdit={setOpenEdit} />}
+
       {login && (
         <LoginModal
           onForgotClick={() => {

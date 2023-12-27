@@ -65,13 +65,37 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ closeModal, setOpenCh
     }
   }, [isCreated])
 
+  const [timer, setTimer] = useState(60) // Initial timer value in seconds
+  const [timerRunning, setTimerRunning] = useState(false)
+
+  useEffect(() => {
+    let interval: string | number | NodeJS.Timeout | undefined
+
+    // Start the timer when it's running
+    if (timerRunning) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => {
+          if (prevTimer === 0) {
+            clearInterval(interval)
+            setTimerRunning(false)
+            return 60 // Reset the timer value after reaching 0
+          }
+          return prevTimer - 1
+        })
+      }, 1000)
+    }
+
+    // Clean up the interval when the component unmounts or timer stops
+    return () => clearInterval(interval)
+  }, [timerRunning])
+
   const handleSubmit = async (values: any) => {
     try {
       if (!user) return
       setLoading(true)
       if (values.otp === verificationId) {
         await updateDoc(doc(db, 'users', user.uid), {
-          phoneNo: values.phoneNumber,
+          phoneNo: countryCode + values.phoneNumber,
         })
         updatePhoneNo(Number(countryCode + values.phoneNumber))
         setIsCreated(true)
@@ -99,6 +123,7 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ closeModal, setOpenCh
 
   const handleSendCode = async (values: any) => {
     try {
+      setTimerRunning(true)
       const verificationCode = generateVerificationCode()
       setVerificationId(verificationCode.toString())
       const response = await axios.post(`${API_URL}/send-otp`, {
@@ -112,7 +137,6 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ closeModal, setOpenCh
     }
   }
 
-  console.log(isCreated)
   return (
     <SignUpWrapper>
       {!isCreated ? (
@@ -207,12 +231,16 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ closeModal, setOpenCh
                         autoCorrect={false}
                         allowFontScaling={false}
                       />
-                      <Pressable
-                        style={{ opacity: verificationId ? 1 : 0 }}
-                        onPress={() => handleSendCode(phoneNumber)}
-                      >
-                        <VerifyText>Resend</VerifyText>
-                      </Pressable>
+                      {timerRunning ? (
+                        <Text style={{ color: COLORS.textTertiaryClr }}>{timer}s</Text>
+                      ) : (
+                        <Pressable
+                          style={{ opacity: verificationId ? 1 : 0 }}
+                          onPress={() => handleSendCode({ phoneNumber: phoneNumber })}
+                        >
+                          <VerifyText>Resend</VerifyText>
+                        </Pressable>
+                      )}
                     </InputBorder>
                     {touched.otp && errors.otp && (
                       <ErrorText allowFontScaling={false}>{errors.otp}</ErrorText>

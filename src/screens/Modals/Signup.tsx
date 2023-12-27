@@ -81,20 +81,33 @@ const SignupModal: React.FC<SignupModalProps> = ({
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const confirmDetails = userStore((state) => state.confirmDetails)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [timer, setTimer] = useState(60) // Initial timer value in seconds
+  const [timerRunning, setTimerRunning] = useState(false)
+
+  useEffect(() => {
+    let interval: string | number | NodeJS.Timeout | undefined
+
+    // Start the timer when it's running
+    if (timerRunning) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => {
+          if (prevTimer === 0) {
+            clearInterval(interval)
+            setTimerRunning(false)
+            return 60 // Reset the timer value after reaching 0
+          }
+          return prevTimer - 1
+        })
+      }, 1000)
+    }
+
+    // Clean up the interval when the component unmounts or timer stops
+    return () => clearInterval(interval)
+  }, [timerRunning])
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
-
-  // useEffect(() => {
-  //   if (errorMessage) {
-  //     const timer = setTimeout(() => {
-  //       setErrorMessage(null)
-  //     }, 1000)
-
-  //     return () => clearTimeout(timer)
-  //   }
-  // }, [errorMessage])
 
   const generateVerificationCode = () => {
     const codeLength = 6
@@ -104,6 +117,8 @@ const SignupModal: React.FC<SignupModalProps> = ({
   }
 
   const handleVerify = async (values: typeof initialValues) => {
+    setTimerRunning(true)
+
     try {
       setIsLoading(true)
       const ProductRef = await getDocs(collection(db, 'users'))
@@ -169,7 +184,6 @@ const SignupModal: React.FC<SignupModalProps> = ({
     if (!user) {
       try {
         setIsLoading(true)
-
         updateSignupUpdate('INVALID')
 
         const { user } = await createUserWithEmailAndPassword(auth, email, password)
@@ -373,13 +387,21 @@ const SignupModal: React.FC<SignupModalProps> = ({
                         style={[{ width: 200 }, styles.input]}
                       />
                       <View style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
-                        <Pressable
-                          style={{ opacity: isVerify ? 0 : 1 }}
-                          disabled={isVerify}
-                          // onPress={() => handleVerify()}
-                        >
-                          <VerifyText allowFontScaling={false}>Resend</VerifyText>
-                        </Pressable>
+                        {timerRunning ? (
+                          <Text style={{ paddingRight: 15, color: COLORS.textTertiaryClr }}>
+                            {timer}s
+                          </Text>
+                        ) : (
+                          <Pressable
+                            style={{ opacity: isVerify ? 0 : 1 }}
+                            disabled={isVerify}
+                            onPress={() =>
+                              handleVerify({ email: email, name: name, password: password })
+                            }
+                          >
+                            <VerifyText allowFontScaling={false}>Resend</VerifyText>
+                          </Pressable>
+                        )}
                       </View>
                     </InputBorder>
                     {touched.otp && errors.otp && (
