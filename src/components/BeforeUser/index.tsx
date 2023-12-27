@@ -1,5 +1,5 @@
 import { View, Dimensions } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomButton from '../Button'
 import Languages from '../../pages/Navigation/StackNavigation/Languages'
 import Currency from '../../pages/Navigation/StackNavigation/Currency'
@@ -12,15 +12,20 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated'
+import { tooltipDisableStore } from '../../store/TooltipDisable'
 
 const { width } = Dimensions.get('window')
-const BeforeUser = () => {
+
+const BeforeUser: React.FC = () => {
   const slideValue = useSharedValue(0)
   const updateConfirmDetails = userStore((state) => state.updateConfirmDetails)
   const avatar = userStore((store) => store.avatar)
   const updateAnimation = userStore((store) => store.updateAnimation)
   const createAvatarAnimationFinished = userStore((store) => store.createAvatarAnimationFinished)
   const [steps, setSteps] = useState(0)
+  const disable = tooltipDisableStore((state) => state.disable)
+
+  console.log('disable', disable)
 
   const slideX = useAnimatedStyle(() => {
     return {
@@ -102,6 +107,7 @@ const BeforeUser = () => {
                 updateAnimation(false)
                 handleDecreaseSteps()
               }}
+              disabled={!disable}
             />
             <CustomButton
               style={{ width: width / 2.4 }}
@@ -130,11 +136,13 @@ const BeforeUser = () => {
               style={{ width: width / 2.4 }}
               text='Previous'
               onPress={handleDecreaseSteps}
+              disabled={!disable}
             />
             <CustomButton
               style={{ width: width / 2.4 }}
               text='Next'
               onPress={handleIncreaseSteps}
+              disabled={!disable}
             />
           </View>
         </>
@@ -156,11 +164,13 @@ const BeforeUser = () => {
               style={{ width: width / 2.4 }}
               text='Previous'
               onPress={handleDecreaseSteps}
+              disabled={!disable}
             />
             <CustomButton
               style={{ width: width / 2.4 }}
               text='Confirm'
               onPress={() => updateConfirmDetails(true)}
+              disabled={!disable}
             />
           </View>
         </>

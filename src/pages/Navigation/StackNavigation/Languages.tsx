@@ -15,6 +15,7 @@ import { doc, updateDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import LanguageTooltip from '../../../components/Tooltips/LanguageTooltip'
+import { tooltipDisableStore } from '../../../store/TooltipDisable'
 
 const { width } = Dimensions.get('window')
 
@@ -42,7 +43,7 @@ const LanguagesData = [
   { language: 'Ukrainian', lang: 'uk', text: 'українська' },
 ]
 
-const Languages = () => {
+const Languages: React.FC = () => {
   const { i18n } = useTranslation()
   const { t } = useTranslation('language')
   const user = userStore((state) => state.user)
@@ -52,19 +53,25 @@ const Languages = () => {
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
   const navigation = useNavigation()
   const [toolTip, showToolTip] = useState(false)
+  const updateDisable = tooltipDisableStore((state) => state.updateDisable)
 
   const isShowToolTip = async () => {
     try {
       const data = await AsyncStorage.getItem('showLanguageTooltip')
 
       if (data !== '13') {
-        AsyncStorage.setItem('showLanguageTooltip', '13')
-        showToolTip(true)
+        updateDisable(false)
+        setTimeout(() => {
+          AsyncStorage.setItem('showLanguageTooltip', '13')
+          updateDisable(true)
+          showToolTip(true)
+        }, 1000)
       }
     } catch (error) {
       console.log(error)
     }
   }
+
   useEffect(() => {
     isShowToolTip()
   }, [isShowToolTip])

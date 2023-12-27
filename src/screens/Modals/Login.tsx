@@ -31,13 +31,7 @@ const ValidationSchema = Yup.object({
     .transform((value, originalValue) => originalValue.toLowerCase().trim())
     .email('Enter a valid email')
     .required('Please enter your email address'),
-  password: Yup.string()
-    .min(8)
-    .required('Please enter your password')
-    .matches(
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-      'Must contain minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character',
-    ),
+  password: Yup.string().required('This Field is required'),
 })
 
 const LoginModal: React.FC<LoginModalProps> = ({

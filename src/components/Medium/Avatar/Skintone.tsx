@@ -25,6 +25,7 @@ import { COLORS } from '../../../styles/theme'
 import { userStore } from '../../../store/userStore'
 import { db, dbDefault } from '../../../../firebase'
 import SelectYourSkintoneTooltip from '../../Tooltips/MidLevel/SelectYourSkintoneTooltip'
+import { tooltipDisableStore } from '../../../store/TooltipDisable'
 
 const { height, width } = Dimensions.get('window')
 
@@ -44,14 +45,19 @@ const Skintone: React.FC<ISkintone> = ({}) => {
   const [data, setData] = useState<{ uid: string; animationFinished?: boolean } | null>(null)
   const [webviewLoading, setWebviewLoading] = useState(true)
   const [toolTip, showToolTip] = useState(false)
+  const updateDisable = tooltipDisableStore((state) => state.updateDisable)
 
   const isShowToolTip = async () => {
     try {
       const data = await AsyncStorage.getItem('showSkinToneTooltip')
 
       if (data !== '11') {
-        AsyncStorage.setItem('showSkinToneTooltip', '11')
-        showToolTip(true)
+        setTimeout(() => {
+          updateDisable(false)
+          AsyncStorage.setItem('showSkinToneTooltip', '11')
+          updateDisable(true)
+          showToolTip(true)
+        }, 1000)
       }
     } catch (error) {
       console.log(error)
@@ -131,6 +137,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
     handleUpdateSkintone()
     handleGetData()
   }, [handleSetUid, handleUpdateGender, handleUpdateSkintone, handleGetData])
+
   const handleSubmit = async (index: number) => {
     if (user) {
       updateAvatar({ gender: avatar.gender, skinTone: index.toString() })

@@ -20,6 +20,7 @@ import { MidlevelStore } from './src/store/midlevelStore'
 import { PUBLISHABLE_KEY } from './src/utils/config'
 import * as Notifications from 'expo-notifications'
 import { generalStore } from './src/store/generalStore'
+import { tooltipDisableStore } from './src/store/TooltipDisable'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -169,7 +170,7 @@ const App: React.FC = () => {
   const language = userStore((state) => state.language)
   const updateAccessory = generalStore((state) => state.updateAccessory)
   const updatePremiumText = generalStore((state) => state.updatePremiumText)
-
+  const updateDisable = tooltipDisableStore((state) => state.updateDisable)
   const updateMidlevelData = MidlevelStore((state) => state.updateMidlevel)
   const signupUpdate = userStore((state) => state.signupUpdate)
   const user = userStore((state) => state.user)
@@ -313,6 +314,17 @@ const App: React.FC = () => {
   useEffect(() => {
     getMidlevelData()
   }, [getMidlevelData])
+
+  const getTooltip = useCallback(async () => {
+    const MidSteps = await AsyncStorage.getItem('showSkinToneTooltip')
+    console.log('showSkinToneTooltip', MidSteps)
+    if (MidSteps === '11') {
+      updateDisable(true)
+    }
+  }, [])
+  useEffect(() => {
+    getTooltip()
+  }, [getTooltip])
 
   const getGeneralSettings = useCallback(async () => {
     try {

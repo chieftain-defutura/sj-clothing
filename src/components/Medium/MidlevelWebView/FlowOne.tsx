@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
-import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, Dimensions, StyleSheet, View, Text } from 'react-native'
 import uuid from 'react-native-uuid'
 import { doc, setDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
+import TextAnimation from '../Navigation/TextAnimation'
 
 const { height, width } = Dimensions.get('window')
 
@@ -14,9 +15,21 @@ interface IFlowOneProps {
   setUid: React.Dispatch<React.SetStateAction<string>>
   color: string
   setAnimationUpdated: React.Dispatch<React.SetStateAction<boolean>>
+  animationUpdated: boolean
+  shake: () => void
+  shakeAnimation: any
 }
 
-const FlowOne: React.FC<IFlowOneProps> = ({ uid, steps, setUid, color, setAnimationUpdated }) => {
+const FlowOne: React.FC<IFlowOneProps> = ({
+  uid,
+  steps,
+  setUid,
+  color,
+  setAnimationUpdated,
+  shake,
+  animationUpdated,
+  shakeAnimation,
+}) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
@@ -93,6 +106,15 @@ const FlowOne: React.FC<IFlowOneProps> = ({ uid, steps, setUid, color, setAnimat
           }
           onHttpError={(value) => console.log('HTTP ERROR', value)}
         />
+      )}
+      {steps === 1 && (
+        <View style={{ position: 'absolute', bottom: 40, left: 110 }}>
+          {!animationUpdated && (
+            <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+              Please wait till avatar load
+            </TextAnimation>
+          )}
+        </View>
       )}
     </View>
   )

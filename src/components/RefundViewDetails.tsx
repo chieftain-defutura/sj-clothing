@@ -1,21 +1,8 @@
-import React, { useState } from 'react'
-import {
-  Modal,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  Text,
-  Dimensions,
-  Pressable,
-  Image,
-  Platform,
-  Alert,
-} from 'react-native'
-import * as Animatable from 'react-native-animatable'
+import React from 'react'
+import { Modal, View, StyleSheet, Dimensions, Pressable, Platform } from 'react-native'
 import { RadioButton } from 'react-native-paper'
 import styled from 'styled-components/native'
-import { COLORS, FONT_FAMILY } from '../styles/theme'
-
+import { COLORS } from '../styles/theme'
 import { IRefund } from '../constant/types'
 import CloseIcon from '../assets/icons/Close'
 import moment from 'moment'
@@ -105,16 +92,16 @@ const RefundViewDetails: React.FC<IRefundViewDetails> = ({ closeModal, refundDat
                 <RadioButton.Android
                   value='option1'
                   status={
-                    refundData?.refundStatus?.paymenyCompleted?.status ? 'checked' : 'unchecked'
+                    refundData?.refundStatus?.paymentCompleted?.status ? 'checked' : 'unchecked'
                   }
                   color={COLORS.textSecondaryClr}
                 />
-                <OrderPlacedText allowFontScaling={false}>Paymeny Completed</OrderPlacedText>
+                <OrderPlacedText allowFontScaling={false}>Payment Completed</OrderPlacedText>
               </View>
               <View>
                 <DateTextText allowFontScaling={false}>
-                  {refundData?.refundStatus?.paymenyCompleted?.createdAt
-                    ? moment(refundData?.refundStatus?.paymenyCompleted?.createdAt.toDate()).format(
+                  {refundData?.refundStatus?.paymentCompleted?.createdAt
+                    ? moment(refundData?.refundStatus?.paymentCompleted?.createdAt.toDate()).format(
                         'DD-MM-YYYY',
                       )
                     : ''}
