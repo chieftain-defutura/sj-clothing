@@ -49,10 +49,10 @@
     "Select area to add text": "உரைப் படத்தைச் சேர்க்க பகுதியைத் தேர்ந்தெடுக்கவும்"
   },
   "TermsAndConditions": {
-    "TERMS & CONDITIONS": "",
-    "Welcome to": "",
-    "PLEASE READ THESE TERMS OF USE CAREFULLY BEFORE USING THE CLOTHING APP.": "",
-    "Acceptance of Terms": "",
+    "TERMS & CONDITIONS": "விதிமுறைகளும் நிபந்தனைகளும்",
+    "Welcome to": "வரவேற்கிறோம்",
+    "PLEASE READ THESE TERMS OF USE CAREFULLY BEFORE USING THE CLOTHING APP.": "ஆடை பயன்பாட்டைப் பயன்படுத்துவதற்கு முன், இந்தப் பயன்பாட்டு விதிமுறைகளை கவனமாகப் படிக்கவும்.",
+    "Acceptance of Terms": "விதிமுறைகளை ஏற்றுக்கொள்வது",
     "Acceptance of Terms By downloading, installing, or using SJ clothing , you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms,you should not use the app.": "",
     "Account Registration": "",
     "a. You must provide accurate and complete information when registering for an account on the Clothing App.": "",
@@ -79,10 +79,10 @@
     "a. For questions or concerns regarding these Terms and Conditions, please contact us  using the contact information provided on the Clothing App. By using the Clothing App, you acknowledge that you have read, understood, and agreed to these Terms and Conditions. If you do not agree to these terms, please do not use the app. Your continued use of the app indicates your acceptance of these terms and any updates or revisions.": "",
     "Information Collection": "",
     "We may collect the following sensitive information:": "",
-    "a. Images: We may collect and store images that you choose to upload or share within the app.": "",
-    "b. Email Addresses: We may collect your email address to facilitate communication and account management.": "",
-    "c. Phone Numbers: We may collect your phone number for account verification and communication purposes.": "",
-    "d. Addresses: We may collect your physical address to provide location-based services orn for shipping purposes.": "",
-    "e. Location Data: We may collect and use your device's location data to enhance your experience within the Service, such as location-based features.": ""
+    "a. Images - We may collect and store images that you choose to upload or share within the app.": "",
+    "b. Email Addresses - We may collect your email address to facilitate communication and account management.": "",
+    "c. Phone Numbers - We may collect your phone number for account verification and communication purposes.": "",
+    "d. Addresses - We may collect your physical address to provide location-based services or for shipping purposes.": "",
+    "e. Location Data - We may collect and use your devices location data to enhance your experience within the Service, such as location-based features.": ""
   }
 }

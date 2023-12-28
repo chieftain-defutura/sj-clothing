@@ -126,27 +126,27 @@ const TermsAndConditions = () => {
             </NormalText>
             <NormalText allowFontScaling={false}>
               {t(
-                'a. Images: We may collect and store images that you choose to upload or share within the app.',
+                'a. Images - We may collect and store images that you choose to upload or share within the app.',
               )}
             </NormalText>
             <NormalText allowFontScaling={false}>
               {t(
-                'b. Email Addresses: We may collect your email address to facilitate communication and account management.',
+                'b. Email Addresses - We may collect your email address to facilitate communication and account management.',
               )}
             </NormalText>
             <NormalText allowFontScaling={false}>
               {t(
-                'c. Phone Numbers: We may collect your phone number for account verification and communication purposes.',
+                'c. Phone Numbers - We may collect your phone number for account verification and communication purposes.',
               )}
             </NormalText>
             <NormalText allowFontScaling={false}>
               {t(
-                'd. Addresses: We may collect your physical address to provide location-based services or  for shipping purposes.',
+                'd. Addresses - We may collect your physical address to provide location-based services or for shipping purposes.',
               )}
             </NormalText>
             <NormalText allowFontScaling={false}>
               {t(
-                'e. Location Data: We may collect and use your devices location data to enhance your experience within the Service, such as location-based features.',
+                'e. Location Data - We may collect and use your devices location data to enhance your experience within the Service, such as location-based features.',
               )}
             </NormalText>
           </View>
