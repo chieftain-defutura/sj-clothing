@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image, Platform } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useEffect, useRef, useState } from 'react'
 import { COLORS } from '../../../styles/theme'
@@ -164,6 +164,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Arvo-Regular',
     textTransform: 'uppercase',
+    width: width / 1.2,
+    ...Platform.select({
+      ios: {
+        width: width / 1.3,
+      },
+    }),
   },
   genderButtonWrapper: {
     display: 'flex',
@@ -183,5 +189,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Arvo-Regular',
     marginTop: 8,
     fontSize: 16,
+    lineHeight: 24,
   },
 })

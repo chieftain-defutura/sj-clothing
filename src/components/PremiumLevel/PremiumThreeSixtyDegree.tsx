@@ -147,18 +147,21 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
           </View>
           {errorMessage && (
             <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 6,
-                position: 'absolute',
-                bottom: 90,
-                left: 0,
-                right: 0,
-                zIndex: 1000,
-              }}
+              style={[
+                {
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 6,
+                  position: 'absolute',
+                  bottom: 90,
+                  left: 0,
+                  right: 0,
+                  zIndex: 1000,
+                },
+                styles.iosStyle,
+              ]}
             >
               <InfoIcon width={24} height={24} style={{ marginTop: 4 }} />
               <Text
@@ -221,5 +224,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  iosStyle: {
+    ...Platform.select({
+      ios: {
+        bottom: 150,
+      },
+    }),
   },
 })

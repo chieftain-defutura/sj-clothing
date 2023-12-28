@@ -34,23 +34,31 @@ interface IDelectAddress {
 const DelectAddress: React.FC<IDelectAddress> = ({ closeModal, errorMessage, setData, index }) => {
   const user = userStore((store) => store.user)
   const [isSendVerifyMail, setSendVerifyMail] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const DeleteAddress = async (indexToRemove: number) => {
-    if (!user) return
-    const userDocRef = doc(db, 'users', user.uid)
-    const userDoc = await getDoc(userDocRef)
-    if (userDoc.exists()) {
-      const userData = userDoc.data()
-      if (!userData) return
+    try {
+      setIsLoading(true)
+      if (!user) return
+      const userDocRef = doc(db, 'users', user.uid)
+      const userDoc = await getDoc(userDocRef)
+      if (userDoc.exists()) {
+        const userData = userDoc.data()
+        if (!userData) return
 
-      const updatedAddresses = userData.address.filter(
-        (_: any, index: any) => index !== indexToRemove,
-      )
-      setData(updatedAddresses)
-      await updateDoc(userDocRef, { address: updatedAddresses })
-      closeModal?.()
-    } else {
-      console.log('User document not found')
+        const updatedAddresses = userData.address.filter(
+          (_: any, index: any) => index !== indexToRemove,
+        )
+        setData(updatedAddresses)
+        closeModal?.()
+        await updateDoc(userDocRef, { address: updatedAddresses })
+      } else {
+        console.log('User document not found')
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -93,8 +101,8 @@ const DelectAddress: React.FC<IDelectAddress> = ({ closeModal, errorMessage, set
               </StyledView>
             </TouchableOpacity>
             <CustomButton
-              text='Yes'
-              disabled={isSendVerifyMail}
+              text={isLoading ? 'Deleting...' : 'Yes'}
+              disabled={isLoading}
               onPress={() => DeleteAddress(index)}
               style={{ width: 100 }}
             />

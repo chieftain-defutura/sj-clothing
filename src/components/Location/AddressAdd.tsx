@@ -85,7 +85,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
   const navigation = useNavigation()
   const user = userStore((state) => state.user)
   const [selectYourOther, setSelectYourOther] = useState<string | null>(
-    EditAddress?.saveAddressAs ? EditAddress.saveAddressAs : null,
+    EditAddress?.saveAddressAs ? EditAddress.saveAddressAs : 'Home',
   )
   const [showOthersOption, setShowOthersOption] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
@@ -585,9 +585,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
                 <DropDownContainer>
                   <View style={{ width: width - 51 }}>
                     <SelectContent onPress={toggleDropdown}>
-                      <SelectText allowFontScaling={false}>
-                        {selectYourOther || 'Home / Work / Others'}
-                      </SelectText>
+                      <SelectText allowFontScaling={false}>{selectYourOther}</SelectText>
                       <Animatable.View
                         animation={isDropdownOpen ? 'rotate' : ''}
                         duration={500}

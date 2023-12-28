@@ -21,6 +21,7 @@ import DeleteIcon from '../../assets/icons/AccountPageIcon/DeleteIcon'
 import EditIcon from '../../assets/icons/AccountPageIcon/EditIcon'
 import DelectAddress from '../../screens/Modals/DelectAddress'
 import WorkIcon from '../../assets/icons/AccountPageIcon/WorkIcon'
+import UserIcon from '../../assets/icons/AccountPageIcon/UserIcon'
 
 interface AddressData {
   name: string
@@ -197,6 +198,9 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
                         <HomeIcon width={16} height={16} color={'black'} />
                       )}
                       {f.saveAddressAs === 'Work' && <WorkIcon width={16} height={16} />}
+                      {f.saveAddressAs !== 'Home' && f.saveAddressAs !== 'Work' && (
+                        <UserIcon width={19} height={19} />
+                      )}
 
                       <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
                     </View>
@@ -232,7 +236,7 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
                 )}
 
                 <TouchableHighlight
-                  style={{ padding: 6, borderRadius: 30, marginLeft: -6 }}
+                  style={[{ padding: 6, borderRadius: 30, marginLeft: -6 }, styles.styleIOS]}
                   activeOpacity={0.6}
                   underlayColor='rgba(219, 0, 255, 0.2)'
                   onPress={(e) => {
@@ -380,6 +384,13 @@ const styles = StyleSheet.create({
         height: 30,
         marginTop: -32,
         marginLeft: 4,
+      },
+    }),
+  },
+  styleIOS: {
+    ...Platform.select({
+      ios: {
+        marginLeft: -15,
       },
     }),
   },
