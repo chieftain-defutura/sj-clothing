@@ -19,6 +19,7 @@ interface AddressData {
   floor: string
   fullAddress: string
   isSelected: boolean
+  countryCode: string
   phoneNo: string
   saveAddressAs: string
 }
@@ -47,6 +48,7 @@ const DelectAddress: React.FC<IDelectAddress> = ({ closeModal, errorMessage, set
       )
       setData(updatedAddresses)
       await updateDoc(userDocRef, { address: updatedAddresses })
+      closeModal?.()
     } else {
       console.log('User document not found')
     }

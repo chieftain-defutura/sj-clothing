@@ -74,7 +74,7 @@ const AddImageOrText: React.FC<IAddImageOrText> = ({
               }}
             >
               {t(
-                `Select area to add ${isImageOrText.title === 'design-images' ? 'image' : 'text'} `,
+                `Select area to add ${isImageOrText.title === 'design-images' ? 'image' : 'text'}`,
               )}
             </Text>
             <View

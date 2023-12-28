@@ -97,6 +97,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
           onClose?.()
           setOpenCheckout?.(true)
         }
+
         if (userData.tokens[0] === null) {
           // userData.tokens.push(...parseExpoTokens)
           await updateDoc(userDocRef, userData)
@@ -114,6 +115,8 @@ const LoginModal: React.FC<LoginModalProps> = ({
     } catch (error) {
       onClose?.()
       console.log('error', error)
+      onClose?.()
+
       if (error instanceof FirebaseError) {
         if (error.code === 'auth/invalid-email') {
           setErrorMessage('invalid email')

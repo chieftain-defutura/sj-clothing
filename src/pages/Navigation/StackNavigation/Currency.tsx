@@ -202,7 +202,7 @@ const Currency = () => {
             {isDropdownSizesOpen && (
               <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
                 <SelectDropDownList>
-                  <ScrollView style={{ height: 240 }}>
+                  <ScrollView style={{ height: 200 }}>
                     {CurrencyData.filter(
                       (f) => f.currency !== (currency ? currency.currency : ''),
                     ).map((f: any, i: number) => (

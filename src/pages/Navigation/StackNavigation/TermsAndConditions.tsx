@@ -57,7 +57,7 @@ const TermsAndConditions = () => {
               )}
             </NormalText>
             <NormalText allowFontScaling={false}>
-              {t('c. You are responsible for all activities that occur under your account. ')}
+              {t('c. You are responsible for all activities that occur under your account.')}
             </NormalText>
             <NormalText allowFontScaling={false}>
               {t('d. You must notify us immediately of any unauthorized use of your account.')}
@@ -65,7 +65,7 @@ const TermsAndConditions = () => {
             <HeadingText allowFontScaling={false}>{t('Payment')}</HeadingText>
             <NormalText allowFontScaling={false}>
               {t(
-                'a. When you place an order through the app, you agree to pay for the products or services ordered at the prices specified, including any applicable taxes and shipping  fees.',
+                'a. When you place an order through the app, you agree to pay for the products or services ordered at the prices specified, including any applicable taxes and shipping fees.',
               )}
             </NormalText>
             <NormalText allowFontScaling={false}>
@@ -107,18 +107,17 @@ const TermsAndConditions = () => {
               )}
             </NormalText>
             <HeadingText allowFontScaling={false}>
-              {' '}
-              {t('Changes to Terms and Conditions ')}
+              {t('Changes to Terms and Conditions')}
             </HeadingText>
             <NormalText allowFontScaling={false}>
               {t(
-                'a. We reserve the right to modify these Terms and Conditions at any time. It is your responsibility to review these terms regularly.Your continued use of the app after any  changes indicate your acceptance of the modified terms.',
+                'a. We reserve the right to modify these Terms and Conditions at any time. It is your responsibility to review these terms regularly.Your continued use of the app after any changes indicate your acceptance of the modified terms.',
               )}
             </NormalText>
             <HeadingText allowFontScaling={false}> {t('Contact Information')}</HeadingText>
             <NormalText allowFontScaling={false}>
               {t(
-                'a. For questions or concerns regarding these Terms and Conditions, please contact us  using the contact information provided on the Clothing App. By using the Clothing App,  you acknowledge that you have read, understood, and agreed to these Terms and   Conditions. If you do not agree to these terms, please do not use the app. Your  continued use of the app indicates your acceptance of these terms and any updates or  revisions.',
+                'a. For questions or concerns regarding these Terms and Conditions, please contact us  using the contact information provided on the Clothing App. By using the Clothing App, you acknowledge that you have read, understood, and agreed to these Terms and Conditions. If you do not agree to these terms, please do not use the app. Your continued use of the app indicates your acceptance of these terms and any updates or revisions.',
               )}
             </NormalText>
             <HeadingText allowFontScaling={false}>{t('Information Collection')}</HeadingText>

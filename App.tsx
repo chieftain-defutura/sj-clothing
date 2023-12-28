@@ -165,7 +165,6 @@ SplashScreen.preventAutoHideAsync()
 const App: React.FC = () => {
   const loadedRef = useRef(false)
   const [loading, setLoading] = useState(true)
-  const rate = userStore((state) => state.rate)
   const currency = userStore((state) => state.currency)
   const language = userStore((state) => state.language)
   const updateAccessory = generalStore((state) => state.updateAccessory)
@@ -174,7 +173,6 @@ const App: React.FC = () => {
   const updateMidlevelData = MidlevelStore((state) => state.updateMidlevel)
   const signupUpdate = userStore((state) => state.signupUpdate)
   const user = userStore((state) => state.user)
-  const steps = MidlevelStore((state) => state.midlevel)
   const updateRate = userStore((state) => state.updateRate)
   const updateUser = userStore((state) => state.updateUser)
   const updateName = userStore((state) => state.updateName)
@@ -190,7 +188,7 @@ const App: React.FC = () => {
   const [notification, setNotification] = useState<Notifications.Notification>()
   const notificationListener = useRef<Notifications.Subscription>()
   const responseListener = useRef<Notifications.Subscription>()
-
+  console.log('language', language)
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => setExpoPushToken(token as string))
     notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
@@ -272,25 +270,11 @@ const App: React.FC = () => {
     }
     const expotokens = await AsyncStorage.getItem('expotokens')
     console.log('expotokens', expotokens)
-  }, [])
+  }, [language])
 
   useEffect(() => {
     getLanguage()
   }, [getLanguage])
-
-  const getCurrency = useCallback(async () => {
-    if (currency) {
-      updateCurrency({
-        currency: currency.currency as string,
-        abrive: currency.abrive as string,
-        symbol: currency.symbol as string,
-      })
-    }
-  }, [])
-
-  useEffect(() => {
-    getCurrency()
-  }, [getCurrency])
 
   const getMidlevelData = useCallback(async () => {
     const MidSteps = await AsyncStorage.getItem('mid-steps')

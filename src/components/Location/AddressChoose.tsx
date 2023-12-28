@@ -32,9 +32,10 @@ interface AddressData {
   country: string
   floor: string
   fullAddress: string
-  isSelected: boolean
   phoneNo: string
   saveAddressAs: string
+  countryCode: string
+  isSelected: boolean
 }
 
 interface IAddAddress {
@@ -200,8 +201,9 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
                       <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
                     </View>
                     <DescriptionText allowFontScaling={false} style={{ width: width / 1.8 }}>
-                      {f.name}, {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city},{' '}
-                      {f.state}, {f.country}, {f.pinCode}.
+                      {f.name}, {f.countryCode}
+                      {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city}, {f.state},{' '}
+                      {f.country}, {f.pinCode}.
                     </DescriptionText>
                   </View>
                 </TouchableOpacity>
@@ -283,6 +285,7 @@ const Container = styled.View`
   border-radius: 10px;
   padding-vertical: 14px;
   padding-horizontal: 12px;
+  margin-vertical: 6px;
 `
 
 const BtnText = styled.Text`
@@ -292,9 +295,9 @@ const BtnText = styled.Text`
 `
 const Header = styled.Text`
   font-family: ${FONT_FAMILY.GilroySemiBold};
-  font-size: 18px;
+  font-size: 19px;
   color: ${COLORS.iconsHighlightClr};
-  margin-bottom: 12px;
+  margin-bottom: 22px;
   margin-top: 12px;
 `
 
