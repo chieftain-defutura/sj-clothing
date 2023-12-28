@@ -92,5 +92,14 @@
     "c. Phone Numbers: We may collect your phone number for account verification and communication purposes.": "Telefonnumre: Vi indsamler muligvis dit telefonnummer til kontobekræftelse og kommunikationsformål.",
     "d. Addresses: We may collect your physical address to provide location-based services orn for shipping purposes.": "Adresser: Vi indsamler muligvis din fysiske adresse for at levere lokationsbaserede tjenester eller til forsendelsesformål.",
     "e. Location Data: We may collect and use your device's location data to enhance your experience within the Service, such as location-based features.": "Placeringsdata: Vi kan indsamle og bruge din enheds placeringsdata til at forbedre din oplevelse i Tjenesten, såsom placeringsbaserede funktioner."
+  },
+  "Address": {
+    "Address Book": "Adressebog",
+    "Add new Address": "Tilføj ny adresse",
+    "Choose Address": "Vælg Adresse",
+    "Use current location": "Brug den aktuelle placering",
+    "No Address": "Ingen adresse",
+    "Enter Complete Address": "Indtast komplet adresse",
+    "Add Address": "Tilføj adresse"
   }
 }

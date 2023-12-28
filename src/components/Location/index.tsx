@@ -7,6 +7,7 @@ import {
   Dimensions,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import MapView from 'react-native-maps'
 import styled from 'styled-components/native'
 import { Pressable } from 'react-native'
@@ -53,6 +54,7 @@ const { width } = Dimensions.get('window')
 
 const Locations: React.FC<IAddressBook> = ({ navigation }) => {
   const [showDisplay, setDisplay] = useState(0)
+  const { t } = useTranslation('Address')
   const [location, setLocation] = useState<any>()
   const mapRef = React.useRef<MapView>(null)
   const [onText, setOnSearchChange] = React.useState<string | null>(null)
@@ -169,7 +171,7 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
                 }}
               >
                 <LeftArrow width={24} height={24} />
-                <CartText allowFontScaling={false}>Address Book</CartText>
+                <CartText allowFontScaling={false}>{t('Address Book')}</CartText>
               </GoBackArrowContent>
               <View
                 style={{
@@ -235,7 +237,7 @@ const Locations: React.FC<IAddressBook> = ({ navigation }) => {
                 <Pressable onPress={handleAddAddress}>
                   <AddAddressBtn>
                     <Plus width={16} height={16} />
-                    <BtnText allowFontScaling={false}>Add new Address</BtnText>
+                    <BtnText allowFontScaling={false}>{t('Add new Address')}</BtnText>
                   </AddAddressBtn>
                 </Pressable>
                 <AddressChoose setDataToEdit={setDataToEdit} setOpenEdit={setOpenEdit} />
@@ -295,13 +297,13 @@ const AddAddressBtn = styled.View`
   flex-direction: row;
   align-items: center;
   gap: 2px;
-  width: 165px;
   top: 30px;
 `
 const BtnText = styled.Text`
   font-size: 12px;
   font-family: Arvo-Regular;
   color: #db00ff;
+  line-height: 18px;
 `
 
 const GoBackArrowContent = styled.TouchableOpacity`
@@ -320,6 +322,7 @@ const CartText = styled.Text`
   font-family: Arvo-Regular;
   font-size: 20px;
   letter-spacing: -0.4px;
+  line-height: 24px;
 `
 
 export default Locations

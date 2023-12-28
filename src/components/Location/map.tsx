@@ -2,6 +2,7 @@ import { StyleSheet, View, KeyboardAvoidingView, Dimensions } from 'react-native
 import React, { useState } from 'react'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import CustomButton from '../../components/Button'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/native'
 // import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { COLORS } from '../../styles/theme'
@@ -29,6 +30,7 @@ const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSear
   const mapRef = React.useRef<MapView>(null)
   const [addedAddress, setAddedAddress] = useState<any>()
   const [isOpen, setIsOpen] = useState(false)
+  const { t } = useTranslation('Address')
 
   async function reverseGeocode(latitude: number, longitude: number) {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
@@ -107,7 +109,7 @@ const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSear
             }}
           >
             <LeftArrow width={24} height={24} />
-            <CartText allowFontScaling={false}>Address Book</CartText>
+            <CartText allowFontScaling={false}>{t('Address Book')}</CartText>
           </GoBackArrowContent>
 
           <MapView
@@ -152,7 +154,7 @@ const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSear
               >
                 <CurrentLocationIcon width={16} height={16} />
                 <UseCurrentLocationText allowFontScaling={false}>
-                  Use current location
+                  {t('Use current location')}
                 </UseCurrentLocationText>
               </FlexRow>
             </CurrentLocationWrapper>
@@ -162,7 +164,7 @@ const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSear
             <CustomButton
               onPress={handlePress}
               variant='primary'
-              text='Enter Complete Address'
+              text={t('Enter Complete Address')}
               fontFamily='Arvo-Regular'
               fontSize={16}
               style={{ width: width / 1.1 }}
@@ -210,6 +212,7 @@ const CartText = styled.Text`
   font-family: Arvo-Regular;
   font-size: 20px;
   letter-spacing: -0.4px;
+  line-height: 28px;
 `
 
 const SelectAddressBtn = styled.View`

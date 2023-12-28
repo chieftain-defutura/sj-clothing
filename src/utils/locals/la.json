@@ -81,5 +81,14 @@
     "c. Phone Numbers: We may collect your phone number for account verification and communication purposes.": "c. Numeri telephonici: Colligere possumus numerum telephonicum ad rationem verificationis et ad proposita communicationis.",
     "d. Addresses: We may collect your physical address to provide location-based services orn for shipping purposes.": "d. Inscriptiones: Collige electronicam tuam physicam ad praebenda loca substructa officia orn ad usus navium.",
     "e. Location Data: We may collect and use your device's location data to enhance your experience within the Service, such as location-based features.": "e. Locus Data: Colligere et uti situ tuo machinam datam ad augendam experientiam tuam intra Servitium, sicut locus notarum substructio."
+  },
+  "Address": {
+    "Address Book": "Inscriptio libro",
+    "Add new Address": "Addere novam Inscriptio",
+    "Choose Address": "Elige Oratio",
+    "Use current location": "Usus current location",
+    "No Address": "Nulla Oratio",
+    "Enter Complete Address": "Intra Inscriptio Complete",
+    "Add Address": "Add Oratio"
   }
 }

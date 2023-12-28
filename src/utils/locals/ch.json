@@ -84,5 +84,14 @@
     "c. Phone Numbers: We may collect your phone number for account verification and communication purposes.": "C。電話號碼：我們可能會收集您的電話號碼用於帳戶驗證和通訊目的。   ",
     "d. Addresses: We may collect your physical address to provide location-based services orn for shipping purposes.": "d.地址：我們可能會收集您的實際地址，以提供基於位置的服務或用於運輸目的。   ",
     "e. Location Data: We may collect and use your device's location data to enhance your experience within the Service, such as location-based features.": "e.位置資料：我們可能會收集和使用您裝置的位置資料來增強您在服務中的體驗，例如基於位置的功能。   "
+  },
+  "Address": {
+    "Address Book": "地址簿",
+    "Add new Address": "添加新地址",
+    "Choose Address": "选择地址",
+    "Use current location": "使用当前位置",
+    "No Address": "无地址",
+    "Enter Complete Address": "输入完整地址",
+    "Add Address": "添加地址"
   }
 }

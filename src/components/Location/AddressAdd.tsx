@@ -1,5 +1,6 @@
 import styled from 'styled-components/native'
 import axios from 'axios'
+import { useTranslation } from 'react-i18next'
 import TickIcon from '../../assets/icons/TickIcon'
 import CustomButton from '../Button'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
@@ -77,6 +78,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
   const [keyboardStatus, setKeyboardStatus] = React.useState('')
   const [Addr, setAddr] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const { t } = useTranslation('Address')
   const [countryCode, setCountryCode] = useState(
     EditAddress?.countryCode ? EditAddress.countryCode : '+91',
   )
@@ -408,7 +410,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
           }}
         >
           <LeftArrow width={24} height={24} />
-          <CartText allowFontScaling={false}>Add Address</CartText>
+          <CartText allowFontScaling={false}>{t('Add Address')}</CartText>
         </GoBackArrowContent>
         <View style={{ paddingHorizontal: 26 }}>
           <View>
@@ -714,12 +716,14 @@ const GoBackArrowContent = styled.Pressable`
   gap: 8px;
   padding-left: 16px;
   padding-top: 16px;
+  margin-bottom: 8px;
 `
 const CartText = styled.Text`
   color: ${COLORS.textClr};
   font-family: Arvo-Regular;
   font-size: 20px;
   letter-spacing: -0.4px;
+  line-height: 28px;
 `
 
 const DropDownContainer = styled.View`

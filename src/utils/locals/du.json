@@ -83,5 +83,14 @@
     "c. Phone Numbers: We may collect your phone number for account verification and communication purposes.": "Telefoonnummers: We kunnen uw telefoonnummer verzamelen voor accountverificatie en communicatiedoeleinden.",
     "d. Addresses: We may collect your physical address to provide location-based services orn for shipping purposes.": "Adressen: we kunnen uw fysieke adres verzamelen om locatiegebaseerde diensten te leveren of voor verzenddoeleinden.",
     "e. Location Data: We may collect and use your device's location data to enhance your experience within the Service, such as location-based features.": " Locatiegegevens: We kunnen de locatiegegevens van uw apparaat verzamelen en gebruiken om uw ervaring binnen de Dienst te verbeteren, zoals locatiegebaseerde functies"
+  },
+  "Address": {
+    "Address Book": "Adresboek",
+    "Add new Address": "Nieuw adres toevoegen",
+    "Choose Address": "Kies Adres",
+    "Use current location": "Gebruik huidige locatie",
+    "No Address": "Geen adres",
+    "Enter Complete Address": "Voer het volledige adres in",
+    "Add Address": "Voeg adres toe"
   }
 }

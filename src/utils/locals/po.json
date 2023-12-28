@@ -83,5 +83,14 @@
     "c. Phone Numbers: We may collect your phone number for account verification and communication purposes.": "C. Numery telefonów: Możemy zebrać Twój numer telefonu w celu weryfikacji konta i celów komunikacyjnych.",
     "d. Addresses: We may collect your physical address to provide location-based services orn for shipping purposes.": "D. Adresy: Możemy gromadzić Twój adres fizyczny w celu świadczenia usług opartych na lokalizacji lub do celów wysyłki.",
     "e. Location Data: We may collect and use your device's location data to enhance your experience within the Service, such as location-based features.": "mi. Dane lokalizacyjne: Możemy gromadzić i wykorzystywać dane o lokalizacji Twojego urządzenia, aby poprawić Twoje doświadczenia z Usługą, np. funkcje oparte na lokalizacji."
+  },
+  "Address": {
+    "Address Book": "Książka adresowa",
+    "Add new Address": "Dodaj nowy adres",
+    "Choose Address": "Wybierz Adres",
+    "Use current location": "Użyj bieżącej lokalizacji",
+    "No Address": "Brak adresu",
+    "Enter Complete Address": "Wprowadź pełny adres",
+    "Add Address": "Dodaj adres"
   }
 }

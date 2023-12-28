@@ -81,5 +81,14 @@
     "c. Phone Numbers: We may collect your phone number for account verification and communication purposes.": "c. Nomor Telepon: Kami dapat mengumpulkan nomor telepon Anda untuk verifikasi akun dan tujuan komunikasi.",
     "d. Addresses: We may collect your physical address to provide location-based services orn for shipping purposes.": "d. Alamat: Kami mungkin mengumpulkan alamat fisik Anda untuk menyediakan layanan berbasis lokasi atau untuk tujuan pengiriman.",
     "e. Location Data: We may collect and use your device's location data to enhance your experience within the Service, such as location-based features.": "e. Data Lokasi: Kami dapat mengumpulkan dan menggunakan data lokasi perangkat Anda untuk meningkatkan pengalaman Anda dalam Layanan, seperti fitur berbasis lokasi."
+  },
+  "Address": {
+    "Address Book": "Buku alamat",
+    "Add new Address": "Tambahkan alamat baru",
+    "Choose Address": "Pilih Alamat",
+    "Use current location": "Gunakan lokasi saat ini",
+    "No Address": "Tidak Ada Alamat",
+    "Enter Complete Address": "Masukkan Alamat Lengkap",
+    "Add Address": "Tambahkan alamat"
   }
 }

@@ -83,5 +83,14 @@
     "c. Phone Numbers: We may collect your phone number for account verification and communication purposes.": "",
     "d. Addresses: We may collect your physical address to provide location-based services orn for shipping purposes.": "",
     "e. Location Data: We may collect and use your device's location data to enhance your experience within the Service, such as location-based features.": ""
+  },
+  "Address": {
+    "Address Book": "Адресная книга",
+    "Add new Address": "Добавить новый адрес",
+    "Choose Address": "Выберите адрес",
+    "Use current location": "Использовать текущее местоположение",
+    "No Address": "Нет адреса",
+    "Enter Complete Address": "Введите полный адрес",
+    "Add Address": "Добавить адрес"
   }
 }
