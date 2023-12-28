@@ -65,7 +65,7 @@ const Languages: React.FC = () => {
           AsyncStorage.setItem('showLanguageTooltip', '13')
           updateDisable(true)
           showToolTip(true)
-        }, 1000)
+        }, 2000)
       }
     } catch (error) {
       console.log(error)

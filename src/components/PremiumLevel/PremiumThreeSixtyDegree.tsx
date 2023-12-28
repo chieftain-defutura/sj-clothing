@@ -155,7 +155,8 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
                 gap: 6,
                 position: 'absolute',
                 bottom: 90,
-                left: 90,
+                left: 0,
+                right: 0,
                 zIndex: 1000,
               }}
             >
@@ -166,7 +167,6 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
                   color: 'red',
                   fontFamily: 'Gilroy-Medium',
                   paddingTop: 3,
-                  // width: width / 1,
                   fontSize: 18,
                   textAlign: 'center',
                 }}
@@ -184,8 +184,6 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               paddingHorizontal: 18,
               paddingTop: 10,
               marginBottom: Platform.OS === 'ios' ? 62 : 0,
-              // position: 'absolute',
-              // bottom: 25,
             }}
             onPress={handleSubmit}
           />
