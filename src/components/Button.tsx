@@ -86,7 +86,6 @@ const ButtonText = styled.Text<{ variant: 'primary' | 'secondary' | undefined }>
   color: white;
   background: ${(p) => (p.variant === 'primary' ? 'transparent' : 'transparent')};
   line-height: 20px;
-  text-transform: capitalize;
 `
 
 export default CustomButton

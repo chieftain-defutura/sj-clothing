@@ -45,7 +45,7 @@ const DelectAddress: React.FC<IDelectAddress> = ({ closeModal, errorMessage, set
       if (userDoc.exists()) {
         const userData = userDoc.data()
         if (!userData) return
-
+        console.log(indexToRemove)
         const updatedAddresses = userData.address.filter(
           (_: any, index: any) => index !== indexToRemove,
         )
@@ -71,7 +71,7 @@ const DelectAddress: React.FC<IDelectAddress> = ({ closeModal, errorMessage, set
       return () => clearTimeout(timer)
     }
   }, [isSendVerifyMail])
-
+  console.log(index)
   return (
     <Modal animationType='fade' transparent={true}>
       <View style={styles.VerificationContainer}>
