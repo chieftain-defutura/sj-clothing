@@ -262,6 +262,8 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         marginBottom: -40,
+        width: width / 1.1,
+        marginLeft: 20,
       },
     }),
   },

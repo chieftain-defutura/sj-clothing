@@ -197,7 +197,6 @@ const Languages: React.FC = () => {
           <View style={{ width: 208, paddingTop: 14 }}>
             <SelectContent onPress={toggleDropdownSizes}>
               <Text allowFontScaling={false} style={styles.selectText}>
-                {' '}
                 {LanguagesData.find((f) => f.lang === language)?.text}
               </Text>
               <Svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
@@ -292,6 +291,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONT_FAMILY.ArvoRegular,
     color: COLORS.textSecondaryClr,
+    lineHeight: 18,
   },
   selectListText: {
     fontSize: 14,
@@ -299,5 +299,6 @@ const styles = StyleSheet.create({
     color: COLORS.textTertiaryClr,
     paddingHorizontal: 12,
     paddingVertical: 8,
+    lineHeight: 18,
   },
 })

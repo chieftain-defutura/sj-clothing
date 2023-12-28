@@ -4,19 +4,12 @@ import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { View, Pressable, Dimensions, TouchableOpacity } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
-import { query, collection, where, onSnapshot, Timestamp } from 'firebase/firestore'
+import { query, collection, where, onSnapshot } from 'firebase/firestore'
 import { LinearGradient } from 'expo-linear-gradient'
 import StarActive from '../../../assets/icons/PostPageIcon/StarActive'
 import StarInActive from '../../../assets/icons/PostPageIcon/StarInActive'
 import { useTranslation } from 'react-i18next'
-import {
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  updateDoc,
-  collection as collectionLite,
-} from 'firebase/firestore/lite'
+import { getDocs, collection as collectionLite } from 'firebase/firestore/lite'
 import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { IOrder, IRatings, IRefund } from '../../../constant/types'
@@ -360,6 +353,7 @@ const CartText = styled.Text`
   font-family: ${FONT_FAMILY.ArvoRegular};
   font-size: 20px;
   letter-spacing: -0.4px;
+  margin-top: -4px;
 `
 
 const ProductWrapper = styled.View`
