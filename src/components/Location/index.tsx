@@ -46,6 +46,7 @@ interface AddressData {
   isSelected: boolean
   phoneNo: string
   saveAddressAs: string
+  countryCode: string
 }
 
 const { width } = Dimensions.get('window')

@@ -24,9 +24,10 @@ interface AddressData {
   country: string
   floor: string
   fullAddress: string
-  isSelected: boolean
   phoneNo: string
   saveAddressAs: string
+  countryCode: string
+  isSelected: boolean
 }
 
 interface IAddAddress {
@@ -187,8 +188,9 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
                       <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
                     </View>
                     <DescriptionText allowFontScaling={false}>
-                      {f.name}, {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city},{' '}
-                      {f.state}, {f.country}, {f.pinCode}.
+                      {f.name}, {f.countryCode}
+                      {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city}, {f.state},{' '}
+                      {f.country}, {f.pinCode}.
                     </DescriptionText>
                   </View>
                 </TouchableOpacity>

@@ -39,6 +39,8 @@ interface IAddAddress {
     floor: string
     phoneNo: string
     saveAddressAs: string
+    countryCode: string
+    isSelected: boolean
   }
 }
 
@@ -72,12 +74,16 @@ const AddressAdd: React.FC<IAddAddress> = ({
   const [keyboardStatus, setKeyboardStatus] = React.useState('')
   const [Addr, setAddr] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [countryCode, setCountryCode] = useState('+91')
+  const [countryCode, setCountryCode] = useState(
+    EditAddress?.countryCode ? EditAddress.countryCode : '+91',
+  )
   const [show, setShow] = useState(false)
   const [padding, setPadding] = useState(0)
   const navigation = useNavigation()
   const user = userStore((state) => state.user)
-  const [selectYourOther, setSelectYourOther] = useState<string | null>(null)
+  const [selectYourOther, setSelectYourOther] = useState<string | null>(
+    EditAddress?.saveAddressAs ? EditAddress.saveAddressAs : null,
+  )
   const [showOthersOption, setShowOthersOption] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
   const [address, setAddress] = useState({
@@ -190,9 +196,10 @@ const AddressAdd: React.FC<IAddAddress> = ({
           pinCode: formik.values.pinCode,
           country: formik.values.country,
           floor: formik.values.floor,
-          phoneNo: countryCode + formik.values.phoneNo,
+          countryCode: countryCode,
+          phoneNo: formik.values.phoneNo,
           saveAddressAs: selectYourOther ? selectYourOther : formik.values.saveAddressAs,
-          isSelected: false,
+          isSelected: EditAddress?.isSelected ? EditAddress.isSelected : false,
         },
       ]
       const newAddress = {
@@ -204,9 +211,10 @@ const AddressAdd: React.FC<IAddAddress> = ({
         pinCode: formik.values.pinCode,
         country: formik.values.country,
         floor: formik.values.floor,
-        phoneNo: countryCode + formik.values.phoneNo,
+        phoneNo: formik.values.phoneNo,
+        countryCode: countryCode,
         saveAddressAs: selectYourOther ? selectYourOther : formik.values.saveAddressAs,
-        isSelected: false,
+        isSelected: EditAddress?.isSelected ? EditAddress.isSelected : false,
       }
 
       saveAddress?.(addressArray)
@@ -219,7 +227,6 @@ const AddressAdd: React.FC<IAddAddress> = ({
       if (!userData) return
 
       if (!EditAddress?.name) {
-        // Adding a new address
         userData.address.push(newAddress)
         setDisplay?.(0)
       } else {
