@@ -1,4 +1,12 @@
-import { View, StyleSheet, Pressable, Dimensions, Platform, TouchableOpacity } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  Pressable,
+  Dimensions,
+  Platform,
+  TouchableOpacity,
+  TouchableHighlight,
+} from 'react-native'
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import styled from 'styled-components/native'
 import { RadioButton } from 'react-native-paper'
@@ -9,10 +17,10 @@ import HomeIcon from '../../assets/icons/HomeIcon'
 import { ScrollView } from 'react-native-gesture-handler'
 import { db } from '../../../firebase'
 import Loader from '../Loading'
-import { Text } from 'react-native'
-import AddressAdd from './AddressAdd'
 import DeleteIcon from '../../assets/icons/AccountPageIcon/DeleteIcon'
 import EditIcon from '../../assets/icons/AccountPageIcon/EditIcon'
+import DelectAddress from '../../screens/Modals/DelectAddress'
+import WorkIcon from '../../assets/icons/AccountPageIcon/WorkIcon'
 
 interface AddressData {
   name: string
@@ -34,15 +42,18 @@ interface IAddAddress {
   setDataToEdit: React.Dispatch<React.SetStateAction<AddressData | undefined>>
 }
 
-const { width, height } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) => {
   const user = userStore((state) => state.user)
   const [data, setData] = useState<AddressData[] | null>([])
   const [checked, setChecked] = React.useState<string | null>(null)
   const [isLoading, setLoading] = useState(false)
+  const [isDelectAddress, setIsDelectAddress] = useState(false)
 
-  const checkefRef = useRef(null)
+  const handleDelectAddress = () => {
+    setIsDelectAddress(true)
+  }
 
   const DeleteAddress = async (indexToRemove: number) => {
     if (!user) return
@@ -128,6 +139,7 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
   useEffect(() => {
     getData()
   }, [getData])
+  console.log('data', data)
 
   if (isLoading)
     <View
@@ -157,10 +169,7 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
         {data?.length ? (
           <ScrollView style={{ height: 500 }} showsVerticalScrollIndicator={false}>
             {data.map((f, index) => (
-              <View
-                key={index}
-                style={{ display: 'flex', flexDirection: 'row', gap: 10, alignItems: 'center' }}
-              >
+              <Container key={index}>
                 <TouchableOpacity
                   style={styles.radioBtn}
                   onPress={() => {
@@ -168,7 +177,7 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
                     updateData(index.toString())
                   }}
                 >
-                  <View>
+                  <View style={{ marginTop: -8 }}>
                     <RadioButton
                       status={checked === index.toString() ? 'checked' : 'unchecked'}
                       value={index.toString()}
@@ -183,42 +192,62 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
 
                   <View style={{ display: 'flex', flexDirection: 'column' }}>
                     <View style={styles.RadioTitle}>
-                      <HomeIcon width={16} height={16} color={'black'} />
+                      {f.saveAddressAs === 'Home' && (
+                        <HomeIcon width={16} height={16} color={'black'} />
+                      )}
+                      {f.saveAddressAs === 'Work' && <WorkIcon width={16} height={16} />}
+
                       <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
                     </View>
-                    <DescriptionText allowFontScaling={false}>
+                    <DescriptionText allowFontScaling={false} style={{ width: width / 1.8 }}>
                       {f.name}, {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city},{' '}
                       {f.state}, {f.country}, {f.pinCode}.
                     </DescriptionText>
                   </View>
                 </TouchableOpacity>
-                <Pressable onPress={() => DeleteAddress(index)}>
-                  <DeleteIcon
-                    width={24}
-                    height={24}
-                    fill='#DB00FF'
-                    stroke='#DB00FF'
-                    strokeWidth={0.9}
+                <TouchableHighlight
+                  onPress={handleDelectAddress}
+                  activeOpacity={0.6}
+                  underlayColor='rgba(219, 0, 255, 0.2)'
+                  style={{ padding: 6, borderRadius: 30, marginLeft: -10 }}
+                >
+                  <View>
+                    <DeleteIcon
+                      width={24}
+                      height={24}
+                      fill='#DB00FF'
+                      stroke='#DB00FF'
+                      strokeWidth={0.9}
+                    />
+                  </View>
+                </TouchableHighlight>
+                {isDelectAddress && (
+                  <DelectAddress
+                    closeModal={() => setIsDelectAddress(false)}
+                    setData={setData}
+                    index={index}
                   />
-                </Pressable>
-                <Pressable
-                  style={styles.editStyle}
+                )}
+
+                <TouchableHighlight
+                  style={{ padding: 6, borderRadius: 30, marginLeft: -6 }}
+                  activeOpacity={0.6}
+                  underlayColor='rgba(219, 0, 255, 0.2)'
                   onPress={(e) => {
                     setOpenEdit(true), setDataToEdit(f)
                   }}
                 >
-                  <EditIcon
-                    width={24}
-                    height={24}
-                    fill='#DB00FF'
-                    stroke='#DB00FF'
-                    strokeWidth={0}
-                  />
-                  {/* <Text allowFontScaling={false} style={styles.editText}>
-                    Edit
-                  </Text> */}
-                </Pressable>
-              </View>
+                  <View>
+                    <EditIcon
+                      width={24}
+                      height={24}
+                      fill='#DB00FF'
+                      stroke='#DB00FF'
+                      strokeWidth={0}
+                    />
+                  </View>
+                </TouchableHighlight>
+              </Container>
             ))}
           </ScrollView>
         ) : (
@@ -242,8 +271,20 @@ const DescriptionText = styled.Text`
   font-size: 12px;
   font-family: Gilroy-Regular;
   line-height: 18px;
-  width: 225px;
 `
+
+const Container = styled.View`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding-vertical: 14px;
+  padding-horizontal: 12px;
+`
+
 const BtnText = styled.Text`
   font-size: 12px;
   font-family: Arvo-Regular;
@@ -288,11 +329,11 @@ const ProductText = styled.Text`
 
 const styles = StyleSheet.create({
   radioBtn: {
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.1)',
-    borderRadius: 10,
-    paddingVertical: 14,
-    paddingHorizontal: 12,
+    // borderWidth: 1,
+    // borderColor: 'rgba(0,0,0,0.1)',
+    // borderRadius: 10,
+    // paddingVertical: 14,
+    // paddingHorizontal: 12,
     display: 'flex',
     flexDirection: 'row',
     width: width / 1.5,
@@ -324,11 +365,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 70,
     marginBottom: 70,
-  },
-  editStyle: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 8,
   },
 
   radioBtnIOS: {

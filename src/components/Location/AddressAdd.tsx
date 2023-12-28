@@ -56,7 +56,10 @@ const validationSchema = yup.object({
   pinCode: yup.string().required('*Please enter your pinCode'),
   country: yup.string().required('*Please enter your country'),
   floor: yup.string().required('*Please enter your floor'),
-  phoneNo: yup.string().required('*Please enter your phoneNo no'),
+  phoneNo: yup
+    .string()
+    .matches(/^\d{10}$/, 'Phone number must be exactly 10 digits')
+    .required('*Please enter your phone number'),
   saveAddressAs: yup.string(),
 })
 
@@ -179,7 +182,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
   const onSubmit = async () => {
     try {
       setIsLoading(true)
-
+      console.log(selectYourOther)
       const addressArray = [
         {
           name: formik.values.name,
@@ -435,16 +438,6 @@ const AddressAdd: React.FC<IAddAddress> = ({
               </Pressable>
             </View>
             <View style={styles.inputContainer}>
-              {/* <View>
-                  <Input
-                    placeholder='Full Address'
-                    value={formik.values.fullAddress}
-                    onChangeText={formik.handleChange('fullAddress')}
-                    onBlur={formik.handleBlur('fullAddress')}
-                    onSubmitEditing={Keyboard.dismiss}
-                  />
-                  {formik.errors.fullAddress && <ErrorText>{formik.errors.fullAddress}</ErrorText>}
-                </View> */}
               <View>
                 <Input
                   placeholder='Name'
@@ -572,10 +565,13 @@ const AddressAdd: React.FC<IAddAddress> = ({
                     style={{ width: width / 1.4 }}
                   />
                 </View>
-                {(formik.values.phoneNo === undefined || formik.values.phoneNo.length === 0) &&
+                {formik.errors.phoneNo && formik.touched.phoneNo && (
+                  <ErrorText allowFontScaling={false}>{formik.errors.phoneNo}</ErrorText>
+                )}
+                {/* {(formik.values.phoneNo === undefined || formik.values.phoneNo.length === 0) &&
                   formik.touched.phoneNo && (
                     <ErrorText allowFontScaling={false}>*Please enter phoneNo</ErrorText>
-                  )}
+                  )} */}
               </View>
 
               <View>
@@ -611,13 +607,20 @@ const AddressAdd: React.FC<IAddAddress> = ({
                 </DropDownContainer>
                 <View style={{ marginVertical: 20 }}>
                   {showOthersOption && (
-                    <Input
-                      placeholder='Save as '
-                      value={formik.values.saveAddressAs}
-                      onChangeText={formik.handleChange('saveAddressAs')}
-                      onBlur={formik.handleBlur('saveAddressAs')}
-                      onSubmitEditing={Keyboard.dismiss}
-                    />
+                    <View>
+                      <Input
+                        placeholder='Save as '
+                        value={formik.values.saveAddressAs}
+                        onChangeText={formik.handleChange('saveAddressAs')}
+                        onBlur={formik.handleBlur('saveAddressAs')}
+                        onSubmitEditing={Keyboard.dismiss}
+                      />
+                      {formik.errors.saveAddressAs && formik.touched.saveAddressAs && (
+                        <ErrorText allowFontScaling={false}>
+                          {formik.errors.saveAddressAs}
+                        </ErrorText>
+                      )}
+                    </View>
                   )}
                 </View>
               </View>

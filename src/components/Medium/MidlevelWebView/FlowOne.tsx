@@ -107,15 +107,24 @@ const FlowOne: React.FC<IFlowOneProps> = ({
           onHttpError={(value) => console.log('HTTP ERROR', value)}
         />
       )}
-      {steps === 1 && (
-        <View style={{ position: 'absolute', bottom: 40, left: 110 }}>
-          {!animationUpdated && (
-            <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
-              Please wait till avatar load
-            </TextAnimation>
-          )}
-        </View>
-      )}
+      <View
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'row',
+        }}
+      >
+        {steps === 1 && (
+          <View>
+            {!animationUpdated && (
+              <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+                Please wait till avatar load
+              </TextAnimation>
+            )}
+          </View>
+        )}
+      </View>
     </View>
   )
 }

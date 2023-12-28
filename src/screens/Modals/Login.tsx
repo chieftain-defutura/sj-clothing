@@ -112,6 +112,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
 
       console.log('User logged in successfully')
     } catch (error) {
+      onClose?.()
       console.log('error', error)
       if (error instanceof FirebaseError) {
         if (error.code === 'auth/invalid-email') {
