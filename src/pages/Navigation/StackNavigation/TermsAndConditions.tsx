@@ -41,7 +41,7 @@ const TermsAndConditions = () => {
             <HeadingText allowFontScaling={false}>{t('Acceptance of Terms')}</HeadingText>
             <NormalText allowFontScaling={false}>
               {t(
-                'Acceptance of Terms By downloading, installing, or using SJ clothing , you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms,you should not use the app.',
+                'Acceptance of Terms By downloading, installing, or using SJ clothing , you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you should not use the app.',
               )}
             </NormalText>
             <HeadingText allowFontScaling={false}>{t('Account Registration')}</HeadingText>
@@ -117,7 +117,7 @@ const TermsAndConditions = () => {
             <HeadingText allowFontScaling={false}> {t('Contact Information')}</HeadingText>
             <NormalText allowFontScaling={false}>
               {t(
-                'a. For questions or concerns regarding these Terms and Conditions, please contact us  using the contact information provided on the Clothing App. By using the Clothing App, you acknowledge that you have read, understood, and agreed to these Terms and Conditions. If you do not agree to these terms, please do not use the app. Your continued use of the app indicates your acceptance of these terms and any updates or revisions.',
+                'a. For questions or concerns regarding these Terms and Conditions, please contact us using the contact information provided on the Clothing App. By using the Clothing App, you acknowledge that you have read, understood, and agreed to these Terms and Conditions. If you do not agree to these terms, please do not use the app. Your continued use of the app indicates your acceptance of these terms and any updates or revisions.',
               )}
             </NormalText>
             <HeadingText allowFontScaling={false}>{t('Information Collection')}</HeadingText>

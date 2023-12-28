@@ -28,7 +28,7 @@ const LanguagesData = [
   { language: 'French', lang: 'fr', text: 'Français' },
   { language: 'German', lang: 'de', text: 'Deutsch' },
   { language: 'Greek', lang: 'ge', text: 'Ελληνικά' },
-  { language: 'Indonesia', lang: 'In', text: 'Indonesia' },
+  { language: 'Indonesia', lang: 'in', text: 'Indonesia' },
   { language: 'Italian', lang: 'it', text: 'Italiana' },
   { language: 'Japanese', lang: 'ja', text: '日本語' },
   { language: 'Korean', lang: 'ko', text: '한국인' },

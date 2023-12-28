@@ -54,8 +54,8 @@
     "Acceptance of Terms": "規約への同意",
     "Acceptance of Terms By downloading, installing, or using SJ clothing , you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you should not use the app.": "規約への同意 SJ clothing をダウンロード、インストール、または使用すると、これらの利用規約に拘束されることに同意したものとみなされます。これらの規約の一部でも同意できない場合は、アプリを使用しないでください。",
     "Account Registration": "アカウントの登録",
-    " a. You must provide accurate and complete information when registering for an account on the Clothing App.": "ａ． Clothing App のアカウントに登録する際は、正確かつ完全な情報を提供する必要があります。",
-    "b. You are responsible for maintaining the confidentiality of your account information, including your username and password.": "b.あなたには、ユーザー名やパスワードを含むアカウント情報の機密性を維持する責任があります。",
+    "a. You must provide accurate and complete information when registering for an account on the Clothing App.": "ａ． Clothing App のアカウントに登録する際は、正確かつ完全な情報を提供する必要があります。",
+    "b. You are responsible for maintaining the confidentiality of your account information,including your username and password.": "b.あなたには、ユーザー名やパスワードを含むアカウント情報の機密性を維持する責任があります。",
     "c. You are responsible for all activities that occur under your account.": "c.あなたは、自分のアカウントで行われるすべての活動に対して責任を負います。",
     "d. You must notify us immediately of any unauthorized use of your account.": "d.アカウントが不正に使用された場合は、直ちに当社に通知する必要があります。",
     "Payment": "支払い",
@@ -72,16 +72,16 @@
     "a. We collect and use your personal information in accordance with our Privacy Statement.": "ａ．当社は、プライバシーに関する声明に従ってお客様の個人情報を収集し、使用します。",
     "Termination": "終了",
     "a. We may terminate or suspend your account and access to the app, with or without notice, for any reason, including violation of these Terms and Conditions.": "ａ．当社は、本利用規約への違反を含む理由の如何を問わず、通知の有無にかかわらず、お客様のアカウントおよびアプリへのアクセスを終了または一時停止することがあります。",
-    " Changes to Terms and Conditions ": "利用規約の変更",
+    "Changes to Terms and Conditions": "利用規約の変更",
     "a. We reserve the right to modify these Terms and Conditions at any time. It is your responsibility to review these terms regularly.Your continued use of the app after any changes indicate your acceptance of the modified terms.": "ａ．当社は、これらの利用規約をいつでも変更する権利を留保します。これらの規約を定期的に確認するのはあなたの責任です。変更後もアプリを継続して使用することは、変更された規約に同意したことを示します",
     "Contact Information": "連絡先",
     "a. For questions or concerns regarding these Terms and Conditions, please contact us using the contact information provided on the Clothing App. By using the Clothing App, you acknowledge that you have read, understood, and agreed to these Terms and Conditions. If you do not agree to these terms, please do not use the app. Your continued use of the app indicates your acceptance of these terms and any updates or revisions.": "ａ．これらの利用規約に関する質問や懸念がある場合は、衣料品アプリに記載されている連絡先情報を使用して当社にお問い合わせください。 Clothing App を使用すると、これらの利用規約を読み、理解し、同意したことを認めたものとみなされます。これらの規約に同意できない場合は、アプリを使用しないでください。アプリを継続的に使用すると、これらの規約および更新または改訂に同意したことになります。",
     "Information Collection": "情報収集",
     "We may collect the following sensitive information:": "当社は次の機密情報を収集する場合があります。",
-    "a. Images: We may collect and store images that you choose to upload or share within the app.": "ａ．画像: 当社は、お客様がアプリ内でアップロードまたは共有するために選択した画像を収集および保存する場合があります。",
-    "b. Email Addresses: We may collect your email address to facilitate communication and account management.": "b.電子メール アドレス: コミュニケーションとアカウント管理を容易にするために、お客様の電子メール アドレスを収集する場合があります。",
-    "c. Phone Numbers: We may collect your phone number for account verification and communication purposes.": "c.電話番号: アカウントの確認と連絡のために、お客様の電話番号を収集する場合があります。",
-    "d. Addresses: We may collect your physical address to provide location-based services orn for shipping purposes.": "d.住所: 当社は、位置情報ベースのサービスを提供するため、または発送の目的で、お客様の物理的な住所を収集する場合があります。",
-    "e. Location Data: We may collect and use your device's location data to enhance your experience within the Service, such as location-based features.": "e.位置データ: 当社は、位置ベースの機能など、サービス内でのエクスペリエンスを向上させるために、デバイスの位置データを収集して使用する場合があります。"
+    "a. Images - We may collect and store images that you choose to upload or share within the app.": "ａ．画像: 当社は、お客様がアプリ内でアップロードまたは共有するために選択した画像を収集および保存する場合があります。",
+    "b. Email Addresses - We may collect your email address to facilitate communication and account management.": "b.電子メール アドレス: コミュニケーションとアカウント管理を容易にするために、お客様の電子メール アドレスを収集する場合があります。",
+    "c. Phone Numbers - We may collect your phone number for account verification and communication purposes.": "c.電話番号: アカウントの確認と連絡のために、お客様の電話番号を収集する場合があります。",
+    "d. Addresses - We may collect your physical address to provide location-based services or for shipping purposes.": "d.住所: 当社は、位置情報ベースのサービスを提供するため、または発送の目的で、お客様の物理的な住所を収集する場合があります。",
+    "e. Location Data - We may collect and use your devices location data to enhance your experience within the Service, such as location-based features.": "e.位置データ: 当社は、位置ベースの機能など、サービス内でのエクスペリエンスを向上させるために、デバイスの位置データを収集して使用する場合があります。"
   }
 }
