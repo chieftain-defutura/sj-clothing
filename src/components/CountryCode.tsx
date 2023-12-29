@@ -38,7 +38,6 @@ const CountryCode: React.FC<ICountryCode> = ({ countryCode, setCountryCode, setS
           pickerButtonOnPress={(item: any) => {
             setCountryCode(item.dial_code)
             setShow(false)
-            console.log('item', item)
           }}
         />
       </Pressable>

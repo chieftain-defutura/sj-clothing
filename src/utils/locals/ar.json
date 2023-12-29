@@ -81,5 +81,14 @@
     "c. Phone Numbers: We may collect your phone number for account verification and communication purposes.": "ج. أرقام الهاتف: قد نقوم بجمع رقم هاتفك لأغراض التحقق من الحساب والتواصل.   ",
     "d. Addresses: We may collect your physical address to provide location-based services orn for shipping purposes.": "د. العناوين: قد نقوم بجمع عنوانك الفعلي لتقديم خدمات تعتمد على الموقع أو لأغراض الشحن.   ",
     "e. Location Data: We may collect and use your device's location data to enhance your experience within the Service, such as location-based features.": "ه. بيانات الموقع: يجوز لنا جمع واستخدام بيانات الموقع الخاصة بجهازك لتحسين تجربتك داخل الخدمة، مثل الميزات المستندة إلى الموقع.   "
+  },
+  "Address": {
+    "Address Book": "دليل العناوين",
+    "Add new Address": "إضافة عنوان جديد",
+    "Choose Address": "اختر العنوان",
+    "Use current location": "استخدام الموقع الحالي",
+    "No Address": "لا يوجد عنوان",
+    "Enter Complete Address": "أدخل العنوان الكامل",
+    "Add Address": "اضف عنوان"
   }
 }

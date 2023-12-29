@@ -41,7 +41,7 @@ const TermsAndConditions = () => {
             <HeadingText allowFontScaling={false}>{t('Acceptance of Terms')}</HeadingText>
             <NormalText allowFontScaling={false}>
               {t(
-                'Acceptance of Terms By downloading, installing, or using SJ clothing , you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms,you should not use the app.',
+                'Acceptance of Terms By downloading, installing, or using SJ clothing , you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you should not use the app.',
               )}
             </NormalText>
             <HeadingText allowFontScaling={false}>{t('Account Registration')}</HeadingText>
@@ -117,7 +117,7 @@ const TermsAndConditions = () => {
             <HeadingText allowFontScaling={false}> {t('Contact Information')}</HeadingText>
             <NormalText allowFontScaling={false}>
               {t(
-                'a. For questions or concerns regarding these Terms and Conditions, please contact us  using the contact information provided on the Clothing App. By using the Clothing App, you acknowledge that you have read, understood, and agreed to these Terms and Conditions. If you do not agree to these terms, please do not use the app. Your continued use of the app indicates your acceptance of these terms and any updates or revisions.',
+                'a. For questions or concerns regarding these Terms and Conditions, please contact us using the contact information provided on the Clothing App. By using the Clothing App, you acknowledge that you have read, understood, and agreed to these Terms and Conditions. If you do not agree to these terms, please do not use the app. Your continued use of the app indicates your acceptance of these terms and any updates or revisions.',
               )}
             </NormalText>
             <HeadingText allowFontScaling={false}>{t('Information Collection')}</HeadingText>
@@ -126,27 +126,27 @@ const TermsAndConditions = () => {
             </NormalText>
             <NormalText allowFontScaling={false}>
               {t(
-                'a. Images: We may collect and store images that you choose to upload or share within the app.',
+                'a. Images - We may collect and store images that you choose to upload or share within the app.',
               )}
             </NormalText>
             <NormalText allowFontScaling={false}>
               {t(
-                'b. Email Addresses: We may collect your email address to facilitate communication and account management.',
+                'b. Email Addresses - We may collect your email address to facilitate communication and account management.',
               )}
             </NormalText>
             <NormalText allowFontScaling={false}>
               {t(
-                'c. Phone Numbers: We may collect your phone number for account verification and communication purposes.',
+                'c. Phone Numbers - We may collect your phone number for account verification and communication purposes.',
               )}
             </NormalText>
             <NormalText allowFontScaling={false}>
               {t(
-                'd. Addresses: We may collect your physical address to provide location-based services or  for shipping purposes.',
+                'd. Addresses - We may collect your physical address to provide location-based services or for shipping purposes.',
               )}
             </NormalText>
             <NormalText allowFontScaling={false}>
               {t(
-                'e. Location Data: We may collect and use your devices location data to enhance your experience within the Service, such as location-based features.',
+                'e. Location Data - We may collect and use your devices location data to enhance your experience within the Service, such as location-based features.',
               )}
             </NormalText>
           </View>
