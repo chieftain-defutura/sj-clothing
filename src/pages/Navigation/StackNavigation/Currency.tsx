@@ -98,7 +98,7 @@ const Currency = () => {
           AsyncStorage.setItem('showCurrencyTooltip', '14')
           updateDisable(true)
           showToolTip(true)
-        }, 2000)
+        }, 1000)
       }
     } catch (error) {
       console.log(error)
