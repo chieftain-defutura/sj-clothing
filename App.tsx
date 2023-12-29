@@ -325,6 +325,7 @@ const App: React.FC = () => {
     getGeneralSettings()
   }, [getGeneralSettings])
 
+  console.log('vhhj', user)
   const [fontsLoaded] = useFonts({
     'Arvo-Regular': require('./src/assets/fonts/timesbold.ttf'), //font-weight 400
     'Gilroy-Medium': require('./src/assets/fonts/times.ttf'), //font-weight 500
