@@ -85,7 +85,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
       const userDocRef = doc(db, 'users', user.uid)
       const userDoc = await getDoc(userDocRef)
       const userData = userDoc.data()
-      console.log(userData)
+      console.log(userData?.phoneNo)
 
       if (!userData) return
 
@@ -113,10 +113,6 @@ const LoginModal: React.FC<LoginModalProps> = ({
 
       console.log('User logged in successfully')
     } catch (error) {
-      onClose?.()
-      console.log('error', error)
-      onClose?.()
-
       if (error instanceof FirebaseError) {
         if (error.code === 'auth/invalid-email') {
           setErrorMessage('invalid email')
@@ -135,7 +131,6 @@ const LoginModal: React.FC<LoginModalProps> = ({
     }
   }
   console.log(phoneNumber)
-  console.log(isVisible)
 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>

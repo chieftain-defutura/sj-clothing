@@ -54,9 +54,11 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
   const [isLoading, setLoading] = useState(false)
   const [isDelectAddress, setIsDelectAddress] = useState(false)
   const { t } = useTranslation('Address')
+  const [deleteIndex, setDeleteIndex] = useState(0)
 
-  const handleDelectAddress = () => {
+  const handleDelectAddress = (index: number) => {
     setIsDelectAddress(true)
+    setDeleteIndex(index)
   }
 
   const DeleteAddress = async (indexToRemove: number) => {
@@ -143,20 +145,22 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
   useEffect(() => {
     getData()
   }, [getData])
-  console.log('data', data)
 
-  if (isLoading)
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 50,
-        marginLeft: 10,
-      }}
-    >
-      <Loader />
-    </View>
+  if (isLoading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 50,
+          marginLeft: 60,
+        }}
+      >
+        <Loader />
+      </View>
+    )
+  }
 
   return (
     <View>
@@ -214,7 +218,7 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
                   </View>
                 </TouchableOpacity>
                 <TouchableHighlight
-                  onPress={handleDelectAddress}
+                  onPress={() => handleDelectAddress(index)}
                   activeOpacity={0.6}
                   underlayColor='rgba(219, 0, 255, 0.2)'
                   style={{ padding: 6, borderRadius: 30, marginLeft: -10 }}
@@ -229,13 +233,6 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
                     />
                   </View>
                 </TouchableHighlight>
-                {isDelectAddress && (
-                  <DelectAddress
-                    closeModal={() => setIsDelectAddress(false)}
-                    setData={setData}
-                    index={index}
-                  />
-                )}
 
                 <TouchableHighlight
                   style={[{ padding: 6, borderRadius: 30, marginLeft: -6 }, styles.styleIOS]}
@@ -257,6 +254,13 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
                 </TouchableHighlight>
               </Container>
             ))}
+            {isDelectAddress && (
+              <DelectAddress
+                closeModal={() => setIsDelectAddress(false)}
+                setData={setData}
+                index={deleteIndex}
+              />
+            )}
           </ScrollView>
         ) : (
           <View style={{ marginTop: 40 }}>
