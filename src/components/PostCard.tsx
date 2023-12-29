@@ -67,11 +67,13 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
   }
 
   const onSubmit = async () => {
-    if (!user) {
-      console.log('user not found')
-      await setFocus(true)
-      setSubscriptionModal(true)
-    }
+    setSubscriptionModal(true)
+
+    // if (!user) {
+    //   console.log('user not found')
+    //   await setFocus(true)
+    //   setSubscriptionModal(true)
+    // }
   }
 
   const handlePressIn = () => {
@@ -299,7 +301,7 @@ const SliderCountContent = styled.View`
   right: 16px;
 `
 
-const PlusIconStyle = styled.Pressable`
+const PlusIconStyle = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -307,6 +309,7 @@ const PlusIconStyle = styled.Pressable`
   position: absolute;
   bottom: 24px;
   right: 24px;
+  z-index: 10000;
 `
 
 const IconPressable = styled.View`

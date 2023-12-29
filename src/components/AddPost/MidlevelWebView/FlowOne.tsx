@@ -1,19 +1,66 @@
-import React, { useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
-import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, Dimensions, StyleSheet, View, Text } from 'react-native'
+import uuid from 'react-native-uuid'
+import { doc, setDoc } from 'firebase/firestore/lite'
+import { db } from '../../../../firebase'
+import { userStore } from '../../../store/userStore'
+import TextAnimation from '../Navigation/TextAnimation'
 
 const { height, width } = Dimensions.get('window')
 
 interface IFlowOneProps {
   uid: string
   steps: number
+  setUid: React.Dispatch<React.SetStateAction<string>>
+  color: string
+  setAnimationUpdated: React.Dispatch<React.SetStateAction<boolean>>
+  animationUpdated: boolean
+  shake: () => void
+  shakeAnimation: any
 }
 
-const FlowOne: React.FC<IFlowOneProps> = ({ uid, steps }) => {
+const FlowOne: React.FC<IFlowOneProps> = ({
+  uid,
+  steps,
+  setUid,
+  color,
+  setAnimationUpdated,
+  shake,
+  animationUpdated,
+  shakeAnimation,
+}) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
   const [webviewLoading, setWebviewLoading] = useState(true)
+  const isMounted = useRef(false)
+  const avatar = userStore((state) => state.avatar)
+
+  const handleSetUid = useCallback(async () => {
+    if (!isMounted.current) {
+      try {
+        isMounted.current = true
+        setAnimationUpdated(false)
+        const tempUid = uuid.v4().toString()
+        const docRef = doc(db, 'ModelsMidlevel', tempUid)
+        const docData: any = { uid: tempUid, skin: avatar?.skinTone, gender: avatar?.gender }
+        if (color) {
+          docData.color = color
+          // docData.colorAnimationFinished = true
+        }
+        await setDoc(docRef, docData)
+
+        setUid(tempUid)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    handleSetUid()
+  }, [handleSetUid])
 
   const handleLayout = () => {
     if (elementRef.current) {
@@ -60,11 +107,31 @@ const FlowOne: React.FC<IFlowOneProps> = ({ uid, steps }) => {
           onHttpError={(value) => console.log('HTTP ERROR', value)}
         />
       )}
+
+      <View
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'row',
+        }}
+      >
+        {steps === 1 && (
+          <View>
+            {!animationUpdated && (
+              <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+                Please wait till avatar load
+              </TextAnimation>
+            )}
+          </View>
+        )}
+      </View>
     </View>
   )
 }
 
 export default FlowOne
+
 const styles = StyleSheet.create({
   absoluteContainer: {
     position: 'absolute',

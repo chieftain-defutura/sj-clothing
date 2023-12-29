@@ -393,18 +393,13 @@ const Navigation: React.FC<INavigation> = ({
                 </Text>
               )}
 
-              <View style={[{ position: 'absolute', top: 560, left: 70 }, styles.errorText]}>
+              {/* <View style={[{ position: 'absolute', top: 560, left: 70 }, styles.errorText]}>
                 {!animationUpdated && (
                   <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
                     Please wait till avatar loads
                   </TextAnimation>
                 )}
-                {/* {steps === 4 && isColor && !colorAnimationUpdate && (
-                  <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
-                    Please wait till avatar loads
-                  </TextAnimation>
-                )} */}
-              </View>
+              </View> */}
             </View>
           )}
           {steps === 6 && (
