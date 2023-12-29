@@ -83,5 +83,14 @@
     "c. Phone Numbers - We may collect your phone number for account verification and communication purposes.": "C. 전화번호: 당사는 계정 확인 및 통신 목적으로 귀하의 전화번호를 수집할 수 있습니다.",
     "d. Addresses - We may collect your physical address to provide location-based services or for shipping purposes.": "D. 주소: 당사는 위치 기반 서비스를 제공하거나 배송 목적으로 귀하의 실제 주소를 수집할 수 있습니다.",
     "e. Location Data - We may collect and use your devices location data to enhance your experience within the Service, such as location-based features.": "E. 위치 데이터: 당사는 위치 기반 기능 등 서비스 내에서 귀하의 경험을 향상시키기 위해 귀하 장치의 위치 데이터를 수집하고 사용할 수 있습니다."
+  },
+  "Address": {
+    "Address Book": "주소록",
+    "Add new Address": "새 주소 추가",
+    "Choose Address": "주소 선택",
+    "Use current location": "현재 위치 사용",
+    "No Address": "주소 없음",
+    "Enter Complete Address": "전체 주소를 입력하세요",
+    "Add Address": "주소 추가"
   }
 }

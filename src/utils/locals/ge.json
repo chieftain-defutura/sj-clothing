@@ -83,5 +83,14 @@
     "c. Phone Numbers - We may collect your phone number for account verification and communication purposes.": "c. Αριθμοί τηλεφώνου: Ενδέχεται να συλλέξουμε τον αριθμό τηλεφώνου σας για λόγους επαλήθευσης λογαριασμού και επικοινωνίας.",
     "d. Addresses - We may collect your physical address to provide location-based services or for shipping purposes.": "d. Διευθύνσεις: Ενδέχεται να συλλέξουμε τη φυσική σας διεύθυνση για να παρέχουμε υπηρεσίες βάσει τοποθεσίας ή για σκοπούς αποστολής.",
     "e. Location Data - We may collect and use your devices location data to enhance your experience within the Service, such as location-based features.": "e. Δεδομένα τοποθεσίας: Ενδέχεται να συλλέξουμε και να χρησιμοποιήσουμε τα δεδομένα τοποθεσίας της συσκευής σας για να βελτιώσουμε την εμπειρία σας εντός της Υπηρεσίας, όπως λειτουργίες που βασίζονται στην τοποθεσία."
+  },
+  "Address": {
+    "Address Book": "Βιβλίο διευθύνσεων",
+    "Add new Address": "Προσθήκη νέας διεύθυνσης",
+    "Choose Address": "Επιλέξτε Διεύθυνση",
+    "Use current location": "Χρησιμοποιήστε την τρέχουσα τοποθεσία",
+    "No Address": "Χωρίς Διεύθυνση",
+    "Enter Complete Address": "Εισαγάγετε την πλήρη διεύθυνση",
+    "Add Address": "Προσθήκη διεύθυνσης"
   }
 }

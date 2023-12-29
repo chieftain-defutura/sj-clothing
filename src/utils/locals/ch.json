@@ -79,10 +79,19 @@
     "a. For questions or concerns regarding these Terms and Conditions, please contact us using the contact information provided on the Clothing App. By using the Clothing App, you acknowledge that you have read, understood, and agreed to these Terms and Conditions. If you do not agree to these terms, please do not use the app. Your continued use of the app indicates your acceptance of these terms and any updates or revisions.": "A。如果對這些條款和條件有疑問或疑慮，請使用服裝應用程式上提供的聯絡資訊與我們聯絡。使用 Clothing App，您承認您已閱讀、理解並同意這些條款和條件。如果您不同意這些條款，請不要使用該應用程式。您繼續使用該應用程式表明您接受這些條款以及任何更新或修訂。   ",
     "Information Collection": "資訊收集   ",
     "We may collect the following sensitive information:": "我們可能會收集以下敏感資訊：   ",
-    "a. Images - We may collect and store images that you choose to upload or share within the app.": "A。圖片：我們可能會收集並儲存您選擇在應用程式中上傳或分享的圖片。   ",
-    "b. Email Addresses - We may collect your email address to facilitate communication and account management.": "b.電子郵件地址：我們可能會收集您的電子郵件地址以方便溝通和帳戶管理。   ",
-    "c. Phone Numbers - We may collect your phone number for account verification and communication purposes.": "C。電話號碼：我們可能會收集您的電話號碼用於帳戶驗證和通訊目的。   ",
-    "d. Addresses - We may collect your physical address to provide location-based services or for shipping purposes.": "d.地址：我們可能會收集您的實際地址，以提供基於位置的服務或用於運輸目的。   ",
-    "e. Location Data - We may collect and use your devices location data to enhance your experience within the Service, such as location-based features.": "e.位置資料：我們可能會收集和使用您裝置的位置資料來增強您在服務中的體驗，例如基於位置的功能。   "
+    "a. Images: We may collect and store images that you choose to upload or share within the app.": "A。圖片：我們可能會收集並儲存您選擇在應用程式中上傳或分享的圖片。   ",
+    "b. Email Addresses: We may collect your email address to facilitate communication and account management.": "b.電子郵件地址：我們可能會收集您的電子郵件地址以方便溝通和帳戶管理。   ",
+    "c. Phone Numbers: We may collect your phone number for account verification and communication purposes.": "C。電話號碼：我們可能會收集您的電話號碼用於帳戶驗證和通訊目的。   ",
+    "d. Addresses: We may collect your physical address to provide location-based services orn for shipping purposes.": "d.地址：我們可能會收集您的實際地址，以提供基於位置的服務或用於運輸目的。   ",
+    "e. Location Data: We may collect and use your device's location data to enhance your experience within the Service, such as location-based features.": "e.位置資料：我們可能會收集和使用您裝置的位置資料來增強您在服務中的體驗，例如基於位置的功能。   "
+  },
+  "Address": {
+    "Address Book": "地址簿",
+    "Add new Address": "添加新地址",
+    "Choose Address": "选择地址",
+    "Use current location": "使用当前位置",
+    "No Address": "无地址",
+    "Enter Complete Address": "输入完整地址",
+    "Add Address": "添加地址"
   }
 }

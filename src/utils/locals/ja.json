@@ -83,5 +83,14 @@
     "c. Phone Numbers - We may collect your phone number for account verification and communication purposes.": "c.電話番号: アカウントの確認と連絡のために、お客様の電話番号を収集する場合があります。",
     "d. Addresses - We may collect your physical address to provide location-based services or for shipping purposes.": "d.住所: 当社は、位置情報ベースのサービスを提供するため、または発送の目的で、お客様の物理的な住所を収集する場合があります。",
     "e. Location Data - We may collect and use your devices location data to enhance your experience within the Service, such as location-based features.": "e.位置データ: 当社は、位置ベースの機能など、サービス内でのエクスペリエンスを向上させるために、デバイスの位置データを収集して使用する場合があります。"
+  },
+  "Address": {
+    "Address Book": "住所録",
+    "Add new Address": "新しいアドレスを追加",
+    "Choose Address": "住所を選択してください",
+    "Use current location": "現在地を使用する",
+    "No Address": "住所なし",
+    "Enter Complete Address": "完全な住所を入力してください",
+    "Add Address": "アドレスを追加"
   }
 }

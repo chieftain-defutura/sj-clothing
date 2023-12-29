@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   TouchableHighlight,
 } from 'react-native'
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/native'
 import { RadioButton } from 'react-native-paper'
 import { userStore } from '../../store/userStore'
@@ -52,6 +53,7 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
   const [checked, setChecked] = React.useState<string | null>(null)
   const [isLoading, setLoading] = useState(false)
   const [isDelectAddress, setIsDelectAddress] = useState(false)
+  const { t } = useTranslation('Address')
   const [deleteIndex, setDeleteIndex] = useState(0)
 
   const handleDelectAddress = (index: number) => {
@@ -163,7 +165,7 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
   return (
     <View>
       <View style={{ marginTop: 26, marginLeft: 8 }}>
-        <Header allowFontScaling={false}>Choose Address</Header>
+        <Header allowFontScaling={false}>{t('Choose Address')}</Header>
 
         {/* <RadioButton.Group
           onValueChange={(newValue) => {
@@ -262,7 +264,7 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
           </ScrollView>
         ) : (
           <View style={{ marginTop: 40 }}>
-            <ProductText allowFontScaling={false}>No Address</ProductText>
+            <ProductText allowFontScaling={false}> {t('No Address')}</ProductText>
           </View>
         )}
         {/* </RadioButton.Group> */}
@@ -307,6 +309,7 @@ const Header = styled.Text`
   color: ${COLORS.iconsHighlightClr};
   margin-bottom: 22px;
   margin-top: 12px;
+  line-height: 24px;
 `
 
 const FlexContent = styled.View`

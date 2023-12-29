@@ -84,5 +84,14 @@
     "c. Phone Numbers - We may collect your phone number for account verification and communication purposes.": "இ. தொலைபேசி எண்கள் - கணக்கு சரிபார்ப்பு மற்றும் தகவல் தொடர்பு நோக்கங்களுக்காக உங்கள் தொலைபேசி எண்ணை நாங்கள் சேகரிக்கலாம்.",
     "d. Addresses - We may collect your physical address to provide location-based services or for shipping purposes.": "ஈ. முகவரிகள் - இருப்பிட அடிப்படையிலான சேவைகளை வழங்குவதற்காக அல்லது ஷிப்பிங் நோக்கங்களுக்காக உங்கள் இருப்பிட முகவரியை நாங்கள் சேகரிக்கலாம்.",
     "e. Location Data - We may collect and use your devices location data to enhance your experience within the Service, such as location-based features.": "உ. இருப்பிடத் தரவு - இருப்பிட அடிப்படையிலான அம்சங்கள் போன்ற சேவையில் உங்கள் அனுபவத்தை மேம்படுத்த உங்கள் சாதனங்களின் இருப்பிடத் தரவை நாங்கள் சேகரித்துப் பயன்படுத்தலாம்."
+  },
+  "Address": {
+    "Address Book": "முகவரி புத்தகம்",
+    "Add new Address": "புதிய முகவரியைச் சேர்க்கவும்",
+    "Choose Address": "முகவரியைத் தேர்ந்தெடுக்கவும்",
+    "Use current location": "தற்போதைய இருப்பிடத்தைப் பயன்படுத்தவும்",
+    "No Address": "முகவரி இல்லை",
+    "Enter Complete Address": "முழுமையான முகவரியை உள்ளிடவும்",
+    "Add Address": "முகவரியைச் சேர்க்கவும்"
   }
 }
