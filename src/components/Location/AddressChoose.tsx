@@ -1,7 +1,6 @@
 import {
   View,
   StyleSheet,
-  Pressable,
   Dimensions,
   Platform,
   TouchableOpacity,
@@ -59,24 +58,6 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
   const handleDelectAddress = (index: number) => {
     setIsDelectAddress(true)
     setDeleteIndex(index)
-  }
-
-  const DeleteAddress = async (indexToRemove: number) => {
-    if (!user) return
-    const userDocRef = doc(db, 'users', user.uid)
-    const userDoc = await getDoc(userDocRef)
-    if (userDoc.exists()) {
-      const userData = userDoc.data()
-      if (!userData) return
-
-      const updatedAddresses = userData.address.filter(
-        (_: any, index: any) => index !== indexToRemove,
-      )
-      setData(updatedAddresses)
-      await updateDoc(userDocRef, { address: updatedAddresses })
-    } else {
-      console.log('User document not found')
-    }
   }
 
   const updateData = async (index: string) => {
@@ -167,13 +148,6 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
       <View style={{ marginTop: 26, marginLeft: 8 }}>
         <Header allowFontScaling={false}>{t('Choose Address')}</Header>
 
-        {/* <RadioButton.Group
-          onValueChange={(newValue) => {
-            updateData(newValue)
-            setChecked(newValue)
-          }}
-          value={checked as string}
-        > */}
         {data?.length ? (
           <ScrollView style={{ height: 500 }} showsVerticalScrollIndicator={false}>
             {data.map((f, index) => (
@@ -267,7 +241,6 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
             <ProductText allowFontScaling={false}> {t('No Address')}</ProductText>
           </View>
         )}
-        {/* </RadioButton.Group> */}
       </View>
     </View>
   )
@@ -298,11 +271,6 @@ const Container = styled.View`
   margin-vertical: 6px;
 `
 
-const BtnText = styled.Text`
-  font-size: 12px;
-  font-family: Arvo-Regular;
-  color: #db00ff;
-`
 const Header = styled.Text`
   font-family: ${FONT_FAMILY.GilroySemiBold};
   font-size: 19px;
@@ -312,27 +280,6 @@ const Header = styled.Text`
   line-height: 24px;
 `
 
-const FlexContent = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 16px;
-  margin-top: 16px;
-`
-const AddAddressBtn = styled.View`
-  border-color: #db00ff;
-  border-width: 1px;
-  padding-horizontal: 14px;
-  padding-vertical: 12px;
-  border-radius: 32px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 2px;
-  width: 165px;
-`
 const ProductText = styled.Text`
   font-size: 14px;
   font-family: ${FONT_FAMILY.ArvoRegular};
@@ -343,11 +290,6 @@ const ProductText = styled.Text`
 
 const styles = StyleSheet.create({
   radioBtn: {
-    // borderWidth: 1,
-    // borderColor: 'rgba(0,0,0,0.1)',
-    // borderRadius: 10,
-    // paddingVertical: 14,
-    // paddingHorizontal: 12,
     display: 'flex',
     flexDirection: 'row',
     width: width / 1.5,

@@ -564,7 +564,16 @@ const AddPost = () => {
               ) : isSteps === 6 ? (
                 <FlowThree color={isColor} isImageOrText={isImageOrText} designs={designs} />
               ) : (
-                <FlowOne uid={uid} steps={isSteps} />
+                <FlowOne
+                  uid={uid}
+                  steps={isSteps}
+                  setUid={setUid}
+                  color={isColor}
+                  setAnimationUpdated={setAnimationUpdated}
+                  animationUpdated={animationUpdated}
+                  shake={shake}
+                  shakeAnimation={shakeAnimation}
+                />
               )}
             </View>
             {isSteps === 5 && FilteredData && (
