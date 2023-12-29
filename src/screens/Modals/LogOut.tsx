@@ -15,6 +15,7 @@ interface ILogOut {
 const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
   const user = userStore((store) => store.user)
   const updateUser = userStore((store) => store.updateUser)
+
   const [isSendVerifyMail, setSendVerifyMail] = useState(false)
 
   const handleClose = async () => {
@@ -22,16 +23,15 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
       await auth.signOut()
       const data = await AsyncStorage.getItem('mail')
       await AsyncStorage.removeItem('mail')
-      closeModal?.()
 
       if (!data) {
         updateUser(null)
       }
+      closeModal?.()
     } catch (error) {
       console.log(error)
     }
   }
-
   useEffect(() => {
     if (isSendVerifyMail) {
       const timer = setTimeout(() => {

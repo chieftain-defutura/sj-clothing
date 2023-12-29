@@ -85,7 +85,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
       const userDocRef = doc(db, 'users', user.uid)
       const userDoc = await getDoc(userDocRef)
       const userData = userDoc.data()
-      console.log(userData?.phoneNo)
+      console.log('fgvn', userData?.tokens)
 
       if (!userData) return
 
@@ -93,13 +93,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
         const expotokens = await AsyncStorage.getItem('expotokens')
         const parseExpoTokens = [JSON.parse(expotokens as string)]
 
-        if (phoneNumber) {
-          onClose?.()
-          setOpenCheckout?.(true)
-        }
-
         if (userData.tokens[0] === null) {
-          // userData.tokens.push(...parseExpoTokens)
           await updateDoc(userDocRef, userData)
         }
         if (
@@ -110,8 +104,12 @@ const LoginModal: React.FC<LoginModalProps> = ({
           await updateDoc(userDocRef, userData)
         }
       }
-
+      if (phoneNumber) {
+        onClose?.()
+        setOpenCheckout?.(true)
+      }
       console.log('User logged in successfully')
+      setIsLoading(false)
     } catch (error) {
       if (error instanceof FirebaseError) {
         if (error.code === 'auth/invalid-email') {
@@ -130,7 +128,6 @@ const LoginModal: React.FC<LoginModalProps> = ({
       setIsLoading(false)
     }
   }
-  console.log(phoneNumber)
 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
@@ -233,7 +230,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
           </Formik>
         </LoginWrapper>
       )}
-      {user && !phoneNumber && (
+      {user && !phoneNumber && !isLoading && (
         <PhoneVerification closeModal={onClose} setOpenCheckout={setOpenCheckout} />
       )}
     </Modal>

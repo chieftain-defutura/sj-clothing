@@ -7,7 +7,16 @@ import {
   ActivityIndicator,
   TouchableHighlight,
   Platform,
+  Animated as ReactAnimate,
+  Easing,
 } from 'react-native'
+
+import {
+  query as defaultQuery,
+  collection as defualtCollection,
+  where as defaultWhere,
+  onSnapshot,
+} from 'firebase/firestore'
 import { WebView } from 'react-native-webview'
 import styled from 'styled-components/native'
 import uuid from 'react-native-uuid'
@@ -15,11 +24,12 @@ import LeftArrow from '../../assets/icons/LeftArrow'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import CustomButton from '../Button'
 import { doc, setDoc } from 'firebase/firestore/lite'
-import { db } from '../../../firebase'
+import { db, dbDefault } from '../../../firebase'
 import { IPremiumData } from '../../constant/types'
 import { userStore } from '../../store/userStore'
 import AuthNavigate from '../../screens/AuthNavigate'
 import InfoIcon from '../../assets/icons/MidlevelIcon/infoIcon'
+import TextAnimation from '../Medium/Navigation/TextAnimation'
 // import { Audio } from 'expo-av'
 
 interface IPremiumThreeSixtyDegree {
@@ -48,7 +58,38 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
+  const [animationUpdated, setAnimationUpdated] = useState(false)
 
+  const shakeAnimation = useRef(new ReactAnimate.Value(0)).current
+
+  const shake = () => {
+    ReactAnimate.sequence([
+      ReactAnimate.timing(shakeAnimation, {
+        toValue: 10,
+        duration: 50,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+      ReactAnimate.timing(shakeAnimation, {
+        toValue: -10,
+        duration: 50,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+      ReactAnimate.timing(shakeAnimation, {
+        toValue: 10,
+        duration: 50,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+      ReactAnimate.timing(shakeAnimation, {
+        toValue: 0,
+        duration: 50,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+    ]).start()
+  }
   // const playSound = async () => {
   //   const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
   //   await sound.playAsync()
@@ -57,6 +98,35 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   // const handleImageClick = () => {
   //   playSound()
   // }
+
+  const handleGetAnimation = useCallback(() => {
+    if (!uid) return
+    const q = defaultQuery(
+      defualtCollection(dbDefault, 'ModelsPremium'),
+      defaultWhere('uid', '==', uid),
+    )
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        // if (doc.data()['animationUpdated']) {
+        //   setAnimationUpdated(doc.data()['animationUpdated'])
+        // }
+        console.log(doc.data())
+        if (doc.data()['avatarLoaded']) {
+          setAnimationUpdated(doc.data()['avatarLoaded'])
+        }
+
+        console.log('doc.data()[animationUpdated]', doc.data()['avatarLoaded'])
+      })
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [uid])
+
+  useEffect(() => {
+    handleGetAnimation()
+  }, [handleGetAnimation])
 
   const handleLayout = () => {
     if (elementRef.current) {
@@ -89,6 +159,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   const onClose = () => {
     setFocus(false)
   }
+  console.log('animationUpda', animationUpdated)
 
   return (
     <Animated.View
@@ -177,10 +248,17 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               </Text>
             </View>
           )}
+
+          {!animationUpdated && (
+            <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+              Please wait till avatar load
+            </TextAnimation>
+          )}
           <CustomButton
             text='Buy Now'
             fontFamily='Arvo-Regular'
             fontSize={16}
+            disabled={!animationUpdated}
             style={{
               width: '100%',
               paddingHorizontal: 18,

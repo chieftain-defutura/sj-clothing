@@ -144,7 +144,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   useEffect(() => {
     getData()
   }, [getData])
-
+  console.log('userPhotourl', user?.photoURL)
   return (
     <LinearGradient colors={gradientOpacityColors}>
       <ScrollView>
@@ -152,18 +152,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
           <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
             <UserWrapper style={{ width: width, height: height / 2.5 }}>
               <NotUserContent>
-                {route.params?.profileImg ? (
-                  <Image
-                    source={{ uri: route.params.profileImg }}
-                    style={{
-                      width: width,
-                      height: height / 2.5,
-                      borderBottomLeftRadius: 50,
-                      borderBottomRightRadius: 50,
-                    }}
-                    alt='profile-img'
-                  />
-                ) : user && user.photoURL ? (
+                {user && user.photoURL ? (
                   <Image
                     source={{ uri: user.photoURL as string }}
                     style={{
@@ -190,11 +179,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
               </EditContent>
             </UserWrapper>
 
-            {route.params?.dName ? (
-              <Text allowFontScaling={false} style={styles.ProfileName}>
-                {route.params.dName}
-              </Text>
-            ) : (
+            {user && (
               <Text allowFontScaling={false} style={styles.ProfileName}>
                 {user?.displayName}
               </Text>
