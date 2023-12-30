@@ -25,6 +25,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
       <View style={styles.selectColorTShirt}>
         <Carousle isGiftVideo={isGiftVideo} setGiftVideo={setGiftVideo} />
       </View>
+
       <View style={{ paddingVertical: 8, display: 'flex', gap: 4 }}>
         <Text
           allowFontScaling={false}
@@ -200,15 +201,31 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           >
             Color
           </Text>
-          <Text
-            allowFontScaling={false}
+          <View
             style={{
-              color: COLORS.textClr,
-              fontFamily: 'Arvo-Regular',
-              fontSize: 14,
-              backgroundColor: 'red',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 2,
+              marginTop: -4,
             }}
-          ></Text>
+          >
+            <Text
+              allowFontScaling={false}
+              style={{
+                color: COLORS.textClr,
+                fontFamily: 'Arvo-Regular',
+                fontSize: 18,
+                backgroundColor: 'red',
+                width: 11,
+                height: 11,
+                marginTop: 6,
+              }}
+            ></Text>
+            <Text style={styles.colorNameText} numberOfLines={1} ellipsizeMode='tail'>
+              Red
+            </Text>
+          </View>
         </View>
       </View>
       <View style={{ marginTop: 14 }}>
@@ -281,5 +298,13 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     fontFamily: 'Arvo-Regular',
     marginBottom: 54,
+  },
+  colorNameText: {
+    fontFamily: FONT_FAMILY.GilroySemiBold,
+    fontSize: 14,
+    marginTop: 6,
+    color: COLORS.iconsHighlightClr,
+    textTransform: 'capitalize',
+    overflow: 'hidden',
   },
 })
