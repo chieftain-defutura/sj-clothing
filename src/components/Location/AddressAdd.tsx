@@ -190,7 +190,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
   const onSubmit = async () => {
     try {
       setIsLoading(true)
-      console.log(selectYourOther)
+
       const addressArray = [
         {
           name: formik.values.name,

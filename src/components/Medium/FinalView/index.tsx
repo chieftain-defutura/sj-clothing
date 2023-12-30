@@ -390,9 +390,7 @@ export default FinalView
 
 const styles = StyleSheet.create({
   finalViewContainer: {
-    // flex: 1,
     padding: 16,
-    // height: height,
   },
   submitBtn: {
     marginVertical: 1,
@@ -408,11 +406,6 @@ const styles = StyleSheet.create({
   },
 })
 
-const AddSubButton = styled.Pressable`
-  border-radius: 5px;
-  background: ${COLORS.addSubButtonBackgroundColor};
-  padding: 11px;
-`
 const DetailsParaText = styled.Text`
   font-size: 12px;
   color: rgba(70, 45, 133, 0.6);
@@ -446,54 +439,4 @@ const ProductText = styled.Text`
   font-family: ${FONT_FAMILY.MontserratRegular};
   color: ${COLORS.SecondaryTwo};
   margin-bottom: 4px;
-`
-
-const InputBorder = styled.View`
-  border-color: ${COLORS.strokeClr};
-  border-width: 1px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-direction: row;
-  padding-vertical: 8px;
-  padding-horizontal: 16px;
-  width: 20%;
-`
-
-const InputStyle = styled.TextInput`
-  font-family: Gilroy-Medium;
-  width: 100%;
-  font-size: 12px;
-  color: ${COLORS.iconsHighlightClr};
-`
-
-const DropDownContainer = styled.View`
-  display: flex;
-  align-items: flex-start;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-horizontal: 16px;
-`
-
-const SelectDropDownList = styled.View`
-  border-color: ${COLORS.dropDownClr};
-  border-width: 1px;
-  border-radius: 5px;
-  margin-top: 8px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-`
-
-const SelectText = styled.Text`
-  font-size: 14px;
-  font-family: ${FONT_FAMILY.ArvoRegular};
-  color: ${COLORS.iconsHighlightClr};
-`
-const SelectListText = styled.Text`
-  font-size: 14px;
-  font-family: ${FONT_FAMILY.ArvoRegular};
-  color: ${COLORS.iconsHighlightClr};
-  padding-horizontal: 12px;
-  padding-vertical: 7px;
 `
