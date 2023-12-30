@@ -102,8 +102,6 @@ const Navigation: React.FC<INavigation> = ({
   const [toolTipColor, setToolTipColor] = useState(false)
   const [saving, setSaving] = useState(false)
 
-  console.log('animationUpdated', animationUpdated)
-
   const isShowToolTip = async () => {
     try {
       const data = await AsyncStorage.getItem('showSelectStyleTooltip')

@@ -112,16 +112,12 @@ const RefundModal: React.FC<IRefund> = ({ closeModal, orderId }) => {
       await task // Wait for the upload to complete
 
       const url = await getDownloadURL(imageRef)
-      console.log('urrl', url)
       setUrl(url)
       setIsLoading(false)
-
-      console.log('1', editProfileDisable)
 
       console.log('Image uploaded to the bucket!')
 
       setEditProfileDisable(true)
-      console.log('2', editProfileDisable)
     } catch (error) {
       console.error('Error uploading image:', error)
       Alert.alert('Error', 'Failed to upload image')
@@ -131,7 +127,6 @@ const RefundModal: React.FC<IRefund> = ({ closeModal, orderId }) => {
 
   const handleSubmit = async (values: typeof initialValues) => {
     try {
-      console.log('values', values)
       if (!user) return
       const docRef = doc(db, 'Returns', user?.uid)
       await setDoc(docRef, {

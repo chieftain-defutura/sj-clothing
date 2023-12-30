@@ -2,7 +2,7 @@ import { useFonts } from 'expo-font'
 import Constants from 'expo-constants'
 import * as Linking from 'expo-linking'
 import { StatusBar } from 'expo-status-bar'
-import { Alert, Platform, SafeAreaView } from 'react-native'
+import { Alert, Button, Platform, SafeAreaView } from 'react-native'
 import { I18nextProvider } from 'react-i18next'
 import * as Device from 'expo-device'
 import * as SplashScreen from 'expo-splash-screen'
@@ -21,6 +21,7 @@ import { PUBLISHABLE_KEY } from './src/utils/config'
 import * as Notifications from 'expo-notifications'
 import { generalStore } from './src/store/generalStore'
 import { tooltipDisableStore } from './src/store/TooltipDisable'
+// import PhoneNumber from 'libphonenumber-js'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -29,47 +30,6 @@ Notifications.setNotificationHandler({
     shouldSetBadge: true,
   }),
 })
-
-// async function registerForPushNotificationsAsync() {
-//   try {
-//     let token
-//     console.log('toen', token)
-
-//     if (Platform.OS === 'android') {
-//       await Notifications.setNotificationChannelAsync('default', {
-//         name: 'default',
-//         importance: Notifications.AndroidImportance.MAX,
-//         sound: 'mySoundFile.wav',
-//         vibrationPattern: [0, 250, 250, 250],
-//       })
-//     }
-
-//     if (Device.isDevice) {
-//       const { status: existingStatus } = await Notifications.getPermissionsAsync()
-//       let finalStatus = existingStatus
-//       console.log('existingStatus', existingStatus)
-//       if (existingStatus !== 'granted') {
-//         const { status } = await Notifications.requestPermissionsAsync()
-//         finalStatus = status
-//       }
-//       console.log('finalStatus', finalStatus)
-//       if (finalStatus !== 'granted') {
-//         alert('Failed to get push token for push notification!')
-//         return
-//       }
-//       token = await Notifications.getExpoPushTokenAsync({
-//         projectId: Constants?.expoConfig?.extra?.eas.projectId,
-//       })
-//       console.log(token)
-//     } else {
-//       alert('Must use physical device for Push Notifications')
-//     }
-
-//     return token?.data
-//   } catch (error) {
-//     console.log('error', error)
-//   }
-// }
 
 async function registerForPushNotificationsAsync() {
   try {
@@ -104,23 +64,7 @@ async function registerForPushNotificationsAsync() {
       }
 
       if (finalStatus !== 'granted') {
-        // The user denied permission. You can show an alert and guide them to settings.
-        // Alert.alert(
-        //   'Enable Push Notifications',
-        //   'Push notifications are important for timely updates. Please enable them in your device settings.',
-        //   [
-        //     {
-        //       text: 'Cancel',
-        //       style: 'cancel',
-        //     },
-        //     {
-        //       text: 'Open Settings',
-        //       onPress: () => Linking.openSettings(),
-        //     },
-        //   ],
-        // )
-
-        return null // or handle as needed in your app
+        return null
       }
 
       token = await Notifications.getExpoPushTokenAsync({
@@ -133,11 +77,6 @@ async function registerForPushNotificationsAsync() {
         expoIosToken = (await Notifications.getExpoPushTokenAsync()).data
         apnToken = (await Notifications.getDevicePushTokenAsync()).data
       }
-      console.log('Token:', token)
-      console.log('expoAndroidToken:', expoAndroidToken)
-      console.log('fcmToken:', fcmToken)
-      console.log('apnToken:', apnToken)
-      console.log('expoIosToken:', expoIosToken)
 
       await AsyncStorage.setItem(
         'expotokens',
@@ -148,8 +87,6 @@ async function registerForPushNotificationsAsync() {
           expoIosToken: expoIosToken ? expoIosToken : null,
         }),
       )
-      const expotokens = await AsyncStorage.getItem('expotokens')
-      console.log(expotokens)
     } else {
       alert('Must use a physical device for Push Notifications')
     }
@@ -188,7 +125,6 @@ const App: React.FC = () => {
   const [notification, setNotification] = useState<Notifications.Notification>()
   const notificationListener = useRef<Notifications.Subscription>()
   const responseListener = useRef<Notifications.Subscription>()
-  console.log('language', language)
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => setExpoPushToken(token as string))
     notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
@@ -269,7 +205,6 @@ const App: React.FC = () => {
       i18n.changeLanguage(language as string)
     }
     const expotokens = await AsyncStorage.getItem('expotokens')
-    console.log('expotokens', expotokens)
   }, [language])
 
   useEffect(() => {
@@ -301,7 +236,6 @@ const App: React.FC = () => {
 
   const getTooltip = useCallback(async () => {
     const MidSteps = await AsyncStorage.getItem('showSkinToneTooltip')
-    console.log('showSkinToneTooltip', MidSteps)
     if (MidSteps === '11') {
       updateDisable(true)
     }
@@ -325,7 +259,20 @@ const App: React.FC = () => {
     getGeneralSettings()
   }, [getGeneralSettings])
 
-  console.log('vhhj', user)
+  // const validatePhoneNumber = () => {
+  //   try {
+  //     const number = PhoneNumber('+1234567890', 'US')
+  //     if (number?.isValid()) {
+  //       return true // Phone number is valid.
+  //     } else {
+  //       return false // Phone number is not valid.
+  //     }
+  //   } catch (e) {
+  //     // Handle parsing errors, such as an invalid phone number.
+  //     return false
+  //   }
+  // }
+
   const [fontsLoaded] = useFonts({
     'Arvo-Regular': require('./src/assets/fonts/timesbold.ttf'), //font-weight 400
     'Gilroy-Medium': require('./src/assets/fonts/times.ttf'), //font-weight 500

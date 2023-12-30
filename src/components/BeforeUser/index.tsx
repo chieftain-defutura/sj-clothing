@@ -25,8 +25,6 @@ const BeforeUser: React.FC = () => {
   const [steps, setSteps] = useState(0)
   const disable = tooltipDisableStore((state) => state.disable)
 
-  console.log('disable', disable)
-
   const slideX = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: slideValue.value * 400 }], // Slide 400 units (assuming a screen width of 400)

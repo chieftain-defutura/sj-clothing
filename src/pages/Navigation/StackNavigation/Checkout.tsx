@@ -86,8 +86,6 @@ const Checkout: React.FC<ICheckout> = ({
   const [isPaySupported, setIsPaySupported] = useState(false)
   const [toolTip, showToolTip] = useState(false)
 
-  console.log(offerPrice)
-
   const setup = useCallback(async () => {
     if (!(await isPlatformPaySupported())) {
       // Alert.alert(
@@ -281,16 +279,16 @@ const Checkout: React.FC<ICheckout> = ({
       const initSheet = await stripe.initPaymentSheet({
         paymentIntentClientSecret: data.clientSecret,
         merchantDisplayName: 'Sprinkle Nadar',
-        applePay: {
-          merchantCountryCode: 'IN',
-          cartItems: [
-            {
-              label: 'Total',
-              amount: fixedAmount.toString(),
-              paymentType: PlatformPay.PaymentType.Immediate,
-            },
-          ],
-        },
+        // applePay: {
+        //   merchantCountryCode: 'IN',
+        //   cartItems: [
+        //     {
+        //       label: 'Total',
+        //       amount: fixedAmount.toString(),
+        //       paymentType: PlatformPay.PaymentType.Immediate,
+        //     },
+        //   ],
+        // },
         googlePay: {
           merchantCountryCode: 'US',
           currencyCode: 'USD',
@@ -369,8 +367,6 @@ const Checkout: React.FC<ICheckout> = ({
     const q = query(defaultCollection(dbDefault, 'users'), where('email', '==', user.email))
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docs.forEach((doc) => {
-        console.log(doc.data())
-
         const addressData = doc
           .data()
           ?.address.find((f: { isSelected: boolean }) => f.isSelected === true)
@@ -386,7 +382,6 @@ const Checkout: React.FC<ICheckout> = ({
   useEffect(() => {
     handleGetData()
   }, [handleGetData])
-  console.log('addr', addr)
 
   const getDeliveryFees = useCallback(async () => {
     try {

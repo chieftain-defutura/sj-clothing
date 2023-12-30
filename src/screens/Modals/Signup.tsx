@@ -128,7 +128,6 @@ const SignupModal: React.FC<SignupModalProps> = ({
       }))
 
       const isEmailUnique = !fetchProduct.some((user) => user.email === values.email)
-      console.log('isEmailUnique', isEmailUnique)
       if (!isEmailUnique) {
         setErrorMessage('Email is already in use. Please choose a different email.')
       } else {

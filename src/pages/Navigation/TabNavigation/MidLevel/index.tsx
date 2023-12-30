@@ -18,8 +18,6 @@ const MidLevel: React.FC = () => {
   const updateLogoVideo = generalStore((state) => state.updateLogoVideo)
   const logoVideo = generalStore((state) => state.logoVideo)
 
-  console.log(logoVideo)
-
   useEffect(() => {
     setInterval(() => updateLogoVideo(true), 10000)
   })

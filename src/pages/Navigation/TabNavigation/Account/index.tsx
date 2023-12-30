@@ -144,7 +144,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   useEffect(() => {
     getData()
   }, [getData])
-  console.log('userPhotourl', user?.photoURL)
   return (
     <LinearGradient colors={gradientOpacityColors}>
       <ScrollView>
@@ -396,6 +395,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
             setSignUp(true), setLogin(false)
           }}
           onClose={() => setLogin(false)}
+          isVisible={login}
         />
       )}
 

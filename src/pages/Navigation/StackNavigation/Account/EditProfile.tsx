@@ -63,19 +63,14 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   const [image, setImage] = React.useState<string | null>(profile)
   const updateProfile = userStore((state) => state.updateProfile)
   const [editProfileDisable, setEditProfileDisable] = useState(true)
-  console.log('urlggfgu', url)
-  console.log(image)
 
   const onSubmit = async (values: { fullName: string }) => {
-    console.log('sgjah', url)
-    console.log('imahe', image)
     try {
       setIsLoading(true)
       if (user) {
         updateName(user?.displayName)
         updateProfile(url)
         await updateProfileDb(user, { displayName: values.fullName, photoURL: url })
-        console.log('urlll', url)
 
         await updateDoc(doc(db, 'users', user.uid), {
           name: values.fullName,
@@ -129,14 +124,11 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
       await task // Wait for the upload to complete
 
       const url = await getDownloadURL(imageRef)
-      console.log('urrl', url)
       setUrl(url)
-      console.log('1', editProfileDisable)
 
       console.log('Image uploaded to the bucket!')
 
       setEditProfileDisable(true)
-      console.log('2', editProfileDisable)
     } catch (error) {
       console.error('Error uploading image:', error)
       Alert.alert('Error', 'Failed to upload image')

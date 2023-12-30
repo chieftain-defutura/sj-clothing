@@ -497,7 +497,6 @@ const PostCreation = () => {
     }
   }, [uid])
 
-  console.log('colorAnimationUpdated', colorAnimationUpdated)
   useEffect(() => {
     handleGetData()
   }, [handleGetData])

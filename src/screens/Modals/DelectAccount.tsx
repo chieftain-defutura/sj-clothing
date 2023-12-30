@@ -28,8 +28,8 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
 
       if (currentUser) {
         const userDocRef = doc(db, 'users', user.uid)
-        await deleteDoc(userDocRef)
         await deleteUser(currentUser)
+        await deleteDoc(userDocRef)
         await auth.signOut()
         closeModal?.()
         const data = await AsyncStorage.getItem('mail')

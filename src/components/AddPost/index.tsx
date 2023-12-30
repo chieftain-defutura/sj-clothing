@@ -197,8 +197,6 @@ const AddPost = () => {
           setColorAnimationUpdated(doc.data()['colorAnimationFinished'])
           // playSound()
         }
-
-        console.log('doc.data()[colorAnimationFinished]', doc.data()['colorAnimationFinished'])
       })
     })
 
@@ -577,18 +575,6 @@ const AddPost = () => {
               )}
             </View>
             {isSteps === 5 && FilteredData && (
-              // <FinalView
-              //   color={isColor}
-              //   colorName={isColorName}
-              //   data={FilteredData}
-              //   focus={focus}
-              //   handleSubmit={handleSubmit}
-              //   isSize={isSize}
-              //   setFocus={setFocus}
-              //   setSize={setSize}
-              //   style={isSelectedStyle}
-              //   isImageOrText={isImageOrText}
-              // />
               <FinalProduct
                 isGiftVideo={isGiftVideo}
                 setGiftVideo={setGiftVideo}

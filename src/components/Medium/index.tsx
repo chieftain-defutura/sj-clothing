@@ -164,7 +164,6 @@ const Medium = () => {
       snapshot.docs.forEach((doc) => {
         if (doc.data()['animationFinished']) {
           setAnimationUpdated(doc.data()['animationFinished'])
-          console.log('FLOW1', doc.data()['animationFinished'])
           if (!isMounted.current) {
             isMounted.current = true
             playSound(0.2)
@@ -202,8 +201,6 @@ const Medium = () => {
         if (doc.data()['colorAnimationFinished']) {
           setColorAnimationUpdated(doc.data()['colorAnimationFinished'])
         }
-
-        console.log('doc.data()[colorAnimationFinished]', doc.data()['colorAnimationFinished'])
       })
     })
 

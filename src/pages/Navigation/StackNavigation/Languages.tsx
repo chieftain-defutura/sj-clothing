@@ -80,7 +80,6 @@ const Languages: React.FC = () => {
     setIsDropdownSizesOpen((prevState) => !prevState)
   }
   const changeLanguage = async (lng: string) => {
-    console.log('lang', lng)
     await AsyncStorage.setItem('language', lng)
     i18n.changeLanguage(lng as string)
     updateLanguage(lng as string)

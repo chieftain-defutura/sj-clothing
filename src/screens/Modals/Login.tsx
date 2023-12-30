@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { collection, doc, getDocs, query, updateDoc, where, getDoc } from 'firebase/firestore/lite'
 import { userStore } from '../../store/userStore'
 import PhoneVerification from './PhoneVerification'
+import { useNavigation } from '@react-navigation/native'
 
 interface LoginModalProps {
   isVisible?: boolean
@@ -43,7 +44,6 @@ const LoginModal: React.FC<LoginModalProps> = ({
 }) => {
   const user = userStore((store) => store.user)
   const phoneNumber = userStore((store) => store.phoneNo)
-
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -85,7 +85,6 @@ const LoginModal: React.FC<LoginModalProps> = ({
       const userDocRef = doc(db, 'users', user.uid)
       const userDoc = await getDoc(userDocRef)
       const userData = userDoc.data()
-      console.log('fgvn', userData?.tokens)
 
       if (!userData) return
 
@@ -96,6 +95,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
         if (userData.tokens[0] === null) {
           await updateDoc(userDocRef, userData)
         }
+
         if (
           pushToken.expoAndroidToken !== parseExpoTokens[0].expoAndroidToken ||
           pushToken.expoIosToken !== parseExpoTokens[0].expoIosToken
@@ -104,13 +104,17 @@ const LoginModal: React.FC<LoginModalProps> = ({
           await updateDoc(userDocRef, userData)
         }
       }
-      if (phoneNumber) {
+      console.log(userData)
+      console.log('phone', userData.phoneNo)
+      if (userData.phoneNo) {
+        console.log('11')
         onClose?.()
         setOpenCheckout?.(true)
       }
       console.log('User logged in successfully')
       setIsLoading(false)
     } catch (error) {
+      console.log(error)
       if (error instanceof FirebaseError) {
         if (error.code === 'auth/invalid-email') {
           setErrorMessage('invalid email')
@@ -128,10 +132,10 @@ const LoginModal: React.FC<LoginModalProps> = ({
       setIsLoading(false)
     }
   }
-
+  console.log('isVisible', isVisible)
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
-      {!user && (
+      {!user && !isLoading && (
         <LoginWrapper>
           <Formik
             initialValues={initialValues}
