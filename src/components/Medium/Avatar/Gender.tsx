@@ -116,12 +116,12 @@ const GenderModel = ({
           </Text>
         </View>
       </TouchableOpacity>
-      <SelectYourGender
+      {/* <SelectYourGender
         isVisible={toolTip}
         onClose={() => {
           showToolTip(false)
         }}
-      />
+      /> */}
     </View>
   )
 }

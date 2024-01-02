@@ -502,12 +502,12 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
           </View>
         </ScrollView>
       </AuthNavigate>
-      <PremiumDetailsTooltip
+      {/* <PremiumDetailsTooltip
         isVisible={toolTip}
         onClose={() => {
           showToolTip(false)
         }}
-      />
+      /> */}
     </View>
   )
 }

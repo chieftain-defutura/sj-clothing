@@ -37,6 +37,7 @@ import FlowThree from './MidlevelWebView/FlowThree'
 import AddImageAddTextTooltip from '../Tooltips/MidLevel/AddImageAddTextTooltip'
 import { gradientOpacityColors } from '../../styles/theme'
 import FinalProduct from './FinalProduct'
+import ProductAndCaption from './ProductAndCaption'
 
 const { width } = Dimensions.get('window')
 
@@ -131,6 +132,8 @@ const AddPost = () => {
   //FinalProduct
 
   const [isGiftVideo, setGiftVideo] = useState<any>(null)
+  const [product, setProduct] = useState('')
+  const [caption, setCaption] = useState('')
 
   const shake = () => {
     Animated.sequence([
@@ -171,7 +174,7 @@ const AddPost = () => {
       snapshot.docs.forEach((doc) => {
         if (doc.data()['animationFinished']) {
           setAnimationUpdated(doc.data()['animationFinished'])
-          playSound()
+          // playSound()
         }
       })
     })
@@ -445,7 +448,7 @@ const AddPost = () => {
       setOpenCheckout(true)
     }
   }
-
+  console.log(isSteps)
   return (
     <View style={{ flex: 1 }}>
       <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
@@ -551,17 +554,17 @@ const AddPost = () => {
                 bottom: 0,
               }}
             >
-              {isSteps === 5 ? (
-                <FlowTwo
+              {isSteps === 6 && (
+                <FlowThree
                   color={isColor}
-                  isImageOrText={tempIsImageOrText}
+                  isImageOrText={isImageOrText}
                   designs={designs}
-                  imageApplied={imageApplied}
-                  setAnimationUpdated={setAnimationUpdated}
+                  animationUpdated={animationUpdated}
+                  shake={shake}
+                  shakeAnimation={shakeAnimation}
                 />
-              ) : isSteps === 6 ? (
-                <FlowThree color={isColor} isImageOrText={isImageOrText} designs={designs} />
-              ) : (
+              )}
+              {isSteps !== 5 && isSteps !== 6 && (
                 <FlowOne
                   uid={uid}
                   steps={isSteps}
@@ -578,8 +581,13 @@ const AddPost = () => {
               <FinalProduct
                 isGiftVideo={isGiftVideo}
                 setGiftVideo={setGiftVideo}
-                Data={FilteredData.description}
                 handleSubmit={handleSubmit}
+                color={isColor}
+                colorName={isColorName}
+                data={FilteredData}
+                isImageOrText={isImageOrText}
+                isSize={isSize}
+                style={isSelectedStyle}
               />
             )}
             {isSteps === 6 && Design && isOpenDesign && !isDone && (
@@ -628,28 +636,14 @@ const AddPost = () => {
         )}
         {openCheckout && FilteredData && (
           // <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
-          <Checkout
-            setOpenCheckout={setOpenCheckout}
-            color={isColor}
-            textAndImage={isImageOrText}
-            description={FilteredData?.description}
-            gender={avatar.gender as string}
-            offerPrice={FilteredData?.offerPrice}
-            price={FilteredData?.normalPrice}
-            productImage={FilteredData?.productImage}
-            productName={FilteredData?.productName}
-            size={{ country: isSize.country, sizeVarient: isSize.sizeVarient[0] }}
-            style={isSelectedStyle}
-            id={FilteredData?.id}
-            type='MidLevel'
-          />
+          <ProductAndCaption setCaption={setCaption} setProduct={setProduct} />
         )}
-        <MidLevelTooltip
+        {/* <MidLevelTooltip
           isVisible={toolTip}
           onClose={() => {
             showToolTip(false)
           }}
-        />
+        /> */}
       </LinearGradient>
     </View>
   )

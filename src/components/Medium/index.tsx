@@ -529,14 +529,14 @@ const Medium = () => {
                 setOpenDesign={setOpenDesign}
               />
             )}
-            {isSteps === 6 && (
+            {/* {isSteps === 6 && (
               <AddImageAddTextTooltip
                 isVisible={addImageAndAddTextToolTip}
                 onClose={() => {
                   setAddImageAndAddTextToolTip(false)
                 }}
               />
-            )}
+            )} */}
           </View>
 
           <View
@@ -554,6 +554,9 @@ const Medium = () => {
                 designs={designs}
                 imageApplied={imageApplied}
                 setAnimationUpdated={setAnimationUpdated}
+                animationUpdated={animationUpdated}
+                shake={shake}
+                shakeAnimation={shakeAnimation}
               />
             ) : isSteps === 6 ? (
               <FlowThree
@@ -561,6 +564,9 @@ const Medium = () => {
                 isImageOrText={isImageOrText}
                 designs={designs}
                 setAnimationUpdated={setAnimationUpdated}
+                animationUpdated={animationUpdated}
+                shake={shake}
+                shakeAnimation={shakeAnimation}
               />
             ) : (
               <FlowOne
@@ -651,12 +657,12 @@ const Medium = () => {
           type='MidLevel'
         />
       )}
-      <MidLevelTooltip
+      {/* <MidLevelTooltip
         isVisible={toolTip}
         onClose={() => {
           showToolTip(false)
         }}
-      />
+      /> */}
     </View>
   )
 }

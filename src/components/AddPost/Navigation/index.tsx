@@ -302,11 +302,11 @@ const Navigation: React.FC<INavigation> = ({
                   styles.Dropdown,
 
                   {
-                    opacity: !animationUpdated ? 0.5 : 1,
+                    opacity: steps !== 5 && !animationUpdated ? 0.5 : 1,
                     backgroundColor: steps === 4 ? isColor : 'transparent',
                   },
                 ]}
-                disabled={!animationUpdated}
+                disabled={steps !== 5 && !animationUpdated}
               >
                 <Text
                   allowFontScaling={false}
@@ -326,13 +326,7 @@ const Navigation: React.FC<INavigation> = ({
                         : 'Select Size',
                     )}`}
                   {steps === 4 && `${t(isColor ? isColor : 'Select Color')}`}
-                  {steps === 5 && (
-                    <TouchableOpacity disabled={!animationUpdated}>
-                      <Text
-                        style={{ opacity: !animationUpdated ? 0.8 : 1, color: '#462D85' }}
-                      >{`${t('Add more')}`}</Text>
-                    </TouchableOpacity>
-                  )}
+                  {steps === 5 && `${t('Add more')}`}
                 </Text>
                 {steps === 1 && !isSelectedStyle && <DropDownArrowIcon />}
                 {steps === 2 && !country && <DropDownArrowIcon />}

@@ -231,12 +231,12 @@ const Currency = () => {
               </Animated.View>
             )}
           </View>
-          <CurrencyTooltip
+          {/* <CurrencyTooltip
             isVisible={toolTip}
             onClose={() => {
               showToolTip(false)
             }}
-          />
+          /> */}
         </View>
       ) : (
         <LinearGradient

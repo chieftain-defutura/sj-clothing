@@ -13,6 +13,7 @@ import {
 import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { IDesigns } from '../../../constant/types'
+import TextAnimation from '../Navigation/TextAnimation'
 
 const { height, width } = Dimensions.get('window')
 
@@ -31,6 +32,9 @@ interface IFlowTwoProps {
   }
   designs: IDesigns[] | undefined
   imageApplied: boolean
+  animationUpdated: boolean
+  shake: () => void
+  shakeAnimation: any
 }
 
 const FlowTwo: React.FC<IFlowTwoProps> = ({
@@ -39,6 +43,9 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({
   designs,
   imageApplied,
   setAnimationUpdated,
+  animationUpdated,
+  shake,
+  shakeAnimation,
 }) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
@@ -161,6 +168,13 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({
           }}
         />
       )}
+      <View>
+        {!animationUpdated && (
+          <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+            Please wait till avatar load
+          </TextAnimation>
+        )}
+      </View>
     </View>
   )
 }

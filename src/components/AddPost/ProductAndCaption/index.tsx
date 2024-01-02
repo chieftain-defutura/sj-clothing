@@ -2,13 +2,79 @@ import React from 'react'
 import styled from 'styled-components/native'
 import { StyleSheet, View } from 'react-native'
 import { COLORS } from '../../../styles/theme'
+import CustomButton from '../../Button'
+import { addDoc, collection } from 'firebase/firestore/lite'
+import { db } from '../../../../firebase'
+import { userStore } from '../../../store/userStore'
 
 interface IProductAndCaption {
   setProduct: React.Dispatch<React.SetStateAction<string>>
   setCaption: React.Dispatch<React.SetStateAction<string>>
+  id?: string
+  style?: string
+  color?: string
+  textAndImage?: {
+    title: string
+    position: string
+    rate: number
+    designs: {
+      hashtag: string
+      image: string
+      originalImage: string
+    }
+  }
+  size?: {
+    country: string
+    sizeVarient: {
+      size: string
+      measurement: string
+      quantity: number | string
+    }
+  }
+  type?: string
+  description?: string
+  price?: string
+  offerPrice?: string
+  gender?: string
+  productName?: string
+  productImage?: any
 }
 
-const ProductAndCaption: React.FC<IProductAndCaption> = ({ setProduct, setCaption }) => {
+const ProductAndCaption: React.FC<IProductAndCaption> = ({
+  setProduct,
+  setCaption,
+  description,
+  gender,
+  offerPrice,
+  price,
+  productImage,
+  productName,
+  size,
+  id,
+  color,
+  style,
+  textAndImage,
+  type,
+}) => {
+  const user = userStore((state) => state.user)
+
+  const handleSubmit = async () => {
+    await addDoc(collection(db, 'Post'), {
+      sizes: size ? size : '',
+      style: style ? style : '',
+      color: color ? color : '',
+      textAndImage: textAndImage ? textAndImage : '',
+      productImage: productImage,
+      description: description,
+      price: price,
+      offerPrice: offerPrice,
+      productId: id,
+      userId: user?.uid,
+      gender: gender,
+      type: type,
+      productName: productName,
+    })
+  }
   return (
     <View style={styles.ProductAndCaptionContainer}>
       <SignUpContainer>
@@ -29,6 +95,14 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({ setProduct, setCaptio
           />
         </View>
       </SignUpContainer>
+      <CustomButton
+        variant='primary'
+        text='Post'
+        fontFamily='Arvo-Regular'
+        fontSize={16}
+        onPress={() => handleSubmit()}
+        buttonStyle={[styles.submitBtn]}
+      />
     </View>
   )
 }
@@ -74,6 +148,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  submitBtn: {
+    marginVertical: 8,
+    fontFamily: 'Arvo-Regular',
+    marginBottom: 54,
   },
 })
 

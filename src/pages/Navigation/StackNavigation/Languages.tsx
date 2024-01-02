@@ -144,12 +144,12 @@ const Languages: React.FC = () => {
               </Animated.View>
             )}
           </View>
-          <LanguageTooltip
+          {/* <LanguageTooltip
             isVisible={toolTip}
             onClose={() => {
               showToolTip(false)
             }}
-          />
+          /> */}
         </View>
       ) : (
         <LinearGradient

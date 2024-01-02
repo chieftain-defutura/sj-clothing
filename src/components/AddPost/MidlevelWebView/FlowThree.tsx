@@ -7,6 +7,7 @@ import uuid from 'react-native-uuid'
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { IDesigns } from '../../../constant/types'
+import TextAnimation from '../Navigation/TextAnimation'
 
 const { height, width } = Dimensions.get('window')
 
@@ -23,9 +24,19 @@ interface IFlowThreeProps {
     }
   }
   designs: IDesigns[] | undefined
+  animationUpdated: boolean
+  shake: () => void
+  shakeAnimation: any
 }
 
-const FlowThree: React.FC<IFlowThreeProps> = ({ color, isImageOrText, designs }) => {
+const FlowThree: React.FC<IFlowThreeProps> = ({
+  color,
+  isImageOrText,
+  designs,
+  animationUpdated,
+  shake,
+  shakeAnimation,
+}) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
@@ -117,6 +128,13 @@ const FlowThree: React.FC<IFlowThreeProps> = ({ color, isImageOrText, designs })
           }}
         />
       )}
+      <View>
+        {!animationUpdated && (
+          <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+            Please wait till avatar load
+          </TextAnimation>
+        )}
+      </View>
     </View>
   )
 }

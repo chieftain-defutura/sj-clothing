@@ -422,16 +422,16 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
 
       {isDelectAccount && <DelectAccount closeModal={() => setIsDelectAccount(false)} />}
 
-      {showTooltip === 2 && (
+      {/* {showTooltip === 2 && (
         <EditProfileTooltip
           isVisible={editProfileToolTip}
           onClose={() => {
             setEditProfileToolTip(false)
           }}
         />
-      )}
+      )} */}
 
-      {showTooltip === 1 && <AccountTooltip isVisible={toolTip} onClose={handleShowTooltip} />}
+      {/* {showTooltip === 1 && <AccountTooltip isVisible={toolTip} onClose={handleShowTooltip} />} */}
     </LinearGradient>
   )
 }

@@ -311,7 +311,7 @@ import SelectDesign from '../Medium/SelectDesign'
 import FinalView from '../Medium/FinalView'
 import FinalProduct from './FinalProduct'
 import { useNavigation } from '@react-navigation/native'
-import ProductAndCaption from './ProductAndCaption'
+import ProductAndCaption from '../AddPost/ProductAndCaption'
 
 const { width } = Dimensions.get('window')
 

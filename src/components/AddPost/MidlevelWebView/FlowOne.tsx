@@ -116,15 +116,13 @@ const FlowOne: React.FC<IFlowOneProps> = ({
           flexDirection: 'row',
         }}
       >
-        {steps === 1 && (
-          <View>
-            {!animationUpdated && (
-              <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
-                Please wait till avatar load
-              </TextAnimation>
-            )}
-          </View>
-        )}
+        <View>
+          {!animationUpdated && (
+            <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+              Please wait till avatar load
+            </TextAnimation>
+          )}
+        </View>
       </View>
     </View>
   )

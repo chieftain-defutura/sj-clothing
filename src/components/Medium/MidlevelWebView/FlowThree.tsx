@@ -13,6 +13,7 @@ import {
 import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { IDesigns } from '../../../constant/types'
+import TextAnimation from '../Navigation/TextAnimation'
 
 const { height, width } = Dimensions.get('window')
 
@@ -30,6 +31,9 @@ interface IFlowThreeProps {
   }
   designs: IDesigns[] | undefined
   setAnimationUpdated: React.Dispatch<React.SetStateAction<boolean>>
+  animationUpdated: boolean
+  shake: () => void
+  shakeAnimation: any
 }
 
 const FlowThree: React.FC<IFlowThreeProps> = ({
@@ -37,6 +41,9 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
   isImageOrText,
   designs,
   setAnimationUpdated,
+  animationUpdated,
+  shake,
+  shakeAnimation,
 }) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
@@ -156,6 +163,13 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
           }}
         />
       )}
+      <View>
+        {!animationUpdated && (
+          <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+            Please wait till avatar load
+          </TextAnimation>
+        )}
+      </View>
     </View>
   )
 }
