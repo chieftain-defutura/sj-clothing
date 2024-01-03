@@ -21,6 +21,7 @@ import { PUBLISHABLE_KEY } from './src/utils/config'
 import * as Notifications from 'expo-notifications'
 import { generalStore } from './src/store/generalStore'
 import { tooltipDisableStore } from './src/store/TooltipDisable'
+import { PostStore } from './src/store/postCreationStore'
 // import PhoneNumber from 'libphonenumber-js'
 
 Notifications.setNotificationHandler({
@@ -108,6 +109,7 @@ const App: React.FC = () => {
   const updatePremiumText = generalStore((state) => state.updatePremiumText)
   const updateDisable = tooltipDisableStore((state) => state.updateDisable)
   const updateMidlevelData = MidlevelStore((state) => state.updateMidlevel)
+  const updatePostData = PostStore((state) => state.updatepost)
   const signupUpdate = userStore((state) => state.signupUpdate)
   const user = userStore((state) => state.user)
   const updateRate = userStore((state) => state.updateRate)
@@ -233,6 +235,29 @@ const App: React.FC = () => {
   useEffect(() => {
     getMidlevelData()
   }, [getMidlevelData])
+
+  const getPostData = useCallback(async () => {
+    const postSteps = await AsyncStorage.getItem('post-steps')
+    const parseData = JSON.parse(postSteps as string)
+
+    if (!parseData) return
+
+    if (parseData.isSteps === '5') {
+      updatePostData({
+        isColor: parseData.isColor,
+        isColorName: parseData.isColorName,
+        isImageOrText: parseData.isImageOrText,
+        isSelectedStyle: parseData.isSelectedStyle,
+        isSize: parseData.isSize,
+        isSteps: parseData.isSteps,
+        tempIsImageOrText: parseData.tempIsImageOrText,
+        uid: parseData.uid,
+      })
+    }
+  }, [])
+  useEffect(() => {
+    getPostData()
+  }, [getPostData])
 
   const getTooltip = useCallback(async () => {
     const MidSteps = await AsyncStorage.getItem('showSkinToneTooltip')

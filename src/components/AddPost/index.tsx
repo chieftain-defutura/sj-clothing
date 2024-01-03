@@ -38,6 +38,7 @@ import AddImageAddTextTooltip from '../Tooltips/MidLevel/AddImageAddTextTooltip'
 import { gradientOpacityColors } from '../../styles/theme'
 import FinalProduct from './FinalProduct'
 import ProductAndCaption from './ProductAndCaption'
+import { PostStore } from '../../store/postCreationStore'
 
 const { width } = Dimensions.get('window')
 
@@ -46,15 +47,13 @@ const AddPost = () => {
   const slideValue = useSharedValue(0)
   const avatar = userStore((state) => state.avatar)
   const phoneNumber = userStore((state) => state.phoneNo)
-  const midlevelData = MidlevelStore((state) => state.midlevel)
-  const updateMidlevelData = MidlevelStore((state) => state.updateMidlevel)
+  const PostData = PostStore((state) => state.post)
+  const updatePostData = PostStore((state) => state.updatepost)
 
   const user = userStore((state) => state.user)
-  const [isSteps, setSteps] = useState(
-    midlevelData.isSteps === '5' ? Number(midlevelData.isSteps) - 1 : 1,
-  )
+  const [isSteps, setSteps] = useState(PostData.isSteps === '5' ? Number(PostData.isSteps) - 1 : 1)
   const [isDropDown, setDropDown] = useState(false)
-  const [uid, setUid] = useState<string>(midlevelData.isSteps === '5' ? midlevelData.uid : '')
+  const [uid, setUid] = useState<string>(PostData.isSteps === '5' ? PostData.uid : '')
   const [focus, setFocus] = useState(false)
   const [openModal, setOpenModal] = useState(false)
 
@@ -71,14 +70,14 @@ const AddPost = () => {
 
   //style
   const [isSelectedStyle, setSelectedStyle] = useState(
-    midlevelData.isSteps === '5' ? midlevelData.isSelectedStyle : '',
+    PostData.isSteps === '5' ? PostData.isSelectedStyle : '',
   )
   const [warning, setWarning] = useState('')
 
   //size
   const [isSize, setSize] = useState(
-    midlevelData.isSteps === '5'
-      ? midlevelData.isSize
+    PostData.isSteps === '5'
+      ? PostData.isSize
       : {
           country: '',
           sizeVarient: [{ size: '', measurement: '', quantity: '' }],
@@ -86,10 +85,8 @@ const AddPost = () => {
   )
 
   //color
-  const [isColor, setColor] = useState(midlevelData.isSteps === '5' ? midlevelData.isColor : '')
-  const [isColorName, setColorName] = useState(
-    midlevelData.isSteps === '5' ? midlevelData.isColorName : '',
-  )
+  const [isColor, setColor] = useState(PostData.isSteps === '5' ? PostData.isColor : '')
+  const [isColorName, setColorName] = useState(PostData.isSteps === '5' ? PostData.isColorName : '')
 
   //image&text
   const [isOpenDesign, setOpenDesign] = useState(false)
@@ -97,8 +94,8 @@ const AddPost = () => {
   const [imageApplied, setImageApplied] = useState(false)
 
   const [isImageOrText, setImageOrText] = useState(
-    midlevelData.isSteps === '5'
-      ? midlevelData.isImageOrText
+    PostData.isSteps === '5'
+      ? PostData.isImageOrText
       : {
           title: '',
           position: 'Front',
@@ -261,11 +258,11 @@ const AddPost = () => {
         tempIsImageOrText: tempIsImageOrText,
         uid: uid,
       }
-      AsyncStorage.setItem('mid-steps', JSON.stringify(data))
-      updateMidlevelData(data)
+      AsyncStorage.setItem('post-steps', JSON.stringify(data))
+      updatePostData(data)
     }
     if (isSteps !== 5) {
-      AsyncStorage.removeItem('mid-steps')
+      AsyncStorage.removeItem('post-steps')
       const data = {
         isSteps: isSteps.toString(),
         isSelectedStyle: isSelectedStyle,
@@ -276,17 +273,17 @@ const AddPost = () => {
         tempIsImageOrText: tempIsImageOrText,
         uid: uid,
       }
-      updateMidlevelData(data)
+      updatePostData(data)
     }
   }, [isSteps])
 
   useEffect(() => {
-    if (midlevelData.isSteps === '5') {
-      if (midlevelData.isImageOrText.designs.originalImage) {
-        setTempImageOrText(midlevelData.isImageOrText)
+    if (PostData.isSteps === '5') {
+      if (PostData.isImageOrText.designs.originalImage) {
+        setTempImageOrText(PostData.isImageOrText)
       }
     }
-  }, [midlevelData])
+  }, [PostData])
 
   const handleIncreaseSteps = () => {
     let currentField
@@ -370,7 +367,7 @@ const AddPost = () => {
   }, [isShowToolTipAddImageAndAddText])
 
   const handleSetUid = useCallback(async () => {
-    if (midlevelData.uid) return
+    if (PostData.uid) return
     if (!isMounted.current) {
       try {
         isMounted.current = true
@@ -448,7 +445,7 @@ const AddPost = () => {
       setOpenCheckout(true)
     }
   }
-  console.log(isSteps)
+
   return (
     <View style={{ flex: 1 }}>
       <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
@@ -636,7 +633,25 @@ const AddPost = () => {
         )}
         {openCheckout && FilteredData && (
           // <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
-          <ProductAndCaption setCaption={setCaption} setProduct={setProduct} />
+          <ProductAndCaption
+            caption={caption}
+            product={product}
+            setCaption={setCaption}
+            setProduct={setProduct}
+            setOpenCheckout={setOpenCheckout}
+            color={isColor}
+            isGiftVideo={isGiftVideo}
+            textAndImage={isImageOrText}
+            description={FilteredData?.description}
+            gender={avatar.gender as string}
+            offerPrice={FilteredData?.offerPrice}
+            price={FilteredData?.normalPrice}
+            productImage={FilteredData?.productImage}
+            productName={FilteredData?.productName}
+            size={{ country: isSize.country, sizeVarient: isSize.sizeVarient[0] }}
+            style={isSelectedStyle}
+            id={FilteredData?.id}
+          />
         )}
         {/* <MidLevelTooltip
           isVisible={toolTip}

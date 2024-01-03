@@ -124,7 +124,7 @@ const Languages: React.FC = () => {
             {isDropdownSizesOpen && (
               <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
                 <SelectDropDownList>
-                  <ScrollView style={{ height: 240 }}>
+                  <ScrollView style={{ height: 200 }}>
                     {LanguagesData.filter((f) => f.lang !== language).map((f: any, i: number) => (
                       <Pressable
                         key={i}
@@ -167,7 +167,7 @@ const Languages: React.FC = () => {
               alignSelf: 'flex-start',
               flexDirection: 'row',
               marginTop: 10,
-              marginLeft: 26,
+              marginLeft: 6,
               gap: 8,
             }}
           >

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useEffect, useCallback } from 'react'
 import {
   Image,
   Pressable,
@@ -15,6 +15,7 @@ import Fire from '../assets/icons/fire'
 import Heart from '../assets/icons/heart'
 import SaveIcon from '../assets/icons/SaveIcon'
 import { useState } from 'react'
+
 import { reelsData } from '../utils/data/postData'
 import SwiperFlatList from 'react-native-swiper-flatlist'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -31,6 +32,8 @@ import Animated, {
 } from 'react-native-reanimated'
 import AuthNavigate from '../screens/AuthNavigate'
 import { userStore } from '../store/userStore'
+import { getDocs, collection } from 'firebase/firestore/lite'
+import { db } from '../../firebase'
 
 const { width, height } = Dimensions.get('window')
 
@@ -45,11 +48,12 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
   const [isPressed, setIsPressed] = useState(false)
   const [isFireActive, setIsFireActive] = useState(false)
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState<any[]>()
   const [isHeartActive, setIsHeartActive] = useState(false)
   const [focus, setFocus] = useState(false)
   const tabHeight = 120
   const reelsHeight = height - tabHeight
-  const user = userStore((state) => state.user)
 
   const handleIconPress = (iconName: string) => {
     setActiveIcon(iconName)
@@ -108,6 +112,29 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
       console.log(error)
     }
   }
+
+  const getData = useCallback(async () => {
+    try {
+      setLoading(true)
+      const ProductRef = await getDocs(collection(db, 'Post'))
+      const fetchProduct = ProductRef.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as any),
+      }))
+      setData(fetchProduct)
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
+  }, [db])
+
+  useEffect(() => {
+    getData()
+  }, [getData])
+
+  console.log('data', data?.length)
 
   const LikeIconStyle = {
     backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
