@@ -380,12 +380,12 @@ const FinalView: React.FC<IFinalView> = ({
             ))}
           </View>
         </View>
-        {/* <FinalViewTooltip
+        <FinalViewTooltip
           isVisible={toolTip}
           onClose={() => {
             showToolTip(false)
           }}
-        /> */}
+        />
       </ScrollView>
     </>
   )

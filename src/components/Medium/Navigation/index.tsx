@@ -319,38 +319,38 @@ const Navigation: React.FC<INavigation> = ({
                 {steps === 3 && !sizeVarient.size && <DropDownArrowIcon />}
 
                 {steps === 4 && !isColor && <DropDownArrowIcon />}
-                {/* {steps === 1 && !isSelectedStyle && (
+                {steps === 1 && !isSelectedStyle && (
                   <SelectStyleTooltip
                     isVisible={toolTip}
                     onClose={() => {
                       showToolTip(false)
                     }}
                   />
-                )} */}
-                {/* {steps === 2 && !country && (
+                )}
+                {steps === 2 && !country && (
                   <SelectCountryTooltip
                     isVisible={toolTipCountry}
                     onClose={() => {
                       setTooltipCountry(false)
                     }}
                   />
-                )} */}
-                {/* {steps === 3 && !sizeVarient.size && (
+                )}
+                {steps === 3 && !sizeVarient.size && (
                   <SelectSizeTooltip
                     isVisible={toolTipSize}
                     onClose={() => {
                       setTooltipSize(false)
                     }}
                   />
-                )} */}
-                {/* {steps === 4 && !isColor && (
+                )}
+                {steps === 4 && !isColor && (
                   <SelectColorTooltip
                     isVisible={toolTipColor}
                     onClose={() => {
                       setToolTipColor(false)
                     }}
                   />
-                )} */}
+                )}
 
                 {/* {steps !== 5 && <DropDownArrowIcon />} */}
               </Pressable>

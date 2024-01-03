@@ -230,12 +230,12 @@ const Skintone: React.FC<ISkintone> = ({}) => {
           />
         </View> */}
       </View>
-      {/* <SelectYourSkintoneTooltip
+      <SelectYourSkintoneTooltip
         isVisible={toolTip}
         onClose={() => {
           showToolTip(false)
         }}
-      /> */}
+      />
     </View>
   )
 }
