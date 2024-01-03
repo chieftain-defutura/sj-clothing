@@ -7,7 +7,18 @@ import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import Input from '../Input'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { StyleSheet, View, ScrollView, Keyboard, Pressable, Dimensions } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Keyboard,
+  Pressable,
+  Dimensions,
+  TouchableOpacity,
+  Text,
+  FlatList,
+  Modal,
+} from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import Animated, { FadeInUp, FadeOutUp, SlideInDown, SlideOutDown } from 'react-native-reanimated'
 import { doc, updateDoc, getDoc } from 'firebase/firestore/lite'
@@ -21,6 +32,7 @@ import { useNavigation } from '@react-navigation/native'
 import LeftArrow from '../../assets/icons/LeftArrow'
 import * as Animatable from 'react-native-animatable'
 import DownArrow from '../../assets/icons/DownArrow'
+import countryPhoneNumber from '../../utils/CountryPhoneNumber/countryPhoneNumber.json'
 
 interface IAddAddress {
   location?: string
@@ -43,6 +55,10 @@ interface IAddAddress {
     countryCode: string
     isSelected: boolean
   }
+}
+
+interface Country {
+  country: string
 }
 
 const dropdownItems = ['Home', 'Work', 'Others']
@@ -78,6 +94,9 @@ const AddressAdd: React.FC<IAddAddress> = ({
   const [keyboardStatus, setKeyboardStatus] = React.useState('')
   const [Addr, setAddr] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [selectedCountry, setSelectedCountry] = useState<string>('')
+  const [phoneNumber, setPhoneNumber] = useState<string>('')
+  const [modalVisible, setModalVisible] = useState<boolean>(false)
   const { t } = useTranslation('Address')
   const [countryCode, setCountryCode] = useState(
     EditAddress?.countryCode ? EditAddress.countryCode : '+91',
@@ -230,6 +249,19 @@ const AddressAdd: React.FC<IAddAddress> = ({
       const userData = userDoc.data()
 
       if (!userData) return
+
+      const selectedCountryData = countryPhoneNumber.find(
+        (country) => country.country === selectedCountry,
+      )
+
+      if (selectedCountryData) {
+        const expectedLength = selectedCountryData.phoneNumberLengthByCountry_phLength
+        if (phoneNumber.length !== expectedLength) {
+          alert(`Invalid phone number length for ${selectedCountry}`)
+        } else {
+          alert(`Valid phone number: ${phoneNumber}`)
+        }
+      }
 
       if (!EditAddress?.name) {
         userData.address.push(newAddress)
@@ -391,6 +423,40 @@ const AddressAdd: React.FC<IAddAddress> = ({
     setIsDropdownOpen(false)
   }
 
+  const placeholderText = `Phone Number for ${selectedCountry}`
+
+  const handleCountryChange = (country: string) => {
+    setSelectedCountry(country)
+    setModalVisible(false)
+    setPhoneNumber('')
+  }
+
+  const handlePhoneNumberChange = (number: string) => {
+    setPhoneNumber(number)
+  }
+
+  const renderItem = ({ item }: { item: Country }) => (
+    <TouchableOpacity
+      style={{
+        borderBottomWidth: 1,
+        borderBottomColor: 'lightgrey',
+        paddingHorizontal: 22,
+        paddingVertical: 12,
+      }}
+      onPress={() => handleCountryChange(item.country)}
+    >
+      <Text
+        style={{
+          color: COLORS.iconsHighlightClr,
+          fontSize: 16,
+          fontFamily: FONT_FAMILY.GilroyMedium,
+        }}
+      >
+        {item.country}
+      </Text>
+    </TouchableOpacity>
+  )
+
   return (
     <Animated.View
       entering={SlideInDown}
@@ -544,6 +610,35 @@ const AddressAdd: React.FC<IAddAddress> = ({
                   )}
               </View>
               <View>
+                <CountryHead onPress={() => setModalVisible(true)}>
+                  <Text
+                    style={{
+                      color: COLORS.iconsHighlightClr,
+                      fontSize: 14,
+                      fontFamily: FONT_FAMILY.GilroyMedium,
+                    }}
+                  >
+                    {selectedCountry || 'Select Country'}
+                  </Text>
+                  <DownArrow width={16} height={16} />
+                </CountryHead>
+                <Modal visible={modalVisible} animationType='slide'>
+                  <View style={{ flex: 1, paddingTop: 40 }}>
+                    <FlatList
+                      data={countryPhoneNumber}
+                      renderItem={renderItem}
+                      keyExtractor={(item, index) => `${item.country}_${index}`}
+                    />
+                    <CustomButton
+                      text='Close'
+                      style={{ padding: 20 }}
+                      fontSize={14}
+                      onPress={() => setModalVisible(false)}
+                    />
+                  </View>
+                </Modal>
+              </View>
+              {/* <View>
                 <Input
                   placeholder='Country'
                   value={formik.values.country}
@@ -555,7 +650,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
                   formik.touched.country && (
                     <ErrorText allowFontScaling={false}>*Please enter country</ErrorText>
                   )}
-              </View>
+              </View> */}
 
               <View>
                 <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -565,18 +660,37 @@ const AddressAdd: React.FC<IAddAddress> = ({
                     setShow={setShow}
                     show={show}
                   />
-                  <Input
+                  {/* <Input
                     placeholder='Phone No'
                     value={formik.values.phoneNo}
                     onChangeText={formik.handleChange('phoneNo')}
                     onBlur={formik.handleBlur('phoneNo')}
                     keyboardType='numeric'
                     style={{ width: width / 1.4 }}
+                  /> */}
+                  <Input
+                    placeholder={placeholderText}
+                    keyboardType='numeric'
+                    style={{ width: width / 1.4 }}
+                    value={phoneNumber !== '' ? phoneNumber : formik.values.phoneNo}
+                    // value={phoneNumber}
+                    onBlur={formik.handleBlur('phoneNo')}
+                    onChangeText={(text) => {
+                      if (
+                        formik.values.phoneNo === undefined ||
+                        formik.values.phoneNo.length === 0
+                      ) {
+                        formik.handleChange('phoneNo')(text)
+                      } else {
+                        handlePhoneNumberChange(text)
+                      }
+                    }}
+                    // onChangeText={(text) => handlePhoneNumberChange(text)}
                   />
                 </View>
-                {formik.errors.phoneNo && formik.touched.phoneNo && (
+                {/* {formik.errors.phoneNo && formik.touched.phoneNo && (
                   <ErrorText allowFontScaling={false}>{formik.errors.phoneNo}</ErrorText>
-                )}
+                )} */}
                 {/* {(formik.values.phoneNo === undefined || formik.values.phoneNo.length === 0) &&
                   formik.touched.phoneNo && (
                     <ErrorText allowFontScaling={false}>*Please enter phoneNo</ErrorText>
@@ -670,6 +784,19 @@ const DescriptionText = styled.Text`
   font-family: Gilroy-Regular;
   line-height: 18px;
   width: 225px;
+`
+
+const CountryHead = styled.Pressable`
+  border-color: ${COLORS.dropDownClr};
+  border-width: 1px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  border-radius: 6px;
+  padding-horizontal: 14px;
+  padding-vertical: 17px;
 `
 
 const SelectContent = styled.Pressable`
