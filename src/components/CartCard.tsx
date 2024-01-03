@@ -1,9 +1,11 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import { ICheckout } from '../constant/types'
 import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../styles/theme'
 import { userStore } from '../store/userStore'
+
+const { height, width } = Dimensions.get('window')
 
 const CartCard: React.FC<ICheckout> = ({ price, offerPrice, productName, productImage }) => {
   const rate = userStore((state) => state.rate)
@@ -14,13 +16,19 @@ const CartCard: React.FC<ICheckout> = ({ price, offerPrice, productName, product
       <View>
         <CartPageContainer>
           <View>
-            <TShirtImage source={{ uri: productImage }} alt={productName} />
+            <TShirtImage
+              source={{ uri: productImage }}
+              alt={productName}
+              style={{ width: width / 5, height: height / 7 }}
+            />
           </View>
           <View>
             <ProductWrapper>
               <View style={{ marginBottom: 16 }}>
                 <ProductText allowFontScaling={false}>Product</ProductText>
-                <ProductShirtText allowFontScaling={false}>{productName}</ProductShirtText>
+                <ProductShirtText allowFontScaling={false} style={{ width: width / 1.5 }}>
+                  {productName}
+                </ProductShirtText>
               </View>
               {/* <Pressable onPress={() => handleClose(index)}>
                         <CircleClose width={20} height={20} />
@@ -121,9 +129,6 @@ const CartPageContainer = styled.View`
 `
 
 const TShirtImage = styled.Image`
-  width: 140px;
-  height: 120px;
-  flex-shrink: 0;
   object-fit: contain;
 `
 

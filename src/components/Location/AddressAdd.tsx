@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useTranslation } from 'react-i18next'
 import TickIcon from '../../assets/icons/TickIcon'
 import CustomButton from '../Button'
-import { COLORS, FONT_FAMILY } from '../../styles/theme'
+import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../styles/theme'
 import Input from '../Input'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -33,6 +33,7 @@ import LeftArrow from '../../assets/icons/LeftArrow'
 import * as Animatable from 'react-native-animatable'
 import DownArrow from '../../assets/icons/DownArrow'
 import countryPhoneNumber from '../../utils/CountryPhoneNumber/countryPhoneNumber.json'
+import { LinearGradient } from 'expo-linear-gradient'
 
 interface IAddAddress {
   location?: string
@@ -462,6 +463,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
   }
 
   const renderItem = ({ item }: { item: Country }) => (
+    // <LinearGradient colors={gradientOpacityColors}>
     <TouchableOpacity
       style={{
         borderBottomWidth: 1,
@@ -481,6 +483,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
         {item.country}
       </Text>
     </TouchableOpacity>
+    // </LinearGradient>
   )
 
   return (
@@ -649,7 +652,10 @@ const AddressAdd: React.FC<IAddAddress> = ({
                   <DownArrow width={16} height={16} />
                 </CountryHead>
                 <Modal visible={modalVisible} animationType='slide'>
-                  <View style={{ flex: 1, paddingTop: 40 }}>
+                  <LinearGradient
+                    colors={gradientOpacityColors}
+                    style={{ flex: 1, paddingTop: 40 }}
+                  >
                     <FlatList
                       data={countryPhoneNumber}
                       renderItem={renderItem}
@@ -661,7 +667,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
                       fontSize={14}
                       onPress={() => setModalVisible(false)}
                     />
-                  </View>
+                  </LinearGradient>
                 </Modal>
               </View>
               {/* <View>

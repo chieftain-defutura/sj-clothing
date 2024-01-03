@@ -72,7 +72,7 @@ const CustomButton: React.FC<Props> = ({
 }
 
 const StyledView = styled.View`
-  padding: 16px;
+  padding: 13px;
   display: flex;
   justify-content: center;
   flex-direction: row;
@@ -86,6 +86,7 @@ const ButtonText = styled.Text<{ variant: 'primary' | 'secondary' | undefined }>
   color: white;
   background: ${(p) => (p.variant === 'primary' ? 'transparent' : 'transparent')};
   line-height: 20px;
+  padding-horizontal: 18px;
 `
 
 export default CustomButton

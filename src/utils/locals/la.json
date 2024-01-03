@@ -12,6 +12,9 @@
   "language": {
     "Choose Your Language": "Elige tibi Language"
   },
+  "currency": {
+    "Choose Your Currency": "Elige tibi Currency"
+  },
   "account": {
     "Avatar": "Avatar",
     "My cart": "My Cart",

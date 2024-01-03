@@ -12,6 +12,9 @@
   "language": {
     "Choose Your Language": "اختر لغتك"
   },
+  "currency": {
+    "Choose Your Currency": "اختر العملة الخاصة بك"
+  },
   "account": {
     "Avatar": "الصورة الرمزية",
     "My cart": "سلة التسوق الخاصة بي",

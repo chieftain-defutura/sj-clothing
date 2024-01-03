@@ -12,6 +12,9 @@
   "language": {
     "Choose Your Language": "Dilinizi seçin"
   },
+  "currency": {
+    "Choose Your Currency": "Para Biriminizi Seçin"
+  },
   "account": {
     "Avatar": "avatar",
     "My cart": "Sepetim",

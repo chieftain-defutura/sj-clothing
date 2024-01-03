@@ -15,6 +15,7 @@ import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/them
 import CurrencyGrayIcon from '../../../assets/icons/AccountPageIcon/CurrencyGrayIcon'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { CURRENCY_API_KEY } from '../../../utils/config'
+import { useTranslation } from 'react-i18next'
 import CurrencyTooltip from '../../../components/Tooltips/CurrencyTooltip'
 import { tooltipDisableStore } from '../../../store/TooltipDisable'
 
@@ -86,6 +87,7 @@ const Currency = () => {
   const [isDropdownSizesOpen, setIsDropdownSizesOpen] = useState<boolean>(false)
   const [toolTip, showToolTip] = useState(false)
   const navigation = useNavigation()
+  const { t } = useTranslation('currency')
   const updateDisable = tooltipDisableStore((state) => state.updateDisable)
 
   const isShowToolTip = async () => {
@@ -166,7 +168,7 @@ const Currency = () => {
           }}
         >
           <Text allowFontScaling={false} style={styles.title}>
-            Choose Your Currency
+            {t('Choose Your Currency')}
           </Text>
           <CurrencyGrayIcon width={190} height={190} />
           <View style={{ width: 238, paddingTop: 14 }}>
@@ -273,7 +275,7 @@ const Currency = () => {
               </IconHoverClr>
             </GoBackArrowContent>
             <Text allowFontScaling={false} style={[styles.title, { fontSize: 28 }]}>
-              Choose Your Currency
+              {t('Choose Your Currency')}
             </Text>
           </View>
           <CurrencyGrayIcon width={190} height={190} />

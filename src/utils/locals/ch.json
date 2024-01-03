@@ -12,6 +12,9 @@
   "language": {
     "Choose Your Language": "選擇你的語言"
   },
+  "currency": {
+    "Choose Your Currency": "选择您的货币"
+  },
   "account": {
     "Avatar": "阿凡達",
     "My cart": "我的車",
