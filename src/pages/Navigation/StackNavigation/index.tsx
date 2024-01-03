@@ -3,7 +3,6 @@ import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/
 import BuyNow from './BuyNow'
 import CartPage from './Cart'
 import MyOrders from './MyOrders'
-// import AddressBook from './AddressBook'
 import MostSearches from './MostSearches'
 import LoginModal from '../../../screens/Modals/Login'
 import SignupModal from '../../../screens/Modals/Signup'
@@ -30,7 +29,6 @@ import Thankyou from './Thankyou'
 import Locations from '../../../components/Location'
 import { generalStore } from '../../../store/generalStore'
 import AddPost from '../../../components/AddPost'
-import PhoneNumber from '../../../components/Location/PhoneNumber'
 
 const Stack = createStackNavigator()
 
@@ -57,21 +55,13 @@ const StackNavigationRoutes: React.FC = () => {
         component={TabNavigationRoutes}
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
       />
-      {/* <Stack.Screen
-        name='AddressBook'
-        component={AddressBook}
-        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-      /> */}
+
       <Stack.Screen
         name='Buynow'
         component={BuyNow}
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
       />
-      <Stack.Screen
-        name='PhoneNumber'
-        component={PhoneNumber}
-        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-      />
+
       <Stack.Screen
         name='PostCreation'
         component={PostCreation}
@@ -143,11 +133,7 @@ const StackNavigationRoutes: React.FC = () => {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={TermsAndConditions}
       />
-      {/* <Stack.Screen
-        name='LocationAddAddress'
-        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-        component={AddressBook}
-      /> */}
+
       <Stack.Screen
         name='Location'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}

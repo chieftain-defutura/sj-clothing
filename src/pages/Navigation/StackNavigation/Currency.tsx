@@ -158,7 +158,6 @@ const Currency = () => {
     <>
       {!confirmDetails ? (
         <View
-          // colors={gradientOpacityColors}
           style={{
             flex: 1,
             display: 'flex',
