@@ -12,6 +12,9 @@
   "language": {
     "Choose Your Language": "Kies je taal"
   },
+  "currency": {
+    "Choose Your Currency": "Kies uw valuta"
+  },
   "account": {
     "Avatar": "Avatar",
     "My cart": "Mijn wagen",

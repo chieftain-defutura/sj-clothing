@@ -73,7 +73,6 @@ const Checkout: React.FC<ICheckout> = ({
   const [cartItems, setCartItems] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [addressPressed, setAddressPressed] = useState(false)
-  const [giftOptionPressed, setGiftOptionPressed] = useState(false)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
   const rate = userStore((state) => state.rate)
   const user = userStore((state) => state.user)

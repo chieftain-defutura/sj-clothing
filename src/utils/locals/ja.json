@@ -12,6 +12,9 @@
   "language": {
     "Choose Your Language": "言語を選んでください"
   },
+  "currency": {
+    "Choose Your Currency": "通貨を選択してください"
+  },
   "account": {
     "Avatar": "アバター",
     "My cart": "私のカート",

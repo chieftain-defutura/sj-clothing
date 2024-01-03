@@ -177,7 +177,7 @@ const Languages: React.FC = () => {
               }}
               activeOpacity={0.6}
               underlayColor='rgba(70, 45, 133, 0.2)'
-              style={{ borderRadius: 100 }}
+              style={{ borderRadius: 100, marginLeft: 10 }}
             >
               <IconHoverClr>
                 <IconHoverPressable>
@@ -187,7 +187,10 @@ const Languages: React.FC = () => {
             </GoBackArrowContent>
             <Text
               allowFontScaling={false}
-              style={[styles.title, { fontSize: 28, width: width / 1.3, textAlign: 'center' }]}
+              style={[
+                styles.title,
+                { fontSize: 28, width: width / 1.3, textAlign: 'center', marginLeft: -10 },
+              ]}
             >
               {t('Choose Your Language')}
             </Text>

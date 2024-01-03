@@ -12,6 +12,9 @@
   "language": {
     "Choose Your Language": "Vælg dit sprog"
   },
+  "currency": {
+    "Choose Your Currency": "Vælg din valuta"
+  },
   "account": {
     "Avatar": "Avatar",
     "My cart": "Min kurv",

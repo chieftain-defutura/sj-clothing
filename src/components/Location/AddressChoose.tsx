@@ -159,7 +159,7 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
                     updateData(index.toString())
                   }}
                 >
-                  <View style={{ marginTop: -8 }}>
+                  <View style={{ marginTop: -7 }}>
                     <RadioButton
                       status={checked === index.toString() ? 'checked' : 'unchecked'}
                       value={index.toString()}
@@ -184,7 +184,7 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
 
                       <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
                     </View>
-                    <DescriptionText allowFontScaling={false} style={{ width: width / 1.8 }}>
+                    <DescriptionText allowFontScaling={false} style={{ width: width / 1.9 }}>
                       {f.name}, {f.countryCode}
                       {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city}, {f.state},{' '}
                       {f.country}, {f.pinCode}.
@@ -195,7 +195,7 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
                   onPress={() => handleDelectAddress(index)}
                   activeOpacity={0.6}
                   underlayColor='rgba(219, 0, 255, 0.2)'
-                  style={{ padding: 6, borderRadius: 30, marginLeft: -10 }}
+                  style={{ padding: 6, borderRadius: 30, marginLeft: -20 }}
                 >
                   <View>
                     <DeleteIcon
@@ -267,7 +267,7 @@ const Container = styled.View`
   border-color: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   padding-vertical: 14px;
-  padding-horizontal: 12px;
+  padding-horizontal: 4px;
   margin-vertical: 6px;
 `
 
@@ -293,8 +293,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: width / 1.5,
-    gap: 8,
-    marginVertical: 8,
+    gap: 4,
     ...Platform.select({
       ios: {
         gap: 16,

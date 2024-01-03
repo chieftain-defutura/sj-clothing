@@ -12,6 +12,9 @@
   "language": {
     "Choose Your Language": "Выберите ваш язык"
   },
+  "currency": {
+    "Choose Your Currency": "Выберите валюту"
+  },
   "account": {
     "Avatar": "Аватар",
     "My cart": "Моя тележка",

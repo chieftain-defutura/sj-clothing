@@ -12,6 +12,9 @@
   "language": {
     "Choose Your Language": "Escolha seu idioma"
   },
+  "currency": {
+    "Choose Your Currency": "Escolha sua moeda"
+  },
   "account": {
     "Avatar": "avatar",
     "My cart": "Meu carrinho",

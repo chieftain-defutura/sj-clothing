@@ -188,7 +188,12 @@ const FinalView: React.FC<IFinalView> = ({
 
               <Text
                 allowFontScaling={false}
-                style={{ color: COLORS.textClr, fontFamily: 'Arvo-Regular', fontSize: 14 }}
+                style={{
+                  color: COLORS.textClr,
+                  fontFamily: 'Arvo-Regular',
+                  fontSize: 14,
+                  textTransform: 'capitalize',
+                }}
               >
                 {isImageOrText.designs.hashtag ? isImageOrText.designs.hashtag : '-'}{' '}
                 {/* {isNaN(isImageOrText.rate)

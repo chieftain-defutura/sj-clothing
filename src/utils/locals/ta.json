@@ -10,7 +10,10 @@
     "Done": "முடிந்தது"
   },
   "language": {
-    "Choose Your Language": "உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்"
+    "Choose Your Language": "மொழியைத் தேர்வு செய்யவும்"
+  },
+  "currency": {
+    "Choose Your Currency": "நாணயத்தைத் தேர்வு செய்யவும்"
   },
   "account": {
     "Avatar": "அவதாரம்",

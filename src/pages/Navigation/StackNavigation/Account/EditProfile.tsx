@@ -165,7 +165,6 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
           <TouchableHighlight activeOpacity={0.6} underlayColor='rgba(70, 45, 133, 0.1)'>
             <View>
               <CustomButton
-                style={{ width: width / 5.8 }}
                 fontSize={11}
                 text={!editProfileDisable ? 'Loading...' : isLoading ? 'Saving' : 'Done'}
                 disabled={!editProfileDisable || isLoading}

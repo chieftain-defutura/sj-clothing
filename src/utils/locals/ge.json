@@ -12,6 +12,9 @@
   "language": {
     "Choose Your Language": "Επιλέξτε τη γλώσσα σας"
   },
+  "currency": {
+    "Choose Your Currency": "Επιλέξτε το νόμισμά σας"
+  },
   "account": {
     "Avatar": "Avatar",
     "My cart": "Καλάθι μου",
