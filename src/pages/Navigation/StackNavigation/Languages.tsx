@@ -37,7 +37,7 @@ const LanguagesData = [
   { language: 'Portuguese', lang: 'por', text: 'Português' },
   { language: 'Russian', lang: 'ru', text: 'Русский' },
   { language: 'Spanish', lang: 'es', text: 'Española' },
-  { language: 'Standard Arabic', lang: 'ar', text: 'اللغة العربية الفصحى' },
+  { language: 'Standard Arabic', lang: 'ar', text: 'عربي' },
   { language: 'Tamil', lang: 'ta', text: 'தமிழ்' },
   { language: 'Turkish', lang: 'tu', text: 'Türkçe' },
   { language: 'Ukrainian', lang: 'uk', text: 'українська' },
