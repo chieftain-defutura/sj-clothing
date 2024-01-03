@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Modal, StyleSheet, Text, TouchableOpacity, View, NativeModules } from 'react-native'
 import { auth } from '../../../firebase'
 import { COLORS } from '../../styles/theme'
 import { userStore } from '../../store/userStore'
@@ -26,8 +26,10 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
 
       if (!data) {
         updateUser(null)
+
+        closeModal?.()
       }
-      closeModal?.()
+      // NativeModules.DevSettings.reload()
     } catch (error) {
       console.log(error)
     }

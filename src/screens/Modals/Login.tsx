@@ -2,15 +2,7 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import {
-  View,
-  Modal,
-  StyleSheet,
-  Pressable,
-  Platform,
-  TouchableOpacity,
-  NativeModules,
-} from 'react-native'
+import { View, Modal, StyleSheet, Pressable, Platform, TouchableOpacity } from 'react-native'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from '../../../firebase'
 import { COLORS } from '../../styles/theme'
@@ -24,6 +16,7 @@ import { collection, doc, getDocs, query, updateDoc, where, getDoc } from 'fireb
 import { userStore } from '../../store/userStore'
 import PhoneVerification from './PhoneVerification'
 import { useNavigation } from '@react-navigation/native'
+import Loader from '../../components/Loading'
 
 interface LoginModalProps {
   isVisible?: boolean
@@ -93,16 +86,18 @@ const LoginModal: React.FC<LoginModalProps> = ({
       const userDocRef = doc(db, 'users', user.uid)
       const userDoc = await getDoc(userDocRef)
       const userData = userDoc.data()
+      console.log(userData?.phoneNo)
       if (!userData) return
 
       for (let pushToken of userData.tokens) {
+        console.log('22')
         const expotokens = await AsyncStorage.getItem('expotokens')
         const parseExpoTokens = [JSON.parse(expotokens as string)]
-
-        if (userData.tokens[0] === null) {
-          await updateDoc(userDocRef, userData)
+        if (expotokens === null && userData.phoneNo) {
+          console.log('11')
+          setOpenCheckout?.(true)
+          onClose?.()
         }
-
         if (
           pushToken.expoAndroidToken !== parseExpoTokens[0].expoAndroidToken ||
           pushToken.expoIosToken !== parseExpoTokens[0].expoIosToken
@@ -111,17 +106,16 @@ const LoginModal: React.FC<LoginModalProps> = ({
           await updateDoc(userDocRef, userData)
         }
       }
-      console.log('phone', userData.phoneNo)
+      // console.log('phone', userData.phoneNo)
       if (userData.phoneNo) {
-        console.log('11')
+        console.log('33')
         setOpenCheckout?.(true)
         onClose?.()
-        // NativeModules.DevSettings.reload()
       }
       console.log('User logged in successfully')
       setIsLoading(false)
     } catch (error) {
-      console.log(error)
+      console.log('error', error)
       if (error instanceof FirebaseError) {
         if (error.code === 'auth/invalid-email') {
           setErrorMessage('invalid email')
@@ -140,9 +134,11 @@ const LoginModal: React.FC<LoginModalProps> = ({
     }
   }
 
+  console.log('isLoading', isVisible)
+
   return (
-    <Modal visible={isVisible} animationType='fade' transparent={false}>
-      {!isLoading && (
+    <Modal visible={isVisible} animationType='fade' transparent={true}>
+      {!user && !isLoading && (
         <LoginWrapper>
           <Formik
             initialValues={initialValues}
@@ -244,6 +240,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
       {user && !phoneNumber && !isLoading && (
         <PhoneVerification closeModal={onClose} setOpenCheckout={setOpenCheckout} />
       )}
+      {isLoading && <Loader />}
     </Modal>
   )
 }

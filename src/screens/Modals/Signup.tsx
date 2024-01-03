@@ -207,7 +207,16 @@ const SignupModal: React.FC<SignupModalProps> = ({
 
           rate: rate,
           confirmDetails: confirmDetails,
-          tokens: [parseExpoTokens],
+          tokens: [
+            parseExpoTokens === null
+              ? {
+                  expoAndroidToken: null,
+                  fcmToken: null,
+                  apnToken: null,
+                  expoIosToken: null,
+                }
+              : parseExpoTokens,
+          ],
         })
 
         updateUser(user)

@@ -65,23 +65,6 @@ const dropdownItems = ['Home', 'Work', 'Others']
 
 const { width } = Dimensions.get('window')
 
-const validationSchema = yup.object({
-  fullAddress: yup.string(),
-  name: yup.string().required('*Please enter name'),
-  addressOne: yup.string().required('*Please enter addressOne'),
-  addressTwo: yup.string().required('*Please enter addressTwo'),
-  city: yup.string().required('*Please enter city'),
-  state: yup.string().required('*Please enter your state'),
-  pinCode: yup.string().required('*Please enter your pinCode'),
-  country: yup.string().required('*Please enter your country'),
-  floor: yup.string().required('*Please enter your floor'),
-  phoneNo: yup
-    .string()
-    .matches(/^\d{10}$/, 'Phone number must be exactly 10 digits')
-    .required('*Please enter your phone number'),
-  saveAddressAs: yup.string(),
-})
-
 const AddressAdd: React.FC<IAddAddress> = ({
   location,
   saveAddress,
@@ -94,8 +77,12 @@ const AddressAdd: React.FC<IAddAddress> = ({
   const [keyboardStatus, setKeyboardStatus] = React.useState('')
   const [Addr, setAddr] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [selectedCountry, setSelectedCountry] = useState<string>('')
-  const [phoneNumber, setPhoneNumber] = useState<string>('')
+  const [selectedCountry, setSelectedCountry] = useState<string>(
+    EditAddress?.country ? EditAddress.country : 'India',
+  )
+  const [phoneNumber, setPhoneNumber] = useState<string>(
+    EditAddress?.phoneNo ? EditAddress.phoneNo : '',
+  )
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const { t } = useTranslation('Address')
   const [countryCode, setCountryCode] = useState(
@@ -110,6 +97,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
   )
   const [showOthersOption, setShowOthersOption] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const [address, setAddress] = useState({
     addressOne: '',
     addressTwo: '',
@@ -119,6 +107,47 @@ const AddressAdd: React.FC<IAddAddress> = ({
     country: '',
   })
 
+  const selectedCountryData = countryPhoneNumber.find(
+    (country) => country.country === selectedCountry,
+  )
+  const expectedLength = selectedCountryData?.phoneNumberLengthByCountry_phLength
+
+  const validationSchema = yup.object({
+    fullAddress: yup.string(),
+    name: yup.string().required('*Please enter name'),
+    addressOne: yup.string().required('*Please enter addressOne'),
+    addressTwo: yup.string().required('*Please enter addressTwo'),
+    city: yup.string().required('*Please enter city'),
+    state: yup.string().required('*Please enter your state'),
+    pinCode: yup.string().required('*Please enter your pinCode'),
+    country: yup.string(),
+    floor: yup.string().required('*Please enter your floor'),
+    phoneNo: yup
+      .string()
+      .test(
+        'test',
+        `${selectedCountry} expected phone number length must be ${expectedLength}`,
+        function (value) {
+          if (selectedCountry) {
+            const selectedCountryData = countryPhoneNumber.find(
+              (country) => country.country === selectedCountry,
+            )
+
+            if (selectedCountryData) {
+              const expectedLength = selectedCountryData.phoneNumberLengthByCountry_phLength
+              console.log('expectedLength', expectedLength)
+              if (value?.length !== expectedLength) {
+                return false // Validation fails
+              }
+            }
+          }
+
+          return true // Validation passes
+        },
+      )
+      .required('*Please enter your phone number'),
+    saveAddressAs: yup.string(),
+  })
   const Addrs = Addr?.split(',')
 
   const Addrss = Addrs?.reverse()
@@ -206,10 +235,19 @@ const AddressAdd: React.FC<IAddAddress> = ({
     }
   }
 
+  useEffect(() => {
+    const selectedCountryData = countryPhoneNumber.find(
+      (country) => country.country === selectedCountry,
+    )
+    if (!selectedCountryData) return
+    setCountryCode(selectedCountryData?.dial_code)
+  }, [selectedCountry])
+
   const onSubmit = async () => {
+    // console.log('1')
     try {
       setIsLoading(true)
-
+      console.log('44')
       const addressArray = [
         {
           name: formik.values.name,
@@ -218,7 +256,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
           city: formik.values.city,
           state: formik.values.state,
           pinCode: formik.values.pinCode,
-          country: formik.values.country,
+          country: selectedCountry,
           floor: formik.values.floor,
           countryCode: countryCode,
           phoneNo: formik.values.phoneNo,
@@ -233,7 +271,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
         city: formik.values.city,
         state: formik.values.state,
         pinCode: formik.values.pinCode,
-        country: formik.values.country,
+        country: selectedCountry,
         floor: formik.values.floor,
         phoneNo: formik.values.phoneNo,
         countryCode: countryCode,
@@ -249,19 +287,6 @@ const AddressAdd: React.FC<IAddAddress> = ({
       const userData = userDoc.data()
 
       if (!userData) return
-
-      const selectedCountryData = countryPhoneNumber.find(
-        (country) => country.country === selectedCountry,
-      )
-
-      if (selectedCountryData) {
-        const expectedLength = selectedCountryData.phoneNumberLengthByCountry_phLength
-        if (phoneNumber.length !== expectedLength) {
-          alert(`Invalid phone number length for ${selectedCountry}`)
-        } else {
-          alert(`Valid phone number: ${phoneNumber}`)
-        }
-      }
 
       if (!EditAddress?.name) {
         userData.address.push(newAddress)
@@ -432,6 +457,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
   }
 
   const handlePhoneNumberChange = (number: string) => {
+    console.log(number)
     setPhoneNumber(number)
   }
 
@@ -653,13 +679,13 @@ const AddressAdd: React.FC<IAddAddress> = ({
               </View> */}
 
               <View>
-                <View style={{ display: 'flex', flexDirection: 'row' }}>
-                  <CountryCode
+                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                  {/* <CountryCode
                     countryCode={countryCode}
                     setCountryCode={setCountryCode}
                     setShow={setShow}
                     show={show}
-                  />
+                  /> */}
                   {/* <Input
                     placeholder='Phone No'
                     value={formik.values.phoneNo}
@@ -668,29 +694,35 @@ const AddressAdd: React.FC<IAddAddress> = ({
                     keyboardType='numeric'
                     style={{ width: width / 1.4 }}
                   /> */}
+                  <Text
+                    style={{
+                      borderColor: 'rgba(0,0,0,0.1)',
+                      borderWidth: 1,
+                      borderRadius: 6,
+                      paddingHorizontal: 14,
+                      paddingVertical: 16,
+                      marginRight: 8,
+                      color: COLORS.textClr,
+                    }}
+                  >
+                    {countryCode}
+                  </Text>
                   <Input
                     placeholder={placeholderText}
                     keyboardType='numeric'
                     style={{ width: width / 1.4 }}
-                    value={phoneNumber !== '' ? phoneNumber : formik.values.phoneNo}
+                    value={formik.values.phoneNo}
                     // value={phoneNumber}
                     onBlur={formik.handleBlur('phoneNo')}
-                    onChangeText={(text) => {
-                      if (
-                        formik.values.phoneNo === undefined ||
-                        formik.values.phoneNo.length === 0
-                      ) {
-                        formik.handleChange('phoneNo')(text)
-                      } else {
-                        handlePhoneNumberChange(text)
-                      }
-                    }}
+                    onChangeText={formik.handleChange('phoneNo')}
                     // onChangeText={(text) => handlePhoneNumberChange(text)}
                   />
                 </View>
-                {/* {formik.errors.phoneNo && formik.touched.phoneNo && (
+                {/* {errorMessage && <ErrorText allowFontScaling={false}>{errorMessage}</ErrorText>} */}
+
+                {formik.errors.phoneNo && formik.touched.phoneNo && (
                   <ErrorText allowFontScaling={false}>{formik.errors.phoneNo}</ErrorText>
-                )} */}
+                )}
                 {/* {(formik.values.phoneNo === undefined || formik.values.phoneNo.length === 0) &&
                   formik.touched.phoneNo && (
                     <ErrorText allowFontScaling={false}>*Please enter phoneNo</ErrorText>

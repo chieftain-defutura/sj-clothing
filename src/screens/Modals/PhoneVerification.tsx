@@ -100,6 +100,7 @@ const PhoneVerification: React.FC<IPhoneVerification> = ({ closeModal, setOpenCh
         updatePhoneNo(Number(countryCode + values.phoneNumber))
         setIsCreated(true)
         setOpenCheckout?.(true)
+        closeModal?.()
       }
 
       if (values.otp !== verificationId) {
