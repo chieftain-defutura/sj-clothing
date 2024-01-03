@@ -529,14 +529,14 @@ const Medium = () => {
                 setOpenDesign={setOpenDesign}
               />
             )}
-            {/* {isSteps === 6 && (
+            {isSteps === 6 && (
               <AddImageAddTextTooltip
                 isVisible={addImageAndAddTextToolTip}
                 onClose={() => {
                   setAddImageAndAddTextToolTip(false)
                 }}
               />
-            )} */}
+            )}
           </View>
 
           <View
@@ -640,7 +640,6 @@ const Medium = () => {
         </View>
       )}
       {openCheckout && FilteredData && (
-        // <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
         <Checkout
           setOpenCheckout={setOpenCheckout}
           color={isColor}
@@ -657,12 +656,12 @@ const Medium = () => {
           type='MidLevel'
         />
       )}
-      {/* <MidLevelTooltip
+      <MidLevelTooltip
         isVisible={toolTip}
         onClose={() => {
           showToolTip(false)
         }}
-      /> */}
+      />
     </View>
   )
 }

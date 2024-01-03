@@ -32,12 +32,12 @@ const Premium: React.FC = () => {
       <PremiumWrapper scrollEnabled={openDetails ? false : true}>
         <PremiumLevel openDetails={openDetails} setOpenDetails={setOpenDetails} />
       </PremiumWrapper>
-      {/* <PremiumTooltip
+      <PremiumTooltip
         isVisible={toolTip}
         onClose={() => {
           showToolTip(false)
         }}
-      /> */}
+      />
     </LinearGradient>
   )
 }

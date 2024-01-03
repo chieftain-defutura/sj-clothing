@@ -29,7 +29,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Haptics from 'expo-haptics'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Audio } from 'expo-av'
-import MidLevelTooltip from '../Tooltips/MidLevelTooltip'
 import { MidlevelStore } from '../../store/midlevelStore'
 import FlowOne from './MidlevelWebView/FlowOne'
 import FlowTwo from './MidlevelWebView/FlowTwo'
@@ -632,7 +631,6 @@ const AddPost = () => {
           </View>
         )}
         {openCheckout && FilteredData && (
-          // <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
           <ProductAndCaption
             caption={caption}
             product={product}
@@ -653,12 +651,6 @@ const AddPost = () => {
             id={FilteredData?.id}
           />
         )}
-        {/* <MidLevelTooltip
-          isVisible={toolTip}
-          onClose={() => {
-            showToolTip(false)
-          }}
-        /> */}
       </LinearGradient>
     </View>
   )

@@ -560,12 +560,12 @@ const Checkout: React.FC<ICheckout> = ({
           setOpengift={setOpengift}
         />
       )}
-      {/* <CheckoutTooltip
+      <CheckoutTooltip
         isVisible={toolTip}
         onClose={() => {
           showToolTip(false)
         }}
-      /> */}
+      />
     </View>
   )
 }

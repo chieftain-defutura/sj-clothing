@@ -158,7 +158,6 @@ const Currency = () => {
     <>
       {!confirmDetails ? (
         <View
-          // colors={gradientOpacityColors}
           style={{
             flex: 1,
             display: 'flex',
@@ -233,12 +232,12 @@ const Currency = () => {
               </Animated.View>
             )}
           </View>
-          {/* <CurrencyTooltip
+          <CurrencyTooltip
             isVisible={toolTip}
             onClose={() => {
               showToolTip(false)
             }}
-          /> */}
+          />
         </View>
       ) : (
         <LinearGradient

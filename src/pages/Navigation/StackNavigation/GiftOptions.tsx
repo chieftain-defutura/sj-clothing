@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Dimensions, Keyboard, TouchableWithoutFeedback, View } from 'react-native'
+import { Keyboard, TouchableWithoutFeedback, View } from 'react-native'
 import styled from 'styled-components/native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import LeftArrow from '../../../assets/icons/LeftArrow'
-import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
+import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import CustomButton from '../../../components/Button'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
-import { LinearGradient } from 'expo-linear-gradient'
 
 interface IGiftOption {
   navigation: any
@@ -20,7 +19,6 @@ interface IGiftOption {
   setOpengift: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const { height } = Dimensions.get('window')
 const initialValues = {
   yourGift: '',
   from: '',
@@ -79,10 +77,6 @@ const GiftOptions: React.FC<IGiftOption> = ({ navigation, setGiftOptions, setOpe
                 <LeftArrow width={24} height={24} />
                 <CartText allowFontScaling={false}>Gift options</CartText>
               </GoBackArrowContent>
-
-              {/* <GiftImage>
-                <TShirtImage source={require('../../../assets/images/t-shirt.png')} />
-              </GiftImage> */}
             </View>
           )}
           <Formik
@@ -196,19 +190,6 @@ const GiftMessageText = styled.Text`
   font-size: 16px;
   font-family: Montserrat-SemiBold;
   color: ${COLORS.iconsHighlightClr};
-`
-
-const GiftImage = styled.View`
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 16px;
-  margin-top: 32px;
-`
-
-const TShirtImage = styled.Image`
-  width: 280px;
-  height: 280px;
-  flex-shrink: 0;
 `
 
 const GoBackArrowContent = styled.TouchableOpacity`
