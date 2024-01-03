@@ -2,7 +2,15 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
-import { View, Modal, StyleSheet, Pressable, Platform, TouchableOpacity } from 'react-native'
+import {
+  View,
+  Modal,
+  StyleSheet,
+  Pressable,
+  Platform,
+  TouchableOpacity,
+  NativeModules,
+} from 'react-native'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from '../../../firebase'
 import { COLORS } from '../../styles/theme'
@@ -85,7 +93,6 @@ const LoginModal: React.FC<LoginModalProps> = ({
       const userDocRef = doc(db, 'users', user.uid)
       const userDoc = await getDoc(userDocRef)
       const userData = userDoc.data()
-
       if (!userData) return
 
       for (let pushToken of userData.tokens) {
@@ -104,12 +111,12 @@ const LoginModal: React.FC<LoginModalProps> = ({
           await updateDoc(userDocRef, userData)
         }
       }
-      console.log(userData)
       console.log('phone', userData.phoneNo)
       if (userData.phoneNo) {
         console.log('11')
-        onClose?.()
         setOpenCheckout?.(true)
+        onClose?.()
+        // NativeModules.DevSettings.reload()
       }
       console.log('User logged in successfully')
       setIsLoading(false)
@@ -132,10 +139,10 @@ const LoginModal: React.FC<LoginModalProps> = ({
       setIsLoading(false)
     }
   }
-  console.log('isVisible', isVisible)
+
   return (
-    <Modal visible={isVisible} animationType='fade' transparent={true}>
-      {!user && !isLoading && (
+    <Modal visible={isVisible} animationType='fade' transparent={false}>
+      {!isLoading && (
         <LoginWrapper>
           <Formik
             initialValues={initialValues}

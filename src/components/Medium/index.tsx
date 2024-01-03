@@ -166,7 +166,7 @@ const Medium = () => {
           setAnimationUpdated(doc.data()['animationFinished'])
           if (!isMounted.current) {
             isMounted.current = true
-            playSound(0.2)
+            // playSound(0.2)
           }
         }
       })

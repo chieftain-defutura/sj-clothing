@@ -36,6 +36,7 @@ import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import PlayCircleIcon from '../../assets/icons/PremiumPageIcon/PlayCircle'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import PremiumDetailsTooltip from '../Tooltips/Premium/PremiumDetailsTooltip'
+import { Text } from 'react-native'
 // import { Audio } from 'expo-av'
 
 const { height, width } = Dimensions.get('window')
@@ -350,13 +351,19 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                   )}
                   {openImage && (
                     <Modal animationType='fade' transparent={true}>
-                      <ImageWrapper onPress={() => setOpenImage(false)}>
-                        <Image
-                          source={{ uri: data.fabricImage }}
-                          alt={data.productName}
-                          style={{ width: 400, height: 300 }}
-                        />
-                      </ImageWrapper>
+                      {data.fabricImage ? (
+                        <ImageWrapper onPress={() => setOpenImage(false)}>
+                          <Image
+                            source={{ uri: data.fabricImage }}
+                            alt={data.productName}
+                            style={{ width: 400, height: 300 }}
+                          />
+                        </ImageWrapper>
+                      ) : (
+                        <ImageWrapper onPress={() => setOpenImage(false)}>
+                          <Text style={{ color: '#FFF' }}>No data</Text>
+                        </ImageWrapper>
+                      )}
                     </Modal>
                   )}
                 </Animated.View>

@@ -1,80 +1,118 @@
 import { create } from 'zustand'
 
 type State = {
-  style?: {
-    title: string | null
-  }
-  color?: string | null
-  image?: {
-    title: string | null
-    design: {
-      name: string | null
-      image: any
+  post: {
+    isSteps: string
+    isSelectedStyle: string
+    isSize: {
+      country: string
+      sizeVarient: {
+        size: string
+        measurement: string
+        quantity: string
+      }[]
     }
-  }
-  text?: {
-    title: string | null
-    design: {
-      font: string | null
-      color: any
+    isColor: string
+    isColorName: string
+    isImageOrText: {
+      title: string
+      position: string
+      rate: number
+      designs: {
+        hashtag: string
+        image: string
+        originalImage: string
+      }
     }
-  }
-  productandcaption?: {
-    product: string | null
-    caption: string | null
+    tempIsImageOrText: {
+      title: string
+      position: string
+      rate: number
+      designs: {
+        hashtag: string
+        image: string
+        originalImage: string
+      }
+    }
+    uid: string
   }
 }
-
 type Action = {
-  setStyle: (style?: { title: string | null }) => void
-  setColor: (color?: string | null) => void
-  setImage: (image?: {
-    title: string | null
-    design: {
-      name: string | null
-      image: any
+  updatepost: (post: {
+    isSteps: string
+    isSelectedStyle: string
+    isSize: {
+      country: string
+      sizeVarient: {
+        size: string
+        measurement: string
+        quantity: string
+      }[]
     }
-  }) => void
-  setText: (text?: {
-    title: string | null
-    design: {
-      font: string | null
-      color: any
+    isColor: string
+    isColorName: string
+    isImageOrText: {
+      title: string
+      position: string
+      rate: number
+      designs: {
+        hashtag: string
+        image: string
+        originalImage: string
+      }
     }
-  }) => void
-  setproductandcaption: (productandcaption?: {
-    product: string | null
-    caption: string | null
+    tempIsImageOrText: {
+      title: string
+      position: string
+      rate: number
+      designs: {
+        hashtag: string
+        image: string
+        originalImage: string
+      }
+    }
+    uid: string
   }) => void
 }
 
-// Create the Zustand store
-export const PostCreationStore = create<State & Action>((set) => ({
-  style: {
-    title: '',
-  },
-  color: '',
-  image: {
-    title: '',
-    design: {
-      name: '',
-      image: '',
+export const PostStore = create<State & Action>((set) => ({
+  post: {
+    isSteps: '1',
+    isSelectedStyle: '',
+    isSize: {
+      country: '',
+      sizeVarient: [
+        {
+          size: '',
+          measurement: '',
+          quantity: '',
+        },
+      ],
     },
-  },
-  text: {
-    title: '',
-    design: {
-      font: '',
-      color: '',
+    isColor: '',
+    isColorName: '',
+    isImageOrText: {
+      title: '',
+      position: '',
+      rate: 0,
+      designs: {
+        hashtag: '',
+        image: '',
+        originalImage: '',
+      },
     },
+    tempIsImageOrText: {
+      title: '',
+      position: '',
+      rate: 0,
+      designs: {
+        hashtag: '',
+        image: '',
+        originalImage: '',
+      },
+    },
+    uid: '',
   },
-  productandcaption: {
-    product: '',
-    caption: '',
-  },
-  setStyle: (style) => set(() => ({ style })),
-  setColor: (color) => set(() => ({ color })),
-  setImage: (image) => set(() => ({ image })),
-  setText: (text) => set(() => ({ text })),
-  setproductandcaption: (productandcaption) => set(() => ({ productandcaption })),
+
+  updatepost: (post) => set(() => ({ post })),
 }))

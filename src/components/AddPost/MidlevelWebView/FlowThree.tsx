@@ -70,7 +70,7 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
       }
     }
   }, [color, isImageOrText])
-
+  console.log(animationUpdated)
   const handleUpdateImageAndText = useCallback(async () => {
     if (!isImageOrText.designs.originalImage || !uid) return
     try {
