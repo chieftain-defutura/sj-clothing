@@ -21,14 +21,9 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
   const handleClose = async () => {
     try {
       await auth.signOut()
-      const data = await AsyncStorage.getItem('mail')
       await AsyncStorage.removeItem('mail')
-
-      if (!data) {
-        updateUser(null)
-
-        closeModal?.()
-      }
+      updateUser(null)
+      closeModal?.()
       // NativeModules.DevSettings.reload()
     } catch (error) {
       console.log(error)

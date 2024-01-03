@@ -20,12 +20,6 @@ export const AccountData = [
     rightIcon: ChevronLeft,
     navigation: 'Avatar',
   },
-  {
-    leftIcon: UserIcon,
-    name: `PhoneNumber`,
-    rightIcon: ChevronLeft,
-    navigation: 'PhoneNumber',
-  },
 
   // {
   //   name: `Payment`,

@@ -30,7 +30,6 @@ import Thankyou from './Thankyou'
 import Locations from '../../../components/Location'
 import { generalStore } from '../../../store/generalStore'
 import AddPost from '../../../components/AddPost'
-import PhoneNumber from '../../../components/Location/PhoneNumber'
 
 const Stack = createStackNavigator()
 
@@ -67,11 +66,7 @@ const StackNavigationRoutes: React.FC = () => {
         component={BuyNow}
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
       />
-      <Stack.Screen
-        name='PhoneNumber'
-        component={PhoneNumber}
-        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-      />
+
       <Stack.Screen
         name='PostCreation'
         component={PostCreation}
