@@ -30,6 +30,7 @@ import { userStore } from '../../store/userStore'
 import AuthNavigate from '../../screens/AuthNavigate'
 import InfoIcon from '../../assets/icons/MidlevelIcon/infoIcon'
 import TextAnimation from '../Medium/Navigation/TextAnimation'
+import Loader from '../Loading'
 // import { Audio } from 'expo-av'
 
 interface IPremiumThreeSixtyDegree {
@@ -248,12 +249,10 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               </Text>
             </View>
           )}
+          <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+            {!animationUpdated && !webviewLoading && <Loader />}
+          </View>
 
-          {!animationUpdated && (
-            <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
-              Please wait till avatar load
-            </TextAnimation>
-          )}
           <CustomButton
             text='Buy Now'
             fontFamily='Arvo-Regular'

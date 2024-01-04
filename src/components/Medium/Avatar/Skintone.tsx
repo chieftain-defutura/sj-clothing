@@ -57,7 +57,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
           AsyncStorage.setItem('showSkinToneTooltip', '11')
           updateDisable(true)
           showToolTip(true)
-        }, 2000)
+        }, 1000)
       }
     } catch (error) {
       console.log(error)
