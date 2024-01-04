@@ -20,7 +20,6 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native'
-
 import { COLORS } from '../../../styles/theme'
 import { userStore } from '../../../store/userStore'
 import { db, dbDefault } from '../../../../firebase'
@@ -63,6 +62,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
       console.log(error)
     }
   }
+
   useEffect(() => {
     isShowToolTip()
   }, [isShowToolTip])

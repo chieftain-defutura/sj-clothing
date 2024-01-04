@@ -22,6 +22,9 @@ import EditIcon from '../../assets/icons/AccountPageIcon/EditIcon'
 import DelectAddress from '../../screens/Modals/DelectAddress'
 import WorkIcon from '../../assets/icons/AccountPageIcon/WorkIcon'
 import UserIcon from '../../assets/icons/AccountPageIcon/UserIcon'
+import AddressUserIcon from '../../assets/icons/AddressIcon/userIcon'
+import AddressEditIcon from '../../assets/icons/AddressIcon/AddressEditIcon'
+import AddressDeleteIcon from '../../assets/icons/AddressIcon/AddressDeleteIcon'
 
 interface AddressData {
   name: string
@@ -44,7 +47,7 @@ interface IAddAddress {
   setDataToEdit: React.Dispatch<React.SetStateAction<AddressData | undefined>>
 }
 
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) => {
   const user = userStore((state) => state.user)
@@ -147,100 +150,91 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
     <View>
       <View style={{ marginTop: 26, marginLeft: 8 }}>
         <Header allowFontScaling={false}>{t('Choose Address')}</Header>
-
-        {data?.length ? (
-          <ScrollView style={{ height: 500 }} showsVerticalScrollIndicator={false}>
-            {data.map((f, index) => (
-              <Container key={index}>
-                <TouchableOpacity
-                  style={styles.radioBtn}
-                  onPress={() => {
-                    setChecked(index.toString())
-                    updateData(index.toString())
-                  }}
-                >
-                  <View style={{ marginTop: -7 }}>
-                    <RadioButton
-                      status={checked === index.toString() ? 'checked' : 'unchecked'}
-                      value={index.toString()}
-                      color={COLORS.textSecondaryClr}
+        <View style={{ height: height / 1.4, paddingBottom: 50 }}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {data?.length ? (
+              <View>
+                {data.map((f, index) => (
+                  <Container key={index}>
+                    <TouchableOpacity
+                      style={styles.radioBtn}
                       onPress={() => {
                         setChecked(index.toString())
                         updateData(index.toString())
                       }}
-                    />
-                    <View style={styles.radioBtnIOS}></View>
-                  </View>
+                    >
+                      <View style={{ marginTop: -7 }}>
+                        <RadioButton
+                          status={checked === index.toString() ? 'checked' : 'unchecked'}
+                          value={index.toString()}
+                          color={COLORS.textSecondaryClr}
+                          onPress={() => {
+                            setChecked(index.toString())
+                            updateData(index.toString())
+                          }}
+                        />
+                        <View style={styles.radioBtnIOS}></View>
+                      </View>
 
-                  <View style={{ display: 'flex', flexDirection: 'column' }}>
-                    <View style={styles.RadioTitle}>
-                      {f.saveAddressAs === 'Home' && (
-                        <HomeIcon width={16} height={16} color={'black'} />
-                      )}
-                      {f.saveAddressAs === 'Work' && <WorkIcon width={16} height={16} />}
-                      {f.saveAddressAs !== 'Home' && f.saveAddressAs !== 'Work' && (
-                        <UserIcon width={19} height={19} />
-                      )}
+                      <View style={{ display: 'flex', flexDirection: 'column' }}>
+                        <View style={styles.RadioTitle}>
+                          {f.saveAddressAs === 'Home' && (
+                            <HomeIcon width={16} height={16} color={'black'} />
+                          )}
+                          {f.saveAddressAs === 'Work' && <WorkIcon width={16} height={16} />}
+                          {f.saveAddressAs !== 'Home' && f.saveAddressAs !== 'Work' && (
+                            <AddressUserIcon width={19} height={19} />
+                          )}
 
-                      <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
-                    </View>
-                    <DescriptionText allowFontScaling={false} style={{ width: width / 1.9 }}>
-                      {f.name}, {f.countryCode}
-                      {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city}, {f.state},{' '}
-                      {f.country}, {f.pinCode}.
-                    </DescriptionText>
-                  </View>
-                </TouchableOpacity>
-                <TouchableHighlight
-                  onPress={() => handleDelectAddress(index)}
-                  activeOpacity={0.6}
-                  underlayColor='rgba(219, 0, 255, 0.2)'
-                  style={{ padding: 6, borderRadius: 30, marginLeft: -20 }}
-                >
-                  <View>
-                    <DeleteIcon
-                      width={24}
-                      height={24}
-                      fill='#DB00FF'
-                      stroke='#DB00FF'
-                      strokeWidth={0.9}
-                    />
-                  </View>
-                </TouchableHighlight>
+                          <HeaderStyle allowFontScaling={false}>{f.saveAddressAs}</HeaderStyle>
+                        </View>
+                        <DescriptionText allowFontScaling={false} style={{ width: width / 1.9 }}>
+                          {f.name}, {f.countryCode}
+                          {f.phoneNo}, {f.floor}, {f.addressOne}, {f.addressTwo}, {f.city},{' '}
+                          {f.state}, {f.country}, {f.pinCode}.
+                        </DescriptionText>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableHighlight
+                      onPress={() => handleDelectAddress(index)}
+                      activeOpacity={0.6}
+                      underlayColor='rgba(219, 0, 255, 0.2)'
+                      style={{ padding: 6, borderRadius: 30, marginLeft: -20 }}
+                    >
+                      <View>
+                        <AddressDeleteIcon width={20} height={20} />
+                      </View>
+                    </TouchableHighlight>
 
-                <TouchableHighlight
-                  style={[{ padding: 6, borderRadius: 30, marginLeft: -6 }, styles.styleIOS]}
-                  activeOpacity={0.6}
-                  underlayColor='rgba(219, 0, 255, 0.2)'
-                  onPress={(e) => {
-                    setOpenEdit(true), setDataToEdit(f)
-                  }}
-                >
-                  <View>
-                    <EditIcon
-                      width={24}
-                      height={24}
-                      fill='#DB00FF'
-                      stroke='#DB00FF'
-                      strokeWidth={0}
-                    />
-                  </View>
-                </TouchableHighlight>
-              </Container>
-            ))}
-            {isDelectAddress && (
-              <DelectAddress
-                closeModal={() => setIsDelectAddress(false)}
-                setData={setData}
-                index={deleteIndex}
-              />
+                    <TouchableHighlight
+                      style={[{ padding: 6, borderRadius: 30, marginLeft: -6 }, styles.styleIOS]}
+                      activeOpacity={0.6}
+                      underlayColor='rgba(219, 0, 255, 0.2)'
+                      onPress={(e) => {
+                        setOpenEdit(true), setDataToEdit(f)
+                      }}
+                    >
+                      <View>
+                        <AddressEditIcon width={20} height={20} />
+                      </View>
+                    </TouchableHighlight>
+                  </Container>
+                ))}
+                {isDelectAddress && (
+                  <DelectAddress
+                    closeModal={() => setIsDelectAddress(false)}
+                    setData={setData}
+                    index={deleteIndex}
+                  />
+                )}
+              </View>
+            ) : (
+              <View style={{ marginTop: 40 }}>
+                <ProductText allowFontScaling={false}> {t('No Address')}</ProductText>
+              </View>
             )}
           </ScrollView>
-        ) : (
-          <View style={{ marginTop: 40 }}>
-            <ProductText allowFontScaling={false}> {t('No Address')}</ProductText>
-          </View>
-        )}
+        </View>
       </View>
     </View>
   )

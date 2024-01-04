@@ -27,7 +27,6 @@ import { db } from '../../../firebase'
 import * as Location from 'expo-location'
 import CurrentLocationIcon from '../../assets/icons/CurrentLocationIcon'
 import ChevronLeft from '../../assets/icons/ChevronLeft'
-import CountryCode from '../CountryCode'
 import { useNavigation } from '@react-navigation/native'
 import LeftArrow from '../../assets/icons/LeftArrow'
 import * as Animatable from 'react-native-animatable'
@@ -89,7 +88,6 @@ const AddressAdd: React.FC<IAddAddress> = ({
   const [countryCode, setCountryCode] = useState(
     EditAddress?.countryCode ? EditAddress.countryCode : '+91',
   )
-  const [show, setShow] = useState(false)
   const [padding, setPadding] = useState(0)
   const navigation = useNavigation()
   const user = userStore((state) => state.user)
@@ -98,10 +96,9 @@ const AddressAdd: React.FC<IAddAddress> = ({
   )
   const [showOthersOption, setShowOthersOption] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
-  const [errorMessage, setErrorMessage] = useState('')
   const [address, setAddress] = useState({
-    addressOne: '',
-    addressTwo: '',
+    // addressOne: '',
+    // addressTwo: '',
     city: '',
     state: '',
     pinCode: '',
@@ -153,8 +150,8 @@ const AddressAdd: React.FC<IAddAddress> = ({
 
   const Addrss = Addrs?.reverse()
 
-  let addressOne = address.addressOne.split(',')[0]
-  let addressTwo = address.addressTwo.split(',')[1]
+  // let addressOne = address.addressOne.split(',')[0]
+  // let addressTwo = address.addressTwo.split(',')[1]
   let country = ''
   let pinCode = ''
   let state = ''
@@ -187,14 +184,14 @@ const AddressAdd: React.FC<IAddAddress> = ({
         longitude: currentLocation.coords.longitude,
       }
 
-      // Call the reverseGeocode function with a callback
       reverseGeocode(loc.latitude, loc.longitude, (data) => {
-        // formik.setValues({ ...formik.values, ...data })
         formik.setValues({
           fullAddress: location ? location : '',
           name: '',
-          addressOne: data.split(',')[0],
-          addressTwo: data.split(',')[1],
+          addressOne: '',
+          addressTwo: '',
+          // addressOne: data.split(',')[0],
+          // addressTwo: data.split(',')[1],
           city: data.split(',').reverse()[3],
           state: data.split(',').reverse()[2],
           pinCode: data.split(',').reverse()[1],
@@ -245,10 +242,9 @@ const AddressAdd: React.FC<IAddAddress> = ({
   }, [selectedCountry])
 
   const onSubmit = async () => {
-    // console.log('1')
     try {
       setIsLoading(true)
-      console.log('44')
+
       const addressArray = [
         {
           name: formik.values.name,
@@ -356,8 +352,8 @@ const AddressAdd: React.FC<IAddAddress> = ({
   useEffect(() => {
     if (onText) {
       setAddress({
-        addressOne: onText,
-        addressTwo: onText,
+        // addressOne: onText,
+        // addressTwo: onText,
         state: onText,
         country: onText,
         pinCode: onText,
@@ -365,8 +361,8 @@ const AddressAdd: React.FC<IAddAddress> = ({
       })
     } else if (Addr) {
       setAddress({
-        addressOne: Addr,
-        addressTwo: Addr,
+        // addressOne: Addr,
+        // addressTwo: Addr,
         state: Addr,
         pinCode: Addr,
         city: Addr,
@@ -379,16 +375,19 @@ const AddressAdd: React.FC<IAddAddress> = ({
     initialValues: {
       fullAddress: location ? location : '',
       name: EditAddress?.name ? EditAddress.name : '',
-      addressOne: EditAddress?.name
-        ? EditAddress.addressOne
-        : !onText
-        ? addressOne
-        : onText.split(',')[0],
-      addressTwo: EditAddress?.name
-        ? EditAddress.addressTwo
-        : !onText
-        ? addressTwo
-        : onText.split(',')[1],
+      addressOne: EditAddress?.addressOne ? EditAddress.addressOne : '',
+      addressTwo: EditAddress?.addressTwo ? EditAddress.addressTwo : '',
+
+      // addressOne: EditAddress?.name
+      //   ? EditAddress.addressOne
+      //   : !onText
+      //   ? addressOne
+      //   : onText.split(',')[0],
+      // addressTwo: EditAddress?.name
+      //   ? EditAddress.addressTwo
+      //   : !onText
+      //   ? addressTwo
+      //   : onText.split(',')[1],
       city: EditAddress?.name ? EditAddress.city : !onText ? city : onText.split(',').reverse()[3],
       state: EditAddress?.name
         ? EditAddress.state
