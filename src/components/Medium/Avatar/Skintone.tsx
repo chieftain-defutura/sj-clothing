@@ -20,7 +20,6 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native'
-
 import { COLORS } from '../../../styles/theme'
 import { userStore } from '../../../store/userStore'
 import { db, dbDefault } from '../../../../firebase'
@@ -57,12 +56,13 @@ const Skintone: React.FC<ISkintone> = ({}) => {
           AsyncStorage.setItem('showSkinToneTooltip', '11')
           updateDisable(true)
           showToolTip(true)
-        }, 2000)
+        }, 1000)
       }
     } catch (error) {
       console.log(error)
     }
   }
+
   useEffect(() => {
     isShowToolTip()
   }, [isShowToolTip])
