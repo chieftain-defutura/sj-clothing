@@ -138,7 +138,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
-      {!user && !isLoading && (
+      {!user && (
         <LoginWrapper>
           <Formik
             initialValues={initialValues}
@@ -240,7 +240,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
       {user && !phoneNumber && !isLoading && (
         <PhoneVerification closeModal={onClose} setOpenCheckout={setOpenCheckout} />
       )}
-      {isLoading && <Loader />}
+      {user && isLoading && <Loader />}
     </Modal>
   )
 }

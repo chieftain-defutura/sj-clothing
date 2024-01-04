@@ -190,6 +190,7 @@ const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSear
             setAddedAddress(addr)
           }}
           setOnSearchChange={setOnSearchChange}
+          setOpenEdit={setIsOpen}
         />
       )}
     </View>

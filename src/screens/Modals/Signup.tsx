@@ -13,7 +13,16 @@ import React, { useEffect, useState } from 'react'
 import { collection, doc, getDocs, setDoc } from 'firebase/firestore/lite'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { View, Modal, StyleSheet, Pressable, TouchableOpacity, Text, Platform } from 'react-native'
+import {
+  View,
+  Modal,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+  Text,
+  Platform,
+  Keyboard,
+} from 'react-native'
 import { COLORS } from '../../styles/theme'
 import { auth, db } from '../../../firebase'
 import CloseIcon from '../../assets/icons/Close'
@@ -344,7 +353,9 @@ const SignupModal: React.FC<SignupModalProps> = ({
                       color={isChecked ? COLORS.textSecondaryClr : undefined}
                     />
                     <AccountViewText allowFontScaling={false}>Accept all</AccountViewText>
-                    <TouchableOpacity onPress={() => setOpenTermsAndConditions(true)}>
+                    <TouchableOpacity
+                      onPress={() => (setOpenTermsAndConditions(true), Keyboard.dismiss())}
+                    >
                       <AccountViewText allowFontScaling={false} style={{ color: COLORS.textClr }}>
                         Terms and conditions
                       </AccountViewText>

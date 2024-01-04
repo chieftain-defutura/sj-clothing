@@ -121,6 +121,8 @@ const App: React.FC = () => {
   const updateCurrency = userStore((state) => state.updateCurrency)
   const updateLanguage = userStore((state) => state.updateLanguage)
   const updateProfile = userStore((state) => state.updateProfile)
+  const updateSaveAddressAs = userStore((state) => state.updatSaveAddressAs)
+
   const updateConfirmDetails = userStore((state) => state.updateConfirmDetails)
   const logoVideo = generalStore((state) => state.logoVideo)
   const [expoPushToken, setExpoPushToken] = useState('')
@@ -166,6 +168,9 @@ const App: React.FC = () => {
         updateCurrency(fetchData?.currency)
         updateRate(fetchData?.rate)
         updateConfirmDetails(fetchData?.confirmDetails)
+
+        const data = fetchData?.address.find((f: { isSelected: boolean }) => f.isSelected === true)
+        updateSaveAddressAs(data.saveAddressAs)
 
         if (!loadedRef.current) {
           loadedRef.current = true
