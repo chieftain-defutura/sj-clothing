@@ -134,7 +134,7 @@ const RefundHead = styled.View`
 const RefundHeading = styled.Text`
   font-size: 20px;
   letter-spacing: -0.4px;
-  font-family: Arvo-Regular;
+  font-family: 'Arvo-Regular';
   color: ${COLORS.textClr};
 `
 

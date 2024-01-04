@@ -59,6 +59,8 @@ const SelectDesign: React.FC<ISelectDesign> = ({
   const currency = userStore((state) => state.currency)
 
   const uniqueArr = [...new Map(designs?.map((v) => [v.hashTag, v])).values()]
+  console.log('uniqueArr', uniqueArr)
+
   const FilteredData =
     isImageOrText.designs.hashtag === ''
       ? designs

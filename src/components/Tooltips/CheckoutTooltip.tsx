@@ -68,7 +68,7 @@ const Content = styled.View`
   padding-vertical: 16px;
   padding-horizontal: 24px;
   position: absolute;
-  bottom: 100px;
+  top: 110px;
   background: white;
   border-radius: 20px;
   z-index: 10000;

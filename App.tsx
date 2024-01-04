@@ -2,7 +2,7 @@ import { useFonts } from 'expo-font'
 import Constants from 'expo-constants'
 import * as Linking from 'expo-linking'
 import { StatusBar } from 'expo-status-bar'
-import { Platform, SafeAreaView } from 'react-native'
+import { Platform, SafeAreaView, Text, View, Dimensions, Image } from 'react-native'
 import { I18nextProvider } from 'react-i18next'
 import * as Device from 'expo-device'
 import * as SplashScreen from 'expo-splash-screen'
@@ -22,7 +22,13 @@ import * as Notifications from 'expo-notifications'
 import { generalStore } from './src/store/generalStore'
 import { tooltipDisableStore } from './src/store/TooltipDisable'
 import { PostStore } from './src/store/postCreationStore'
-// import PhoneNumber from 'libphonenumber-js'
+import NetInfo from '@react-native-community/netinfo'
+import { LinearGradient } from 'expo-linear-gradient'
+import { COLORS, FONT_FAMILY, gradientOpacityColors } from './src/styles/theme'
+import styled from 'styled-components/native'
+import WifiIcon from './src/assets/icons/AddressIcon/WifiIcon'
+
+const { width, height } = Dimensions.get('window')
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -124,9 +130,15 @@ const App: React.FC = () => {
   const updateConfirmDetails = userStore((state) => state.updateConfirmDetails)
   const logoVideo = generalStore((state) => state.logoVideo)
   const [expoPushToken, setExpoPushToken] = useState('')
+  const [netInfo, setNetInfo] = useState<{ type: string; isConnected: boolean }>({
+    type: '',
+    isConnected: false,
+  })
+
   const [notification, setNotification] = useState<Notifications.Notification>()
   const notificationListener = useRef<Notifications.Subscription>()
   const responseListener = useRef<Notifications.Subscription>()
+
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => setExpoPushToken(token as string))
     notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
@@ -192,14 +204,26 @@ const App: React.FC = () => {
   }, [])
 
   const handleAppLoading = useCallback(async () => {
-    if (!loading) {
+    if (!loading && netInfo.isConnected) {
       await SplashScreen.hideAsync()
     }
-  }, [loading])
+  }, [loading, netInfo.isConnected])
 
   useEffect(() => {
     handleAppLoading()
   }, [handleAppLoading])
+
+  useEffect(() => {
+    const data = NetInfo.addEventListener((state) => {
+      setNetInfo({
+        type: state.type,
+        isConnected: state.isConnected !== null ? state.isConnected : false,
+      })
+    })
+    return () => {
+      data()
+    }
+  }, [])
 
   const getLanguage = useCallback(async () => {
     if (language) {
@@ -312,8 +336,74 @@ const App: React.FC = () => {
     return Constants.appOwnership === 'expo' ? Linking.createURL('/--/') : Linking.createURL('/')
   }
 
-  if (!fontsLoaded) {
-    return null
+  // if (!fontsLoaded) {
+  //   return null
+  // }
+
+  if (!fontsLoaded || !netInfo.isConnected) {
+    return (
+      <Fragment>
+        <SafeAreaView
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <LinearGradient
+            colors={gradientOpacityColors}
+            style={{ width: width, position: 'relative', height: height }}
+          >
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  position: 'absolute',
+                  top: -10,
+                  left: 0,
+                  right: 0,
+                  zIndex: 1000,
+                }}
+              >
+                <TShirtImg
+                  source={require('./src/assets/logo/logo-img-1.png')}
+                  alt='logo'
+                  style={{ width: width / 2 }}
+                />
+              </View>
+              <View>
+                <View
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    marginBottom: 12,
+                  }}
+                >
+                  <WifiIcon width={64} height={64} />
+                </View>
+
+                <ProductText style={{ width: width / 1.5 }}>
+                  {!netInfo.isConnected
+                    ? 'No internet connection. Please connect to a network.'
+                    : 'Loading...'}
+                </ProductText>
+              </View>
+            </View>
+          </LinearGradient>
+        </SafeAreaView>
+      </Fragment>
+    )
   }
 
   return (
@@ -348,3 +438,14 @@ const App: React.FC = () => {
 }
 
 export default App
+
+const TShirtImg = styled.Image`
+  object-fit: contain;
+`
+
+const ProductText = styled.Text`
+  font-size: 22px;
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  color: ${COLORS.iconsHighlightClr};
+  text-align: center;
+`
