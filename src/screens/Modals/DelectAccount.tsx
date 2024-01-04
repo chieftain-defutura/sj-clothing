@@ -15,13 +15,17 @@ interface IDelectAccount {
   errorMessage?: string | null
 }
 
+const sleep = () => new Promise((resolve) => setTimeout(resolve, 3000))
+
 const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) => {
   const user = userStore((store) => store.user)
   const updateUser = userStore((store) => store.updateUser)
   const [isSendVerifyMail, setSendVerifyMail] = useState(false)
-
+  const [loading, setLoading] = useState(false)
   const handleDelete = async () => {
     try {
+      setLoading(true)
+
       if (!user) return
       const auth = getAuth()
       const currentUser = auth.currentUser
@@ -39,10 +43,14 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
       } else {
         console.error('No authenticated user found.')
       }
+
+      setLoading(false)
     } catch (error) {
       console.error('Error deleting user account:', error)
+      setLoading(false)
     }
   }
+  console.log(loading)
 
   useEffect(() => {
     if (isSendVerifyMail) {
@@ -58,7 +66,16 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
     <Modal animationType='fade' transparent={true}>
       <View style={styles.VerificationContainer}>
         <View style={styles.VerificationWrapper}>
-          <AlertIcon width={130} height={130} />
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 10,
+              justifyContent: 'center',
+            }}
+          >
+            <AlertIcon width={130} height={130} />
+          </View>
           <Text style={styles.header} allowFontScaling={false}>
             Are you sure want to Delete account ?
           </Text>
@@ -74,7 +91,12 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
             </Text>
           )}
           <View
-            style={{ display: 'flex', flexDirection: 'row', gap: 10, justifyContent: 'center' }}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 10,
+              justifyContent: 'space-between',
+            }}
           >
             {/* <CustomButton
               text='No'
@@ -91,10 +113,10 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
               </StyledView>
             </TouchableOpacity>
             <CustomButton
-              text='Yes'
-              disabled={isSendVerifyMail}
+              text={loading ? 'Deleting...' : 'Yes'}
+              disabled={isSendVerifyMail || loading}
               onPress={handleDelete}
-              style={{ width: 100 }}
+              // style={{ width: 100 }}
             />
           </View>
         </View>
@@ -109,7 +131,7 @@ const StyledView = styled.View`
   justify-content: center;
   flex-direction: row;
   align-items: center;
-  width: 90px;
+  width: 70px;
 `
 
 export default DelectAccount
@@ -125,7 +147,7 @@ const styles = StyleSheet.create({
   VerificationWrapper: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    // alignItems: 'center',
     backgroundColor: `${COLORS.iconsNormalClr}`,
     padding: 20,
     borderRadius: 12,

@@ -6,6 +6,7 @@ import { doc, setDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import TextAnimation from '../Navigation/TextAnimation'
+import Loader from '../../Loading'
 
 const { height, width } = Dimensions.get('window')
 
@@ -107,24 +108,17 @@ const FlowOne: React.FC<IFlowOneProps> = ({
           onHttpError={(value) => console.log('HTTP ERROR', value)}
         />
       )}
-      <View
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'row',
-        }}
-      >
-        {/* {steps === 1 && ( */}
-        <View>
-          {!animationUpdated && (
-            <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
-              Please wait till avatar load
-            </TextAnimation>
-          )}
-        </View>
-        {/* )} */}
+
+      {/* {steps === 1 && ( */}
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+        {!animationUpdated && !webviewLoading && (
+          // <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+          //   Please wait till avatar load
+          // </TextAnimation>
+          <Loader />
+        )}
       </View>
+      {/* )} */}
     </View>
   )
 }

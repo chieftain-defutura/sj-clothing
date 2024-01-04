@@ -13,7 +13,16 @@ import React, { useEffect, useState } from 'react'
 import { collection, doc, getDocs, setDoc } from 'firebase/firestore/lite'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { View, Modal, StyleSheet, Pressable, TouchableOpacity, Text, Platform } from 'react-native'
+import {
+  View,
+  Modal,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+  Text,
+  Platform,
+  Keyboard,
+} from 'react-native'
 import { COLORS } from '../../styles/theme'
 import { auth, db } from '../../../firebase'
 import CloseIcon from '../../assets/icons/Close'
@@ -25,6 +34,8 @@ import GreenTick from '../../assets/icons/GreenTick'
 import EyeHideIcon from '../../assets/icons/EyeIconHide'
 import axios from 'axios'
 import Animated, { FadeInUp, FadeOutDown } from 'react-native-reanimated'
+import TermsAndConditions from '../../pages/Navigation/StackNavigation/TermsAndConditions'
+import TermsAndCondition from './TermsAndCondition'
 
 interface SignupModalProps {
   isVisible?: boolean
@@ -83,7 +94,7 @@ const SignupModal: React.FC<SignupModalProps> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [timer, setTimer] = useState(60) // Initial timer value in seconds
   const [timerRunning, setTimerRunning] = useState(false)
-
+  const [openTermsAndCondition, setOpenTermsAndConditions] = useState(false)
   useEffect(() => {
     let interval: string | number | NodeJS.Timeout | undefined
 
@@ -229,11 +240,15 @@ const SignupModal: React.FC<SignupModalProps> = ({
       }
     }
   }
-
+  console.log(openTermsAndCondition)
   return (
-    <Modal visible={isVisible} animationType='fade' transparent={true}>
+    <Modal
+      visible={isVisible}
+      animationType='fade'
+      transparent={openTermsAndCondition ? false : true}
+    >
       {!user && (
-        <SignUpWrapper>
+        <SignUpWrapper style={{ opacity: openTermsAndCondition ? 0 : 1 }}>
           {!verificationCode && (
             <Formik
               initialValues={initialValues}
@@ -338,7 +353,9 @@ const SignupModal: React.FC<SignupModalProps> = ({
                       color={isChecked ? COLORS.textSecondaryClr : undefined}
                     />
                     <AccountViewText allowFontScaling={false}>Accept all</AccountViewText>
-                    <TouchableOpacity onPress={() => navigation.navigate('TermsAndConditions')}>
+                    <TouchableOpacity
+                      onPress={() => (setOpenTermsAndConditions(true), Keyboard.dismiss())}
+                    >
                       <AccountViewText allowFontScaling={false} style={{ color: COLORS.textClr }}>
                         Terms and conditions
                       </AccountViewText>
@@ -437,17 +454,15 @@ const SignupModal: React.FC<SignupModalProps> = ({
         </SignUpWrapper>
       )}
 
-      {/* {((user && !user.emailVerified) || showVerificationModal) && (
-        <EmailVerification
-          // setIsCreated={setIsCreated}
-          setShowVerificationModal={setShowVerificationModal}
-          errorMessage={errorMessage}
-          closeModal={onClose}
-        />
-      )} */}
       {user && !user.phoneNumber && (
         <PhoneVerification closeModal={onClose} setOpenCheckout={setOpenCheckout} />
       )}
+
+      <View style={{ position: 'absolute', top: 0, bottom: 0, zIndex: 100 }}>
+        {openTermsAndCondition && (
+          <TermsAndCondition setOpenTermsAndConditions={setOpenTermsAndConditions} />
+        )}
+      </View>
     </Modal>
   )
 }

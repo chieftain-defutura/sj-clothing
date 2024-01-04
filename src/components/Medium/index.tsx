@@ -454,6 +454,7 @@ const Medium = () => {
             position: 'relative',
             justifyContent: 'space-between',
             zIndex: 1,
+            opacity: openCheckout ? 0 : 1,
           }}
         >
           <Navigation

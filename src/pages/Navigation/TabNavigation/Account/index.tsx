@@ -24,7 +24,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import NotUserIcon from '../../../../assets/icons/AccountPageIcon/NotUserIcon'
 import { RouteProp } from '@react-navigation/native'
 import { RootStackParamList } from '../../../ScreenTypes'
-import { collection, getDocs } from 'firebase/firestore/lite'
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore/lite'
 import { useTranslation } from 'react-i18next'
 import { IOrder } from '../../../../constant/types'
 import LoginModal from '../../../../screens/Modals/Login'
@@ -50,7 +50,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [orderData, setOrderData] = useState<IOrder[]>([])
   const user = userStore((state) => state.user)
-  const profile = userStore((state) => state.profile)
+  const saveAddressAs = userStore((state) => state.saveAddressAs)
   const phoneNumber = userStore((state) => state.phoneNo)
   const AccessoryName = generalStore((state) => state.AccessoryName)
   const Accessory = generalStore((state) => state.Accessory)
@@ -62,7 +62,6 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   const [isDelectAccount, setIsDelectAccount] = useState(false)
   const [editProfileToolTip, setEditProfileToolTip] = useState(false)
   const [showTooltip, setShowTooltip] = useState(1)
-
   const isShowToolTip = async () => {
     try {
       const data = await AsyncStorage.getItem('showAccountTooltip')
@@ -144,6 +143,7 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
   useEffect(() => {
     getData()
   }, [getData])
+
   return (
     <LinearGradient colors={gradientOpacityColors}>
       <ScrollView>
@@ -209,11 +209,18 @@ const Account: React.FC<IAccount> = ({ navigation, route }) => {
                           </Text>
                         </FlexIcon>
                         {f.rightIcon && <f.rightIcon width={20} height={20} />}
-                        {f.rightText && (
+                        {f.name === 'My orders' && (
                           <Text allowFontScaling={false} style={styles.RightText}>
-                            {user && f.name === 'My orders'
+                            {user && f.name === 'My orders' && orderData
                               ? `${orderData.length} items`
-                              : f.rightText}
+                              : '0 items'}
+                          </Text>
+                        )}
+                        {f.name === 'Address Book' && (
+                          <Text allowFontScaling={false} style={styles.RightText}>
+                            {user && f.name === 'Address Book' && saveAddressAs
+                              ? saveAddressAs
+                              : ''}
                           </Text>
                         )}
                       </ProfileUserContent>

@@ -15,23 +15,21 @@ interface ILogOut {
 const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
   const user = userStore((store) => store.user)
   const updateUser = userStore((store) => store.updateUser)
-
+  const [loading, setLoading] = useState(false)
   const [isSendVerifyMail, setSendVerifyMail] = useState(false)
 
   const handleClose = async () => {
     try {
+      setLoading(true)
       await auth.signOut()
-      const data = await AsyncStorage.getItem('mail')
       await AsyncStorage.removeItem('mail')
-
-      if (!data) {
-        updateUser(null)
-
-        closeModal?.()
-      }
-      // NativeModules.DevSettings.reload()
+      updateUser(null)
+      closeModal?.()
+      NativeModules.DevSettings.reload()
+      setLoading(false)
     } catch (error) {
       console.log(error)
+      setLoading(false)
     }
   }
   useEffect(() => {
@@ -48,7 +46,15 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
     <Modal animationType='fade' transparent={true}>
       <View style={styles.VerificationContainer}>
         <View style={styles.VerificationWrapper}>
-          <AlertIcon width={130} height={130} />
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}
+          >
+            <AlertIcon width={130} height={130} />
+          </View>
           <Text allowFontScaling={false} style={styles.header}>
             Are You Leaving ?
           </Text>
@@ -61,7 +67,12 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
             </Text>
           )}
           <View
-            style={{ display: 'flex', flexDirection: 'row', gap: 10, justifyContent: 'center' }}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 10,
+              justifyContent: 'space-between',
+            }}
           >
             {/* <CustomButton
               text='No'
@@ -79,8 +90,8 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
             </TouchableOpacity>
 
             <CustomButton
-              text='Yes'
-              disabled={isSendVerifyMail}
+              text={loading ? 'Loading...' : 'Yes'}
+              disabled={isSendVerifyMail || loading}
               onPress={handleClose}
               style={{ width: 100 }}
             />
@@ -113,7 +124,6 @@ const styles = StyleSheet.create({
   VerificationWrapper: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: `${COLORS.iconsNormalClr}`,
     padding: 20,
     borderRadius: 12,

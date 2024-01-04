@@ -373,7 +373,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                 <View style={{ width: width / 2.5 }}>
                   <SelectContent onPress={toggleDropdown}>
                     <SelectText allowFontScaling={false}>
-                      {selectedCountry || 'Select a country'}
+                      {selectedCountry || 'Select continent'}
                     </SelectText>
                     <Animatable.View
                       animation={isDropdownOpen ? 'rotate' : ''}
@@ -384,7 +384,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                     </Animatable.View>
                   </SelectContent>
                   {isDropdownOpen && (
-                    <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
+                    <Animated.View entering={FadeInUp.duration(200)} exiting={FadeOutUp}>
                       <SelectDropDownList>
                         {data?.sizes
                           .filter((f) => f.gender === data.gender)
@@ -422,7 +422,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
                     </Animatable.View>
                   </SelectContent>
                   {isDropdownSizesOpen && selectedCountry && (
-                    <Animated.View entering={FadeInUp.duration(800).delay(200)} exiting={FadeOutUp}>
+                    <Animated.View entering={FadeInUp.duration(200)} exiting={FadeOutUp}>
                       <SelectDropDownList>
                         <View>
                           {Sizes[0].map((f: any, index: number) => (
@@ -479,7 +479,7 @@ const PremiumDetailsCard: React.FC<IPremiumDetailsCard> = ({
               )}
             </PremiumDetailsWrapper>
 
-            <Animated.View entering={FadeInUp.duration(2000)} exiting={FadeOut}>
+            <Animated.View entering={FadeInUp.duration(200)} exiting={FadeOut.duration(200)}>
               <Btns>
                 {showDetails ? (
                   <HideDetailsBorder

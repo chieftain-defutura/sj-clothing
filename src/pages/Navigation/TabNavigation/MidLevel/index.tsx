@@ -23,8 +23,8 @@ const MidLevel: React.FC = () => {
   })
 
   return (
-    <Animated.View style={{ flex: 1 }}>
-      <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+    <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
+      <Animated.View style={{ flex: 1 }}>
         {!logoVideo ? (
           <View style={{ flex: 1 }}>
             <Video
@@ -41,8 +41,8 @@ const MidLevel: React.FC = () => {
         ) : (
           <BeforeUser />
         )}
-      </LinearGradient>
-    </Animated.View>
+      </Animated.View>
+    </LinearGradient>
   )
 }
 

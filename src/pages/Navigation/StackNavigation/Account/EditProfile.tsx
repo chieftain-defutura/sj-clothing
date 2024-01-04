@@ -56,7 +56,7 @@ const validationSchema = yup.object({
 
 const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
   const user = userStore((state) => state.user)
-  const [url, setUrl] = useState('')
+  const [url, setUrl] = useState(user?.photoURL ? user.photoURL : '')
   const [isLoading, setIsLoading] = useState(false)
   const updateName = userStore((name) => name.updateName)
   const profile = userStore((state) => state.profile)

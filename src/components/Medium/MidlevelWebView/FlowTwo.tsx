@@ -14,6 +14,7 @@ import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { IDesigns } from '../../../constant/types'
 import TextAnimation from '../Navigation/TextAnimation'
+import Loader from '../../Loading'
 
 const { height, width } = Dimensions.get('window')
 
@@ -54,6 +55,10 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({
   const [uid, setUid] = useState<string>('')
   const isMounted = useRef(false)
   const avatar = userStore((state) => state.avatar)
+
+  useEffect(() => {
+    setAnimationUpdated(false)
+  }, [])
 
   const handleGetData = useCallback(() => {
     if (!uid) return
@@ -134,6 +139,7 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({
       })
     }
   }
+  console.log(animationUpdated)
   return (
     <View
       style={{
@@ -168,12 +174,16 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({
           }}
         />
       )}
-      <View>
-        {!animationUpdated && (
-          <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
-            Please wait till avatar load
-          </TextAnimation>
-        )}
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        }}
+      >
+        {!animationUpdated && !webviewLoading && <Loader />}
       </View>
     </View>
   )

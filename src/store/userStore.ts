@@ -58,6 +58,7 @@ type State = {
   createAvatarAnimationFinished: boolean
   signupUpdate?: 'INVALID' | 'VALID'
   midSteps: string
+  saveAddressAs: string
 }
 
 type Action = {
@@ -88,6 +89,7 @@ type Action = {
   updateRate: (rate: number | null) => void
   updateConfirmDetails: (confirmDetails: boolean) => void
   updateAnimation: (value: boolean) => void
+  updatSaveAddressAs: (value: string) => void
 }
 
 export const userStore = create<State & Action>((set) => ({
@@ -121,6 +123,7 @@ export const userStore = create<State & Action>((set) => ({
   midSteps: '',
   orderId: null,
   confirmDetails: false,
+  saveAddressAs: '',
   createAvatarAnimationFinished: false,
   updateFetching: (fetching) => set(() => ({ isFetching: fetching })),
   updateUser: (user) => set(() => ({ user })),
@@ -136,6 +139,7 @@ export const userStore = create<State & Action>((set) => ({
   updateCurrency: (currency) => set(() => ({ currency })),
   updateOderId: (orderId) => set(() => ({ orderId })),
   updateRate: (rate) => set(() => ({ rate })),
+  updatSaveAddressAs: (saveAddressAs) => set(() => ({ saveAddressAs })),
   updateSignupUpdate: (signupUpdate) => set(() => ({ signupUpdate })),
   updateConfirmDetails: (confirmDetails) => set(() => ({ confirmDetails })),
   updateAnimation: (value) => set(() => ({ createAvatarAnimationFinished: value })),

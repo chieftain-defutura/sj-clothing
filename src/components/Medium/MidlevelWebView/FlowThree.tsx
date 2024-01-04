@@ -14,6 +14,7 @@ import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { IDesigns } from '../../../constant/types'
 import TextAnimation from '../Navigation/TextAnimation'
+import Loader from '../../Loading'
 
 const { height, width } = Dimensions.get('window')
 
@@ -163,12 +164,8 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
           }}
         />
       )}
-      <View>
-        {!animationUpdated && (
-          <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
-            Please wait till avatar load
-          </TextAnimation>
-        )}
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+        {!animationUpdated && !webviewLoading && <Loader />}
       </View>
     </View>
   )

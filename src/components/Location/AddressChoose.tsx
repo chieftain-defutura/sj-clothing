@@ -55,6 +55,7 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
   const [checked, setChecked] = React.useState<string | null>(null)
   const [isLoading, setLoading] = useState(false)
   const [isDelectAddress, setIsDelectAddress] = useState(false)
+  const updateSaveAddressAs = userStore((state) => state.updatSaveAddressAs)
   const { t } = useTranslation('Address')
   const [deleteIndex, setDeleteIndex] = useState(0)
 
@@ -69,6 +70,7 @@ const AddressChoose: React.FC<IAddAddress> = ({ setOpenEdit, setDataToEdit }) =>
         data.forEach((item, i) => {
           if (i === parseInt(index)) {
             item.isSelected = true
+            updateSaveAddressAs(item.saveAddressAs)
           } else {
             item.isSelected = false
           }

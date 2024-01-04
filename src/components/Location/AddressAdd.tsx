@@ -486,9 +486,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
   )
 
   return (
-    <Animated.View
-      entering={SlideInDown}
-      exiting={SlideOutDown}
+    <View
       style={{
         flex: 1,
       }}
@@ -498,11 +496,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
         contentContainerStyle={{ paddingBottom: padding }}
         showsVerticalScrollIndicator={false}
       >
-        <GoBackArrowContent
-          onPress={() => {
-            navigation.goBack()
-          }}
-        >
+        <GoBackArrowContent onPress={() => setOpenEdit?.(false)}>
           <LeftArrow width={24} height={24} />
           <CartText allowFontScaling={false}>{t('Add Address')}</CartText>
         </GoBackArrowContent>
@@ -805,7 +799,7 @@ const AddressAdd: React.FC<IAddAddress> = ({
           </View>
         </View>
       </ScrollView>
-    </Animated.View>
+    </View>
   )
 }
 
