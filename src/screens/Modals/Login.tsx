@@ -86,15 +86,12 @@ const LoginModal: React.FC<LoginModalProps> = ({
       const userDocRef = doc(db, 'users', user.uid)
       const userDoc = await getDoc(userDocRef)
       const userData = userDoc.data()
-      console.log(userData?.phoneNo)
       if (!userData) return
 
       for (let pushToken of userData.tokens) {
-        console.log('22')
         const expotokens = await AsyncStorage.getItem('expotokens')
         const parseExpoTokens = [JSON.parse(expotokens as string)]
         if (expotokens === null && userData.phoneNo) {
-          console.log('11')
           setOpenCheckout?.(true)
           onClose?.()
         }
@@ -106,9 +103,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
           await updateDoc(userDocRef, userData)
         }
       }
-      // console.log('phone', userData.phoneNo)
       if (userData.phoneNo) {
-        console.log('33')
         setOpenCheckout?.(true)
         onClose?.()
       }
@@ -133,8 +128,6 @@ const LoginModal: React.FC<LoginModalProps> = ({
       setIsLoading(false)
     }
   }
-
-  console.log('isLoading', isVisible)
 
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>

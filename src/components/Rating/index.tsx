@@ -60,7 +60,6 @@ const Rating: React.FC<IOrderCard> = ({ orderId, setOpenReview }) => {
     const q = query(collection(dbDefault, 'Ratings'), where('orderId', '==', orderId))
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docs.forEach((doc) => {
-        console.log(doc.data())
         setRatings(doc.data() as IRatings)
       })
     })

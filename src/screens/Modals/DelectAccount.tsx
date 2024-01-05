@@ -50,7 +50,6 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
       setLoading(false)
     }
   }
-  console.log(loading)
 
   useEffect(() => {
     if (isSendVerifyMail) {

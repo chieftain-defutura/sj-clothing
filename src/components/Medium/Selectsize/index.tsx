@@ -46,10 +46,7 @@ const SelectSize: React.FC<ISelectSize> = ({ isDropDown, isSize, data, setDropDo
   >([])
 
   useEffect(() => {
-    const sizesData = data.sizes.find(
-      (f) =>
-        f.country === isSize.country && f.gender.toLowerCase() === avatar.gender?.toLowerCase(),
-    )?.sizeVarients
+    const sizesData = data.sizes.find((f) => f.country === isSize.country)?.sizeVarients
     setSizeData(sizesData)
   }, [])
 

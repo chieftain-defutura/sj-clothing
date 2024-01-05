@@ -111,7 +111,6 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
         // if (doc.data()['animationUpdated']) {
         //   setAnimationUpdated(doc.data()['animationUpdated'])
         // }
-        console.log(doc.data())
         if (doc.data()['avatarLoaded']) {
           setAnimationUpdated(doc.data()['avatarLoaded'])
         }
