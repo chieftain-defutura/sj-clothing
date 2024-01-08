@@ -32,7 +32,6 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
   const user = userStore((state) => state.user)
   const phoneNumber = userStore((state) => state.phoneNo)
   const premiumText = generalStore((state) => state.premiumText)
-
   const [data, setData] = useState<IPremiumData[]>()
   const [openCard, setOpenCard] = useState(false)
   const [productId, setProductId] = useState('')
@@ -94,7 +93,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
 
     if (user && phoneNumber) {
       if (!isSize.sizeVarient.size) {
-        setErrorMessage('Select size to procced further')
+        setErrorMessage('Return to the previous step to continue')
       } else {
         setFocus(true)
         setErrorMessage('')
