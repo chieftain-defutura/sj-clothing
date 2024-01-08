@@ -29,6 +29,7 @@ import Thankyou from './Thankyou'
 import Locations from '../../../components/Location'
 import { generalStore } from '../../../store/generalStore'
 import AddPost from '../../../components/AddPost'
+import InstaLike from '../../../components/InstaLike'
 
 const Stack = createStackNavigator()
 
@@ -59,6 +60,11 @@ const StackNavigationRoutes: React.FC = () => {
       <Stack.Screen
         name='Buynow'
         component={BuyNow}
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+      />
+      <Stack.Screen
+        name='InstaLike'
+        component={InstaLike}
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
       />
 

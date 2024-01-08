@@ -20,6 +20,12 @@ export const AccountData = [
     rightIcon: ChevronLeft,
     navigation: 'Avatar',
   },
+  {
+    leftIcon: UserIcon,
+    name: `InstaLike`,
+    rightIcon: ChevronLeft,
+    navigation: 'InstaLike',
+  },
 
   // {
   //   name: `Payment`,

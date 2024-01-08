@@ -1,5 +1,13 @@
 import React, { useEffect, useCallback, Dispatch, SetStateAction } from 'react'
-import { Pressable, Dimensions, Share, View, StyleSheet, TouchableOpacity } from 'react-native'
+import {
+  Pressable,
+  Dimensions,
+  Share,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+} from 'react-native'
 import styled from 'styled-components/native'
 import { useState } from 'react'
 import SwiperFlatList from 'react-native-swiper-flatlist'
@@ -7,9 +15,6 @@ import Animated, { LightSpeedInRight, LightSpeedOutRight } from 'react-native-re
 import { getDocs, collection } from 'firebase/firestore/lite'
 import { COLORS } from '../../styles/theme'
 import SaveIcon from '../../assets/icons/SaveIcon'
-import IsLikeIcon from '../../assets/icons/PostPageIcon/isLikeIcon'
-import IsFireIcon from '../../assets/icons/PostPageIcon/isFire'
-import IsHeartIcon from '../../assets/icons/PostPageIcon/isHeartIcon'
 import { IPostData } from '../../constant/types'
 import AuthNavigate from '../../screens/AuthNavigate'
 import SubscriptionModal from '../../screens/Modals/Subscription'
@@ -22,21 +27,15 @@ const { height } = Dimensions.get('window')
 
 interface IPost {
   navigation: any
-  // postData: IPostData[] | undefined
   setPostId: Dispatch<SetStateAction<string>>
   setOpen: Dispatch<SetStateAction<boolean>>
 }
 
 const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [activeIcon, setActiveIcon] = useState<string | null>(null)
-  const [isLiked, setIsLiked] = useState(false)
-  const [isPressed, setIsPressed] = useState(false)
-  const [isFireActive, setIsFireActive] = useState(false)
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<IPostData[]>()
-  const [isHeartActive, setIsHeartActive] = useState(false)
   const [focus, setFocus] = useState(false)
   const tabHeight = 120
   const reelsHeight = height - tabHeight
@@ -125,17 +124,21 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen }) => {
           renderItem={({ item }) => (
             <View
               key={item.id}
-              style={{
-                height: reelsHeight,
-                flex: 1,
-                borderRadius: 10,
-                position: 'relative',
-              }}
+              style={[
+                {
+                  height: reelsHeight,
+                  flex: 1,
+                  borderRadius: 10,
+                  position: 'relative',
+                },
+                styles.iosContainer,
+              ]}
             >
               <PostCard item={item} handlePostClick={handlePostClick} />
 
               {/* <SliderCountContent>
-                <SliderNumber>
+                <SliderNumber> 
+                  
                   {currentIndex + 1}/{item.images.length}
                 </SliderNumber>
               </SliderCountContent> */}
@@ -161,19 +164,22 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen }) => {
           )}
         />
         <TouchableOpacity
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-end',
-            justifyContent: 'flex-end',
-            alignSelf: 'flex-end',
-            gap: 6,
-            position: 'absolute',
-            left: 0,
-            right: 24,
-            bottom: 50,
-            zIndex: 1000,
-          }}
+          style={[
+            {
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-end',
+              justifyContent: 'flex-end',
+              alignSelf: 'flex-end',
+              gap: 6,
+              position: 'absolute',
+              left: 0,
+              right: 24,
+              bottom: 50,
+              zIndex: 1000,
+            },
+            styles.iosContent,
+          ]}
           onPress={onSubmit}
         >
           <LinearGradient
@@ -210,17 +216,6 @@ const SliderCountContent = styled.View`
   top: 16px;
   right: 16px;
 `
-
-// const PlusIconStyle = styled.TouchableOpacity`
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-//   justify-content: center;
-//   position: absolute;
-//   bottom: 24px;
-//   right: 24px;
-//   z-index: 10000;
-// `
 
 const TextHead = styled.Text`
   font-size: 14px;
@@ -291,6 +286,21 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.24,
     shadowRadius: 0,
     elevation: 5,
+  },
+  iosContainer: {
+    ...Platform.select({
+      ios: {
+        paddingBottom: 80,
+      },
+    }),
+  },
+  iosContent: {
+    ...Platform.select({
+      ios: {
+        bottom: 110,
+        right: 16,
+      },
+    }),
   },
 })
 
