@@ -1,45 +1,41 @@
 import React, { useEffect, useCallback, Dispatch, SetStateAction } from 'react'
-import { Pressable, Dimensions, Share, View, StyleSheet, TouchableOpacity } from 'react-native'
+import {
+  Pressable,
+  Dimensions,
+  Share,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+} from 'react-native'
 import styled from 'styled-components/native'
 import { useState } from 'react'
 import SwiperFlatList from 'react-native-swiper-flatlist'
-import { LinearGradient } from 'expo-linear-gradient'
 import Animated, { LightSpeedInRight, LightSpeedOutRight } from 'react-native-reanimated'
 import { getDocs, collection } from 'firebase/firestore/lite'
 import { COLORS } from '../../styles/theme'
-import Like from '../../assets/icons/like'
-import Fire from '../../assets/icons/fire'
-import Heart from '../../assets/icons/heart'
 import SaveIcon from '../../assets/icons/SaveIcon'
-import IsLikeIcon from '../../assets/icons/PostPageIcon/isLikeIcon'
-import IsFireIcon from '../../assets/icons/PostPageIcon/isFire'
-import IsHeartIcon from '../../assets/icons/PostPageIcon/isHeartIcon'
-import HomePlusIcon from '../../assets/icons/PostPlusIcon'
 import { IPostData } from '../../constant/types'
 import AuthNavigate from '../../screens/AuthNavigate'
 import SubscriptionModal from '../../screens/Modals/Subscription'
 import { db } from '../../../firebase'
 import PostCard from './PostCard'
+import { LinearGradient } from 'expo-linear-gradient'
+import HomePlusIcon from '../../assets/icons/PostPlusIcon'
 
-const { height, width } = Dimensions.get('window')
+const { height } = Dimensions.get('window')
 
 interface IPost {
   navigation: any
-  // postData: IPostData[] | undefined
   setPostId: Dispatch<SetStateAction<string>>
   setOpen: Dispatch<SetStateAction<boolean>>
 }
 
 const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [activeIcon, setActiveIcon] = useState<string | null>(null)
-  const [isLiked, setIsLiked] = useState(false)
-  const [isPressed, setIsPressed] = useState(false)
-  const [isFireActive, setIsFireActive] = useState(false)
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<IPostData[]>()
-  const [isHeartActive, setIsHeartActive] = useState(false)
   const [focus, setFocus] = useState(false)
   const tabHeight = 120
   const reelsHeight = height - tabHeight
@@ -48,17 +44,6 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen }) => {
     console.log(postId)
     setPostId(postId)
     setOpen(true)
-  }
-
-  const handleIconPress = (iconName: string) => {
-    setActiveIcon(iconName)
-    if (iconName === 'like') {
-      setIsLiked((prevIsLiked) => !prevIsLiked)
-    } else if (iconName === 'fire') {
-      setIsFireActive((prev) => !prev)
-    } else if (iconName === 'heart') {
-      setIsHeartActive((prev) => !prev)
-    }
   }
 
   const onClose = () => {
@@ -81,14 +66,6 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen }) => {
     //   await setFocus(true)
     //   setSubscriptionModal(true)
     // }
-  }
-
-  const handlePressIn = () => {
-    setIsPressed(true)
-  }
-
-  const handlePressOut = () => {
-    setIsPressed(false)
   }
 
   const openSubscriptionModal = () => {
@@ -137,27 +114,9 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen }) => {
     getData()
   }, [getData])
 
-  const LikeIconStyle = {
-    backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
-  }
-
-  const dynamicLikeIconStyle = activeIcon === 'like' ? LikeIconStyle : {}
-
-  const FireIconStyle = {
-    backgroundColor: isPressed ? 'rgba(251, 99, 4, 0.5)' : 'transparent',
-  }
-
-  const dynamicFireIconStyle = activeIcon === 'fire' ? FireIconStyle : {}
-
-  const HeartIconStyle = {
-    backgroundColor: isPressed ? 'rgba(219, 0, 255, 0.5)' : 'transparent',
-  }
-
-  const dynamicHeartIconStyle = activeIcon === 'heart' ? HeartIconStyle : {}
-
   return (
     <AuthNavigate focus={focus} onClose={onClose}>
-      <PostCardWrapper style={{ position: 'relative', height: height }}>
+      <PostCardWrapper style={{ position: 'relative', height: height - 100 }}>
         <SwiperFlatList
           data={data}
           vertical
@@ -165,81 +124,25 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen }) => {
           renderItem={({ item }) => (
             <View
               key={item.id}
-              style={{
-                height: reelsHeight,
-                flex: 1,
-                borderRadius: 10,
-                position: 'relative',
-              }}
+              style={[
+                {
+                  height: reelsHeight,
+                  flex: 1,
+                  borderRadius: 10,
+                  position: 'relative',
+                },
+                styles.iosContainer,
+              ]}
             >
               <PostCard item={item} handlePostClick={handlePostClick} />
 
               {/* <SliderCountContent>
-                <SliderNumber>
+                <SliderNumber> 
+                  
                   {currentIndex + 1}/{item.images.length}
                 </SliderNumber>
               </SliderCountContent> */}
 
-              <CardContent>
-                <IconPressable>
-                  <ContentView
-                    onPress={() => handleIconPress('like')}
-                    onPressIn={handlePressIn}
-                    onPressOut={handlePressOut}
-                    style={dynamicLikeIconStyle}
-                  >
-                    {activeIcon === 'like' ? (
-                      isLiked ? (
-                        <IsLikeIcon width={20} height={20} />
-                      ) : (
-                        <IsLikeIcon width={20} height={20} />
-                      )
-                    ) : (
-                      <Like width={20} height={20} />
-                    )}
-                  </ContentView>
-                  <LikeText>1k</LikeText>
-                </IconPressable>
-
-                <IconPressable>
-                  <ContentView
-                    onPress={() => handleIconPress('fire')}
-                    onPressIn={handlePressIn}
-                    onPressOut={handlePressOut}
-                    style={dynamicFireIconStyle}
-                  >
-                    {activeIcon === 'fire' ? (
-                      isFireActive ? (
-                        <IsFireIcon width={20} height={20} />
-                      ) : (
-                        <IsFireIcon width={20} height={20} />
-                      )
-                    ) : (
-                      <Fire width={20} height={20} />
-                    )}
-                  </ContentView>
-                  <LikeText>1.2k</LikeText>
-                </IconPressable>
-                <IconPressable>
-                  <ContentView
-                    onPress={() => handleIconPress('heart')}
-                    onPressIn={handlePressIn}
-                    onPressOut={handlePressOut}
-                    style={dynamicHeartIconStyle}
-                  >
-                    {activeIcon === 'heart' ? (
-                      isHeartActive ? (
-                        <IsHeartIcon width={20} height={20} />
-                      ) : (
-                        <IsHeartIcon width={20} height={20} />
-                      )
-                    ) : (
-                      <Heart width={20} height={20} />
-                    )}
-                  </ContentView>
-                  <LikeText>1.5k</LikeText>
-                </IconPressable>
-              </CardContent>
               <Animated.View
                 entering={LightSpeedInRight.duration(1000).delay(200)}
                 exiting={LightSpeedOutRight}
@@ -261,18 +164,22 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen }) => {
           )}
         />
         <TouchableOpacity
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-end',
-            justifyContent: 'flex-end',
-            alignSelf: 'flex-end',
-            gap: 6,
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            zIndex: 1000,
-          }}
+          style={[
+            {
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-end',
+              justifyContent: 'flex-end',
+              alignSelf: 'flex-end',
+              gap: 6,
+              position: 'absolute',
+              left: 0,
+              right: 24,
+              bottom: 50,
+              zIndex: 1000,
+            },
+            styles.iosContent,
+          ]}
           onPress={onSubmit}
         >
           <LinearGradient
@@ -308,24 +215,6 @@ const SliderCountContent = styled.View`
   position: absolute;
   top: 16px;
   right: 16px;
-`
-
-// const PlusIconStyle = styled.TouchableOpacity`
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-//   justify-content: center;
-//   position: absolute;
-//   bottom: 24px;
-//   right: 24px;
-//   z-index: 10000;
-// `
-
-const IconPressable = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 4px;
 `
 
 const TextHead = styled.Text`
@@ -367,30 +256,7 @@ const PostDescription = styled.Text`
   letter-spacing: -0.24px;
   margin-top: 4px;
   text-transform: capitalize;
-`
-
-const CardContent = styled.View`
-  position: absolute;
-  padding-left: 16px;
-  display: flex;
-  bottom: 145px;
-  flex-direction: row;
-  gap: 8px;
-`
-
-const ContentView = styled.TouchableOpacity`
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-  padding: 5px;
-  border-radius: 30px;
-`
-
-const LikeText = styled.Text`
-  color: white;
-  align-items: center;
-  font-style: normal;
-  font-size: 14px;
+  margin-bottom: 15px;
 `
 
 const PostCardContent = styled.View`
@@ -420,6 +286,21 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.24,
     shadowRadius: 0,
     elevation: 5,
+  },
+  iosContainer: {
+    ...Platform.select({
+      ios: {
+        paddingBottom: 80,
+      },
+    }),
+  },
+  iosContent: {
+    ...Platform.select({
+      ios: {
+        bottom: 110,
+        right: 16,
+      },
+    }),
   },
 })
 
