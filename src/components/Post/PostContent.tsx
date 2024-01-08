@@ -1,47 +1,36 @@
-import React, { useEffect, useCallback } from 'react'
-import {
-  Image,
-  Pressable,
-  Dimensions,
-  Share,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native'
-import { COLORS, gradientColors } from '../styles/theme'
+import React, { useEffect, useCallback, Dispatch, SetStateAction } from 'react'
+import { Pressable, Dimensions, Share, View, StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
-import Like from '../assets/icons/like'
-import Fire from '../assets/icons/fire'
-import Heart from '../assets/icons/heart'
-import SaveIcon from '../assets/icons/SaveIcon'
 import { useState } from 'react'
-
-import { reelsData } from '../utils/data/postData'
 import SwiperFlatList from 'react-native-swiper-flatlist'
 import { LinearGradient } from 'expo-linear-gradient'
-import IsLikeIcon from '../assets/icons/PostPageIcon/isLikeIcon'
-import IsFireIcon from '../assets/icons/PostPageIcon/isFire'
-import IsHeartIcon from '../assets/icons/PostPageIcon/isHeartIcon'
-import HomePlusIcon from '../assets/icons/PostPlusIcon'
-import SubscriptionModal from '../screens/Modals/Subscription'
-import Animated, {
-  FlipInEasyY,
-  FlipOutEasyY,
-  LightSpeedInRight,
-  LightSpeedOutRight,
-} from 'react-native-reanimated'
-import AuthNavigate from '../screens/AuthNavigate'
-import { userStore } from '../store/userStore'
+import Animated, { LightSpeedInRight, LightSpeedOutRight } from 'react-native-reanimated'
 import { getDocs, collection } from 'firebase/firestore/lite'
-import { db } from '../../firebase'
+import { COLORS } from '../../styles/theme'
+import Like from '../../assets/icons/like'
+import Fire from '../../assets/icons/fire'
+import Heart from '../../assets/icons/heart'
+import SaveIcon from '../../assets/icons/SaveIcon'
+import IsLikeIcon from '../../assets/icons/PostPageIcon/isLikeIcon'
+import IsFireIcon from '../../assets/icons/PostPageIcon/isFire'
+import IsHeartIcon from '../../assets/icons/PostPageIcon/isHeartIcon'
+import HomePlusIcon from '../../assets/icons/PostPlusIcon'
+import { IPostData } from '../../constant/types'
+import AuthNavigate from '../../screens/AuthNavigate'
+import SubscriptionModal from '../../screens/Modals/Subscription'
+import { db } from '../../../firebase'
+import PostCard from './PostCard'
 
-const { width, height } = Dimensions.get('window')
+const { height, width } = Dimensions.get('window')
 
 interface IPost {
   navigation: any
+  // postData: IPostData[] | undefined
+  setPostId: Dispatch<SetStateAction<string>>
+  setOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const PostCard: React.FC<IPost> = ({ navigation }) => {
+const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [activeIcon, setActiveIcon] = useState<string | null>(null)
   const [isLiked, setIsLiked] = useState(false)
@@ -49,11 +38,17 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
   const [isFireActive, setIsFireActive] = useState(false)
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<any[]>()
+  const [data, setData] = useState<IPostData[]>()
   const [isHeartActive, setIsHeartActive] = useState(false)
   const [focus, setFocus] = useState(false)
   const tabHeight = 120
   const reelsHeight = height - tabHeight
+
+  const handlePostClick = (postId: string) => {
+    console.log(postId)
+    setPostId(postId)
+    setOpen(true)
+  }
 
   const handleIconPress = (iconName: string) => {
     setActiveIcon(iconName)
@@ -70,7 +65,15 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
     setFocus(false)
   }
 
-  const onSubmit = async () => {
+  // const handlePress = (postId: string) => {
+  //   const selectedPost = data?.find((post) => post.id === postId)
+  //   if (selectedPost) {
+  //     setSelectedPost(selectedPost)
+  //     setShowPostDetails(true)
+  //   }
+  // }
+
+  const onSubmit = () => {
     setSubscriptionModal(true)
 
     // if (!user) {
@@ -134,8 +137,6 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
     getData()
   }, [getData])
 
-  console.log('data', data?.length)
-
   const LikeIconStyle = {
     backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
   }
@@ -155,59 +156,29 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
   const dynamicHeartIconStyle = activeIcon === 'heart' ? HeartIconStyle : {}
 
   return (
-    // <LinearGradient colors={gradientColors} style={{ borderRadius: 10 }}>
     <AuthNavigate focus={focus} onClose={onClose}>
-      <PostCardWrapper>
+      <PostCardWrapper style={{ position: 'relative', height: height }}>
         <SwiperFlatList
-          data={reelsData}
+          data={data}
           vertical
           renderAll={true}
           renderItem={({ item }) => (
             <View
               key={item.id}
               style={{
-                height: reelsHeight - 12,
+                height: reelsHeight,
                 flex: 1,
                 borderRadius: 10,
                 position: 'relative',
               }}
             >
-              <SwiperFlatList
-                data={item.images}
-                horizontal
-                index={currentIndex}
-                onChangeIndex={({ index }) => setCurrentIndex(index)}
-                showPagination={false}
-                renderItem={({ item: image }) => (
-                  <LinearGradient colors={gradientColors} style={{ borderRadius: 10 }}>
-                    <TouchableOpacity
-                      style={styles.container}
-                      onPress={() => navigation.navigate('PostDetails')}
-                    >
-                      <Image
-                        source={image}
-                        style={{
-                          height: reelsHeight - 150,
-                          width: width - 16,
-                          resizeMode: 'cover',
-                        }}
-                        alt='postCard-reels-img'
-                      />
-                      <LinearGradient
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 0, y: 1 }}
-                        colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.38)']}
-                        style={styles.linearGradient}
-                      ></LinearGradient>
-                    </TouchableOpacity>
-                  </LinearGradient>
-                )}
-              />
-              <SliderCountContent>
+              <PostCard item={item} handlePostClick={handlePostClick} />
+
+              {/* <SliderCountContent>
                 <SliderNumber>
                   {currentIndex + 1}/{item.images.length}
                 </SliderNumber>
-              </SliderCountContent>
+              </SliderCountContent> */}
 
               <CardContent>
                 <IconPressable>
@@ -275,13 +246,13 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
               >
                 <PostCardContent>
                   <FlexContent>
-                    <TextHead>{item.text}</TextHead>
+                    <TextHead>{item.style}</TextHead>
                     <Pressable onPress={share}>
                       <SaveIcon width={24} height={24} />
                     </Pressable>
                   </FlexContent>
                   <Content>
-                    <PostCardText>{item.title}</PostCardText>
+                    <PostCardText>{item.productName}</PostCardText>
                     <PostDescription>{item.description}</PostDescription>
                   </Content>
                 </PostCardContent>
@@ -289,18 +260,30 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
             </View>
           )}
         />
-        <Animated.View entering={FlipInEasyY.duration(800).delay(200)} exiting={FlipOutEasyY}>
-          <PlusIconStyle onPress={onSubmit}>
-            <LinearGradient
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              colors={['#462D85', '#DB00FF']}
-              style={styles.plusIconGradientColor}
-            >
-              <HomePlusIcon width={20} height={20} />
-            </LinearGradient>
-          </PlusIconStyle>
-        </Animated.View>
+        <TouchableOpacity
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-end',
+            justifyContent: 'flex-end',
+            alignSelf: 'flex-end',
+            gap: 6,
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            zIndex: 1000,
+          }}
+          onPress={onSubmit}
+        >
+          <LinearGradient
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            colors={['#462D85', '#DB00FF']}
+            style={styles.plusIconGradientColor}
+          >
+            <HomePlusIcon width={20} height={20} />
+          </LinearGradient>
+        </TouchableOpacity>
         <SubscriptionModal
           isVisible={isSubscriptionModal}
           onClose={closeSubscriptionModal}
@@ -308,7 +291,6 @@ const PostCard: React.FC<IPost> = ({ navigation }) => {
         />
       </PostCardWrapper>
     </AuthNavigate>
-    // </LinearGradient>
   )
 }
 
@@ -328,16 +310,16 @@ const SliderCountContent = styled.View`
   right: 16px;
 `
 
-const PlusIconStyle = styled.TouchableOpacity`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  bottom: 24px;
-  right: 24px;
-  z-index: 10000;
-`
+// const PlusIconStyle = styled.TouchableOpacity`
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   justify-content: center;
+//   position: absolute;
+//   bottom: 24px;
+//   right: 24px;
+//   z-index: 10000;
+// `
 
 const IconPressable = styled.View`
   display: flex;
@@ -384,13 +366,14 @@ const PostDescription = styled.Text`
   font-family: Gilroy-Regular;
   letter-spacing: -0.24px;
   margin-top: 4px;
+  text-transform: capitalize;
 `
 
 const CardContent = styled.View`
   position: absolute;
   padding-left: 16px;
   display: flex;
-  bottom: 130px;
+  bottom: 145px;
   flex-direction: row;
   gap: 8px;
 `
@@ -440,4 +423,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default PostCard
+export default PostContent

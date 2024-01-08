@@ -178,6 +178,39 @@ export interface IDesigns {
   }
 }
 
+export interface IPostData {
+  color: string
+  description: string
+  gender: string
+  giftVideo: string
+  id: string
+  offerPrice: string
+  price: string
+  productId: string
+  productImage: string
+  productName: string
+  sizes: {
+    country: string
+    sizeVarient: {
+      measurement: number
+      quantity: string
+      size: string
+    }[]
+  }
+  style: string
+  textAndImage: {
+    designs: {
+      hashtag: string
+      image: string
+      originalImage: string
+    }[]
+    position: string
+    rate: number
+    title: string
+  }
+  userId: string
+}
+
 export interface IOrder {
   description: string
   gender: string

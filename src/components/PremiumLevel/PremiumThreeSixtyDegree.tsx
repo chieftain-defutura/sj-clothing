@@ -42,7 +42,7 @@ interface IPremiumThreeSixtyDegree {
   setFocus: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const { width, height } = Dimensions.get('window')
+const { height } = Dimensions.get('window')
 
 const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   setOpenDetails,
@@ -175,7 +175,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               }}
               activeOpacity={0.6}
               underlayColor='rgba(70, 45, 133, 0.2)'
-              style={{ borderRadius: 100, width: 50, height: 50 }}
+              style={{ borderRadius: 100, width: 50, height: 50, marginLeft: 15 }}
             >
               <View>
                 <IconHoverPressable>
