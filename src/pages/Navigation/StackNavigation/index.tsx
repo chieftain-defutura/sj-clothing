@@ -10,7 +10,6 @@ import ForgotModal from '../../../screens/Forgot'
 import NotificationPage from './NotificationPage'
 import TabNavigationRoutes from '../TabNavigation'
 import OrderPlaced from '../../../screens/OrderPlaced'
-import PostCreation from '../../../components/PostCreater'
 import { HeaderLeft } from '../../../components/Header'
 import Premium from '../TabNavigation/Premium'
 import MyPosts from './Account/MyPosts'
@@ -62,11 +61,6 @@ const StackNavigationRoutes: React.FC = () => {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
       />
 
-      <Stack.Screen
-        name='PostCreation'
-        component={PostCreation}
-        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-      />
       <Stack.Screen
         name='AddPost'
         component={AddPost}

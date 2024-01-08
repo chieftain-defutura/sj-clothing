@@ -9,9 +9,18 @@ import { Video, ResizeMode } from 'expo-av'
 interface ICarousle {
   isGiftVideo: any
   setGiftVideo: React.Dispatch<any>
+  isImageOrText: {
+    title: string
+    position: string
+    rate: number
+    designs: {
+      hashtag: string
+      image: string
+    }
+  }
 }
 
-const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo }) => {
+const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo, isImageOrText }) => {
   useEffect(() => {
     ;(async () => {
       // Request permission to access the user's media library
@@ -51,7 +60,7 @@ const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo }) => {
       <View style={styles.slide2}>
         <Image
           style={{ objectFit: 'cover', width: 400, height: 400 }}
-          source={require('../../../assets/images/monkey-nft.png')}
+          source={{ uri: isImageOrText.designs.image }}
           alt='carousle-img'
         />
       </View>

@@ -59,7 +59,11 @@ const FinalProduct: React.FC<IFinalProduct> = ({
   return (
     <ScrollView style={styles.selectContainer}>
       <View style={styles.selectColorTShirt}>
-        <Carousle isGiftVideo={isGiftVideo} setGiftVideo={setGiftVideo} />
+        <Carousle
+          isGiftVideo={isGiftVideo}
+          setGiftVideo={setGiftVideo}
+          isImageOrText={isImageOrText}
+        />
       </View>
 
       <View style={{ paddingHorizontal: 15 }}>
