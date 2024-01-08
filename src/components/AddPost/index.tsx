@@ -38,6 +38,7 @@ import { gradientOpacityColors } from '../../styles/theme'
 import FinalProduct from './FinalProduct'
 import ProductAndCaption from './ProductAndCaption'
 import { PostStore } from '../../store/postCreationStore'
+import UploadDesign from './UploadDesign'
 
 const { width } = Dimensions.get('window')
 
@@ -444,7 +445,6 @@ const AddPost = () => {
       setOpenCheckout(true)
     }
   }
-
   return (
     <View style={{ flex: 1 }}>
       <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
@@ -558,6 +558,7 @@ const AddPost = () => {
                   animationUpdated={animationUpdated}
                   shake={shake}
                   shakeAnimation={shakeAnimation}
+                  setAnimationUpdated={setAnimationUpdated}
                 />
               )}
               {isSteps !== 5 && isSteps !== 6 && (
@@ -587,14 +588,20 @@ const AddPost = () => {
               />
             )}
             {isSteps === 6 && Design && isOpenDesign && !isDone && (
-              <SelectDesign
-                color={isColor}
+              // <SelectDesign
+              //   color={isColor}
+              //   isImageOrText={isImageOrText}
+              //   designs={Design}
+              //   setOpenDesign={setOpenDesign}
+              //   isDone={isDone}
+              //   setDone={setDone}
+              //   setImageOrText={setImageOrText}
+              // />
+              <UploadDesign
                 isImageOrText={isImageOrText}
-                designs={Design}
-                setOpenDesign={setOpenDesign}
-                isDone={isDone}
-                setDone={setDone}
                 setImageOrText={setImageOrText}
+                setDone={setDone}
+                color={isColor}
               />
             )}
             {login && (

@@ -1,6 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
-import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native'
+import {
+  ActivityIndicator,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { doc, setDoc, updateDoc } from 'firebase/firestore/lite'
 import uuid from 'react-native-uuid'
 
@@ -8,6 +15,7 @@ import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { IDesigns } from '../../../constant/types'
 import TextAnimation from '../Navigation/TextAnimation'
+import Loader from '../../Loading'
 
 const { height, width } = Dimensions.get('window')
 
@@ -23,6 +31,7 @@ interface IFlowThreeProps {
       originalImage: string
     }
   }
+  setAnimationUpdated: React.Dispatch<React.SetStateAction<boolean>>
   designs: IDesigns[] | undefined
   animationUpdated: boolean
   shake: () => void
@@ -35,15 +44,21 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
   designs,
   animationUpdated,
   shake,
+  setAnimationUpdated,
   shakeAnimation,
 }) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
   const [webviewLoading, setWebviewLoading] = useState(true)
+  const [webLoader, setWebLoader] = useState(false)
   const [uid, setUid] = useState<string>('')
   const isMounted = useRef(false)
   const avatar = userStore((state) => state.avatar)
+  const webViewRef = useRef<any>(null)
+  useEffect(() => {
+    setAnimationUpdated(false)
+  }, [])
 
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
@@ -70,7 +85,6 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
       }
     }
   }, [color, isImageOrText])
-  console.log(animationUpdated)
   const handleUpdateImageAndText = useCallback(async () => {
     if (!isImageOrText.designs.originalImage || !uid) return
     try {
@@ -94,46 +108,95 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
       })
     }
   }
+
+  // const reloadWebView = () => {
+  //   try {
+  //     setWebLoader(true)
+  //     if (webViewRef.current) {
+  //       webViewRef.current.reload()
+  //     }
+  //     setTimeout(() => {
+  //       setWebLoader(false)
+  //     }, 2000)
+  //   } catch (error) {
+  //     console.log(error)
+  //     setWebLoader(false)
+  //   }
+  // }
+
+  useEffect(() => {
+    try {
+      if (isImageOrText.designs.image) {
+        setWebLoader(true)
+        if (webViewRef.current) {
+          webViewRef.current.reload()
+        }
+        setTimeout(() => {
+          setWebLoader(false)
+        }, 2000)
+      }
+    } catch (error) {
+      console.log(error)
+      setWebLoader(false)
+    }
+  }, [isImageOrText])
+  console.log('webLoader', webLoader)
+  console.log('webLoading', webviewLoading)
+  console.log(animationUpdated)
   return (
     <View
       style={{
-        width: width / 1,
-        height: height / 1.3,
         flex: 1,
-        backgroundColor: 'transparent',
-        position: 'relative',
       }}
-      ref={elementRef}
-      onLayout={handleLayout}
     >
-      {webviewLoading && (
-        <View style={styles.absoluteContainer}>
-          <ActivityIndicator size='large' color={'#8C73CB'} />
-        </View>
-      )}
-      {Boolean(uid) && Boolean(pageY) && Boolean(elementHeight) && (
-        <WebView
-          style={{
-            backgroundColor: 'transparent',
-          }}
-          source={{
-            // uri: `http://localhost:5173/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
-            uri: `https://sj-threejs-development.netlify.app/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
-          }}
-          scrollEnabled={false}
-          onLoad={() => {
-            setTimeout(() => {
-              setWebviewLoading(false)
-            }, 1000)
-          }}
-        />
-      )}
-      <View>
-        {!animationUpdated && (
-          <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
-            Please wait till avatar load
-          </TextAnimation>
+      <View
+        style={{
+          width: width / 1,
+          height: height / 1.3,
+          flex: 1,
+          backgroundColor: 'transparent',
+          position: 'relative',
+          opacity: webLoader ? 0 : 1,
+        }}
+        ref={elementRef}
+        onLayout={handleLayout}
+      >
+        {webviewLoading && (
+          <View style={styles.absoluteContainer}>
+            <ActivityIndicator size='large' color={'#8C73CB'} />
+          </View>
         )}
+        {Boolean(uid) && Boolean(pageY) && Boolean(elementHeight) && (
+          <WebView
+            ref={webViewRef}
+            style={{
+              backgroundColor: 'transparent',
+            }}
+            source={{
+              // uri: `http://localhost:5173/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
+              uri: `https://sj-threejs-development.netlify.app/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
+            }}
+            scrollEnabled={false}
+            onLoad={() => {
+              setTimeout(() => {
+                setWebviewLoading(false)
+              }, 1000)
+            }}
+          />
+        )}
+        {/* <TouchableOpacity onPress={reloadWebView}>
+          <Text>sghjs</Text>
+        </TouchableOpacity> */}
+        {/* <View>
+          {!animationUpdated && (
+            <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+              Please wait till avatar load
+            </TextAnimation>
+          )}
+        </View> */}
+      </View>
+      <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
+        {webLoader && <Loader />}
       </View>
     </View>
   )

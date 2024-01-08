@@ -70,6 +70,7 @@ const FlowOne: React.FC<IFlowOneProps> = ({
       })
     }
   }
+  console.log('flow1', uid)
 
   return (
     <View

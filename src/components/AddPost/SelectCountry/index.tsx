@@ -48,9 +48,7 @@ const SelectCountry: React.FC<ISelectedCountry> = ({ setSize, isSize, data, setD
   >([])
 
   useEffect(() => {
-    const filteredData = data.sizes
-      .filter((f) => f.gender.toLowerCase() === avatar.gender?.toLowerCase())
-      .map((f) => f)
+    const filteredData = data.sizes.map((f) => f)
     setCountry(filteredData)
   }, [data, avatar])
 

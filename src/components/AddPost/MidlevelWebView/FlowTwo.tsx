@@ -134,6 +134,8 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({
       })
     }
   }
+  console.log('flow2', uid)
+
   return (
     <View
       style={{

@@ -264,7 +264,7 @@ const Navigation: React.FC<INavigation> = ({
             {
               justifyContent: steps === 6 ? 'flex-start' : 'space-between',
               alignItems: 'center',
-              gap: steps === 6 ? 70 : 0,
+              gap: steps === 6 ? 120 : 0,
             },
           ]}
         >
@@ -418,7 +418,7 @@ const Navigation: React.FC<INavigation> = ({
                   </Text>
                 </View>
               </TouchableHighlight>
-              <TouchableHighlight
+              {/* <TouchableHighlight
                 onPress={() => {
                   setDropDown(true),
                     setDropDown(true),
@@ -439,7 +439,7 @@ const Navigation: React.FC<INavigation> = ({
                     {t('Add Text')}
                   </Text>
                 </View>
-              </TouchableHighlight>
+              </TouchableHighlight> */}
             </View>
           )}
 

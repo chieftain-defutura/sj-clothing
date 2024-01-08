@@ -105,6 +105,8 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
           gender: gender,
           productName: productName,
           giftVideo: isGiftVideo,
+          product: product,
+          caption: caption,
         })
         setOpenCheckout(false)
         navigation.navigate('Stack')

@@ -1,33 +1,55 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import * as ImagePicker from 'expo-image-picker'
 import { Pressable, StyleSheet, Text, View, Image, Dimensions, Alert } from 'react-native'
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
 import CustomButton from '../../Button'
-import { uriToBlob } from '../../../pages/Navigation/StackNavigation/Account/EditProfile'
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
-import { storage } from '../../../../firebase'
+import * as FileSystem from 'expo-file-system'
 import { userStore } from '../../../store/userStore'
+import axios from 'axios'
 
 interface IUploadDesign {
   isImageOrText: {
     title: string
-    image: string
     position: string
+    rate: number
+    designs: {
+      hashtag: string
+      image: string
+      originalImage: string
+    }
   }
+  color: string
   setDone: React.Dispatch<React.SetStateAction<boolean>>
   setImageOrText: React.Dispatch<
     React.SetStateAction<{
       title: string
-      image: string
       position: string
+      rate: number
+      designs: {
+        hashtag: string
+        image: string
+        originalImage: string
+      }
     }>
   >
 }
 const { height, width } = Dimensions.get('window')
-const UploadDesign: React.FC<IUploadDesign> = ({ setDone, setImageOrText, isImageOrText }) => {
+const UploadDesign: React.FC<IUploadDesign> = ({
+  setDone,
+  setImageOrText,
+  isImageOrText,
+  color,
+}) => {
   const user = userStore((state) => state.user)
+  const [image, setImage] = useState('')
+  const [loading, setLoading] = useState(false)
+  const ref = useRef<any>(null)
+  function resolveImage() {
+    return require('../../../assets/images/PremiumImage/premium-img2.png')
+  }
+
   const handleSelectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -41,32 +63,38 @@ const UploadDesign: React.FC<IUploadDesign> = ({ setDone, setImageOrText, isImag
   }
   const uploadImage = async (uri: string) => {
     try {
-      const blob = await uriToBlob(uri)
-
-      const imageRef = ref(storage, user?.uid)
-      const task = uploadBytesResumable(imageRef, blob)
-
-      task.on('state_changed', (taskSnapshot) => {
-        console.log(
-          `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
-        )
+      setLoading(true)
+      console.log(color)
+      const fileContent = await FileSystem.readAsStringAsync(uri, {
+        encoding: FileSystem.EncodingType.Base64,
+      })
+      const { data } = await axios.post('http://192.168.29.25:3001/canvas', {
+        color: color,
+        image: `data:image/jpeg;base64,${fileContent}`,
       })
 
-      await task // Wait for the upload to complete
+      setImage(data.base64Image)
 
-      const url = await getDownloadURL(imageRef)
-      setImageOrText((prevState) => ({
-        ...prevState,
-        image: url,
-      })),
-        console.log('Image uploaded to the bucket!')
+      setImageOrText({
+        title: 'image',
+        position: isImageOrText.position,
+        rate: 0,
+        designs: {
+          hashtag: '',
+          image: `data:image/jpeg;base64,${fileContent}`,
+          originalImage: `data:image/png;base64,${data.base64Image}`,
+        },
+      })
+      console.log('Image uploaded to the bucket!')
+      setDone(true)
+      setLoading(false)
     } catch (error) {
       console.error('Error uploading image:', error)
-      Alert.alert('Error', 'Failed to upload image')
-      // You can also throw the error to handle it elsewhere if needed
+      setLoading(false)
       throw error
     }
   }
+
   return (
     <Animated.View
       entering={SlideInDown.duration(800)}
@@ -103,7 +131,7 @@ const UploadDesign: React.FC<IUploadDesign> = ({ setDone, setImageOrText, isImag
         </Pressable>
       </View>
       <View>
-        {isImageOrText.image ? (
+        {image ? (
           <View
             style={{
               display: 'flex',
@@ -114,7 +142,7 @@ const UploadDesign: React.FC<IUploadDesign> = ({ setDone, setImageOrText, isImag
             }}
           >
             <Image
-              source={{ uri: isImageOrText.image }}
+              source={{ uri: `data:image/png;base64,${image}` }}
               style={{ width: 200, height: 200 }}
               alt='upload-design-img'
             />
@@ -130,7 +158,11 @@ const UploadDesign: React.FC<IUploadDesign> = ({ setDone, setImageOrText, isImag
             />
           </View>
         ) : (
-          <CustomButton text='Select Image' onPress={handleSelectImage} />
+          <CustomButton
+            text={loading ? 'Loading...' : 'Select Image'}
+            onPress={handleSelectImage}
+            disabled={loading}
+          />
         )}
       </View>
     </Animated.View>

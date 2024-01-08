@@ -183,7 +183,6 @@ const FinalProduct: React.FC<IFinalProduct> = ({
               display: 'flex',
               flexDirection: 'column',
               width: width / 4,
-              paddingTop: 16,
             }}
           >
             <View
@@ -329,7 +328,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
             </View>
           </View>
         </View>
-        <View style={{ marginTop: 14 }}>
+        <View>
           <DetailsHeading allowFontScaling={false}>Detailed features</DetailsHeading>
           {Description.map((f, index) => (
             <View
