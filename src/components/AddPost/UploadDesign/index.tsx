@@ -68,7 +68,7 @@ const UploadDesign: React.FC<IUploadDesign> = ({
       const fileContent = await FileSystem.readAsStringAsync(uri, {
         encoding: FileSystem.EncodingType.Base64,
       })
-      const { data } = await axios.post('http://192.168.1.6:3001/canvas', {
+      const { data } = await axios.post('http://192.168.29.122:3001/canvas', {
         color: color,
         image: `data:image/jpeg;base64,${fileContent}`,
       })

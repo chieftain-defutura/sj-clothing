@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Pressable, Share, View } from 'react-native'
+import { Pressable, Share, TouchableHighlight, View } from 'react-native'
 import styled from 'styled-components/native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -42,8 +42,6 @@ const ProductData = [
 ]
 
 const PostDetails: React.FC<IPostDetails> = ({ selectedPost, onClose }) => {
-  const [isPressed, setIsPressed] = useState(false)
-
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
     try {
@@ -63,7 +61,7 @@ const PostDetails: React.FC<IPostDetails> = ({ selectedPost, onClose }) => {
   }
 
   return (
-    <LinearGradient colors={gradientOpacityColors}>
+    <View>
       <Animated.View
         entering={SlideInRight.duration(500).delay(200)}
         exiting={SlideOutRight.duration(500).delay(200)}
@@ -71,28 +69,23 @@ const PostDetails: React.FC<IPostDetails> = ({ selectedPost, onClose }) => {
         <ScrollViewContent>
           <View>
             <FlexContent>
-              <GoBackArrowContent
+              <TouchableHighlight
                 onPress={() => {
                   onClose()
                 }}
-                onPressIn={() => setIsPressed(true)}
-                onPressOut={() => setIsPressed(false)}
+                activeOpacity={0.6}
+                underlayColor='rgba(70, 45, 133, 0.2)'
+                style={{ borderRadius: 100, width: 50, height: 50, marginTop: -15, marginLeft: -8 }}
               >
-                {() => (
-                  <IconHoverClr
-                    style={{
-                      backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
-                    }}
-                  >
-                    <IconHoverPressable>
-                      <LeftArrow width={24} height={24} />
-                    </IconHoverPressable>
-                  </IconHoverClr>
-                )}
-              </GoBackArrowContent>
-              <Pressable onPress={share}>
+                <View>
+                  <IconHoverPressable>
+                    <LeftArrow width={24} height={24} style={{ marginTop: 10 }} />
+                  </IconHoverPressable>
+                </View>
+              </TouchableHighlight>
+              {/* <Pressable onPress={share}>
                 <ShareArrow />
-              </Pressable>
+              </Pressable> */}
             </FlexContent>
             <TShirtImageWrapper>
               <TShirtImage
@@ -154,38 +147,27 @@ const PostDetails: React.FC<IPostDetails> = ({ selectedPost, onClose }) => {
                     <ProductName allowFontScaling={false}>{selectedPost?.price}</ProductName>
                   </Column>
                 </Row>
+                <CustomButton
+                  variant='primary'
+                  text='Buy now'
+                  fontFamily='Arvo-Regular'
+                  fontSize={16}
+                  style={{
+                    width: '100%',
+                    marginTop: 10,
+                  }}
+                />
               </Container>
             </Content>
           </View>
         </ScrollViewContent>
-        <CustomButton
-          variant='primary'
-          text='Buy now'
-          fontFamily='Arvo-Regular'
-          fontSize={16}
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            width: '100%',
-            backgroundColor: 'rgba(145, 177, 225, 0.2)',
-            padding: 16,
-          }}
-        />
       </Animated.View>
-    </LinearGradient>
+    </View>
   )
 }
 
 const ScrollViewContent = styled.ScrollView`
   height: 100%;
-`
-const GoBackArrowContent = styled.Pressable`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
 `
 const FlexContent = styled.View`
   display: flex;

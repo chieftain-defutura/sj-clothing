@@ -1,5 +1,13 @@
 import React, { useEffect, useCallback, useRef } from 'react'
-import { Image, Dimensions, StyleSheet, Pressable, ImageBackground, View } from 'react-native'
+import {
+  Image,
+  Dimensions,
+  StyleSheet,
+  Pressable,
+  ImageBackground,
+  View,
+  TouchableOpacity,
+} from 'react-native'
 import { useState } from 'react'
 import styled from 'styled-components/native'
 import SwiperFlatList from 'react-native-swiper-flatlist'
@@ -92,7 +100,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick }) => {
   }))
 
   const onDoubleTap = useCallback(() => {
-    handleIconPress('heart')
+    handleIconPress('fire')
 
     scale.value = withSpring(1, undefined, (isFinished) => {
       if (isFinished) {
@@ -138,14 +146,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick }) => {
       onChangeIndex={({ index }) => setCurrentIndex(index)}
       showPagination={false}
       renderItem={({ item: imageUrl }) => (
-        <LinearGradient colors={gradientColors} style={{ borderRadius: 10 }}>
-          {/* <Pressable
-            style={styles.container}
-            onPress={() => {
-              console.log('Clicked on post with ID:', item.id)
-              handlePostClick(item.id)
-            }}
-          > */}
+        <LinearGradient colors={gradientColors}>
           <TapGestureHandler waitFor={doubleTapRef} onActivated={onSingleTap}>
             <TapGestureHandler
               maxDelayMs={250}
@@ -162,30 +163,39 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick }) => {
                   }}
                   resizeMode='contain'
                 >
-                  <AnimatedImage
-                    source={require('../../assets/images/AccountImage/heart-img.png')}
-                    style={[
-                      styles.image,
-                      {
-                        shadowOffset: { width: 0, height: 20 },
-                        shadowOpacity: 0.35,
-                        shadowRadius: 35,
-                        tintColor: '#DB00FF',
-                      },
-                      rStyle,
-                    ]}
-                    resizeMode={'center'}
-                  />
+                  <View style={styles.image}>
+                    <AnimatedImage
+                      source={require('../../assets/images/AccountImage/fire-img.png')}
+                      style={[
+                        {
+                          shadowOffset: { width: 0, height: 20 },
+                          shadowOpacity: 0.35,
+                          shadowRadius: 35,
+                          // tintColor: '#DB00FF',
+                          width: width / 4,
+                        },
+                        rStyle,
+                      ]}
+                      resizeMode={'center'}
+                    />
+                  </View>
+                  <LinearGradient
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0, y: 1 }}
+                    colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.38)']}
+                    style={styles.linearGradient}
+                  ></LinearGradient>
                 </ImageBackground>
               </Animated.View>
             </TapGestureHandler>
           </TapGestureHandler>
-          {/* </Pressable> */}
 
           <CardContent>
             <IconPressable>
               <ContentView
-                onPress={() => handleIconPress('like')}
+                onPress={() =>
+                  activeIcon === 'like' ? handleIconPress('') : handleIconPress('like')
+                }
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
                 style={dynamicLikeIconStyle}
@@ -205,7 +215,9 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick }) => {
 
             <IconPressable>
               <ContentView
-                onPress={() => handleIconPress('fire')}
+                onPress={() =>
+                  activeIcon === 'fire' ? handleIconPress('') : handleIconPress('fire')
+                }
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
                 style={dynamicFireIconStyle}
@@ -224,7 +236,9 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick }) => {
             </IconPressable>
             <IconPressable>
               <ContentView
-                onPress={() => handleIconPress('heart')}
+                onPress={() =>
+                  activeIcon === 'heart' ? handleIconPress('') : handleIconPress('heart')
+                }
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
                 style={dynamicHeartIconStyle}
@@ -246,8 +260,8 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick }) => {
           <View
             style={{
               position: 'absolute',
-              right: 18,
-              top: 18,
+              right: 22,
+              top: 22,
               display: 'flex',
               flexDirection: 'row',
               gap: 4,
@@ -258,6 +272,31 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick }) => {
               <EditText>Edit</EditText>
             </View>
           </View>
+          <TouchableOpacity
+            onPress={() => {
+              console.log('Clicked on post with ID:', item.id)
+              handlePostClick(item.id)
+            }}
+            style={{
+              position: 'absolute',
+              right: 22,
+              bottom: 18,
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 4,
+            }}
+          >
+            <LinearGradient
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              colors={['#462D85', '#DB00FF']}
+              style={{ borderRadius: 30 }}
+            >
+              <ViewDetailsBtn>
+                <ViewDetailsText>View Details</ViewDetailsText>
+              </ViewDetailsBtn>
+            </LinearGradient>
+          </TouchableOpacity>
         </LinearGradient>
       )}
     />
@@ -276,8 +315,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: SIZE,
-    height: SIZE,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -294,6 +331,13 @@ const CardContent = styled.View`
   flex-direction: row;
   gap: 8px;
 `
+
+const ViewDetailsText = styled.Text`
+  color: ${COLORS.iconsNormalClr};
+  font-size: 12px;
+  font-family: ${FONT_FAMILY.GilroySemiBold};
+`
+
 const IconPressable = styled.View`
   display: flex;
   flex-direction: row;
@@ -315,7 +359,12 @@ const LikeText = styled.Text`
 `
 
 const EditText = styled.Text`
-  font-size: 17px;
+  font-size: 14px;
   font-family: ${FONT_FAMILY.GilroySemiBold};
   color: ${COLORS.textSecondaryClr};
+`
+
+const ViewDetailsBtn = styled.View`
+  padding-horizontal: 12px;
+  padding-vertical: 8px;
 `
