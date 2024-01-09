@@ -34,6 +34,8 @@ type State = {
         originalImage: string
       }
     }
+    product: string
+    caption: string
     uid: string
   }
 }
@@ -71,6 +73,8 @@ type Action = {
         originalImage: string
       }
     }
+    product: string
+    caption: string
     uid: string
   }) => void
 }
@@ -111,6 +115,8 @@ export const PostStore = create<State & Action>((set) => ({
         originalImage: '',
       },
     },
+    product: '',
+    caption: '',
     uid: '',
   },
 

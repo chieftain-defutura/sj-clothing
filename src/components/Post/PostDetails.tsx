@@ -7,10 +7,10 @@ import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../styles/theme'
 import LeftArrow from '../../assets/icons/LeftArrow'
 import ShareArrow from '../../assets/icons/ShareArrow'
 import CustomButton from '../Button'
-import { IPostData } from '../../constant/types'
+import { IPostData, IUserPost } from '../../constant/types'
 
 interface IPostDetails {
-  selectedPost: IPostData | null
+  selectedPost: IUserPost
   onClose: () => void
 }
 
@@ -138,7 +138,7 @@ const PostDetails: React.FC<IPostDetails> = ({ selectedPost, onClose }) => {
                       ))
                     ) : (
                       <ProductName allowFontScaling={false}>
-                        {selectedPost?.sizes?.sizeVarient?.size || '-'}
+                        {selectedPost?.sizes?.sizeVarient.size || '-'}
                       </ProductName>
                     )}
                   </Column>

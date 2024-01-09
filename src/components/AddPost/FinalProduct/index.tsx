@@ -4,7 +4,7 @@ import { Svg, Circle } from 'react-native-svg'
 import Carousle from './Carousle'
 import CustomButton from '../../Button'
 import { ScrollView, StyleSheet, Text, Dimensions, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { userStore } from '../../../store/userStore'
 import { useTranslation } from 'react-i18next'
 import { IMidlevel } from '../../../constant/types'
@@ -37,7 +37,7 @@ interface IFinalProduct {
   handleSubmit: () => Promise<void>
 }
 
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 const FinalProduct: React.FC<IFinalProduct> = ({
   isGiftVideo,
@@ -394,6 +394,7 @@ export default FinalProduct
 const styles = StyleSheet.create({
   selectContainer: {
     padding: 16,
+    height: height,
   },
   selectNavigator: {
     display: 'flex',

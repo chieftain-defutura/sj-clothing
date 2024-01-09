@@ -140,7 +140,7 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({
     <View
       style={{
         width: width / 1,
-        height: height / 1.3,
+        height: height / 1,
         flex: 5,
         backgroundColor: 'transparent',
         position: 'relative',

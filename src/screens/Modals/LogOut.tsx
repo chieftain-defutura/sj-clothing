@@ -25,7 +25,7 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
       await AsyncStorage.removeItem('mail')
       updateUser(null)
       closeModal?.()
-      NativeModules.DevSettings.reload()
+      // NativeModules.DevSettings.reload()
       setLoading(false)
     } catch (error) {
       console.log(error)
@@ -93,7 +93,7 @@ const LogOut: React.FC<ILogOut> = ({ closeModal, errorMessage }) => {
               text={loading ? 'Loading...' : 'Yes'}
               disabled={isSendVerifyMail || loading}
               onPress={handleClose}
-              style={{ width: 100 }}
+              style={{ width: '50%' }}
             />
           </View>
         </View>
@@ -108,7 +108,6 @@ const StyledView = styled.View`
   justify-content: center;
   flex-direction: row;
   align-items: center;
-  width: 90px;
 `
 
 export default LogOut
@@ -146,5 +145,7 @@ const styles = StyleSheet.create({
   btnText: {
     fontSize: 14,
     color: '#462d85',
+    textAlign: 'center',
+    width: 100,
   },
 })

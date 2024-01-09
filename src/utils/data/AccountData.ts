@@ -22,10 +22,16 @@ export const AccountData = [
   },
   {
     leftIcon: UserIcon,
-    name: `InstaLike`,
+    name: `Emoji`,
     rightIcon: ChevronLeft,
-    navigation: 'InstaLike',
+    navigation: 'Emoji',
   },
+  // {
+  //   leftIcon: UserIcon,
+  //   name: `InstaLike`,
+  //   rightIcon: ChevronLeft,
+  //   navigation: 'InstaLike',
+  // },
 
   // {
   //   name: `Payment`,
@@ -56,11 +62,11 @@ export const AccountData = [
     rightText: '0 items',
     navigation: 'MyOrders',
   },
-  {
-    leftIcon: ShoppingBag,
-    name: 'User Post',
-    navigation: 'UserPost',
-  },
+  // {
+  //   leftIcon: ShoppingBag,
+  //   name: 'User Post',
+  //   navigation: 'UserPost',
+  // },
   // {
   //   leftIcon: HomeLocation,
   //   name: 'Addressbook',

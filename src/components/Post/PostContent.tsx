@@ -29,9 +29,10 @@ interface IPost {
   navigation: any
   setPostId: Dispatch<SetStateAction<string>>
   setOpen: Dispatch<SetStateAction<boolean>>
+  setEditPost: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen }) => {
+const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditPost }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -133,7 +134,7 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen }) => {
               styles.iosContainer,
             ]}
           >
-            <PostCard item={item} handlePostClick={handlePostClick} />
+            <PostCard item={item} handlePostClick={handlePostClick} setEditPost={setEditPost} />
 
             {/* <SliderCountContent>
                 <SliderNumber> 

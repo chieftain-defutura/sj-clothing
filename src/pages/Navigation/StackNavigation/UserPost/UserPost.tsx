@@ -12,7 +12,7 @@ import { userStore } from '../../../../store/userStore'
 
 import Loader from '../../../../components/Loading'
 import { useNavigation } from '@react-navigation/native'
-import { IUserPost } from '../../../../constant/types'
+import { IPostData } from '../../../../constant/types'
 import UserPostCard from './UserPostCard'
 import AddPost from '../../../../components/AddPost'
 
@@ -24,7 +24,7 @@ const UserPost: React.FC = ({}) => {
   const [openPost, setOpenPost] = useState(false)
   const user = userStore((state) => state.user)
   const [isLoading, setLoading] = useState(false)
-  const [userPostData, setuserPostData] = useState<IUserPost[]>([])
+  const [userPostData, setuserPostData] = useState<IPostData[]>([])
   const navigation = useNavigation()
 
   const getData = useCallback(async () => {
@@ -110,7 +110,7 @@ const UserPost: React.FC = ({}) => {
           </Animated.View>
         </LinearGradient>
       ) : (
-        <AddPost editData={FilterData as IUserPost} openPost={openPost} setOpenPost={setOpenPost} />
+        <AddPost editData={FilterData as IPostData} openPost={openPost} setOpenPost={setOpenPost} />
       )}
     </>
   )
