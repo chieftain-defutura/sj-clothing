@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useRef } from 'react'
-import { Image, Dimensions, StyleSheet, Pressable, ImageBackground } from 'react-native'
+import { Image, Dimensions, StyleSheet, Pressable, ImageBackground, View } from 'react-native'
 import { useState } from 'react'
 import styled from 'styled-components/native'
 import SwiperFlatList from 'react-native-swiper-flatlist'
@@ -13,7 +13,7 @@ import Animated, {
 import { TapGestureHandler } from 'react-native-gesture-handler'
 import { LinearGradient } from 'expo-linear-gradient'
 import { getDocs, collection } from 'firebase/firestore/lite'
-import { gradientColors } from '../../styles/theme'
+import { COLORS, FONT_FAMILY, gradientColors } from '../../styles/theme'
 import { IPostData } from '../../constant/types'
 import { db } from '../../../firebase'
 import IsLikeIcon from '../../assets/icons/PostPageIcon/isLikeIcon'
@@ -22,6 +22,7 @@ import IsFireIcon from '../../assets/icons/PostPageIcon/isFire'
 import Fire from '../../assets/icons/fire'
 import IsHeartIcon from '../../assets/icons/PostPageIcon/isHeartIcon'
 import Heart from '../../assets/icons/heart'
+import AddressEditIcon from '../../assets/icons/AddressIcon/AddressEditIcon'
 
 const { width: SIZE } = Dimensions.get('window')
 const { height, width } = Dimensions.get('window')
@@ -180,6 +181,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick }) => {
             </TapGestureHandler>
           </TapGestureHandler>
           {/* </Pressable> */}
+
           <CardContent>
             <IconPressable>
               <ContentView
@@ -240,6 +242,22 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick }) => {
               <LikeText>1.5k</LikeText>
             </IconPressable>
           </CardContent>
+
+          <View
+            style={{
+              position: 'absolute',
+              right: 18,
+              top: 18,
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 4,
+            }}
+          >
+            <AddressEditIcon width={20} height={20} />
+            <View>
+              <EditText>Edit</EditText>
+            </View>
+          </View>
         </LinearGradient>
       )}
     />
@@ -294,4 +312,10 @@ const LikeText = styled.Text`
   align-items: center;
   font-style: normal;
   font-size: 14px;
+`
+
+const EditText = styled.Text`
+  font-size: 17px;
+  font-family: ${FONT_FAMILY.GilroySemiBold};
+  color: ${COLORS.textSecondaryClr};
 `
