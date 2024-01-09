@@ -146,6 +146,9 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
   const [product, setProduct] = useState(editData?.product ? editData.product : '')
   const [caption, setCaption] = useState(editData?.caption ? editData.caption : '')
 
+  console.log(editData?.sizes)
+  console.log(isSize)
+
   const shake = () => {
     Animated.sequence([
       Animated.timing(shakeAnimation, {
