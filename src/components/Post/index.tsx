@@ -2,12 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { View, Dimensions } from 'react-native'
 import PostContent from './PostContent'
 import { getDocs, collection } from 'firebase/firestore/lite'
-import { IPostData } from '../../constant/types'
+import { IPostData, IUserPost } from '../../constant/types'
 import { db } from '../../../firebase'
 import Loader from '../Loading'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import styled from 'styled-components/native'
 import PostDetails from './PostDetails'
+import AddPost from '../AddPost'
 
 interface IPostComponent {
   navigation: any
@@ -16,11 +17,11 @@ interface IPostComponent {
 const { height } = Dimensions.get('window')
 
 const PostComponent: React.FC<IPostComponent> = ({ navigation }) => {
-  const [data, setData] = useState<IPostData[] | undefined>(undefined)
+  const [data, setData] = useState<IUserPost[] | undefined>(undefined)
   const [isLoading, setLoading] = useState(false)
   const [postId, setPostId] = useState('')
   const [open, setOpen] = useState(false)
-
+  const [editPost, setEditPost] = useState(false)
   const getData = useCallback(async () => {
     try {
       setLoading(true)
@@ -43,7 +44,7 @@ const PostComponent: React.FC<IPostComponent> = ({ navigation }) => {
   }, [getData])
 
   const FilteredData = data?.find((f) => f.id === postId)
-
+  console.log(FilteredData)
   if (isLoading) {
     return (
       <View style={{ justifyContent: 'center', height: height }}>
@@ -61,20 +62,26 @@ const PostComponent: React.FC<IPostComponent> = ({ navigation }) => {
   }
 
   return (
-    <>
-      {open && FilteredData ? (
-        <PostDetails onClose={() => setOpen(false)} selectedPost={FilteredData} />
+    <View style={{ flex: 1 }}>
+      {!editPost ? (
+        open && FilteredData ? (
+          <PostDetails onClose={() => setOpen(false)} selectedPost={FilteredData} />
+        ) : (
+          <View style={{ position: 'relative' }}>
+            <PostContent
+              navigation={navigation}
+              setEditPost={setEditPost}
+              setOpen={setOpen}
+              setPostId={setPostId}
+            />
+          </View>
+        )
       ) : (
-        <View style={{ position: 'relative' }}>
-          <PostContent
-            navigation={navigation}
-            // postData={data}
-            setOpen={setOpen}
-            setPostId={setPostId}
-          />
+        <View style={{ flex: 1 }}>
+          <AddPost editData={FilteredData} openPost={editPost} setOpenPost={setEditPost} />
         </View>
       )}
-    </>
+    </View>
   )
 }
 

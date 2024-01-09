@@ -20,12 +20,12 @@ export const AccountData = [
     rightIcon: ChevronLeft,
     navigation: 'Avatar',
   },
-  {
-    leftIcon: UserIcon,
-    name: `InstaLike`,
-    rightIcon: ChevronLeft,
-    navigation: 'InstaLike',
-  },
+  // {
+  //   leftIcon: UserIcon,
+  //   name: `InstaLike`,
+  //   rightIcon: ChevronLeft,
+  //   navigation: 'InstaLike',
+  // },
 
   // {
   //   name: `Payment`,
@@ -56,11 +56,11 @@ export const AccountData = [
     rightText: '0 items',
     navigation: 'MyOrders',
   },
-  {
-    leftIcon: ShoppingBag,
-    name: 'User Post',
-    navigation: 'UserPost',
-  },
+  // {
+  //   leftIcon: ShoppingBag,
+  //   name: 'User Post',
+  //   navigation: 'UserPost',
+  // },
   // {
   //   leftIcon: HomeLocation,
   //   name: 'Addressbook',

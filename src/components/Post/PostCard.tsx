@@ -1,5 +1,14 @@
 import React, { useEffect, useCallback, useRef } from 'react'
-import { Image, Dimensions, StyleSheet, Pressable, ImageBackground, View } from 'react-native'
+import {
+  Image,
+  Dimensions,
+  StyleSheet,
+  Pressable,
+  ImageBackground,
+  View,
+  Touchable,
+  TouchableOpacity,
+} from 'react-native'
 import { useState } from 'react'
 import styled from 'styled-components/native'
 import SwiperFlatList from 'react-native-swiper-flatlist'
@@ -30,11 +39,12 @@ const { height, width } = Dimensions.get('window')
 interface IPost {
   item: IPostData
   handlePostClick: (postId: string) => void
+  setEditPost: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const AnimatedImage = Animated.createAnimatedComponent(Image)
 
-const PostCard: React.FC<IPost> = ({ item, handlePostClick }) => {
+const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<IPostData[]>()
@@ -243,7 +253,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick }) => {
             </IconPressable>
           </CardContent>
 
-          <View
+          <TouchableOpacity
             style={{
               position: 'absolute',
               right: 18,
@@ -252,12 +262,13 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick }) => {
               flexDirection: 'row',
               gap: 4,
             }}
+            onPress={() => setEditPost(true)}
           >
             <AddressEditIcon width={20} height={20} />
             <View>
               <EditText>Edit</EditText>
             </View>
-          </View>
+          </TouchableOpacity>
         </LinearGradient>
       )}
     />
@@ -315,7 +326,7 @@ const LikeText = styled.Text`
 `
 
 const EditText = styled.Text`
-  font-size: 17px;
+  font-size: 16px;
   font-family: ${FONT_FAMILY.GilroySemiBold};
   color: ${COLORS.textSecondaryClr};
 `

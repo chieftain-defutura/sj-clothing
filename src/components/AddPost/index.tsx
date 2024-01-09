@@ -146,8 +146,7 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
   const [product, setProduct] = useState(editData?.product ? editData.product : '')
   const [caption, setCaption] = useState(editData?.caption ? editData.caption : '')
 
-  console.log(editData?.sizes)
-  console.log(isSize)
+  console.log(editData)
 
   const shake = () => {
     Animated.sequence([
@@ -273,6 +272,8 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
         isColorName: isColorName,
         isImageOrText: isImageOrText,
         tempIsImageOrText: tempIsImageOrText,
+        caption: caption,
+        product: product,
         uid: uid,
       }
       AsyncStorage.setItem('post-steps', JSON.stringify(data))
@@ -288,6 +289,8 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
         isColorName: isColorName,
         isImageOrText: isImageOrText,
         tempIsImageOrText: tempIsImageOrText,
+        caption: caption,
+        product: product,
         uid: uid,
       }
       updatePostData(data)

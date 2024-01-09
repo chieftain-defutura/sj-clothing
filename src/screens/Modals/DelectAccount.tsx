@@ -115,7 +115,7 @@ const DelectAccount: React.FC<IDelectAccount> = ({ closeModal, errorMessage }) =
               text={loading ? 'Deleting...' : 'Yes'}
               disabled={isSendVerifyMail || loading}
               onPress={handleDelete}
-              // style={{ width: 100 }}
+              style={{ width: '50%' }}
             />
           </View>
         </View>
@@ -130,7 +130,6 @@ const StyledView = styled.View`
   justify-content: center;
   flex-direction: row;
   align-items: center;
-  width: 70px;
 `
 
 export default DelectAccount
@@ -163,6 +162,8 @@ const styles = StyleSheet.create({
   btnText: {
     fontSize: 14,
     color: '#462d85',
+    textAlign: 'center',
+    width: 100,
   },
   description: {
     fontSize: 15,

@@ -208,6 +208,9 @@ export interface IPostData {
     rate: number
     title: string
   }
+  product: string
+  caption: string
+  colorName: string
   userId: string
 }
 
