@@ -22,7 +22,7 @@ import { userStore } from '../../store/userStore'
 import LoginModal from '../../screens/Modals/Login'
 import SignupModal from '../../screens/Modals/Signup'
 import ForgotMail from '../../screens/Modals/ForgotMail'
-import { IDesigns, IMidlevel } from '../../constant/types'
+import { IDesigns, IMidlevel, IUserPost } from '../../constant/types'
 import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 import AlertModal from '../../screens/Modals/AlertModal'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -41,17 +41,23 @@ import { PostStore } from '../../store/postCreationStore'
 import UploadDesign from './UploadDesign'
 
 const { width } = Dimensions.get('window')
-
-const AddPost = () => {
+interface IAddPost {
+  editData?: IUserPost
+  setOpenPost?: React.Dispatch<React.SetStateAction<boolean>>
+  openPost?: boolean
+}
+const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
   const isMounted = useRef(false)
   const slideValue = useSharedValue(0)
+  const user = userStore((state) => state.user)
   const avatar = userStore((state) => state.avatar)
-  const phoneNumber = userStore((state) => state.phoneNo)
   const PostData = PostStore((state) => state.post)
+  const phoneNumber = userStore((state) => state.phoneNo)
   const updatePostData = PostStore((state) => state.updatepost)
 
-  const user = userStore((state) => state.user)
-  const [isSteps, setSteps] = useState(PostData.isSteps === '5' ? Number(PostData.isSteps) - 1 : 1)
+  const [isSteps, setSteps] = useState(
+    editData?.id ? 1 : PostData.isSteps === '5' ? Number(PostData.isSteps) - 1 : 1,
+  )
   const [isDropDown, setDropDown] = useState(false)
   const [uid, setUid] = useState<string>(PostData.isSteps === '5' ? PostData.uid : '')
   const [focus, setFocus] = useState(false)
@@ -70,7 +76,7 @@ const AddPost = () => {
 
   //style
   const [isSelectedStyle, setSelectedStyle] = useState(
-    PostData.isSteps === '5' ? PostData.isSelectedStyle : '',
+    editData?.style ? editData.style : PostData.isSteps === '5' ? PostData.isSelectedStyle : '',
   )
   const [warning, setWarning] = useState('')
 
@@ -85,8 +91,12 @@ const AddPost = () => {
   )
 
   //color
-  const [isColor, setColor] = useState(PostData.isSteps === '5' ? PostData.isColor : '')
-  const [isColorName, setColorName] = useState(PostData.isSteps === '5' ? PostData.isColorName : '')
+  const [isColor, setColor] = useState(
+    editData?.color ? editData.color : PostData.isSteps === '5' ? PostData.isColor : '',
+  )
+  const [isColorName, setColorName] = useState(
+    editData?.colorName ? editData.colorName : PostData.isSteps === '5' ? PostData.isColorName : '',
+  )
 
   //image&text
   const [isOpenDesign, setOpenDesign] = useState(false)
@@ -107,16 +117,20 @@ const AddPost = () => {
           },
         },
   )
-  const [tempIsImageOrText, setTempImageOrText] = useState({
-    title: '',
-    position: 'Front',
-    rate: 0,
-    designs: {
-      hashtag: '',
-      image: '',
-      originalImage: '',
-    },
-  })
+  const [tempIsImageOrText, setTempImageOrText] = useState(
+    editData?.textAndImage
+      ? editData.textAndImage
+      : {
+          title: '',
+          position: 'Front',
+          rate: 0,
+          designs: {
+            hashtag: '',
+            image: '',
+            originalImage: '',
+          },
+        },
+  )
   const [openCheckout, setOpenCheckout] = useState(false)
   const [animationUpdated, setAnimationUpdated] = useState(false)
   const [colorAnimationUpdated, setColorAnimationUpdated] = useState(false)
@@ -128,9 +142,9 @@ const AddPost = () => {
 
   //FinalProduct
 
-  const [isGiftVideo, setGiftVideo] = useState<any>(null)
-  const [product, setProduct] = useState('')
-  const [caption, setCaption] = useState('')
+  const [isGiftVideo, setGiftVideo] = useState<any>(editData?.giftVideo ? editData.giftVideo : null)
+  const [product, setProduct] = useState(editData?.product ? editData.product : '')
+  const [caption, setCaption] = useState(editData?.caption ? editData.caption : '')
 
   const shake = () => {
     Animated.sequence([
@@ -480,6 +494,8 @@ const AddPost = () => {
               animationUpdated={animationUpdated}
               colorAnimationUpdate={colorAnimationUpdated}
               shake={shake}
+              openPost={openPost as boolean}
+              setOpenPost={setOpenPost as React.Dispatch<React.SetStateAction<boolean>>}
               shakeAnimation={shakeAnimation}
             />
 
@@ -582,7 +598,7 @@ const AddPost = () => {
                 color={isColor}
                 colorName={isColorName}
                 data={FilteredData}
-                isImageOrText={isImageOrText}
+                isImageOrText={tempIsImageOrText}
                 isSize={isSize}
                 style={isSelectedStyle}
               />

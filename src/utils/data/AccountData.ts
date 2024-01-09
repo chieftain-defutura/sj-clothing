@@ -56,6 +56,11 @@ export const AccountData = [
     rightText: '0 items',
     navigation: 'MyOrders',
   },
+  {
+    leftIcon: ShoppingBag,
+    name: 'User Post',
+    navigation: 'UserPost',
+  },
   // {
   //   leftIcon: HomeLocation,
   //   name: 'Addressbook',

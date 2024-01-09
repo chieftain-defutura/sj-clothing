@@ -29,6 +29,7 @@ import Locations from '../../../components/Location'
 import { generalStore } from '../../../store/generalStore'
 import AddPost from '../../../components/AddPost'
 import InstaLike from '../../../components/InstaLike'
+import UserPost from './UserPost/UserPost'
 
 const Stack = createStackNavigator()
 
@@ -75,6 +76,12 @@ const StackNavigationRoutes: React.FC = () => {
       <Stack.Screen
         name='Cart'
         component={CartPage}
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
+      />
+
+      <Stack.Screen
+        name='UserPost'
+        component={UserPost}
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
       />
 

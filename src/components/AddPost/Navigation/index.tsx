@@ -47,11 +47,12 @@ interface INavigation {
   }
   colorAnimationUpdate: boolean
   isColor: string
+  openPost: boolean
   shakeAnimation: any
   handleIncreaseSteps: () => void
   handleDecreaseSteps: () => void
   shake: () => void
-
+  setOpenPost: React.Dispatch<React.SetStateAction<boolean>>
   setDone: React.Dispatch<React.SetStateAction<boolean>>
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDesign: React.Dispatch<React.SetStateAction<boolean>>
@@ -92,6 +93,8 @@ const Navigation: React.FC<INavigation> = ({
   setImageOrText,
   setDone,
   setImageApplied,
+  openPost,
+  setOpenPost,
 }) => {
   const { t } = useTranslation('midlevel')
   const [isPressed, setIsPressed] = useState(false)
@@ -269,11 +272,12 @@ const Navigation: React.FC<INavigation> = ({
           ]}
         >
           <TouchableHighlight
-            onPress={() => steps !== 1 && handleDecreaseSteps()}
+            onPress={() => (openPost && steps === 1 ? setOpenPost(false) : handleDecreaseSteps())}
             activeOpacity={0.6}
             underlayColor='rgba(70, 45, 133, 0.2)'
+            disabled={!openPost && steps === 1}
             style={{
-              opacity: steps === 1 ? 0 : 1,
+              opacity: openPost ? 1 : steps === 1 ? 0 : 1,
               borderRadius: 20,
               padding: 6,
             }}

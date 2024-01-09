@@ -56,6 +56,8 @@ const FinalProduct: React.FC<IFinalProduct> = ({
   const rate = userStore((state) => state.rate)
   const [toolTip, showToolTip] = useState(false)
   const Description = data.description.split(',')
+
+  console.log(isImageOrText)
   return (
     <ScrollView style={styles.selectContainer}>
       <View style={styles.selectColorTShirt}>
