@@ -2,7 +2,7 @@ import { useFonts } from 'expo-font'
 import Constants from 'expo-constants'
 import * as Linking from 'expo-linking'
 import { StatusBar } from 'expo-status-bar'
-import { Platform, SafeAreaView, Text, View, Dimensions, Image } from 'react-native'
+import { Platform, SafeAreaView, View, Dimensions } from 'react-native'
 import { I18nextProvider } from 'react-i18next'
 import * as Device from 'expo-device'
 import * as SplashScreen from 'expo-splash-screen'
@@ -281,6 +281,8 @@ const App: React.FC = () => {
         isSteps: parseData.isSteps,
         tempIsImageOrText: parseData.tempIsImageOrText,
         uid: parseData.uid,
+        caption: parseData.caption,
+        product: parseData.product,
       })
     }
   }, [])

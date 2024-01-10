@@ -100,7 +100,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
 
       if (!user) return
 
-      const userDocRef = doc(db, 'Post', user.uid)
+      const userDocRef = doc(db, 'Post', item.id)
       const userDoc = await getDoc(userDocRef)
       const userData = userDoc.data()
 

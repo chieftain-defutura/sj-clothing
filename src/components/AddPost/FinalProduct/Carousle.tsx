@@ -61,18 +61,19 @@ const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo, isImageOrTex
           source={require('../../../assets/images/plain-shirt.png')}
           alt='carousle-img'
           resizeMode='contain'
+          style={{ width: width / 1.5 }}
         />
       </View>
       <View style={styles.slide2}>
         {isImageOrText.designs.image ? (
           <Image
-            style={{ objectFit: 'contain', width: width / 3, height: height / 3 }}
+            style={{ objectFit: 'contain', width: width / 1 }}
             source={{ uri: isImageOrText.designs.image }}
             alt='carousle-img'
           />
         ) : (
           <Image
-            style={{ objectFit: 'contain', width: width / 1, height: height / 1 }}
+            style={{ objectFit: 'contain', width: width / 1 }}
             source={require('../../../assets/images/monkey-nft.png')}
             alt='carousle-img'
           />
@@ -83,22 +84,22 @@ const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo, isImageOrTex
           <View>
             <Video
               source={{ uri: isGiftVideo }}
-              style={{ width: width / 1.1, height: height / 1.2 }}
               shouldPlay
+              style={{ width: width / 1.1, height: height / 2.5 }}
               isLooping
               resizeMode={ResizeMode.COVER}
-              useNativeControls
+              useNativeControls={false}
             />
           </View>
         ) : (
-          <View>
-            <UndrawGiftBox width={248} height={200} />
+          <View style={{ marginTop: -35 }}>
+            <UndrawGiftBox />
             <View style={{ paddingVertical: 16 }}>
               <Text
                 allowFontScaling={false}
                 style={{
                   textAlign: 'center',
-                  fontSize: 24,
+                  fontSize: 22,
                   fontFamily: 'Arvo-Regular',
                   color: COLORS.textClr,
                 }}
@@ -109,7 +110,7 @@ const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo, isImageOrTex
                 allowFontScaling={false}
                 style={{
                   textAlign: 'center',
-                  fontSize: 24,
+                  fontSize: 22,
                   fontFamily: 'Arvo-Regular',
                   color: COLORS.textSecondaryClr,
                 }}
@@ -120,7 +121,7 @@ const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo, isImageOrTex
                 allowFontScaling={false}
                 style={{
                   textAlign: 'center',
-                  fontSize: 24,
+                  fontSize: 22,
                   fontFamily: 'Arvo-Regular',
                   color: COLORS.textClr,
                 }}
@@ -154,6 +155,7 @@ const styles = StyleSheet.create({
   wrapper: {
     height: height / 2,
   },
+
   slide1: {
     flex: 1,
     justifyContent: 'center',
@@ -179,7 +181,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 50,
     width: 250,
-    paddingVertical: 12,
+    paddingVertical: 8,
     opacity: 0.4,
+    fontSize: 12,
+    marginTop: -10,
   },
 })
