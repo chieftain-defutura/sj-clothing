@@ -126,7 +126,7 @@ const GenderModel = ({
   )
 }
 
-const Gender: React.FC<IGender> = ({}) => {
+const Gender: React.FC = () => {
   const { t } = useTranslation('avatar')
 
   return (

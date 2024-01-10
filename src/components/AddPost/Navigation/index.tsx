@@ -322,7 +322,7 @@ const Navigation: React.FC<INavigation> = ({
                 >
                   {steps === 1 && `${t(isSelectedStyle ? isSelectedStyle : 'Select Style')}`}
 
-                  {steps === 2 && `${t(country ? country : 'Select Country')}`}
+                  {steps === 2 && `${t(country ? country : 'Select Continent')}`}
                   {steps === 3 &&
                     `${t(
                       sizeVarient.size

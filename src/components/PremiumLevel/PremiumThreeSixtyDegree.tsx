@@ -130,7 +130,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
 
   const handleLayout = () => {
     if (elementRef.current) {
-      elementRef.current.measure((x, y, width, height, pageX, pageY) => {
+      elementRef.current.measure((height, pageY) => {
         setPageY(pageY)
         setElementHeight(height)
       })
@@ -186,8 +186,6 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
           </FlexContent>
           <View
             style={{
-              // width: width,
-              // height: height / 1.6,
               backgroundColor: 'transparent',
               marginTop: 18,
               position: 'relative',

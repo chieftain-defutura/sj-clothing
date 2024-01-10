@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
-import { ActivityIndicator, Dimensions, StyleSheet, View, Text } from 'react-native'
+import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native'
 import uuid from 'react-native-uuid'
 import { doc, setDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
-import TextAnimation from '../Navigation/TextAnimation'
+import Loader from '../../Loading'
 
 const { height, width } = Dimensions.get('window')
 
@@ -109,7 +109,11 @@ const FlowOne: React.FC<IFlowOneProps> = ({
         />
       )}
 
-      <View
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+        {!animationUpdated && !webviewLoading && <Loader />}
+      </View>
+
+      {/* <View
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -124,7 +128,7 @@ const FlowOne: React.FC<IFlowOneProps> = ({
             </TextAnimation>
           )}
         </View>
-      </View>
+      </View> */}
     </View>
   )
 }

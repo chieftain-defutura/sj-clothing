@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Image, Pressable, Dimensions } from 'react-native'
 import React, { useEffect } from 'react'
 import Slick from 'react-native-slick'
 import * as ImagePicker from 'expo-image-picker'
@@ -20,6 +20,8 @@ interface ICarousle {
   }
   productImage: string
 }
+
+const { height, width } = Dimensions.get('window')
 
 const Carousle: React.FC<ICarousle> = ({
   isGiftVideo,
@@ -80,7 +82,7 @@ const Carousle: React.FC<ICarousle> = ({
           />
         ) : (
           <Image
-            style={{ objectFit: 'cover', width: 400, height: 400 }}
+            style={{ objectFit: 'contain', width: width / 1 }}
             source={require('../../../assets/images/monkey-nft.png')}
             alt='carousle-img'
           />
@@ -91,22 +93,22 @@ const Carousle: React.FC<ICarousle> = ({
           <View>
             <Video
               source={{ uri: isGiftVideo }}
-              style={{ width: 400, height: 400 }}
               shouldPlay
+              style={{ width: width / 1.1, height: height / 2.5 }}
               isLooping
               resizeMode={ResizeMode.COVER}
-              useNativeControls
+              useNativeControls={false}
             />
           </View>
         ) : (
-          <View>
-            <UndrawGiftBox width={248} height={200} />
+          <View style={{ marginTop: -35 }}>
+            <UndrawGiftBox />
             <View style={{ paddingVertical: 16 }}>
               <Text
                 allowFontScaling={false}
                 style={{
                   textAlign: 'center',
-                  fontSize: 24,
+                  fontSize: 22,
                   fontFamily: 'Arvo-Regular',
                   color: COLORS.textClr,
                 }}
@@ -117,7 +119,7 @@ const Carousle: React.FC<ICarousle> = ({
                 allowFontScaling={false}
                 style={{
                   textAlign: 'center',
-                  fontSize: 24,
+                  fontSize: 22,
                   fontFamily: 'Arvo-Regular',
                   color: COLORS.textSecondaryClr,
                 }}
@@ -128,7 +130,7 @@ const Carousle: React.FC<ICarousle> = ({
                 allowFontScaling={false}
                 style={{
                   textAlign: 'center',
-                  fontSize: 24,
+                  fontSize: 22,
                   fontFamily: 'Arvo-Regular',
                   color: COLORS.textClr,
                 }}
@@ -160,8 +162,9 @@ export default Carousle
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: 500,
+    height: height / 2,
   },
+
   slide1: {
     flex: 1,
     justifyContent: 'center',
@@ -187,7 +190,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 50,
     width: 250,
-    paddingVertical: 12,
+    paddingVertical: 8,
     opacity: 0.4,
+    fontSize: 12,
+    marginTop: -10,
   },
 })

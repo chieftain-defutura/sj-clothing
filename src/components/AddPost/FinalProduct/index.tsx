@@ -4,7 +4,7 @@ import { Svg, Circle } from 'react-native-svg'
 import Carousle from './Carousle'
 import CustomButton from '../../Button'
 import { ScrollView, StyleSheet, Text, Dimensions, View } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import { userStore } from '../../../store/userStore'
 import { useTranslation } from 'react-i18next'
 import { IMidlevel } from '../../../constant/types'
@@ -54,7 +54,6 @@ const FinalProduct: React.FC<IFinalProduct> = ({
   const avatar = userStore((state) => state.avatar)
   const currency = userStore((state) => state.currency)
   const rate = userStore((state) => state.rate)
-  const [toolTip, showToolTip] = useState(false)
   const Description = data.description.split(',')
 
   return (
@@ -68,22 +67,26 @@ const FinalProduct: React.FC<IFinalProduct> = ({
         />
       </View>
 
-      <View style={{ paddingHorizontal: 15 }}>
-        <CustomButton
-          variant='primary'
-          text={`${t('Post')}`}
-          fontFamily='Arvo-Regular'
-          fontSize={16}
-          onPress={() => handleSubmit()}
-          buttonStyle={[styles.submitBtn]}
-        />
+      <CustomButton
+        variant='primary'
+        text={`${t('Post')}`}
+        fontFamily='Arvo-Regular'
+        fontSize={16}
+        onPress={() => handleSubmit()}
+        buttonStyle={[styles.submitBtn]}
+      />
 
+      <ScrollView
+        style={{ paddingHorizontal: 8, height: height / 4.9 }}
+        showsVerticalScrollIndicator={false}
+      >
         <View
           style={{
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
             gap: 37,
+            marginTop: -8,
           }}
         >
           <View
@@ -264,7 +267,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
               display: 'flex',
               flexDirection: 'column',
               width: width / 4,
-              paddingTop: 16,
+              paddingTop: 8,
             }}
           >
             <Text
@@ -295,7 +298,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
               display: 'flex',
               flexDirection: 'column',
               width: width / 4,
-              paddingTop: 16,
+              paddingTop: 8,
             }}
           >
             <Text
@@ -334,12 +337,12 @@ const FinalProduct: React.FC<IFinalProduct> = ({
             </View>
           </View>
         </View>
-        <View>
+        <View style={{ marginTop: 12, paddingBottom: 10 }}>
           <DetailsHeading allowFontScaling={false}>Detailed features</DetailsHeading>
           {Description.map((f, index) => (
             <View
               key={index}
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}
             >
               <Svg width={8} height={8}>
                 <Circle cx={3} cy={3} r={3} fill='rgba(70, 45, 133, 0.6)' />
@@ -350,7 +353,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
             </View>
           ))}
         </View>
-      </View>
+      </ScrollView>
     </ScrollView>
   )
 }
@@ -387,14 +390,15 @@ const ProductText = styled.Text`
   font-size: 13px;
   font-family: ${FONT_FAMILY.MontserratRegular};
   color: ${COLORS.SecondaryTwo};
-  margin-bottom: 4px;
+  margin-top: 8px;
 `
 export default FinalProduct
 
 const styles = StyleSheet.create({
   selectContainer: {
     padding: 16,
-    height: height,
+    height: height / 1,
+    marginTop: -30,
   },
   selectNavigator: {
     display: 'flex',
@@ -417,7 +421,7 @@ const styles = StyleSheet.create({
   submitBtn: {
     marginVertical: 8,
     fontFamily: 'Arvo-Regular',
-    marginBottom: 54,
+    marginTop: -8,
   },
   colorNameText: {
     fontFamily: FONT_FAMILY.GilroySemiBold,

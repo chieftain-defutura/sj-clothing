@@ -7,7 +7,6 @@ import { addDoc, collection, doc, updateDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import LeftArrow from '../../../assets/icons/LeftArrow'
-import { ErrorMessage } from 'formik'
 import { useNavigation } from '@react-navigation/native'
 
 interface IProductAndCaption {
@@ -241,16 +240,4 @@ const ErrorText = styled.Text`
   text-align: center;
   font-size: 12px;
   color: ${COLORS.errorClr};
-`
-const ImageContent = styled.View`
-  padding: 16px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-`
-const TShirtImg = styled.Image`
-  width: 250px;
-  height: 300px;
-  flex-shrink: 0;
-  margin-vertical: 30px;
-  margin-horizontal: 14px;
 `

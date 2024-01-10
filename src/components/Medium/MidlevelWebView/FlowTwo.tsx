@@ -9,11 +9,9 @@ import {
   where as defaultWhere,
   onSnapshot,
 } from 'firebase/firestore'
-
 import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { IDesigns } from '../../../constant/types'
-import TextAnimation from '../Navigation/TextAnimation'
 import Loader from '../../Loading'
 
 const { height, width } = Dimensions.get('window')

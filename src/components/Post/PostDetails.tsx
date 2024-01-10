@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Share, TouchableHighlight, View } from 'react-native'
+import { Share, TouchableHighlight, View, Dimensions } from 'react-native'
 import styled from 'styled-components/native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'

@@ -14,6 +14,7 @@ import { db, dbDefault } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import { IDesigns } from '../../../constant/types'
 import TextAnimation from '../Navigation/TextAnimation'
+import Loader from '../../Loading'
 
 const { height, width } = Dimensions.get('window')
 
@@ -140,7 +141,7 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({
     <View
       style={{
         width: width / 1,
-        height: height / 1,
+        height: height / 1.1,
         flex: 5,
         backgroundColor: 'transparent',
         position: 'relative',
@@ -170,13 +171,24 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({
           }}
         />
       )}
-      <View>
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        }}
+      >
+        {!animationUpdated && !webviewLoading && <Loader />}
+      </View>
+      {/* <View>
         {!animationUpdated && (
           <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
             Please wait till avatar load
           </TextAnimation>
         )}
-      </View>
+      </View> */}
     </View>
   )
 }

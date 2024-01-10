@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Animated, StyleSheet } from 'react-native'
+import { Text, Animated, StyleSheet } from 'react-native'
 
 interface IFloatingEmoji {
   emoji: any
