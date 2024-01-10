@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
-import { Pressable, Share, TouchableHighlight, View } from 'react-native'
+import React from 'react'
+import { Share, TouchableHighlight, View } from 'react-native'
 import styled from 'styled-components/native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
-import { LinearGradient } from 'expo-linear-gradient'
-import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../styles/theme'
+import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import LeftArrow from '../../assets/icons/LeftArrow'
 import ShareArrow from '../../assets/icons/ShareArrow'
 import CustomButton from '../Button'
-import { IPostData, IUserPost } from '../../constant/types'
+import { IUserPost } from '../../constant/types'
 
 interface IPostDetails {
   selectedPost: IUserPost

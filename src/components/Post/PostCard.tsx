@@ -19,9 +19,9 @@ import Animated, {
 } from 'react-native-reanimated'
 import { TapGestureHandler } from 'react-native-gesture-handler'
 import { LinearGradient } from 'expo-linear-gradient'
-import { getDocs, collection } from 'firebase/firestore/lite'
+import { getDocs, collection, updateDoc, doc, getDoc } from 'firebase/firestore/lite'
 import { COLORS, FONT_FAMILY, gradientColors } from '../../styles/theme'
-import { IPostData } from '../../constant/types'
+import { IUserPost } from '../../constant/types'
 import { db } from '../../../firebase'
 import IsLikeIcon from '../../assets/icons/PostPageIcon/isLikeIcon'
 import Like from '../../assets/icons/like'
@@ -30,11 +30,12 @@ import Fire from '../../assets/icons/fire'
 import IsHeartIcon from '../../assets/icons/PostPageIcon/isHeartIcon'
 import Heart from '../../assets/icons/heart'
 import AddressEditIcon from '../../assets/icons/AddressIcon/AddressEditIcon'
+import { userStore } from '../../store/userStore'
 
 const { height, width } = Dimensions.get('window')
 
 interface IPost {
-  item: IPostData
+  item: IUserPost
   handlePostClick: (postId: string) => void
   setEditPost: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -44,15 +45,17 @@ const AnimatedImage = Animated.createAnimatedComponent(Image)
 const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<IPostData[]>()
+  const [data, setData] = useState<IUserPost[]>()
   const [activeIcon, setActiveIcon] = useState<string | null>(null)
   const [isLiked, setIsLiked] = useState(false)
   const [isFireActive, setIsFireActive] = useState(false)
   const [isHeartActive, setIsHeartActive] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
+  const user = userStore((state) => state.user)
   const scale = useSharedValue(0)
   const opacity = useSharedValue(1)
   const doubleTapRef = useRef()
+  console.log('data', data)
 
   const getData = useCallback(async () => {
     try {
@@ -83,16 +86,73 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
     setIsPressed(false)
   }
 
-  const handleIconPress = (iconName: string) => {
+  const handleIconPress = async (iconName: string) => {
     setActiveIcon(iconName)
-    if (iconName === 'like') {
-      setIsLiked((prevIsLiked) => !prevIsLiked)
-    } else if (iconName === 'fire') {
-      setIsFireActive((prev) => !prev)
-    } else if (iconName === 'heart') {
-      setIsHeartActive((prev) => !prev)
+
+    try {
+      if (iconName === 'like') {
+        setIsLiked((prevIsLiked) => !prevIsLiked)
+      } else if (iconName === 'fire') {
+        setIsFireActive((prev) => !prev)
+      } else if (iconName === 'heart') {
+        setIsHeartActive((prev) => !prev)
+      }
+
+      if (!user) return
+
+      const userDocRef = doc(db, 'Post', user.uid)
+      const userDoc = await getDoc(userDocRef)
+      const userData = userDoc.data()
+
+      if (!userData) return
+
+      const updatedPostComment = [...userData.postComment]
+      const userCommentIndex = updatedPostComment.findIndex(
+        (comment) => comment.userId === user.uid,
+      )
+
+      const newComment = {
+        userId: user.uid,
+        icons: iconName,
+      }
+
+      console.log('newComment', newComment)
+
+      if (userCommentIndex === -1) {
+        updatedPostComment.push(newComment)
+      } else {
+        updatedPostComment[userCommentIndex] = newComment
+      }
+
+      await updateDoc(userDocRef, {
+        ...userData,
+        postComment: updatedPostComment,
+      })
+    } catch (error) {
+      console.error('Error:', error)
     }
   }
+
+  // const handleIconPress = async (iconName: string) => {
+  //   setActiveIcon(iconName)
+
+  //   if (!user) return
+  //   const userDocRef = doc(db, 'Post', user.uid)
+  //   const userDoc = await getDoc(userDocRef)
+  //   const userData = userDoc.data()
+
+  //   if (!userData) return
+
+  //   console.log('userData', userData)
+
+  //   if (iconName === 'like') {
+  //     setIsLiked((prevIsLiked) => !prevIsLiked)
+  //   } else if (iconName === 'fire') {
+  //     setIsFireActive((prev) => !prev)
+  //   } else if (iconName === 'heart') {
+  //     setIsHeartActive((prev) => !prev)
+  //   }
+  // }
 
   const rStyle = useAnimatedStyle(() => ({
     transform: [{ scale: Math.max(scale.value, 0) }],
