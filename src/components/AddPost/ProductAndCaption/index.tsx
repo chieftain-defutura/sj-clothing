@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 import { StyleSheet, View } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import CustomButton from '../../Button'
-import { addDoc, collection } from 'firebase/firestore/lite'
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import LeftArrow from '../../../assets/icons/LeftArrow'
@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native'
 interface IProductAndCaption {
   setProduct: React.Dispatch<React.SetStateAction<string>>
   setCaption: React.Dispatch<React.SetStateAction<string>>
+  editId?: string
   id?: string
   style?: string
   color?: string
@@ -62,6 +63,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
   textAndImage,
   caption,
   product,
+  editId,
   isGiftVideo,
   setOpenCheckout,
 }) => {
@@ -91,24 +93,37 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
         return setErrorMessage('Please fill product')
       }
       if (caption && product) {
-        await addDoc(collection(db, 'Post'), {
-          sizes: size ? size : '',
-          style: style ? style : '',
-          color: color ? color : '',
-          textAndImage: textAndImage ? textAndImage : '',
-          productImage: productImage,
-          description: description,
-          price: price,
-          offerPrice: offerPrice,
-          productId: id,
-          userId: user?.uid,
-          gender: gender,
-          productName: productName,
-          giftVideo: isGiftVideo,
-          product: product,
-          caption: caption,
-          postComment: [],
-        })
+        if (editId) {
+          await updateDoc(doc(db, 'Post', editId), {
+            sizes: size ? size : '',
+            style: style ? style : '',
+            color: color ? color : '',
+            textAndImage: textAndImage ? textAndImage : '',
+            giftVideo: isGiftVideo,
+            product: product,
+            caption: caption,
+          })
+        }
+        if (!editId) {
+          await addDoc(collection(db, 'Post'), {
+            sizes: size ? size : '',
+            style: style ? style : '',
+            color: color ? color : '',
+            textAndImage: textAndImage ? textAndImage : '',
+            productImage: productImage,
+            description: description,
+            price: price,
+            offerPrice: offerPrice,
+            productId: id,
+            userId: user?.uid,
+            gender: gender,
+            productName: productName,
+            giftVideo: isGiftVideo,
+            product: product,
+            caption: caption,
+            postComment: [],
+          })
+        }
         setOpenCheckout(false)
         navigation.navigate('Stack')
       }
@@ -125,12 +140,13 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
       <SignUpContainer>
         <GoBackArrowContent onPress={() => setOpenCheckout(false)}>
           <LeftArrow width={24} height={24} />
-          <CartText allowFontScaling={false}>Gift options</CartText>
+          <CartText allowFontScaling={false}>Create Post</CartText>
         </GoBackArrowContent>
         <View>
           <LabelText allowFontScaling={false}>Product name</LabelText>
           <InputStyle
             placeholder='Product Name'
+            value={product}
             onChangeText={(text) => setProduct(text)}
             placeholderTextColor={COLORS.SecondaryTwo}
           />
@@ -139,17 +155,18 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
           <LabelText allowFontScaling={false}>Caption</LabelText>
           <InputStyle
             placeholder='Caption'
+            value={caption}
             onChangeText={(text) => setCaption(text)}
             placeholderTextColor={COLORS.SecondaryTwo}
           />
         </View>
       </SignUpContainer>
-      <View>
+      <View style={{ flex: 1 }}>
         {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
 
         <CustomButton
           variant='primary'
-          text={loading ? 'Poasting...' : 'Post'}
+          text={loading ? 'Posting...' : 'Post'}
           fontFamily='Arvo-Regular'
           fontSize={16}
           onPress={() => handleSubmit()}
@@ -174,6 +191,10 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     fontFamily: 'Arvo-Regular',
     marginBottom: 54,
+    position: 'absolute',
+    bottom: -400,
+    left: 0,
+    right: 0,
     marginHorizontal: 10,
   },
 })

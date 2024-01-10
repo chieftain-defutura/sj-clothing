@@ -312,7 +312,7 @@ const Checkout: React.FC<ICheckout> = ({
         return Alert.alert(presentSheet.error.message)
       }
       {
-        style &&
+        type === 'midlevel' &&
           updateMidlevel({
             isSteps: '',
             isSelectedStyle: '',
@@ -544,7 +544,7 @@ const Checkout: React.FC<ICheckout> = ({
             fontSize={16}
             style={{
               position: 'absolute',
-              bottom: 0,
+              bottom: type === 'Post' ? 200 : 0,
               left: 0,
               right: 0,
               width: '100%',

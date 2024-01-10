@@ -134,7 +134,12 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
               styles.iosContainer,
             ]}
           >
-            <PostCard item={item} handlePostClick={handlePostClick} setEditPost={setEditPost} />
+            <PostCard
+              item={item}
+              handlePostClick={handlePostClick}
+              setEditPost={setEditPost}
+              setPostId={setPostId}
+            />
 
             {/* <SliderCountContent>
                 <SliderNumber> 
@@ -163,7 +168,7 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
           </View>
         )}
       />
-      {/* <TouchableOpacity
+      <TouchableOpacity
         style={[
           {
             display: 'flex',
@@ -190,7 +195,7 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
         >
           <HomePlusIcon width={20} height={20} />
         </LinearGradient>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       <SubscriptionModal
         isVisible={isSubscriptionModal}
         onClose={closeSubscriptionModal}

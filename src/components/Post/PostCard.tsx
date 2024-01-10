@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef } from 'react'
+import React, { useEffect, useCallback, useRef, SetStateAction } from 'react'
 import {
   Image,
   Dimensions,
@@ -37,25 +37,36 @@ const { height, width } = Dimensions.get('window')
 interface IPost {
   item: IUserPost
   handlePostClick: (postId: string) => void
+  setPostId: React.Dispatch<SetStateAction<string>>
   setEditPost: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+interface IPostComment {
+  userId: string
+  icons: string
 }
 
 const AnimatedImage = Animated.createAnimatedComponent(Image)
 
-const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
+const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPostId }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<IUserPost[]>()
+  const [data, setData] = useState<IUserPost[]>([])
+  const [postComment, setPostComment] = useState<IPostComment[]>([])
   const [activeIcon, setActiveIcon] = useState<string | null>(null)
   const [isLiked, setIsLiked] = useState(false)
   const [isFireActive, setIsFireActive] = useState(false)
   const [isHeartActive, setIsHeartActive] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
+  const user = userStore((state) => state.user)
   const scale = useSharedValue(0)
   const opacity = useSharedValue(1)
   const doubleTapRef = useRef()
-  const user = userStore((state) => state.user)
+  // const heartLength = postComment?.map((f) => f.icons === 'heart')
+  // const fireLength = postComment?.map((f) => f.icons === 'fire')
+  // const likeLength = postComment?.map((f) => f.icons === 'like')
 
+  console.log(postComment)
   const getData = useCallback(async () => {
     try {
       setLoading(true)
@@ -65,6 +76,8 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
         ...(doc.data() as any),
       }))
       setData(fetchProduct)
+      const data = fetchProduct.flatMap((f) => f.postComment)
+      setPostComment(data)
     } catch (error) {
       console.log(error)
       setLoading(false)
@@ -99,13 +112,15 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
 
       if (!user) return
 
-      const userDocRef = doc(db, 'Post', user.uid)
+      const userDocRef = doc(db, 'Post', item.id)
       const userDoc = await getDoc(userDocRef)
       const userData = userDoc.data()
 
       if (!userData) return
 
-      const updatedPostComment = [...userData.postComment]
+      const updatedPostComment = Array.isArray(userData.postComment)
+        ? [...userData.postComment]
+        : []
       const userCommentIndex = updatedPostComment.findIndex(
         (comment) => comment.userId === user.uid,
       )
@@ -268,7 +283,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
                   <Like width={20} height={20} />
                 )}
               </ContentView>
-              <LikeText>1k</LikeText>
+              {/* <LikeText>{likeLength.length}</LikeText> */}
             </IconPressable>
 
             <IconPressable>
@@ -290,7 +305,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
                   <Fire width={20} height={20} />
                 )}
               </ContentView>
-              <LikeText>1.2k</LikeText>
+              {/* <LikeText>{fireLength.length}</LikeText> */}
             </IconPressable>
             <IconPressable>
               <ContentView
@@ -311,28 +326,50 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
                   <Heart width={20} height={20} />
                 )}
               </ContentView>
-              <LikeText>1.5k</LikeText>
+              {/* <LikeText>{heartLength.length}</LikeText> */}
             </IconPressable>
           </CardContent>
 
-          {item.userId === user?.uid && (
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                right: 18,
-                top: 18,
-                display: 'flex',
-                flexDirection: 'row',
-                gap: 4,
-              }}
-              onPress={() => setEditPost(true)}
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              right: 22,
+              top: 22,
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 4,
+            }}
+            onPress={() => (setEditPost(true), setPostId(item.id))}
+          >
+            <AddressEditIcon width={20} height={20} />
+            <View>
+              <EditText>Edit</EditText>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              handlePostClick(item.id)
+            }}
+            style={{
+              position: 'absolute',
+              right: 22,
+              bottom: 18,
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 4,
+            }}
+          >
+            <LinearGradient
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              colors={['#462D85', '#DB00FF']}
+              style={{ borderRadius: 30 }}
             >
-              <AddressEditIcon width={20} height={20} />
-              <View>
-                <EditText>Edit</EditText>
-              </View>
-            </TouchableOpacity>
-          )}
+              <ViewDetailsBtn>
+                <ViewDetailsText>View Details</ViewDetailsText>
+              </ViewDetailsBtn>
+            </LinearGradient>
+          </TouchableOpacity>
         </LinearGradient>
       )}
     />

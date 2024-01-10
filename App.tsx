@@ -281,6 +281,8 @@ const App: React.FC = () => {
         isSteps: parseData.isSteps,
         tempIsImageOrText: parseData.tempIsImageOrText,
         uid: parseData.uid,
+        caption: parseData.caption,
+        product: parseData.product,
       })
     }
   }, [])

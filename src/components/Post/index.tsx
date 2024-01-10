@@ -56,9 +56,14 @@ const PostComponent: React.FC<IPostComponent> = ({ navigation }) => {
     setSubscriptionModal(false)
   }
 
-  const FilteredData = data?.find((f) => f.id === postId)
-  console.log('FilteredData', FilteredData)
+  console.log('postId', postId)
 
+  const FilteredData = data?.find((f) => f.id === postId)
+
+  console.log(
+    'FilteredData?.color',
+    data?.map((f) => f.color),
+  )
   if (isLoading) {
     return (
       <View style={{ justifyContent: 'center', height: height }}>

@@ -57,7 +57,6 @@ const FinalProduct: React.FC<IFinalProduct> = ({
   const [toolTip, showToolTip] = useState(false)
   const Description = data.description.split(',')
 
-  console.log(isImageOrText)
   return (
     <ScrollView style={styles.selectContainer}>
       <View style={styles.selectColorTShirt}>
@@ -65,6 +64,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           isGiftVideo={isGiftVideo}
           setGiftVideo={setGiftVideo}
           isImageOrText={isImageOrText}
+          productImage={data.productImage}
         />
       </View>
 

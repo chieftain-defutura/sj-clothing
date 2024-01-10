@@ -58,7 +58,7 @@ export interface ICheckout {
     country: string
     sizeVarient: {
       size: string
-      measurement: string
+      measurement: string | number
       quantity: number | string
     }
   }
@@ -283,7 +283,7 @@ export interface IUserPost {
       measurement: number
       quantity: string
       size: string
-    }[]
+    }
   }
   style: string
   textAndImage: {
