@@ -3,10 +3,8 @@ import {
   Image,
   Dimensions,
   StyleSheet,
-  Pressable,
   ImageBackground,
   View,
-  Touchable,
   TouchableOpacity,
 } from 'react-native'
 import { useState } from 'react'
@@ -21,9 +19,9 @@ import Animated, {
 } from 'react-native-reanimated'
 import { TapGestureHandler } from 'react-native-gesture-handler'
 import { LinearGradient } from 'expo-linear-gradient'
-import { getDocs, collection } from 'firebase/firestore/lite'
+import { getDocs, collection, updateDoc, doc, getDoc } from 'firebase/firestore/lite'
 import { COLORS, FONT_FAMILY, gradientColors } from '../../styles/theme'
-import { IPostData } from '../../constant/types'
+import { IUserPost } from '../../constant/types'
 import { db } from '../../../firebase'
 import IsLikeIcon from '../../assets/icons/PostPageIcon/isLikeIcon'
 import Like from '../../assets/icons/like'
@@ -34,11 +32,10 @@ import Heart from '../../assets/icons/heart'
 import AddressEditIcon from '../../assets/icons/AddressIcon/AddressEditIcon'
 import { userStore } from '../../store/userStore'
 
-const { width: SIZE } = Dimensions.get('window')
 const { height, width } = Dimensions.get('window')
 
 interface IPost {
-  item: IPostData
+  item: IUserPost
   handlePostClick: (postId: string) => void
   setEditPost: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -48,7 +45,7 @@ const AnimatedImage = Animated.createAnimatedComponent(Image)
 const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<IPostData[]>()
+  const [data, setData] = useState<IUserPost[]>()
   const [activeIcon, setActiveIcon] = useState<string | null>(null)
   const [isLiked, setIsLiked] = useState(false)
   const [isFireActive, setIsFireActive] = useState(false)
@@ -88,23 +85,80 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
     setIsPressed(false)
   }
 
-  const handleIconPress = (iconName: string) => {
+  const handleIconPress = async (iconName: string) => {
     setActiveIcon(iconName)
-    if (iconName === 'like') {
-      setIsLiked((prevIsLiked) => !prevIsLiked)
-    } else if (iconName === 'fire') {
-      setIsFireActive((prev) => !prev)
-    } else if (iconName === 'heart') {
-      setIsHeartActive((prev) => !prev)
+
+    try {
+      if (iconName === 'like') {
+        setIsLiked((prevIsLiked) => !prevIsLiked)
+      } else if (iconName === 'fire') {
+        setIsFireActive((prev) => !prev)
+      } else if (iconName === 'heart') {
+        setIsHeartActive((prev) => !prev)
+      }
+
+      if (!user) return
+
+      const userDocRef = doc(db, 'Post', user.uid)
+      const userDoc = await getDoc(userDocRef)
+      const userData = userDoc.data()
+
+      if (!userData) return
+
+      const updatedPostComment = [...userData.postComment]
+      const userCommentIndex = updatedPostComment.findIndex(
+        (comment) => comment.userId === user.uid,
+      )
+
+      const newComment = {
+        userId: user.uid,
+        icons: iconName,
+      }
+
+      console.log('newComment', newComment)
+
+      if (userCommentIndex === -1) {
+        updatedPostComment.push(newComment)
+      } else {
+        updatedPostComment[userCommentIndex] = newComment
+      }
+
+      await updateDoc(userDocRef, {
+        ...userData,
+        postComment: updatedPostComment,
+      })
+    } catch (error) {
+      console.error('Error:', error)
     }
   }
+
+  // const handleIconPress = async (iconName: string) => {
+  //   setActiveIcon(iconName)
+
+  //   if (!user) return
+  //   const userDocRef = doc(db, 'Post', user.uid)
+  //   const userDoc = await getDoc(userDocRef)
+  //   const userData = userDoc.data()
+
+  //   if (!userData) return
+
+  //   console.log('userData', userData)
+
+  //   if (iconName === 'like') {
+  //     setIsLiked((prevIsLiked) => !prevIsLiked)
+  //   } else if (iconName === 'fire') {
+  //     setIsFireActive((prev) => !prev)
+  //   } else if (iconName === 'heart') {
+  //     setIsHeartActive((prev) => !prev)
+  //   }
+  // }
 
   const rStyle = useAnimatedStyle(() => ({
     transform: [{ scale: Math.max(scale.value, 0) }],
   }))
 
   const onDoubleTap = useCallback(() => {
-    handleIconPress('heart')
+    handleIconPress('fire')
 
     scale.value = withSpring(1, undefined, (isFinished) => {
       if (isFinished) {
@@ -150,14 +204,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
       onChangeIndex={({ index }) => setCurrentIndex(index)}
       showPagination={false}
       renderItem={({ item: imageUrl }) => (
-        <LinearGradient colors={gradientColors} style={{ borderRadius: 10 }}>
-          {/* <Pressable
-            style={styles.container}
-            onPress={() => {
-              console.log('Clicked on post with ID:', item.id)
-              handlePostClick(item.id)
-            }}
-          > */}
+        <LinearGradient colors={gradientColors}>
           <TapGestureHandler waitFor={doubleTapRef} onActivated={onSingleTap}>
             <TapGestureHandler
               maxDelayMs={250}
@@ -174,30 +221,39 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
                   }}
                   resizeMode='contain'
                 >
-                  <AnimatedImage
-                    source={require('../../assets/images/AccountImage/heart-img.png')}
-                    style={[
-                      styles.image,
-                      {
-                        shadowOffset: { width: 0, height: 20 },
-                        shadowOpacity: 0.35,
-                        shadowRadius: 35,
-                        tintColor: '#DB00FF',
-                      },
-                      rStyle,
-                    ]}
-                    resizeMode={'center'}
-                  />
+                  <View style={styles.image}>
+                    <AnimatedImage
+                      source={require('../../assets/images/AccountImage/fire-img.png')}
+                      style={[
+                        {
+                          shadowOffset: { width: 0, height: 20 },
+                          shadowOpacity: 0.35,
+                          shadowRadius: 35,
+                          // tintColor: '#DB00FF',
+                          width: width / 4,
+                        },
+                        rStyle,
+                      ]}
+                      resizeMode={'center'}
+                    />
+                  </View>
+                  <LinearGradient
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0, y: 1 }}
+                    colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.38)']}
+                    style={styles.linearGradient}
+                  ></LinearGradient>
                 </ImageBackground>
               </Animated.View>
             </TapGestureHandler>
           </TapGestureHandler>
-          {/* </Pressable> */}
 
           <CardContent>
             <IconPressable>
               <ContentView
-                onPress={() => handleIconPress('like')}
+                onPress={() =>
+                  activeIcon === 'like' ? handleIconPress('') : handleIconPress('like')
+                }
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
                 style={dynamicLikeIconStyle}
@@ -217,7 +273,9 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
 
             <IconPressable>
               <ContentView
-                onPress={() => handleIconPress('fire')}
+                onPress={() =>
+                  activeIcon === 'fire' ? handleIconPress('') : handleIconPress('fire')
+                }
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
                 style={dynamicFireIconStyle}
@@ -236,7 +294,9 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
             </IconPressable>
             <IconPressable>
               <ContentView
-                onPress={() => handleIconPress('heart')}
+                onPress={() =>
+                  activeIcon === 'heart' ? handleIconPress('') : handleIconPress('heart')
+                }
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
                 style={dynamicHeartIconStyle}
@@ -291,8 +351,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: SIZE,
-    height: SIZE,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -309,6 +367,13 @@ const CardContent = styled.View`
   flex-direction: row;
   gap: 8px;
 `
+
+const ViewDetailsText = styled.Text`
+  color: ${COLORS.iconsNormalClr};
+  font-size: 12px;
+  font-family: ${FONT_FAMILY.GilroySemiBold};
+`
+
 const IconPressable = styled.View`
   display: flex;
   flex-direction: row;
@@ -330,7 +395,12 @@ const LikeText = styled.Text`
 `
 
 const EditText = styled.Text`
-  font-size: 16px;
+  font-size: 14px;
   font-family: ${FONT_FAMILY.GilroySemiBold};
   color: ${COLORS.textSecondaryClr};
+`
+
+const ViewDetailsBtn = styled.View`
+  padding-horizontal: 12px;
+  padding-vertical: 8px;
 `

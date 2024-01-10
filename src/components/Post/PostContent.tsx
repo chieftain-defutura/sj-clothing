@@ -15,7 +15,7 @@ import Animated, { LightSpeedInRight, LightSpeedOutRight } from 'react-native-re
 import { getDocs, collection } from 'firebase/firestore/lite'
 import { COLORS } from '../../styles/theme'
 import SaveIcon from '../../assets/icons/SaveIcon'
-import { IPostData } from '../../constant/types'
+import { IUserPost } from '../../constant/types'
 import AuthNavigate from '../../screens/AuthNavigate'
 import SubscriptionModal from '../../screens/Modals/Subscription'
 import { db } from '../../../firebase'
@@ -36,7 +36,7 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<IPostData[]>()
+  const [data, setData] = useState<IUserPost[]>()
   const [focus, setFocus] = useState(false)
   const tabHeight = 120
   const reelsHeight = height - tabHeight

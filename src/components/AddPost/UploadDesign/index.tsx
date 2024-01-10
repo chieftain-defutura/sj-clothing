@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import * as ImagePicker from 'expo-image-picker'
-import { Pressable, StyleSheet, Text, View, Image, Dimensions, Alert } from 'react-native'
+import { Pressable, StyleSheet, Text, View, Image, Dimensions } from 'react-native'
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated'
 import { COLORS } from '../../../styles/theme'
 import CloseIcon from '../../../assets/icons/Close'
@@ -108,6 +108,7 @@ const UploadDesign: React.FC<IUploadDesign> = ({
         bottom: 0,
         flex: 1,
         width: width,
+        height: height / 3.2,
       }}
     >
       <View

@@ -152,7 +152,7 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
       <View
         style={{
           width: width / 1,
-          height: height / 1.3,
+          height: height / 1,
           flex: 1,
           backgroundColor: 'transparent',
           position: 'relative',
