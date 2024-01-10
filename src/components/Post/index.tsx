@@ -81,7 +81,7 @@ const PostComponent: React.FC<IPostComponent> = ({ navigation }) => {
               alignSelf: 'flex-end',
               gap: 6,
               position: 'absolute',
-              right: 30,
+              right: 20,
               bottom: 30,
               zIndex: 1000,
             },

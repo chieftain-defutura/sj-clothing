@@ -41,24 +41,23 @@ const AboutUs: React.FC<IAboutUs> = ({ navigation }) => {
             </View>
             <View style={{ padding: 16 }}>
               <Paragraph allowFontScaling={false}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum
-                dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                ullamco laboris.
+                Welcome to Sprinkle Nader, where innovation meets flavor! At Sprinkle Nader, we
+                believe in transforming ordinary moments into extraordinary experiences through our
+                delectable creations. We are not just a company; we are the architects of sweetness,
+                the maestros of taste, and the sprinkle enthusiasts that make every bite a
+                celebration.
               </Paragraph>
               <Paragraph allowFontScaling={false} style={{ marginVertical: 8 }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua.
+                Sprinkle Nader was born out of a simple yet profound idea – to add a dash of joy to
+                every day. From our humble beginnings, we've evolved into a brand that stands for
+                quality, creativity, and a commitment to delighting taste buds around the world.
               </Paragraph>
               <Paragraph allowFontScaling={false}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum
-                dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                ullamco laboris.
+                At the heart of Sprinkle Nader is a mission to redefine the dessert experience. We
+                strive to craft confections that not only satisfy cravings but also elevate your
+                senses. With a passion for perfection and an unwavering dedication to using the
+                finest ingredients, we aim to be the go-to source for those seeking a symphony of
+                flavors in every bite.
               </Paragraph>
             </View>
           </View>
