@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Image, Pressable, Dimensions } from 'react-native'
 import React, { useEffect } from 'react'
 import Slick from 'react-native-slick'
 import * as ImagePicker from 'expo-image-picker'
@@ -19,6 +19,8 @@ interface ICarousle {
     }
   }
 }
+
+const { height, width } = Dimensions.get('window')
 
 const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo, isImageOrText }) => {
   useEffect(() => {
@@ -55,18 +57,22 @@ const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo, isImageOrTex
       activeDotStyle={{ backgroundColor: COLORS.textSecondaryClr, width: 12, height: 4 }}
     >
       <View style={styles.slide1}>
-        <Image source={require('../../../assets/images/plain-shirt.png')} alt='carousle-img' />
+        <Image
+          source={require('../../../assets/images/plain-shirt.png')}
+          alt='carousle-img'
+          resizeMode='contain'
+        />
       </View>
       <View style={styles.slide2}>
         {isImageOrText.designs.image ? (
           <Image
-            style={{ objectFit: 'cover', width: 400, height: 400 }}
+            style={{ objectFit: 'contain', width: width / 3, height: height / 3 }}
             source={{ uri: isImageOrText.designs.image }}
             alt='carousle-img'
           />
         ) : (
           <Image
-            style={{ objectFit: 'cover', width: 400, height: 400 }}
+            style={{ objectFit: 'contain', width: width / 1, height: height / 1 }}
             source={require('../../../assets/images/monkey-nft.png')}
             alt='carousle-img'
           />
@@ -77,7 +83,7 @@ const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo, isImageOrTex
           <View>
             <Video
               source={{ uri: isGiftVideo }}
-              style={{ width: 400, height: 400 }}
+              style={{ width: width / 1.1, height: height / 1.2 }}
               shouldPlay
               isLooping
               resizeMode={ResizeMode.COVER}
@@ -146,7 +152,7 @@ export default Carousle
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: 500,
+    height: height / 2,
   },
   slide1: {
     flex: 1,

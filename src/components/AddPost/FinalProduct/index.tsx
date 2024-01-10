@@ -387,14 +387,14 @@ const ProductText = styled.Text`
   font-size: 13px;
   font-family: ${FONT_FAMILY.MontserratRegular};
   color: ${COLORS.SecondaryTwo};
-  margin-bottom: 4px;
+  margin-top: 7px;
 `
 export default FinalProduct
 
 const styles = StyleSheet.create({
   selectContainer: {
     padding: 16,
-    height: height,
+    height: height / 1,
   },
   selectNavigator: {
     display: 'flex',
@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
   submitBtn: {
     marginVertical: 8,
     fontFamily: 'Arvo-Regular',
-    marginBottom: 54,
+    marginBottom: 8,
   },
   colorNameText: {
     fontFamily: FONT_FAMILY.GilroySemiBold,
