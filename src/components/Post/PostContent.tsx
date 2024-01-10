@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
+  Text,
 } from 'react-native'
 import styled from 'styled-components/native'
 import { useState } from 'react'
@@ -22,6 +23,7 @@ import { db } from '../../../firebase'
 import PostCard from './PostCard'
 import { LinearGradient } from 'expo-linear-gradient'
 import HomePlusIcon from '../../assets/icons/PostPlusIcon'
+import Loader from '../Loading'
 
 const { height } = Dimensions.get('window')
 
@@ -116,87 +118,95 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
   }, [getData])
 
   return (
-    <PostCardWrapper style={{ position: 'relative', height: height - 100 }}>
-      <SwiperFlatList
-        data={data}
-        vertical
-        renderAll={true}
-        renderItem={({ item }) => (
-          <View
-            key={item.id}
+    <>
+      {loading ? (
+        <View style={{ height: height - 100, justifyContent: 'center' }}>
+          <Loader />
+        </View>
+      ) : (
+        <PostCardWrapper style={{ position: 'relative', height: height - 100 }}>
+          <SwiperFlatList
+            data={data}
+            vertical
+            renderAll={true}
+            renderItem={({ item }) => (
+              <View
+                key={item.id}
+                style={[
+                  {
+                    height: reelsHeight,
+                    flex: 1,
+                    borderRadius: 10,
+                    position: 'relative',
+                  },
+                  styles.iosContainer,
+                ]}
+              >
+                <PostCard item={item} handlePostClick={handlePostClick} setEditPost={setEditPost} />
+
+                {/* <SliderCountContent>
+              <SliderNumber> 
+                
+                {currentIndex + 1}/{item.images.length}
+              </SliderNumber>
+            </SliderCountContent> */}
+
+                <Animated.View
+                  entering={LightSpeedInRight.duration(1000).delay(200)}
+                  exiting={LightSpeedOutRight}
+                >
+                  <PostCardContent>
+                    <FlexContent>
+                      <TextHead>{item.style}</TextHead>
+                      <Pressable onPress={share}>
+                        <SaveIcon width={24} height={24} />
+                      </Pressable>
+                    </FlexContent>
+                    <Content>
+                      <PostCardText>{item.productName}</PostCardText>
+                      <PostDescription>{item.description}</PostDescription>
+                    </Content>
+                  </PostCardContent>
+                </Animated.View>
+              </View>
+            )}
+          />
+          <TouchableOpacity
             style={[
               {
-                height: reelsHeight,
-                flex: 1,
-                borderRadius: 10,
-                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                justifyContent: 'flex-end',
+                alignSelf: 'flex-end',
+                gap: 6,
+                position: 'absolute',
+                left: 0,
+                right: 24,
+                bottom: 50,
+                zIndex: 1000,
               },
-              styles.iosContainer,
+              styles.iosContent,
             ]}
+            onPress={onSubmit}
           >
-            <PostCard item={item} handlePostClick={handlePostClick} setEditPost={setEditPost} />
-
-            {/* <SliderCountContent>
-                <SliderNumber> 
-                  
-                  {currentIndex + 1}/{item.images.length}
-                </SliderNumber>
-              </SliderCountContent> */}
-
-            <Animated.View
-              entering={LightSpeedInRight.duration(1000).delay(200)}
-              exiting={LightSpeedOutRight}
+            <LinearGradient
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              colors={['#462D85', '#DB00FF']}
+              style={styles.plusIconGradientColor}
             >
-              <PostCardContent>
-                <FlexContent>
-                  <TextHead>{item.style}</TextHead>
-                  <Pressable onPress={share}>
-                    <SaveIcon width={24} height={24} />
-                  </Pressable>
-                </FlexContent>
-                <Content>
-                  <PostCardText>{item.productName}</PostCardText>
-                  <PostDescription>{item.description}</PostDescription>
-                </Content>
-              </PostCardContent>
-            </Animated.View>
-          </View>
-        )}
-      />
-      <TouchableOpacity
-        style={[
-          {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-end',
-            justifyContent: 'flex-end',
-            alignSelf: 'flex-end',
-            gap: 6,
-            position: 'absolute',
-            left: 0,
-            right: 24,
-            bottom: 50,
-            zIndex: 1000,
-          },
-          styles.iosContent,
-        ]}
-        onPress={onSubmit}
-      >
-        <LinearGradient
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          colors={['#462D85', '#DB00FF']}
-          style={styles.plusIconGradientColor}
-        >
-          <HomePlusIcon width={20} height={20} />
-        </LinearGradient>
-      </TouchableOpacity>
-      <SubscriptionModal
-        isVisible={isSubscriptionModal}
-        onClose={closeSubscriptionModal}
-        navigation={navigation}
-      />
-    </PostCardWrapper>
+              <HomePlusIcon width={20} height={20} />
+            </LinearGradient>
+          </TouchableOpacity>
+          <SubscriptionModal
+            isVisible={isSubscriptionModal}
+            onClose={closeSubscriptionModal}
+            navigation={navigation}
+          />
+        </PostCardWrapper>
+      )}
+    </>
   )
 }
 

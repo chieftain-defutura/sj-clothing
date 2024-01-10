@@ -1,8 +1,7 @@
-import uuid from 'react-native-uuid'
-import { Dimensions, View, Animated, Easing, Button } from 'react-native'
+import { Dimensions, View, Animated, Easing } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSharedValue, withSequence, withTiming } from 'react-native-reanimated'
-import { collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
+import { collection, doc, getDocs, updateDoc } from 'firebase/firestore/lite'
 import {
   query as defaultQuery,
   collection as defualtCollection,

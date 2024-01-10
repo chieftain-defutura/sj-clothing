@@ -1,5 +1,5 @@
 import React from 'react'
-import { Share, TouchableHighlight, View } from 'react-native'
+import { Share, TouchableHighlight, View, Dimensions } from 'react-native'
 import styled from 'styled-components/native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
@@ -12,6 +12,8 @@ interface IPostDetails {
   selectedPost: IUserPost
   onClose: () => void
 }
+
+const { height, width } = Dimensions.get('window')
 
 const ProductData = [
   {
@@ -90,7 +92,7 @@ const PostDetails: React.FC<IPostDetails> = ({ selectedPost, onClose }) => {
               <TShirtImage
                 source={{ uri: selectedPost?.productImage }}
                 alt='post-details-img'
-                style={{ resizeMode: 'contain' }}
+                style={{ resizeMode: 'contain', width: width, height: height / 2.6 }}
               />
               {/* <ThreeSixtyDegreeImage>
                 <ThreeSixtyDegree width={40} height={40} />

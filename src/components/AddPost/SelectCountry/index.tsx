@@ -90,7 +90,7 @@ const SelectCountry: React.FC<ISelectedCountry> = ({ setSize, isSize, data, setD
               color: COLORS.iconsHighlightClr,
             }}
           >
-            {t('Select Country')}
+            {t('Select Continent')}
           </Text>
         </View>
         <View

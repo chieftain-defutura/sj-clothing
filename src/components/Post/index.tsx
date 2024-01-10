@@ -61,7 +61,7 @@ const PostComponent: React.FC<IPostComponent> = ({ navigation }) => {
 
   if (isLoading) {
     return (
-      <View style={{ justifyContent: 'center', height: height }}>
+      <View style={{ justifyContent: 'center', height: height - 100 }}>
         <Loader />
       </View>
     )

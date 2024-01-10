@@ -7,7 +7,6 @@ import {
   Dimensions,
   TouchableHighlight,
   Platform,
-  TouchableOpacity,
 } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import Animated, {
@@ -21,13 +20,11 @@ import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import { COLORS } from '../../../styles/theme'
 import { useTranslation } from 'react-i18next'
-import TextAnimation from './TextAnimation'
 import SelectStyleTooltip from '../../Tooltips/MidLevel/SelectStyle'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import SelectCountryTooltip from '../../Tooltips/MidLevel/SelectCountry'
 import SelectSizeTooltip from '../../Tooltips/MidLevel/SelectSize'
 import SelectColorTooltip from '../../Tooltips/MidLevel/SelectColor'
-import FinalViewTooltip from '../../Tooltips/MidLevel/FinalViewTooltip'
 
 const { width } = Dimensions.get('window')
 

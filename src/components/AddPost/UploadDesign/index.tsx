@@ -108,7 +108,7 @@ const UploadDesign: React.FC<IUploadDesign> = ({
         bottom: 0,
         flex: 1,
         width: width,
-        height: height / 3.2,
+        height: height / 3,
       }}
     >
       <View
@@ -163,6 +163,7 @@ const UploadDesign: React.FC<IUploadDesign> = ({
             text={loading ? 'Loading...' : 'Select Image'}
             onPress={handleSelectImage}
             disabled={loading}
+            style={{ marginTop: 18 }}
           />
         )}
       </View>

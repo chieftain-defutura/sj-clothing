@@ -6,6 +6,7 @@ import {
   ImageBackground,
   View,
   TouchableOpacity,
+  Text,
 } from 'react-native'
 import { useState } from 'react'
 import styled from 'styled-components/native'

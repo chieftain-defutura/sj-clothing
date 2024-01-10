@@ -20,7 +20,6 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native'
-
 import { COLORS } from '../../../styles/theme'
 import { userStore } from '../../../store/userStore'
 import { db, dbDefault } from '../../../../firebase'
@@ -29,8 +28,7 @@ import { tooltipDisableStore } from '../../../store/TooltipDisable'
 
 const { height, width } = Dimensions.get('window')
 
-interface ISkintone {}
-const Skintone: React.FC<ISkintone> = ({}) => {
+const Skintone: React.FC = () => {
   const isMounted = useRef(false)
   const { t } = useTranslation('avatar')
   const elementRef = useRef<View | null>(null)
@@ -87,7 +85,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
 
   const handleLayout = () => {
     if (elementRef.current) {
-      elementRef.current.measure((x, y, width, height, pageX, pageY) => {
+      elementRef.current.measure((height, pageY) => {
         setPageY(pageY)
         setElementHeight(height)
       })

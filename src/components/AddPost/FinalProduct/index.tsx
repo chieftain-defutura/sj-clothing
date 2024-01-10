@@ -4,7 +4,7 @@ import { Svg, Circle } from 'react-native-svg'
 import Carousle from './Carousle'
 import CustomButton from '../../Button'
 import { ScrollView, StyleSheet, Text, Dimensions, View } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import { userStore } from '../../../store/userStore'
 import { useTranslation } from 'react-i18next'
 import { IMidlevel } from '../../../constant/types'
@@ -54,7 +54,6 @@ const FinalProduct: React.FC<IFinalProduct> = ({
   const avatar = userStore((state) => state.avatar)
   const currency = userStore((state) => state.currency)
   const rate = userStore((state) => state.rate)
-  const [toolTip, showToolTip] = useState(false)
   const Description = data.description.split(',')
 
   return (
