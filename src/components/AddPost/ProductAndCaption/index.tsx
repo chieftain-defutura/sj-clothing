@@ -107,6 +107,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
           giftVideo: isGiftVideo,
           product: product,
           caption: caption,
+          postComment: [],
         })
         setOpenCheckout(false)
         navigation.navigate('Stack')

@@ -163,7 +163,7 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
           </View>
         )}
       />
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={[
           {
             display: 'flex',
@@ -190,7 +190,7 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
         >
           <HomePlusIcon width={20} height={20} />
         </LinearGradient>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <SubscriptionModal
         isVisible={isSubscriptionModal}
         onClose={closeSubscriptionModal}
@@ -286,18 +286,18 @@ const styles = StyleSheet.create({
     shadowRadius: 0,
     elevation: 5,
   },
-  iosContainer: {
-    ...Platform.select({
-      ios: {
-        paddingBottom: 80,
-      },
-    }),
-  },
   iosContent: {
     ...Platform.select({
       ios: {
         bottom: 110,
         right: 16,
+      },
+    }),
+  },
+  iosContainer: {
+    ...Platform.select({
+      ios: {
+        paddingBottom: 80,
       },
     }),
   },

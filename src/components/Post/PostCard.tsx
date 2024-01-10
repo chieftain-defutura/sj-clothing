@@ -32,6 +32,7 @@ import Fire from '../../assets/icons/fire'
 import IsHeartIcon from '../../assets/icons/PostPageIcon/isHeartIcon'
 import Heart from '../../assets/icons/heart'
 import AddressEditIcon from '../../assets/icons/AddressIcon/AddressEditIcon'
+import { userStore } from '../../store/userStore'
 
 const { width: SIZE } = Dimensions.get('window')
 const { height, width } = Dimensions.get('window')
@@ -56,6 +57,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
   const scale = useSharedValue(0)
   const opacity = useSharedValue(1)
   const doubleTapRef = useRef()
+  const user = userStore((state) => state.user)
 
   const getData = useCallback(async () => {
     try {
@@ -253,22 +255,24 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
             </IconPressable>
           </CardContent>
 
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              right: 18,
-              top: 18,
-              display: 'flex',
-              flexDirection: 'row',
-              gap: 4,
-            }}
-            onPress={() => setEditPost(true)}
-          >
-            <AddressEditIcon width={20} height={20} />
-            <View>
-              <EditText>Edit</EditText>
-            </View>
-          </TouchableOpacity>
+          {item.userId === user?.uid && (
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                right: 18,
+                top: 18,
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 4,
+              }}
+              onPress={() => setEditPost(true)}
+            >
+              <AddressEditIcon width={20} height={20} />
+              <View>
+                <EditText>Edit</EditText>
+              </View>
+            </TouchableOpacity>
+          )}
         </LinearGradient>
       )}
     />
