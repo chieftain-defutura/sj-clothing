@@ -7,7 +7,6 @@ import {
   Dimensions,
   TouchableHighlight,
   Platform,
-  TouchableOpacity,
 } from 'react-native'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import Animated, {
@@ -21,12 +20,11 @@ import ArrowCircleRight from '../../../assets/icons/ArrowCircleRight'
 import DropDownArrowIcon from '../../../assets/icons/DropDownArrow'
 import { COLORS } from '../../../styles/theme'
 import { useTranslation } from 'react-i18next'
-import TextAnimation from './TextAnimation'
-import SelectStyleTooltip from '../../Tooltips/MidLevel/SelectStyle'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import SelectCountryTooltip from '../../Tooltips/MidLevel/SelectCountry'
-import SelectSizeTooltip from '../../Tooltips/MidLevel/SelectSize'
-import SelectColorTooltip from '../../Tooltips/MidLevel/SelectColor'
+import SelectColorPostTooltip from '../../Tooltips/Post/SelectColor'
+import SelectCountryPostTooltip from '../../Tooltips/Post/SelectCountry'
+import SelectSizePostTooltip from '../../Tooltips/Post/SelectSize'
+import SelectStylePostTooltip from '../../Tooltips/Post/SelectStyle'
 
 const { width } = Dimensions.get('window')
 
@@ -105,10 +103,10 @@ const Navigation: React.FC<INavigation> = ({
 
   const isShowToolTip = async () => {
     try {
-      const data = await AsyncStorage.getItem('showSelectStyleTooltip')
+      const data = await AsyncStorage.getItem('showSelectStylePostTooltip')
 
-      if (data !== '5') {
-        AsyncStorage.setItem('showSelectStyleTooltip', '5')
+      if (data !== '22') {
+        AsyncStorage.setItem('showSelectStylePostTooltip', '22')
         showToolTip(true)
       }
     } catch (error) {
@@ -121,10 +119,10 @@ const Navigation: React.FC<INavigation> = ({
 
   const isShowToolTipCountry = async () => {
     try {
-      const data = await AsyncStorage.getItem('showSelectCountryTooltip')
+      const data = await AsyncStorage.getItem('showSelectCountryPostTooltip')
 
-      if (data !== '6') {
-        AsyncStorage.setItem('showSelectCountryTooltip', '6')
+      if (data !== '20') {
+        AsyncStorage.setItem('showSelectCountryPostTooltip', '20')
         setTooltipCountry(true)
       }
     } catch (error) {
@@ -137,10 +135,10 @@ const Navigation: React.FC<INavigation> = ({
 
   const isShowToolTipSize = async () => {
     try {
-      const data = await AsyncStorage.getItem('showSelectSizeTooltip')
+      const data = await AsyncStorage.getItem('showSelectSizePostTooltip')
 
-      if (data !== '7') {
-        AsyncStorage.setItem('showSelectSizeTooltip', '7')
+      if (data !== '21') {
+        AsyncStorage.setItem('showSelectSizePostTooltip', '21')
         setTooltipSize(true)
       }
     } catch (error) {
@@ -153,10 +151,10 @@ const Navigation: React.FC<INavigation> = ({
 
   const isShowToolTipColor = async () => {
     try {
-      const data = await AsyncStorage.getItem('showSelectSizeTooltip')
+      const data = await AsyncStorage.getItem('showSelectColorPostTooltip')
 
-      if (data !== '7') {
-        AsyncStorage.setItem('showSelectSizeTooltip', '7')
+      if (data !== '19') {
+        AsyncStorage.setItem('showSelectColorPostTooltip', '19')
         setToolTipColor(true)
       }
     } catch (error) {
@@ -338,7 +336,7 @@ const Navigation: React.FC<INavigation> = ({
 
                 {steps === 4 && !isColor && <DropDownArrowIcon />}
                 {steps === 1 && !isSelectedStyle && (
-                  <SelectStyleTooltip
+                  <SelectStylePostTooltip
                     isVisible={toolTip}
                     onClose={() => {
                       showToolTip(false)
@@ -346,7 +344,7 @@ const Navigation: React.FC<INavigation> = ({
                   />
                 )}
                 {steps === 2 && !country && (
-                  <SelectCountryTooltip
+                  <SelectCountryPostTooltip
                     isVisible={toolTipCountry}
                     onClose={() => {
                       setTooltipCountry(false)
@@ -354,7 +352,7 @@ const Navigation: React.FC<INavigation> = ({
                   />
                 )}
                 {steps === 3 && !sizeVarient.size && (
-                  <SelectSizeTooltip
+                  <SelectSizePostTooltip
                     isVisible={toolTipSize}
                     onClose={() => {
                       setTooltipSize(false)
@@ -362,7 +360,7 @@ const Navigation: React.FC<INavigation> = ({
                   />
                 )}
                 {steps === 4 && !isColor && (
-                  <SelectColorTooltip
+                  <SelectColorPostTooltip
                     isVisible={toolTipColor}
                     onClose={() => {
                       setToolTipColor(false)

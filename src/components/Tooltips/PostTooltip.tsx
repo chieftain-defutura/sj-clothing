@@ -1,30 +1,30 @@
 import React from 'react'
-import { Modal, View, StyleSheet, TouchableOpacity, Dimensions, Platform } from 'react-native'
+import { Modal, View, StyleSheet, TouchableOpacity, Platform, Dimensions } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
-import { COLORS, FONT_FAMILY } from '../../../styles/theme'
-import TooltipTopArrowIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
+import { COLORS, FONT_FAMILY } from '../../styles/theme'
+import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
+import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
 
-interface ISelectCountryTooltip {
+interface IPostTooltip {
   isVisible?: boolean
   onClose?: () => void
 }
 
 const { width } = Dimensions.get('window')
 
-const SelectCountryTooltip: React.FC<ISelectCountryTooltip> = ({ isVisible, onClose }) => {
+const PostTooltip: React.FC<IPostTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
-        <View style={{ position: 'absolute', top: 150 }}>
+        <View style={{ position: 'absolute', bottom: 80 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
               <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Select Continent
+                Post
               </Heading>
               <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Manage your profile, customize avatars, and track your orders
+                Express your unique style with our customizable clothes.
               </Paragraph>
 
               <View
@@ -56,8 +56,10 @@ const SelectCountryTooltip: React.FC<ISelectCountryTooltip> = ({ isVisible, onCl
               </View>
             </Content>
           </View>
-          <View style={[{ position: 'absolute', top: -14, left: 170, zIndex: -1000 }, styles.icon]}>
-            <TooltipTopArrowIcon width={26} height={46} />
+          <View
+            style={[{ position: 'absolute', bottom: -14, left: 20, zIndex: -1000 }, styles.icon]}
+          >
+            <TooltipIcon width={26} height={46} />
           </View>
         </View>
       </TooltipWrapper>
@@ -94,7 +96,7 @@ const Paragraph = styled.Text`
   margin-bottom: 8px;
 `
 
-export default SelectCountryTooltip
+export default PostTooltip
 
 const styles = StyleSheet.create({
   plusIconGradientColor: {
@@ -111,15 +113,14 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: {
-        top: 30,
+        bottom: 30,
       },
     }),
   },
   icon: {
     ...Platform.select({
       ios: {
-        top: 18,
-        left: 160,
+        bottom: 17,
       },
     }),
   },

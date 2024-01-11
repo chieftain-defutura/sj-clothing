@@ -240,7 +240,6 @@ const SignupModal: React.FC<SignupModalProps> = ({
       }
     }
   }
-  console.log(openTermsAndCondition)
   return (
     <Modal
       visible={isVisible}

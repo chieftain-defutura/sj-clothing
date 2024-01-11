@@ -66,7 +66,6 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
   // const fireLength = postComment?.map((f) => f.icons === 'fire')
   // const likeLength = postComment?.map((f) => f.icons === 'like')
 
-  console.log(postComment)
   const getData = useCallback(async () => {
     try {
       setLoading(true)
@@ -129,8 +128,6 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
         userId: user.uid,
         icons: iconName,
       }
-
-      console.log('newComment', newComment)
 
       if (userCommentIndex === -1) {
         updatedPostComment.push(newComment)

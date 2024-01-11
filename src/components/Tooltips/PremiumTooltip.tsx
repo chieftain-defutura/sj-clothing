@@ -55,7 +55,10 @@ const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose }) => {
               </View>
             </Content>
             <View
-              style={[{ position: 'absolute', bottom: -14, left: 160, zIndex: -1000 }, styles.icon]}
+              style={[
+                { position: 'absolute', bottom: -14, right: 110, zIndex: -1000 },
+                styles.icon,
+              ]}
             >
               <TooltipIcon width={26} height={46} />
             </View>

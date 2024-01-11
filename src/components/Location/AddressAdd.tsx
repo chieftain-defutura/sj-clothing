@@ -200,8 +200,6 @@ const AddressAdd: React.FC<IAddAddress> = ({
           phoneNo: '',
           saveAddressAs: '',
         })
-
-        console.log('Current Location Address:', data)
       })
     } catch (error) {
       console.error('Error:', error)

@@ -54,7 +54,6 @@ const Input: React.FC<InputProps> = ({
             pickerButtonOnPress={(item: any) => {
               setCountryCode(item.dial_code)
               setShow(false)
-              console.log('item', item)
             }}
           />
         </Pressable>

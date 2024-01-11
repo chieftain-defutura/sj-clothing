@@ -13,7 +13,7 @@ interface ISelectCountryTooltip {
 
 const { width } = Dimensions.get('window')
 
-const SelectCountryTooltip: React.FC<ISelectCountryTooltip> = ({ isVisible, onClose }) => {
+const SelectCountryPostTooltip: React.FC<ISelectCountryTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
@@ -56,7 +56,7 @@ const SelectCountryTooltip: React.FC<ISelectCountryTooltip> = ({ isVisible, onCl
               </View>
             </Content>
           </View>
-          <View style={[{ position: 'absolute', top: -14, left: 170, zIndex: -1000 }, styles.icon]}>
+          <View style={[{ position: 'absolute', top: -14, left: 160, zIndex: -1000 }, styles.icon]}>
             <TooltipTopArrowIcon width={26} height={46} />
           </View>
         </View>
@@ -94,7 +94,7 @@ const Paragraph = styled.Text`
   margin-bottom: 8px;
 `
 
-export default SelectCountryTooltip
+export default SelectCountryPostTooltip
 
 const styles = StyleSheet.create({
   plusIconGradientColor: {

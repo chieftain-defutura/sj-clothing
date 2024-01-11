@@ -44,7 +44,6 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
   const reelsHeight = height - tabHeight
 
   const handlePostClick = (postId: string) => {
-    console.log(postId)
     setPostId(postId)
     setOpen(true)
   }
