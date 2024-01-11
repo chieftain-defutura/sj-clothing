@@ -67,27 +67,25 @@ const Carousle: React.FC<ICarousle> = ({
           <Image
             source={{ uri: productImage }}
             alt=''
-            style={{ objectFit: 'cover', width: 400, height: 400 }}
+            style={{ objectFit: 'contain', width: width / 1, height: height / 2.5 }}
           />
         ) : (
-          <Image source={require('../../../assets/images/plain-shirt.png')} alt='carousle-img' />
+          <Image
+            source={require('../../../assets/images/plain-shirt.png')}
+            alt='carousle-img'
+            style={{ width: width / 2, height: height / 2.5, objectFit: 'contain' }}
+          />
         )}
       </View>
-      <View style={styles.slide2}>
-        {isImageOrText.designs.image ? (
+      {isImageOrText.designs.image && (
+        <View style={styles.slide2}>
           <Image
             style={{ objectFit: 'cover', width: 400, height: 400 }}
             source={{ uri: `${isImageOrText.designs.image}` }}
             alt='carousle-img'
           />
-        ) : (
-          <Image
-            style={{ objectFit: 'contain', width: width / 1 }}
-            source={require('../../../assets/images/monkey-nft.png')}
-            alt='carousle-img'
-          />
-        )}
-      </View>
+        </View>
+      )}
       <View style={styles.slide3}>
         {isGiftVideo ? (
           <View>

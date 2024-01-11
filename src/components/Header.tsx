@@ -5,7 +5,6 @@ import styled from 'styled-components/native'
 import ShoppingCart from '../assets/icons/ShoppingCart'
 // import NotificationInActive from '../assets/icons/NotificationInActive'
 // import NotificationActive from '../assets/icons/NotificationActive'
-import { COLORS } from '../styles/theme'
 import { generalStore } from '../store/generalStore'
 
 export const HeaderLeft = () => {
@@ -18,10 +17,6 @@ export const HeaderLeft = () => {
           <Pressable onPress={() => navigation.navigate('Stack')}>
             <TShirtImg source={require('../assets/logo/logo-img-1.png')} />
           </Pressable>
-          {/* <View>
-        <LogoText>SPRINKLE</LogoText>
-        <NadarText>NADAR</NadarText>
-      </View> */}
         </LogoContent>
       ) : (
         <View></View>
@@ -80,21 +75,6 @@ const TShirtImg = styled.Image`
   object-fit: contain;
   margin-left: -20px;
   margin-top: 10px;
-`
-
-const NadarText = styled.Text`
-  letter-spacing: 5.5px;
-  font-size: 12px;
-  color: ${COLORS.iconsHighlightClr};
-  font-family: Gilroy-Medium;
-  margin-top: 1px;
-`
-
-const LogoText = styled.Text`
-  letter-spacing: 5.4px;
-  font-size: 14px;
-  color: ${COLORS.iconsHighlightClr};
-  font-family: Gilroy-Medium;
 `
 
 const Icons = styled.View`

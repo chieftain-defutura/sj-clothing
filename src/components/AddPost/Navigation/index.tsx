@@ -286,7 +286,7 @@ const Navigation: React.FC<INavigation> = ({
               <ArrowCircleLeft width={24} height={24} />
             </Animated.View>
           </TouchableHighlight>
-          {steps !== 6 && steps !== 5 && (
+          {steps !== 6 && (
             <View
               style={{
                 flex: 1,
@@ -330,7 +330,7 @@ const Navigation: React.FC<INavigation> = ({
                         : 'Select Size',
                     )}`}
                   {steps === 4 && `${t(isColor ? isColor : 'Select Color')}`}
-                  {/* {steps === 5 && `${t('Add more')}`} */}
+                  {steps === 5 && `${t('Add more')}`}
                 </Text>
                 {steps === 1 && !isSelectedStyle && <DropDownArrowIcon />}
                 {steps === 2 && !country && <DropDownArrowIcon />}

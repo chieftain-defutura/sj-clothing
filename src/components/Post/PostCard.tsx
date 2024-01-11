@@ -219,22 +219,24 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
             comments={item.postComment}
           />
 
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              right: 22,
-              top: 22,
-              display: 'flex',
-              flexDirection: 'row',
-              gap: 4,
-            }}
-            onPress={() => (setEditPost(true), setPostId(item.id))}
-          >
-            <AddressEditIcon width={20} height={20} />
-            <View>
-              <EditText>Edit</EditText>
-            </View>
-          </TouchableOpacity>
+          {item.userId === user?.uid && (
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                right: 22,
+                top: 22,
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 4,
+              }}
+              onPress={() => (setEditPost(true), setPostId(item.id))}
+            >
+              <AddressEditIcon width={20} height={20} />
+              <View>
+                <EditText>Edit</EditText>
+              </View>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={() => {
               handlePostClick(item.id)

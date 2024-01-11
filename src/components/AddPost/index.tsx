@@ -9,13 +9,11 @@ import {
   where as defaultWhere,
   onSnapshot,
 } from 'firebase/firestore'
-import FinalView from './FinalView'
 import Navigation from './Navigation'
 import SelectSize from './Selectsize'
 import { db, dbDefault } from '../../../firebase'
 import SelectStyle from './SelectStyle'
 import SelectColor from './SelectColor'
-import SelectDesign from './SelectDesign'
 import SelectCountry from './SelectCountry'
 import AddImageOrText from './AddImageOrText'
 import { userStore } from '../../store/userStore'
@@ -23,17 +21,13 @@ import LoginModal from '../../screens/Modals/Login'
 import SignupModal from '../../screens/Modals/Signup'
 import ForgotMail from '../../screens/Modals/ForgotMail'
 import { IDesigns, IMidlevel, IUserPost } from '../../constant/types'
-import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 import AlertModal from '../../screens/Modals/AlertModal'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Haptics from 'expo-haptics'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Audio } from 'expo-av'
-import { MidlevelStore } from '../../store/midlevelStore'
 import FlowOne from './MidlevelWebView/FlowOne'
-import FlowTwo from './MidlevelWebView/FlowTwo'
 import FlowThree from './MidlevelWebView/FlowThree'
-import AddImageAddTextTooltip from '../Tooltips/MidLevel/AddImageAddTextTooltip'
 import { gradientOpacityColors } from '../../styles/theme'
 import FinalProduct from './FinalProduct'
 import ProductAndCaption from './ProductAndCaption'
@@ -60,7 +54,6 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
   )
   const [isDropDown, setDropDown] = useState(false)
   const [uid, setUid] = useState<string>(PostData.isSteps === '5' ? PostData.uid : '')
-  const [focus, setFocus] = useState(false)
   const [openModal, setOpenModal] = useState(false)
 
   //data
@@ -145,9 +138,6 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
   const [openCheckout, setOpenCheckout] = useState(false)
   const [animationUpdated, setAnimationUpdated] = useState(false)
   const [colorAnimationUpdated, setColorAnimationUpdated] = useState(false)
-
-  const [toolTip, showToolTip] = useState(false)
-  const [addImageAndAddTextToolTip, setAddImageAndAddTextToolTip] = useState(false)
 
   const shakeAnimation = useRef(new Animated.Value(0)).current
 
@@ -362,39 +352,6 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
     }, 2000)
   }, [warning])
 
-  const isShowToolTip = async () => {
-    try {
-      const data = await AsyncStorage.getItem('showMidLevelToolTip')
-
-      if (data !== '0') {
-        AsyncStorage.setItem('showMidLevelToolTip', '0')
-        showToolTip(true)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    isShowToolTip()
-  }, [isShowToolTip])
-
-  const isShowToolTipAddImageAndAddText = async () => {
-    try {
-      const data = await AsyncStorage.getItem('showAddImageAndAddTextTooltip')
-
-      if (data !== '15') {
-        AsyncStorage.setItem('showAddImageAndAddTextTooltip', '15')
-        setAddImageAndAddTextToolTip(true)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  useEffect(() => {
-    isShowToolTipAddImageAndAddText()
-  }, [isShowToolTipAddImageAndAddText])
-
   const handleSetUid = useCallback(async () => {
     if (PostData.uid) return
     if (!isMounted.current) {
@@ -562,14 +519,6 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
                   isImageOrText={isImageOrText}
                   setImageOrText={setImageOrText}
                   setOpenDesign={setOpenDesign}
-                />
-              )}
-              {isSteps === 6 && (
-                <AddImageAddTextTooltip
-                  isVisible={addImageAndAddTextToolTip}
-                  onClose={() => {
-                    setAddImageAndAddTextToolTip(false)
-                  }}
                 />
               )}
             </View>
