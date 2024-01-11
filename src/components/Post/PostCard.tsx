@@ -50,53 +50,14 @@ const AnimatedImage = Animated.createAnimatedComponent(Image)
 
 const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPostId }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<IUserPost[]>([])
-  const [postComment, setPostComment] = useState<IPostComment[]>([])
   const [activeIcon, setActiveIcon] = useState<string | null>(null)
   const [isLiked, setIsLiked] = useState(false)
   const [isFireActive, setIsFireActive] = useState(false)
   const [isHeartActive, setIsHeartActive] = useState(false)
-  const [isPressed, setIsPressed] = useState(false)
   const user = userStore((state) => state.user)
   const scale = useSharedValue(0)
   const opacity = useSharedValue(1)
   const doubleTapRef = useRef()
-  // const heartLength = postComment?.map((f) => f.icons === 'heart')
-  // const fireLength = postComment?.map((f) => f.icons === 'fire')
-  // const likeLength = postComment?.map((f) => f.icons === 'like')
-
-  console.log(postComment)
-  const getData = useCallback(async () => {
-    try {
-      setLoading(true)
-      const ProductRef = await getDocs(collection(db, 'Post'))
-      const fetchProduct = ProductRef.docs.map((doc) => ({
-        id: doc.id,
-        ...(doc.data() as any),
-      }))
-      setData(fetchProduct)
-      const data = fetchProduct.flatMap((f) => f.postComment)
-      setPostComment(data)
-    } catch (error) {
-      console.log(error)
-      setLoading(false)
-    } finally {
-      setLoading(false)
-    }
-  }, [db])
-
-  useEffect(() => {
-    getData()
-  }, [getData])
-
-  const handlePressIn = () => {
-    setIsPressed(true)
-  }
-
-  const handlePressOut = () => {
-    setIsPressed(false)
-  }
 
   const handleIconPress = async (iconName: string) => {
     setActiveIcon(iconName)
@@ -190,24 +151,6 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
     })
   }, [])
 
-  const LikeIconStyle = {
-    backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
-  }
-
-  const dynamicLikeIconStyle = activeIcon === 'like' ? LikeIconStyle : {}
-
-  const HeartIconStyle = {
-    backgroundColor: isPressed ? 'rgba(219, 0, 255, 0.5)' : 'transparent',
-  }
-
-  const dynamicHeartIconStyle = activeIcon === 'heart' ? HeartIconStyle : {}
-
-  const FireIconStyle = {
-    backgroundColor: isPressed ? 'rgba(251, 99, 4, 0.5)' : 'transparent',
-  }
-
-  const dynamicFireIconStyle = activeIcon === 'fire' ? FireIconStyle : {}
-
   let productImg = []
   productImg.push(item.productImage)
 
@@ -263,72 +206,18 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
             </TapGestureHandler>
           </TapGestureHandler>
 
-          <CardContent>
-            <IconPressable>
-              <ContentView
-                onPress={() =>
-                  activeIcon === 'like' ? handleIconPress('') : handleIconPress('like')
-                }
-                onPressIn={handlePressIn}
-                onPressOut={handlePressOut}
-                style={dynamicLikeIconStyle}
-              >
-                {activeIcon === 'like' ? (
-                  isLiked ? (
-                    <IsLikeIcon width={20} height={20} />
-                  ) : (
-                    <IsLikeIcon width={20} height={20} />
-                  )
-                ) : (
-                  <Like width={20} height={20} />
-                )}
-              </ContentView>
-              {/* <LikeText>{likeLength.length}</LikeText> */}
-            </IconPressable>
-
-            <IconPressable>
-              <ContentView
-                onPress={() =>
-                  activeIcon === 'fire' ? handleIconPress('') : handleIconPress('fire')
-                }
-                onPressIn={handlePressIn}
-                onPressOut={handlePressOut}
-                style={dynamicFireIconStyle}
-              >
-                {activeIcon === 'fire' ? (
-                  isFireActive ? (
-                    <IsFireIcon width={20} height={20} />
-                  ) : (
-                    <IsFireIcon width={20} height={20} />
-                  )
-                ) : (
-                  <Fire width={20} height={20} />
-                )}
-              </ContentView>
-              {/* <LikeText>{fireLength.length}</LikeText> */}
-            </IconPressable>
-            <IconPressable>
-              <ContentView
-                onPress={() =>
-                  activeIcon === 'heart' ? handleIconPress('') : handleIconPress('heart')
-                }
-                onPressIn={handlePressIn}
-                onPressOut={handlePressOut}
-                style={dynamicHeartIconStyle}
-              >
-                {activeIcon === 'heart' ? (
-                  isHeartActive ? (
-                    <IsHeartIcon width={20} height={20} />
-                  ) : (
-                    <IsHeartIcon width={20} height={20} />
-                  )
-                ) : (
-                  <Heart width={20} height={20} />
-                )}
-              </ContentView>
-              {/* <LikeText>{heartLength.length}</LikeText> */}
-            </IconPressable>
-          </CardContent>
+          <PostComment
+            activeIcon={activeIcon}
+            handleIconPress={handleIconPress}
+            isFireActive={isFireActive}
+            isHeartActive={isHeartActive}
+            isLiked={isLiked}
+            userId={''}
+            icons={''}
+            id={item.id}
+            setActiveIcon={setActiveIcon}
+            comments={item.postComment}
+          />
 
           <TouchableOpacity
             style={{
@@ -441,3 +330,156 @@ const ViewDetailsBtn = styled.View`
   padding-horizontal: 12px;
   padding-vertical: 8px;
 `
+
+interface IPostComment {
+  activeIcon: string | null
+  isLiked: boolean
+  isFireActive: boolean
+  isHeartActive: boolean
+  handleIconPress: (iconName: string) => Promise<void>
+  setActiveIcon: React.Dispatch<React.SetStateAction<string | null>>
+  comments: {
+    userId: string
+    icons: string
+  }[]
+  id: string
+}
+const PostComment: React.FC<IPostComment> = ({
+  activeIcon,
+  isLiked,
+  isFireActive,
+  isHeartActive,
+  handleIconPress,
+  setActiveIcon,
+  comments,
+  id,
+}) => {
+  const user = userStore((state) => state.user)
+  const [isPressed, setIsPressed] = useState(false)
+  const [data, setData] = useState<any>()
+  console.log(data?.postComment.filter((f: { icons: string }) => f.icons === 'like').length)
+  const getData = useCallback(async () => {
+    try {
+      if (!user) return
+
+      const q = doc(db, 'Post', id)
+      const querySnapshot = await getDoc(q)
+
+      if (querySnapshot.exists()) {
+        const fetchData = querySnapshot.data()
+        setData(fetchData)
+        fetchData.postComment.forEach((d: any, index: any) => {
+          if (d.userId === user?.uid) {
+            setActiveIcon(d.icons as string)
+          }
+        })
+      } else {
+        console.log('Document not found')
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }, [activeIcon])
+
+  useEffect(() => {
+    getData()
+  }, [getData])
+
+  // useEffect(() => {
+  //   if (!activeIcon) {
+  //     const data = comments.find((f) => f.userId === user?.uid)
+  //     console.log(data?.icons)
+  //     setActiveIcon(data?.icons as string)
+  //   }
+  // })
+
+  const handlePressIn = () => {
+    setIsPressed(true)
+  }
+
+  const handlePressOut = () => {
+    setIsPressed(false)
+  }
+
+  const LikeIconStyle = {
+    backgroundColor: isPressed ? 'rgba(70, 45, 133, 0.5)' : 'transparent',
+  }
+
+  const dynamicLikeIconStyle = activeIcon === 'like' ? LikeIconStyle : {}
+
+  const HeartIconStyle = {
+    backgroundColor: isPressed ? 'rgba(219, 0, 255, 0.5)' : 'transparent',
+  }
+
+  const dynamicHeartIconStyle = activeIcon === 'heart' ? HeartIconStyle : {}
+
+  const FireIconStyle = {
+    backgroundColor: isPressed ? 'rgba(251, 99, 4, 0.5)' : 'transparent',
+  }
+
+  const dynamicFireIconStyle = activeIcon === 'fire' ? FireIconStyle : {}
+  return (
+    <CardContent>
+      <IconPressable>
+        <ContentView
+          onPress={() => (activeIcon === 'like' ? handleIconPress('') : handleIconPress('like'))}
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
+          style={dynamicLikeIconStyle}
+        >
+          {activeIcon === 'like' ? (
+            isLiked ? (
+              <IsLikeIcon width={20} height={20} />
+            ) : (
+              <IsLikeIcon width={20} height={20} />
+            )
+          ) : (
+            <Like width={20} height={20} />
+          )}
+        </ContentView>
+        <LikeText>
+          {data?.postComment.filter((f: { icons: string }) => f.icons === 'like').length}
+        </LikeText>
+      </IconPressable>
+
+      <IconPressable>
+        <ContentView
+          onPress={() => (activeIcon === 'fire' ? handleIconPress('') : handleIconPress('fire'))}
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
+          style={dynamicFireIconStyle}
+        >
+          {activeIcon === 'fire' ? (
+            isFireActive ? (
+              <IsFireIcon width={20} height={20} />
+            ) : (
+              <IsFireIcon width={20} height={20} />
+            )
+          ) : (
+            <Fire width={20} height={20} />
+          )}
+        </ContentView>
+        <LikeText>{data?.postComment.filter((f: any) => f.icons === 'fire').length}</LikeText>
+      </IconPressable>
+      <IconPressable>
+        <ContentView
+          onPress={() => (activeIcon === 'heart' ? handleIconPress('') : handleIconPress('heart'))}
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
+          style={dynamicHeartIconStyle}
+        >
+          {activeIcon === 'heart' ? (
+            isHeartActive ? (
+              <IsHeartIcon width={20} height={20} />
+            ) : (
+              <IsHeartIcon width={20} height={20} />
+            )
+          ) : (
+            <Heart width={20} height={20} />
+          )}
+        </ContentView>
+        <LikeText>{data?.postComment.filter((f: any) => f.icons === 'heart').length}</LikeText>
+      </IconPressable>
+    </CardContent>
+  )
+}

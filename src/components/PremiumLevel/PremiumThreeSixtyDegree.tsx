@@ -30,7 +30,6 @@ import { userStore } from '../../store/userStore'
 import AuthNavigate from '../../screens/AuthNavigate'
 import InfoIcon from '../../assets/icons/MidlevelIcon/infoIcon'
 import TextAnimation from '../Medium/Navigation/TextAnimation'
-import Loader from '../Loading'
 // import { Audio } from 'expo-av'
 
 interface IPremiumThreeSixtyDegree {
@@ -42,7 +41,7 @@ interface IPremiumThreeSixtyDegree {
   setFocus: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const { height } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   setOpenDetails,
@@ -111,6 +110,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
         // if (doc.data()['animationUpdated']) {
         //   setAnimationUpdated(doc.data()['animationUpdated'])
         // }
+        console.log(doc.data())
         if (doc.data()['avatarLoaded']) {
           setAnimationUpdated(doc.data()['avatarLoaded'])
         }
@@ -130,7 +130,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
 
   const handleLayout = () => {
     if (elementRef.current) {
-      elementRef.current.measure((height, pageY) => {
+      elementRef.current.measure((x, y, width, height, pageX, pageY) => {
         setPageY(pageY)
         setElementHeight(height)
       })
@@ -175,7 +175,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               }}
               activeOpacity={0.6}
               underlayColor='rgba(70, 45, 133, 0.2)'
-              style={{ borderRadius: 100, width: 50, height: 50, marginLeft: 15 }}
+              style={{ borderRadius: 100, width: 50, height: 50 }}
             >
               <View>
                 <IconHoverPressable>
@@ -205,7 +205,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
                   backgroundColor: 'transparent',
                 }}
                 source={{
-                  // uri: `http://localhost:5173/premium/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
+                  // uri: http://localhost:5173/premium/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight},
                   uri: `https://sj-threejs-development.netlify.app/premium/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
                 }}
                 scrollEnabled={false}
@@ -246,10 +246,12 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               </Text>
             </View>
           )}
-          <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-            {!animationUpdated && !webviewLoading && <Loader />}
-          </View>
 
+          {!animationUpdated && (
+            <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+              Please wait till avatar load
+            </TextAnimation>
+          )}
           <CustomButton
             text='Buy Now'
             fontFamily='Arvo-Regular'
