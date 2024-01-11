@@ -1,14 +1,10 @@
-import CopyIcon from '../../assets/icons/AccountPageIcon/CopyIcon'
 import UsersMore from '../../assets/icons/AccountPageIcon/UsersMore'
-import SackDollar from '../../assets/icons/AccountPageIcon/SackDollar'
 import ShoppingBag from '../../assets/icons/AccountPageIcon/ShoppingBag'
-// import WishListIcon from '../../assets/icons/AccountPageIcon/WishlistIcon'
 import UserIcon from '../../assets/icons/AccountPageIcon/UserIcon'
 import ChevronLeft from '../../assets/icons/ChevronLeft'
 import HomeLocation from '../../assets/icons/AccountPageIcon/HomeLocation'
 import CustomerCare from '../../assets/icons/AccountPageIcon/CustomerCare'
 import HelpQuestion from '../../assets/icons/AccountPageIcon/HelpQuestion'
-import Cart from '../../assets/icons/AccountPageIcon/CartIcon'
 import LanguageIcon from '../../assets/icons/LanguageIcon'
 import CurrencyIcon from '../../assets/icons/CurrencyIcon'
 import TermsAndCondition from '../../assets/icons/AccountPageIcon/TermsAndConditions'
@@ -20,59 +16,12 @@ export const AccountData = [
     rightIcon: ChevronLeft,
     navigation: 'Avatar',
   },
-  // {
-  //   leftIcon: UserIcon,
-  //   name: `Emoji`,
-  //   rightIcon: ChevronLeft,
-  //   navigation: 'Emoji',
-  // },
-  // {
-  //   leftIcon: UserIcon,
-  //   name: `InstaLike`,
-  //   rightIcon: ChevronLeft,
-  //   navigation: 'InstaLike',
-  // },
-
-  // {
-  //   name: `Payment`,
-  //   rightIcon: ChevronLeft,
-  //   navigation: 'Payment',
-  // },
-  // {
-  //   leftIcon: CopyIcon,
-  //   name: 'My posts',
-  //   rightText: '44 posts',
-  //   navigation: 'MyPosts',
-  // },
-  // {
-  //   leftIcon: SackDollar,
-  //   name: 'Checkout',
-  //   rightText: '1500 INR',
-  //   navigation: 'Checkout',
-  // },
-  // {
-  //   leftIcon: Cart,
-  //   name: 'My cart',
-  //   rightText: '2 items',
-  //   navigation: 'Cart',
-  // },
   {
     leftIcon: ShoppingBag,
     name: 'My orders',
     rightText: '0 items',
     navigation: 'MyOrders',
   },
-  // {
-  //   leftIcon: ShoppingBag,
-  //   name: 'User Post',
-  //   navigation: 'UserPost',
-  // },
-  // {
-  //   leftIcon: HomeLocation,
-  //   name: 'Addressbook',
-  //   rightText: 'Home',
-  //   navigation: 'AddressBook',
-  // },
   {
     leftIcon: HomeLocation,
     name: 'Address Book',
@@ -109,4 +58,19 @@ export const AccountData = [
     name: 'Terms And Condition',
     navigation: 'TermsAndConditions',
   },
+  // {
+  //   leftIcon: UsersMore,
+  //   name: 'Search',
+  //   navigation: 'Search',
+  // },
+  // {
+  //   leftIcon: UsersMore,
+  //   name: 'NotificationPage',
+  //   navigation: 'NotificationPage',
+  // },
+  // {
+  //   leftIcon: TermsAndCondition,
+  //   name: 'Royalties',
+  //   navigation: 'Royalties',
+  // },
 ]

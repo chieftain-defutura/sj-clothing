@@ -8,7 +8,7 @@ import LeftArrow from '../../../../assets/icons/LeftArrow'
 import { RoyaltiesData } from '../../../../utils/data/RoyaltiesData'
 
 interface IRoyalties {
-  navigation: any
+  navigation?: any
 }
 
 const Royalties: React.FC<IRoyalties> = ({ navigation }) => {

@@ -1,7 +1,6 @@
 import React from 'react'
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack'
 import BuyNow from './BuyNow'
-import CartPage from './Cart'
 import MyOrders from './MyOrders'
 import MostSearches from './MostSearches'
 import LoginModal from '../../../screens/Modals/Login'
@@ -12,14 +11,12 @@ import TabNavigationRoutes from '../TabNavigation'
 import OrderPlaced from '../../../screens/OrderPlaced'
 import { HeaderLeft } from '../../../components/Header'
 import Premium from '../TabNavigation/Premium'
-import MyPosts from './Account/MyPosts'
 import EditProfile from './Account/EditProfile'
 import AboutUs from './Account/AboutUs'
 import Royalties from './Account/Royalties'
 import FAQ from './Account/FAQ'
 import Customer from './Account/CustomerCare'
 import Accessory from '../../../components/Accessory'
-import PostDetails from './Post/PostDetails'
 import Languages from './Languages'
 import Currency from './Currency'
 import AvatarNavigation from './Avatar'
@@ -28,9 +25,6 @@ import Thankyou from './Thankyou'
 import Locations from '../../../components/Location'
 import { generalStore } from '../../../store/generalStore'
 import AddPost from '../../../components/AddPost'
-import InstaLike from '../../../components/InstaLike'
-import UserPost from './UserPost/UserPost'
-import Emoji from '../../../components/Emoji'
 
 const Stack = createStackNavigator()
 
@@ -65,14 +59,14 @@ const StackNavigationRoutes: React.FC = () => {
       />
 
       <Stack.Screen
-        name='Emoji'
-        component={Emoji}
+        name='Royalties'
+        component={Royalties}
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
       />
 
       <Stack.Screen
-        name='InstaLike'
-        component={InstaLike}
+        name='NotificationPage'
+        component={NotificationPage}
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
       />
 
@@ -81,23 +75,7 @@ const StackNavigationRoutes: React.FC = () => {
         component={AddPost}
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
       />
-      <Stack.Screen
-        name='Cart'
-        component={CartPage}
-        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-      />
 
-      <Stack.Screen
-        name='UserPost'
-        component={UserPost}
-        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-      />
-
-      <Stack.Screen
-        name='MyPosts'
-        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-        component={MyPosts}
-      />
       <Stack.Screen
         name='EditProfile'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
@@ -118,11 +96,7 @@ const StackNavigationRoutes: React.FC = () => {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={Customer}
       />
-      <Stack.Screen
-        name='Royalties'
-        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-        component={Royalties}
-      />
+
       <Stack.Screen
         name='Accessories'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
@@ -138,11 +112,7 @@ const StackNavigationRoutes: React.FC = () => {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
         component={Currency}
       />
-      <Stack.Screen
-        name='PostDetails'
-        options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
-        component={PostDetails}
-      />
+
       <Stack.Screen
         name='TermsAndConditions'
         options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS }}
