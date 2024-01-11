@@ -142,7 +142,12 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
                   styles.iosContainer,
                 ]}
               >
-                <PostCard item={item} handlePostClick={handlePostClick} setEditPost={setEditPost} />
+                <PostCard
+                  setPostId={setPostId}
+                  item={item}
+                  handlePostClick={handlePostClick}
+                  setEditPost={setEditPost}
+                />
 
                 {/* <SliderCountContent>
               <SliderNumber> 
@@ -296,18 +301,18 @@ const styles = StyleSheet.create({
     shadowRadius: 0,
     elevation: 5,
   },
-  iosContainer: {
-    ...Platform.select({
-      ios: {
-        paddingBottom: 80,
-      },
-    }),
-  },
   iosContent: {
     ...Platform.select({
       ios: {
         bottom: 110,
         right: 16,
+      },
+    }),
+  },
+  iosContainer: {
+    ...Platform.select({
+      ios: {
+        paddingBottom: 80,
       },
     }),
   },

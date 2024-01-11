@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef } from 'react'
+import React, { useEffect, useCallback, useRef, SetStateAction } from 'react'
 import {
   Image,
   Dimensions,
@@ -6,7 +6,6 @@ import {
   ImageBackground,
   View,
   TouchableOpacity,
-  Text,
 } from 'react-native'
 import { useState } from 'react'
 import styled from 'styled-components/native'
@@ -38,15 +37,22 @@ const { height, width } = Dimensions.get('window')
 interface IPost {
   item: IUserPost
   handlePostClick: (postId: string) => void
+  setPostId: React.Dispatch<SetStateAction<string>>
   setEditPost: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+interface IPostComment {
+  userId: string
+  icons: string
 }
 
 const AnimatedImage = Animated.createAnimatedComponent(Image)
 
-const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
+const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPostId }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<IUserPost[]>()
+  const [data, setData] = useState<IUserPost[]>([])
+  const [postComment, setPostComment] = useState<IPostComment[]>([])
   const [activeIcon, setActiveIcon] = useState<string | null>(null)
   const [isLiked, setIsLiked] = useState(false)
   const [isFireActive, setIsFireActive] = useState(false)
@@ -56,8 +62,11 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
   const scale = useSharedValue(0)
   const opacity = useSharedValue(1)
   const doubleTapRef = useRef()
-  console.log('data', data)
+  // const heartLength = postComment?.map((f) => f.icons === 'heart')
+  // const fireLength = postComment?.map((f) => f.icons === 'fire')
+  // const likeLength = postComment?.map((f) => f.icons === 'like')
 
+  console.log(postComment)
   const getData = useCallback(async () => {
     try {
       setLoading(true)
@@ -67,6 +76,8 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
         ...(doc.data() as any),
       }))
       setData(fetchProduct)
+      const data = fetchProduct.flatMap((f) => f.postComment)
+      setPostComment(data)
     } catch (error) {
       console.log(error)
       setLoading(false)
@@ -107,7 +118,9 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
 
       if (!userData) return
 
-      const updatedPostComment = [...userData.postComment]
+      const updatedPostComment = Array.isArray(userData.postComment)
+        ? [...userData.postComment]
+        : []
       const userCommentIndex = updatedPostComment.findIndex(
         (comment) => comment.userId === user.uid,
       )
@@ -270,7 +283,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
                   <Like width={20} height={20} />
                 )}
               </ContentView>
-              <LikeText>1k</LikeText>
+              {/* <LikeText>{likeLength.length}</LikeText> */}
             </IconPressable>
 
             <IconPressable>
@@ -292,7 +305,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
                   <Fire width={20} height={20} />
                 )}
               </ContentView>
-              <LikeText>1.2k</LikeText>
+              {/* <LikeText>{fireLength.length}</LikeText> */}
             </IconPressable>
             <IconPressable>
               <ContentView
@@ -313,7 +326,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
                   <Heart width={20} height={20} />
                 )}
               </ContentView>
-              <LikeText>1.5k</LikeText>
+              {/* <LikeText>{heartLength.length}</LikeText> */}
             </IconPressable>
           </CardContent>
 
@@ -326,7 +339,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost }) => {
               flexDirection: 'row',
               gap: 4,
             }}
-            onPress={() => setEditPost(true)}
+            onPress={() => (setEditPost(true), setPostId(item.id))}
           >
             <AddressEditIcon width={20} height={20} />
             <View>

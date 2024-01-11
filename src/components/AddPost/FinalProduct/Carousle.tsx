@@ -18,11 +18,17 @@ interface ICarousle {
       image: string
     }
   }
+  productImage: string
 }
 
 const { height, width } = Dimensions.get('window')
 
-const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo, isImageOrText }) => {
+const Carousle: React.FC<ICarousle> = ({
+  isGiftVideo,
+  setGiftVideo,
+  isImageOrText,
+  productImage,
+}) => {
   useEffect(() => {
     ;(async () => {
       // Request permission to access the user's media library
@@ -57,18 +63,25 @@ const Carousle: React.FC<ICarousle> = ({ isGiftVideo, setGiftVideo, isImageOrTex
       activeDotStyle={{ backgroundColor: COLORS.textSecondaryClr, width: 12, height: 4 }}
     >
       <View style={styles.slide1}>
-        <Image
-          source={require('../../../assets/images/plain-shirt.png')}
-          alt='carousle-img'
-          resizeMode='contain'
-          style={{ width: width / 1.5 }}
-        />
+        {productImage ? (
+          <Image
+            source={{ uri: productImage }}
+            alt=''
+            style={{ objectFit: 'contain', width: width / 1, height: height / 2.5 }}
+          />
+        ) : (
+          <Image
+            source={require('../../../assets/images/plain-shirt.png')}
+            alt='carousle-img'
+            style={{ width: width / 2, height: height / 2.5, objectFit: 'contain' }}
+          />
+        )}
       </View>
       <View style={styles.slide2}>
         {isImageOrText.designs.image ? (
           <Image
-            style={{ objectFit: 'contain', width: width / 1 }}
-            source={{ uri: isImageOrText.designs.image }}
+            style={{ objectFit: 'cover', width: 400, height: 400 }}
+            source={{ uri: `${isImageOrText.designs.image}` }}
             alt='carousle-img'
           />
         ) : (

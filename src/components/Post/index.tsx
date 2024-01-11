@@ -57,7 +57,6 @@ const PostComponent: React.FC<IPostComponent> = ({ navigation }) => {
   }
 
   const FilteredData = data?.find((f) => f.id === postId)
-  console.log('FilteredData', FilteredData)
 
   if (isLoading) {
     return (

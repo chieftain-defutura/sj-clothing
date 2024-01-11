@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Share, TouchableHighlight, View, Dimensions } from 'react-native'
 import styled from 'styled-components/native'
 import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated'
@@ -7,42 +7,16 @@ import LeftArrow from '../../assets/icons/LeftArrow'
 import ShareArrow from '../../assets/icons/ShareArrow'
 import CustomButton from '../Button'
 import { IUserPost } from '../../constant/types'
+import Checkout from '../../pages/Navigation/StackNavigation/Checkout'
 
 interface IPostDetails {
   selectedPost: IUserPost
   onClose: () => void
 }
 
-const { height, width } = Dimensions.get('window')
-
-const ProductData = [
-  {
-    product: 'Product',
-    productName: 'Black blazer',
-  },
-  {
-    product: 'Style',
-    productName: 'Round neck',
-  },
-  {
-    product: 'Quantity',
-    productName: 'x1',
-  },
-  {
-    product: 'Material',
-    productName: '70% Wool, 30% Mohair',
-  },
-  {
-    product: 'Lining',
-    productName: '100% Silk',
-  },
-  {
-    product: 'Price',
-    productName: '450 INR',
-  },
-]
-
 const PostDetails: React.FC<IPostDetails> = ({ selectedPost, onClose }) => {
+  const [openCheckout, setOpenCheckout] = useState(false)
+
   const url = 'https://www.youtube.com/watch?v=lTxn2BuqyzU'
   const share = async () => {
     try {
@@ -62,107 +36,138 @@ const PostDetails: React.FC<IPostDetails> = ({ selectedPost, onClose }) => {
   }
 
   return (
-    <View>
-      <Animated.View
-        entering={SlideInRight.duration(500).delay(200)}
-        exiting={SlideOutRight.duration(500).delay(200)}
-      >
-        <ScrollViewContent>
-          <View>
-            <FlexContent>
-              <TouchableHighlight
-                onPress={() => {
-                  onClose()
-                }}
-                activeOpacity={0.6}
-                underlayColor='rgba(70, 45, 133, 0.2)'
-                style={{ borderRadius: 100, width: 50, height: 50, marginTop: -15, marginLeft: -8 }}
-              >
-                <View>
-                  <IconHoverPressable>
-                    <LeftArrow width={24} height={24} style={{ marginTop: 10 }} />
-                  </IconHoverPressable>
-                </View>
-              </TouchableHighlight>
-              {/* <Pressable onPress={share}>
+    <View style={{ flex: 1 }}>
+      {!openCheckout ? (
+        <Animated.View
+          entering={SlideInRight.duration(500).delay(200)}
+          exiting={SlideOutRight.duration(500).delay(200)}
+        >
+          <ScrollViewContent>
+            <View>
+              <FlexContent>
+                <TouchableHighlight
+                  onPress={() => {
+                    onClose()
+                  }}
+                  activeOpacity={0.6}
+                  underlayColor='rgba(70, 45, 133, 0.2)'
+                  style={{
+                    borderRadius: 100,
+                    width: 50,
+                    height: 50,
+                    marginTop: -15,
+                    marginLeft: -8,
+                  }}
+                >
+                  <View>
+                    <IconHoverPressable>
+                      <LeftArrow width={24} height={24} style={{ marginTop: 10 }} />
+                    </IconHoverPressable>
+                  </View>
+                </TouchableHighlight>
+                {/* <Pressable onPress={share}>
                 <ShareArrow />
               </Pressable> */}
-            </FlexContent>
-            <TShirtImageWrapper>
-              <TShirtImage
-                source={{ uri: selectedPost?.productImage }}
-                alt='post-details-img'
-                style={{ resizeMode: 'contain', width: width, height: height / 2.6 }}
-              />
-              {/* <ThreeSixtyDegreeImage>
+              </FlexContent>
+              <TShirtImageWrapper>
+                <TShirtImage
+                  source={{ uri: selectedPost?.productImage }}
+                  alt='post-details-img'
+                  style={{ resizeMode: 'contain' }}
+                />
+                {/* <ThreeSixtyDegreeImage>
                 <ThreeSixtyDegree width={40} height={40} />
               </ThreeSixtyDegreeImage> */}
-            </TShirtImageWrapper>
-            <Content>
-              {/* <Head allowFontScaling={false}>#Round neck</Head>
+              </TShirtImageWrapper>
+              <Content>
+                {/* <Head allowFontScaling={false}>#Round neck</Head>
               <Para allowFontScaling={false}>
                 Imperdiet in sit rhoncus , eleifend tellus augue lec.Imperdiet in sit rhoncus ,
                 eleifend tellus augue lec.
               </Para> */}
 
-              <Head allowFontScaling={false}>{selectedPost?.style}</Head>
-              <Para allowFontScaling={false}>{selectedPost?.description}</Para>
+                <Head allowFontScaling={false}>{selectedPost?.style}</Head>
+                <Para allowFontScaling={false}>{selectedPost?.description}</Para>
 
-              <Container>
-                <Row>
-                  <Column>
-                    <ProductText allowFontScaling={false}>Product</ProductText>
-                    <ProductName allowFontScaling={false}>{selectedPost?.productName}</ProductName>
-                  </Column>
-                  <Column>
-                    <ProductText allowFontScaling={false}>Style</ProductText>
-                    <ProductName allowFontScaling={false}>{selectedPost?.style}</ProductName>
-                  </Column>
-                  <Column>
-                    <ProductText allowFontScaling={false}>Quantity</ProductText>
-                    <ProductName allowFontScaling={false}>{selectedPost?.productName}</ProductName>
-                  </Column>
-                </Row>
-
-                <Row>
-                  <Column>
-                    <ProductText allowFontScaling={false}>Gender</ProductText>
-                    <ProductName allowFontScaling={false}>{selectedPost?.gender}</ProductName>
-                  </Column>
-                  <Column>
-                    <ProductText allowFontScaling={false}>Size</ProductText>
-                    {Array.isArray(selectedPost?.sizes?.sizeVarient) ? (
-                      selectedPost?.sizes?.sizeVarient.map((sizeData, index) => (
-                        <ProductName key={index} allowFontScaling={false}>
-                          {sizeData.size}
-                        </ProductName>
-                      ))
-                    ) : (
+                <Container>
+                  <Row>
+                    <Column>
+                      <ProductText allowFontScaling={false}>Product</ProductText>
                       <ProductName allowFontScaling={false}>
-                        {selectedPost?.sizes?.sizeVarient.size || '-'}
+                        {selectedPost?.productName}
                       </ProductName>
-                    )}
-                  </Column>
-                  <Column>
-                    <ProductText allowFontScaling={false}>Price</ProductText>
-                    <ProductName allowFontScaling={false}>{selectedPost?.price}</ProductName>
-                  </Column>
-                </Row>
-                <CustomButton
-                  variant='primary'
-                  text='Buy now'
-                  fontFamily='Arvo-Regular'
-                  fontSize={16}
-                  style={{
-                    width: '100%',
-                    marginTop: 10,
-                  }}
-                />
-              </Container>
-            </Content>
-          </View>
-        </ScrollViewContent>
-      </Animated.View>
+                    </Column>
+                    <Column>
+                      <ProductText allowFontScaling={false}>Style</ProductText>
+                      <ProductName allowFontScaling={false}>{selectedPost?.style}</ProductName>
+                    </Column>
+                    <Column>
+                      <ProductText allowFontScaling={false}>Quantity</ProductText>
+                      <ProductName allowFontScaling={false}>
+                        {selectedPost?.productName}
+                      </ProductName>
+                    </Column>
+                  </Row>
+
+                  <Row>
+                    <Column>
+                      <ProductText allowFontScaling={false}>Gender</ProductText>
+                      <ProductName allowFontScaling={false}>{selectedPost?.gender}</ProductName>
+                    </Column>
+                    <Column>
+                      <ProductText allowFontScaling={false}>Size</ProductText>
+                      {Array.isArray(selectedPost?.sizes?.sizeVarient) ? (
+                        selectedPost?.sizes?.sizeVarient.map((sizeData, index) => (
+                          <ProductName key={index} allowFontScaling={false}>
+                            {sizeData.size}
+                          </ProductName>
+                        ))
+                      ) : (
+                        <ProductName allowFontScaling={false}>
+                          {selectedPost?.sizes?.sizeVarient.size || '-'}
+                        </ProductName>
+                      )}
+                    </Column>
+                    <Column>
+                      <ProductText allowFontScaling={false}>Price</ProductText>
+                      <ProductName allowFontScaling={false}>{selectedPost?.price}</ProductName>
+                    </Column>
+                  </Row>
+                  <CustomButton
+                    variant='primary'
+                    text='Buy now'
+                    fontFamily='Arvo-Regular'
+                    fontSize={16}
+                    style={{
+                      width: '100%',
+                      marginTop: 10,
+                    }}
+                    onPress={() => setOpenCheckout(true)}
+                  />
+                </Container>
+              </Content>
+            </View>
+          </ScrollViewContent>
+        </Animated.View>
+      ) : (
+        <View style={{ flex: 1 }}>
+          <Checkout
+            setOpenCheckout={setOpenCheckout}
+            type='Post'
+            color={selectedPost.color}
+            description={selectedPost.description}
+            gender={selectedPost.gender}
+            id={selectedPost.id}
+            offerPrice={selectedPost.offerPrice}
+            price={selectedPost.price}
+            productImage={selectedPost.productImage}
+            productName={selectedPost.productName}
+            size={selectedPost.sizes}
+            style={selectedPost.style}
+            textAndImage={selectedPost.textAndImage}
+          />
+        </View>
+      )}
     </View>
   )
 }

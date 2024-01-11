@@ -82,7 +82,18 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
 
   //size
   const [isSize, setSize] = useState(
-    PostData.isSteps === '5'
+    editData?.sizes
+      ? {
+          country: editData.sizes.country,
+          sizeVarient: [
+            {
+              size: editData.sizes.sizeVarient.size,
+              measurement: editData.sizes.sizeVarient.measurement.toString(),
+              quantity: editData.sizes.sizeVarient.quantity,
+            },
+          ],
+        }
+      : PostData.isSteps === '5'
       ? PostData.isSize
       : {
           country: '',
@@ -145,8 +156,6 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
   const [isGiftVideo, setGiftVideo] = useState<any>(editData?.giftVideo ? editData.giftVideo : null)
   const [product, setProduct] = useState(editData?.product ? editData.product : '')
   const [caption, setCaption] = useState(editData?.caption ? editData.caption : '')
-
-  console.log(editData)
 
   const shake = () => {
     Animated.sequence([
@@ -465,6 +474,7 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
       setOpenCheckout(true)
     }
   }
+
   return (
     <View style={{ flex: 1 }}>
       <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
@@ -610,15 +620,6 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
               />
             )}
             {isSteps === 6 && Design && isOpenDesign && !isDone && (
-              // <SelectDesign
-              //   color={isColor}
-              //   isImageOrText={isImageOrText}
-              //   designs={Design}
-              //   setOpenDesign={setOpenDesign}
-              //   isDone={isDone}
-              //   setDone={setDone}
-              //   setImageOrText={setImageOrText}
-              // />
               <UploadDesign
                 isImageOrText={isImageOrText}
                 setImageOrText={setImageOrText}
@@ -678,6 +679,7 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
             size={{ country: isSize.country, sizeVarient: isSize.sizeVarient[0] }}
             style={isSelectedStyle}
             id={FilteredData?.id}
+            editId={editData?.id}
           />
         )}
       </LinearGradient>

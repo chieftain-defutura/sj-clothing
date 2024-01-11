@@ -63,6 +63,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           isGiftVideo={isGiftVideo}
           setGiftVideo={setGiftVideo}
           isImageOrText={isImageOrText}
+          productImage={data.productImage}
         />
       </View>
 
