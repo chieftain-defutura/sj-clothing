@@ -111,6 +111,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
         // if (doc.data()['animationUpdated']) {
         //   setAnimationUpdated(doc.data()['animationUpdated'])
         // }
+        console.log(doc.data())
         if (doc.data()['avatarLoaded']) {
           setAnimationUpdated(doc.data()['avatarLoaded'])
         }
@@ -130,7 +131,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
 
   const handleLayout = () => {
     if (elementRef.current) {
-      elementRef.current.measure((height, pageY) => {
+      elementRef.current.measure((x, y, width, height, pageX, pageY) => {
         setPageY(pageY)
         setElementHeight(height)
       })
@@ -159,7 +160,6 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   const onClose = () => {
     setFocus(false)
   }
-  console.log('animationUpda', animationUpdated)
 
   return (
     <Animated.View
@@ -175,7 +175,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               }}
               activeOpacity={0.6}
               underlayColor='rgba(70, 45, 133, 0.2)'
-              style={{ borderRadius: 100, width: 50, height: 50, marginLeft: 15 }}
+              style={{ borderRadius: 100, width: 50, height: 50 }}
             >
               <View>
                 <IconHoverPressable>
@@ -246,6 +246,13 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
               </Text>
             </View>
           )}
+
+          {/* {!animationUpdated && (
+            <TextAnimation shake={shake} shakeAnimatiron={shakeAnimation}>
+              Please wait till avatar load
+            </TextAnimation>
+          )} */}
+
           <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
             {!animationUpdated && !webviewLoading && <Loader />}
           </View>

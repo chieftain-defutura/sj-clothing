@@ -147,7 +147,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
 
         <CustomButton
           variant='primary'
-          text={loading ? 'Poasting...' : 'Post'}
+          text={loading ? 'posting...' : 'Post'}
           fontFamily='Arvo-Regular'
           fontSize={16}
           onPress={() => handleSubmit()}
