@@ -360,7 +360,9 @@ const PostComment: React.FC<IPostComment> = ({
   const user = userStore((state) => state.user)
   const [isPressed, setIsPressed] = useState(false)
   const [data, setData] = useState<any>()
-  console.log(data?.postComment.filter((f: { icons: string }) => f.icons === 'like').length)
+  console.log('data', data)
+
+  // console.log(data?.postComment.filter((f: { icons: string }) => f.icons === 'like').length)
   const getData = useCallback(async () => {
     try {
       if (!user) return
@@ -371,11 +373,11 @@ const PostComment: React.FC<IPostComment> = ({
       if (querySnapshot.exists()) {
         const fetchData = querySnapshot.data()
         setData(fetchData)
-        fetchData.postComment.forEach((d: any, index: any) => {
-          if (d.userId === user?.uid) {
-            setActiveIcon(d.icons as string)
-          }
-        })
+        // fetchData.postComment.forEach((d: any, index: any) => {
+        //   if (d.userId === user?.uid) {
+        //     setActiveIcon(d.icons as string)
+        //   }
+        // })
       } else {
         console.log('Document not found')
       }
@@ -440,9 +442,9 @@ const PostComment: React.FC<IPostComment> = ({
             <Like width={20} height={20} />
           )}
         </ContentView>
-        <LikeText>
+        {/* <LikeText>
           {data?.postComment.filter((f: { icons: string }) => f.icons === 'like').length}
-        </LikeText>
+        </LikeText> */}
       </IconPressable>
 
       <IconPressable>
@@ -462,7 +464,7 @@ const PostComment: React.FC<IPostComment> = ({
             <Fire width={20} height={20} />
           )}
         </ContentView>
-        <LikeText>{data?.postComment.filter((f: any) => f.icons === 'fire').length}</LikeText>
+        {/* <LikeText>{data?.postComment.filter((f: any) => f.icons === 'fire').length}</LikeText> */}
       </IconPressable>
       <IconPressable>
         <ContentView
@@ -481,7 +483,7 @@ const PostComment: React.FC<IPostComment> = ({
             <Heart width={20} height={20} />
           )}
         </ContentView>
-        <LikeText>{data?.postComment.filter((f: any) => f.icons === 'heart').length}</LikeText>
+        {/* <LikeText>{data?.postComment.filter((f: any) => f.icons === 'heart').length}</LikeText> */}
       </IconPressable>
     </CardContent>
   )
