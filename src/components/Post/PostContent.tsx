@@ -98,6 +98,7 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
   const getData = useCallback(async () => {
     try {
       setLoading(true)
+
       const ProductRef = await getDocs(collection(db, 'Post'))
       const fetchProduct = ProductRef.docs.map((doc) => ({
         id: doc.id,

@@ -1,10 +1,13 @@
-import { StyleSheet, Text, View, Image, Pressable, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Image, Pressable, Dimensions, Alert } from 'react-native'
 import React, { useEffect } from 'react'
 import Slick from 'react-native-slick'
 import * as ImagePicker from 'expo-image-picker'
 import UndrawGiftBox from '../../../assets/icons/Undraw-gift-box'
 import { COLORS } from '../../../styles/theme'
 import { Video, ResizeMode } from 'expo-av'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import { storage } from '../../../../firebase'
+import { uriToBlob } from '../../Refund'
 
 interface ICarousle {
   isGiftVideo: any
@@ -19,6 +22,7 @@ interface ICarousle {
     }
   }
   productImage: string
+  productId: string
 }
 
 const { height, width } = Dimensions.get('window')
@@ -28,6 +32,7 @@ const Carousle: React.FC<ICarousle> = ({
   setGiftVideo,
   isImageOrText,
   productImage,
+  productId,
 }) => {
   useEffect(() => {
     ;(async () => {
@@ -48,10 +53,31 @@ const Carousle: React.FC<ICarousle> = ({
       })
 
       if (!result.canceled) {
-        result.assets?.map((s) => setGiftVideo(s.uri))
+        const selectedVideoUri = result.assets?.[0]?.uri
+        setGiftVideo(selectedVideoUri)
+        uploadVideo(selectedVideoUri)
       }
     } catch (error) {
       console.error('Error picking a video', error)
+    }
+  }
+
+  const uploadVideo = async (videoUri: string) => {
+    try {
+      console.log('one')
+
+      const blob = await uriToBlob(videoUri)
+      const imageRef = ref(storage, productId)
+      const task = uploadBytesResumable(imageRef, blob)
+
+      await task
+
+      const url = await getDownloadURL(imageRef)
+
+      console.log('videourl:', url)
+    } catch (error) {
+      console.error('Error uploading Video:', error)
+      Alert.alert('Error', 'Failed to upload video')
     }
   }
 
@@ -77,21 +103,15 @@ const Carousle: React.FC<ICarousle> = ({
           />
         )}
       </View>
-      <View style={styles.slide2}>
-        {isImageOrText.designs.image ? (
+      {isImageOrText.designs.image && (
+        <View style={styles.slide2}>
           <Image
             style={{ objectFit: 'cover', width: 400, height: 400 }}
             source={{ uri: `${isImageOrText.designs.image}` }}
             alt='carousle-img'
           />
-        ) : (
-          <Image
-            style={{ objectFit: 'contain', width: width / 1 }}
-            source={require('../../../assets/images/monkey-nft.png')}
-            alt='carousle-img'
-          />
-        )}
-      </View>
+        </View>
+      )}
       <View style={styles.slide3}>
         {isGiftVideo ? (
           <View>

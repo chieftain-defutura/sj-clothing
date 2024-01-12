@@ -42,7 +42,7 @@ interface IPremiumThreeSixtyDegree {
   setFocus: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const { height } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
   setOpenDetails,
@@ -205,7 +205,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
                   backgroundColor: 'transparent',
                 }}
                 source={{
-                  // uri: `http://localhost:5173/premium/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
+                  // uri: http://localhost:5173/premium/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight},
                   uri: `https://sj-threejs-development.netlify.app/premium/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
                 }}
                 scrollEnabled={false}
@@ -257,6 +257,11 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
             {!animationUpdated && !webviewLoading && <Loader />}
           </View>
 
+          {/* {!animationUpdated && (
+            <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
+              Please wait till avatar load
+            </TextAnimation>
+          )} */}
           <CustomButton
             text='Buy Now'
             fontFamily='Arvo-Regular'
