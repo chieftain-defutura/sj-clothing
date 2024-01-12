@@ -117,6 +117,12 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
     getData()
   }, [getData])
 
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      getData()
+    })
+  }, [])
+
   return (
     <>
       {loading ? (
@@ -150,8 +156,8 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
                 />
 
                 {/* <SliderCountContent>
-              <SliderNumber> 
-                
+              <SliderNumber>
+
                 {currentIndex + 1}/{item.images.length}
               </SliderNumber>
             </SliderCountContent> */}
@@ -168,8 +174,8 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
                       </Pressable>
                     </FlexContent>
                     <Content>
-                      <PostCardText>{item.productName}</PostCardText>
-                      <PostDescription>{item.description}</PostDescription>
+                      <PostCardText>{item.product}</PostCardText>
+                      <PostDescription>{item.caption}</PostDescription>
                     </Content>
                   </PostCardContent>
                 </Animated.View>

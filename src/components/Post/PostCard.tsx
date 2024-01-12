@@ -6,6 +6,7 @@ import {
   ImageBackground,
   View,
   TouchableOpacity,
+  Text,
 } from 'react-native'
 import { useState } from 'react'
 import styled from 'styled-components/native'
@@ -17,7 +18,8 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated'
-import { TapGestureHandler } from 'react-native-gesture-handler'
+import { storage } from '../../../firebase'
+import { ScrollView, TapGestureHandler } from 'react-native-gesture-handler'
 import { LinearGradient } from 'expo-linear-gradient'
 import { updateDoc, doc, getDoc } from 'firebase/firestore/lite'
 import { COLORS, FONT_FAMILY, gradientColors } from '../../styles/theme'
@@ -32,6 +34,8 @@ import Heart from '../../assets/icons/heart'
 import AddressEditIcon from '../../assets/icons/AddressIcon/AddressEditIcon'
 import { userStore } from '../../store/userStore'
 import { Video, ResizeMode } from 'expo-av'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import Slick from 'react-native-slick'
 
 const { height, width } = Dimensions.get('window')
 
@@ -59,6 +63,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
   const scale = useSharedValue(0)
   const opacity = useSharedValue(1)
   const doubleTapRef = useRef()
+  const [vidUrl, setVidUrl] = useState<any>(null)
 
   const handleIconPress = async (iconName: string) => {
     setActiveIcon(iconName)
@@ -153,118 +158,135 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
   let productImg = []
   productImg.push(item.productImage)
 
-  console.log('dataaaa:giftVideo ', item.giftVideo)
+  const getVideoUrl = async () => {
+    const imageRef = ref(storage, item.productId)
+    const url = await getDownloadURL(imageRef)
+    setVidUrl(url)
+  }
+
+  useEffect(() => {
+    getVideoUrl()
+  }, [])
 
   return (
-    <SwiperFlatList
-      data={productImg}
-      horizontal
-      index={currentIndex}
-      onChangeIndex={({ index }) => setCurrentIndex(index)}
-      showPagination={false}
-      renderItem={({ item: imageUrl }) => (
-        <LinearGradient colors={gradientColors}>
-          <TapGestureHandler waitFor={doubleTapRef} onActivated={onSingleTap}>
-            <TapGestureHandler
-              maxDelayMs={250}
-              ref={doubleTapRef}
-              numberOfTaps={2}
-              onActivated={onDoubleTap}
-            >
-              <Animated.View style={styles.container}>
-                <ImageBackground
-                  source={{ uri: imageUrl }}
-                  style={{
-                    height: height,
-                    width: width - 19,
-                  }}
-                  resizeMode='contain'
-                >
-                  <View style={styles.image}>
-                    <AnimatedImage
-                      source={require('../../assets/images/AccountImage/fire-img.png')}
-                      style={[
-                        {
-                          shadowOffset: { width: 0, height: 20 },
-                          shadowOpacity: 0.35,
-                          shadowRadius: 35,
-                          // tintColor: '#DB00FF',
-                          width: width / 4,
-                        },
-                        rStyle,
-                      ]}
-                      resizeMode={'center'}
-                    />
-                  </View>
-                  <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 0, y: 1 }}
-                    colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.38)']}
-                    style={styles.linearGradient}
-                  ></LinearGradient>
-                </ImageBackground>
-              </Animated.View>
-            </TapGestureHandler>
+    <Slick
+      showsButtons={false}
+      dotStyle={{ width: 4, height: 4, backgroundColor: COLORS.slickDotClr }}
+      activeDotStyle={{ backgroundColor: COLORS.textSecondaryClr, width: 12, height: 4 }}
+    >
+      <LinearGradient colors={gradientColors} style={styles.slide1}>
+        <TapGestureHandler waitFor={doubleTapRef} onActivated={onSingleTap}>
+          <TapGestureHandler
+            maxDelayMs={250}
+            ref={doubleTapRef}
+            numberOfTaps={2}
+            onActivated={onDoubleTap}
+          >
+            <Animated.View style={styles.container}>
+              <ImageBackground
+                source={{ uri: item.productImage }}
+                style={{
+                  height: height,
+                  width: width - 19,
+                }}
+                resizeMode='contain'
+              >
+                <View style={styles.image}>
+                  <AnimatedImage
+                    source={require('../../assets/images/AccountImage/fire-img.png')}
+                    style={[
+                      {
+                        shadowOffset: { width: 0, height: 20 },
+                        shadowOpacity: 0.35,
+                        shadowRadius: 35,
+                        // tintColor: '#DB00FF',
+                        width: width / 4,
+                      },
+                      rStyle,
+                    ]}
+                    resizeMode={'center'}
+                  />
+                </View>
+                <LinearGradient
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 0, y: 1 }}
+                  colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.38)']}
+                  style={styles.linearGradient}
+                ></LinearGradient>
+              </ImageBackground>
+            </Animated.View>
           </TapGestureHandler>
+        </TapGestureHandler>
 
-          <PostComment
-            activeIcon={activeIcon}
-            handleIconPress={handleIconPress}
-            isFireActive={isFireActive}
-            isHeartActive={isHeartActive}
-            isLiked={isLiked}
-            userId={''}
-            icons={''}
-            id={item.id}
-            setActiveIcon={setActiveIcon}
-            comments={item.postComment}
-          />
+        <PostComment
+          activeIcon={activeIcon}
+          handleIconPress={handleIconPress}
+          isFireActive={isFireActive}
+          isHeartActive={isHeartActive}
+          isLiked={isLiked}
+          userId={''}
+          icons={''}
+          id={item.id}
+          setActiveIcon={setActiveIcon}
+          comments={item.postComment}
+        />
 
-          {item.userId === user?.uid && (
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                right: 22,
-                top: 22,
-                display: 'flex',
-                flexDirection: 'row',
-                gap: 4,
-              }}
-              onPress={() => (setEditPost(true), setPostId(item.id))}
-            >
-              <AddressEditIcon width={20} height={20} />
-              <View>
-                <EditText>Edit</EditText>
-              </View>
-            </TouchableOpacity>
-          )}
+        {item.userId === user?.uid && (
           <TouchableOpacity
-            onPress={() => {
-              handlePostClick(item.id)
-            }}
             style={{
               position: 'absolute',
               right: 22,
-              bottom: 18,
+              top: 22,
               display: 'flex',
               flexDirection: 'row',
               gap: 4,
             }}
+            onPress={() => (setEditPost(true), setPostId(item.id))}
           >
-            <LinearGradient
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              colors={['#462D85', '#DB00FF']}
-              style={{ borderRadius: 30 }}
-            >
-              <ViewDetailsBtn>
-                <ViewDetailsText>View Details</ViewDetailsText>
-              </ViewDetailsBtn>
-            </LinearGradient>
+            <AddressEditIcon width={20} height={20} />
+            <View>
+              <EditText>Edit</EditText>
+            </View>
           </TouchableOpacity>
-        </LinearGradient>
+        )}
+        <TouchableOpacity
+          onPress={() => {
+            handlePostClick(item.id)
+          }}
+          style={{
+            position: 'absolute',
+            right: 22,
+            bottom: 18,
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 4,
+          }}
+        >
+          <LinearGradient
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            colors={['#462D85', '#DB00FF']}
+            style={{ borderRadius: 30 }}
+          >
+            <ViewDetailsBtn>
+              <ViewDetailsText>View Details</ViewDetailsText>
+            </ViewDetailsBtn>
+          </LinearGradient>
+        </TouchableOpacity>
+      </LinearGradient>
+      {vidUrl && (
+        <View style={styles.slide2}>
+          <Video
+            source={{ uri: vidUrl }}
+            shouldPlay
+            style={{ width: width / 1.1, height: height / 2.5 }}
+            isLooping
+            resizeMode={ResizeMode.COVER}
+            useNativeControls={false}
+          />
+        </View>
       )}
-    />
+    </Slick>
   )
 }
 
@@ -280,6 +302,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  slide1: {
+    flex: 1,
+  },
+  slide2: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -360,7 +390,6 @@ const PostComment: React.FC<IPostComment> = ({
   const user = userStore((state) => state.user)
   const [isPressed, setIsPressed] = useState(false)
   const [data, setData] = useState<any>()
-  console.log('data', data)
 
   // console.log(data?.postComment.filter((f: { icons: string }) => f.icons === 'like').length)
   const getData = useCallback(async () => {
@@ -373,11 +402,11 @@ const PostComment: React.FC<IPostComment> = ({
       if (querySnapshot.exists()) {
         const fetchData = querySnapshot.data()
         setData(fetchData)
-        // fetchData.postComment.forEach((d: any, index: any) => {
-        //   if (d.userId === user?.uid) {
-        //     setActiveIcon(d.icons as string)
-        //   }
-        // })
+        fetchData.postComment.forEach((d: any, index: any) => {
+          if (d.userId === user?.uid) {
+            setActiveIcon(d.icons as string)
+          }
+        })
       } else {
         console.log('Document not found')
       }
@@ -390,13 +419,13 @@ const PostComment: React.FC<IPostComment> = ({
     getData()
   }, [getData])
 
-  // useEffect(() => {
-  //   if (!activeIcon) {
-  //     const data = comments.find((f) => f.userId === user?.uid)
-  //     console.log(data?.icons)
-  //     setActiveIcon(data?.icons as string)
-  //   }
-  // })
+  useEffect(() => {
+    if (!activeIcon) {
+      const data = comments.find((f) => f.userId === user?.uid)
+      console.log(data?.icons)
+      setActiveIcon(data?.icons as string)
+    }
+  })
 
   const handlePressIn = () => {
     setIsPressed(true)
@@ -442,9 +471,9 @@ const PostComment: React.FC<IPostComment> = ({
             <Like width={20} height={20} />
           )}
         </ContentView>
-        {/* <LikeText>
+        <LikeText>
           {data?.postComment.filter((f: { icons: string }) => f.icons === 'like').length}
-        </LikeText> */}
+        </LikeText>
       </IconPressable>
 
       <IconPressable>
@@ -464,7 +493,7 @@ const PostComment: React.FC<IPostComment> = ({
             <Fire width={20} height={20} />
           )}
         </ContentView>
-        {/* <LikeText>{data?.postComment.filter((f: any) => f.icons === 'fire').length}</LikeText> */}
+        <LikeText>{data?.postComment.filter((f: any) => f.icons === 'fire').length}</LikeText>
       </IconPressable>
       <IconPressable>
         <ContentView
@@ -483,7 +512,7 @@ const PostComment: React.FC<IPostComment> = ({
             <Heart width={20} height={20} />
           )}
         </ContentView>
-        {/* <LikeText>{data?.postComment.filter((f: any) => f.icons === 'heart').length}</LikeText> */}
+        <LikeText>{data?.postComment.filter((f: any) => f.icons === 'heart').length}</LikeText>
       </IconPressable>
     </CardContent>
   )
