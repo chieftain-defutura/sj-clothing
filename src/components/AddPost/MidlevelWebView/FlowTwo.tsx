@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
-import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, Dimensions, StyleSheet, View, Text } from 'react-native'
 import { doc, setDoc } from 'firebase/firestore/lite'
 import uuid from 'react-native-uuid'
 import {

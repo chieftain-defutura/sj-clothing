@@ -140,9 +140,9 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
       setWebLoader(false)
     }
   }, [isImageOrText])
-  console.log('webLoader', webLoader)
-  console.log('webLoading', webviewLoading)
-  console.log(animationUpdated)
+  // console.log('webLoader', webLoader)
+  // console.log('webLoading', webviewLoading)
+  // console.log(animationUpdated)
   return (
     <View
       style={{
