@@ -11,6 +11,7 @@ interface SubscriptionModalProps {
   isVisible: boolean
   onClose: () => void
   navigation: any
+  setOpenPost: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const ValidationSchema = Yup.object().shape({})
@@ -19,6 +20,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
   isVisible,
   onClose,
   navigation,
+  setOpenPost,
 }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
@@ -258,7 +260,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                 variant='primary'
                 text='Pay now'
                 onPress={() => {
-                  navigation.navigate('AddPost'), onClose()
+                  setOpenPost(true), onClose()
                 }}
                 fontFamily='Arvo-Regular'
                 buttonStyle={[styles.submitBtn]}

@@ -1,13 +1,15 @@
 import styled from 'styled-components/native'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import { Svg, Circle } from 'react-native-svg'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import Carousle from './Carousle'
 import CustomButton from '../../Button'
 import { ScrollView, StyleSheet, Text, Dimensions, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { userStore } from '../../../store/userStore'
 import { useTranslation } from 'react-i18next'
 import { IMidlevel } from '../../../constant/types'
+import FinalViewPostTooltip from '../../Tooltips/Post/FinalViewPostTooltip'
 
 interface IFinalProduct {
   style: string
@@ -55,6 +57,24 @@ const FinalProduct: React.FC<IFinalProduct> = ({
   const currency = userStore((state) => state.currency)
   const rate = userStore((state) => state.rate)
   const Description = data.description.split(',')
+  const [toolTip, showToolTip] = useState(false)
+
+  const isShowToolTip = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showFinalProductTooltip')
+
+      if (data !== '24') {
+        AsyncStorage.setItem('showFinalProductTooltip', '24')
+        showToolTip(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    isShowToolTip()
+  }, [isShowToolTip])
 
   return (
     <ScrollView style={styles.selectContainer}>
@@ -64,6 +84,7 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           setGiftVideo={setGiftVideo}
           isImageOrText={isImageOrText}
           productImage={data.productImage}
+          productId={data.id}
         />
       </View>
 
@@ -354,6 +375,12 @@ const FinalProduct: React.FC<IFinalProduct> = ({
           ))}
         </View>
       </ScrollView>
+      <FinalViewPostTooltip
+        isVisible={toolTip}
+        onClose={() => {
+          showToolTip(false)
+        }}
+      />
     </ScrollView>
   )
 }

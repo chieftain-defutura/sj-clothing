@@ -56,7 +56,7 @@ const FinalViewTooltip: React.FC<IFinalViewTooltip> = ({ isVisible, onClose }) =
               </View>
             </Content>
           </View>
-          <View style={[{ position: 'absolute', top: -14, right: 30, zIndex: -1000 }, styles.icon]}>
+          <View style={[{ position: 'absolute', top: -14, right: 20, zIndex: -1000 }, styles.icon]}>
             <TooltipTopArrowIcon width={26} height={46} />
           </View>
         </View>

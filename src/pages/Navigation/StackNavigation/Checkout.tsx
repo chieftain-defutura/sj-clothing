@@ -30,6 +30,7 @@ import { useNavigation } from '@react-navigation/native'
 import { API_URL } from '../../../utils/config'
 import { MidlevelStore } from '../../../store/midlevelStore'
 import CheckoutTooltip from '../../../components/Tooltips/CheckoutTooltip'
+import AlertModal from '../../../screens/Modals/AlertModal'
 
 const { width } = Dimensions.get('window')
 
@@ -74,6 +75,7 @@ const Checkout: React.FC<ICheckout> = ({
   const [isLoading, setIsLoading] = useState(false)
   const [addressPressed, setAddressPressed] = useState(false)
   const [deliveryFees, setDeliveryFees] = useState<IDeliveryfees>()
+  const [errorMessage, setErrorMessage] = useState('')
   const rate = userStore((state) => state.rate)
   const user = userStore((state) => state.user)
   const currency = userStore((state) => state.currency)
@@ -174,7 +176,8 @@ const Checkout: React.FC<ICheckout> = ({
 
       const address = addr
       if (!address) {
-        Alert.alert('Please add address first')
+        // Alert.alert('Please add address first')
+        setErrorMessage('Please add address first')
         return
       }
 
@@ -205,7 +208,7 @@ const Checkout: React.FC<ICheckout> = ({
       const data = await response.json()
 
       if (!response.ok) {
-        return Alert.alert(data.message)
+        return setErrorMessage(data.message as string)
       }
 
       //1. order create
@@ -297,7 +300,7 @@ const Checkout: React.FC<ICheckout> = ({
 
       if (initSheet.error) {
         console.error(initSheet.error)
-        return Alert.alert(initSheet.error.message)
+        return setErrorMessage(initSheet.error?.message as string)
       }
 
       const presentSheet = await stripe.presentPaymentSheet({
@@ -308,8 +311,9 @@ const Checkout: React.FC<ICheckout> = ({
       //   clientSecret: data.clientSecret,
       // })
       if (presentSheet.error) {
-        console.error(presentSheet.error)
-        return Alert.alert(presentSheet.error.message)
+        // console.error('presentSheet.error', presentSheet.error)
+        setErrorMessage(presentSheet.error?.message as string)
+        return
       }
       {
         type === 'midlevel' &&
@@ -355,7 +359,8 @@ const Checkout: React.FC<ICheckout> = ({
       // Alert.alert('Payment successfully! Thank you.')
     } catch (err) {
       console.error(err)
-      Alert.alert('failed!')
+      // Alert.alert('failed!')
+      setErrorMessage('failed')
     } finally {
       setIsLoading(false)
     }
@@ -396,6 +401,12 @@ const Checkout: React.FC<ICheckout> = ({
   useEffect(() => {
     getDeliveryFees()
   }, [getDeliveryFees])
+
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     setErrorMessage('')
+  //   }, 5000)
+  // })
 
   return (
     <View style={{ flex: 1 }}>
@@ -566,6 +577,7 @@ const Checkout: React.FC<ICheckout> = ({
           showToolTip(false)
         }}
       />
+      {errorMessage && <AlertModal children={errorMessage} close={() => setErrorMessage('')} />}
     </View>
   )
 }

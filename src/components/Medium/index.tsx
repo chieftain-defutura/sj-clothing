@@ -636,7 +636,12 @@ const Medium = () => {
               onClose={() => setForgotmail(false)}
             />
           )}
-          {openModal && <AlertModal />}
+          {openModal && (
+            <AlertModal
+              children={`Hi ${user?.displayName}, Are you sure you want to delete your account?`}
+              close={() => setOpenModal(false)}
+            />
+          )}
         </View>
       )}
       {openCheckout && FilteredData && (

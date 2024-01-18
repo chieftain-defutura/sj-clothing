@@ -64,15 +64,16 @@ const UploadDesign: React.FC<IUploadDesign> = ({
   const uploadImage = async (uri: string) => {
     try {
       setLoading(true)
-      console.log(color)
+
       const fileContent = await FileSystem.readAsStringAsync(uri, {
         encoding: FileSystem.EncodingType.Base64,
       })
-      const { data } = await axios.post('http://192.168.29.25:3001/canvas', {
+      const { data } = await axios.post('https://ruby-bull-robe.cyclic.app/canvas', {
         color: color,
         image: `data:image/jpeg;base64,${fileContent}`,
       })
 
+      console.log(fileContent)
       setImage(data.base64Image)
 
       setImageOrText({

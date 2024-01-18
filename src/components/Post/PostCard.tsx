@@ -6,6 +6,7 @@ import {
   ImageBackground,
   View,
   TouchableOpacity,
+  Text,
 } from 'react-native'
 import { useState } from 'react'
 import styled from 'styled-components/native'
@@ -17,9 +18,10 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated'
-import { TapGestureHandler } from 'react-native-gesture-handler'
+import { storage } from '../../../firebase'
+import { ScrollView, TapGestureHandler } from 'react-native-gesture-handler'
 import { LinearGradient } from 'expo-linear-gradient'
-import { getDocs, collection, updateDoc, doc, getDoc } from 'firebase/firestore/lite'
+import { updateDoc, doc, getDoc } from 'firebase/firestore/lite'
 import { COLORS, FONT_FAMILY, gradientColors } from '../../styles/theme'
 import { IUserPost } from '../../constant/types'
 import { db } from '../../../firebase'
@@ -31,6 +33,9 @@ import IsHeartIcon from '../../assets/icons/PostPageIcon/isHeartIcon'
 import Heart from '../../assets/icons/heart'
 import AddressEditIcon from '../../assets/icons/AddressIcon/AddressEditIcon'
 import { userStore } from '../../store/userStore'
+import { Video, ResizeMode } from 'expo-av'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import Slick from 'react-native-slick'
 
 const { height, width } = Dimensions.get('window')
 
@@ -91,8 +96,6 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
         icons: iconName,
       }
 
-      console.log('newComment', newComment)
-
       if (userCommentIndex === -1) {
         updatedPostComment.push(newComment)
       } else {
@@ -107,27 +110,6 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
       console.error('Error:', error)
     }
   }
-
-  // const handleIconPress = async (iconName: string) => {
-  //   setActiveIcon(iconName)
-
-  //   if (!user) return
-  //   const userDocRef = doc(db, 'Post', user.uid)
-  //   const userDoc = await getDoc(userDocRef)
-  //   const userData = userDoc.data()
-
-  //   if (!userData) return
-
-  //   console.log('userData', userData)
-
-  //   if (iconName === 'like') {
-  //     setIsLiked((prevIsLiked) => !prevIsLiked)
-  //   } else if (iconName === 'fire') {
-  //     setIsFireActive((prev) => !prev)
-  //   } else if (iconName === 'heart') {
-  //     setIsHeartActive((prev) => !prev)
-  //   }
-  // }
 
   const rStyle = useAnimatedStyle(() => ({
     transform: [{ scale: Math.max(scale.value, 0) }],
@@ -154,15 +136,28 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
   let productImg = []
   productImg.push(item.productImage)
 
+  // const getVideoUrl = async () => {
+  //   const imageRef = ref(storage, item.productId)
+  //   const url = await getDownloadURL(imageRef)
+  //   setVidUrl(url)
+  // }
+
+  // useEffect(() => {
+  //   getVideoUrl()
+  // }, [getVideoUrl])
+
   return (
-    <SwiperFlatList
-      data={productImg}
-      horizontal
-      index={currentIndex}
-      onChangeIndex={({ index }) => setCurrentIndex(index)}
-      showPagination={false}
-      renderItem={({ item: imageUrl }) => (
-        <LinearGradient colors={gradientColors}>
+    <View style={{ position: 'relative', flex: 1, zIndex: 1 }}>
+      <Slick
+        showsButtons={false}
+        dotStyle={{ width: 4, height: 4, backgroundColor: COLORS.slickDotClr }}
+        activeDotStyle={{
+          backgroundColor: COLORS.textSecondaryClr,
+          width: 12,
+          height: 4,
+        }}
+      >
+        <LinearGradient colors={gradientColors} style={styles.slide1}>
           <TapGestureHandler waitFor={doubleTapRef} onActivated={onSingleTap}>
             <TapGestureHandler
               maxDelayMs={250}
@@ -172,7 +167,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
             >
               <Animated.View style={styles.container}>
                 <ImageBackground
-                  source={{ uri: imageUrl }}
+                  source={{ uri: item.productImage }}
                   style={{
                     height: height,
                     width: width - 19,
@@ -195,75 +190,107 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
                       resizeMode={'center'}
                     />
                   </View>
-                  <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 0, y: 1 }}
-                    colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.38)']}
-                    style={styles.linearGradient}
-                  ></LinearGradient>
                 </ImageBackground>
               </Animated.View>
             </TapGestureHandler>
           </TapGestureHandler>
-
-          <PostComment
-            activeIcon={activeIcon}
-            handleIconPress={handleIconPress}
-            isFireActive={isFireActive}
-            isHeartActive={isHeartActive}
-            isLiked={isLiked}
-            userId={''}
-            icons={''}
-            id={item.id}
-            setActiveIcon={setActiveIcon}
-            comments={item.postComment}
-          />
-
-          {item.userId === user?.uid && (
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                right: 22,
-                top: 22,
-                display: 'flex',
-                flexDirection: 'row',
-                gap: 4,
-              }}
-              onPress={() => (setEditPost(true), setPostId(item.id))}
-            >
-              <AddressEditIcon width={20} height={20} />
-              <View>
-                <EditText>Edit</EditText>
-              </View>
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            onPress={() => {
-              handlePostClick(item.id)
-            }}
-            style={{
-              position: 'absolute',
-              right: 22,
-              bottom: 18,
-              display: 'flex',
-              flexDirection: 'row',
-              gap: 4,
-            }}
-          >
-            <LinearGradient
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              colors={['#462D85', '#DB00FF']}
-              style={{ borderRadius: 30 }}
-            >
-              <ViewDetailsBtn>
-                <ViewDetailsText>View Details</ViewDetailsText>
-              </ViewDetailsBtn>
-            </LinearGradient>
-          </TouchableOpacity>
         </LinearGradient>
+
+        {item.giftVideo && (
+          <View style={styles.slide2}>
+            <Video
+              source={{ uri: item.giftVideo }}
+              shouldPlay
+              style={{ width: width / 1.1, height: height / 2.5 }}
+              isLooping
+              resizeMode={ResizeMode.COVER}
+              useNativeControls={false}
+            />
+          </View>
+        )}
+        {item.textAndImage.designs.image && (
+          <View style={styles.slide2}>
+            <Image
+              source={{ uri: item.textAndImage.designs.image as string }}
+              style={{ width: width / 1.1, height: height / 2.5 }}
+              resizeMode={ResizeMode.COVER}
+            />
+          </View>
+        )}
+      </Slick>
+      <View style={{ position: 'absolute', top: height / 1.5, zIndex: 1000 }}>
+        <PostComment
+          activeIcon={activeIcon}
+          handleIconPress={handleIconPress}
+          isFireActive={isFireActive}
+          isHeartActive={isHeartActive}
+          isLiked={isLiked}
+          userId={''}
+          icons={''}
+          id={item.id}
+          setActiveIcon={setActiveIcon}
+          comments={item.postComment}
+        />
+      </View>
+
+      {item.userId === user?.uid && (
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            right: 22,
+            top: 22,
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 4,
+            zIndex: 100,
+          }}
+          onPress={() => (setEditPost(true), setPostId(item.id))}
+        >
+          <AddressEditIcon width={20} height={20} />
+          <View>
+            <EditText>Edit</EditText>
+          </View>
+        </TouchableOpacity>
       )}
-    />
+      <TouchableOpacity
+        onPress={() => {
+          handlePostClick(item.id)
+        }}
+        style={{
+          position: 'absolute',
+          right: 22,
+          top: height / 1.5,
+          display: 'flex',
+          flexDirection: 'row',
+          gap: 4,
+          zIndex: 100,
+        }}
+      >
+        <LinearGradient
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          colors={['#462D85', '#DB00FF']}
+          style={{ borderRadius: 30 }}
+        >
+          <ViewDetailsBtn>
+            <ViewDetailsText>View Details</ViewDetailsText>
+          </ViewDetailsBtn>
+        </LinearGradient>
+      </TouchableOpacity>
+      <LinearGradient
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.38)']}
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          zIndex: -1,
+        }}
+      ></LinearGradient>
+    </View>
   )
 }
 
@@ -283,15 +310,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  slide1: {
+    flex: 1,
+  },
+  slide2: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })
 
 export default PostCard
 
 const CardContent = styled.View`
-  position: absolute;
   padding-left: 16px;
   display: flex;
-  bottom: 14px;
   flex-direction: row;
   gap: 8px;
 `
@@ -359,7 +392,8 @@ const PostComment: React.FC<IPostComment> = ({
   const user = userStore((state) => state.user)
   const [isPressed, setIsPressed] = useState(false)
   const [data, setData] = useState<any>()
-  console.log(data?.postComment.filter((f: { icons: string }) => f.icons === 'like').length)
+
+  // console.log(data?.postComment.filter((f: { icons: string }) => f.icons === 'like').length)
   const getData = useCallback(async () => {
     try {
       if (!user) return
@@ -387,13 +421,12 @@ const PostComment: React.FC<IPostComment> = ({
     getData()
   }, [getData])
 
-  // useEffect(() => {
-  //   if (!activeIcon) {
-  //     const data = comments.find((f) => f.userId === user?.uid)
-  //     console.log(data?.icons)
-  //     setActiveIcon(data?.icons as string)
-  //   }
-  // })
+  useEffect(() => {
+    if (!activeIcon) {
+      const data = comments.find((f) => f.userId === user?.uid)
+      setActiveIcon(data?.icons as string)
+    }
+  })
 
   const handlePressIn = () => {
     setIsPressed(true)

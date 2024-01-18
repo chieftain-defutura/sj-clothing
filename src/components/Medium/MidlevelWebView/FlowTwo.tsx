@@ -114,8 +114,7 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({
           docObj.image = isImageOrText.designs.originalImage
         }
       }
-      console.log(tempUid)
-      console.log(docObj)
+
       await setDoc(docRef, docObj)
 
       setUid(tempUid)
@@ -137,7 +136,6 @@ const FlowTwo: React.FC<IFlowTwoProps> = ({
       })
     }
   }
-  console.log(animationUpdated)
   return (
     <View
       style={{

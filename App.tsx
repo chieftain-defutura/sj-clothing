@@ -109,7 +109,7 @@ SplashScreen.preventAutoHideAsync()
 const App: React.FC = () => {
   const loadedRef = useRef(false)
   const [loading, setLoading] = useState(true)
-  const currency = userStore((state) => state.currency)
+  const confirmDetails = userStore((state) => state.confirmDetails)
   const language = userStore((state) => state.language)
   const updateAccessory = generalStore((state) => state.updateAccessory)
   const updatePremiumText = generalStore((state) => state.updatePremiumText)
@@ -265,6 +265,21 @@ const App: React.FC = () => {
     getMidlevelData()
   }, [getMidlevelData])
 
+  const getConfirmDetails = useCallback(async () => {
+    const confirmDetails = await AsyncStorage.getItem('confirmDetails')
+    const parseData = JSON.parse(confirmDetails as string)
+    if (!parseData) return
+    if (parseData.confirmDetails === true) {
+      updateConfirmDetails(true)
+      updateAvatar(parseData.avatar)
+      updateLanguage(parseData.language)
+      updateCurrency(parseData.currency)
+    }
+  }, [])
+
+  useEffect(() => {
+    getConfirmDetails()
+  }, [getConfirmDetails])
   const getPostData = useCallback(async () => {
     const postSteps = await AsyncStorage.getItem('post-steps')
     const parseData = JSON.parse(postSteps as string)

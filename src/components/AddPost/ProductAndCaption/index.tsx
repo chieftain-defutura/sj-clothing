@@ -3,11 +3,12 @@ import styled from 'styled-components/native'
 import { StyleSheet, View } from 'react-native'
 import { COLORS } from '../../../styles/theme'
 import CustomButton from '../../Button'
-import { addDoc, collection, doc, updateDoc } from 'firebase/firestore/lite'
+import { addDoc, collection, doc, updateDoc, Timestamp } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { useNavigation } from '@react-navigation/native'
+import { PostStore } from '../../../store/postCreationStore'
 
 interface IProductAndCaption {
   setProduct: React.Dispatch<React.SetStateAction<string>>
@@ -44,6 +45,7 @@ interface IProductAndCaption {
   productName?: string
   productImage?: any
   setOpenCheckout: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenPost?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const ProductAndCaption: React.FC<IProductAndCaption> = ({
@@ -65,11 +67,15 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
   editId,
   isGiftVideo,
   setOpenCheckout,
+  setOpenPost,
 }) => {
   const user = userStore((state) => state.user)
   const navigation = useNavigation()
   const [errorMessage, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const UpdatePost = PostStore((state) => state.updatepost)
+
+  console.log(isGiftVideo)
   useEffect(() => {
     if (errorMessage) {
       setInterval(() => {
@@ -77,6 +83,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
       }, 3000)
     }
   })
+
   const handleSubmit = async () => {
     try {
       setLoading(true)
@@ -121,10 +128,52 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
             product: product,
             caption: caption,
             postComment: [],
+            createdAt: Timestamp.now(),
+            updateAt: Timestamp.now(),
+          })
+          UpdatePost({
+            isSteps: '1',
+            isSelectedStyle: '',
+            isSize: {
+              country: '',
+              sizeVarient: [
+                {
+                  size: '',
+                  measurement: '',
+                  quantity: '',
+                },
+              ],
+            },
+            isColor: '',
+            isColorName: '',
+            isImageOrText: {
+              title: '',
+              position: '',
+              rate: 0,
+              designs: {
+                hashtag: '',
+                image: '',
+                originalImage: '',
+              },
+            },
+            tempIsImageOrText: {
+              title: '',
+              position: '',
+              rate: 0,
+              designs: {
+                hashtag: '',
+                image: '',
+                originalImage: '',
+              },
+            },
+            product: '',
+            caption: '',
+            uid: '',
           })
         }
+
         setOpenCheckout(false)
-        navigation.navigate('Stack')
+        setOpenPost?.(false)
       }
       setLoading(false)
     } catch (error) {
@@ -148,6 +197,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
             value={product}
             onChangeText={(text) => setProduct(text)}
             placeholderTextColor={COLORS.SecondaryTwo}
+            style={{ color: '#462D85' }}
           />
         </View>
         <View>
@@ -157,20 +207,26 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
             value={caption}
             onChangeText={(text) => setCaption(text)}
             placeholderTextColor={COLORS.SecondaryTwo}
+            style={{ color: '#462D85' }}
           />
         </View>
       </SignUpContainer>
       <View style={{ flex: 1 }}>
         {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
-
         <CustomButton
           variant='primary'
           text={loading ? 'Posting...' : 'Post'}
           fontFamily='Arvo-Regular'
           fontSize={16}
           onPress={() => handleSubmit()}
-          buttonStyle={[styles.submitBtn]}
           disabled={loading}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            paddingHorizontal: 28,
+          }}
         />
       </View>
     </View>

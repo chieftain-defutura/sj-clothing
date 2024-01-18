@@ -15,17 +15,26 @@ import SubscriptionModal from '../../screens/Modals/Subscription'
 
 interface IPostComponent {
   navigation: any
+  editPost: boolean
+  openPost: boolean
+  setEditPost: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenPost: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const { height } = Dimensions.get('window')
 
-const PostComponent: React.FC<IPostComponent> = ({ navigation }) => {
+const PostComponent: React.FC<IPostComponent> = ({
+  navigation,
+  setEditPost,
+  setOpenPost,
+  editPost,
+  openPost,
+}) => {
   const [data, setData] = useState<IUserPost[] | undefined>(undefined)
   const [isLoading, setLoading] = useState(false)
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [postId, setPostId] = useState('')
   const [open, setOpen] = useState(false)
-  const [editPost, setEditPost] = useState(false)
 
   const getData = useCallback(async () => {
     try {
@@ -35,7 +44,12 @@ const PostComponent: React.FC<IPostComponent> = ({ navigation }) => {
         id: doc.id,
         ...(doc.data() as any),
       }))
-      setData(fetchProduct)
+      const sortedData = fetchProduct.sort((a, b) => {
+        const timeA = a.updateAt.seconds * 1000 + a.updateAt.nanoseconds / 1e6
+        const timeB = b.updateAt.seconds * 1000 + b.updateAt.nanoseconds / 1e6
+        return timeB - timeA // Sorting in descending order
+      })
+      setData(sortedData)
     } catch (error) {
       console.log('PostError', error)
       setLoading(false)
@@ -68,62 +82,82 @@ const PostComponent: React.FC<IPostComponent> = ({ navigation }) => {
 
   if (!data || data.length === 0) {
     return (
-      <View style={{ height: height / 1.2, justifyContent: 'center' }}>
-        <ProductText allowFontScaling={false}>No Data</ProductText>
-        <TouchableOpacity
-          style={[
-            {
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-end',
-              justifyContent: 'flex-end',
-              alignSelf: 'flex-end',
-              gap: 6,
-              position: 'absolute',
-              right: 20,
-              bottom: 30,
-              zIndex: 1000,
-            },
-            styles.iosContent,
-          ]}
-          onPress={onSubmit}
-        >
-          <LinearGradient
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            colors={['#462D85', '#DB00FF']}
-            style={styles.plusIconGradientColor}
-          >
-            <HomePlusIcon width={20} height={20} />
-          </LinearGradient>
-        </TouchableOpacity>
-        <SubscriptionModal
-          isVisible={isSubscriptionModal}
-          onClose={closeSubscriptionModal}
-          navigation={navigation}
-        />
-      </View>
+      <>
+        {!openPost && (
+          <View style={{ height: height / 1.2, justifyContent: 'center' }}>
+            <ProductText allowFontScaling={false}>No Data</ProductText>
+            <TouchableOpacity
+              style={[
+                {
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  justifyContent: 'flex-end',
+                  alignSelf: 'flex-end',
+                  gap: 6,
+                  position: 'absolute',
+                  right: 20,
+                  bottom: 30,
+                  zIndex: 1000,
+                },
+                styles.iosContent,
+              ]}
+              onPress={onSubmit}
+            >
+              <LinearGradient
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                colors={['#462D85', '#DB00FF']}
+                style={styles.plusIconGradientColor}
+              >
+                <HomePlusIcon width={20} height={20} />
+              </LinearGradient>
+            </TouchableOpacity>
+            <SubscriptionModal
+              isVisible={isSubscriptionModal}
+              onClose={closeSubscriptionModal}
+              navigation={navigation}
+              setOpenPost={setOpenPost}
+            />
+          </View>
+        )}
+        {openPost && (
+          <View style={{ flex: 1 }}>
+            <AddPost openPost={openPost} setOpenPost={setOpenPost} />
+          </View>
+        )}
+      </>
     )
   }
 
   return (
     <View style={{ flex: 1 }}>
-      {!editPost ? (
-        open && FilteredData ? (
-          <PostDetails onClose={() => setOpen(false)} selectedPost={FilteredData} />
-        ) : (
-          <View style={{ position: 'relative' }}>
-            <PostContent
-              navigation={navigation}
-              setEditPost={setEditPost}
-              setOpen={setOpen}
-              setPostId={setPostId}
-            />
-          </View>
-        )
-      ) : (
+      {!openPost && (
+        <>
+          {!editPost ? (
+            open && FilteredData ? (
+              <PostDetails onClose={() => setOpen(false)} selectedPost={FilteredData} />
+            ) : (
+              <View style={{ position: 'relative' }}>
+                <PostContent
+                  navigation={navigation}
+                  setEditPost={setEditPost}
+                  setOpen={setOpen}
+                  setPostId={setPostId}
+                  setOpenPost={setOpenPost}
+                />
+              </View>
+            )
+          ) : (
+            <View style={{ flex: 1 }}>
+              <AddPost editData={FilteredData} openPost={editPost} setOpenPost={setEditPost} />
+            </View>
+          )}
+        </>
+      )}
+      {openPost && (
         <View style={{ flex: 1 }}>
-          <AddPost editData={FilteredData} openPost={editPost} setOpenPost={setEditPost} />
+          <AddPost openPost={openPost} setOpenPost={setOpenPost} />
         </View>
       )}
     </View>

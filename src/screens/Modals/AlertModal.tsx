@@ -1,20 +1,34 @@
-import { COLORS } from '../../styles/theme'
+import { COLORS, gradientOpacityColors } from '../../styles/theme'
 import React from 'react'
-import { Modal, StyleSheet, Text, View } from 'react-native'
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { userStore } from '../../store/userStore'
 import AlertIcon from '../../assets/icons/Alert'
+import { LinearGradient } from 'expo-linear-gradient'
+import CloseIcon from '../../assets/icons/Close'
 
-const AlertModal = () => {
+interface IAlertModal {
+  children: string
+  close: () => void
+}
+const AlertModal: React.FC<IAlertModal> = ({ children, close }) => {
   const user = userStore((store) => store.user)
   return (
     <Modal animationType='fade' transparent={true}>
       <View style={styles.VerificationContainer}>
+        {/* <LinearGradient colors={gradientOpacityColors}> */}
         <View style={styles.VerificationWrapper}>
-          <AlertIcon width={130} height={130} />
+          <TouchableOpacity onPress={close} style={{ display: 'flex', alignItems: 'flex-end' }}>
+            <CloseIcon width={50} height={50} />
+          </TouchableOpacity>
+          <View style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertIcon width={130} height={130} />
+          </View>
+
           <Text allowFontScaling={false} style={styles.description}>
-            Hi {user?.displayName}, Are you sure you want to delete your account?
+            {children}
           </Text>
         </View>
+        {/* </LinearGradient> */}
       </View>
     </Modal>
   )
@@ -31,9 +45,9 @@ const styles = StyleSheet.create({
   },
   VerificationWrapper: {
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: `${COLORS.iconsNormalClr}`,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    backgroundColor: `${COLORS.borderClr}`,
     padding: 20,
     borderRadius: 12,
     width: 328,

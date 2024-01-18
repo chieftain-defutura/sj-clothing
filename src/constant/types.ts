@@ -302,4 +302,6 @@ export interface IUserPost {
     userId: string
     icons: string
   }[]
+  createdAt: Timestamp
+  updateAt: Timestamp
 }

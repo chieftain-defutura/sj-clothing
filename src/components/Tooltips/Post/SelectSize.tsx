@@ -6,22 +6,22 @@ import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import TooltipTopArrowIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
 
-interface ISelectCountryTooltip {
+interface ISelectSizeTooltip {
   isVisible?: boolean
   onClose?: () => void
 }
 
 const { width } = Dimensions.get('window')
 
-const SelectCountryTooltip: React.FC<ISelectCountryTooltip> = ({ isVisible, onClose }) => {
+const SelectSizePostTooltip: React.FC<ISelectSizeTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
-        <View style={{ position: 'absolute', top: 150 }}>
+        <View style={{ position: 'absolute', top: 210 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
               <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Select Continent
+                Select Size
               </Heading>
               <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
                 Manage your profile, customize avatars, and track your orders
@@ -94,7 +94,7 @@ const Paragraph = styled.Text`
   margin-bottom: 8px;
 `
 
-export default SelectCountryTooltip
+export default SelectSizePostTooltip
 
 const styles = StyleSheet.create({
   plusIconGradientColor: {
@@ -118,8 +118,8 @@ const styles = StyleSheet.create({
   icon: {
     ...Platform.select({
       ios: {
-        top: 18,
-        left: 160,
+        top: 16,
+        left: 150,
       },
     }),
   },

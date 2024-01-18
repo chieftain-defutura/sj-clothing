@@ -109,21 +109,6 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
     }
   }
 
-  // const reloadWebView = () => {
-  //   try {
-  //     setWebLoader(true)
-  //     if (webViewRef.current) {
-  //       webViewRef.current.reload()
-  //     }
-  //     setTimeout(() => {
-  //       setWebLoader(false)
-  //     }, 2000)
-  //   } catch (error) {
-  //     console.log(error)
-  //     setWebLoader(false)
-  //   }
-  // }
-
   useEffect(() => {
     try {
       if (isImageOrText.designs.image) {
@@ -140,9 +125,9 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
       setWebLoader(false)
     }
   }, [isImageOrText])
-  // console.log('webLoader', webLoader)
-  // console.log('webLoading', webviewLoading)
-  // console.log(animationUpdated)
+
+  console.log(webviewLoading)
+
   return (
     <View
       style={{
@@ -182,18 +167,9 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
                 setWebviewLoading(false)
               }, 1000)
             }}
+            onHttpError={(value) => console.log('HTTP ERROR', value)}
           />
         )}
-        {/* <TouchableOpacity onPress={reloadWebView}>
-          <Text>sghjs</Text>
-        </TouchableOpacity> */}
-        {/* <View>
-          {!animationUpdated && (
-            <TextAnimation shake={shake} shakeAnimation={shakeAnimation}>
-              Please wait till avatar load
-            </TextAnimation>
-          )}
-        </View> */}
       </View>
       <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
         {webLoader && <Loader />}

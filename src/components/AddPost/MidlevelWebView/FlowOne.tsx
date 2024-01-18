@@ -3,13 +3,10 @@ import { WebView } from 'react-native-webview'
 import { ActivityIndicator, Dimensions, StyleSheet, Text, View } from 'react-native'
 import uuid from 'react-native-uuid'
 import { doc, setDoc } from 'firebase/firestore/lite'
-import { db, storage } from '../../../../firebase'
+import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import Loader from '../../Loading'
-import CustomButton from '../../Button'
-import ViewShot from 'react-native-view-shot'
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
-import { uriToBlob } from '../../Refund'
+import * as FileSystem from 'expo-file-system'
 
 const { height, width } = Dimensions.get('window')
 
@@ -75,30 +72,45 @@ const FlowOne: React.FC<IFlowOneProps> = ({
       })
     }
   }
+  // const captureComponent = async () => {
+  //   try {
+  //     if (webViewRef.current) {
+  //       const result = await webViewRef.current.capture()
+  //       const blob = await uriToBlob(result)
+
+  //       console.log(blob)
+  //       // const imageRef = ref(storage, uid)
+  //       // const task = uploadBytesResumable(imageRef, blob)
+
+  //       // await task // Wait for the upload to complete
+
+  //       // const url = await getDownloadURL(imageRef)
+  //       // console.log(url)
+  //     }
+  //   } catch (error) {
+  //     console.error('Error capturing component:', error)
+  //   }
+  // }
   const captureComponent = async () => {
-    try {
-      if (webViewRef.current) {
+    if (webViewRef.current) {
+      try {
         const result = await webViewRef.current.capture()
-        const blob = await uriToBlob(result)
-        const imageRef = ref(storage, uid)
-        const task = uploadBytesResumable(imageRef, blob)
-
-        await task // Wait for the upload to complete
-
-        const url = await getDownloadURL(imageRef)
-        console.log(url)
+        const fileContent = await FileSystem.readAsStringAsync(result, {
+          encoding: FileSystem.EncodingType.Base64,
+        })
+        console.log('Image saved to gallery:', `data:image/jpeg;base64,${fileContent}`)
+      } catch (error) {
+        console.error('Error capturing image:', error)
       }
-    } catch (error) {
-      console.error('Error capturing component:', error)
     }
   }
   return (
     <View
       style={{
         width: width / 1,
-        height: steps === 5 ? height / 1 : height / 1.1,
+        height: steps === 5 ? height / 1 : height / 1.15,
         flex: steps === 5 ? 5 : 1,
-        zIndex: -100,
+        // zIndex: -100,
         backgroundColor: 'transparent',
         position: 'relative',
       }}
@@ -110,27 +122,30 @@ const FlowOne: React.FC<IFlowOneProps> = ({
           <ActivityIndicator size='large' color={'#8C73CB'} />
         </View>
       )}
-      <ViewShot ref={webViewRef} options={{ format: 'jpg', quality: 0.9 }} style={{ flex: 1 }}>
-        {Boolean(pageY) && Boolean(elementHeight) && (
-          <WebView
-            style={{
-              backgroundColor: 'transparent',
-            }}
-            source={{
-              // uri: `http://localhost:5173/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
-              uri: `https://sj-threejs-development.netlify.app/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
-            }}
-            scrollEnabled={false}
-            onLoad={() =>
-              setTimeout(() => {
-                setWebviewLoading(false), 1000
-              })
-            }
-            onHttpError={(value) => console.log('HTTP ERROR', value)}
-          />
-        )}
-      </ViewShot>
-      <CustomButton text='capture' onPress={captureComponent} />
+      {/* <View style={{ position: 'absolute', bottom: 0, zIndex: 10000 }}>
+        <CustomButton text='capture' onPress={captureComponent} />
+      </View> */}
+
+      {/* <ViewShot ref={webViewRef} options={{ format: 'jpg', quality: 0.9 }} style={{ flex: 1 }}> */}
+      {Boolean(pageY) && Boolean(elementHeight) && (
+        <WebView
+          style={{
+            backgroundColor: 'transparent',
+          }}
+          source={{
+            // uri: `http://localhost:5173/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
+            uri: `https://sj-threejs-development.netlify.app/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
+          }}
+          scrollEnabled={false}
+          onLoad={() =>
+            setTimeout(() => {
+              setWebviewLoading(false), 1000
+            })
+          }
+          onHttpError={(value) => console.log('HTTP ERROR', value)}
+        />
+      )}
+      {/* </ViewShot> */}
 
       <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
         {!animationUpdated && !webviewLoading && <Loader />}

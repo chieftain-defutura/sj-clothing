@@ -49,7 +49,6 @@ interface INavigation {
   handleIncreaseSteps: () => void
   handleDecreaseSteps: () => void
   shake: () => void
-
   setDone: React.Dispatch<React.SetStateAction<boolean>>
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDesign: React.Dispatch<React.SetStateAction<boolean>>
@@ -135,8 +134,8 @@ const Navigation: React.FC<INavigation> = ({
     try {
       const data = await AsyncStorage.getItem('showSelectSizeTooltip')
 
-      if (data !== '7') {
-        AsyncStorage.setItem('showSelectSizeTooltip', '7')
+      if (data !== '8') {
+        AsyncStorage.setItem('showSelectSizeTooltip', '8')
         setTooltipSize(true)
       }
     } catch (error) {
@@ -149,10 +148,10 @@ const Navigation: React.FC<INavigation> = ({
 
   const isShowToolTipColor = async () => {
     try {
-      const data = await AsyncStorage.getItem('showSelectSizeTooltip')
+      const data = await AsyncStorage.getItem('showSelectColorTooltip')
 
       if (data !== '7') {
-        AsyncStorage.setItem('showSelectSizeTooltip', '7')
+        AsyncStorage.setItem('showSelectColorTooltip', '7')
         setToolTipColor(true)
       }
     } catch (error) {

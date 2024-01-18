@@ -32,9 +32,16 @@ interface IPost {
   setPostId: Dispatch<SetStateAction<string>>
   setOpen: Dispatch<SetStateAction<boolean>>
   setEditPost: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenPost: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditPost }) => {
+const PostContent: React.FC<IPost> = ({
+  navigation,
+  setPostId,
+  setOpen,
+  setEditPost,
+  setOpenPost,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -44,7 +51,6 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
   const reelsHeight = height - tabHeight
 
   const handlePostClick = (postId: string) => {
-    console.log(postId)
     setPostId(postId)
     setOpen(true)
   }
@@ -105,7 +111,13 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
         id: doc.id,
         ...(doc.data() as any),
       }))
-      setData(fetchProduct)
+      const sortedData = fetchProduct.sort((a, b) => {
+        const timeA = a.updateAt.seconds * 1000 + a.updateAt.nanoseconds / 1e6
+        const timeB = b.updateAt.seconds * 1000 + b.updateAt.nanoseconds / 1e6
+        return timeB - timeA // Sorting in descending order
+      })
+
+      setData(sortedData)
     } catch (error) {
       console.log(error)
       setLoading(false)
@@ -117,6 +129,12 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
   useEffect(() => {
     getData()
   }, [getData])
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      getData()
+    })
+  }, [])
 
   return (
     <>
@@ -151,8 +169,8 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
                 />
 
                 {/* <SliderCountContent>
-              <SliderNumber> 
-                
+              <SliderNumber>
+
                 {currentIndex + 1}/{item.images.length}
               </SliderNumber>
             </SliderCountContent> */}
@@ -169,8 +187,8 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
                       </Pressable>
                     </FlexContent>
                     <Content>
-                      <PostCardText>{item.productName}</PostCardText>
-                      <PostDescription>{item.description}</PostDescription>
+                      <PostCardText>{item.product}</PostCardText>
+                      <PostDescription>{item.caption}</PostDescription>
                     </Content>
                   </PostCardContent>
                 </Animated.View>
@@ -209,6 +227,7 @@ const PostContent: React.FC<IPost> = ({ navigation, setPostId, setOpen, setEditP
             isVisible={isSubscriptionModal}
             onClose={closeSubscriptionModal}
             navigation={navigation}
+            setOpenPost={setOpenPost}
           />
         </PostCardWrapper>
       )}

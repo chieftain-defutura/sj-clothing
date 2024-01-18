@@ -13,6 +13,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 import { tooltipDisableStore } from '../../store/TooltipDisable'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const { width } = Dimensions.get('window')
 
@@ -20,6 +21,9 @@ const BeforeUser: React.FC = () => {
   const slideValue = useSharedValue(0)
   const updateConfirmDetails = userStore((state) => state.updateConfirmDetails)
   const avatar = userStore((store) => store.avatar)
+  const language = userStore((store) => store.language)
+  const currency = userStore((store) => store.currency)
+
   const updateAnimation = userStore((store) => store.updateAnimation)
   const createAvatarAnimationFinished = userStore((store) => store.createAvatarAnimationFinished)
   const [steps, setSteps] = useState(0)
@@ -47,6 +51,18 @@ const BeforeUser: React.FC = () => {
         withTiming(0, { duration: 400 }), // Slide back to original state
       )
     }
+  }
+
+  const handleConfirm = async () => {
+    updateConfirmDetails(true)
+
+    const confirmDetails = {
+      avatar: avatar,
+      language: language,
+      currency: currency,
+      confirmDetails: true,
+    }
+    await AsyncStorage.setItem('confirmDetails', JSON.stringify(confirmDetails))
   }
 
   return (
@@ -167,7 +183,7 @@ const BeforeUser: React.FC = () => {
             <CustomButton
               style={{ width: width / 2.4 }}
               text='Confirm'
-              onPress={() => updateConfirmDetails(true)}
+              onPress={handleConfirm}
               disabled={!disable}
             />
           </View>

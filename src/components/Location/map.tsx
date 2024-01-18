@@ -186,7 +186,6 @@ const Map: React.FC<IAddressBook> = ({ navigation, setDisplay, onText, setOnSear
           setDisplay={setDisplay}
           location={locText}
           saveAddress={(addr) => {
-            console.log(addr)
             setAddedAddress(addr)
           }}
           setOnSearchChange={setOnSearchChange}

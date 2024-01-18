@@ -147,9 +147,9 @@ const ProductSizes = styled.View`
 `
 
 const ProductText = styled.Text`
-  color: ${COLORS.SecondaryTwo};
-  font-family: Gilroy-Regular;
-  font-size: 12px;
+  font-family: ${FONT_FAMILY.ArvoRegular};
+  color: ${COLORS.iconsHighlightClr};
+  font-size: 14px;
   text-transform: uppercase;
 `
 

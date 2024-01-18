@@ -528,7 +528,7 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
                 flex: isSteps === 5 ? 9 : 1,
                 zIndex: -100,
                 position: isSteps === 5 ? 'relative' : 'absolute',
-                bottom: 0,
+                top: 0,
               }}
             >
               {isSteps === 6 && (
@@ -606,7 +606,12 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
                 onClose={() => setForgotmail(false)}
               />
             )}
-            {openModal && <AlertModal />}
+            {openModal && (
+              <AlertModal
+                children={`Hi ${user?.displayName}, Are you sure you want to delete your account?`}
+                close={() => setOpenModal(false)}
+              />
+            )}
           </View>
         )}
         {openCheckout && FilteredData && (
@@ -629,6 +634,7 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
             style={isSelectedStyle}
             id={FilteredData?.id}
             editId={editData?.id}
+            setOpenPost={setOpenPost as React.Dispatch<React.SetStateAction<boolean>>}
           />
         )}
       </LinearGradient>

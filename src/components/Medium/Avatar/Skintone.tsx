@@ -101,7 +101,6 @@ const Skintone: React.FC<ISkintone> = ({}) => {
         const tempUid = uuid.v4().toString()
         const docRef = doc(db, 'CreateAvatar', tempUid)
         await setDoc(docRef, { uid: tempUid, gender: avatar.gender, skin: avatar.skinTone || '3' })
-        console.log('added')
         setUid(tempUid)
       } catch (error) {
         console.log(error)
