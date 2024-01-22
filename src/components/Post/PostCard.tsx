@@ -218,7 +218,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
           </View>
         )}
       </Slick>
-      <View style={{ position: 'absolute', top: height / 1.5, zIndex: 1000 }}>
+      <View style={{ position: 'absolute', bottom: 18, zIndex: 1000 }}>
         <PostComment
           activeIcon={activeIcon}
           handleIconPress={handleIconPress}
@@ -248,7 +248,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
         >
           <AddressEditIcon width={20} height={20} />
           <View>
-            <EditText>Edit</EditText>
+            <EditText allowFontScaling={false}>Edit</EditText>
           </View>
         </TouchableOpacity>
       )}
@@ -258,8 +258,8 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
         }}
         style={{
           position: 'absolute',
-          right: 22,
-          top: height / 1.5,
+          right: 18,
+          bottom: 24,
           display: 'flex',
           flexDirection: 'row',
           gap: 4,
@@ -273,14 +273,14 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
           style={{ borderRadius: 30 }}
         >
           <ViewDetailsBtn>
-            <ViewDetailsText>View Details</ViewDetailsText>
+            <ViewDetailsText allowFontScaling={false}>View Details</ViewDetailsText>
           </ViewDetailsBtn>
         </LinearGradient>
       </TouchableOpacity>
       <LinearGradient
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
-        colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.38)']}
+        colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.10)']}
         style={{
           position: 'absolute',
           left: 0,
@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
 export default PostCard
 
 const CardContent = styled.View`
-  padding-left: 16px;
+  padding-left: 12px;
   display: flex;
   flex-direction: row;
   gap: 8px;
@@ -472,7 +472,7 @@ const PostComment: React.FC<IPostComment> = ({
             <Like width={20} height={20} />
           )}
         </ContentView>
-        <LikeText>
+        <LikeText allowFontScaling={false}>
           {data?.postComment.filter((f: { icons: string }) => f.icons === 'like').length}
         </LikeText>
       </IconPressable>
@@ -494,7 +494,9 @@ const PostComment: React.FC<IPostComment> = ({
             <Fire width={20} height={20} />
           )}
         </ContentView>
-        <LikeText>{data?.postComment.filter((f: any) => f.icons === 'fire').length}</LikeText>
+        <LikeText allowFontScaling={false}>
+          {data?.postComment.filter((f: any) => f.icons === 'fire').length}
+        </LikeText>
       </IconPressable>
       <IconPressable>
         <ContentView
@@ -513,7 +515,9 @@ const PostComment: React.FC<IPostComment> = ({
             <Heart width={20} height={20} />
           )}
         </ContentView>
-        <LikeText>{data?.postComment.filter((f: any) => f.icons === 'heart').length}</LikeText>
+        <LikeText allowFontScaling={false}>
+          {data?.postComment.filter((f: any) => f.icons === 'heart').length}
+        </LikeText>
       </IconPressable>
     </CardContent>
   )

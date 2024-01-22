@@ -181,14 +181,14 @@ const PostContent: React.FC<IPost> = ({
                 >
                   <PostCardContent>
                     <FlexContent>
-                      <TextHead>{item.style}</TextHead>
+                      <TextHead allowFontScaling={false}>{item.style}</TextHead>
                       <Pressable onPress={share}>
                         <SaveIcon width={24} height={24} />
                       </Pressable>
                     </FlexContent>
                     <Content>
-                      <PostCardText>{item.product}</PostCardText>
-                      <PostDescription>{item.caption}</PostDescription>
+                      <PostCardText allowFontScaling={false}>{item.product}</PostCardText>
+                      <PostDescription allowFontScaling={false}>{item.caption}</PostDescription>
                     </Content>
                   </PostCardContent>
                 </Animated.View>

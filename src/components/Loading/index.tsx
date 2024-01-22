@@ -8,7 +8,9 @@ const Loader: React.FC = () => {
     <LoaderWrapper>
       <View>
         <ActivityIndicator size={50} color={'#8C73CB'} />
-        <LoadingText style={{ textAlign: 'center' }}>Loading...</LoadingText>
+        <LoadingText allowFontScaling={false} style={{ textAlign: 'center' }}>
+          Loading...
+        </LoadingText>
       </View>
     </LoaderWrapper>
   )
