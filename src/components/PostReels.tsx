@@ -135,8 +135,8 @@ const ReelsComponent: React.FC<ReelsComponentProps> = ({ reelsData }) => {
                           alt='post-img'
                         />
                         <LinearGradient
-                          start={{ x: 0, y: 0 }}
-                          end={{ x: 1, y: 1 }}
+                          // start={{ x: 0, y: 0 }}
+                          // end={{ x: 1, y: 1 }}
                           colors={['rgba(0, 0, 0, 0.04)', 'rgba(0, 0, 0, 0.80)']}
                           style={styles.linearGradient}
                         ></LinearGradient>
@@ -154,8 +154,8 @@ const ReelsComponent: React.FC<ReelsComponentProps> = ({ reelsData }) => {
                 </SliderCountContent>
                 <PlusIconStyle onPress={openSubscriptionModal}>
                   <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
+                    // start={{ x: 0, y: 0 }}
+                    // end={{ x: 1, y: 1 }}
                     colors={['#462D85', '#DB00FF']}
                     style={styles.plusIconGradientColor}
                   >
@@ -247,12 +247,13 @@ const ReelsComponent: React.FC<ReelsComponentProps> = ({ reelsData }) => {
           )}
         />
       </Animated.View>
-
+      {/* 
       <SubscriptionModal
         isVisible={isSubscriptionModal}
         onClose={closeSubscriptionModal}
         navigation={navigation}
-      />
+
+      /> */}
     </View>
   )
 }

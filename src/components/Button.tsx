@@ -41,8 +41,9 @@ const CustomButton: React.FC<Props> = ({
             ? [disabledBackgroundColor, disabledBackgroundColor]
             : [COLORS.textClr, COLORS.textSecondaryClr]
         }
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
+        // start={{ x: 0, y: 0 }}
+        // end={{ x: 1, y: 0 }}
+
         style={[
           {
             backgroundColor: backgroundColor ? backgroundColor : 'transparent',

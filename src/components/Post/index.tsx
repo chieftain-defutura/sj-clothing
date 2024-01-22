@@ -105,8 +105,8 @@ const PostComponent: React.FC<IPostComponent> = ({
               onPress={onSubmit}
             >
               <LinearGradient
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
+                // start={{ x: 0, y: 0 }}
+                // end={{ x: 1, y: 1 }}
                 colors={['#462D85', '#DB00FF']}
                 style={styles.plusIconGradientColor}
               >
