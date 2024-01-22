@@ -9,6 +9,7 @@ import { userStore } from '../../../store/userStore'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { useNavigation } from '@react-navigation/native'
 import { PostStore } from '../../../store/postCreationStore'
+import axios from 'axios'
 
 interface IProductAndCaption {
   setProduct: React.Dispatch<React.SetStateAction<string>>
@@ -44,6 +45,7 @@ interface IProductAndCaption {
   gender?: string
   productName?: string
   productImage?: any
+  uid: string
   setOpenCheckout: React.Dispatch<React.SetStateAction<boolean>>
   setOpenPost?: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -65,6 +67,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
   caption,
   product,
   editId,
+  uid,
   isGiftVideo,
   setOpenCheckout,
   setOpenPost,
@@ -75,7 +78,6 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
   const [loading, setLoading] = useState(false)
   const UpdatePost = PostStore((state) => state.updatepost)
 
-  console.log(isGiftVideo)
   useEffect(() => {
     if (errorMessage) {
       setInterval(() => {
@@ -83,6 +85,8 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
       }, 3000)
     }
   })
+
+  console.log('uid', uid)
 
   const handleSubmit = async () => {
     try {
@@ -111,12 +115,15 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
           })
         }
         if (!editId) {
+          const { data } = await axios.post('https://ruby-bull-robe.cyclic.app/captureWebsite', {
+            uid: uid,
+          })
           await addDoc(collection(db, 'Post'), {
             sizes: size ? size : '',
             style: style ? style : '',
             color: color ? color : '',
             textAndImage: textAndImage ? textAndImage : '',
-            productImage: productImage,
+            productImage: `data:image/jpeg;base64,${data.screenshotBase64}`,
             description: description,
             price: price,
             offerPrice: offerPrice,

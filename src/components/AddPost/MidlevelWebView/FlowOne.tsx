@@ -1,13 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
-import { ActivityIndicator, Dimensions, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Dimensions, StyleSheet, Image, View, Alert } from 'react-native'
 import uuid from 'react-native-uuid'
 import { doc, setDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import Loader from '../../Loading'
-import * as FileSystem from 'expo-file-system'
-
 const { height, width } = Dimensions.get('window')
 
 interface IFlowOneProps {
@@ -72,38 +70,7 @@ const FlowOne: React.FC<IFlowOneProps> = ({
       })
     }
   }
-  // const captureComponent = async () => {
-  //   try {
-  //     if (webViewRef.current) {
-  //       const result = await webViewRef.current.capture()
-  //       const blob = await uriToBlob(result)
 
-  //       console.log(blob)
-  //       // const imageRef = ref(storage, uid)
-  //       // const task = uploadBytesResumable(imageRef, blob)
-
-  //       // await task // Wait for the upload to complete
-
-  //       // const url = await getDownloadURL(imageRef)
-  //       // console.log(url)
-  //     }
-  //   } catch (error) {
-  //     console.error('Error capturing component:', error)
-  //   }
-  // }
-  const captureComponent = async () => {
-    if (webViewRef.current) {
-      try {
-        const result = await webViewRef.current.capture()
-        const fileContent = await FileSystem.readAsStringAsync(result, {
-          encoding: FileSystem.EncodingType.Base64,
-        })
-        console.log('Image saved to gallery:', `data:image/jpeg;base64,${fileContent}`)
-      } catch (error) {
-        console.error('Error capturing image:', error)
-      }
-    }
-  }
   return (
     <View
       style={{
@@ -122,9 +89,6 @@ const FlowOne: React.FC<IFlowOneProps> = ({
           <ActivityIndicator size='large' color={'#8C73CB'} />
         </View>
       )}
-      {/* <View style={{ position: 'absolute', bottom: 0, zIndex: 10000 }}>
-        <CustomButton text='capture' onPress={captureComponent} />
-      </View> */}
 
       {/* <ViewShot ref={webViewRef} options={{ format: 'jpg', quality: 0.9 }} style={{ flex: 1 }}> */}
       {Boolean(pageY) && Boolean(elementHeight) && (
@@ -132,6 +96,7 @@ const FlowOne: React.FC<IFlowOneProps> = ({
           style={{
             backgroundColor: 'transparent',
           }}
+          ref={webViewRef}
           source={{
             // uri: `http://localhost:5173/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,
             uri: `https://sj-threejs-development.netlify.app/midlevel/?uid=${uid}&pageY=${pageY}&h=${height}&elh=${elementHeight}`,

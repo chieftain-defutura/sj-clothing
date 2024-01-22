@@ -36,6 +36,8 @@ interface IFlowThreeProps {
   animationUpdated: boolean
   shake: () => void
   shakeAnimation: any
+  setUid: React.Dispatch<React.SetStateAction<string>>
+  uid: string
 }
 
 const FlowThree: React.FC<IFlowThreeProps> = ({
@@ -46,16 +48,18 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
   shake,
   setAnimationUpdated,
   shakeAnimation,
+  setUid,
+  uid,
 }) => {
   const [pageY, setPageY] = useState<number | null>(null)
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
   const [webviewLoading, setWebviewLoading] = useState(true)
   const [webLoader, setWebLoader] = useState(false)
-  const [uid, setUid] = useState<string>('')
   const isMounted = useRef(false)
   const avatar = userStore((state) => state.avatar)
   const webViewRef = useRef<any>(null)
+
   useEffect(() => {
     setAnimationUpdated(false)
   }, [])
@@ -102,7 +106,7 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
 
   const handleLayout = () => {
     if (elementRef.current) {
-      elementRef.current.measure((height, pageY) => {
+      elementRef.current.measure((x, y, width, height, pageX, pageY) => {
         setPageY(pageY)
         setElementHeight(height)
       })
@@ -118,15 +122,13 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
         }
         setTimeout(() => {
           setWebLoader(false)
-        }, 2000)
+        }, 5000)
       }
     } catch (error) {
       console.log(error)
       setWebLoader(false)
     }
   }, [isImageOrText])
-
-  console.log(webviewLoading)
 
   return (
     <View
@@ -137,7 +139,7 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
       <View
         style={{
           width: width / 1,
-          height: height / 1,
+          height: height / 1.15,
           flex: 1,
           backgroundColor: 'transparent',
           position: 'relative',
@@ -173,6 +175,9 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
       </View>
       <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
         {webLoader && <Loader />}
+      </View>
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+        {animationUpdated && !webviewLoading && <Loader />}
       </View>
     </View>
   )

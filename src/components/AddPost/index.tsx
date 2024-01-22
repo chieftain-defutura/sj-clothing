@@ -54,6 +54,7 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
   )
   const [isDropDown, setDropDown] = useState(false)
   const [uid, setUid] = useState<string>(PostData.isSteps === '5' ? PostData.uid : '')
+  const [FlowThreeUid, setFlowThreeUid] = useState('')
   const [openModal, setOpenModal] = useState(false)
 
   //data
@@ -533,6 +534,8 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
             >
               {isSteps === 6 && (
                 <FlowThree
+                  setUid={setFlowThreeUid}
+                  uid={FlowThreeUid}
                   color={isColor}
                   isImageOrText={isImageOrText}
                   designs={designs}
@@ -634,6 +637,7 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
             style={isSelectedStyle}
             id={FilteredData?.id}
             editId={editData?.id}
+            uid={FlowThreeUid ? FlowThreeUid : uid}
             setOpenPost={setOpenPost as React.Dispatch<React.SetStateAction<boolean>>}
           />
         )}

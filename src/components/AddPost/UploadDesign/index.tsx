@@ -45,16 +45,12 @@ const UploadDesign: React.FC<IUploadDesign> = ({
   const user = userStore((state) => state.user)
   const [image, setImage] = useState('')
   const [loading, setLoading] = useState(false)
-  const ref = useRef<any>(null)
-  function resolveImage() {
-    return require('../../../assets/images/PremiumImage/premium-img2.png')
-  }
 
   const handleSelectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
     })
 
     if (!result.canceled) {
@@ -73,7 +69,7 @@ const UploadDesign: React.FC<IUploadDesign> = ({
         image: `data:image/jpeg;base64,${fileContent}`,
       })
 
-      console.log(fileContent)
+      console.log(data)
       setImage(data.base64Image)
 
       setImageOrText({
@@ -83,7 +79,7 @@ const UploadDesign: React.FC<IUploadDesign> = ({
         designs: {
           hashtag: '',
           image: `data:image/jpeg;base64,${fileContent}`,
-          originalImage: `data:image/png;base64,${data.base64Image}`,
+          originalImage: `${data.base64Image}`,
         },
       })
       console.log('Image uploaded to the bucket!')

@@ -157,7 +157,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
           height: 4,
         }}
       >
-        <LinearGradient colors={gradientColors} style={styles.slide1}>
+        <View style={styles.slide1}>
           <TapGestureHandler waitFor={doubleTapRef} onActivated={onSingleTap}>
             <TapGestureHandler
               maxDelayMs={250}
@@ -169,10 +169,10 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
                 <ImageBackground
                   source={{ uri: item.productImage }}
                   style={{
-                    height: height,
+                    height: height / 1.3,
                     width: width - 19,
                   }}
-                  resizeMode='contain'
+                  resizeMode='cover'
                 >
                   <View style={styles.image}>
                     <AnimatedImage
@@ -194,7 +194,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
               </Animated.View>
             </TapGestureHandler>
           </TapGestureHandler>
-        </LinearGradient>
+        </View>
 
         {item.giftVideo && (
           <View style={styles.slide2}>

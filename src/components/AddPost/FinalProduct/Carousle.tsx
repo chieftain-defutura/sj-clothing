@@ -8,6 +8,7 @@ import { Video, ResizeMode } from 'expo-av'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { storage } from '../../../../firebase'
 import { uriToBlob } from '../../Refund'
+import * as FileSystem from 'expo-file-system'
 
 interface ICarousle {
   isGiftVideo: any
@@ -64,18 +65,20 @@ const Carousle: React.FC<ICarousle> = ({
 
   const uploadVideo = async (videoUri: string) => {
     try {
-      console.log('one')
+      const fileContent = await FileSystem.readAsStringAsync(videoUri, {
+        encoding: FileSystem.EncodingType.Base64,
+      })
 
-      const blob = await uriToBlob(videoUri)
-      const imageRef = ref(storage, productId)
-      const task = uploadBytesResumable(imageRef, blob)
+      // const blob = await uriToBlob(videoUri)
+      // const imageRef = ref(storage, productId)
+      // const task = uploadBytesResumable(imageRef, blob)
 
-      await task
+      // await task
 
-      const url = await getDownloadURL(imageRef)
+      // const url = await getDownloadURL(imageRef)
 
-      console.log('videourl:', url)
-      setGiftVideo(url)
+      // console.log('videourl:', url)
+      setGiftVideo(`data:image/jpeg;base64,${fileContent}`)
     } catch (error) {
       console.error('Error uploading Video:', error)
       Alert.alert('Error', 'Failed to upload video')
