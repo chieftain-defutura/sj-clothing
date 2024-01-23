@@ -25,6 +25,7 @@ import SelectColorPostTooltip from '../../Tooltips/Post/SelectColor'
 import SelectCountryPostTooltip from '../../Tooltips/Post/SelectCountry'
 import SelectSizePostTooltip from '../../Tooltips/Post/SelectSize'
 import SelectStylePostTooltip from '../../Tooltips/Post/SelectStyle'
+import { PostStore } from '../../../store/postCreationStore'
 
 const { width } = Dimensions.get('window')
 
@@ -100,7 +101,9 @@ const Navigation: React.FC<INavigation> = ({
   const [toolTipCountry, setTooltipCountry] = useState(false)
   const [toolTipSize, setTooltipSize] = useState(false)
   const [toolTipColor, setToolTipColor] = useState(false)
-
+  const updateEditPost = PostStore((state) => state.updateEditPost)
+  const updateOpenPost = PostStore((state) => state.updateOpenPost)
+  const postOpen = PostStore((state) => state.openPost)
   const isShowToolTip = async () => {
     try {
       const data = await AsyncStorage.getItem('showSelectStylePostTooltip')
@@ -270,12 +273,16 @@ const Navigation: React.FC<INavigation> = ({
           ]}
         >
           <TouchableHighlight
-            onPress={() => (openPost && steps === 1 ? setOpenPost(false) : handleDecreaseSteps())}
+            onPress={() =>
+              openPost || (postOpen && steps === 1)
+                ? (setOpenPost(false), updateEditPost(null), updateOpenPost(false))
+                : handleDecreaseSteps()
+            }
             activeOpacity={0.6}
             underlayColor='rgba(70, 45, 133, 0.2)'
             disabled={!openPost && steps === 1}
             style={{
-              opacity: openPost ? 1 : steps === 1 ? 0 : 1,
+              opacity: openPost || postOpen ? 1 : steps === 1 ? 0 : 1,
               borderRadius: 20,
               padding: 6,
             }}

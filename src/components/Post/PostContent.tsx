@@ -24,6 +24,7 @@ import PostCard from './PostCard'
 import { LinearGradient } from 'expo-linear-gradient'
 import HomePlusIcon from '../../assets/icons/PostPlusIcon'
 import Loader from '../Loading'
+import { PostStore } from '../../store/postCreationStore'
 
 const { height } = Dimensions.get('window')
 
@@ -42,11 +43,13 @@ const PostContent: React.FC<IPost> = ({
   setEditPost,
   setOpenPost,
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0)
   const [isSubscriptionModal, setSubscriptionModal] = useState(false)
+  const updateEditPost = PostStore((state) => state.updateEditPost)
+  const updateOpenPost = PostStore((state) => state.updateOpenPost)
+
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<IUserPost[]>()
-  const [focus, setFocus] = useState(false)
+
   const tabHeight = 120
   const reelsHeight = height - tabHeight
 
@@ -55,31 +58,10 @@ const PostContent: React.FC<IPost> = ({
     setOpen(true)
   }
 
-  const onClose = () => {
-    setFocus(false)
-  }
-
-  // const handlePress = (postId: string) => {
-  //   const selectedPost = data?.find((post) => post.id === postId)
-  //   if (selectedPost) {
-  //     setSelectedPost(selectedPost)
-  //     setShowPostDetails(true)
-  //   }
-  // }
-
   const onSubmit = () => {
     setSubscriptionModal(true)
-
-    // if (!user) {
-    //   console.log('user not found')
-    //   await setFocus(true)
-    //   setSubscriptionModal(true)
-    // }
   }
 
-  const openSubscriptionModal = () => {
-    setSubscriptionModal(true)
-  }
   const closeSubscriptionModal = () => {
     setSubscriptionModal(false)
   }
@@ -130,6 +112,14 @@ const PostContent: React.FC<IPost> = ({
     getData()
   }, [getData])
 
+  const handleEditPost = (id: string) => {
+    updateOpenPost(true)
+    const FilteredData = data?.find((f) => f.id === id)
+    if (!FilteredData) return
+    updateEditPost(FilteredData)
+    navigation.navigate('AddPost')
+  }
+
   useEffect(() => {
     navigation.addListener('focus', () => {
       getData()
@@ -162,18 +152,10 @@ const PostContent: React.FC<IPost> = ({
                 ]}
               >
                 <PostCard
-                  setPostId={setPostId}
                   item={item}
                   handlePostClick={handlePostClick}
-                  setEditPost={setEditPost}
+                  handleEditPost={handleEditPost}
                 />
-
-                {/* <SliderCountContent>
-              <SliderNumber>
-
-                {currentIndex + 1}/{item.images.length}
-              </SliderNumber>
-            </SliderCountContent> */}
 
                 <Animated.View
                   entering={LightSpeedInRight.duration(1000).delay(200)}
@@ -181,14 +163,14 @@ const PostContent: React.FC<IPost> = ({
                 >
                   <PostCardContent>
                     <FlexContent>
-                      <TextHead>{item.style}</TextHead>
+                      <TextHead allowFontScaling={false}>{item.style}</TextHead>
                       <Pressable onPress={share}>
                         <SaveIcon width={24} height={24} />
                       </Pressable>
                     </FlexContent>
                     <Content>
-                      <PostCardText>{item.product}</PostCardText>
-                      <PostDescription>{item.caption}</PostDescription>
+                      <PostCardText allowFontScaling={false}>{item.product}</PostCardText>
+                      <PostDescription allowFontScaling={false}>{item.caption}</PostDescription>
                     </Content>
                   </PostCardContent>
                 </Animated.View>

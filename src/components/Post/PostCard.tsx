@@ -6,11 +6,9 @@ import {
   ImageBackground,
   View,
   TouchableOpacity,
-  Text,
 } from 'react-native'
 import { useState } from 'react'
 import styled from 'styled-components/native'
-import SwiperFlatList from 'react-native-swiper-flatlist'
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -18,11 +16,10 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated'
-import { storage } from '../../../firebase'
-import { ScrollView, TapGestureHandler } from 'react-native-gesture-handler'
+import { TapGestureHandler } from 'react-native-gesture-handler'
 import { LinearGradient } from 'expo-linear-gradient'
 import { updateDoc, doc, getDoc } from 'firebase/firestore/lite'
-import { COLORS, FONT_FAMILY, gradientColors } from '../../styles/theme'
+import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import { IUserPost } from '../../constant/types'
 import { db } from '../../../firebase'
 import IsLikeIcon from '../../assets/icons/PostPageIcon/isLikeIcon'
@@ -34,7 +31,6 @@ import Heart from '../../assets/icons/heart'
 import AddressEditIcon from '../../assets/icons/AddressIcon/AddressEditIcon'
 import { userStore } from '../../store/userStore'
 import { Video, ResizeMode } from 'expo-av'
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import Slick from 'react-native-slick'
 
 const { height, width } = Dimensions.get('window')
@@ -42,8 +38,7 @@ const { height, width } = Dimensions.get('window')
 interface IPost {
   item: IUserPost
   handlePostClick: (postId: string) => void
-  setPostId: React.Dispatch<SetStateAction<string>>
-  setEditPost: React.Dispatch<React.SetStateAction<boolean>>
+  handleEditPost: (id: string) => void
 }
 
 interface IPostComment {
@@ -53,12 +48,14 @@ interface IPostComment {
 
 const AnimatedImage = Animated.createAnimatedComponent(Image)
 
-const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPostId }) => {
-  const [currentIndex, setCurrentIndex] = useState(0)
+const PostCard: React.FC<IPost> = ({ item, handlePostClick, handleEditPost }) => {
   const [activeIcon, setActiveIcon] = useState<string | null>(null)
   const [isLiked, setIsLiked] = useState(false)
   const [isFireActive, setIsFireActive] = useState(false)
   const [isHeartActive, setIsHeartActive] = useState(false)
+  const [likeLength, setLikeLength] = useState(0)
+  const [fireLength, setFireLength] = useState(0)
+  const [heartLength, setHeartLength] = useState(0)
   const user = userStore((state) => state.user)
   const scale = useSharedValue(0)
   const opacity = useSharedValue(1)
@@ -70,10 +67,31 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
     try {
       if (iconName === 'like') {
         setIsLiked((prevIsLiked) => !prevIsLiked)
+        setLikeLength((prevLikeLength) => prevLikeLength + 1)
+
+        if (activeIcon === 'fire') {
+          setFireLength((prevFireLength) => prevFireLength - 1)
+        } else if (activeIcon === 'heart') {
+          setHeartLength((prevHeartLength) => prevHeartLength - 1)
+        }
       } else if (iconName === 'fire') {
         setIsFireActive((prev) => !prev)
+        setFireLength((prevFireLength) => prevFireLength + 1)
+
+        if (activeIcon === 'like') {
+          setLikeLength((prevLikeLength) => prevLikeLength - 1)
+        } else if (activeIcon === 'heart') {
+          setHeartLength((prevHeartLength) => prevHeartLength - 1)
+        }
       } else if (iconName === 'heart') {
         setIsHeartActive((prev) => !prev)
+        setHeartLength((prevHeartLength) => prevHeartLength + 1)
+
+        if (activeIcon === 'like') {
+          setLikeLength((prevLikeLength) => prevLikeLength - 1)
+        } else if (activeIcon === 'fire') {
+          setFireLength((prevFireLength) => prevFireLength - 1)
+        }
       }
 
       if (!user) return
@@ -135,16 +153,6 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
 
   let productImg = []
   productImg.push(item.productImage)
-
-  // const getVideoUrl = async () => {
-  //   const imageRef = ref(storage, item.productId)
-  //   const url = await getDownloadURL(imageRef)
-  //   setVidUrl(url)
-  // }
-
-  // useEffect(() => {
-  //   getVideoUrl()
-  // }, [getVideoUrl])
 
   return (
     <View style={{ position: 'relative', flex: 1, zIndex: 1 }}>
@@ -218,7 +226,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
           </View>
         )}
       </Slick>
-      <View style={{ position: 'absolute', bottom: 18, zIndex: 1000 }}>
+      <View style={{ position: 'absolute', bottom: 15, zIndex: 1000 }}>
         <PostComment
           activeIcon={activeIcon}
           handleIconPress={handleIconPress}
@@ -229,6 +237,15 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
           icons={''}
           id={item.id}
           setActiveIcon={setActiveIcon}
+          setIsFireActive={setIsFireActive}
+          setIsHeartActive={setIsHeartActive}
+          setIsLiked={setIsLiked}
+          setFireLength={setFireLength}
+          setHeartLength={setHeartLength}
+          setLikeLength={setLikeLength}
+          fireLength={fireLength}
+          heartLength={heartLength}
+          likeLength={likeLength}
           comments={item.postComment}
         />
       </View>
@@ -244,7 +261,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
             gap: 4,
             zIndex: 100,
           }}
-          onPress={() => (setEditPost(true), setPostId(item.id))}
+          onPress={() => handleEditPost(item.id)}
         >
           <AddressEditIcon width={20} height={20} />
           <View>
@@ -259,7 +276,7 @@ const PostCard: React.FC<IPost> = ({ item, handlePostClick, setEditPost, setPost
         style={{
           position: 'absolute',
           right: 18,
-          bottom: 24,
+          bottom: 15,
           display: 'flex',
           flexDirection: 'row',
           gap: 4,
@@ -371,8 +388,17 @@ interface IPostComment {
   isLiked: boolean
   isFireActive: boolean
   isHeartActive: boolean
+  likeLength: number
+  fireLength: number
+  heartLength: number
+  setLikeLength: React.Dispatch<React.SetStateAction<number>>
+  setFireLength: React.Dispatch<React.SetStateAction<number>>
+  setHeartLength: React.Dispatch<React.SetStateAction<number>>
   handleIconPress: (iconName: string) => Promise<void>
   setActiveIcon: React.Dispatch<React.SetStateAction<string | null>>
+  setIsLiked: (value: React.SetStateAction<boolean>) => void
+  setIsFireActive: React.Dispatch<React.SetStateAction<boolean>>
+  setIsHeartActive: React.Dispatch<React.SetStateAction<boolean>>
   comments: {
     userId: string
     icons: string
@@ -386,6 +412,15 @@ const PostComment: React.FC<IPostComment> = ({
   isHeartActive,
   handleIconPress,
   setActiveIcon,
+  setIsFireActive,
+  setIsHeartActive,
+  setFireLength,
+  setHeartLength,
+  setLikeLength,
+  setIsLiked,
+  fireLength,
+  heartLength,
+  likeLength,
   comments,
   id,
 }) => {
@@ -424,7 +459,19 @@ const PostComment: React.FC<IPostComment> = ({
   useEffect(() => {
     if (!activeIcon) {
       const data = comments.find((f) => f.userId === user?.uid)
+      setFireLength(comments.filter((f: { icons: string }) => f.icons === 'fire').length)
+      setLikeLength(comments.filter((f: { icons: string }) => f.icons === 'like').length)
+      setHeartLength(comments.filter((f: { icons: string }) => f.icons === 'heart').length)
       setActiveIcon(data?.icons as string)
+      if (data?.icons === 'fire') {
+        setIsFireActive(true)
+      }
+      if (data?.icons === 'like') {
+        setIsLiked(true)
+      }
+      if (data?.icons === 'heart') {
+        setIsHeartActive(true)
+      }
     }
   })
 
@@ -473,7 +520,8 @@ const PostComment: React.FC<IPostComment> = ({
           )}
         </ContentView>
         <LikeText allowFontScaling={false}>
-          {data?.postComment.filter((f: { icons: string }) => f.icons === 'like').length}
+          {likeLength}
+          {/* {data?.postComment.filter((f: { icons: string }) => f.icons === 'like').length} */}
         </LikeText>
       </IconPressable>
 
@@ -495,7 +543,8 @@ const PostComment: React.FC<IPostComment> = ({
           )}
         </ContentView>
         <LikeText allowFontScaling={false}>
-          {data?.postComment.filter((f: any) => f.icons === 'fire').length}
+          {fireLength}
+          {/* {data?.postComment.filter((f: any) => f.icons === 'fire').length} */}
         </LikeText>
       </IconPressable>
       <IconPressable>
@@ -516,7 +565,8 @@ const PostComment: React.FC<IPostComment> = ({
           )}
         </ContentView>
         <LikeText allowFontScaling={false}>
-          {data?.postComment.filter((f: any) => f.icons === 'heart').length}
+          {heartLength}
+          {/* {data?.postComment.filter((f: any) => f.icons === 'heart').length} */}
         </LikeText>
       </IconPressable>
     </CardContent>

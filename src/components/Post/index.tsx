@@ -134,23 +134,17 @@ const PostComponent: React.FC<IPostComponent> = ({
     <View style={{ flex: 1 }}>
       {!openPost && (
         <>
-          {!editPost ? (
-            open && FilteredData ? (
-              <PostDetails onClose={() => setOpen(false)} selectedPost={FilteredData} />
-            ) : (
-              <View style={{ position: 'relative' }}>
-                <PostContent
-                  navigation={navigation}
-                  setEditPost={setEditPost}
-                  setOpen={setOpen}
-                  setPostId={setPostId}
-                  setOpenPost={setOpenPost}
-                />
-              </View>
-            )
+          {open && FilteredData ? (
+            <PostDetails onClose={() => setOpen(false)} selectedPost={FilteredData} />
           ) : (
-            <View style={{ flex: 1 }}>
-              <AddPost editData={FilteredData} openPost={editPost} setOpenPost={setEditPost} />
+            <View style={{ position: 'relative' }}>
+              <PostContent
+                navigation={navigation}
+                setEditPost={setEditPost}
+                setOpen={setOpen}
+                setPostId={setPostId}
+                setOpenPost={setOpenPost}
+              />
             </View>
           )}
         </>

@@ -1,4 +1,13 @@
-import { StyleSheet, Text, View, Image, Pressable, Dimensions, Alert } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  Dimensions,
+  Alert,
+  TouchableOpacity,
+} from 'react-native'
 import React, { useEffect } from 'react'
 import Slick from 'react-native-slick'
 import * as ImagePicker from 'expo-image-picker'
@@ -9,6 +18,8 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { storage } from '../../../../firebase'
 import { uriToBlob } from '../../Refund'
 import * as FileSystem from 'expo-file-system'
+import CloseIcon from '../../../assets/icons/Close'
+import CloseRedIcon from '../../../assets/icons/CloseRedIcon'
 
 interface ICarousle {
   isGiftVideo: any
@@ -118,7 +129,19 @@ const Carousle: React.FC<ICarousle> = ({
       )}
       <View style={styles.slide3}>
         {isGiftVideo ? (
-          <View>
+          <View
+            style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', gap: 10 }}
+          >
+            <TouchableOpacity
+              onPress={() => setGiftVideo('')}
+              style={{
+                borderRadius: 50,
+                borderColor: 'red',
+                borderWidth: 1.5,
+              }}
+            >
+              <CloseRedIcon width={40} height={40} />
+            </TouchableOpacity>
             <Video
               source={{ uri: isGiftVideo }}
               shouldPlay

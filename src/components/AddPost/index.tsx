@@ -36,21 +36,22 @@ import UploadDesign from './UploadDesign'
 
 const { width } = Dimensions.get('window')
 interface IAddPost {
-  editData?: IUserPost
   setOpenPost?: React.Dispatch<React.SetStateAction<boolean>>
   openPost?: boolean
 }
-const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
+const AddPost: React.FC<IAddPost> = ({ openPost, setOpenPost }) => {
   const isMounted = useRef(false)
   const slideValue = useSharedValue(0)
   const user = userStore((state) => state.user)
   const avatar = userStore((state) => state.avatar)
+  const editData = PostStore((state) => state.editPost)
+
   const PostData = PostStore((state) => state.post)
   const phoneNumber = userStore((state) => state.phoneNo)
   const updatePostData = PostStore((state) => state.updatepost)
 
   const [isSteps, setSteps] = useState(
-    editData?.id ? 1 : PostData.isSteps === '5' ? Number(PostData.isSteps) - 1 : 1,
+    editData?.id ? 0 : PostData.isSteps === '5' ? Number(PostData.isSteps) - 1 : 1,
   )
   const [isDropDown, setDropDown] = useState(false)
   const [uid, setUid] = useState<string>(PostData.isSteps === '5' ? PostData.uid : '')
@@ -109,7 +110,9 @@ const AddPost: React.FC<IAddPost> = ({ editData, openPost, setOpenPost }) => {
   const [imageApplied, setImageApplied] = useState(false)
 
   const [isImageOrText, setImageOrText] = useState(
-    PostData.isSteps === '5'
+    editData?.textAndImage
+      ? editData.textAndImage
+      : PostData.isSteps === '5'
       ? PostData.isImageOrText
       : {
           title: '',

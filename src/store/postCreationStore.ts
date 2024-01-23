@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { IUserPost } from '../constant/types'
 
 type State = {
   post: {
@@ -38,6 +39,8 @@ type State = {
     caption: string
     uid: string
   }
+  editPost: IUserPost | null
+  openPost: boolean
 }
 type Action = {
   updatepost: (post: {
@@ -77,6 +80,8 @@ type Action = {
     caption: string
     uid: string
   }) => void
+  updateEditPost: (editPost: IUserPost | null) => void
+  updateOpenPost: (fetching: boolean) => void
 }
 
 export const PostStore = create<State & Action>((set) => ({
@@ -119,6 +124,9 @@ export const PostStore = create<State & Action>((set) => ({
     caption: '',
     uid: '',
   },
-
+  openPost: true,
+  editPost: null,
+  updateEditPost: (editPost) => set(() => ({ editPost })),
   updatepost: (post) => set(() => ({ post })),
+  updateOpenPost: (fetching) => set(() => ({ openPost: fetching })),
 }))

@@ -6,6 +6,7 @@ import { doc, setDoc } from 'firebase/firestore/lite'
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import Loader from '../../Loading'
+import { PostStore } from '../../../store/postCreationStore'
 const { height, width } = Dimensions.get('window')
 
 interface IFlowOneProps {
@@ -36,6 +37,7 @@ const FlowOne: React.FC<IFlowOneProps> = ({
   const isMounted = useRef(false)
   const avatar = userStore((state) => state.avatar)
   const webViewRef = useRef<any>(null)
+  const openPost = PostStore((state) => state.openPost)
 
   const handleSetUid = useCallback(async () => {
     if (!isMounted.current) {
@@ -75,9 +77,8 @@ const FlowOne: React.FC<IFlowOneProps> = ({
     <View
       style={{
         width: width / 1,
-        height: steps === 5 ? height / 1 : height / 1.15,
+        height: steps === 5 ? height / 1 : openPost ? height / 1.05 : height / 1.15,
         flex: steps === 5 ? 5 : 1,
-        // zIndex: -100,
         backgroundColor: 'transparent',
         position: 'relative',
       }}

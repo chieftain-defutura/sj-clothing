@@ -1,10 +1,11 @@
-import { COLORS, gradientOpacityColors } from '../../styles/theme'
+import { COLORS } from '../../styles/theme'
 import React from 'react'
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Modal, StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native'
 import { userStore } from '../../store/userStore'
 import AlertIcon from '../../assets/icons/Alert'
-import { LinearGradient } from 'expo-linear-gradient'
 import CloseIcon from '../../assets/icons/Close'
+
+const { width } = Dimensions.get('window')
 
 interface IAlertModal {
   children: string
@@ -15,9 +16,8 @@ const AlertModal: React.FC<IAlertModal> = ({ children, close }) => {
   return (
     <Modal animationType='fade' transparent={true}>
       <View style={styles.VerificationContainer}>
-        {/* <LinearGradient colors={gradientOpacityColors}> */}
         <View style={styles.VerificationWrapper}>
-          <TouchableOpacity onPress={close} style={{ display: 'flex', alignItems: 'flex-end' }}>
+          <TouchableOpacity onPress={close} style={{ position: 'absolute', top: 18, right: -8 }}>
             <CloseIcon width={50} height={50} />
           </TouchableOpacity>
           <View style={{ display: 'flex', alignItems: 'center' }}>
@@ -28,7 +28,6 @@ const AlertModal: React.FC<IAlertModal> = ({ children, close }) => {
             {children}
           </Text>
         </View>
-        {/* </LinearGradient> */}
       </View>
     </Modal>
   )
@@ -47,10 +46,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     // justifyContent: 'center',
     // alignItems: 'center',
+    position: 'relative',
     backgroundColor: `${COLORS.borderClr}`,
     padding: 20,
     borderRadius: 12,
-    width: 328,
+    width: width / 1.3,
   },
   header: {
     fontSize: 25,

@@ -16,6 +16,7 @@ import { userStore } from '../../../store/userStore'
 import { IDesigns } from '../../../constant/types'
 import TextAnimation from '../Navigation/TextAnimation'
 import Loader from '../../Loading'
+import { PostStore } from '../../../store/postCreationStore'
 
 const { height, width } = Dimensions.get('window')
 
@@ -55,6 +56,7 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
   const [elementHeight, setElementHeight] = useState<number | null>(null)
   const elementRef = useRef<View | null>(null)
   const [webviewLoading, setWebviewLoading] = useState(true)
+  const openPost = PostStore((state) => state.openPost)
   const [webLoader, setWebLoader] = useState(false)
   const isMounted = useRef(false)
   const avatar = userStore((state) => state.avatar)
@@ -139,7 +141,7 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
       <View
         style={{
           width: width / 1,
-          height: height / 1.15,
+          height: openPost ? height / 1.05 : height / 1.15,
           flex: 1,
           backgroundColor: 'transparent',
           position: 'relative',
