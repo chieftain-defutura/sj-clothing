@@ -1,4 +1,4 @@
-import { Dimensions, View } from 'react-native'
+import { Dimensions, View, Text, Button, Linking } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
@@ -9,7 +9,7 @@ import PostComponent from '../../../../components/Post'
 import { LinearGradient } from 'expo-linear-gradient'
 import { gradientColors } from '../../../../styles/theme'
 import PostTooltip from '../../../../components/Tooltips/PostTooltip'
-
+import AppRating from '../../../../screens/Modals/AppRating'
 const { height } = Dimensions.get('window')
 
 const Post: React.FC = () => {
@@ -21,6 +21,7 @@ const Post: React.FC = () => {
   const updateAddress = userStore((state) => state.updateAddress)
   const updatePhoneNo = userStore((state) => state.updatePhoneNo)
   const updateProfile = userStore((state) => state.updateProfile)
+  const [openRating, setOpenRating] = useState(false)
   const [editPost, setEditPost] = useState(false)
   const [openPost, setOpenPost] = useState(false)
 
@@ -62,6 +63,22 @@ const Post: React.FC = () => {
     isShowToolTip()
   }, [isShowToolTip])
 
+  const getAppRatings = useCallback(async () => {
+    const ratings = await AsyncStorage.getItem('ratingApp')
+
+    if (!ratings) {
+      setTimeout(() => {
+        setOpenRating(true) // Set the state to null after 5 seconds
+      }, 10000)
+    }
+  }, [])
+
+  useEffect(() => {
+    getAppRatings()
+  }, [getAppRatings])
+
+  console.log(openRating)
+
   return (
     <>
       {openPost || editPost ? (
@@ -95,6 +112,8 @@ const Post: React.FC = () => {
               showToolTip(false)
             }}
           />
+
+          {openRating && <AppRating close={() => setOpenRating(false)} />}
         </LinearGradient>
       )}
     </>

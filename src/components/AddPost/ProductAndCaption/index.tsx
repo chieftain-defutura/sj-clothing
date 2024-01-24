@@ -9,6 +9,7 @@ import { userStore } from '../../../store/userStore'
 import LeftArrow from '../../../assets/icons/LeftArrow'
 import { useNavigation } from '@react-navigation/native'
 import { PostStore } from '../../../store/postCreationStore'
+import * as FileSystem from 'expo-file-system'
 import axios from 'axios'
 
 interface IProductAndCaption {
@@ -115,15 +116,23 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
           })
         }
         if (!editId) {
-          const { data } = await axios.post('https://ruby-bull-robe.cyclic.app/captureWebsite', {
-            uid: uid,
-          })
+          const url = `https://sj-threejs-development.netlify.app/webview/?uid=${uid}`
+          const response = await axios.get(
+            `https://api.screenshotone.com/take?access_key=iyrm0kI7sfhL6g&url=${url}&full_page=false&viewport_width=1920&viewport_height=1280&device_scale_factor=1&format=jpg&image_quality=80&block_ads=true&block_cookie_banners=true&block_banners_by_heuristics=false&block_trackers=true&delay=10&timeout=60`,
+            {
+              headers: {
+                responseType: 'arraybuffer',
+                'Content-Type': 'multipart/form-data',
+              },
+            },
+          )
+
           await addDoc(collection(db, 'Post'), {
             sizes: size ? size : '',
             style: style ? style : '',
             color: color ? color : '',
             textAndImage: textAndImage ? textAndImage : '',
-            productImage: `data:image/jpeg;base64,${data.screenshotBase64}`,
+            productImage: response.config.url,
             description: description,
             price: price,
             offerPrice: offerPrice,
@@ -184,7 +193,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
       }
       setLoading(false)
     } catch (error) {
-      console.log(error)
+      console.log('error', Object.values(error as any))
       setLoading(false)
     } finally {
       setLoading(false)

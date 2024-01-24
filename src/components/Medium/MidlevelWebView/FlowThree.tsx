@@ -124,7 +124,7 @@ const FlowThree: React.FC<IFlowThreeProps> = ({
 
   const handleLayout = () => {
     if (elementRef.current) {
-      elementRef.current.measure((height, pageY) => {
+      elementRef.current.measure((x, y, width, height, pageX, pageY) => {
         setPageY(pageY)
         setElementHeight(height)
       })

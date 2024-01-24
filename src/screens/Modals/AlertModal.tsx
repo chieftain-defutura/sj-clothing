@@ -12,7 +12,6 @@ interface IAlertModal {
   close: () => void
 }
 const AlertModal: React.FC<IAlertModal> = ({ children, close }) => {
-  const user = userStore((store) => store.user)
   return (
     <Modal animationType='fade' transparent={true}>
       <View style={styles.VerificationContainer}>
