@@ -80,7 +80,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
       setErrorMessage('') // Set the state to null after 5 seconds
     }, 2000)
   }, [errorMessage])
-  
+
   const handleSubmit = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
     if (!FilteredData) return
@@ -94,7 +94,7 @@ const PremiumLevel: React.FC<IPremiumLevel> = ({ openDetails, setOpenDetails }) 
 
     if (user && phoneNumber) {
       if (!isSize.sizeVarient.size) {
-        setErrorMessage('Return to the previous step to continue')
+        setErrorMessage('Return to the previous step to select size and then continue')
       } else {
         setFocus(true)
         setErrorMessage('')

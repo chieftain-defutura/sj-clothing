@@ -48,9 +48,20 @@ interface INavigation {
   isColor: string
   openPost: boolean
   shakeAnimation: any
+  isImageOrText: {
+    title: string
+    position: string
+    rate: number
+    designs: {
+      hashtag: string
+      image: string
+      originalImage: string
+    }
+  }
   handleIncreaseSteps: () => void
   handleDecreaseSteps: () => void
   shake: () => void
+  handleRemoveImage: () => void
   setOpenPost: React.Dispatch<React.SetStateAction<boolean>>
   setDone: React.Dispatch<React.SetStateAction<boolean>>
   setDropDown: React.Dispatch<React.SetStateAction<boolean>>
@@ -83,10 +94,12 @@ const Navigation: React.FC<INavigation> = ({
   sizeVarient,
   animationUpdated,
   shakeAnimation,
+  isImageOrText,
   colorAnimationUpdate,
   setOpenDesign,
   handleIncreaseSteps,
   shake,
+  handleRemoveImage,
   handleDecreaseSteps,
   setDropDown,
   setImageOrText,
@@ -304,7 +317,13 @@ const Navigation: React.FC<INavigation> = ({
               }}
             >
               <Pressable
-                onPress={() => (steps !== 5 ? setDropDown(true) : handleIncreaseSteps())}
+                onPress={() =>
+                  steps !== 5
+                    ? setDropDown(true)
+                    : isImageOrText.designs.image
+                    ? handleRemoveImage()
+                    : handleIncreaseSteps()
+                }
                 onPressIn={() => setIsPressed(true)}
                 onPressOut={() => setIsPressed(false)}
                 style={[
@@ -335,7 +354,8 @@ const Navigation: React.FC<INavigation> = ({
                         : 'Select Size',
                     )}`}
                   {steps === 4 && `${t(isColor ? isColor : 'Select Color')}`}
-                  {steps === 5 && `${t('Add more')}`}
+                  {steps === 5 && isImageOrText.designs.image && `${t('Remove')}`}
+                  {steps === 5 && !isImageOrText.designs.image && `${t('Add more')}`}
                 </Text>
                 {steps === 1 && !isSelectedStyle && <DropDownArrowIcon />}
                 {steps === 2 && !country && <DropDownArrowIcon />}

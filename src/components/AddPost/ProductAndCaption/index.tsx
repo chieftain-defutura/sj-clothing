@@ -78,6 +78,7 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
   const [errorMessage, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const UpdatePost = PostStore((state) => state.updatepost)
+  const updateOpenPost = PostStore((state) => state.updateOpenPost)
 
   useEffect(() => {
     if (errorMessage) {
@@ -105,12 +106,24 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
       }
       if (caption && product) {
         if (editId) {
+          const url = `https://sj-threejs-development.netlify.app/webview/?uid=${uid}`
+          const response = await axios.get(
+            `https://api.screenshotone.com/take?access_key=iyrm0kI7sfhL6g&url=${url}&full_page=false&viewport_width=1920&viewport_height=1280&device_scale_factor=1&format=jpg&image_quality=80&block_ads=true&block_cookie_banners=true&block_banners_by_heuristics=false&block_trackers=true&delay=10&timeout=60`,
+            {
+              headers: {
+                responseType: 'arraybuffer',
+                'Content-Type': 'multipart/form-data',
+              },
+            },
+          )
+
           await updateDoc(doc(db, 'Post', editId), {
             sizes: size ? size : '',
             style: style ? style : '',
             color: color ? color : '',
             textAndImage: textAndImage ? textAndImage : '',
             giftVideo: isGiftVideo,
+            productImage: response.config.url,
             product: product,
             caption: caption,
           })
@@ -147,48 +160,48 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
             createdAt: Timestamp.now(),
             updateAt: Timestamp.now(),
           })
-          UpdatePost({
-            isSteps: '1',
-            isSelectedStyle: '',
-            isSize: {
-              country: '',
-              sizeVarient: [
-                {
-                  size: '',
-                  measurement: '',
-                  quantity: '',
-                },
-              ],
-            },
-            isColor: '',
-            isColorName: '',
-            isImageOrText: {
-              title: '',
-              position: '',
-              rate: 0,
-              designs: {
-                hashtag: '',
-                image: '',
-                originalImage: '',
-              },
-            },
-            tempIsImageOrText: {
-              title: '',
-              position: '',
-              rate: 0,
-              designs: {
-                hashtag: '',
-                image: '',
-                originalImage: '',
-              },
-            },
-            product: '',
-            caption: '',
-            uid: '',
-          })
         }
-
+        UpdatePost({
+          isSteps: '1',
+          isSelectedStyle: '',
+          isSize: {
+            country: '',
+            sizeVarient: [
+              {
+                size: '',
+                measurement: '',
+                quantity: '',
+              },
+            ],
+          },
+          isColor: '',
+          isColorName: '',
+          isImageOrText: {
+            title: '',
+            position: '',
+            rate: 0,
+            designs: {
+              hashtag: '',
+              image: '',
+              originalImage: '',
+            },
+          },
+          tempIsImageOrText: {
+            title: '',
+            position: '',
+            rate: 0,
+            designs: {
+              hashtag: '',
+              image: '',
+              originalImage: '',
+            },
+          },
+          product: '',
+          caption: '',
+          uid: '',
+        })
         setOpenCheckout(false)
+        updateOpenPost(false)
         setOpenPost?.(false)
       }
       setLoading(false)

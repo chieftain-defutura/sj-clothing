@@ -436,6 +436,29 @@ const AddPost: React.FC<IAddPost> = ({ openPost, setOpenPost }) => {
     }
   }
 
+  const handleRemoveImage = () => {
+    setImageOrText({
+      title: '',
+      position: '',
+      rate: 0,
+      designs: {
+        hashtag: '',
+        image: '',
+        originalImage: '',
+      },
+    })
+    setTempImageOrText({
+      title: '',
+      position: '',
+      rate: 0,
+      designs: {
+        hashtag: '',
+        image: '',
+        originalImage: '',
+      },
+    })
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <LinearGradient colors={gradientOpacityColors} style={{ flex: 1 }}>
@@ -463,8 +486,10 @@ const AddPost: React.FC<IAddPost> = ({ openPost, setOpenPost }) => {
               setDropDown={setDropDown}
               isOpenDesign={isOpenDesign}
               setOpenDesign={setOpenDesign}
+              isImageOrText={isImageOrText}
               sizeVarient={isSize.sizeVarient[0]}
               isSelectedStyle={isSelectedStyle}
+              handleRemoveImage={handleRemoveImage}
               handleDecreaseSteps={handleDecreaseSteps}
               handleIncreaseSteps={handleIncreaseSteps}
               setImageApplied={setImageApplied}
