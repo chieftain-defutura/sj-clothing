@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
 import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
+import { LanguageTooltipData } from '../../constant/TooltipData/Language'
 
 interface ILanguageTooltip {
   isVisible?: boolean
@@ -20,12 +21,18 @@ const LanguageTooltip: React.FC<ILanguageTooltip> = ({ isVisible, onClose }) => 
         <View style={{ position: 'absolute', bottom: 100 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
-              <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Language
-              </Heading>
-              <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Manage your profile, customize avatars, and track your orders
-              </Paragraph>
+              {LanguageTooltipData.map((f, index) => {
+                return (
+                  <div key={index}>
+                    <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+                      {f.heading}
+                    </Heading>
+                    <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+                      {f.paragraph}
+                    </Paragraph>
+                  </div>
+                )
+              })}
 
               <View
                 style={{

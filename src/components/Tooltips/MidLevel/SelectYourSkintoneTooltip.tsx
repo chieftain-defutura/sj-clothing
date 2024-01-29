@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import TooltipIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
+import { SelectYourSkintoneTooltipData } from '../../../constant/TooltipData/MidLevel/SelectYourSkintoneTooltip'
 
 interface ISelectYourSkintoneTooltip {
   isVisible?: boolean
@@ -23,12 +24,18 @@ const SelectYourSkintoneTooltip: React.FC<ISelectYourSkintoneTooltip> = ({
         <View style={{ position: 'absolute', bottom: 100 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
-              <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Select Your Skintone
-              </Heading>
-              <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Elevate Your Wardrobe, Explore and purchase premium clothing for a refined look
-              </Paragraph>
+              {SelectYourSkintoneTooltipData.map((f, index) => {
+                return (
+                  <div key={index}>
+                    <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+                      {f.heading}
+                    </Heading>
+                    <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+                      {f.paragraph}
+                    </Paragraph>
+                  </div>
+                )
+              })}
 
               <View
                 style={{

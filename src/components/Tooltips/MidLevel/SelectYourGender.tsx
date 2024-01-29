@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import TooltipIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
+import { SelectYourGenderTooltipData } from '../../../constant/TooltipData/MidLevel/SelectYourGender'
 
 interface ISelectYourGender {
   isVisible?: boolean
@@ -20,12 +21,18 @@ const SelectYourGender: React.FC<ISelectYourGender> = ({ isVisible, onClose }) =
         <View style={{ position: 'absolute', bottom: 125 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
-              <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Select Your Gender
-              </Heading>
-              <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Express your unique style with our customizable clothes.
-              </Paragraph>
+              {SelectYourGenderTooltipData.map((f, index) => {
+                return (
+                  <div key={index}>
+                    <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+                      {f.heading}
+                    </Heading>
+                    <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+                      {f.paragraph}
+                    </Paragraph>
+                  </div>
+                )
+              })}
 
               <View
                 style={{

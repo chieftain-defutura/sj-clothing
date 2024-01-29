@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import TooltipTopArrowIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
+import { FinalViewTooltipData } from '../../../constant/TooltipData/MidLevel/FinalViewTooltip'
 
 interface IFinalViewTooltip {
   isVisible?: boolean
@@ -20,12 +21,18 @@ const FinalViewTooltip: React.FC<IFinalViewTooltip> = ({ isVisible, onClose }) =
         <View style={{ position: 'absolute', top: 140 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
-              <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Add More Design
-              </Heading>
-              <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Manage your profile, customize avatars, and track your orders
-              </Paragraph>
+              {FinalViewTooltipData.map((f, index) => {
+                return (
+                  <div key={index}>
+                    <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+                      {f.heading}
+                    </Heading>
+                    <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+                      {f.paragraph}
+                    </Paragraph>
+                  </div>
+                )
+              })}
 
               <View
                 style={{

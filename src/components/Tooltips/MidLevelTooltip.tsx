@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
 import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
+import { MidLevelTooltipData } from '../../constant/TooltipData/MidLevel'
 
 interface IMidLevelTooltip {
   isVisible?: boolean
@@ -20,12 +21,18 @@ const MidLevelTooltip: React.FC<IMidLevelTooltip> = ({ isVisible, onClose }) => 
         <View style={{ position: 'absolute', bottom: 80 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
-              <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Mid level
-              </Heading>
-              <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Express your unique style with our customizable clothes.
-              </Paragraph>
+              {MidLevelTooltipData.map((f, index) => {
+                return (
+                  <div key={index}>
+                    <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+                      {f.heading}
+                    </Heading>
+                    <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+                      {f.paragraph}
+                    </Paragraph>
+                  </div>
+                )
+              })}
 
               <View
                 style={{
