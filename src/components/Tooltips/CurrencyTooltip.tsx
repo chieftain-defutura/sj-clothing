@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
 import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
-import { CurrencyTooltipData } from '../../constant/TooltipData/Currency'
+import { CurrencyTooltipData } from '../../constant/TooltipData'
 
 interface ICurrencyTooltip {
   isVisible?: boolean
@@ -14,6 +14,9 @@ interface ICurrencyTooltip {
 
 const { width } = Dimensions.get('window')
 
+const heading = CurrencyTooltipData[0]
+const paragraph = CurrencyTooltipData[1]
+
 const CurrencyTooltip: React.FC<ICurrencyTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
@@ -21,18 +24,12 @@ const CurrencyTooltip: React.FC<ICurrencyTooltip> = ({ isVisible, onClose }) => 
         <View style={{ position: 'absolute', bottom: 100 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
-              {CurrencyTooltipData.map((f, index) => {
-                return (
-                  <div key={index}>
-                    <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                      {f.heading}
-                    </Heading>
-                    <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                      {f.paragraph}
-                    </Paragraph>
-                  </div>
-                )
-              })}
+              <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+                {heading}
+              </Heading>
+              <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+                {paragraph}
+              </Paragraph>
 
               <View
                 style={{

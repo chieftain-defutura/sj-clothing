@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import TooltipIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
-import { SelectYourGenderTooltipData } from '../../../constant/TooltipData/MidLevel/SelectYourGender'
+import { SelectYourGenderTooltipData } from '../../../constant/TooltipData'
 
 interface ISelectYourGender {
   isVisible?: boolean
@@ -14,6 +14,9 @@ interface ISelectYourGender {
 
 const { width } = Dimensions.get('window')
 
+const heading = SelectYourGenderTooltipData[0]
+const paragraph = SelectYourGenderTooltipData[1]
+
 const SelectYourGender: React.FC<ISelectYourGender> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
@@ -21,18 +24,12 @@ const SelectYourGender: React.FC<ISelectYourGender> = ({ isVisible, onClose }) =
         <View style={{ position: 'absolute', bottom: 125 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
-              {SelectYourGenderTooltipData.map((f, index) => {
-                return (
-                  <div key={index}>
-                    <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                      {f.heading}
-                    </Heading>
-                    <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                      {f.paragraph}
-                    </Paragraph>
-                  </div>
-                )
-              })}
+              <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+                {heading}
+              </Heading>
+              <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+                {paragraph}
+              </Paragraph>
 
               <View
                 style={{

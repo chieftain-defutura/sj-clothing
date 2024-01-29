@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
 import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
-import { PostTooltipData } from '../../constant/TooltipData/Post'
+import { PostTooltipData } from '../../constant/TooltipData'
 
 interface IPostTooltip {
   isVisible?: boolean
@@ -14,6 +14,9 @@ interface IPostTooltip {
 
 const { width } = Dimensions.get('window')
 
+const heading = PostTooltipData[0]
+const paragraph = PostTooltipData[1]
+
 const PostTooltip: React.FC<IPostTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
@@ -21,18 +24,12 @@ const PostTooltip: React.FC<IPostTooltip> = ({ isVisible, onClose }) => {
         <View style={{ position: 'absolute', bottom: 80 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
-              {PostTooltipData.map((f, index) => {
-                return (
-                  <div key={index}>
-                    <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                      {f.heading}
-                    </Heading>
-                    <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                      {f.paragraph}
-                    </Paragraph>
-                  </div>
-                )
-              })}
+              <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+                {heading}
+              </Heading>
+              <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+                {paragraph}
+              </Paragraph>
 
               <View
                 style={{

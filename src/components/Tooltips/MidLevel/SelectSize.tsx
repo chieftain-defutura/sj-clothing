@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import TooltipTopArrowIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
-import { SelectSizeTooltipData } from '../../../constant/TooltipData/MidLevel/SelectSize'
+import { SelectSizeTooltipData } from '../../../constant/TooltipData'
 
 interface ISelectSizeTooltip {
   isVisible?: boolean
@@ -14,6 +14,9 @@ interface ISelectSizeTooltip {
 
 const { width } = Dimensions.get('window')
 
+const heading = SelectSizeTooltipData[0]
+const paragraph = SelectSizeTooltipData[1]
+
 const SelectSizeTooltip: React.FC<ISelectSizeTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
@@ -21,18 +24,12 @@ const SelectSizeTooltip: React.FC<ISelectSizeTooltip> = ({ isVisible, onClose })
         <View style={{ position: 'absolute', top: 210 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
-              {SelectSizeTooltipData.map((f, index) => {
-                return (
-                  <div key={index}>
-                    <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                      {f.heading}
-                    </Heading>
-                    <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                      {f.paragraph}
-                    </Paragraph>
-                  </div>
-                )
-              })}
+              <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+                {heading}
+              </Heading>
+              <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+                {paragraph}
+              </Paragraph>
 
               <View
                 style={{

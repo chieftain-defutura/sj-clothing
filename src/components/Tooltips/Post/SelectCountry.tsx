@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import TooltipTopArrowIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
-import { SelectContinentPostTooltipData } from '../../../constant/TooltipData/Post/SelectContinent'
+import { SelectContinentPostTooltipData } from '../../../constant/TooltipData'
 
 interface ISelectCountryTooltip {
   isVisible?: boolean
@@ -14,6 +14,9 @@ interface ISelectCountryTooltip {
 
 const { width } = Dimensions.get('window')
 
+const heading = SelectContinentPostTooltipData[0]
+const paragraph = SelectContinentPostTooltipData[1]
+
 const SelectCountryPostTooltip: React.FC<ISelectCountryTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
@@ -21,18 +24,12 @@ const SelectCountryPostTooltip: React.FC<ISelectCountryTooltip> = ({ isVisible, 
         <View style={{ position: 'absolute', top: 150 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
-              {SelectContinentPostTooltipData.map((f, index) => {
-                return (
-                  <div key={index}>
-                    <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                      {f.heading}
-                    </Heading>
-                    <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                      {f.paragraph}
-                    </Paragraph>
-                  </div>
-                )
-              })}
+              <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+                {heading}
+              </Heading>
+              <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+                {paragraph}
+              </Paragraph>
 
               <View
                 style={{

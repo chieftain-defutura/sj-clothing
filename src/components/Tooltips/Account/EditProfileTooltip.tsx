@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import TooltipTopArrowIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
-import { EditProfileTooltipData } from '../../../constant/TooltipData/Account/EditProfileTooltipData'
+import { EditProfileTooltipData } from '../../../constant/TooltipData'
 
 interface IEditProfileTooltip {
   isVisible?: boolean
@@ -14,6 +14,9 @@ interface IEditProfileTooltip {
 
 const { width } = Dimensions.get('window')
 
+const heading = EditProfileTooltipData[0]
+const paragraph = EditProfileTooltipData[1]
+
 const EditProfileTooltip: React.FC<IEditProfileTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
@@ -21,18 +24,12 @@ const EditProfileTooltip: React.FC<IEditProfileTooltip> = ({ isVisible, onClose 
         <View style={{ position: 'absolute', top: 150 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
-              {EditProfileTooltipData.map((f, index) => {
-                return (
-                  <div key={index}>
-                    <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                      {f.heading}
-                    </Heading>
-                    <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                      {f.paragraph}
-                    </Paragraph>
-                  </div>
-                )
-              })}
+              <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+                {heading}
+              </Heading>
+              <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+                {paragraph}
+              </Paragraph>
               <View
                 style={{
                   display: 'flex',

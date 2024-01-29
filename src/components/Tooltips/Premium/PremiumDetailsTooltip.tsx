@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
-import { PremiumDetailsTooltipData } from '../../../constant/TooltipData/Premium/PremiumDetailsTooltipData'
+import { PremiumDetailsTooltipData } from '../../../constant/TooltipData'
 
 interface IPremiumDetailsTooltip {
   isVisible?: boolean
@@ -13,23 +13,20 @@ interface IPremiumDetailsTooltip {
 
 const { width } = Dimensions.get('window')
 
+const heading = PremiumDetailsTooltipData[0]
+const paragraph = PremiumDetailsTooltipData[1]
+
 const PremiumDetailsTooltip: React.FC<IPremiumDetailsTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
         <Content style={[{ width: width / 1.2 }, styles.container]}>
-          {PremiumDetailsTooltipData.map((f, index) => {
-            return (
-              <div key={index}>
-                <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                  {f.heading}
-                </Heading>
-                <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                  {f.paragraph}
-                </Paragraph>
-              </div>
-            )
-          })}
+          <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+            {heading}
+          </Heading>
+          <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+            {paragraph}
+          </Paragraph>
 
           <View
             style={{

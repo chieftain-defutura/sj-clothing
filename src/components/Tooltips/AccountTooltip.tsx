@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
 import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
-import { AccountTooltipData } from '../../constant/TooltipData/Account'
+import { AccountTooltipData } from '../../constant/TooltipData'
 
 interface IAccountTooltip {
   isVisible?: boolean
@@ -14,6 +14,9 @@ interface IAccountTooltip {
 
 const { width } = Dimensions.get('window')
 
+const heading = AccountTooltipData[0]
+const paragraph = AccountTooltipData[1]
+
 const AccountTooltip: React.FC<IAccountTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
@@ -21,18 +24,12 @@ const AccountTooltip: React.FC<IAccountTooltip> = ({ isVisible, onClose }) => {
         <View style={{ position: 'absolute', bottom: 80 }}>
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
-              {AccountTooltipData.map((f, index) => {
-                return (
-                  <div key={index}>
-                    <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                      {f.heading}
-                    </Heading>
-                    <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                      {f.paragraph}
-                    </Paragraph>
-                  </div>
-                )
-              })}
+              <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+                {heading}
+              </Heading>
+              <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+                {paragraph}
+              </Paragraph>
 
               <View
                 style={{

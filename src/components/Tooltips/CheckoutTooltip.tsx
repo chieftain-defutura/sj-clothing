@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
-import { CheckoutTooltipData } from '../../constant/TooltipData/Checkout'
+import { CheckoutTooltipData } from '../../constant/TooltipData'
 
 interface ICheckoutTooltip {
   isVisible?: boolean
@@ -13,23 +13,20 @@ interface ICheckoutTooltip {
 
 const { width } = Dimensions.get('window')
 
+const heading = CheckoutTooltipData[0]
+const paragraph = CheckoutTooltipData[1]
+
 const CheckoutTooltip: React.FC<ICheckoutTooltip> = ({ isVisible, onClose }) => {
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <TooltipWrapper>
         <Content style={[{ width: width / 1.2 }, styles.container]}>
-          {CheckoutTooltipData.map((f, index) => {
-            return (
-              <div key={index}>
-                <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                  {f.heading}
-                </Heading>
-                <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                  {f.paragraph}
-                </Paragraph>
-              </div>
-            )
-          })}
+          <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
+            {heading}
+          </Heading>
+          <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
+            {paragraph}
+          </Paragraph>
 
           <View
             style={{
