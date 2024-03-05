@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import TooltipIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
+import { SelectYourSkintoneTooltipData } from '../../../constant/TooltipData'
 
 interface ISelectYourSkintoneTooltip {
   isVisible?: boolean
@@ -12,6 +13,9 @@ interface ISelectYourSkintoneTooltip {
 }
 
 const { width } = Dimensions.get('window')
+
+const heading = SelectYourSkintoneTooltipData[0]
+const paragraph = SelectYourSkintoneTooltipData[1]
 
 const SelectYourSkintoneTooltip: React.FC<ISelectYourSkintoneTooltip> = ({
   isVisible,
@@ -24,10 +28,10 @@ const SelectYourSkintoneTooltip: React.FC<ISelectYourSkintoneTooltip> = ({
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
               <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Select Your Skintone
+                {heading}
               </Heading>
               <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Elevate Your Wardrobe, Explore and purchase premium clothing for a refined look
+                {paragraph}
               </Paragraph>
 
               <View

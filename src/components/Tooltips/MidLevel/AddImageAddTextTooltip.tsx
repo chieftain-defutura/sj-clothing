@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import TooltipTopArrowIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
+import { AddImageAddTextTooltipData } from '../../../constant/TooltipData'
 
 interface IAddImageAddTextTooltip {
   isVisible?: boolean
@@ -12,6 +13,9 @@ interface IAddImageAddTextTooltip {
 }
 
 const { width } = Dimensions.get('window')
+
+const heading = AddImageAddTextTooltipData[0]
+const paragraph = AddImageAddTextTooltipData[1]
 
 const AddImageAddTextTooltip: React.FC<IAddImageAddTextTooltip> = ({ isVisible, onClose }) => {
   return (
@@ -21,10 +25,10 @@ const AddImageAddTextTooltip: React.FC<IAddImageAddTextTooltip> = ({ isVisible, 
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
               <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Add Image and Add Text
+                {heading}
               </Heading>
               <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Manage your profile, customize avatars, and track your orders
+                {paragraph}
               </Paragraph>
 
               <View

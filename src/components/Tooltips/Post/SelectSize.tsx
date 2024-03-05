@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import TooltipTopArrowIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
+import { SelectSizePostTooltipData } from '../../../constant/TooltipData'
 
 interface ISelectSizeTooltip {
   isVisible?: boolean
@@ -12,6 +13,9 @@ interface ISelectSizeTooltip {
 }
 
 const { width } = Dimensions.get('window')
+
+const heading = SelectSizePostTooltipData[0]
+const paragraph = SelectSizePostTooltipData[1]
 
 const SelectSizePostTooltip: React.FC<ISelectSizeTooltip> = ({ isVisible, onClose }) => {
   return (
@@ -21,10 +25,10 @@ const SelectSizePostTooltip: React.FC<ISelectSizeTooltip> = ({ isVisible, onClos
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
               <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Select Size
+                {heading}
               </Heading>
               <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Manage your profile, customize avatars, and track your orders
+                {paragraph}
               </Paragraph>
 
               <View

@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import RightIcon from '../../../assets/icons/MidlevelIcon/rightIcon'
 import { COLORS, FONT_FAMILY } from '../../../styles/theme'
 import TooltipTopArrowIcon from '../../../assets/icons/TooltipIcon.tsx/TooltipTopArrow'
+import { EditProfileTooltipData } from '../../../constant/TooltipData'
 
 interface IEditProfileTooltip {
   isVisible?: boolean
@@ -12,6 +13,9 @@ interface IEditProfileTooltip {
 }
 
 const { width } = Dimensions.get('window')
+
+const heading = EditProfileTooltipData[0]
+const paragraph = EditProfileTooltipData[1]
 
 const EditProfileTooltip: React.FC<IEditProfileTooltip> = ({ isVisible, onClose }) => {
   return (
@@ -21,12 +25,11 @@ const EditProfileTooltip: React.FC<IEditProfileTooltip> = ({ isVisible, onClose 
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
               <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Edit Profile
+                {heading}
               </Heading>
               <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Manage your profile, customize avatars, and track your orders
+                {paragraph}
               </Paragraph>
-
               <View
                 style={{
                   display: 'flex',

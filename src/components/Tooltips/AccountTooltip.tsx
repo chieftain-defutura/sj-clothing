@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
 import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
+import { AccountTooltipData } from '../../constant/TooltipData'
 
 interface IAccountTooltip {
   isVisible?: boolean
@@ -12,6 +13,9 @@ interface IAccountTooltip {
 }
 
 const { width } = Dimensions.get('window')
+
+const heading = AccountTooltipData[0]
+const paragraph = AccountTooltipData[1]
 
 const AccountTooltip: React.FC<IAccountTooltip> = ({ isVisible, onClose }) => {
   return (
@@ -21,10 +25,10 @@ const AccountTooltip: React.FC<IAccountTooltip> = ({ isVisible, onClose }) => {
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
               <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Account
+                {heading}
               </Heading>
               <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Manage your profile, customize avatars, and track your orders
+                {paragraph}
               </Paragraph>
 
               <View

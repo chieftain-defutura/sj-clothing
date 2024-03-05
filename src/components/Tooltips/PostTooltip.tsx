@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
 import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
+import { PostTooltipData } from '../../constant/TooltipData'
 
 interface IPostTooltip {
   isVisible?: boolean
@@ -12,6 +13,9 @@ interface IPostTooltip {
 }
 
 const { width } = Dimensions.get('window')
+
+const heading = PostTooltipData[0]
+const paragraph = PostTooltipData[1]
 
 const PostTooltip: React.FC<IPostTooltip> = ({ isVisible, onClose }) => {
   return (
@@ -21,10 +25,10 @@ const PostTooltip: React.FC<IPostTooltip> = ({ isVisible, onClose }) => {
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
               <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Post
+                {heading}
               </Heading>
               <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Express your unique style with our customizable clothes.
+                {paragraph}
               </Paragraph>
 
               <View

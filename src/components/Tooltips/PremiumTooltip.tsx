@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY } from '../../styles/theme'
 import RightIcon from '../../assets/icons/MidlevelIcon/rightIcon'
 import TooltipIcon from '../../assets/icons/TooltipIcon.tsx/TooltipArrowIcon'
+import { PremiumTooltipData } from '../../constant/TooltipData'
 
 interface IPremiumTooltip {
   isVisible?: boolean
@@ -12,6 +13,9 @@ interface IPremiumTooltip {
 }
 
 const { width } = Dimensions.get('window')
+
+const heading = PremiumTooltipData[0]
+const paragraph = PremiumTooltipData[1]
 
 const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose }) => {
   return (
@@ -21,11 +25,12 @@ const PremiumTooltip: React.FC<IPremiumTooltip> = ({ isVisible, onClose }) => {
           <View style={{ position: 'relative' }}>
             <Content style={[{ width: width / 1.2 }, styles.container]}>
               <Heading allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Premium
+                {heading}
               </Heading>
               <Paragraph allowFontScaling={false} style={{ width: width / 1.4 }}>
-                Elevate Your Wardrobe, Explore and purchase premium clothing for a refined look
+                {paragraph}
               </Paragraph>
+
               <View
                 style={{
                   display: 'flex',
