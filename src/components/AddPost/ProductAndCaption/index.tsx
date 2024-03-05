@@ -7,9 +7,7 @@ import { addDoc, collection, doc, updateDoc, Timestamp } from 'firebase/firestor
 import { db } from '../../../../firebase'
 import { userStore } from '../../../store/userStore'
 import LeftArrow from '../../../assets/icons/LeftArrow'
-import { useNavigation } from '@react-navigation/native'
 import { PostStore } from '../../../store/postCreationStore'
-import * as FileSystem from 'expo-file-system'
 import axios from 'axios'
 
 interface IProductAndCaption {
@@ -74,7 +72,6 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
   setOpenPost,
 }) => {
   const user = userStore((state) => state.user)
-  const navigation = useNavigation()
   const [errorMessage, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const UpdatePost = PostStore((state) => state.updatepost)
@@ -87,8 +84,6 @@ const ProductAndCaption: React.FC<IProductAndCaption> = ({
       }, 3000)
     }
   })
-
-  console.log('uid', uid)
 
   const handleSubmit = async () => {
     try {

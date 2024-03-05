@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, Image, Modal, StyleSheet, Pressable } from 'react-native'
 import { COLORS } from '../../styles/theme'
 import { Formik } from 'formik'
@@ -6,6 +6,11 @@ import * as Yup from 'yup'
 import CloseIcon from '../../assets/icons/Close'
 import CustomButton from '../../components/Button'
 import CloseRedIcon from '../../assets/icons/CloseRedIcon'
+import { API_URL, SUBSCRIPTION_AMOUNT } from '../../utils/config'
+import { userStore } from '../../store/userStore'
+import { useStripe } from '@stripe/stripe-react-native'
+import { doc, setDoc } from 'firebase/firestore/lite'
+import { db } from '../../../firebase'
 
 interface SubscriptionModalProps {
   isVisible: boolean
@@ -19,9 +24,99 @@ const ValidationSchema = Yup.object().shape({})
 const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
   isVisible,
   onClose,
-  navigation,
   setOpenPost,
 }) => {
+  const currency = userStore((state) => state.currency)
+  const rate = userStore((state) => state.rate)
+  const user = userStore((state) => state.user)
+  const [errorMessage, setErrorMessage] = useState('')
+  const stripe = useStripe()
+
+  const handleSubscription = async () => {
+    try {
+      const fixedAmount = Number((Number(SUBSCRIPTION_AMOUNT) * (rate as number)).toFixed(2))
+      const response = await fetch(`${API_URL}/create-payment-intent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: user?.displayName,
+          email: user?.email,
+          amount: fixedAmount,
+          address: {
+            line1: '',
+            line2: '',
+            postal_code: '',
+            city: '',
+            state: '',
+            country: '',
+          },
+          description: 'sjclothing merchant product',
+          currency: currency.currency,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        return setErrorMessage(data.message as string)
+      }
+
+      //1. order create
+      const { paymentId } = data
+
+      const userDocRef = doc(db, 'Orders', paymentId)
+
+      await setDoc(userDocRef, {
+        userId: user?.uid,
+
+      })
+
+      const initSheet = await stripe.initPaymentSheet({
+        paymentIntentClientSecret: data.clientSecret,
+        merchantDisplayName: 'Sprinkle Nadar',
+        // applePay: {
+        //   merchantCountryCode: 'IN',
+        //   cartItems: [
+        //     {
+        //       label: 'Total',
+        //       amount: fixedAmount.toString(),
+        //       paymentType: PlatformPay.PaymentType.Immediate,
+        //     },
+        //   ],
+        // },
+        googlePay: {
+          merchantCountryCode: 'US',
+          currencyCode: 'USD',
+          testEnv: true,
+        },
+      })
+
+      if (initSheet.error) {
+        console.error(initSheet.error)
+        return setErrorMessage(initSheet.error?.message as string)
+      }
+
+      const presentSheet = await stripe.presentPaymentSheet({
+        clientSecret: data.clientSecret,
+      })
+
+      // const presentSheet = await stripe.presentGooglePay({
+      //   clientSecret: data.clientSecret,
+      // })
+      if (presentSheet.error) {
+        // console.error('presentSheet.error', presentSheet.error)
+        setErrorMessage(presentSheet.error?.message as string)
+        return
+      }
+      setOpenPost(true)
+      onClose()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <Modal visible={isVisible} animationType='fade' transparent={true}>
       <View
@@ -92,13 +187,15 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                       color: COLORS.textClr,
                     }}
                   >
-                    790
+                    {(
+                      Number(SUBSCRIPTION_AMOUNT ? SUBSCRIPTION_AMOUNT : 0) * (rate as number)
+                    ).toFixed(2)}
                   </Text>
                   <Text
                     allowFontScaling={false}
                     style={{ fontSize: 12, fontFamily: 'Gilroy-Medium', color: COLORS.textClr }}
                   >
-                    INR/month
+                    {currency.symbol}/month
                   </Text>
                 </View>
               </View>
@@ -246,21 +343,24 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                       fontFamily: 'Montserrat-SemiBold',
                     }}
                   >
-                    790
+                    {(
+                      Number(SUBSCRIPTION_AMOUNT ? SUBSCRIPTION_AMOUNT : 0) * (rate as number)
+                    ).toFixed(2)}
                   </Text>
                   <Text
                     allowFontScaling={false}
                     style={{ textAlign: 'center', color: COLORS.textClr }}
                   >
-                    INR
+                    {currency.symbol}
                   </Text>
                 </View>
               </View>
+              <Text>{errorMessage}</Text>
               <CustomButton
                 variant='primary'
                 text='Pay now'
                 onPress={() => {
-                  setOpenPost(true), onClose()
+                  handleSubscription()
                 }}
                 fontFamily='Arvo-Regular'
                 buttonStyle={[styles.submitBtn]}

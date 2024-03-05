@@ -4,3 +4,5 @@ export const PUBLISHABLE_KEY =
 export const CURRENCY_API_KEY = 'bf132cfcd88c95ed5ffd44b9'
 
 export const API_URL = 'https://sj-clothing-backend.cyclic.app'
+
+export const SUBSCRIPTION_AMOUNT = 1000
