@@ -31,6 +31,7 @@ import AuthNavigate from '../../screens/AuthNavigate'
 import InfoIcon from '../../assets/icons/MidlevelIcon/infoIcon'
 import TextAnimation from '../Medium/Navigation/TextAnimation'
 import Loader from '../Loading'
+import { Audio } from 'expo-av'
 // import { Audio } from 'expo-av'
 
 interface IPremiumThreeSixtyDegree {
@@ -91,14 +92,33 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
       }),
     ]).start()
   }
-  // const playSound = async () => {
-  //   const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
-  //   await sound.playAsync()
-  // }
 
-  // const handleImageClick = () => {
-  //   playSound()
-  // }
+  let sound: Audio.Sound | null = null
+
+  const playSound = async () => {
+    try {
+      if (sound === null) {
+        const { sound: newSound } = await Audio.Sound.createAsync(
+          require('../../assets/video/sound.wav'),
+        )
+        sound = newSound
+      }
+      await sound.playAsync()
+    } catch (error) {
+      console.error('Error playing sound:', error)
+    }
+  }
+
+  const stopSound = async () => {
+    try {
+      if (sound !== null) {
+        await sound.stopAsync()
+        sound = null // Reset sound variable after stopping
+      }
+    } catch (error) {
+      console.error('Error stopping sound:', error)
+    }
+  }
 
   const handleGetAnimation = useCallback(() => {
     if (!uid) return
@@ -106,11 +126,13 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
       defualtCollection(dbDefault, 'ModelsPremium'),
       defaultWhere('uid', '==', uid),
     )
+    playSound()
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docs.forEach((doc) => {
         // if (doc.data()['animationUpdated']) {
         //   setAnimationUpdated(doc.data()['animationUpdated'])
         // }
+
         console.log(doc.data())
         if (doc.data()['avatarLoaded']) {
           setAnimationUpdated(doc.data()['avatarLoaded'])
@@ -122,6 +144,7 @@ const PremiumThreeSixtyDegree: React.FC<IPremiumThreeSixtyDegree> = ({
 
     return () => {
       unsubscribe()
+      stopSound()
     }
   }, [uid])
 

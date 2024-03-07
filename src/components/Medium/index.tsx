@@ -33,6 +33,7 @@ import FlowOne from './MidlevelWebView/FlowOne'
 import FlowTwo from './MidlevelWebView/FlowTwo'
 import FlowThree from './MidlevelWebView/FlowThree'
 import AddImageAddTextTooltip from '../Tooltips/MidLevel/AddImageAddTextTooltip'
+import MidIntroModal from '../../screens/Modals/MidIntroModal'
 
 const { width } = Dimensions.get('window')
 
@@ -43,6 +44,7 @@ const Medium = () => {
   const phoneNumber = userStore((state) => state.phoneNo)
   const midlevelData = MidlevelStore((state) => state.midlevel)
   const updateMidlevelData = MidlevelStore((state) => state.updateMidlevel)
+  const [showIntroModal, setShowIntroModal] = useState(false)
 
   const user = userStore((state) => state.user)
   const [isSteps, setSteps] = useState(
@@ -152,6 +154,32 @@ const Medium = () => {
       }),
     ]).start()
   }
+  let sound: Audio.Sound | null = null
+
+  const playSound = async () => {
+    try {
+      if (sound === null) {
+        const { sound: newSound } = await Audio.Sound.createAsync(
+          require('../../assets/video/sound.wav'),
+        )
+        sound = newSound
+      }
+      await sound.playAsync()
+    } catch (error) {
+      console.error('Error playing sound:', error)
+    }
+  }
+
+  const stopSound = async () => {
+    try {
+      if (sound !== null) {
+        await sound.stopAsync()
+        sound = null // Reset sound variable after stopping
+      }
+    } catch (error) {
+      console.error('Error stopping sound:', error)
+    }
+  }
 
   const handleGetData = useCallback(() => {
     if (!uid) return
@@ -159,6 +187,7 @@ const Medium = () => {
       defualtCollection(dbDefault, 'ModelsMidlevel'),
       defaultWhere('uid', '==', uid),
     )
+    playSound()
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docs.forEach((doc) => {
         if (doc.data()['animationFinished']) {
@@ -173,6 +202,7 @@ const Medium = () => {
 
     return () => {
       unsubscribe()
+      stopSound()
     }
   }, [uid])
 
@@ -217,25 +247,6 @@ const Medium = () => {
       setTempImageOrText(isImageOrText)
     }
   }, [imageApplied])
-
-  // const playSound = async () => {
-  //   try {
-  //     const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
-  //     await sound.playAsync()
-  //   } catch (error) {
-  //     console.log('sound error:', error)
-  //   }
-  // }
-
-  const playSound = async (volume: any) => {
-    try {
-      const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
-      await sound.setVolumeAsync(volume) // Set volume between 0 (silent) and 1 (full volume)
-      await sound.playAsync()
-    } catch (error) {
-      console.log('sound error:', error)
-    }
-  }
 
   const handleDecreaseSteps = () => {
     if (isSteps !== 1) {
@@ -378,6 +389,21 @@ const Medium = () => {
   useEffect(() => {
     isShowToolTipAddImageAndAddText()
   }, [isShowToolTipAddImageAndAddText])
+
+  const isShowIntroModal = async () => {
+    try {
+      const data = await AsyncStorage.getItem('showIntroModal')
+      if (data !== 'true') {
+        AsyncStorage.setItem('showIntroModal', 'true')
+        setShowIntroModal(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    isShowIntroModal()
+  }, [isShowIntroModal])
 
   const handleUpdateColor = useCallback(async () => {
     if (!isColor || !uid) return
@@ -661,12 +687,18 @@ const Medium = () => {
           type='MidLevel'
         />
       )}
-      <MidLevelTooltip
-        isVisible={toolTip}
-        onClose={() => {
-          showToolTip(false)
-        }}
-      />
+
+      {!showIntroModal && (
+        <MidLevelTooltip
+          isVisible={toolTip}
+          onClose={() => {
+            showToolTip(false)
+          }}
+        />
+      )}
+      {showIntroModal && (
+        <MidIntroModal isVisible={showIntroModal} close={() => setShowIntroModal(false)} />
+      )}
     </View>
   )
 }

@@ -3,6 +3,7 @@ import { StyleProp, ViewStyle, View, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS } from '../styles/theme'
+import { Audio } from 'expo-av'
 
 type Props = {
   text: string
@@ -33,8 +34,25 @@ const CustomButton: React.FC<Props> = ({
   fontSize,
   style,
 }: Props) => {
+  const playSound = async () => {
+    try {
+      const { sound } = await Audio.Sound.createAsync(require('../assets/video/selectclick.wav'))
+      await sound.playAsync()
+    } catch (error) {
+      console.log('sound error:', error)
+    }
+  }
+  const handlePress = () => {
+    playSound() // Play sound
+    onPress?.() // Call the provided onPress handler
+  }
+
   return (
-    <TouchableOpacity onPress={disabled ? undefined : onPress} disabled={disabled} style={style}>
+    <TouchableOpacity
+      onPress={disabled ? undefined : handlePress}
+      disabled={disabled}
+      style={style}
+    >
       <LinearGradient
         colors={
           disabled && disabledBackgroundColor

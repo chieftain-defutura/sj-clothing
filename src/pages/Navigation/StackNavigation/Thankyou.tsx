@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View, Dimensions, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import uuid from 'react-native-uuid'
-import WebView from 'react-native-webview'
+import { WebView } from 'react-native-webview'
 import CustomButton from '../../../components/Button'
 import { LinearGradient } from 'expo-linear-gradient'
 import { COLORS, FONT_FAMILY, gradientOpacityColors } from '../../../styles/theme'
 import { useNavigation, StackActions } from '@react-navigation/native'
+
 import Animated, {
   FadeIn,
   FadeInUp,

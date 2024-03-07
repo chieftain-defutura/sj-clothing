@@ -179,13 +179,39 @@ const AddPost: React.FC<IAddPost> = ({ openPost, setOpenPost }) => {
       }),
     ]).start()
   }
+  let sound: Audio.Sound | null = null
 
+  const playSound = async () => {
+    try {
+      if (sound === null) {
+        const { sound: newSound } = await Audio.Sound.createAsync(
+          require('../../assets/video/sound.wav'),
+        )
+        sound = newSound
+      }
+      await sound.playAsync()
+    } catch (error) {
+      console.error('Error playing sound:', error)
+    }
+  }
+
+  const stopSound = async () => {
+    try {
+      if (sound !== null) {
+        await sound.stopAsync()
+        sound = null // Reset sound variable after stopping
+      }
+    } catch (error) {
+      console.error('Error stopping sound:', error)
+    }
+  }
   const handleGetData = useCallback(() => {
     if (!uid) return
     const q = defaultQuery(
       defualtCollection(dbDefault, 'ModelsMidlevel'),
       defaultWhere('uid', '==', uid),
     )
+    playSound()
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docs.forEach((doc) => {
         if (doc.data()['animationFinished']) {
@@ -197,6 +223,7 @@ const AddPost: React.FC<IAddPost> = ({ openPost, setOpenPost }) => {
 
     return () => {
       unsubscribe()
+      stopSound()
     }
   }, [uid])
 
@@ -234,14 +261,14 @@ const AddPost: React.FC<IAddPost> = ({ openPost, setOpenPost }) => {
     }
   }, [imageApplied])
 
-  const playSound = async () => {
-    try {
-      const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
-      await sound.playAsync()
-    } catch (error) {
-      console.log('sound error:', error)
-    }
-  }
+  // const playSound = async () => {
+  //   try {
+  //     const { sound } = await Audio.Sound.createAsync(require('../../assets/video/sound.mp3'))
+  //     await sound.playAsync()
+  //   } catch (error) {
+  //     console.log('sound error:', error)
+  //   }
+  // }
 
   const handleDecreaseSteps = () => {
     if (isSteps !== 1) {

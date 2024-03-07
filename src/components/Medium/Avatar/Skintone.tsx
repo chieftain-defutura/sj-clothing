@@ -5,7 +5,7 @@ import {
   onSnapshot,
 } from 'firebase/firestore'
 import uuid from 'react-native-uuid'
-import WebView from 'react-native-webview'
+import { WebView } from 'react-native-webview'
 import { useTranslation } from 'react-i18next'
 import { doc, setDoc, updateDoc } from 'firebase/firestore/lite'
 import Animated, { FadeInUp, FadeOut } from 'react-native-reanimated'
@@ -25,6 +25,7 @@ import { userStore } from '../../../store/userStore'
 import { db, dbDefault } from '../../../../firebase'
 import SelectYourSkintoneTooltip from '../../Tooltips/MidLevel/SelectYourSkintoneTooltip'
 import { tooltipDisableStore } from '../../../store/TooltipDisable'
+import { Audio } from 'expo-av'
 
 const { height, width } = Dimensions.get('window')
 
@@ -66,6 +67,32 @@ const Skintone: React.FC<ISkintone> = ({}) => {
   useEffect(() => {
     isShowToolTip()
   }, [isShowToolTip])
+  let sound: Audio.Sound | null = null
+
+  const playSound = async () => {
+    try {
+      if (sound === null) {
+        const { sound: newSound } = await Audio.Sound.createAsync(
+          require('../../../assets/video/sound.wav'),
+        )
+        sound = newSound
+      }
+      await sound.playAsync()
+    } catch (error) {
+      console.error('Error playing sound:', error)
+    }
+  }
+
+  const stopSound = async () => {
+    try {
+      if (sound !== null) {
+        await sound.stopAsync()
+        sound = null // Reset sound variable after stopping
+      }
+    } catch (error) {
+      console.error('Error stopping sound:', error)
+    }
+  }
 
   const handleGetData = useCallback(() => {
     if (!uid) return
@@ -73,6 +100,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
       defualtCollection(dbDefault, 'CreateAvatar'),
       defaultWhere('uid', '==', uid),
     )
+    playSound()
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docs.forEach((doc) => {
         setData(doc.data() as any)
@@ -82,6 +110,7 @@ const Skintone: React.FC<ISkintone> = ({}) => {
 
     return () => {
       unsubscribe()
+      stopSound()
     }
   }, [uid])
 
